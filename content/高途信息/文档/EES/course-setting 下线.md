@@ -50,6 +50,8 @@ diff 日志:
 ![[../../../壁纸/附件/RedisCacheUtil.java]]
 
 
+
+
 ```
 // 对于Map<U,T>类型参数，使用parseObject并保留原始类型  
 // 创建一个ParameterizedTypeImpl来保留泛型信息  
