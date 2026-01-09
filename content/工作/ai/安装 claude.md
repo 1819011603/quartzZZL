@@ -74,6 +74,6 @@ cat /usr/local/etc/npmrc 2>/dev/null
 
 配置
 
-https://claude-code-router.baijia.com
+claude-code-router
 
 sk--A_poOtprtGJA00Z2V9G8A
