@@ -71,4 +71,20 @@ done < .gitignore > .gitignore.tmp && mv .gitignore.tmp .gitignore
 
 ```
 
-	
+
+
+
+
+
+![[../壁纸/附件/Pasted image 20260109171715.png]]
+
+
+
+### 修改检索的content的size
+
+```
+vim quartz/plugins/emitters/contentIndex.tsx
+
+```
+
+![[../壁纸/附件/Pasted image 20260109173056.png]]
