@@ -26,10 +26,10 @@ unalias ffmpeg
 
 linux环境可执行文件: http://genshuixue-public.oss-cn-beijing.aliyuncs.com/origin_test/2024-02-28/16ba808b8016e6dea99071a9892ab41b/audio_transfer_av
 
-![[../壁纸/附件/audio_transfer_av]]
+
 windows可执行文件:  http://genshuixue-public.oss-cn-beijing.aliyuncs.com/origin_test/2024-02-28/2e051f81c4d6482001280cf2f34954d5/audio_transfer_av.exe
 
-![[../壁纸/附件/audio_transfer_av.exe]]
+
 
 http://genshuixue-public.oss-cn-beijing.aliyuncs.com/origin_test/2024-02-28/3bf8d026f28d693d58d5cd9411766d62/audio_transfer_av.zip
 
