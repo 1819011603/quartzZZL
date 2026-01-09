@@ -39,7 +39,7 @@ https://shadowrocketios.org/#%E5%AE%98%E7%BD%91%E4%B8%8B%E8%BD%BD
 
 https://shadowrocketvpn.com/download/#Download_File_for_Android
 
-![[../壁纸/附件/shadowrocket for android.apk.zip]]
+
 
 
 
