@@ -109,7 +109,7 @@ export const ContentIndex: QuartzEmitterPlugin<Partial<Options>> = (opts) => {
             title: file.data.frontmatter?.title!,
             links: file.data.links ?? [],
             tags: file.data.frontmatter?.tags ?? [],
-  content: (file.data.text ?? "").slice(0, 200),  
+  content: (file.data.text ?? "").slice(0, 1000),  
   richContent: undefined,         
             date: date,
             description: file.data.description ?? "",
