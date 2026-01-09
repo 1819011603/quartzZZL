@@ -1,0 +1,28 @@
+{
+	"nodes":[
+		{"id":"a35e700add2eadad","x":-280,"y":-60,"width":250,"height":60,"type":"text","text":"“永远不够”"},
+		{"id":"fadcc3126a456704","x":240,"y":-60,"width":250,"height":60,"type":"text","text":"匮乏文化: 安全感荡然无存"},
+		{"id":"021fe3a1ad053b22","x":597,"y":-230,"width":250,"height":60,"type":"text","text":"我还没睡够"},
+		{"id":"d502958de70afc28","x":640,"y":-62,"width":250,"height":60,"type":"text","text":"我的时间不够用"},
+		{"id":"1bf91af178e75992","x":653,"y":100,"width":267,"height":80,"type":"text","text":"我们一天到晚都在倾听、解释、抱怨或担心我们没有足够的"},
+		{"id":"0324d1bbf8c808cc","x":648,"y":266,"width":312,"height":114,"type":"text","text":"着这些想法入睡，醒来时仍沉浸在“不够”的想法中……匮乏感产生的内在条件和匮乏感产生的心理状态，存在于嫉妒、贪婪、偏见和与生活的抗争中……"},
+		{"id":"244bafc7fbaa2c56","x":649,"y":434,"width":250,"height":60,"type":"text","text":"潜意识持续工作,相当耗精力,耗能量. 会形成负循环."},
+		{"id":"32987136d1603adf","x":634,"y":629,"width":486,"height":111,"type":"text","text":"这种持续的计算和攀比如此令自我挫败的原因是，我们时常将自己的生活、婚姻、家庭和社群，与难以企及的、由媒体炒作的完美愿景进行比较，或者将自己的现状与幻想中别人的完美生活进行对比。"},
+		{"id":"54d6d5a4b7b34e55","x":139,"y":131,"width":250,"height":60,"type":"text","text":"匮乏的对立面是足够"},
+		{"id":"70e46a2d5f2b1403","x":-240,"y":1160,"width":250,"height":60,"type":"text","text":"误解1：“脆弱就是软弱"},
+		{"id":"34290a40759eddff","x":253,"y":1137,"width":567,"height":106,"type":"text","text":"脆弱也是孕育我们所渴望的情感和体验的摇篮。脆弱孕育了爱、归属感、快乐、勇气、同理心和创造力。它是希望、同理心、责任感和真实感的源泉。如果我们想拥有更清晰的人生目标，或更深刻、更有意义的精神生活，展现脆弱是必经之路。"},
+		{"id":"70ba69b0d48bf8d2","x":970,"y":1156,"width":250,"height":60,"type":"text","text":"我想体验你的脆弱，但我不想变得脆弱。"}
+	],
+	"edges":[
+		{"id":"337958a9d6c8b2b4","fromNode":"a35e700add2eadad","fromSide":"right","toNode":"fadcc3126a456704","toSide":"left"},
+		{"id":"1fd628d40cb10098","fromNode":"fadcc3126a456704","fromSide":"right","toNode":"021fe3a1ad053b22","toSide":"left"},
+		{"id":"7000a107fc16ca96","fromNode":"fadcc3126a456704","fromSide":"right","toNode":"d502958de70afc28","toSide":"left"},
+		{"id":"1933a44ad5d134cf","fromNode":"fadcc3126a456704","fromSide":"right","toNode":"1bf91af178e75992","toSide":"left"},
+		{"id":"c8ed4d81496b31a9","fromNode":"fadcc3126a456704","fromSide":"right","toNode":"0324d1bbf8c808cc","toSide":"left"},
+		{"id":"1b56c0e8dc7b2069","fromNode":"fadcc3126a456704","fromSide":"right","toNode":"244bafc7fbaa2c56","toSide":"left"},
+		{"id":"9c831fdddd12b513","fromNode":"fadcc3126a456704","fromSide":"right","toNode":"32987136d1603adf","toSide":"left"},
+		{"id":"2bb2c88a4fab0ea1","fromNode":"fadcc3126a456704","fromSide":"bottom","toNode":"54d6d5a4b7b34e55","toSide":"top","label":"对立面"},
+		{"id":"a8b6c8a717838708","fromNode":"70e46a2d5f2b1403","fromSide":"right","toNode":"34290a40759eddff","toSide":"left"},
+		{"id":"2a59a4832c4e5b4f","fromNode":"34290a40759eddff","fromSide":"right","toNode":"70ba69b0d48bf8d2","toSide":"left"}
+	]
+}

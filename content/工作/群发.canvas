@@ -1,0 +1,38 @@
+{
+	"nodes":[
+		{"id":"bd7d2041b46b2651","type":"text","text":"RobotWinServerController","x":-144,"y":-180,"width":264,"height":50},
+		{"id":"4ebd8964c8ff813b","x":-200,"y":57,"width":400,"height":83,"type":"text","text":"recordMapper.insertSingleRecord(robotWinServerRecordPo)获取任务id  "},
+		{"id":"ffd52d3b5cf686a4","x":462,"y":71,"width":378,"height":60,"type":"text","text":"这个节点不记录, 因为这样的话,定时任务的耗时就不准了 就没有统计效果"},
+		{"id":"43fea08cad8093b1","x":-505,"y":436,"width":250,"height":60,"type":"text","text":"定时任务扫描"},
+		{"id":"c3ca949d850e641b","x":-118,"y":601,"width":250,"height":60,"type":"text","text":"发送MQ到ss-msg-bulk-send"},
+		{"id":"a2df3b9dda9e06b7","x":-115,"y":839,"width":250,"height":60,"type":"text","text":"MsgBulkSendConsumer消费"},
+		{"id":"580d7c98f746b493","x":-114,"y":1073,"width":250,"height":60,"type":"text","text":"将任务状态改成typeSending"},
+		{"id":"f7997615c109d42d","x":-114,"y":1306,"width":250,"height":60,"type":"text","text":"发送MQ到ss-msg-bulk-detail"},
+		{"id":"3e9cf4d45373e61a","x":-110,"y":1530,"width":250,"height":60,"type":"text","text":"MsgBulkDetailConsumer消费"},
+		{"id":"c2698dee6e628eab","x":-106,"y":1721,"width":250,"height":60,"type":"text","text":"facade下发任务"},
+		{"id":"49d4cbd68166aa3b","x":501,"y":608,"width":250,"height":60,"type":"text","text":"节点1"},
+		{"id":"63e92abf3de05c0d","x":487,"y":848,"width":250,"height":60,"type":"text","text":"节点2"},
+		{"id":"d64f3e8317098a74","x":498,"y":1075,"width":250,"height":60,"type":"text","text":"节点3"},
+		{"id":"737cf53748581db7","x":502,"y":1317,"width":250,"height":60,"type":"text","text":"节点4"},
+		{"id":"f2627ac80c289238","x":495,"y":1539,"width":250,"height":60,"type":"text","text":"节点5"},
+		{"id":"edbbf3c83c869213","x":501,"y":1731,"width":250,"height":60,"type":"text","text":"节点6"}
+	],
+	"edges":[
+		{"id":"86ffc9b3e32e5213","fromNode":"bd7d2041b46b2651","fromSide":"bottom","toNode":"4ebd8964c8ff813b","toSide":"top"},
+		{"id":"cfce207404cef886","fromNode":"4ebd8964c8ff813b","fromSide":"right","toNode":"ffd52d3b5cf686a4","toSide":"left"},
+		{"id":"e9a93ac224580687","fromNode":"4ebd8964c8ff813b","fromSide":"bottom","toNode":"43fea08cad8093b1","toSide":"top"},
+		{"id":"3a376b00d0ca14bd","fromNode":"4ebd8964c8ff813b","fromSide":"bottom","toNode":"c3ca949d850e641b","toSide":"top"},
+		{"id":"a07ff00746f218de","fromNode":"43fea08cad8093b1","fromSide":"bottom","toNode":"c3ca949d850e641b","toSide":"left"},
+		{"id":"d707a742df19dcb5","fromNode":"c3ca949d850e641b","fromSide":"bottom","toNode":"a2df3b9dda9e06b7","toSide":"top"},
+		{"id":"720e937531ff205e","fromNode":"a2df3b9dda9e06b7","fromSide":"bottom","toNode":"580d7c98f746b493","toSide":"top"},
+		{"id":"3ea0c41b31b04874","fromNode":"580d7c98f746b493","fromSide":"bottom","toNode":"f7997615c109d42d","toSide":"top"},
+		{"id":"100524e44aee0eef","fromNode":"f7997615c109d42d","fromSide":"bottom","toNode":"3e9cf4d45373e61a","toSide":"top"},
+		{"id":"40608d0aa7f46a7e","fromNode":"3e9cf4d45373e61a","fromSide":"bottom","toNode":"c2698dee6e628eab","toSide":"top"},
+		{"id":"8393dba5da8c1231","fromNode":"c3ca949d850e641b","fromSide":"right","toNode":"49d4cbd68166aa3b","toSide":"left"},
+		{"id":"860b7d5465b9c4ce","fromNode":"a2df3b9dda9e06b7","fromSide":"right","toNode":"63e92abf3de05c0d","toSide":"left"},
+		{"id":"dc214427a1525531","fromNode":"580d7c98f746b493","fromSide":"right","toNode":"d64f3e8317098a74","toSide":"left"},
+		{"id":"9dfdd25d75f20bd0","fromNode":"f7997615c109d42d","fromSide":"right","toNode":"737cf53748581db7","toSide":"left"},
+		{"id":"73547f23a264d804","fromNode":"3e9cf4d45373e61a","fromSide":"right","toNode":"f2627ac80c289238","toSide":"left"},
+		{"id":"b1f7e89c90a39301","fromNode":"c2698dee6e628eab","fromSide":"right","toNode":"edbbf3c83c869213","toSide":"left"}
+	]
+}

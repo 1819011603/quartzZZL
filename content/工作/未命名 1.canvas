@@ -1,0 +1,15 @@
+{
+	"nodes":[
+		{"id":"e387a8d001592b1e","x":-125,"y":-30,"width":250,"height":60,"type":"text","text":"JoinChatroomConsumer开始消费"},
+		{"id":"6d55f676dfbc8512","x":-128,"y":210,"width":250,"height":60,"type":"text","text":"是否满足发送条件"},
+		{"id":"93cca3dc93a8666e","x":-125,"y":440,"width":250,"height":60,"type":"text","text":"发送MQ到ss-msg-chatroomJoinReply-send"},
+		{"id":"9ad5b3d4dc83e8e4","x":-128,"y":634,"width":250,"height":60,"type":"text","text":"JoinChatroomReplyConsumer开始消费"},
+		{"id":"062f3daa65d88d9c","x":-130,"y":840,"width":250,"height":60,"type":"text","text":"下任务给facade"}
+	],
+	"edges":[
+		{"id":"a52d2c6e38203be5","fromNode":"e387a8d001592b1e","fromSide":"bottom","toNode":"6d55f676dfbc8512","toSide":"top"},
+		{"id":"6faba10052c61c21","fromNode":"6d55f676dfbc8512","fromSide":"bottom","toNode":"93cca3dc93a8666e","toSide":"top"},
+		{"id":"0e2891824eddd16b","fromNode":"93cca3dc93a8666e","fromSide":"bottom","toNode":"9ad5b3d4dc83e8e4","toSide":"top"},
+		{"id":"51d31801515f58f9","fromNode":"9ad5b3d4dc83e8e4","fromSide":"bottom","toNode":"062f3daa65d88d9c","toSide":"top"}
+	]
+}

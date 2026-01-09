@@ -1,0 +1,10 @@
+
+
+在这种情况下，出现了服务启动时Consumer的init方法先于Hystrix和Feign对象初始化的情况，这可能导致调用其他服务时出现异常。这是因为在init方法中可能会依赖Hystrix和Feign对象进行远程调用，但由于它们尚未初始化，所以会导致调用其他服务失败。
+
+为了解决这个问题，可以考虑使用CommandLineRunner接口来延迟执行需要依赖Hystrix和Feign对象的操作，以确保它们在初始化后再进行调用。
+
+
+
+<mark class="hltr-yellow">使用CommandLineRunner接口可以确保在Spring Boot容器启动完毕后执行相应的操作，包括启动Consumer服务。由于此时Spring Boot容器已经完成初始化，因此在CommandLineRunner中启动Consumer是一个合适的解决方案，可以避免Consumer在Hystrix和Feign对象未初始化完毕时发生调用异常。</mark>
+

@@ -1,0 +1,51 @@
+1. # MyBatisCodeHelper-Pro插件破解版[2.9.7]  https://mbtsp.github.io/mybatisSmartCodeHelp/#/
+
+
+2. RestfulTool
+3. SequenceDiagram
+
+
+
+
+**破解:**
+
+https://github.com/NotoChen/Jetbrains-Help
+
+
+-javaagent:/Users/gaotu/Downloads/ja-netfilter/ja-netfilter.jar
+--add-opens=java.base/jdk.internal.org.objectweb.asm=ALL-UNNAMED
+--add-opens=java.base/jdk.internal.org.objectweb.asm.tree=ALL-UNNAMED
+
+-javaagent:/Users/gaotu/Downloads/jetbra/ja-netfilter.jar=jetbrains
+
+
+
+### idea破解 2024.1
+
+
+	java -jar ~/Downloads/tmp/Jetbrains-Help/target/Jetbrains-Help.jar
+
+破解
+
+1. git clone https://github.com/NotoChen/Jetbrains-Help
+2. mvn clean package
+3. java -jar target/Jetbrains-Help.jar
+4. http://127.0.0.1:10768/
+5. 下载ja-netfilter.zip
+	1. http://genshuixue-public.oss-cn-beijing.aliyuncs.com/origin_test/2024-07-27/0b41ae148cdd07e10db1527869b1a94c/ja-netfilter.zip 
+	2. ![[../../壁纸/附件/Pasted image 20240727222603.png]]
+7. Edit Custom VM Options...
+```
+-javaagent:/Users/gaotu/Downloads/ja-netfilter/ja-netfilter.jar  
+--add-opens=java.base/jdk.internal.org.objectweb.asm=ALL-UNNAMED  
+--add-opens=java.base/jdk.internal.org.objectweb.asm.tree=ALL-UNNAMED
+```
+7. 在 http://127.0.0.1:10768/ 复制激活码 进行激活
+```
+74976ae9da194765b5040c6b92b97916-eyJsaWNlbnNlSWQiOiI3NDk3NmFlOWRhMTk0NzY1YjUwNDBjNmI5MmI5NzkxNiIsImxpY2Vuc2VlTmFtZSI6IuWFieS6kSIsImFzc2lnbmVlTmFtZSI6IuiXj+afjyIsInByb2R1Y3RzIjpbeyJjb2RlIjoiSUkiLCJmYWxsYmFja0RhdGUiOiIyMTExLTExLTExIiwicGFpZFVwVG8iOiIyMTExLTExLTExIn0seyJjb2RlIjoiUENXTVAiLCJmYWxsYmFja0RhdGUiOiIyMTExLTExLTExIiwicGFpZFVwVG8iOiIyMTExLTExLTExIn0seyJjb2RlIjoiUFNJIiwiZmFsbGJhY2tEYXRlIjoiMjExMS0xMS0xMSIsInBhaWRVcFRvIjoiMjExMS0xMS0xMSJ9XSwibWV0YWRhdGEiOiIwMTIwMjMwOTE0UFNBWDAwMDAwNSJ9-UnSt3WYlrSoaQe2Mey/qlTWTTTt4cdQrUGFp6IohnbvEgmT8vBnnA7/KoyTtu9hxH6gpLu5HbPug2w6NZWBbxiGrWWlOrS5cQVtMhxy6vT2mYonNJtup1QEwpeiDOMCzneS4wBytIwz2/AScbOSw+uzxdwECorxs4pPpTmpbCg0vpUbNxKnBW7gsqVZePxoEqqJnefpR08axkq6LZcj6yxWfhvtvF6cmfocO9e7Br/slFZlz4cWzGJabk+gETyuq1aBkyjPYnTmMoik8NRNw+nj0cy9lKh3BLK8HP259S5AtV8uyKJn3YKd+3MiB9gg9ScH3XoNfhznb3O142SXyGfRIy0Py7P2oZQ5IQF7yqp/dCUiBewp71c8O/d1C7IlJ8h8alMMTlbdpuA0fYPdllfg00/CFq8v4C/Ox1iZzr9fXf0H+WrGKxhj5Ulngb/3j7JTBYSX/CgwdbZhnvXHgVO5qX5QrQFAlpIvNOS/7XUJha8PrfHAaPWRJpmk1auK7RN/MmJtehsmZ4l0ZhxLtSt7/bcdn/7QKQE56IKdUcVCRi7+5pHH7cSZRHKBwt22Aa02e2sevN7PNzf0LTzlFolbugine5HGbZkkO6FfaCwZESFwaQMUpgpaQ+0rcssg4/jPbR3whqP3W9Awlau+FeyzGjWwpcAyDZo6PTy5W3q4=-MIIEsTCCApmgAwIBAgIGAZD0juh/MA0GCSqGSIb3DQEBCwUAMBgxFjAUBgNVBAMMDUpldFByb2ZpbGUgQ0EwIBcNMjQwNzI2MTQxODQ0WhgPMjEyNDA3MjcxNDE4NDRaMBkxFzAVBgNVBAMMDkpldGJyYWlucy1IZWxwMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAl7y0mRzFf4wa/+y/mVQS9KchHnhXysmXnO7Vq4lHWue1F8z2Ijq+X/GIEf8xazeytKB0XP4mqgHKDdv0wVX+PYYXDJElaUMt14L38vTS27/mCIWcyCIJBpIS8XMKX2yQyYpMyyWE2ofWCWfgWeAsICHPf9QKLUISJ0qtZ5sTj9c/AvPpPzCXKJyRGskDNUyoKNJfp7I2yt/BhFbGnPov2f2ObCun60AnFWkUcuZ4KNLzMeoxaqJ2z89iKfsGRADf2dGGmQAikdyOLIw7Rt7RHirT6j+vVxHJY62WyvFl6hn5G28xqur2TuEHMV8CHAAkOwToMlkguvGQX0QS1hRKPZjbVtd2pC8em3Pv7jFIiGfSePdt/Zwbvj6/4pYIaqLvNv4HIAUu1+4k+bYHHUZH8ZJweg5jm5MN3z2Leky+YpsNmdRpM7xZ8urWTsB02mKSxiQ4HdX7lMOnHnYEWNacyWFaULZMamdu2UONabOPJooyPtU5W0h4jG49h01yJLwO6rZjf+64z/sHqPQXiaaVHZGrY7bRhpWHxxoQ4zXLycPNZcIL4VeLBurfu0TfPZpBRAVqxhiTrCAEYQ6VotgDDmja0eEcv8vIu79J/qclp1sBJgRWhClzIcMVcPhVwKiYpaF6rCLZIXQvYyQXs99sFElbye3DYk55zdRsET2biN0CAwEAATANBgkqhkiG9w0BAQsFAAOCAgEAhCdGGV12suvnKW9BSCtSsIzI5g8uvDhU2QJhJJ/GJAP5Dcj4HM/MO01Mlbv/PtURoIWpQActSHnI6YuUyX7M9p2PzHkyi1ZwmAutuLAgxGgHUHWXxfsTa2Rj5WGCB0fsZ2lwaXcFsDS1hU7ADTcJLIw7eRt+L0GpPYI0LJb8k9lZIIBu4902R9aRqIL2/syd+eCOPVkpYArEzUlFGzvMj7Rgg45tUnq/ICdycB6rlLW38MGTJy0ggCVuQ19GdFRtQ7JJs3LbOPQipI+i4FmlfxCWMaHxcNVcx076hWYgI/lzfKDlJ0muSWRBQ6MaelUxCQowcC7GZFVAsk7nZNy/V/tAKWcngG7rGws+JgL5o8iVmsZn0w1RYwVLIPBJAPR79BD0Z3iax8VX6PHfzyHa8zBQzm4mYhLXYx/9/sc8aZo7V2PGXcyJWXultkrvgynJe0gkK30NjB3VfeaYahR4TrTlLtBWYovLYivN06g+7fiVmMC2wQVbu7HTgoO2w/J1P2S4lysxAM+e6T0E2kmoHJFn/JAkk76OvSNVHzExoccFN4W6Nc6ZUeSHM20bPP+GRINJ0WtXg2SpuXOslYjsciUEcwzJWFK9JUuEBu7VqKkLVTpuaeXCJn/otgbcI3ibP+561APw4EqayQyn0Hr7PzbjSQXvLeO0n0JNg2BwA68=
+```
+![[../../壁纸/附件/Pasted image 20240727222821.png]]
+
+
+
+![[../../壁纸/附件/Pasted image 20240727222845.png]]
