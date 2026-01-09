@@ -7,3 +7,4 @@ https://blog.csdn.net/qq_46433748/article/details/133619647
 **方案二**
 
 找到pycharm中的设置，找到编辑器>字体，更换一个中文字体，我这里用的simhei也就是宋体
+
