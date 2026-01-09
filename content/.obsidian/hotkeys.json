@@ -1,0 +1,20 @@
+{
+  "codeblock-customizer:codeblock-customizer-foldall-editor": [
+    {
+      "modifiers": [
+        "Mod",
+        "Shift"
+      ],
+      "key": "C"
+    }
+  ],
+  "codeblock-customizer:codeblock-customizer-unfoldall-editor": [
+    {
+      "modifiers": [
+        "Mod",
+        "Shift"
+      ],
+      "key": "V"
+    }
+  ]
+}
