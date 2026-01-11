@@ -41,12 +41,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "java/idea/cursor.md",
+                "file": "linux/白嫖实例.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "cursor"
+              "title": "白嫖实例"
             }
           }
         ],
@@ -82,7 +82,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "cursor",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": true,
@@ -103,8 +103,7 @@
               "title": "书签"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -195,8 +194,20 @@
       "oz-clear-unused-images:Clear Unused Images": false
     }
   },
-  "active": "f916d392d676112f",
+  "active": "0b7ce85027e24f5b",
   "lastOpenFiles": [
+    "生活/steam游戏/steam游戏.md",
+    "生活/steam游戏/steam 下载速度.md",
+    "生活/steam游戏",
+    "软件/软件网址链接.md",
+    "书籍/历史/明朝那些事儿/朱元璋.md",
+    "书籍/心理学/巨婴国-武志红/巨婴国.md",
+    "生活/其他/计划.md",
+    "生活/其他/电脑购买： 耀世15Pro.md",
+    "生活/其他/成瘾.md",
+    "软件/windows软件.md",
+    "壁纸/附件/Pasted image 20260109232708.png",
+    "java/idea/cursor.md",
     "壁纸/附件/Pasted image 20260109231656.png",
     "高途信息/文档/EES/course-setting 下线.md",
     "java/json字段提取.md",
@@ -214,15 +225,6 @@
     "高途信息/文档/企微侧边栏/问题/开通企微侧边栏权限.md",
     "高途信息/文档/EES/好友关系.md",
     "高途信息/EES.md",
-    "高途信息/周报.md",
-    "高途信息/业财一体化.md",
-    "高途信息/文档.md",
-    "高途信息/微信助手依赖服务.md",
-    "高途信息/流程图.md",
-    "高途信息/即时聊天.md",
-    "高途信息/工作机.md",
-    "高途信息/个人贡献总结.md",
-    "高途信息/高途网址.md",
     "壁纸/附件/Pasted image 20251225181034.png",
     "壁纸/附件/Pasted image 20251225180923.png",
     "壁纸/附件/Pasted image 20251225180902.png",
@@ -232,8 +234,6 @@
     "壁纸/附件/Pasted image 20251225143951.png",
     "壁纸/附件/Pasted image 20251225140939.png",
     "ai/解决方案",
-    "壁纸/附件/img_v3_02t2_f9743817-9426-415d-a11e-64d9f99644cg.png",
-    "壁纸/附件/Pasted image 20251217151205.png",
     "壁纸/附件/AclServiceCompareController 1.java",
     "壁纸/附件/AclServiceCompareController.java",
     "壁纸/附件/Record_2025-07-09-21-36-54_5b9ffa3eca6ceb7886a201532a778ee7.mp4",
@@ -242,7 +242,6 @@
     "壁纸/附件/iShot_2025-08-26_16.06.45.mp4",
     "壁纸/附件/iShot_2025-08-26_13.52.12.mp4",
     "壁纸/附件/apollo.zip",
-    "java/elasticSearch优化",
     "书籍/心理学/无所畏惧-颠覆你内心的脆弱.canvas",
     "未命名 2.canvas",
     "未命名 1.canvas",
