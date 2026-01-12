@@ -88,3 +88,8 @@ https://github.com/SteamAutoCracks/ManifestHub/archive/refs/heads/1245620.zip
 
 
 https://github.com/pjy612/SteamManifestCache
+
+
+
+
+https://caigamer.cn/thread-7269.htm

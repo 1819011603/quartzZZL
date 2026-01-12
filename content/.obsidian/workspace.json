@@ -41,12 +41,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "linux/白嫖实例.md",
+                "file": "java/泛型.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "白嫖实例"
+              "title": "泛型"
             }
           }
         ],
@@ -82,7 +82,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "cast",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": true,
@@ -103,7 +103,8 @@
               "title": "书签"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -184,32 +185,40 @@
   },
   "left-ribbon": {
     "hiddenItems": {
+      "bases:创建新数据库": false,
       "switcher:打开快速切换": false,
       "graph:查看关系图谱": false,
       "canvas:新建白板": false,
       "daily-notes:打开/创建今天的日记": false,
       "templates:插入模板": false,
       "command-palette:打开命令面板": false,
-      "markdown-importer:打开 Markdown 格式转换器": false,
-      "oz-clear-unused-images:Clear Unused Images": false
+      "oz-clear-unused-images:Clear Unused Images": false,
+      "markdown-importer:打开 Markdown 格式转换器": false
     }
   },
-  "active": "0b7ce85027e24f5b",
+  "active": "f916d392d676112f",
   "lastOpenFiles": [
+    "ai/prompt/学习.md",
+    "ai/prompt/student-center.md",
+    "ai/prompt/Student-Data 项目开发规范.md",
+    "ai/prompt/CRM-Service 项目 Cursor Rules.md",
+    "ai/prompt/生成prompt.md",
+    "ai/prompt.md",
+    "学校/文献/下载文献  获取文献.md",
+    "ai/prompt",
+    "壁纸/附件/Pasted image 20260112095626.png",
+    "壁纸/附件/Pasted image 20260112095625.png",
+    "壁纸/附件/Pasted image 20260112095550.png",
+    "壁纸/附件/Pasted image 20260112095536.png",
+    "学校/答辩ppt制作.md",
     "生活/steam游戏/steam游戏.md",
+    "学校/文献",
+    "高途信息/文档/EES/course-setting 下线.md",
+    "高途信息/文档/EES/分页数从300到 500,  优化接口速度.md",
     "生活/steam游戏/steam 下载速度.md",
     "生活/steam游戏",
-    "软件/软件网址链接.md",
-    "书籍/历史/明朝那些事儿/朱元璋.md",
-    "书籍/心理学/巨婴国-武志红/巨婴国.md",
-    "生活/其他/计划.md",
-    "生活/其他/电脑购买： 耀世15Pro.md",
-    "生活/其他/成瘾.md",
-    "软件/windows软件.md",
     "壁纸/附件/Pasted image 20260109232708.png",
-    "java/idea/cursor.md",
     "壁纸/附件/Pasted image 20260109231656.png",
-    "高途信息/文档/EES/course-setting 下线.md",
     "java/json字段提取.md",
     "高途信息/文档/EES/Elasticsearch 单分片文档数上限事故分析报告.md",
     "java/arthas.md",
@@ -224,15 +233,10 @@
     "高途信息/文档/企微侧边栏/企业微信侧边栏接入.md",
     "高途信息/文档/企微侧边栏/问题/开通企微侧边栏权限.md",
     "高途信息/文档/EES/好友关系.md",
-    "高途信息/EES.md",
     "壁纸/附件/Pasted image 20251225181034.png",
     "壁纸/附件/Pasted image 20251225180923.png",
     "壁纸/附件/Pasted image 20251225180902.png",
     "壁纸/附件/Pasted image 20251225160105.png",
-    "壁纸/附件/Pasted image 20251225145344.png",
-    "壁纸/附件/Pasted image 20251225144020.png",
-    "壁纸/附件/Pasted image 20251225143951.png",
-    "壁纸/附件/Pasted image 20251225140939.png",
     "ai/解决方案",
     "壁纸/附件/AclServiceCompareController 1.java",
     "壁纸/附件/AclServiceCompareController.java",
@@ -240,8 +244,6 @@
     "壁纸/附件/灵犀20250912-114654.mp4",
     "java/mybatisPlus",
     "壁纸/附件/iShot_2025-08-26_16.06.45.mp4",
-    "壁纸/附件/iShot_2025-08-26_13.52.12.mp4",
-    "壁纸/附件/apollo.zip",
     "书籍/心理学/无所畏惧-颠覆你内心的脆弱.canvas",
     "未命名 2.canvas",
     "未命名 1.canvas",
