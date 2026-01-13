@@ -41,12 +41,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "java/泛型.md",
+                "file": "生活/运动/羽毛球.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "泛型"
+              "title": "羽毛球"
             }
           }
         ],
@@ -82,7 +82,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "cast",
+                "query": "羽毛球",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": true,
@@ -198,6 +198,9 @@
   },
   "active": "f916d392d676112f",
   "lastOpenFiles": [
+    "壁纸/附件/Pasted image 20260113161430.png",
+    "高途信息/文档/企微侧边栏/企业微信侧边栏接入.md",
+    "java/泛型.md",
     "ai/prompt/学习.md",
     "ai/prompt/student-center.md",
     "ai/prompt/Student-Data 项目开发规范.md",
@@ -230,9 +233,6 @@
     "高途信息/文档/EES/course-setting下线 prompt 1.md",
     "高途信息/文档/EES/企微侧边栏新增字段.md",
     "高途信息/文档/企微侧边栏/企业微信侧边栏总结.md",
-    "高途信息/文档/企微侧边栏/企业微信侧边栏接入.md",
-    "高途信息/文档/企微侧边栏/问题/开通企微侧边栏权限.md",
-    "高途信息/文档/EES/好友关系.md",
     "壁纸/附件/Pasted image 20251225181034.png",
     "壁纸/附件/Pasted image 20251225180923.png",
     "壁纸/附件/Pasted image 20251225180902.png",
