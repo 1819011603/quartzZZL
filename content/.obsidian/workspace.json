@@ -41,12 +41,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "生活/运动/羽毛球.md",
+                "file": "ai/解决方案/元prompt.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "羽毛球"
+              "title": "元prompt"
             }
           }
         ],
@@ -82,7 +82,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "羽毛球",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": true,
@@ -103,8 +103,7 @@
               "title": "书签"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -198,6 +197,10 @@
   },
   "active": "f916d392d676112f",
   "lastOpenFiles": [
+    "ai/解决方案/ai 的模式.md",
+    "ai/解决方案/元prompt.md",
+    "ai/解决方案/如何更好的使用ai.md",
+    "生活/运动/羽毛球.md",
     "壁纸/附件/Pasted image 20260113161430.png",
     "高途信息/文档/企微侧边栏/企业微信侧边栏接入.md",
     "java/泛型.md",
@@ -230,13 +233,9 @@
     "高途信息/文档/EES/course-setting下线 prompt.md",
     "ai/解决方案/解决思维链.md",
     "高途信息/文档/EES/course-setting下线 prompt  gaotu-crm.md",
-    "高途信息/文档/EES/course-setting下线 prompt 1.md",
-    "高途信息/文档/EES/企微侧边栏新增字段.md",
-    "高途信息/文档/企微侧边栏/企业微信侧边栏总结.md",
     "壁纸/附件/Pasted image 20251225181034.png",
     "壁纸/附件/Pasted image 20251225180923.png",
     "壁纸/附件/Pasted image 20251225180902.png",
-    "壁纸/附件/Pasted image 20251225160105.png",
     "ai/解决方案",
     "壁纸/附件/AclServiceCompareController 1.java",
     "壁纸/附件/AclServiceCompareController.java",
