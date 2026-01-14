@@ -41,12 +41,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "ai/解决方案/元prompt.md",
+                "file": "股票/学习/第四课 K线.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "元prompt"
+              "title": "第四课 K线"
             }
           }
         ],
@@ -82,7 +82,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "资金",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": true,
@@ -197,8 +197,20 @@
   },
   "active": "f916d392d676112f",
   "lastOpenFiles": [
-    "ai/解决方案/ai 的模式.md",
+    "股票/路径.md",
+    "股票/学习/第四课 K线.md",
+    "股票/学习/右侧交易.md",
+    "股票/学习/第三课.md",
+    "股票/学习/第一课：仓位与资金管理术语.md",
+    "股票/学习/A股情绪面.md",
+    "股票/学习/一些经验.md",
+    "股票/学习/第二课：买卖动作与时机术语.md",
+    "股票/学习",
+    "ai/解决方案/股票.md",
+    "股票",
+    "ai/解决方案/股票 1.md",
     "ai/解决方案/元prompt.md",
+    "ai/解决方案/ai 的模式.md",
     "ai/解决方案/如何更好的使用ai.md",
     "生活/运动/羽毛球.md",
     "壁纸/附件/Pasted image 20260113161430.png",
@@ -220,19 +232,9 @@
     "生活/steam游戏/steam游戏.md",
     "学校/文献",
     "高途信息/文档/EES/course-setting 下线.md",
-    "高途信息/文档/EES/分页数从300到 500,  优化接口速度.md",
-    "生活/steam游戏/steam 下载速度.md",
     "生活/steam游戏",
     "壁纸/附件/Pasted image 20260109232708.png",
     "壁纸/附件/Pasted image 20260109231656.png",
-    "java/json字段提取.md",
-    "高途信息/文档/EES/Elasticsearch 单分片文档数上限事故分析报告.md",
-    "java/arthas.md",
-    "高途信息/文档/EES/course-setting下线 check.md",
-    "高途信息/文档/EES/course-setting下线 prompt-改进.md",
-    "高途信息/文档/EES/course-setting下线 prompt.md",
-    "ai/解决方案/解决思维链.md",
-    "高途信息/文档/EES/course-setting下线 prompt  gaotu-crm.md",
     "壁纸/附件/Pasted image 20251225181034.png",
     "壁纸/附件/Pasted image 20251225180923.png",
     "壁纸/附件/Pasted image 20251225180902.png",
@@ -241,8 +243,6 @@
     "壁纸/附件/AclServiceCompareController.java",
     "壁纸/附件/Record_2025-07-09-21-36-54_5b9ffa3eca6ceb7886a201532a778ee7.mp4",
     "壁纸/附件/灵犀20250912-114654.mp4",
-    "java/mybatisPlus",
-    "壁纸/附件/iShot_2025-08-26_16.06.45.mp4",
     "书籍/心理学/无所畏惧-颠覆你内心的脆弱.canvas",
     "未命名 2.canvas",
     "未命名 1.canvas",
