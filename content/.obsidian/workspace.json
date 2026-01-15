@@ -41,16 +41,16 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "股票/学习/第四课 K线.md",
+                "file": "股票/学习/第一课：仓位与资金管理术语.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "第四课 K线"
+              "title": "第一课：仓位与资金管理术语"
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -82,7 +82,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "资金",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": true,
@@ -184,55 +184,54 @@
   },
   "left-ribbon": {
     "hiddenItems": {
-      "bases:创建新数据库": false,
       "switcher:打开快速切换": false,
       "graph:查看关系图谱": false,
       "canvas:新建白板": false,
       "daily-notes:打开/创建今天的日记": false,
       "templates:插入模板": false,
       "command-palette:打开命令面板": false,
-      "oz-clear-unused-images:Clear Unused Images": false,
-      "markdown-importer:打开 Markdown 格式转换器": false
+      "markdown-importer:打开 Markdown 格式转换器": false,
+      "oz-clear-unused-images:Clear Unused Images": false
     }
   },
-  "active": "f916d392d676112f",
+  "active": "f76580125bbcece9",
   "lastOpenFiles": [
-    "股票/路径.md",
-    "股票/学习/第四课 K线.md",
-    "股票/学习/右侧交易.md",
-    "股票/学习/第三课.md",
+    "高途信息/文档/企微侧边栏/企业微信侧边栏总结.md",
+    "高途信息/文档/EES/course-setting 下线.md",
     "股票/学习/第一课：仓位与资金管理术语.md",
-    "股票/学习/A股情绪面.md",
-    "股票/学习/一些经验.md",
+    "股票/学习/第四课 K线.md",
+    "股票/学习/第三课.md",
+    "linux/白嫖实例.md",
     "股票/学习/第二课：买卖动作与时机术语.md",
+    "股票/学习/一些经验.md",
+    "股票/学习/右侧交易.md",
+    "股票/学习/A股情绪面.md",
+    "股票/路径.md",
     "股票/学习",
-    "ai/解决方案/股票.md",
     "股票",
-    "ai/解决方案/股票 1.md",
-    "ai/解决方案/元prompt.md",
-    "ai/解决方案/ai 的模式.md",
-    "ai/解决方案/如何更好的使用ai.md",
-    "生活/运动/羽毛球.md",
-    "壁纸/附件/Pasted image 20260113161430.png",
-    "高途信息/文档/企微侧边栏/企业微信侧边栏接入.md",
-    "java/泛型.md",
-    "ai/prompt/学习.md",
-    "ai/prompt/student-center.md",
-    "ai/prompt/Student-Data 项目开发规范.md",
-    "ai/prompt/CRM-Service 项目 Cursor Rules.md",
-    "ai/prompt/生成prompt.md",
-    "ai/prompt.md",
     "学校/文献/下载文献  获取文献.md",
-    "ai/prompt",
+    "学校/文献",
+    "壁纸/附件/Pasted image 20260113161430.png",
     "壁纸/附件/Pasted image 20260112095626.png",
     "壁纸/附件/Pasted image 20260112095625.png",
     "壁纸/附件/Pasted image 20260112095550.png",
     "壁纸/附件/Pasted image 20260112095536.png",
-    "学校/答辩ppt制作.md",
+    "ai/解决方案/股票.md",
+    "ai/解决方案/股票 1.md",
+    "ai/解决方案/如何更好的使用ai.md",
+    "ai/解决方案/元prompt.md",
+    "ai/解决方案/ai 的模式.md",
+    "ai/prompt/生成prompt.md",
+    "ai/prompt/学习.md",
+    "ai/prompt/student-center.md",
+    "ai/prompt/Student-Data 项目开发规范.md",
+    "ai/prompt/CRM-Service 项目 Cursor Rules.md",
+    "ai/prompt",
     "生活/steam游戏/steam游戏.md",
-    "学校/文献",
-    "高途信息/文档/EES/course-setting 下线.md",
+    "生活/steam游戏/steam 下载速度.md",
     "生活/steam游戏",
+    "软件/软件网址链接.md",
+    "书籍/历史/明朝那些事儿/朱元璋.md",
     "壁纸/附件/Pasted image 20260109232708.png",
     "壁纸/附件/Pasted image 20260109231656.png",
     "壁纸/附件/Pasted image 20251225181034.png",
