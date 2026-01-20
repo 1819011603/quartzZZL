@@ -195,8 +195,9 @@
       "oz-clear-unused-images:Clear Unused Images": false
     }
   },
-  "active": "6acd9b7ef7db0934",
+  "active": "f76580125bbcece9",
   "lastOpenFiles": [
+    "壁纸/附件/Microsoft.PowerShell_profile.ps1",
     "高途信息/文档/EES/问题/Jenkins构建偶现编译错误问题分析.md",
     "软件/clash macos 1.md",
     "工具/嵌套复制json字段.md",
@@ -239,7 +240,6 @@
     "ai/解决方案/ai 的模式.md",
     "ai/prompt/生成prompt.md",
     "ai/prompt/学习.md",
-    "ai/prompt/student-center.md",
     "ai/prompt",
     "生活/steam游戏",
     "ai/解决方案",
