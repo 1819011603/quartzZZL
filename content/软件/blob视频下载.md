@@ -13,7 +13,7 @@ C:\Users\Administrator\Documents\WindowsPowerShell
 
 . $PROFILE
 ```
-![[../壁纸/附件/Microsoft.PowerShell_profile.ps1]]
+![[../壁纸/附件/Microsoft.PowerShell_profile 1.ps1]]
 # 下载
 # https://github.com/nilaoda/N_m3u8DL-RE/releases
 
