@@ -1,3 +1,27 @@
+
+# ===== Oh My Posh 配置 =====
+$exePath = "C:\Users\Administrator\scoop\shims\oh-my-posh.exe"
+$themesPath = "C:\Users\Administrator\AppData\Local\Programs\oh-my-posh\themes"
+$env:POSH_THEMES_PATH = $themesPath
+& $exePath init pwsh --config "$themesPath\atomic.omp.json" | Invoke-Expression
+
+# ===== 命令历史配置 =====
+Set-PSReadLineOption -HistoryNoDuplicates:$true
+Set-PSReadLineOption -MaximumHistoryCount 10000
+Set-PSReadLineOption -HistorySaveStyle SaveIncrementally
+Set-PSReadLineOption -PredictionSource History
+Set-PSReadLineOption -PredictionViewStyle ListView
+Set-PSReadLineOption -Colors @{
+    InlinePrediction = 'DarkGray'
+    ListPrediction = 'DarkGray'
+}
+
+# ===== 快捷键配置 =====
+Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
+Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
+Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
+Set-PSReadLineKeyHandler -Key Ctrl+r -Function ReverseSearchHistory
+
 function download_vedio {
     if ($args.Count -eq 0) {
         Write-Host "Usage: download_vedio [yt-dlp options] <url>" -ForegroundColor Yellow

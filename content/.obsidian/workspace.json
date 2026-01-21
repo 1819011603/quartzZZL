@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "软件/blob视频下载.md",
+                "file": "软件/windows软件.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "blob视频下载"
+              "title": "windows软件"
             }
           },
           {
@@ -82,7 +82,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "blob",
+                "query": "windows",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": true,
@@ -195,8 +195,13 @@
       "oz-clear-unused-images:Clear Unused Images": false
     }
   },
-  "active": "f76580125bbcece9",
+  "active": "6acd9b7ef7db0934",
   "lastOpenFiles": [
+    "软件/blob视频下载.md",
+    "软件/windows软件.md",
+    "壁纸/附件/Pasted image 20260121223725.png",
+    "软件/windows/windows 设置 cpu优先级.md",
+    "软件/macOs/macOS软件.md",
     "壁纸/附件/Microsoft.PowerShell_profile 1.ps1",
     "壁纸/附件/Microsoft.PowerShell_profile.ps1",
     "高途信息/文档/EES/问题/Jenkins构建偶现编译错误问题分析.md",
@@ -211,7 +216,6 @@
     "壁纸/附件/Pasted image 20260120012249.png",
     "壁纸/附件/Pasted image 20260120012050.png",
     "软件/apifox使用.md",
-    "软件/blob视频下载.md",
     "壁纸/附件/clipboard-server 1.zip",
     "壁纸/附件/clipboard-server.zip",
     "生活/steam游戏/steam游戏.md",
@@ -233,16 +237,12 @@
     "壁纸/附件/Pasted image 20260113161430.png",
     "壁纸/附件/Pasted image 20260112095626.png",
     "壁纸/附件/Pasted image 20260112095625.png",
-    "壁纸/附件/Pasted image 20260112095550.png",
     "ai/解决方案/股票.md",
     "ai/解决方案/股票 1.md",
     "ai/解决方案/如何更好的使用ai.md",
     "ai/解决方案/元prompt.md",
     "ai/解决方案/ai 的模式.md",
-    "ai/prompt/生成prompt.md",
-    "ai/prompt/学习.md",
     "ai/prompt",
-    "生活/steam游戏",
     "书籍/心理学/无所畏惧-颠覆你内心的脆弱.canvas",
     "未命名 2.canvas",
     "未命名 1.canvas",
