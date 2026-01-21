@@ -97,6 +97,7 @@ Write-Host "  history_clear" -ForegroundColor Yellow
 Write-Host ""
 Write-Host "测试一下：" -ForegroundColor Gray
 history_clear
+
 ```
 
 
