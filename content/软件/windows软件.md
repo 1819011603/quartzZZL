@@ -33,6 +33,9 @@ Win + Tab  可以新建桌面和删除桌面
 
 ### windows创建脚本命令 
 
+
+C:\Users\Administrator\PowerShellScripts
+
 ```
 # ===== 一键创建 history_clear 命令 =====
 
