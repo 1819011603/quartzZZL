@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "软件/windows软件.md",
+                "file": "java/idea/cursor.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "windows软件"
+              "title": "cursor"
             }
           },
           {
@@ -82,7 +82,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "windows",
+                "query": "cursor",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": true,
@@ -195,10 +195,13 @@
       "oz-clear-unused-images:Clear Unused Images": false
     }
   },
-  "active": "6acd9b7ef7db0934",
+  "active": "f76580125bbcece9",
   "lastOpenFiles": [
-    "软件/blob视频下载.md",
+    "壁纸/附件/mitmproxy 1.zip",
+    "壁纸/附件/mitmproxy.zip",
+    "壁纸/附件/cursor_token_updater.zip",
     "软件/windows软件.md",
+    "软件/blob视频下载.md",
     "壁纸/附件/Pasted image 20260121223725.png",
     "软件/windows/windows 设置 cpu优先级.md",
     "软件/macOs/macOS软件.md",
@@ -233,7 +236,6 @@
     "股票/学习",
     "股票",
     "学校/文献/下载文献  获取文献.md",
-    "学校/文献",
     "壁纸/附件/Pasted image 20260113161430.png",
     "壁纸/附件/Pasted image 20260112095626.png",
     "壁纸/附件/Pasted image 20260112095625.png",
@@ -241,8 +243,6 @@
     "ai/解决方案/股票 1.md",
     "ai/解决方案/如何更好的使用ai.md",
     "ai/解决方案/元prompt.md",
-    "ai/解决方案/ai 的模式.md",
-    "ai/prompt",
     "书籍/心理学/无所畏惧-颠覆你内心的脆弱.canvas",
     "未命名 2.canvas",
     "未命名 1.canvas",

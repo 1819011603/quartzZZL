@@ -9,18 +9,28 @@ $env:POSH_THEMES_PATH = $themesPath
 Set-PSReadLineOption -HistoryNoDuplicates:$true
 Set-PSReadLineOption -MaximumHistoryCount 10000
 Set-PSReadLineOption -HistorySaveStyle SaveIncrementally
-Set-PSReadLineOption -PredictionSource History
-Set-PSReadLineOption -PredictionViewStyle ListView
-Set-PSReadLineOption -Colors @{
-    InlinePrediction = 'DarkGray'
-    ListPrediction = 'DarkGray'
+
+# 预测建议配置（仅在支持的环境中启用）
+try {
+    Set-PSReadLineOption -PredictionSource History
+    Set-PSReadLineOption -PredictionViewStyle ListView
+    Set-PSReadLineOption -Colors @{
+        InlinePrediction = 'DarkGray'
+        ListPrediction = 'DarkGray'
+    }
+} catch {
+    # 在不支持预测建议的环境中静默跳过
 }
 
 # ===== 快捷键配置 =====
 Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
-Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
 Set-PSReadLineKeyHandler -Key Ctrl+r -Function ReverseSearchHistory
+# 👇 Tab 菜单补全
+Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
+
+# 👇 右键接受整个提示
+Set-PSReadLineKeyHandler -Key RightArrow -Function AcceptSuggestion
 
 function download_vedio {
     if ($args.Count -eq 0) {
@@ -81,3 +91,4 @@ function download_vedio {
         }
     }
 }
+
