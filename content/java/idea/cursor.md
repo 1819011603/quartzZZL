@@ -46,6 +46,6 @@ cd C:\Users\Administrator\mitmproxy
 ```
 
 
-![[../../壁纸/附件/mitmproxy 1.zip]]
+![[../../壁纸/附件/mitmproxy.zip]]
 
 ![[../../壁纸/附件/cursor_token_updater.zip]]
