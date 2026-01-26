@@ -22,10 +22,10 @@ vmtool -x 3 \
 
 ```
 
-thread -n 4000  > 1.txt
+thread -n 5000  > 1.txt
 
 
-thread -n 4000 --state=WAITING,TIMED_WAITING > 1.txt
+thread -n 000 --state=WAITING,TIMED_WAITING > 1.txt
 
 退出arthas 
 

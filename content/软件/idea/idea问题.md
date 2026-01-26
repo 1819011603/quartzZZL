@@ -1,4 +1,12 @@
 
+###  idea 层级消失 
+
+删除  将项目第一层目录下的.idea隐藏目录
+```
+
+sudo rm -rf .idea
+```
+
 
 
 ### idea cpu 高 排查
