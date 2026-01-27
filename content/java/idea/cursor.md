@@ -62,10 +62,10 @@ cd C:\Users\Administrator\mitmproxy
 重写逻辑在 C:\Users\Administrator\mitmproxy\cursor_rewrite.py
 ```
 
-![[../../壁纸/附件/mitmproxy 2.zip]]
+![[../../壁纸/附件/mitmproxy.zip]]
 ![[../../壁纸/附件/cursor_token_updater.zip]]
 
-
+![[../../壁纸/附件/mitmproxy_mac.zip]]
 
 ###  macos
 
@@ -112,3 +112,5 @@ export https_proxy=http://127.0.0.1:7897 http_proxy=http://127.0.0.1:7897 all_pr
 
 
 ![[../../壁纸/附件/claude_code_updater_arm.zip]]
+
+![[../../壁纸/附件/cursor_token_updater_arm (1).zip]]

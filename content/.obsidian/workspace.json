@@ -83,12 +83,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "软件/idea/idea问题.md",
+                "file": "java/idea/cursor.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "idea问题"
+              "title": "cursor"
             }
           }
         ],
@@ -124,7 +124,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "idea",
+                "query": "curs",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": true,
@@ -240,6 +240,19 @@
   },
   "active": "85517e2aefb9668d",
   "lastOpenFiles": [
+    "壁纸/附件/cursor_token_updater_arm (1).zip",
+    "壁纸/附件/mitmproxy_mac.zip",
+    "壁纸/附件/mitmproxy",
+    "壁纸/附件/mitmproxy.zip",
+    "壁纸/附件/mitmproxy/__pycache__/cursor_rewrite.cpython-311.pyc",
+    "壁纸/附件/mitmproxy/test_proxy.ps1",
+    "壁纸/附件/mitmproxy/stop_proxy.ps1",
+    "壁纸/附件/mitmproxy/stop_proxy.bat",
+    "壁纸/附件/mitmproxy/start_proxy.ps1",
+    "壁纸/附件/mitmproxy/start_proxy.bat",
+    "壁纸/附件/mitmproxy/rewrite_rules.json",
+    "壁纸/附件/mitmproxy/README.md",
+    "软件/idea/idea问题.md",
     "java/Netty/Reactor.md",
     "java/RocketMq/apollo 动态调整线程池参数.md",
     "工单/EES/课节学员直播答题.md",
@@ -247,8 +260,6 @@
     "壁纸/附件/Pasted image 20260126150831.png",
     "壁纸/附件/Pasted image 20260126150732.png",
     "未命名.md",
-    "工单/EES",
-    "工单",
     "java/mybatisPlus/多数据源查找不到的问题.md",
     "java/虚拟机/增加线程数量.md",
     "开发/mqtt rocketMq消费.md",
@@ -263,18 +274,9 @@
     "软件/idea/破解idea插件.md",
     "软件/macOs/macos网络.md",
     "软件/macOs/macOs清理内存.md",
-    "壁纸/附件/cleanmac.zip",
     "java/idea/cursor.md",
-    "壁纸/附件/claude_code_updater_arm.zip",
     "壁纸/附件/Pasted image 20260123174100.png",
     "壁纸/附件/Pasted image 20260123174056.png",
-    "壁纸/附件/mitmproxy/start_proxy.bat",
-    "壁纸/附件/mitmproxy/start_proxy.ps1",
-    "壁纸/附件/mitmproxy/cursor_accounts.json",
-    "壁纸/附件/mitmproxy/mitmproxy-ca-cert.p12",
-    "壁纸/附件/mitmproxy/quick_start.bat",
-    "壁纸/附件/mitmproxy/rewrite_example.py",
-    "壁纸/附件/mitmproxy/README.md",
     "软件/macOs/macOS软件.md",
     "壁纸/附件/Pasted image 20260121223725.png",
     "软件/macOs/macOS系统监听黑盒脚本网络请求完整指南.md",
@@ -283,9 +285,7 @@
     "壁纸/附件/Pasted image 20260122182439.png",
     "问题/cloud cpu增加.md",
     "高途信息/文档/EES/问题/Jenkins构建偶现编译错误问题分析.md",
-    "软件/blob视频下载.md",
     "壁纸/附件/Pasted image 20260120012249.png",
-    "软件/clash macos.md",
     "书籍/心理学/无所畏惧-颠覆你内心的脆弱.canvas",
     "未命名 2.canvas",
     "未命名 1.canvas",
