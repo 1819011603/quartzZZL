@@ -1,4 +1,4 @@
-
+$env:HTTP_PROXY="http://127.0.0.1:7897"; $env:HTTPS_PROXY="http://127.0.0.1:7897"
 # ===== Oh My Posh 配置 =====
 $exePath = "C:\Users\Administrator\scoop\shims\oh-my-posh.exe"
 $themesPath = "C:\Users\Administrator\AppData\Local\Programs\oh-my-posh\themes"
@@ -30,7 +30,7 @@ Set-PSReadLineKeyHandler -Key Ctrl+r -Function ReverseSearchHistory
 Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
 
 # 👇 右键接受整个提示
-Set-PSReadLineKeyHandler -Key RightArrow -Function AcceptSuggestion
+Set-PSReadLineKeyHandler -Key Ctrl+Tab -Function AcceptSuggestion
 
 function download_vedio {
     if ($args.Count -eq 0) {
@@ -76,9 +76,9 @@ function download_vedio {
     }
     
     if ($extraArgs.Count -gt 0) {
-        ./yt-dlp.exe --cookies E:\Download\yt-blp-cookie.txt -f "bestvideo[height<=1080][vcodec^=avc1]+bestaudio/bestvideo[height<=1080]+bestaudio/best[height<=1080]" --merge-output-format mp4 --concurrent-fragments 4 -P "H:\Downloads" -r 20M @extraArgs $url
+        ./yt-dlp.exe --cookies E:\Download\yt-blp-cookie.txt --merge-output-format mp4 --concurrent-fragments 4 -P "H:\Downloads" -r 20M @extraArgs $url
     } else {
-        ./yt-dlp.exe --cookies E:\Download\yt-blp-cookie.txt -f "bestvideo[height<=1080][vcodec^=avc1]+bestaudio/bestvideo[height<=1080]+bestaudio/best[height<=1080]" --merge-output-format mp4 --concurrent-fragments 4 -P "H:\Downloads" -r 20M $url
+        ./yt-dlp.exe --cookies E:\Download\yt-blp-cookie.txt --merge-output-format mp4 --concurrent-fragments 4 -P "H:\Downloads" -r 20M $url
     }
     
     # 下载完成后打开最新的视频文件
