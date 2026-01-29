@@ -262,7 +262,7 @@ MQClientInstance 中包含的主要线程池和资源：
 
 
 支持apollo配置
-![[../../壁纸/附件/RocketMQThreadOptimizerProcessor 2.java]]
+![[../../壁纸/附件/RocketMQThreadOptimizerProcessor 3.java]]
 
 
 ### 使用requests获取apollo配置
