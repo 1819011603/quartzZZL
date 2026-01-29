@@ -142,7 +142,7 @@ vmtool -x 3 --action getInstances --className org.apache.rocketmq.client.impl.fa
 💡 总结：
 
 > 每新建一个 Consumer，会增加核心线程 + Netty IO 线程 + 定时线程，总计大约 10~20 条，取决于你的配置参数。
-
+![[../../壁纸/附件/RocketMQThreadOptimizerProcessor.java]]
 
 ### 使用requests获取apollo配置
 
