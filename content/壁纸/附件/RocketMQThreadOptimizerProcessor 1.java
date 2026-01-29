@@ -15,9 +15,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.PriorityOrdered;
 
+import javax.annotation.PreDestroy;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
+import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -36,21 +42,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  * <p>
  * 【注意】consumeMessageService (消费线程池) 是每个 Consumer 独立的，不会共享！
  * <p>
- * 【优化效果】
- * 假设 50 个 Consumer：
- * - 不优化: 50 × 12 ≈ 600 个线程
- * - 每 4 个共享: 50 / 4 × 12 ≈ 150 个线程 (减少 75%)
- * - 每 8 个共享: 50 / 8 × 12 ≈ 75 个线程 (减少 87%)
- * <p>
- * 目标类（各自独立分组）：
- * - com.gaotu.arch.ons.config.OnsMessageListenerContainer (普通消息)
- * - com.gaotu.arch.ons.config.OnsMessageOrderListenerContainer (顺序消息)
- * - com.gaotu.arch.ons.config.OnsBatchMessageListenerContainer (批量消息)
- * <p>
- * 【分组建议】
- * - NORMAL (普通消息): 4-8 个/组，并发度高可多共享
- * - ORDER (顺序消息): 2-4 个/组，时序敏感不宜过多
- * - BATCH (批量消息): 2-4 个/组，吞吐量大适度共享
+ * 【桶算法】
+ * - 初始2个桶，使用随机数选择起始桶
+ * - 当桶使用超过一半容量时自动扩容
+ * - 保证每桶严格不超过 groupSize
  */
 @Configuration
 @Slf4j
@@ -60,22 +55,59 @@ public class RocketMQThreadOptimizerProcessor implements BeanPostProcessor, Prio
      * OnsMessageListenerContainer 类名前缀
      */
     private static final String ONS_CONTAINER_PREFIX = "com.gaotu.arch.ons.config.Ons";
+
     /**
-     * 各容器类型的优化计数器（独立分组）
+     * 最大桶数量
+     */
+    private static final int MAX_BUCKETS = 64;
+
+    /**
+     * 初始桶数量
+     */
+    private static final int INIT_BUCKETS = 3;
+
+    /**
+     * 随机数生成器
+     */
+    private final Random random = new Random();
+
+    /**
+     * 各容器类型的优化计数器（用于统计）
      */
     private final AtomicInteger normalCount = new AtomicInteger(0);
     private final AtomicInteger orderCount = new AtomicInteger(0);
     private final AtomicInteger batchCount = new AtomicInteger(0);
+
     /**
-     * OnsMessageListenerContainer 每组消费者数量，默认 8
+     * 桶状态：按 nameServerHash#accessKeyHash#containerType 维护，记录每个桶的当前容量
+     * 只有相同 nameServer + accessKey + containerType 的 Consumer 才能共享 MQClientInstance
+     */
+    private final Map<String, BucketState> bucketStates = new ConcurrentHashMap<>();
+
+    /**
+     * 分布记录：distinctInstanceName -> List<beanName>
+     */
+
+    private final Map<String, List<String>> distributionMap = new ConcurrentHashMap<>();
+
+
+    public Map<String, List<String>> getDistributionMap() {
+        return distributionMap;
+    }
+
+
+    /**
+     * OnsMessageListenerContainer 每组消费者数量
      */
     private int normalGroupSize = 4;
+
     /**
-     * OnsMessageOrderListenerContainer 每组消费者数量，默认 8
+     * OnsMessageOrderListenerContainer 每组消费者数量
      */
     private int orderGroupSize = 3;
+
     /**
-     * OnsBatchMessageListenerContainer 每组消费者数量，默认 8
+     * OnsBatchMessageListenerContainer 每组消费者数量
      */
     private int batchGroupSize = 2;
 
@@ -87,25 +119,36 @@ public class RocketMQThreadOptimizerProcessor implements BeanPostProcessor, Prio
         return bean;
     }
 
-    /**
-     * 在 Bean 初始化后被调用（在 afterPropertiesSet 之后）
-     * 此时 consumerBean 已经在 afterPropertiesSet() 中创建并设置好属性
-     * 我们在这里追加 instanceName 属性
-     */
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-
-        // 检查是否是 OnsMessageListenerContainer 或其子类
         if (isOnsListenerContainer(bean.getClass())) {
-
             optimizeContainer(beanName, bean);
         }
         return bean;
     }
 
     /**
+     * 应用关闭时打印分布情况
+     */
+    @PreDestroy
+    public void printDistribution() {
+        if (distributionMap.isEmpty()) {
+            return;
+        }
+        
+        log.info("========== RocketMQ Consumer 分布情况 ==========");
+        distributionMap.forEach((instanceName, beanNames) -> {
+            log.info("  {} ({} 个):", instanceName, beanNames.size());
+            beanNames.forEach(name -> log.info("    - {}", name));
+        });
+        log.info("===============================================");
+        log.info("总计: {} 个 MQClientInstance, {} 个 Consumer", 
+                distributionMap.size(), 
+                distributionMap.values().stream().mapToInt(List::size).sum());
+    }
+
+    /**
      * 检查类是否是 OnsMessageListenerContainer 或其子类
-     * 包括：OnsMessageListenerContainer, OnsMessageOrderListenerContainer, OnsBatchMessageListenerContainer
      */
     private boolean isOnsListenerContainer(Class<?> clazz) {
         String className = clazz.getName();
@@ -146,7 +189,6 @@ public class RocketMQThreadOptimizerProcessor implements BeanPostProcessor, Prio
 
     /**
      * 优化单个 OnsMessageListenerContainer
-     * 通过反射获取 consumerBean 属性，并设置 instanceName
      */
     private void optimizeContainer(String beanName, Object container) {
         try {
@@ -193,28 +235,28 @@ public class RocketMQThreadOptimizerProcessor implements BeanPostProcessor, Prio
             int nameServerHash = nameServer.hashCode();
             int accessKeyHash = accessKey.hashCode();
 
-            // 5. 获取实例 ID（优先使用配置的 ID，否则使用 PID）
+            // 5. 获取实例 ID
             String id = getInstanceId();
 
-            // 6. 获取该类型容器的计数器和分组大小
-            AtomicInteger counter = getCounter(containerType);
+            // 6. 获取分组大小并计数
             int groupSize = getGroupSize(containerType);
+            int currentCount = getCounter(containerType).getAndIncrement();
 
-            // 7. 计算组号（每 groupSize 个为一组，各类型独立计数）
-            int currentCount = counter.getAndIncrement();
-            int groupNumber = currentCount / groupSize;
+            // 7. 使用桶算法计算组号（在相同 nameServer+accessKey+type 范围内分桶）
+            int groupNumber = calcBucketNumber(nameServerHash, accessKeyHash, containerType, groupSize);
 
             // 8. 生成 InstanceName
-            // 格式: id#nameServerHash#accessKeyHash#containerType#groupNumber
-            // 相同类型、相同组的 Consumer 会得到相同的 InstanceName，从而复用 MQClientInstance
             String distinctInstanceName = id + "#" + nameServerHash + "#" + accessKeyHash
                     + "#" + containerType.getConfigKey() + "#" + groupNumber;
 
             // 9. 设置 instanceName 到 Properties 中
             properties.setProperty(PropertyKeyConst.InstanceName, distinctInstanceName);
 
-            log.info("✓ [RocketMQ优化] Bean: {} 已设置 InstanceName: {} (类型: {}, 第 {} 个, 组号: {})",
-                    beanName, distinctInstanceName, containerType.getConfigKey(), currentCount + 1, groupNumber);
+            // 10. 记录分布情况
+            distributionMap.computeIfAbsent(distinctInstanceName, k -> new ArrayList<>()).add(beanName);
+
+            log.info("✓ [RocketMQ优化] {} -> 桶{} (类型: {}, 第{}个)", 
+                    beanName, groupNumber, containerType.getConfigKey(), currentCount + 1);
 
         } catch (Exception e) {
             log.error("❌ [RocketMQ优化] Bean: {} 优化失败: {}", beanName, e.getMessage(), e);
@@ -222,14 +264,67 @@ public class RocketMQThreadOptimizerProcessor implements BeanPostProcessor, Prio
     }
 
     /**
-     * 获取实例 ID
-     * 优先使用配置的 ID，否则使用 PID
+     * 桶算法：随机起始 + 动态扩容
+     * <p>
+     * 设计思想：
+     * 1. 按 nameServerHash + accessKeyHash + containerType 分组（只有这些都相同才能复用 MQClientInstance）
+     * 2. 每组初始2个桶，随机选择起始桶，顺序查找未满的桶
+     * 3. 当总使用量超过总容量70%时，自动增加一个桶
+     * 4. 保证每桶严格不超过 groupSize
+     *
+     * @param nameServerHash nameServer 哈希值
+     * @param accessKeyHash  accessKey 哈希值
+     * @param containerType  容器类型
+     * @param groupSize      每个桶的最大容量
+     * @return 桶号
      */
-    private String getInstanceId() {
-        // 默认使用 PID
-        return String.valueOf(UtilAll.getPid());
+    private synchronized int calcBucketNumber(int nameServerHash, int accessKeyHash, 
+                                               ContainerType containerType, int groupSize) {
+        // 生成桶状态的 key：相同 nameServer + accessKey + type 才能共享 MQClientInstance
+        String stateKey = nameServerHash + "#" + accessKeyHash + "#" + containerType.getConfigKey();
+        
+        // 获取或创建桶状态
+        BucketState state = bucketStates.computeIfAbsent(stateKey, 
+                k -> new BucketState(INIT_BUCKETS, groupSize));
+
+        // 检查是否需要扩容（使用超过70%）
+        if (state.shouldExpand() && state.bucketCount < MAX_BUCKETS) {
+            state.expand();
+            log.info("📦 [RocketMQ优化] [{}] 桶扩容: {} -> {} 个桶", 
+                    stateKey, state.bucketCount - 1, state.bucketCount);
+        }
+
+        // 随机选择起始桶
+        int startBucket = random.nextInt(state.bucketCount);
+
+        // 从起始桶开始，找第一个没满的桶
+        for (int offset = 0; offset < state.bucketCount; offset++) {
+            int bucketIndex = (startBucket + offset) % state.bucketCount;
+            if (state.buckets[bucketIndex] < groupSize) {
+                state.buckets[bucketIndex]++;
+                state.totalUsed++;
+                return bucketIndex;
+            }
+        }
+
+        // 所有桶都满了，强制扩容并放入新桶
+        if (state.bucketCount < MAX_BUCKETS) {
+            state.expand();
+            state.buckets[state.bucketCount - 1]++;
+            state.totalUsed++;
+            return state.bucketCount - 1;
+        }
+
+        // 极端情况：达到最大桶数，返回随机桶
+        return startBucket;
     }
 
+    /**
+     * 获取实例 ID
+     */
+    private String getInstanceId() {
+        return String.valueOf(UtilAll.getPid());
+    }
 
     /**
      * 在类及其父类中查找指定名称的字段
@@ -252,20 +347,43 @@ public class RocketMQThreadOptimizerProcessor implements BeanPostProcessor, Prio
     }
 
     /**
+     * 桶状态类
+     */
+    private static class BucketState {
+        int[] buckets;      // 每个桶的当前容量
+        int bucketCount;    // 当前桶数量
+        int totalUsed;      // 总使用量
+        int groupSize;      // 每桶最大容量
+
+        BucketState(int initCount, int groupSize) {
+            this.buckets = new int[MAX_BUCKETS];
+            this.bucketCount = initCount;
+            this.totalUsed = 0;
+            this.groupSize = groupSize;
+        }
+
+        /**
+         * 是否应该扩容
+         */
+        boolean shouldExpand() {
+            int totalCapacity = bucketCount * groupSize;
+            return totalUsed >= totalCapacity * 0.7;
+        }
+
+        /**
+         * 扩容：增加一个桶
+         */
+        void expand() {
+            bucketCount++;
+        }
+    }
+
+    /**
      * 容器类型枚举
      */
     private enum ContainerType {
-        /**
-         * 普通消息监听容器
-         */
         NORMAL("OnsMessageListenerContainer", "normal"),
-        /**
-         * 顺序消息监听容器
-         */
         ORDER("OnsMessageOrderListenerContainer", "order"),
-        /**
-         * 批量消息监听容器
-         */
         BATCH("OnsBatchMessageListenerContainer", "batch");
 
         private final String className;
@@ -276,9 +394,6 @@ public class RocketMQThreadOptimizerProcessor implements BeanPostProcessor, Prio
             this.configKey = configKey;
         }
 
-        /**
-         * 根据类名获取容器类型
-         */
         public static ContainerType fromClass(Class<?> clazz) {
             String simpleName = clazz.getSimpleName();
             for (ContainerType type : values()) {
