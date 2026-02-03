@@ -69,12 +69,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "java/RocketMq/RocketMQ如何复用MQClientInstance线程,MQ动态调整线程池参数.md",
+                "file": "ai/cursor/cursor 使用.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "RocketMQ如何复用MQClientInstance线程,MQ动态调整线程池参数"
+              "title": "cursor 使用"
             }
           },
           {
@@ -124,7 +124,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "直播",
+                "query": "cursor",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": true,
@@ -239,12 +239,18 @@
   },
   "active": "aa2449c9a86dd63e",
   "lastOpenFiles": [
+    "java/idea/cursor.md",
+    "ai/cursor/cursor 使用.md",
+    "ai/cursor",
+    "软件/idea/idea问题.md",
+    "高途信息/文档/企微侧边栏/企业微信侧边栏接入.md",
+    "高途信息/文档/企微侧边栏/问题/开通企微侧边栏权限.md",
+    "java/RocketMq/RocketMQ如何复用MQClientInstance线程,MQ动态调整线程池参数.md",
     "壁纸/附件/RocketMQThreadOptimizerProcessor 4.java",
     "壁纸/附件/RocketMQThreadOptimizerProcessor 3.java",
     "壁纸/附件/RocketMQThreadOptimizerProcessor 2.java",
     "壁纸/附件/Pasted image 20260129111756.png",
     "java/RocketMq/未命名.md",
-    "java/RocketMq/RocketMQ如何复用MQClientInstance线程,MQ动态调整线程池参数.md",
     "壁纸/附件/Pasted image 20260129110625.png",
     "壁纸/附件/Pasted image 20260129110540.png",
     "壁纸/附件/Pasted image 20260129110524.png",
@@ -260,15 +266,11 @@
     "壁纸/附件/Pasted image 20260129093828.png",
     "工单/EES/课节学员直播答题.md",
     "高途信息/文档/EES/Elasticsearch 单分片文档数上限事故分析报告.md",
-    "java/idea/cursor.md",
     "壁纸/附件/cursor_token_updater_arm (1).zip",
     "壁纸/附件/mitmproxy_mac.zip",
     "壁纸/附件/mitmproxy",
     "壁纸/附件/mitmproxy.zip",
-    "壁纸/附件/mitmproxy/__pycache__/cursor_rewrite.cpython-311.pyc",
-    "壁纸/附件/mitmproxy/test_proxy.ps1",
     "壁纸/附件/mitmproxy/README.md",
-    "软件/idea/idea问题.md",
     "java/Netty/Reactor.md",
     "未命名.md",
     "java/mybatisPlus/多数据源查找不到的问题.md",
@@ -283,8 +285,6 @@
     "java/线程池/线程池异步注意事项.md",
     "软件/idea/破解idea插件.md",
     "软件/macOs/macos网络.md",
-    "软件/macOs/macOs清理内存.md",
-    "软件/macOs/macOS软件.md",
     "书籍/心理学/无所畏惧-颠覆你内心的脆弱.canvas",
     "未命名 2.canvas",
     "未命名 1.canvas",
