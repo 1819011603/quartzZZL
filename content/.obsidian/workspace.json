@@ -41,16 +41,16 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "股票/学习/第一课：仓位与资金管理术语.md",
+                "file": "软件/blob视频下载 yt-dlp.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "第一课：仓位与资金管理术语"
+              "title": "blob视频下载 yt-dlp"
             }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -82,7 +82,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "cursor",
+                "query": "Microsoft",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": true,
@@ -103,7 +103,8 @@
               "title": "书签"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -194,13 +195,27 @@
       "oz-clear-unused-images:Clear Unused Images": false
     }
   },
-  "active": "0b7ce85027e24f5b",
+  "active": "f916d392d676112f",
   "lastOpenFiles": [
+    "软件/windows/windows 设置 cpu优先级.md",
+    "软件/windows软件.md",
+    "股票/学习/第一课：仓位与资金管理术语.md",
+    "java/idea/cursor.md",
+    "壁纸/附件/RocketMQThreadOptimizerProcessor 4.java",
+    "壁纸/附件/RocketMQThreadOptimizerProcessor 1.java",
+    "壁纸/附件/Pasted image 20260129111756.png",
+    "壁纸/附件/Pasted image 20260129110625.png",
+    "壁纸/附件/Pasted image 20260129110540.png",
+    "壁纸/附件/Pasted image 20260129095041.png",
+    "壁纸/附件/Pasted image 20260129095013.png",
+    "壁纸/附件/Pasted image 20260129094853.png",
+    "java/RocketMq/未命名.md",
+    "java/RocketMq/RocketMQ如何复用MQClientInstance线程,MQ动态调整线程池参数.md",
+    "ai/cursor/cursor 使用.md",
+    "ai/cursor",
     "壁纸/附件/mitmproxy(1).zip",
     "工单/EES/课节学员搜不到.md",
-    "软件/windows软件.md",
     "软件/blob视频下载 yt-dlp.md",
-    "java/idea/cursor.md",
     "软件/clash macos.md",
     "ai/prompt/CRM-Service 项目 Cursor Rules.md",
     "java/RocketMq/apollo 动态调整线程池参数.md",
@@ -224,24 +239,10 @@
     "高途信息/文档/EES/花名册.md",
     "高途信息/微信助手依赖服务.md",
     "高途信息/EES.md",
-    "工单/EES",
-    "工单",
-    "壁纸/附件/mitmproxy 2.zip",
-    "壁纸/附件/mitmproxy 1.zip",
-    "壁纸/附件/Pasted image 20260121223725.png",
-    "软件/windows/windows 设置 cpu优先级.md",
     "软件/macOs/macOS软件.md",
     "高途信息/文档/EES/问题/Jenkins构建偶现编译错误问题分析.md",
     "软件/clash macos 1.md",
     "工具/嵌套复制json字段.md",
-    "壁纸/附件/img_v3_02u0_f02990e7-9006-428c-9ba7-f58aeaf4410g.jpg",
-    "壁纸/附件/img_v3_02u0_b2f1f870-e03e-4f63-a7d4-51903bd504dg.jpg",
-    "壁纸/附件/Pasted image 20260119164015.png",
-    "壁纸/附件/Pasted image 20260119144721.png",
-    "壁纸/附件/Pasted image 20260120012249.png",
-    "软件/apifox使用.md",
-    "高途信息/文档/EES/course-setting 下线.md",
-    "股票/学习/第一课：仓位与资金管理术语.md",
     "书籍/心理学/无所畏惧-颠覆你内心的脆弱.canvas",
     "未命名 2.canvas",
     "未命名 1.canvas",

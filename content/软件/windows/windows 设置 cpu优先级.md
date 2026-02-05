@@ -4,7 +4,7 @@
 
 ```
 
-HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options 
+HKEY_LOCAL_MACHINE\SOFTWARE\sofMicrosoft\Windows NT\CurrentVersion\Image File Execution Options 
 您可以简单地将上面的地址复制并粘贴到注册表编辑器的地址栏中到达该文件夹。
 
 1.创建程序名称的文件夹
