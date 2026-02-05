@@ -142,7 +142,127 @@ vmtool -x 3 --action getInstances --className org.apache.rocketmq.client.impl.fa
 💡 总结：
 
 > 每新建一个 Consumer，会增加核心线程 + Netty IO 线程 + 定时线程，总计大约 10~20 条，取决于你的配置参数。
+
+
+
+
+
+
+
+
+###  MQ复用逻辑
+```
+
+com.aliyun.openservices.shade.com.alibaba.rocketmq.client.impl.MQClientManager#getAndCreateMQClientInstance(com.aliyun.openservices.shade.com.alibaba.rocketmq.client.ClientConfig, com.aliyun.openservices.shade.com.alibaba.rocketmq.remoting.RPCHook, com.aliyun.openservices.shade.io.netty.channel.EventLoopGroup, com.aliyun.openservices.shade.io.netty.util.concurrent.EventExecutorGroup)
+
+
+
+```
+![[../../壁纸/附件/Pasted image 20260129094853.png]]
+
+### 分组数量建议
+
+| 容器类型          | 当前配置 | 建议  | 原因               |
+| ------------- | ---- | --- | ---------------- |
+| NORMAL (普通消息) | 4    | 4-8 | 普通消息并发度高，可以多共享   |
+| ORDER (顺序消息)  | 4    | 2-4 | 顺序消息对时序敏感，不宜过多共享 |
+| BATCH (批量消息)  | 2    | 2-4 | 批量消息吞吐量大，适度共享    |
+
+
+
+
+### 注册MQ gaotu包 
+com.gaotu.arch.ons.config.MessageListenerRegister#createOnsMessageOrderListenerContainerBeanDefinition
+
+![[../../壁纸/附件/Pasted image 20260129095013.png]]
+这里设置属性 但是没有设置instanceName
+
+![[../../壁纸/附件/Pasted image 20260129095041.png]]
+
+
+使用 com.gaotu.student.data.facade.config.RocketMQThreadOptimizerProcessor#postProcessAfterInitialization 对实例增加属性  
+
+![[../../壁纸/附件/Pasted image 20260129110540.png]]
+本质是使用的BatchConsumerBean  (com.aliyun.openservices.ons.api.bean.BatchConsumerBean)进行创建对象 
+
+普通: com.aliyun.openservices.ons.api.bean.ConsumerBean
+顺序: com.aliyun.openservices.ons.api.bean.OrderConsumerBean
+![[../../壁纸/附件/Pasted image 20260129110625.png]]
+
+RocketMQThreadOptimizerProcessor是在调用consumer.start之前修改properties的instanceName属性
+使其复用MQClientInstance对象 
+
+
+### MQClientInstance 包含的线程资源
+
+|线程/线程池|线程数|作用|是否共享|
+|---|---|---|---|
+|scheduledExecutorService|1-4|定时任务：更新路由、发送心跳、持久化消费进度|✅ 共享|
+|pullMessageService|1|拉取消息服务|✅ 共享|
+|rebalanceService|1|负载均衡服务|✅ 共享|
+|Netty eventLoopGroupWorker|3 (默认)|网络 IO 处理|✅ 共享|
+|Netty eventLoopGroupSelector|3 (默认)|网络连接选择器|✅ 共享|
+|publicExecutor|4 (默认)|回调处理|✅ 共享|
+|consumeMessageService|20 (默认)|消费线程池|❌ 每个 Consumer 独立|
+MQClientInstance 中包含的主要线程池和资源：
+
+1. scheduledExecutorService - 定时任务线程池
+
+	- 用于定期更新 NameServer 地址
+	
+	- 用于定期从 NameServer 获取路由信息
+	
+	- 用于定期发送心跳
+	
+	- 用于定期持久化消费进度
+	
+	- 用于定期调整线程池
+	
+	- 通常是单线程
+
+2. pullMessageService - 拉取消息服务
+
+	- 内部有一个线程用于拉取消息
+	
+	- 一个 MQClientInstance 一个
+
+3. rebalanceService - 负载均衡服务
+
+	- 内部有一个线程用于负载均衡
+	
+	- 一个 MQClientInstance 一个
+
+4. NettyRemotingClient (mQClientAPIImpl 内部)
+
+	- publicExecutor - 公共线程池，处理回调
+	
+	- eventLoopGroupWorker - Netty worker 线程组
+	
+	- eventLoopGroupSelector - Netty selector 线程组
+	
+	- channelEventListener - 通道事件监听线程
+
+5. DefaultMQPushConsumerImpl (每个 Consumer)
+
+	- consumeMessageService - 消费消息服务线程池
+	
+	- ConsumeMessageConcurrentlyService: 默认 20 个线程
+	
+	- ConsumeMessageOrderlyService: 默认 20 个线程
+	
+	- 这个线程池是每个 Consumer 独立的，不会因为共享 MQClientInstance 而共享
+
+
+![[../../壁纸/附件/Pasted image 20260129111756.png]]
+
 ![[../../壁纸/附件/RocketMQThreadOptimizerProcessor.java]]
+
+使用桶算法优化 
+![[../../壁纸/附件/RocketMQThreadOptimizerProcessor 1.java]]
+
+
+支持apollo配置
+![[../../壁纸/附件/RocketMQThreadOptimizerProcessor 4.java]]
 
 ### 使用requests获取apollo配置
 

@@ -7,7 +7,18 @@
 sudo rm -rf .idea
 ```
 
+修复.idea下的  modules.xml 文件 可以使用cursor修复
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/fairy.iml" filepath="$PROJECT_DIR$/fairy.iml" />
+    </modules>
+  </component>
+</project>
 
+```
 
 ### idea cpu 高 排查
 
