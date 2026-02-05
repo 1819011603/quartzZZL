@@ -14,6 +14,24 @@ http://genshuixue-public.oss-cn-beijing.aliyuncs.com/origin_test/2024-07-14/bd73
 
 
 
+| 命令             | 效果          |
+| -------------- | ----------- |
+| `explorer .`   | 打开当前目录      |
+| `explorer ..`  | 打开上级目录      |
+| `explorer C:\` | 打开指定目录      |
+| `start .`      | 同上，也能打开当前目录 |
+
+### PowerShell 中
+
+PowerShell
+
+```
+ii .
+```
+
+`ii` 是 `Invoke-Item` 的别名，更短。
+
+
 截屏
 
 **`Win + Shift + S`**
