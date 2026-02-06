@@ -389,6 +389,9 @@ vmtool --action getInstances \
 
 ![[../../壁纸/附件/RocketMQConsumerThreadPoolHandler.java]]
 ![[../../壁纸/附件/RocketMQConsumerThreadPoolHandler 1.java]]
+
+
+![[../../壁纸/附件/RocketMQConsumerThreadPoolHandler 2.java]]
 ### 使用requests获取apollo配置
 
 url = f"{apollo_server_url}/configs/{app_id}/default/{namespace}"

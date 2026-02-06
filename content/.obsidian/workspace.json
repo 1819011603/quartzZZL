@@ -13,58 +13,16 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "高途信息/文档/企微侧边栏/企业微信侧边栏总结.md",
+                "file": "软件/windows软件.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "企业微信侧边栏总结"
+              "title": "windows软件"
             }
           },
           {
             "id": "f76580125bbcece9",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "高途信息/文档/EES/course-setting 下线.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "course-setting 下线"
-            }
-          },
-          {
-            "id": "f916d392d676112f",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "ai/解决方案/元prompt.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "元prompt"
-            }
-          },
-          {
-            "id": "8808bcf8471dc08d",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "软件/macOs/macos网络.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "macos网络"
-            }
-          },
-          {
-            "id": "aa2449c9a86dd63e",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -78,21 +36,21 @@
             }
           },
           {
-            "id": "85517e2aefb9668d",
+            "id": "f916d392d676112f",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "工单/EES/课节学员直播答题.md",
+                "file": "生活/steam游戏/steam游戏.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "课节学员直播答题"
+              "title": "steam游戏"
             }
           }
         ],
-        "currentTab": 4
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -124,7 +82,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "arthas",
+                "query": "rocketM",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": true,
@@ -145,8 +103,7 @@
               "title": "书签"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -227,65 +184,64 @@
   },
   "left-ribbon": {
     "hiddenItems": {
-      "bases:新建数据库": false,
       "switcher:打开快速切换": false,
       "graph:查看关系图谱": false,
       "canvas:新建白板": false,
       "daily-notes:打开/创建今天的日记": false,
       "templates:插入模板": false,
       "command-palette:打开命令面板": false,
-      "oz-clear-unused-images:Clear Unused Images": false,
-      "markdown-importer:打开 Markdown 格式转换器": false
+      "markdown-importer:打开 Markdown 格式转换器": false,
+      "oz-clear-unused-images:Clear Unused Images": false
     }
   },
-  "active": "aa2449c9a86dd63e",
+  "active": "f76580125bbcece9",
   "lastOpenFiles": [
-    "壁纸/附件/RocketMQConsumerThreadPoolHandler 1.java",
-    "壁纸/附件/mitmproxy(1).zip",
-    "java/arthas.md",
+    "壁纸/附件/RocketMQConsumerThreadPoolHandler 2.java",
     "java/RocketMq/RocketMQ如何复用MQClientInstance线程,MQ动态调整线程池参数.md",
-    "壁纸/附件/RocketMQConsumerThreadPoolHandler.java",
-    "ai/prompt/CRM-Service 项目 Cursor Rules.md",
-    "java/cloud/Feign带请求头参数.md",
-    "ai/prompt/student-center.md",
-    "高途信息/文档/EES/Student-center没有指定apollo.meta 为什么可以直接运行.md",
-    "ai/prompt/Student-Data 项目开发规范.md",
-    "java/错误/日志依赖问题.md",
-    "高途信息/高途网址.md",
+    "问题/EES/记录一下线上MQ部分机器堆积导致整个topic堆积的情况.md",
     "java/idea/cursor.md",
-    "ai/cursor/cursor 使用.md",
-    "ai/cursor",
-    "软件/idea/idea问题.md",
-    "高途信息/文档/企微侧边栏/企业微信侧边栏接入.md",
-    "高途信息/文档/企微侧边栏/问题/开通企微侧边栏权限.md",
+    "壁纸/附件/RocketMQConsumerThreadPoolHandler.java",
+    "壁纸/附件/RocketMQConsumerThreadPoolHandler 1.java",
+    "生活/steam游戏/steam游戏.md",
+    "软件/blob视频下载 yt-dlp.md",
+    "软件/windows/windows 设置 cpu优先级.md",
+    "软件/windows软件.md",
+    "股票/学习/第一课：仓位与资金管理术语.md",
     "壁纸/附件/RocketMQThreadOptimizerProcessor 4.java",
-    "壁纸/附件/RocketMQThreadOptimizerProcessor 3.java",
-    "壁纸/附件/RocketMQThreadOptimizerProcessor 2.java",
+    "壁纸/附件/RocketMQThreadOptimizerProcessor 1.java",
     "壁纸/附件/Pasted image 20260129111756.png",
-    "java/RocketMq/未命名.md",
     "壁纸/附件/Pasted image 20260129110625.png",
     "壁纸/附件/Pasted image 20260129110540.png",
-    "壁纸/附件/Pasted image 20260129110524.png",
-    "壁纸/附件/RocketMQThreadOptimizerProcessor 1.java",
-    "壁纸/附件/RocketMQThreadOptimizerProcessor.java",
     "壁纸/附件/Pasted image 20260129095041.png",
-    "壁纸/附件/Pasted image 20260129095027.png",
     "壁纸/附件/Pasted image 20260129095013.png",
     "壁纸/附件/Pasted image 20260129094853.png",
-    "软件/blob视频下载 yt-dlp.md",
+    "java/RocketMq/未命名.md",
+    "ai/cursor/cursor 使用.md",
+    "ai/cursor",
+    "壁纸/附件/mitmproxy(1).zip",
     "工单/EES/课节学员搜不到.md",
-    "壁纸/附件/Pasted image 20260128131741.png",
-    "壁纸/附件/Pasted image 20260129093828.png",
-    "工单/EES/课节学员直播答题.md",
-    "高途信息/文档/EES/Elasticsearch 单分片文档数上限事故分析报告.md",
-    "壁纸/附件/cursor_token_updater_arm (1).zip",
-    "壁纸/附件/mitmproxy_mac.zip",
-    "壁纸/附件/mitmproxy/README.md",
-    "java/Netty/Reactor.md",
-    "未命名.md",
-    "java/mybatisPlus/多数据源查找不到的问题.md",
-    "java/虚拟机/增加线程数量.md",
+    "软件/clash macos.md",
+    "ai/prompt/CRM-Service 项目 Cursor Rules.md",
+    "java/RocketMq/apollo 动态调整线程池参数.md",
+    "壁纸/附件/RocketMQThreadOptimizerProcessor.java",
+    "java/RocketMq/rocketmq 事务消息.md",
     "开发/mqtt rocketMq消费.md",
+    "壁纸/附件/Pasted image 20260128131741.png",
+    "未命名.md",
+    "工单/EES/课节学员直播答题.md",
+    "壁纸/附件/mitmproxy_mac.zip",
+    "壁纸/附件/mitmproxy.zip",
+    "壁纸/附件/cursor_token_updater_arm (1).zip",
+    "壁纸/附件/Pasted image 20260126150903.png",
+    "壁纸/附件/Pasted image 20260126150732.png",
+    "壁纸/附件/Pasted image 20260123174100.png",
+    "高途信息/文档/企微侧边栏/企业微信侧边栏总结.md",
+    "高途信息/文档/EES/花名册.md",
+    "高途信息/微信助手依赖服务.md",
+    "高途信息/EES.md",
+    "软件/macOs/macOS软件.md",
+    "高途信息/文档/EES/问题/Jenkins构建偶现编译错误问题分析.md",
+    "软件/clash macos 1.md",
     "书籍/心理学/无所畏惧-颠覆你内心的脆弱.canvas",
     "未命名 2.canvas",
     "未命名 1.canvas",
