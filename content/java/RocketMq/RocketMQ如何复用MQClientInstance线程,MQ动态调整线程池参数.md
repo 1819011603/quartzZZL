@@ -264,6 +264,131 @@ MQClientInstance 中包含的主要线程池和资源：
 支持apollo配置
 ![[../../壁纸/附件/RocketMQThreadOptimizerProcessor 4.java]]
 
+
+### 动态调整RocketMQ的线程池
+
+
+```
+
+  vmtool --action getInstances \
+  --className com.gaotu.arch.ons.config.OnsListenerContainer \
+  --limit 500 -x 1 \
+  --express '
+    #containers=instances,
+    #containers.{
+      #cn=#this.getClass().getSimpleName(),
+      #l=#this.getMessageListenerList(),
+         
+      "container="+#this.getClass().getName()+" listeners="+(#l==null?"null":#l.{#this.getClass().getName()})
+    }
+  '
+```
+
+获取消费者的线程池的线程数 
+```
+  vmtool --action getInstances \
+  --className com.gaotu.arch.ons.config.OnsListenerContainer \
+  --limit 500 -x 1 \
+  --express '
+    #name="StaffOrgRelationChangeListener"
+    ,#containers=instances,
+    #filtered=#containers.{?
+      (
+        #l=#this.messageListenerList,
+        #l!=null and !#l.isEmpty() and
+        !#l.{? #this.getClass().getName().contains(#name)}.isEmpty()
+      )
+    },
+    #container=(#filtered.isEmpty() ? null : #filtered[0]),
+    #container==null ? "not found" : (
+      #cn=#container.getClass().getSimpleName(),
+      #cb=#container.consumerBean,
+      #cb==null ? "consumerBean null" : (
+        #ons=(#cn.equals("OnsMessageListenerContainer") ? #cb.consumer :
+             (#cn.equals("OnsMessageOrderListenerContainer") ? #cb.orderConsumer :
+              #cb.batchConsumer)),
+        #ons==null ? "consumer null" : (
+          #dmq=#ons.defaultMQPushConsumer,
+          #dmq==null ? "dmq null" : (
+            #impl=#dmq.defaultMQPushConsumerImpl,
+            #impl==null ? "impl null" : (
+              #svc=#impl.consumeMessageService,
+              #svc==null ? "svc null" : (
+                #exec=#svc.consumeExecutor,
+                #exec==null ? "exec null" :
+                  "core="+#exec.getCorePoolSize()
+                  +" max="+#exec.getMaximumPoolSize()
+                  +" active="+#exec.getActiveCount()
+                  +" pool="+#exec.getPoolSize()
+                  +" queue="+#exec.getQueue().size()
+              )
+            )
+          )
+        )
+      )
+    )
+  '
+
+```
+
+
+更新线程池的线程数 
+
+```
+vmtool --action getInstances \
+  --className com.gaotu.arch.ons.config.OnsListenerContainer \
+  --limit 500 -x 1 \
+  --express '
+    #name="StaffOrgRelationChangeListener"
+     ,#core=8,#max=16
+    ,#containers=instances,
+    #filtered=#containers.{?
+      (
+        #l=#this.messageListenerList,
+        #l!=null and !#l.isEmpty() and
+        !#l.{? #this.getClass().getName().contains(#name)}.isEmpty()
+      )
+    },
+    #container=(#filtered.isEmpty() ? null : #filtered[0]),
+    #container==null ? "not found" : (
+      #cn=#container.getClass().getSimpleName(),
+      #cb=#container.consumerBean,
+      #cb==null ? "consumerBean null" : (
+        #ons=(#cn.equals("OnsMessageListenerContainer") ? #cb.consumer :
+             (#cn.equals("OnsMessageOrderListenerContainer") ? #cb.orderConsumer :
+              #cb.batchConsumer)),
+        #ons==null ? "consumer null" : (
+          #dmq=#ons.defaultMQPushConsumer,
+          #dmq==null ? "dmq null" : (
+            #impl=#dmq.defaultMQPushConsumerImpl,
+            #impl==null ? "impl null" : (
+              #svc=#impl.consumeMessageService,
+              #svc==null ? "svc null" : (
+                #exec=#svc.consumeExecutor,
+                #exec==null ? "exec null" :
+                  (
+                  #curMax=#exec.getMaximumPoolSize(),
+                  #curCore=#exec.getCorePoolSize(),
+                  (#max>#curMax ? (#exec.setMaximumPoolSize(#max),#exec.setCorePoolSize(#core)) :
+                   (#core<#curCore ? (#exec.setCorePoolSize(#core),#exec.setMaximumPoolSize(#max)) :
+                    (#exec.setCorePoolSize(#core),#exec.setMaximumPoolSize(#max)))),
+                  "updated core="+#exec.getCorePoolSize()
+                  +" max="+#exec.getMaximumPoolSize()
+                  +" active="+#exec.getActiveCount()
+                  +" pool="+#exec.getPoolSize()
+                  +" queue="+#exec.getQueue().size()
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  '
+```
+
+![[../../壁纸/附件/RocketMQConsumerThreadPoolHandler.java]]
+
 ### 使用requests获取apollo配置
 
 url = f"{apollo_server_url}/configs/{app_id}/default/{namespace}"
