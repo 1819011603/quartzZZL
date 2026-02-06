@@ -22,10 +22,14 @@ try {
     # 在不支持预测建议的环境中静默跳过
 }
 
-# ===== 快捷键配置 =====
+# ===== 快捷键配 ?=====
+# 上下箭头：前缀匹配历史搜索
 Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
+
+# Ctrl+R/S：全局匹配历史搜索（包含匹配，输入关键词后可在整个命令中搜索）
 Set-PSReadLineKeyHandler -Key Ctrl+r -Function ReverseSearchHistory
+Set-PSReadLineKeyHandler -Key Ctrl+s -Function ForwardSearchHistory
 # 👇 Tab 菜单补全
 Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
 

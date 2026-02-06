@@ -62,7 +62,11 @@ cd C:\Users\Administrator\mitmproxy
 重写逻辑在 C:\Users\Administrator\mitmproxy\cursor_rewrite.py
 ```
 
-![[../../壁纸/附件/mitmproxy.zip]]
+
+![[../../壁纸/附件/mitmproxy(1).zip]]
+
+
+
 ![[../../壁纸/附件/cursor_token_updater.zip]]
 
 ![[../../壁纸/附件/mitmproxy_mac.zip]]
