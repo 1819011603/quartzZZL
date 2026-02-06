@@ -44,8 +44,8 @@ public class RocketMQConsumerThreadPoolHandler extends IJobHandler implements Ap
     /** 定时调度线程池，用于自动扩缩容 */
     private static final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(2);
 
-    @Value("${rocketmq.consumer.threadpool.init.delay.ms:30000}")
-    private long initDelayMs = 30000;
+    @Value("${rocketmq.consumer.threadpool.init.delay.ms:180000}")
+    private long initDelayMs = 180000;
 
     @Value("${rocketmq.consumer.threadpool.userClazzName.enabled:true}")
     private boolean userClazzNameEnabled;
