@@ -55,7 +55,7 @@ public class RocketMQConsumerThreadPoolHandler extends IJobHandler implements Ap
     private boolean autoScaleEnabled;
 
     /** 自动扩缩容检查间隔（秒） */
-    @Value("${rocketmq.consumer.threadpool.autoScale.interval.seconds:30}")
+    @Value("${rocketmq.consumer.threadpool.autoScale.interval.seconds:120}")
     private long autoScaleIntervalSeconds;
 
     /** 扩容步长 */
@@ -63,12 +63,23 @@ public class RocketMQConsumerThreadPoolHandler extends IJobHandler implements Ap
     private int scaleUpStep;
 
     /** 缩容步长（温和缩减） */
-    @Value("${rocketmq.consumer.threadpool.scale.down.step:4}")
+    @Value("${rocketmq.consumer.threadpool.scale.down.step:2}")
     private int scaleDownStep;
 
     /** 空闲时线程保活时间（秒） */
     @Value("${rocketmq.consumer.threadpool.keepAlive.seconds:60}")
     private long keepAliveSeconds;
+
+
+    @Value("${rocketmq.consumer.threadpool.min.pool.size:2}")
+    private int minPoolSize;
+
+    @Value("${rocketmq.consumer.threadpool.max.pool.size:32}")
+    private int maxPoolSize;
+
+
+    @Value("${rocketmq.consumer.threadpool.max.multi:3}")
+    private int maxMulti;
 
     /**
      * 每个消费者的线程池范围配置
@@ -159,7 +170,7 @@ public class RocketMQConsumerThreadPoolHandler extends IJobHandler implements Ap
         }
         int currentCore = threadPoolExecutor.getCorePoolSize();
         int currentMax = threadPoolExecutor.getMaximumPoolSize();
-        int activeCount = threadPoolExecutor.getActiveCount();
+        Integer activeCount = null;
         int poolSize = threadPoolExecutor.getPoolSize();
         int queueSize = threadPoolExecutor.getQueue().size();
 
@@ -168,23 +179,25 @@ public class RocketMQConsumerThreadPoolHandler extends IJobHandler implements Ap
         int minPoolSize = rangeConfig.getMin();
         int maxPoolSize = rangeConfig.getMax();
 
-        // 扩容判断: 活跃线程数 * 3 >= corePoolSize 且 队列积压 >= corePoolSize
-        if (activeCount * 3 >= 2 * currentCore && queueSize >= currentCore * currentCore) {
+        // 扩容判断: 活跃线程数 * 3 >= 2 * corePoolSize 且 队列积压 >= corePoolSize
+        if (queueSize >= currentCore * currentCore && (activeCount = threadPoolExecutor.getActiveCount()) * 3 >= 2 * currentCore ) {
             if (currentCore < maxPoolSize && poolSize < maxPoolSize) {
                 int newCore = Math.min(Math.max(currentCore, poolSize) + scaleUpStep, maxPoolSize);
-                safeSetCoreAndMax(threadPoolExecutor, newCore, Math.max(newCore, currentMax));
+                int max = Math.max(newCore, currentMax);
+                safeSetCoreAndMax(threadPoolExecutor, newCore, max);
                 log.info("ThreadPool scaled up: {}, core: {} -> {}, max: {} -> {}, active={}, queue={}",
-                        name, currentCore, newCore, currentMax, Math.max(newCore, currentMax), activeCount, queueSize);
+                        name, currentCore, newCore, currentMax, max, activeCount, queueSize);
             }
         }
-        else if (activeCount <= 1 && queueSize == 0) {
+        else if (queueSize == 0 && (activeCount = activeCount == null? threadPoolExecutor.getActiveCount() : activeCount) <= 1 ) {
             int newCore = Math.max(minPoolSize, currentCore - scaleDownStep);
             if (newCore < currentCore) {
-                safeSetCoreAndMax(threadPoolExecutor, newCore, Math.max(newCore, currentMax));
+                int max = Math.max(newCore, currentMax);
+                safeSetCoreAndMax(threadPoolExecutor, newCore, max);
                 // 设置空闲线程回收时间
                 threadPoolExecutor.setKeepAliveTime(keepAliveSeconds, TimeUnit.SECONDS);
-                log.info("ThreadPool scaled down: {}, core: {} -> {}, keepAlive={}s, active={}, queue={}",
-                        name, currentCore, newCore, keepAliveSeconds, activeCount, queueSize);
+                log.info("ThreadPool scaled down: {}, core: {} -> {}, max: {} -> {}, keepAlive={}s, active={}, queue={}",
+                        name, currentCore, newCore,  currentMax, max, keepAliveSeconds, activeCount, queueSize);
             }
         }
 
@@ -205,12 +218,12 @@ public class RocketMQConsumerThreadPoolHandler extends IJobHandler implements Ap
 
         // 没有配置则使用默认范围
         Integer initialMax = initialMaxPoolSizeRegistry.get(name);
-        if (initialMax == null) {
-            initialMax = 4;
+        if (initialMax == null || initialMax <= 0) {
+            initialMax = minPoolSize;
         }
         ThreadPoolRangeConfig defaultConfig = new ThreadPoolRangeConfig();
         defaultConfig.setMin(initialMax);
-        defaultConfig.setMax(initialMax * 2);
+        defaultConfig.setMax(Math.min(initialMax * maxMulti, maxPoolSize));
         return defaultConfig;
     }
 
