@@ -153,6 +153,10 @@ public class RocketMQConsumerThreadPoolHandler extends IJobHandler implements Ap
      * 缩容触发条件: 活跃线程数 == 0 且 队列大小 == 0
      */
     private void autoAdjustThreadNum(String name, ThreadPoolExecutor threadPoolExecutor) {
+
+        if (!autoScaleEnabled) {
+            return;
+        }
         int currentCore = threadPoolExecutor.getCorePoolSize();
         int currentMax = threadPoolExecutor.getMaximumPoolSize();
         int activeCount = threadPoolExecutor.getActiveCount();
