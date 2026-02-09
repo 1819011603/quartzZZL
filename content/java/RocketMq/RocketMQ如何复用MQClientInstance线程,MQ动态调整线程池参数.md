@@ -394,6 +394,7 @@ vmtool --action getInstances \
 
 
 
+
 ### 获取单台机器的Consumer的消费情况 
 
 
@@ -464,6 +465,12 @@ vmtool --action getInstances \
 
 
 
+
+
+![[../../壁纸/附件/RocketMQConsumerThreadPoolHandler 3.java]]
+
+
+![[../../壁纸/附件/RocketMQConsumerThreadPoolHandler 2.java]]
 
 ### 使用requests获取apollo配置
 
