@@ -81,12 +81,14 @@
             "id": "5172a3f19cc17356",
             "type": "leaf",
             "state": {
-              "type": "release-notes",
+              "type": "markdown",
               "state": {
-                "currentVersion": "1.11.7"
+                "file": "java/RocketMq/RocketMQ如何复用MQClientInstance线程,MQ动态调整线程池参数.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-book-up",
-              "title": "版本说明 1.11.7"
+              "icon": "lucide-file",
+              "title": "RocketMQ如何复用MQClientInstance线程,MQ动态调整线程池参数"
             }
           },
           {
@@ -136,7 +138,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "macos",
+                "query": "rocketMq",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": true,
@@ -252,10 +254,11 @@
   },
   "active": "5172a3f19cc17356",
   "lastOpenFiles": [
+    "问题/EES/记录一下线上MQ部分机器堆积导致整个topic堆积的情况.md",
     "软件/macOs/chrome.md",
+    "壁纸/附件/apollo.zip",
     "壁纸/附件/apollo 1.zip",
     "软件/macOs/macos网络.md",
-    "问题/EES/记录一下线上MQ部分机器堆积导致整个topic堆积的情况.md",
     "java/RocketMq/RocketMQ如何复用MQClientInstance线程,MQ动态调整线程池参数.md",
     "壁纸/附件/RocketMQConsumerThreadPoolHandler 1.java",
     "壁纸/附件/mitmproxy(1).zip",
@@ -283,7 +286,6 @@
     "壁纸/附件/Pasted image 20260129110540.png",
     "壁纸/附件/Pasted image 20260129110524.png",
     "壁纸/附件/RocketMQThreadOptimizerProcessor 1.java",
-    "壁纸/附件/RocketMQThreadOptimizerProcessor.java",
     "壁纸/附件/Pasted image 20260129095041.png",
     "壁纸/附件/Pasted image 20260129095027.png",
     "壁纸/附件/Pasted image 20260129095013.png",
@@ -297,7 +299,6 @@
     "壁纸/附件/mitmproxy/README.md",
     "java/Netty/Reactor.md",
     "未命名.md",
-    "java/mybatisPlus/多数据源查找不到的问题.md",
     "书籍/心理学/无所畏惧-颠覆你内心的脆弱.canvas",
     "未命名 2.canvas",
     "未命名 1.canvas",
