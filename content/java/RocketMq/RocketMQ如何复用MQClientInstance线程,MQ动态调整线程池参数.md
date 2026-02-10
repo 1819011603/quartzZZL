@@ -407,58 +407,43 @@ vmtool --action getInstances \
 |**dropped**|队列是否被丢弃|**true 说明正在 rebalance**|
 
 ```
-
 vmtool --action getInstances \
   --className com.gaotu.arch.ons.config.OnsListenerContainer \
   --limit 500 -x 3 \
   --express '
-    #name="DwsSubClazzDataConsumer"
-    ,#containers=instances,
-    #filtered=#containers.{?
-      (
-        #l=#this.messageListenerList,
-        #l!=null and !#l.isEmpty() and
-        !#l.{? #this.getClass().getName().contains(#name)}.isEmpty()
-      )
-    },
+    #name="DwsSubClazzDataConsumer",
+    #containers=instances,
+    #filtered=#containers.{?(
+      #l=#this.messageListenerList,
+      #l!=null and !#l.isEmpty() and
+      !#l.{? #this.getClass().getName().contains(#name)}.isEmpty()
+    )},
     #container=(#filtered.isEmpty() ? null : #filtered[0]),
     #container==null ? "not found" : (
-      #cn=#container.getClass().getSimpleName(),
       #cb=#container.consumerBean,
-      #cb==null ? "consumerBean null" : (
-        #ons=(#cn.equals("OnsMessageListenerContainer") ? #cb.consumer :
-             (#cn.equals("OnsMessageOrderListenerContainer") ? #cb.orderConsumer :
-              #cb.batchConsumer)),
-        #ons==null ? "consumer null" : (
-          #dmq=#ons.defaultMQPushConsumer,
-          #dmq==null ? "dmq null" : (
-            #impl=#dmq.defaultMQPushConsumerImpl,
-            #impl==null ? "impl null" : (
-              #pqt=#impl.rebalanceImpl.processQueueTable,
-              #os=#impl.offsetStore,
-              #ot=#os.offsetTable,
-              "group=" + #dmq.consumerGroup
-              + "\n====== partitions=" + #pqt.size() + " ======"
-              + "\n"
-              + #pqt.entrySet().{
-                  #mq=#this.key,
-                  #pq=#this.value,
-                  #offset=(#ot.get(#mq) != null ? #ot.get(#mq).get() : -1),
-                  #cached=#pq.getMsgCount().get(),
-                  #span=(#pq.getMaxSpan()),
-                  #broker=#mq.brokerName,
-                  #qid=#mq.queueId,
-                  #broker + "-q" + #qid
-                  + " | offset=" + #offset
-                  + " | cached=" + #cached
-                  + " | span=" + #span
-                  + " | lastPull=" + #pq.getLastPullTimestamp()
-                  + " | dropped=" + #pq.isDropped()
-                }.toString()
-            )
-          )
-        )
-      )
+      #ons=#cb.consumer,
+      #dmq=#ons.defaultMQPushConsumer,
+      #impl=#dmq.defaultMQPushConsumerImpl,
+      #pqt=#impl.rebalanceImpl.processQueueTable,
+      #ot=#impl.offsetStore.offsetTable,
+      
+      #list=#pqt.entrySet().{?(
+        !#this.key.topic.startsWith("%RETRY%")
+      )}.{
+        #mq=#this.key,
+        #pq=#this.value,
+        #span=#pq.getMaxSpan(),
+        #mq.brokerName + "-q" + #mq.queueId +
+        " | span=" + #span +
+        " | cached=" + #pq.getMsgCount().get() +
+        " | offset=" + (#ot.get(#mq) != null ? #ot.get(#mq).get() : -1)
+      },
+      
+      @java.util.Collections@sort(#list, @java.util.Collections@reverseOrder()),
+      
+      "group=" + #dmq.consumerGroup + "\n" +
+      "====== partitions=" + #list.size() + " ======\n" +
+      #list.toString()
     )
   '
 ```
