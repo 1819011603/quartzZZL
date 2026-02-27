@@ -55,12 +55,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "软件/idea/idea快捷键.md",
+                "file": "高途信息/文档/企微侧边栏/企业微信侧边栏接入.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "idea快捷键"
+              "title": "企业微信侧边栏接入"
             }
           },
           {
@@ -138,7 +138,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "idea",
+                "query": "侧边栏",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": true,
@@ -254,10 +254,16 @@
   },
   "active": "8808bcf8471dc08d",
   "lastOpenFiles": [
+    "软件/macOs/macos网络.md",
+    "壁纸/附件/Record_2025-07-09-21-36-54_5b9ffa3eca6ceb7886a201532a778ee7.mp4",
+    "高途信息/文档/企微侧边栏/企业微信侧边栏接入.md",
+    "高途信息/文档/企微侧边栏/问题/开通企微侧边栏权限.md",
+    "高途信息/文档/企微侧边栏/企业微信侧边栏总结.md",
+    "高途信息/文档/EES/企微侧边栏新增字段.md",
+    "软件/idea/idea快捷键.md",
     "java/idea/cursor.md",
     "壁纸/附件/mitmproxy",
     "开发/MQ泳道隔离.md",
-    "软件/macOs/macos网络.md",
     "软件/macOs/chrome.md",
     "java/arthas.md",
     "java/RocketMq/RocketMQ如何复用MQClientInstance线程,MQ动态调整线程池参数.md",
@@ -279,9 +285,6 @@
     "ai/cursor/cursor 使用.md",
     "ai/cursor",
     "软件/idea/idea问题.md",
-    "高途信息/文档/企微侧边栏/企业微信侧边栏接入.md",
-    "高途信息/文档/企微侧边栏/问题/开通企微侧边栏权限.md",
-    "壁纸/附件/RocketMQThreadOptimizerProcessor 4.java",
     "壁纸/附件/Pasted image 20260129111756.png",
     "java/RocketMq/未命名.md",
     "壁纸/附件/Pasted image 20260129110625.png",
@@ -296,9 +299,6 @@
     "壁纸/附件/Pasted image 20260128131741.png",
     "壁纸/附件/Pasted image 20260129093828.png",
     "工单/EES/课节学员直播答题.md",
-    "高途信息/文档/EES/Elasticsearch 单分片文档数上限事故分析报告.md",
-    "壁纸/附件/mitmproxy/README.md",
-    "java/Netty/Reactor.md",
     "书籍/心理学/无所畏惧-颠覆你内心的脆弱.canvas",
     "未命名 2.canvas",
     "未命名 1.canvas",
