@@ -4,6 +4,8 @@
 删除  将项目第一层目录下的.idea隐藏目录
 ```
 
+生成 ~/IdeaProjects/JavaProject/reach-service/.idea 下的 modules.xml 文件 他损坏了 idea 层级消失 了
+
 sudo rm -rf .idea
 ```
 

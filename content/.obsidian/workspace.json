@@ -55,12 +55,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "高途信息/文档/企微侧边栏/企业微信侧边栏接入.md",
+                "file": "软件/idea/idea问题.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "企业微信侧边栏接入"
+              "title": "idea问题"
             }
           },
           {
@@ -138,7 +138,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "侧边栏",
+                "query": "idea",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": true,
@@ -254,13 +254,14 @@
   },
   "active": "8808bcf8471dc08d",
   "lastOpenFiles": [
+    "软件/idea/idea快捷键.md",
+    "java/git/git多环境配置.md",
+    "高途信息/文档/企微侧边栏/企业微信侧边栏接入.md",
     "软件/macOs/macos网络.md",
     "壁纸/附件/Record_2025-07-09-21-36-54_5b9ffa3eca6ceb7886a201532a778ee7.mp4",
-    "高途信息/文档/企微侧边栏/企业微信侧边栏接入.md",
     "高途信息/文档/企微侧边栏/问题/开通企微侧边栏权限.md",
     "高途信息/文档/企微侧边栏/企业微信侧边栏总结.md",
     "高途信息/文档/EES/企微侧边栏新增字段.md",
-    "软件/idea/idea快捷键.md",
     "java/idea/cursor.md",
     "壁纸/附件/mitmproxy",
     "开发/MQ泳道隔离.md",
