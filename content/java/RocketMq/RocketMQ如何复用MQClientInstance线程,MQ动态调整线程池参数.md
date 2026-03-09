@@ -391,10 +391,72 @@ vmtool --action getInstances \
 ![[../../壁纸/附件/RocketMQConsumerThreadPoolHandler 1.java]]
 
 
+
+
+
+
+### 获取单台机器的Consumer的消费情况 
+
+
+|字段|含义|🔴 报警阈值|
+|---|---|---|
+|**offset**|消费到第几条|本身不能判断堆积，需要配合 maxOffset|
+|**cached**|本地已拉取未消费的消息数|**> 1000 有堆积**|
+|**span**|本地消息队列中最大offset和最小offset的差值|**> 2000 会触发流控**|
+|**lastPull**|上次拉取时间戳|**距现在 > 60s 说明可能卡住**|
+|**dropped**|队列是否被丢弃|**true 说明正在 rebalance**|
+
+```
+vmtool --action getInstances \
+  --className com.gaotu.arch.ons.config.OnsListenerContainer \
+  --limit 500 -x 3 \
+  --express '
+    #name="DwsSubClazzDataConsumer",
+    #containers=instances,
+    #filtered=#containers.{?(
+      #l=#this.messageListenerList,
+      #l!=null and !#l.isEmpty() and
+      !#l.{? #this.getClass().getName().contains(#name)}.isEmpty()
+    )},
+    #container=(#filtered.isEmpty() ? null : #filtered[0]),
+    #container==null ? "not found" : (
+      #cb=#container.consumerBean,
+      #ons=#cb.consumer,
+      #dmq=#ons.defaultMQPushConsumer,
+      #impl=#dmq.defaultMQPushConsumerImpl,
+      #pqt=#impl.rebalanceImpl.processQueueTable,
+      #ot=#impl.offsetStore.offsetTable,
+      
+      #list=#pqt.entrySet().{?(
+        !#this.key.topic.startsWith("%RETRY%")
+      )}.{
+        #mq=#this.key,
+        #pq=#this.value,
+        #span=#pq.getMaxSpan(),
+        #mq.brokerName + "-q" + #mq.queueId +
+        " | span=" + #span +
+        " | cached=" + #pq.getMsgCount().get() +
+        " | offset=" + (#ot.get(#mq) != null ? #ot.get(#mq).get() : -1)
+      },
+      
+      @java.util.Collections@sort(#list, @java.util.Collections@reverseOrder()),
+      
+      "group=" + #dmq.consumerGroup + "\n" +
+      "====== partitions=" + #list.size() + " ======\n" +
+      #list.toString()
+    )
+  '
+```
+
+
+
+
+
 ![[../../壁纸/附件/RocketMQConsumerThreadPoolHandler 3.java]]
 
 
 ![[../../壁纸/附件/RocketMQConsumerThreadPoolHandler 2.java]]
+
 ### 使用requests获取apollo配置
 
 url = f"{apollo_server_url}/configs/{app_id}/default/{namespace}"

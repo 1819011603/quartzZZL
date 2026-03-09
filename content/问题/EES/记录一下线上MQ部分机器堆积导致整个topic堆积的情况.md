@@ -19,9 +19,9 @@ sc -d com.aliyun.openservices.shade.com.alibaba.rocketmq.client.impl.factory.MQC
 ```
 
 ```shell
-vmtool -x 3 --action getInstances --className com.aliyun.openservices.shade.com.alibaba.rocketmq.client.impl.factory.MQClientInstance  --express '@com.alibaba.fastjson.JSONObject@toJSONString(instances.{topicRouteTable})'  -c 320e400
+vmtool -x 3 --action getInstances --className com.aliyun.openservices.shade.com.alibaba.rocketmq.client.impl.factory.MQClientInstance  --express '@com.alibaba.fastjson.JSONObject@toJSONString(instances.{topicRouteTable})'  -c 7674a051
 
-vmtool -x 3 --action getInstances --className com.aliyun.openservices.shade.com.alibaba.rocketmq.client.impl.factory.MQClientInstance  --express '@com.alibaba.fastjson.JSONObject@toJSONString(instances.{producerTable})'  -c 320e400
+vmtool -x 3 --action getInstances --className com.aliyun.openservices.shade.com.alibaba.rocketmq.client.impl.factory.MQClientInstance  --express '@com.alibaba.fastjson.JSONObject@toJSONString(instances.{producerTable})'  -c 7674a051
 ```
 
 
