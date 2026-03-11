@@ -97,12 +97,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "高途信息/文档/企微侧边栏/问题/开通企微侧边栏权限.md",
+                "file": "软件/idea/破解idea插件.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "开通企微侧边栏权限"
+              "title": "破解idea插件"
             }
           }
         ],
@@ -138,7 +138,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "侧边栏",
+                "query": "idea",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": true,
@@ -254,6 +254,8 @@
   },
   "active": "85517e2aefb9668d",
   "lastOpenFiles": [
+    "软件/macOs/macos网络.md",
+    "高途信息/文档/企微侧边栏/问题/开通企微侧边栏权限.md",
     "壁纸/附件/iShot_2026-03-05_18.13.12.mp4",
     "高途信息/文档/EES/企微侧边栏新增字段.md",
     "学校/文献/下载文献  获取文献.md",
@@ -261,10 +263,8 @@
     "ai/安装 claude.md",
     "壁纸/附件/Pasted image 20260304174507.png",
     "高途信息/文档/企微侧边栏/企业微信侧边栏接入.md",
-    "高途信息/文档/企微侧边栏/问题/开通企微侧边栏权限.md",
     "高途信息/文档/企微侧边栏/企业微信侧边栏总结.md",
     "工单/EES/课节学员直播答题.md",
-    "软件/macOs/macos网络.md",
     "壁纸/附件/Record_2025-07-09-21-36-54_5b9ffa3eca6ceb7886a201532a778ee7.mp4",
     "壁纸/附件/灵犀20250912-114654.mp4",
     "软件/idea/idea问题.md",
@@ -283,7 +283,6 @@
     "壁纸/附件/apollo 1.zip",
     "壁纸/附件/RocketMQConsumerThreadPoolHandler 1.java",
     "壁纸/附件/mitmproxy(1).zip",
-    "壁纸/附件/RocketMQConsumerThreadPoolHandler.java",
     "ai/prompt/CRM-Service 项目 Cursor Rules.md",
     "java/cloud/Feign带请求头参数.md",
     "ai/prompt/student-center.md",
