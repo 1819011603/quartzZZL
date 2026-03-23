@@ -97,12 +97,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "软件/windows软件.md",
+                "file": "ai/SDD/短 prompt.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "windows软件"
+              "title": "短 prompt"
             }
           }
         ],
@@ -138,7 +138,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "windows",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": true,
@@ -159,8 +159,7 @@
               "title": "书签"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -254,8 +253,13 @@
   },
   "active": "85517e2aefb9668d",
   "lastOpenFiles": [
-    "软件/windows/windows 设置 cpu优先级.md",
+    "ai/SDD/GPS作业改造.md",
+    "ai/SDD/prompt.md",
+    "ai/SDD/短 prompt.md",
+    "高途信息/文档/企微侧边栏/企业微信侧边栏接入.md",
+    "ai/SDD",
     "软件/windows软件.md",
+    "软件/windows/windows 设置 cpu优先级.md",
     "软件/idea/破解idea插件.md",
     "软件/macOs/macos网络.md",
     "高途信息/文档/企微侧边栏/问题/开通企微侧边栏权限.md",
@@ -265,7 +269,6 @@
     "书籍/心理学/巨婴国-武志红/第四章 全能自恋的龙  (自恋和自我关注度太高).md",
     "ai/安装 claude.md",
     "壁纸/附件/Pasted image 20260304174507.png",
-    "高途信息/文档/企微侧边栏/企业微信侧边栏接入.md",
     "高途信息/文档/企微侧边栏/企业微信侧边栏总结.md",
     "工单/EES/课节学员直播答题.md",
     "壁纸/附件/Record_2025-07-09-21-36-54_5b9ffa3eca6ceb7886a201532a778ee7.mp4",
@@ -285,12 +288,8 @@
     "壁纸/附件/apollo.zip",
     "壁纸/附件/apollo 1.zip",
     "壁纸/附件/RocketMQConsumerThreadPoolHandler 1.java",
-    "壁纸/附件/mitmproxy(1).zip",
     "ai/prompt/CRM-Service 项目 Cursor Rules.md",
     "java/cloud/Feign带请求头参数.md",
-    "ai/prompt/student-center.md",
-    "高途信息/文档/EES/Student-center没有指定apollo.meta 为什么可以直接运行.md",
-    "ai/prompt/Student-Data 项目开发规范.md",
     "壁纸/附件/Pasted image 20260129111756.png",
     "壁纸/附件/Pasted image 20260129110625.png",
     "壁纸/附件/Pasted image 20260129110540.png",
