@@ -1,4 +1,52 @@
 
+
+### 设置CPU优先级等
+
+Process Lasso  软件
+
+### 护眼程序
+
+CareUEyes
+
+
+### 内存清理软件
+Mem Reduct  ![[../壁纸/附件/memreduct-3.5.2-bin.7z]]
+
+### 卸载**任务栏小组件（Widgets）**：天气、新闻、股票、体育等
+
+```
+
+& "$env:LOCALAPPDATA\Microsoft\WindowsApps\winget.exe" uninstall "Windows web experience pack"
+
+
+```
+
+```
+winget uninstall "Microsoft News"
+winget uninstall "MSN Weather"
+winget uninstall "Windows Maps"
+winget uninstall "Microsoft People"
+winget uninstall "Mail and Calendar"
+winget uninstall "Microsoft To Do"
+winget uninstall "Microsoft Tips"
+winget uninstall "Get Help"
+winget uninstall "Microsoft Solitaire Collection"
+winget uninstall "Xbox Game Bar"
+winget uninstall "Xbox"
+winget uninstall "Feedback Hub"
+winget uninstall "Power Automate"
+winget uninstall "Clipchamp"
+winget uninstall "Microsoft Family"
+winget uninstall "Quick Assist"
+
+Stop-Service WSearch
+Set-Service WSearch -StartupType Disabled
+Stop-Service DiagTrack
+Set-Service DiagTrack -StartupType Disabled
+```
+```
+
+```
 ### C盘清理
 
 # SpaceSniffer(磁盘空间分析工具)
