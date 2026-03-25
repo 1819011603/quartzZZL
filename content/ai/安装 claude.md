@@ -77,3 +77,13 @@ cat /usr/local/etc/npmrc 2>/dev/null
 claude-code-router
 
 sk--A_poOtprtGJA00Z2V9G8A
+
+使用cc switch
+
+![[../壁纸/附件/Pasted image 20260304174507.png]]
+
+
+```
+
+sk-2dabfd1083943628b643735e25cebd2767f0b2de30d4508f8fa8fbd21001a2a8
+```
