@@ -97,12 +97,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "ai/SDD/短 prompt.md",
+                "file": "工单/EES/续班预报名/03-27-ees班级花名册不显示预报名状态.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "短 prompt"
+              "title": "03-27-ees班级花名册不显示预报名状态"
             }
           }
         ],
@@ -138,7 +138,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "idea",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": true,
@@ -253,9 +253,18 @@
   },
   "active": "85517e2aefb9668d",
   "lastOpenFiles": [
+    "壁纸/附件/Pasted image 20260327142644.png",
+    "软件/idea/环境 Debug 自动 配置.md",
+    "工单/EES/续班预报名/03-27-ees班级花名册不显示预报名状态.md",
+    "工单/EES/续班预报名",
+    "壁纸/附件/sync_remote_host.sh",
+    "壁纸/附件/sync_remote_host.ps1",
+    "软件/idea/idea快捷键.md",
+    "软件/idea/idea问题.md",
+    "高途信息/文档/EES/gaia配置.md",
+    "ai/SDD/短 prompt.md",
     "ai/SDD/GPS作业改造.md",
     "ai/SDD/prompt.md",
-    "ai/SDD/短 prompt.md",
     "高途信息/文档/企微侧边栏/企业微信侧边栏接入.md",
     "ai/SDD",
     "软件/windows软件.md",
@@ -273,23 +282,14 @@
     "工单/EES/课节学员直播答题.md",
     "壁纸/附件/Record_2025-07-09-21-36-54_5b9ffa3eca6ceb7886a201532a778ee7.mp4",
     "壁纸/附件/灵犀20250912-114654.mp4",
-    "软件/idea/idea问题.md",
-    "软件/idea/idea快捷键.md",
     "java/git/git多环境配置.md",
     "java/idea/cursor.md",
     "壁纸/附件/mitmproxy",
     "开发/MQ泳道隔离.md",
     "软件/macOs/chrome.md",
     "java/arthas.md",
-    "java/RocketMq/RocketMQ如何复用MQClientInstance线程,MQ动态调整线程池参数.md",
     "壁纸/附件/RocketMQConsumerThreadPoolHandler 3.java",
     "壁纸/附件/RocketMQConsumerThreadPoolHandler 2.java",
-    "问题/EES/记录一下线上MQ部分机器堆积导致整个topic堆积的情况.md",
-    "壁纸/附件/apollo.zip",
-    "壁纸/附件/apollo 1.zip",
-    "壁纸/附件/RocketMQConsumerThreadPoolHandler 1.java",
-    "ai/prompt/CRM-Service 项目 Cursor Rules.md",
-    "java/cloud/Feign带请求头参数.md",
     "壁纸/附件/Pasted image 20260129111756.png",
     "壁纸/附件/Pasted image 20260129110625.png",
     "壁纸/附件/Pasted image 20260129110540.png",
