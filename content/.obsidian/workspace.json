@@ -138,7 +138,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "侧边栏",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": true,
@@ -159,8 +159,7 @@
               "title": "书签"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -252,7 +251,7 @@
       "markdown-importer:打开 Markdown 格式转换器": false
     }
   },
-  "active": "85517e2aefb9668d",
+  "active": "0b7ce85027e24f5b",
   "lastOpenFiles": [
     "高途信息/文档/企微侧边栏/企业微信侧边栏总结.md",
     "高途信息/文档/企微侧边栏/企业微信侧边栏接入.md",
