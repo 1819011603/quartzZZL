@@ -104,9 +104,21 @@
               "icon": "lucide-file",
               "title": "macos网络"
             }
+          },
+          {
+            "id": "f7ee37b9db16792e",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.12.7"
+              },
+              "icon": "lucide-book-up",
+              "title": "版本说明 1.12.7"
+            }
           }
         ],
-        "currentTab": 6
+        "currentTab": 7
       }
     ],
     "direction": "vertical"
@@ -252,7 +264,7 @@
       "markdown-importer:打开 Markdown 格式转换器": false
     }
   },
-  "active": "85517e2aefb9668d",
+  "active": "f7ee37b9db16792e",
   "lastOpenFiles": [
     "高途信息/文档/企微侧边栏/企业微信侧边栏接入.md",
     "高途信息/文档/企微侧边栏/企业微信侧边栏总结.md",
