@@ -79,6 +79,8 @@ https://github.com/SteamAutoCracks/ManifestHub/archive/refs/heads/1245620.zip
 2397250
 
 
+3764200
+
 
 |                                                      |
 | ---------------------------------------------------- |
