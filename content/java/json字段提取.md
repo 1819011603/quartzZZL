@@ -11,7 +11,7 @@ pbpaste | jq '.[].key' | pbcopy
 
 pbpaste | jq '.[].[com.gaotu.reach.adapter.business.staff.StaffAdapter#listByOrgNumbers].[].orgNamePath' | pbcopy
 
-pbpaste | jq '.hits.hits.[]._id' | pbcopy
+pbpaste | jq '.data.[casServiceImpl#listByAccountIds].accountId' | pbcopy
 ```
 
 
