@@ -20,3 +20,7 @@ sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder
 - 在释放租约后，点击“将DHCP租约分配给当前位置”。
 - 点击“确定”来保存设置。
 - 现在，你的macOS设备会向DHCP服务器请求新的IP地址
+
+
+
+![[../../壁纸/附件/Pasted image 20260630124110.png]]
