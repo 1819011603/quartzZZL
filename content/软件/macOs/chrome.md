@@ -7,3 +7,6 @@ http://genshuixue-public.oss-cn-beijing.aliyuncs.com/origin_test/2026-02-09/c3a1
 		![[Pasted image 20240115005602.png]]
 
 
+modHeader 修改请求头
+
+![[../../壁纸/附件/modheader-fork.zip]]
