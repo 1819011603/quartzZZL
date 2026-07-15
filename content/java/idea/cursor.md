@@ -4,6 +4,14 @@
 Option+Shift+O
 
 
+禁止更新cursor: 
+cursor 更新
+
+```
+
+APP="/Applications/Cursor.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js" cp "$APP" "$APP.bak" perl -0pi -e 's/\(u===oNe\.REQUIRED\|\|u===oNe\.RECOMMENDED\)&&!e\(\)&&\(o\(!0\),t\(!0\)\)/false/' "$APP"
+```
+
 ### windows 
 
 快捷键 
