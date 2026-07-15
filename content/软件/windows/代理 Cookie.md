@@ -3,7 +3,12 @@
 ```
 -s -k -x http://127.0.0.1:8888 
   
-cd /Users/gaotu/curSkillDemo/pythonManage/chrome-extension/agent && python3 agent_cookie_proxy.py --port 8765 &
+python3 /Users/gaotu/bridge/payload/cookie-agent/agent_cookie_proxy.py &
+
+
+
+
+
 ```
 
 ```
