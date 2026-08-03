@@ -92,6 +92,11 @@ git remote set-url origin git://mirrors.ustc.edu.cn/homebrew-core.git
 
 ![[../../壁纸/附件/Pasted image 20240820105343.png]]
 
+使用这个登录
+
+siirsH6nGRQLQpoYHF8a
+
+
 解决思路:
 
 禁用内置插件 gitlab
