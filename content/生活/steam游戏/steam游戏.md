@@ -95,3 +95,13 @@ https://github.com/pjy612/SteamManifestCache
 
 
 https://caigamer.cn/thread-7269.htm
+
+
+
+
+**[SteamAppImport](https://github.com/settings/tokens/4690362801)**
+
+```
+
+
+```
