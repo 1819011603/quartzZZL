@@ -75,7 +75,11 @@ date: 2026-09-07
 
 ## 四、脚本
 
-桌面：`云枢-关闭监控.bat`（**GBK 编码**保存，避免中文 cmd 乱码 / 吞字节；不要用 `chcp 65001`）。
+桌面：`YunShu-Monitor-Toggle.bat`（**纯 ASCII / 全英文**）。
+
+> **编码坑（踩过）**：本机控制台默认代码页是 **UTF-8(65001)**（Win11「使用 Unicode UTF-8」测试选项开着）。
+> - 批处理里含中文时：文件存 UTF-8 → `chcp 65001` 有**吞字节** bug；文件存 GBK → 65001 控制台读乱，且**在文件里写 `chcp 936` 也救不回来**（cmd 已按启动编码解析后续行），表现为每行 `call ... "path"` 被拆成 `xxx.dll"` 报「不是命令」。
+> - **最终解法：整份脚本不留任何中文（纯 ASCII）**，任何代码页都不会乱。这也是最终采用的版本。
 
 菜单：
 
@@ -85,6 +89,13 @@ date: 2026-09-07
 - `[0]` 退出
 
 原理：`taskkill` 结束监控进程 → 把上表文件 / 目录 `ren` 成 `*.disabled`；恢复即反向 `ren` 回来。
+
+> `scanlib` / `ScriptEngine` 两个目录常改名失败，是因为被 **DLP 扫描引擎 `TBRunner.exe`** 和 **插件宿主 `YunShu Plugin.exe`** 占用（与 VPN 无关）。脚本已把这两个进程加入结束列表，并处理看门狗新建的 `ScriptEngineNew`。
+
+### 实测结果（2026-09-07，正常模式）
+
+- 一次运行即禁用 **32 项**（含 `scanlib` / `ScriptEngine`），**VPN 未受影响**、向日葵保留。
+- 观察到看门狗会重新拉起 `YunShu Plugin.exe` / `aitools` 并新建 `ScriptEngineNew` → **正常模式下改动可能被还原，安全模式最干净。**
 
 ## 五、使用步骤
 
@@ -101,6 +112,8 @@ date: 2026-09-07
 - 本文档与脚本仅用于**个人自有电脑**上关闭对本人的监控。
 
 ## 附：脚本全文
+
+![[../壁纸/附件/YunShu-Monitor-Toggle.bat]]
 
 ```bat
 @echo off
@@ -132,7 +145,7 @@ if "%CH%"=="0" exit /b
 goto MENU
 
 :DISABLE
-for %%P in ("YunShu dpengine.exe" "YunShu ScreenLock.exe" "CcOwl.exe" "CcFfmpeg.exe" "CcFileWatermark.exe" "aitools.exe") do taskkill /f /im %%~P >nul 2>&1
+for %%P in ("YunShu Plugin.exe" "YunShu dpengine.exe" "YunShu ScreenLock.exe" "CcOwl.exe" "CcFfmpeg.exe" "CcFileWatermark.exe" "TBRunner.exe" "aitools.exe") do taskkill /f /im %%~P >nul 2>&1
 set OKN=0
 set FAILN=0
 set ACTION=ren
@@ -186,6 +199,7 @@ call :%ACTION% "%B%\YunShu ScreenLock.exe"
 call :%ACTION% "%B%\scanlib"
 call :%ACTION% "%B%\channel_model"
 call :%ACTION% "%B%\ScriptEngine"
+call :%ACTION% "%B%\ScriptEngineNew"
 goto :eof
 
 :ren
