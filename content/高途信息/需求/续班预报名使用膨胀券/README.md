@@ -1,0 +1,128 @@
+---
+title: 续班预报名使用膨胀券
+aliases:
+  - 【续班】预报名使用膨胀劵
+  - 【预报名】预报名支持膨胀劵
+  - 004-xuban-pre
+status: 开发中
+owner: zhangzeling
+branches:
+  - promotion:feature-xuban-pre
+  - promotion-app:feature-xuban-pre
+  - product-server:feature-xuban-pre
+  - order:feature-xuban-pre
+  - cart:feature-xuban-pre
+  - student-center:feature-xuban-pre
+updated: 2026-09-08
+tags:
+  - 需求
+---
+
+# 续班预报名使用膨胀券
+
+> **本目录导航**：[[links|🔗 链接中心]] · [[tasks|✅ 任务板]] · [[changelog|📜 会话日志]] · [[verify|🧪 验证手册]]
+> 技术方案在飞书反讲文档里（见 [[links]]），本地不留副本。
+> 续接这个需求：读完本文件即可。
+
+## 一句话
+
+在现有「订金班预报名」之外新增一种**膨胀券预报名**形态：活动挂膨胀券商品，学员购券即完成预报名，无需进班。
+
+## 需求摘要
+
+> 飞书文档只存链接不落全文，这里是唯一的离线兜底。
+
+- **要解决的问题**：现有预报名只支持「订金班」（挂预报名班级课程商品、付订金占位、可见范围读可续关系）。
+  本次新增「膨胀券」形态 —— 活动挂膨胀券商品，学员购券（如付 50 抵 200），**购券即预报名**。
+- **给谁用**：老师（花名册发链接 / 下单弹窗加购）、学员（C 端落地页选券）、运营（配置活动与券范围）。
+- **两种形态的可见范围口径完全不同**（最容易搞错的地方）：订金班读**可续关系**；膨胀券读**券上配置的年级+学科**，不读可续关系。
+- **核心改动**（6 个模块，跨 6 个仓库）：配置（product-server/promotion）、发链接（student-center）、
+  B 端下单（product-server/order）、C 端落地页（cart）、字段与指标（student-data，**归马胜**）、预报名预警。
+- **判定做完的标准**：六个模块端到端跑通；学员购券后由**券订单消息**驱动落库预报名状态与科目（不需进班）。
+- **明确不做**：C 端过滤不沿用老那套；优惠金额展示走统一逻辑、不做配置。
+
+## 已定共识（硬约束，改代码前先扫一眼）
+
+- **`productType` = 8014**。⚠️ 不是 8027 —— 8027 是「课时包商品」，student-center 与 promotion-app 均已占用；也不要用 27（老优惠券概念）。
+- **券范围唯一键 = 活动级** `uk_act_grade_subject(activity_number, grade_code, subject_code)`：
+  同一活动内「年级+学科」只能出现一次；**同一张券的同一组合在不同活动可各配一次 → 跨活动重复必须放行**（误拦是回归项）。
+- **券不参与满赠**（2026-09-08 产品确认），且 promotion-app 本期不改。
+- **order 侧只做「膨胀券商品能加购」+ 购物车总价**，下单/支付成功/退款由订单团队自行兼容。
+- **除 student-data 外，6 个仓库全是我的活**（含 promotion/promotion-app/order/cart/product-server）。
+  反讲文档「项目关联方」写「待定」指的是对方服务对接人待定，**不是这活不是我的**。
+- 灰度按**续班计划 ID**；用**膨胀券商品ID**；C 端一券只能买一次、页面多选；加购上限来源=电商接口。
+- 三者交集 = 前置班学科 ∩ 后置班年级学科 ∩ 券配置范围，且仅【使用中】。**按「年级+学科」成对判定**，
+  分别求交会放行「年级来自A组合、学科来自B组合」的伪命中。
+
+## 现在什么情况
+
+| | |
+|---|---|
+| 阶段 | 开发中（代码已齐，待自测） |
+| 进度 | T 12/13 · R 0/2 · C 0/0 |
+| 排期 | 09-08~09-11 开发 · 09-14 自测 · 09-15~16 联调 · **提测 09-16** |
+| 当前卡点 | **电商券商品接口未提供** → 端到端跑不通，已用 Apollo mock 顶替 |
+| 最近更新 | 2026-09-08 |
+
+**六仓库代码全部提交并推送，编译全绿（BUILD SUCCESS）**，但均未写单测、未跑功能自测。
+
+| 仓库 | 最新 commit |
+|---|---|
+| student-center | `7425901f5` |
+| product-server | `566380d4e` |
+| promotion | `938590af5` |
+| order | `073dea69e2` |
+| cart | `0b529fa4` |
+| promotion-app | 仅 spec（本期不改代码） |
+
+## 下一步
+
+1. 跑功能自测 —— **泳道 test-gtbg-dev-3，造好的数据与调用方式见 [[verify]]**
+2. 找电商（邓俊兵）要券商品接口，或确认 `productType=8014` 与券状态码枚举
+3. 跟前端对齐三个新字段名：`postProductId` / `postProductName` / `activityType`
+4. 定 `scopes` 落库方（product-server 还是 promotion）—— 影响 B 端回显是否丢券范围
+5. R-01 找王永诗；R-02 问清「测试冲突」指什么
+
+## 待确认
+
+> 真相源是飞书待办表，这里是镜像。开发期新增的 8 条见 [[tasks]] 末尾。
+
+- [ ] 一个膨胀券只能在一个活动中用么？ —— 等王永诗（**注意**：券范围唯一键已按「活动级、跨活动放行」定稿，此条若答"只能一个活动"则需改口径）
+- [ ] 测试冲突问题 —— 无处理人
+- [ ] 一个前置班级只能在一个续班计划上，但班级可脱离续班计划配置，如何控制 —— 无处理人
+- [ ] 新续班计划配置的预报名活动 vs 老的非续班计划配置并存，是否并集 —— 等马胜
+- [ ] 历史预报名活动统一刷成订金班预报名 —— 等马胜（**待上线后处理**，不在本次开发内）
+
+## 涉及的代码
+
+| 仓库 | 分支 | 关键位置 |
+|---|---|---|
+| /Users/gaotu/IdeaProjects/JavaProject/student-center | feature-xuban-pre | 券选品接口、发链接分流、券列表 mock |
+| /Users/gaotu/IdeaProjects/JavaProject/product-server | feature-xuban-pre | 活动配置、券范围表、三者交集、预警、C端样式 |
+| /Users/gaotu/IdeaProjects/JavaProject/promotion | feature-xuban-pre | 活动形式、券可用范围、baseUrl 分叉 |
+| /Users/gaotu/IdeaProjects/JavaProject/order | feature-xuban-pre | 仅加购 + 购物车总价 |
+| /Users/gaotu/IdeaProjects/JavaProject/cart | feature-xuban-pre | C 端落地页取数与算价 |
+| /Users/gaotu/IdeaProjects/JavaProject/promotion-app | feature-xuban-pre | 仅 spec；满赠校验在此服务，本期不改 |
+| student-data | — | **不要动**，B 端收数归马胜 |
+
+## 上线影响面
+
+> 新建的表 / Apollo key / 代课权限逐项清单 → **见 [[verify]] 末尾「新建的东西」**（那份是上线 checklist 的原料）。
+
+| 配置项 | 涉及 |
+|---|---|
+| MySQL DDL | ✅ 一张新表，测试已建、线上待建 |
+| Apollo | ✅ 5 个 key，其中 `renewal.content.config.map` **不配则老师端无入口** |
+| 代课接口权限 | ✅ 2 个新接口待登记 |
+| MQ | ❌ 券订单消息由订单团队发 |
+| ES | ❌ 写 ES 归马胜 |
+
+## 必须知过的坑
+
+- **8027 ≠ 膨胀券**，是课时包商品，两个仓库都已占用。膨胀券是 **8014**。
+- **静默失效**：花名册四字段 key 一个都不能改（前端写死 8 份副本）；Apollo 没配 = 入口不存在且不报错；
+  cart 的 `productNumber`/`productType`/`price`/`signUp` 是**同名沿用语义改写**，失败形态是静默跳过。
+- **短链必须在切完 path 之后生成**，顺序反了会把订金班 path 固化进不可改的短链。
+- **`/deal` 原本无条件返回 `code=0`**（没包 `handleRequest`），只在 service 加校验无效，运营点了静默无反应。
+- **promotion 的 `pre_order_activity_product` 表只有 8 列、无券字段** → 活动保存后 detail 回显会丢券字段。
+- 这两个分支做过 **force push**（student-center / product-server），**不要直接 `git pull`**。
