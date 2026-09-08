@@ -61,7 +61,7 @@ tags:
 | 阶段 | 开发中（**B 端券列表自测已通过**） |
 | 进度 | T 16/18 · R 0/2 · C 0/0 |
 | 排期 | 09-08~09-11 开发 · 09-14 自测 · 09-15~16 联调 · **提测 09-16** |
-| 当前卡点 | C 端跑不通：**库里没有 type=2 膨胀券活动**，需先在 B 端建一个并配券范围 |
+| 当前卡点 | 建膨胀券活动受阻：promotion 反射桥拒登录 → 改走 arthas，但**青舟登录也过期了，需先重登** |
 | 最近更新 | 2026-09-08
 
 **六仓库代码全部提交并推送，编译全绿（BUILD SUCCESS）**，但均未写单测、未跑功能自测。
@@ -69,7 +69,7 @@ tags:
 | 仓库 | 最新 commit |
 |---|---|
 | student-center | `7425901f5` |
-| product-server | `566380d4e` |
+| product-server | `566380d4e` + **未提交**（券状态码 1→2 修正，编译通过） |
 | promotion | `938590af5` |
 | order | `073dea69e2` |
 | cart | `0b529fa4` + **未提交**（DTO 补券字段 + 三处改抛异常 + 成对求交，编译通过） |
@@ -77,18 +77,22 @@ tags:
 
 ## 下一步
 
-1. **在 B 端建一个 `type=2` 膨胀券活动**，挂券（用 mock 的 801400001/2）并配年级学科范围。
-   这是 C 端自测的唯一前提 —— 库里现存活动**全是 type=1 订金班**，
-   且 scope 表的 activity_number(9001/9002/9003) 是造的假号，对不上真实活动。
-2. 活动建好后：配 `pre.order.activity.coupon.renewalPlanIds` 白名单（填该活动的续班计划 ID）
-   → 跑发链接 path 切换 + C 端落地页自测。
-   ⚠️ `PreOrderActivityAclServiceImpl#getByRenewalPlanId` **有 Redis 缓存**，
-   改完配置若没生效，先想到是缓存不是代码。
-3. 提交 cart 改动（三处静默失败改抛异常 + 补齐 DTO 字段 + 成对求交），并发布到 test-gtbg-dev-3。
-4. 找电商（邓俊兵）要券商品接口，确认券状态码枚举（当前 mock 用 1待开始/2使用中/3已结束）
-5. 跟前端对齐三个新字段名：`postProductId` / `postProductName` / `activityType`
-6. 定 `scopes` 落库方（product-server 还是 promotion）—— 影响 B 端回显是否丢券范围
-7. R-01 找王永诗；R-02 问清「测试冲突」指什么
+1. **让用户重登 qingzhou.baijia.com** —— arthas 依赖它换 container_token，当前已过期。
+2. **建膨胀券活动**（C 端自测的唯一前提）。⚠️ **不能直接插 DB**：promotion 的券字段
+   （couponId/buyAmount/couponStatus/scopes）**不落库**，只存在于 Redis 缓存 DTO，
+   且缓存 miss 会从 DB 重建、券字段必为 null。必须走 `PreOrderActivityService#create()`。
+   - promotion 反射桥 `acl/compare/service` 拒绝登录（CAS 重定向 / 403），换 host 无效 —— 应用侧鉴权更严
+   - 改走 **arthas 进程内调用**：已验证能拿到 bean 实例，OGNL 见 `/tmp/mkact2.ognl`
+   - ⚠️ OGNL **字符串必须用单引号**，双引号会被 pty 吃掉导致 ParseException
+   - 若报 ClassNotFound，先 `sc -d <类名>` 拿 classloader hash，再 `-c <hash>`
+3. 活动建好后配 `pre.order.activity.coupon.renewalPlanIds` → 跑发链接 path 切换 + C 端落地页自测。
+   ⚠️ `getByRenewalPlanId` 有 Redis 缓存，改配置不生效先想到缓存。
+4. 提交并发布 cart / product-server 改动到 test-gtbg-dev-3。
+5. 找电商（邓俊兵）要券商品接口，确认券状态码枚举（当前按 1待开始/2使用中/3已结束/4已下线）
+6. 跟前端对齐三个新字段名：`postProductId` / `postProductName` / `activityType`
+7. 定 `scopes` 落库方 —— **本轮发现 promotion 侧根本不落库**，这条已不只是"回显丢字段"，
+   而是「缓存过期后券信息整体丢失」，优先级应提高
+8. R-01 找王永诗；R-02 问清「测试冲突」指什么
 
 ## 待确认
 
@@ -129,7 +133,9 @@ tags:
 - **8027 ≠ 膨胀券**，是课时包商品，两个仓库都已占用。膨胀券是 **8014**。
 - **Apollo 没有泳道 cluster 是正常的** —— 读不到会自动回落 `default`，不必为泳道单独建 cluster。
   别把「查泳道 cluster 404」当成环境不可用（我犯过这个错）。
-- **判断服务在不在泳道，看青舟 pod 列表**，不是看 Apollo；pod 可能在你查完之后才发布。
+- **泳道名不能反推逻辑环境**：`test-gtbg-dev-3` 属于 **dev** 不是 test，只查 environment=test
+  会误判「该泳道没 pod」。已修进 `pod_term.py pods`（默认聚合 test+dev，带 `--ns` 过滤）。
+- **promotion 券字段不落库**，只在 Redis 缓存里；插 DB 造不出可用的膨胀券活动。
 - **cart 侧三处已改为抛异常**（price / scopes / deductibleAmount）：上游字段缺失时落地页直接失败，
   **这是预期行为**（不能静默失败）。别把它当回归 bug 去「修回」返 0。
 - **成对求交**：cart 原本把年级、学科**分别求交**，会放行「年级来自 A 组合、学科来自 B 组合」的
