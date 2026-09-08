@@ -43,6 +43,17 @@ tags: [需求, 日志]
   `README.md` 第 3 步（「发链接 path 切换」自测步骤已取消）。
 - **验证**：`student-center-service`+`student-center-web`、`promotion-domain` 均编译通过；
   全仓库 grep 确认 `.java` 里 `preSignUpCoupon` 零残留，`.md` 里的残留全是「已撤销」标记。
+- **已发布到 test-gtbg-dev-3**（两个仓库的代码改动）：
+  - student-center 流水线 `1261177` ✅ 新 pod `student-center-6c87d4d6c4-qlzf4` Running/eureka UP
+  - promotion 流水线 `1261297`（`gaotu_promotion` = promotion-b）
+  - cart / product-server / reach-service 本次**只改 spec，无需发布**
+- 📌 **promotion 有三个青舟部署，共用同一个 `promotion-controller` 产物**（全仓库只有一个
+  `@SpringBootApplication`），在 test-gtbg-dev-3 里三个 pod 都 Running/eureka UP：
+  `gaotu_promotion`(promotion-b) / `gaotu_promotion_c`(promotion-c) /
+  `baijia.gaotu.Shared.market.gaotu-promotion-task`(promotion-task)。
+  `qingzhou_deploy` 传 `project_name=promotion` 会因命中多个而失败，**必须传 service_code**。
+  发链接 Feign（`RecommendLinkFeignService#getPreRegistration`，student-center 调用）
+  按职责走 **promotion-b**，本次即只发它（用户定）。
 - ⚠️ **上线注意**：Apollo **不要**新增 `gaotu.website.preRegistrationCouponUrl`(promotion)
   与 `renewal.content.config.preRegistration.coupon.path`(student-center) —— 代码里已经没有了。
   触达后台 `report_content` 的 url 模板必须写 `/preSignUp`。
