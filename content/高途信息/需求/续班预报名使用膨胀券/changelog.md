@@ -45,7 +45,10 @@ tags: [需求, 日志]
   全仓库 grep 确认 `.java` 里 `preSignUpCoupon` 零残留，`.md` 里的残留全是「已撤销」标记。
 - **已发布到 test-gtbg-dev-3**（两个仓库的代码改动）：
   - student-center 流水线 `1261177` ✅ 新 pod `student-center-6c87d4d6c4-qlzf4` Running/eureka UP
-  - promotion 流水线 `1261297`（`gaotu_promotion` = promotion-b）
+  - promotion 流水线 `1261297`（`gaotu_promotion` = promotion-b）✅ 新 pod
+    `promotion-b-gaotu100-com-b7d4b896b-wsmfb` Running/eureka UP
+  - ⚠️ promotion-c 与 promotion-task **未发**（用户定只发 B 端），仍跑旧镜像带 path 分叉；
+    当前无 type=2 活动经它们，无影响，但 C 端 path 若异常先想到这条
   - cart / product-server / reach-service 本次**只改 spec，无需发布**
 - 📌 **promotion 有三个青舟部署，共用同一个 `promotion-controller` 产物**（全仓库只有一个
   `@SpringBootApplication`），在 test-gtbg-dev-3 里三个 pod 都 Running/eureka UP：
