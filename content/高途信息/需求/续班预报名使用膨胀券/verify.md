@@ -123,10 +123,23 @@ service_method=com.gaotu.product.service.renewal.preorder.PreOrderCouponIntersec
 
 **C 端自测在此修复前跑不通**，且这是**上线阻塞项**，不是自测环境问题。
 
-### 结论
+### 修复进展（2026-09-08）
 
-需要 promotion 侧给 `pre_order_activity_product` 加券字段列（或另建券信息表）。
-这条已不属于「待确认」，是必须做的改动 —— 建议尽快找 promotion 对齐。
+**代码已改完并提交**（promotion `a620a7e2f`），三处都补了：
+
+| 位置 | 原问题 |
+|---|---|
+| `pre_order_activity_product` 表 | 无券列 → **DDL 工单 8025 已提，测试环境待审批发布** |
+| `PreOrderActivityProduct` Entity + Mapper XML | 无字段/无列映射 → 已补 5 字段 + resultMap + Base_Column_List + insertSelective |
+| `PreOrderActivityProductRepositoryImpl` | `batchInsert` 与 `convertPreOrderActivityProductBO` **两处都跳过券字段**（丢字段的直接原因） → 已双向补齐 |
+
+**⏳ 卡在 DDL 工单审批**：https://sre.baijia.com/dms/mySql/detail?id=8025&env=/test-sql
+表加列生效后才能重新验证；在此之前 `listFromCache` 仍会返回 5 字段。
+
+`scopes` 仍不落 promotion 库 —— 它是一对多，权威源在 product-server 的
+`renewal_pre_order_activity_coupon_scope` 表，不需要挪。
+
+**上线时线上库也要加这 5 列**（另提 prod 工单）。
 
 ## 反射桥调用地址（四个服务，均实测）
 
