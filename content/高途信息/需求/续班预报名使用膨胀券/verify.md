@@ -89,6 +89,66 @@ service_method=com.gaotu.product.service.renewal.preorder.PreOrderCouponIntersec
   且 scope 表里的 activity_number(9001/9002/9003) 是造的假号，与真实活动对不上。
   C 端要跑通，得先在 B 端建一个膨胀券活动、挂上券并配好范围。
 
+## 🔴 阻塞级发现：promotion 券字段不落库，C 端拿不到
+
+**已实测复现**（2026-09-08，活动 `578363764011708416`，已发布 `activity_status=2`）：
+
+调 `PreOrderActivityService#listFromCache` 返回的 `product_list`，每项**只有 5 个字段**：
+
+```json
+{"id":916, "pre_order_activity_number":578363764011708416,
+ "product_number":801400001, "product_type":8014, "deductible_amount":20000}
+```
+
+**`couponId` / `couponName` / `skuId` / `buyAmount` / `couponStatus` / `scopes` 全部丢失。**
+
+### 为什么
+
+- `promotion.pre_order_activity_product` 表**只有 8 列，没有任何券字段**（已 SHOW COLUMNS 确认）
+- 创建时这些字段只写进 **Redis 缓存 DTO**（`PreOrderActivityProductCacheDTO` 里确实定义了这 6 个字段）
+- 但缓存 miss 会 **从 DB 重建**（`listVisibleActivityByNumbersFromCache` → `listVisibleActivityByNumbersFromDB`），
+  重建后券字段必然为 null —— 本次实测就是重建路径
+- 代码注释自己也写了：「膨胀券字段与券范围：**BO 侧不落库**，此处随缓存结构一并透传」
+
+### 影响面（比原以为的严重）
+
+原先 README 记的是「B 端活动详情回显会丢券字段」，**低估了**。实际是：
+
+| 场景 | 后果 |
+|---|---|
+| 缓存有效期内 | 正常 |
+| **缓存过期/重启/miss** | 券信息**整体丢失**，C 端落地页无券可展示 |
+| product-server 三者交集 | 拿不到 `scopes` 与 `couponStatus`，交集必然为空 |
+| cart C 端组装 | 拿不到 `buyAmount`/`scopes` → 按新逻辑**直接抛异常**（落地页 500） |
+
+**C 端自测在此修复前跑不通**，且这是**上线阻塞项**，不是自测环境问题。
+
+### 结论
+
+需要 promotion 侧给 `pre_order_activity_product` 加券字段列（或另建券信息表）。
+这条已不属于「待确认」，是必须做的改动 —— 建议尽快找 promotion 对齐。
+
+## 反射桥调用地址（四个服务，均实测）
+
+| 服务 | 调用地址 | 状态 |
+|---|---|---|
+| student-center | `https://test-fuwu.baijia.com/bgwApi/component/student-center/test/acl/compare/service` | ✅ |
+| promotion | `https://test-fuwu.baijia.com/bgwApi/promotion/b/test/acl/compare/service` | ✅ |
+| **cart** | `https://test-api.gaotu100.com/cart/test/acl/compare/service` | ✅ |
+| product-server(B) | `https://test-fuwu.baijia.com/bgwApi/product-b/b/test/acl/compare/service` | 待验(已加挂 /b 路径) |
+
+`mcp baijia-invoke invoke_service` 的 `ROUTE_MAP` 已按上表登记，直接用 `project=xxx` 即可。
+
+### 三个必踩的坑
+
+1. **「请重新登录」≠ Cookie 失效**，绝大多数是**路由/host 不匹配**打到了 CAS 兜底。
+   判据：看日志里有没有这条请求 —— 没有就是压根没到应用，别去查 Cookie。
+2. **cart 是 C 端服务**，网关路由**没绑 `test-fuwu.baijia.com`**（那是 B 端网关），
+   必须走 `test-api.gaotu100.com` 且**不带 `/bgwApi` 前缀**。
+3. **`curl --data-raw @file` 不会读文件**，会把 `@/tmp/x.json` 当字面量发出去，
+   服务端报 `JSONException: syntax error, expect {` 但外层只回「参数异常」。
+   读文件要用 `--data @file`。（2026-09-08 为此误判成校验失败查了很久）
+
 ## 🚨 上线必做：关闭三个反射调用桥
 
 `AclServiceCompareController` 迁进了 **promotion / cart / product-server** 三个仓库，

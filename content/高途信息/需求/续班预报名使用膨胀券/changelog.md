@@ -50,6 +50,49 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-09-08（第六次会话 · 桥全打通 + 发现上线阻塞项）
+
+### 🤖 Claude
+- **迁 `AclServiceCompareController` 到 promotion / cart / product-server**，三份逐字节相同：
+  自带极简 RVO 内部类，不复用各仓库的响应包装类（product-server 一个仓库就有 5 种，复用必漂移）。
+  product-server 按用户要求 B/C 两侧各放一份。
+- **四个反射桥全部实测打通**（均返回 code:0）：
+  | 服务 | 地址 |
+  |---|---|
+  | student-center | `test-fuwu.baijia.com/bgwApi/component/student-center/...` |
+  | promotion | `test-fuwu.baijia.com/bgwApi/promotion/b/...` |
+  | cart | **`test-api.gaotu100.com/cart/...`**（C 端 host，不带 bgwApi） |
+  | product-b | `test-fuwu.baijia.com/bgwApi/product-b/b/...` |
+  `baijia_invoke.ROUTE_MAP` 已登记，`_acl_url` 支持按项目指定 host。
+- **三个把我坑了很久的点，已写进 verify.md**：
+  1. 「请重新登录」**绝大多数不是 Cookie 失效**，而是路由/host 不匹配打到 CAS 兜底。
+     判据：应用日志里有没有这条请求 —— 没有就是没到应用，别查 Cookie。
+  2. **cart 是 C 端服务**，网关路由没绑 `test-fuwu`（B 端网关），必须走 `test-api.gaotu100.com`。
+     我一度以为是 `UserAuthInterceptor` 拦的，还改了放行（改动保留，本身合理），但真因是 host 错了。
+  3. **`curl --data-raw @file` 不读文件**，把 `@/tmp/x.json` 当字面量发出去，
+     服务端报 JSON 解析失败、外层只回「参数异常」。要用 `--data @file`。
+     我为此误以为是业务校验失败，查了一大圈。
+- **建成第一个 type=2 膨胀券活动**：`578363764011708416`（v2，已发布 activity_status=2），
+  挂了 801400001/801400002 两张券，DB 已确认 type=2、product_type=8014。
+  （v1 `578361735860203520` 因 beginTime 只留 10 分钟、发布时已过期，作废不用）
+
+### 🔴 发现上线阻塞项：promotion 券字段不落库
+- 实测 `listFromCache` 返回的 `product_list` **只有 5 个字段**，
+  `couponId`/`couponName`/`skuId`/`buyAmount`/`couponStatus`/`scopes` **全丢**。
+- 原因：`pre_order_activity_product` 表只有 8 列无券字段，券信息只写 Redis 缓存 DTO，
+  而缓存 miss 会**从 DB 重建**，重建后必为 null。代码注释自己写着「BO 侧不落库」。
+- **影响比原以为的严重**：原先记的是「B 端详情回显丢券字段」，实际是
+  **缓存一过期券信息整体丢失** → C 端无券可展示、三者交集必空、
+  cart 按新逻辑直接抛异常（落地页 500）。
+- 结论：需 promotion 加券字段列或另建券表。**C 端自测在此之前跑不通**，且这是上线必修项。
+
+### 留给下次
+- 找 promotion 对齐券字段落库（T-21，最高优先级）。
+- 修好后用活动 `578363764011708416` 跑 C 端；发链接自测需先配 `renewalPlanIds` 白名单。
+- 🚨 上线前三个仓库的 `AclServiceCompareController.enabled` **必须显式配 false**（代码默认 true）。
+
+---
+
 ## 2026-09-08（第五次会话 · 建活动受阻 + 修工具）
 
 ### 🤖 Claude

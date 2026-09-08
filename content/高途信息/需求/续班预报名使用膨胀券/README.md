@@ -61,7 +61,7 @@ tags:
 | 阶段 | 开发中（**B 端券列表自测已通过**） |
 | 进度 | T 16/18 · R 0/2 · C 0/0 |
 | 排期 | 09-08~09-11 开发 · 09-14 自测 · 09-15~16 联调 · **提测 09-16** |
-| 当前卡点 | 建膨胀券活动受阻：promotion 反射桥拒登录 → 改走 arthas，但**青舟登录也过期了，需先重登** |
+| 当前卡点 | 🔴 **promotion 券字段不落库**（表无券列，仅存 Redis，缓存 miss 即丢）→ C 端拿不到 scopes/buyAmount，交集必空、落地页必失败。**上线阻塞项**，见 [[verify]] |
 | 最近更新 | 2026-09-08
 
 **六仓库代码全部提交并推送，编译全绿（BUILD SUCCESS）**，但均未写单测、未跑功能自测。
@@ -77,25 +77,16 @@ tags:
 
 ## 下一步
 
-1. **让用户重登 qingzhou.baijia.com** —— arthas 依赖它换 container_token，当前已过期。
-2. **建膨胀券活动**（C 端自测的唯一前提）。⚠️ **不能直接插 DB**：promotion 的券字段
-   （couponId/buyAmount/couponStatus/scopes）**不落库**，只存在于 Redis 缓存 DTO，
-   且缓存 miss 会从 DB 重建、券字段必为 null。必须走 `PreOrderActivityService#create()`。
-   - promotion 反射桥 `acl/compare/service` 拒绝登录（CAS 重定向 / 403），换 host 无效 —— 应用侧鉴权更严
-   - 改走 **arthas 进程内调用**：已验证能拿到 bean 实例，OGNL 见 `/tmp/mkact2.ognl`
-   - ⚠️ OGNL **字符串必须用单引号**，双引号会被 pty 吃掉导致 ParseException
-   - 若报 ClassNotFound，先 `sc -d <类名>` 拿 classloader hash，再 `-c <hash>`
-3. 活动建好后配 `pre.order.activity.coupon.renewalPlanIds` → 跑 C 端落地页自测。
+1. 🔴 **找 promotion 对齐券字段落库**（最高优先级，上线阻塞）：
+   `pre_order_activity_product` 表只有 8 列、无券字段，`couponId`/`buyAmount`/`couponStatus`/`scopes`
+   只写进 Redis 缓存，**缓存 miss 从 DB 重建后全部为 null**（已实测复现，见 [[verify]]）。
+   需要加列或另建券信息表。**在此之前 C 端自测跑不通，且线上必然出问题。**
+2. 券字段修好后再跑 C 端：活动 `578363764011708416` 已建好并发布（type=2，挂了两张券）。
+3. 配 `pre.order.activity.coupon.renewalPlanIds` → 跑发链接 path 切换自测。
    ⚠️ `getByRenewalPlanId` 有 Redis 缓存，改配置不生效先想到缓存。
-   ⚠️ **「发链接 path 切换」这一步已取消**（2026-09-08）：前端无 `/preSignUpCoupon` 页面，
-   落地页 path 不分叉，膨胀券与订金班同为 `/preSignUp`。发链接现在**没有形式差异可验**，
-   只需回归订金班不坏；若发出的链接出现 `/preSignUpCoupon` 即为缺陷。
-4. 提交并发布 cart / product-server 改动到 test-gtbg-dev-3。
-5. 找电商（邓俊兵）要券商品接口，确认券状态码枚举（当前按 1待开始/2使用中/3已结束/4已下线）
-6. 跟前端对齐三个新字段名：`postProductId` / `postProductName` / `activityType`
-7. 定 `scopes` 落库方 —— **本轮发现 promotion 侧根本不落库**，这条已不只是"回显丢字段"，
-   而是「缓存过期后券信息整体丢失」，优先级应提高
-8. R-01 找王永诗；R-02 问清「测试冲突」指什么
+4. 找电商（邓俊兵）要券商品接口，确认券状态码枚举（现按 1待开始/2使用中/3已结束/4已下线）
+5. 跟前端对齐三个新字段名：`postProductId` / `postProductName` / `activityType`
+6. R-01 找王永诗；R-02 问清「测试冲突」指什么
 
 ## 待确认
 

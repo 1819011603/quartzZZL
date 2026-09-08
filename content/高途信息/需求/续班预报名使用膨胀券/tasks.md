@@ -35,7 +35,10 @@ tags: [需求, 任务]
 | T-18 | cart 补齐 DTO 券字段 + 修正为成对求交 | 已完成 | — | 原按年级/学科分别求交，会放行伪命中；已删 `intersect()` helper |
 | T-14 | cart 侧三处静默失败改抛异常 | 已完成 | — | `PreRegistrationCouponAssembler`：price/scopes/deductibleAmount 取不到不再返 0/空，改抛 `CommonsException`；编译通过 |
 | T-15 | 静态自测：三者交集算法走查 | 已完成 | — | 成对判定确认正确，未发现 bug；5 行真实数据推演 3 场景符合预期 |
-| T-16 | 部署 student-center + product-server 到可用泳道并跑自测 | 待办 | 等 T-13 泳道决策 | 需先定用 `test` 还是补全 test-gtbg-dev-3 |
+| T-16 | 四服务部署到 test-gtbg-dev-3 + 反射桥全部打通 | 已完成 | — | student-center/promotion/cart/product-b 四个桥均实测 code:0 |
+| T-19 | 迁 AclServiceCompareController 到三仓库 | 已完成 | — | 三份逐字节相同、自带 RVO 内部类；cart 放行拦截器、B 侧加挂 /b 路径 |
+| T-20 | 建 type=2 膨胀券活动并发布 | 已完成 | — | `578363764011708416`，挂 801400001/2 两张券 |
+| T-21 | 推动 promotion 券字段落库 | 待办 | **卡 promotion 团队** | 🔴 上线阻塞，表无券列、缓存 miss 即丢，详见 [[verify]] |
 
 ### T-13 自测进展（2026-09-08 订正）
 
