@@ -82,8 +82,11 @@ tags:
    只写进 Redis 缓存，**缓存 miss 从 DB 重建后全部为 null**（已实测复现，见 [[verify]]）。
    需要加列或另建券信息表。**在此之前 C 端自测跑不通，且线上必然出问题。**
 2. 券字段修好后再跑 C 端：活动 `578363764011708416` 已建好并发布（type=2，挂了两张券）。
-3. 配 `pre.order.activity.coupon.renewalPlanIds` → 跑发链接 path 切换自测。
+3. 配 `pre.order.activity.coupon.renewalPlanIds` → 跑 C 端落地页自测。
    ⚠️ `getByRenewalPlanId` 有 Redis 缓存，改配置不生效先想到缓存。
+   ⚠️ **「发链接 path 切换」自测已取消**（2026-09-08）：前端无 `/preSignUpCoupon` 页面，
+   落地页 path 不分叉，膨胀券与订金班同为 `/preSignUp`。发链接已无形式差异可验，
+   只需回归订金班不坏；若发出的链接出现 `/preSignUpCoupon` 即为缺陷。
 4. 找电商（邓俊兵）要券商品接口，确认券状态码枚举（现按 1待开始/2使用中/3已结束/4已下线）
 5. 跟前端对齐三个新字段名：`postProductId` / `postProductName` / `activityType`
 6. R-01 找王永诗；R-02 问清「测试冲突」指什么
