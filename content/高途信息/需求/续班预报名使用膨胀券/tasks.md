@@ -23,7 +23,7 @@ tags: [需求, 任务]
 | T-03 | 促销侧活动支持膨胀券形式与券可用范围 | 已完成 | — | promotion `938590af5`；原 `type!=1` 硬门槛会让膨胀券活动存不进去 |
 | T-04 | 膨胀券商品加购 + 购物车总价 | 已完成 | — | order `073dea69e2`；**范围已收敛**，见备注区 |
 | T-05 | C 端预报名落地页取数与算价改造 | 已完成 | — | cart `0b529fa4`；算价复用既有 `skuNumbers` 桶 |
-| T-06 | 发链接按活动形式分流到 `/preSignUpCoupon` | 已完成 | — | student-center `7425901f5`；新增独立 Strategy，订金班链路逐字节未动 |
+| T-06 | ~~发链接按活动形式分流到 `/preSignUpCoupon`~~ | **已撤销** | — | 前端无此页面，配了会 404。定稿：path 不分叉，两形式共用 `/preSignUp`。`7425901f5` 中的 path 分流部分已回滚（Support/CouponStrategy/枚举/分发重载），**活动形式判定与 validate 分支保留** |
 | T-07 | 三者交集同源实现 + 预警按券口径 + C 端样式分流 | 已完成 | — | product-server `c85438f92`；交集按「年级+学科」**成对**判定 |
 | T-08 | 券列表 Apollo mock（解除电商接口阻塞） | 已完成 | — | student-center `b3efe04d3`；`pre.order.coupon.mock.enabled` |
 | T-09 | 券适用范围表名加 `renewal_` 前缀 | 已完成 | — | product-server `1716371b2`；马胜建表时改的名 |

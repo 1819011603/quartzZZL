@@ -75,7 +75,7 @@ service_method=com.gaotu.product.service.renewal.preorder.PreOrderCouponIntersec
 ## 能验到哪一层
 
 - ✅ **可验**：券列表筛选与分页（走 mock）、券范围落库与唯一键校验、三者交集算法、
-  发链接 path 切到 `/preSignUpCoupon`、订金班不回归
+  发链接 path **不分叉**（膨胀券与订金班同为 `/preSignUp`，出现 `/preSignUpCoupon` 即缺陷）、订金班不回归
 - ✅ **已实测通过（2026-09-08，泳道 test-gtbg-dev-3 反射调用）**：
   - `PreOrderCouponBiz#listCoupon` 空条件 → **3 条 mock 券返回 2 条**，已结束券被默认状态过滤掉 ✅
   - `productType` 全部为 **8014** ✅ · `couponStatusDesc`(使用中/待开始) 与 `selectable` 正确 ✅
@@ -88,6 +88,26 @@ service_method=com.gaotu.product.service.renewal.preorder.PreOrderCouponIntersec
   库里 `promotion.pre_order_activity` 现存活动**全部是 type=1 订金班**，
   且 scope 表里的 activity_number(9001/9002/9003) 是造的假号，与真实活动对不上。
   C 端要跑通，得先在 B 端建一个膨胀券活动、挂上券并配好范围。
+
+## 🚨 上线必做：关闭三个反射调用桥
+
+`AclServiceCompareController` 迁进了 **promotion / cart / product-server** 三个仓库，
+它能**反射调用任意 Spring Bean 的任意方法**，线上必须关掉。
+
+| Apollo appId | key | 测试环境 | **线上** |
+|---|---|---|---|
+| `promotion.gaotu100.com` | `AclServiceCompareController.enabled` | true(默认) | **必须 false** |
+| `cart.gaotu100.com` | `AclServiceCompareController.enabled` | true(默认) | **必须 false** |
+| `product` | `AclServiceCompareController.enabled` | true(默认) | **必须 false** |
+
+⚠️ **代码里的默认值是 `true`**（`@Value("${AclServiceCompareController.enabled:true}")`），
+所以**不配 = 开启**。线上必须显式配 `false`，不能靠"没配就是关的"。
+
+cart 还额外把 `/test/acl/compare/**` 加进了 `MvcConfig` 的
+`excludePathPatterns`（绕过 `UserAuthInterceptor`），这条**也只有开关能兜底**——
+即 enabled=false 时 Controller 直接返回失败，放行路径本身不构成风险。
+
+这三条已进上线 checklist，见 [[README]] 的「上线影响面」。
 
 ## 新建的东西（上线 checklist 原料）
 

@@ -12,6 +12,44 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-09-08（第六次会话 · 撤销落地页 path 分叉）
+
+### 👤 我
+- 前端确认：**`/preSignUpCoupon` 这个页面不存在**，后端 spec 要撤。
+  正确口径：**path 不分叉**，膨胀券和订金班都是 `/preSignUp`；
+  C 端样式配置 `nodeType` 也不新增（这条本来就是对的）。
+
+### 🤖 Claude
+- **一个错误的前端假设，污染了 5 份 spec + 2 个仓库的已提交代码**。用户点名了 3 份
+  （promotion / cart / product-server），实际排查后另有 **student-center 与 reach-service**
+  两份 spec 也写了同一假设，且 **promotion 与 student-center 已经按它写完代码合进分支**。
+- **回滚边界（问过用户）**：`7425901f5` 不只有 path 分流，
+  `PreOrderActivityFormResolver` / `FormEnum` / ACL 还被**下单前校验 validate**
+  （`RenewalService:2149`、`:2165`）用着，与落地页无关。
+  定稿为**只回滚 path 分流，保留活动形式判定** —— 直接 `git revert` 会误伤校验链路。
+- **student-center**（`baccd3fed`）：删 `PreSignUpCouponUrlSupport`、
+  `RenewalPreRegistrationCouponStrategy`、`RenewalContentSceneEnum.PRE_REGISTRATION_COUPON`、
+  `StrategyManager#preRegistrationStrategy(form)` 重载；`RenewalContentConfigService`
+  回到 `7425901f5^` 逐字节一致。删 Strategy 的理由：它与订金班的**唯一**差异就是切 path，
+  去掉后是纯透传，留着只是多一条无人验证的分支。
+- **promotion**（`1134a827b`）：删 `urlPrefixPreRegistrationCoupon` 与三元分叉，
+  并删掉**已无调用方**的 `getPreOrderActivityType`（它唯一用途就是给 path 选分支，
+  留着等于挂一条无人验证的 product-server 反查链路）。
+  `PersonalLinkDomainService.java` 现与 `938590af5^` **逐字节一致**；
+  `938590af5` 其余部分（券字段 / typeList / 券范围校验）不受影响。
+- **spec 全部改口径**：promotion（Apollo 表 + §2.4 + 用例5）、cart（变更速读）、
+  product-server（§2.4 + 用例7）、student-center（4 处）、reach-service（4 处）；
+  另同步 `conf/xuban-pre-coupon-handoff.md` §6.4、本目录 `tasks.md` T-06、`verify.md`、
+  `README.md` 第 3 步（「发链接 path 切换」自测步骤已取消）。
+- **验证**：`student-center-service`+`student-center-web`、`promotion-domain` 均编译通过；
+  全仓库 grep 确认 `.java` 里 `preSignUpCoupon` 零残留，`.md` 里的残留全是「已撤销」标记。
+- ⚠️ **上线注意**：Apollo **不要**新增 `gaotu.website.preRegistrationCouponUrl`(promotion)
+  与 `renewal.content.config.preRegistration.coupon.path`(student-center) —— 代码里已经没有了。
+  触达后台 `report_content` 的 url 模板必须写 `/preSignUp`。
+  `renewal.content.config.map` 的膨胀券 reportCode 条目仍是上线阻塞项，不受本次影响。
+
+---
+
 ## 2026-09-08（第五次会话 · 建活动受阻 + 修工具）
 
 ### 🤖 Claude

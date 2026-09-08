@@ -85,8 +85,11 @@ tags:
    - 改走 **arthas 进程内调用**：已验证能拿到 bean 实例，OGNL 见 `/tmp/mkact2.ognl`
    - ⚠️ OGNL **字符串必须用单引号**，双引号会被 pty 吃掉导致 ParseException
    - 若报 ClassNotFound，先 `sc -d <类名>` 拿 classloader hash，再 `-c <hash>`
-3. 活动建好后配 `pre.order.activity.coupon.renewalPlanIds` → 跑发链接 path 切换 + C 端落地页自测。
+3. 活动建好后配 `pre.order.activity.coupon.renewalPlanIds` → 跑 C 端落地页自测。
    ⚠️ `getByRenewalPlanId` 有 Redis 缓存，改配置不生效先想到缓存。
+   ⚠️ **「发链接 path 切换」这一步已取消**（2026-09-08）：前端无 `/preSignUpCoupon` 页面，
+   落地页 path 不分叉，膨胀券与订金班同为 `/preSignUp`。发链接现在**没有形式差异可验**，
+   只需回归订金班不坏；若发出的链接出现 `/preSignUpCoupon` 即为缺陷。
 4. 提交并发布 cart / product-server 改动到 test-gtbg-dev-3。
 5. 找电商（邓俊兵）要券商品接口，确认券状态码枚举（当前按 1待开始/2使用中/3已结束/4已下线）
 6. 跟前端对齐三个新字段名：`postProductId` / `postProductName` / `activityType`
@@ -125,6 +128,7 @@ tags:
 | MySQL DDL | ✅ 一张新表，测试已建、线上待建 |
 | Apollo | ✅ 5 个 key，其中 `renewal.content.config.map` **不配则老师端无入口** |
 | 代课接口权限 | ✅ 2 个新接口待登记 |
+| **反射桥开关** | 🚨 **promotion / cart / product-server 三处 `AclServiceCompareController.enabled` 线上必须显式配 `false`**（代码默认 true，不配=开启）→ 见 [[verify]] |
 | MQ | ❌ 券订单消息由订单团队发 |
 | ES | ❌ 写 ES 归马胜 |
 
