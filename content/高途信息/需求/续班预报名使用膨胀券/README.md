@@ -58,11 +58,11 @@ tags:
 
 | | |
 |---|---|
-| 阶段 | 开发中（代码已齐，待自测） |
-| 进度 | T 12/13 · R 0/2 · C 0/0 |
+| 阶段 | 开发中（**B 端券列表自测已通过**） |
+| 进度 | T 16/18 · R 0/2 · C 0/0 |
 | 排期 | 09-08~09-11 开发 · 09-14 自测 · 09-15~16 联调 · **提测 09-16** |
-| 当前卡点 | **电商券商品接口未提供** → 端到端跑不通，已用 Apollo mock 顶替 |
-| 最近更新 | 2026-09-08 |
+| 当前卡点 | C 端跑不通：**库里没有 type=2 膨胀券活动**，需先在 B 端建一个并配券范围 |
+| 最近更新 | 2026-09-08
 
 **六仓库代码全部提交并推送，编译全绿（BUILD SUCCESS）**，但均未写单测、未跑功能自测。
 
@@ -72,16 +72,23 @@ tags:
 | product-server | `566380d4e` |
 | promotion | `938590af5` |
 | order | `073dea69e2` |
-| cart | `0b529fa4` |
+| cart | `0b529fa4` + **未提交**（DTO 补券字段 + 三处改抛异常 + 成对求交，编译通过） |
 | promotion-app | 仅 spec（本期不改代码） |
 
 ## 下一步
 
-1. 跑功能自测 —— **泳道 test-gtbg-dev-3，造好的数据与调用方式见 [[verify]]**
-2. 找电商（邓俊兵）要券商品接口，或确认 `productType=8014` 与券状态码枚举
-3. 跟前端对齐三个新字段名：`postProductId` / `postProductName` / `activityType`
-4. 定 `scopes` 落库方（product-server 还是 promotion）—— 影响 B 端回显是否丢券范围
-5. R-01 找王永诗；R-02 问清「测试冲突」指什么
+1. **在 B 端建一个 `type=2` 膨胀券活动**，挂券（用 mock 的 801400001/2）并配年级学科范围。
+   这是 C 端自测的唯一前提 —— 库里现存活动**全是 type=1 订金班**，
+   且 scope 表的 activity_number(9001/9002/9003) 是造的假号，对不上真实活动。
+2. 活动建好后：配 `pre.order.activity.coupon.renewalPlanIds` 白名单（填该活动的续班计划 ID）
+   → 跑发链接 path 切换 + C 端落地页自测。
+   ⚠️ `PreOrderActivityAclServiceImpl#getByRenewalPlanId` **有 Redis 缓存**，
+   改完配置若没生效，先想到是缓存不是代码。
+3. 提交 cart 改动（三处静默失败改抛异常 + 补齐 DTO 字段 + 成对求交），并发布到 test-gtbg-dev-3。
+4. 找电商（邓俊兵）要券商品接口，确认券状态码枚举（当前 mock 用 1待开始/2使用中/3已结束）
+5. 跟前端对齐三个新字段名：`postProductId` / `postProductName` / `activityType`
+6. 定 `scopes` 落库方（product-server 还是 promotion）—— 影响 B 端回显是否丢券范围
+7. R-01 找王永诗；R-02 问清「测试冲突」指什么
 
 ## 待确认
 
@@ -120,9 +127,10 @@ tags:
 ## 必须知过的坑
 
 - **8027 ≠ 膨胀券**，是课时包商品，两个仓库都已占用。膨胀券是 **8014**。
-- **静默失效**：花名册四字段 key 一个都不能改（前端写死 8 份副本）；Apollo 没配 = 入口不存在且不报错；
-  cart 的 `productNumber`/`productType`/`price`/`signUp` 是**同名沿用语义改写**，失败形态是静默跳过。
-- **短链必须在切完 path 之后生成**，顺序反了会把订金班 path 固化进不可改的短链。
-- **`/deal` 原本无条件返回 `code=0`**（没包 `handleRequest`），只在 service 加校验无效，运营点了静默无反应。
-- **promotion 的 `pre_order_activity_product` 表只有 8 列、无券字段** → 活动保存后 detail 回显会丢券字段。
-- 这两个分支做过 **force push**（student-center / product-server），**不要直接 `git pull`**。
+- **Apollo 没有泳道 cluster 是正常的** —— 读不到会自动回落 `default`，不必为泳道单独建 cluster。
+  别把「查泳道 cluster 404」当成环境不可用（我犯过这个错）。
+- **判断服务在不在泳道，看青舟 pod 列表**，不是看 Apollo；pod 可能在你查完之后才发布。
+- **cart 侧三处已改为抛异常**（price / scopes / deductibleAmount）：上游字段缺失时落地页直接失败，
+  **这是预期行为**（不能静默失败）。别把它当回归 bug 去「修回」返 0。
+- **成对求交**：cart 原本把年级、学科**分别求交**，会放行「年级来自 A 组合、学科来自 B 组合」的
+  伪命中，已改为按 `PreOrderActivityCouponScopeDTO` 整对比对，并删掉诱发该写法的 `intersect()` helper。

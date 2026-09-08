@@ -30,7 +30,34 @@ tags: [需求, 任务]
 | T-10 | `process/list` 出参补 `activityType` 区分订金班/膨胀券 | 已完成 | — | product-server `566380d4e`；复用已有活动详情，零额外 RPC |
 | T-11 | 测试环境建表 + 插 scope 测试数据 | 已完成 | — | `gaotu_polar_test_03`(cluster 142)；5 行数据，验过唯一键两个方向 |
 | T-12 | 五个仓库编译验证 | 已完成 | — | 全部 BUILD SUCCESS |
-| T-13 | 单测 + 功能自测 | 待办 | 部分卡电商券商品接口 | 券名称/金额/状态取不到，mock 可先跑通交互 |
+| T-13 | 单测 + 功能自测 | 进行中 | C 端等膨胀券活动 | **B 端券列表已实测通过**，详见 [[verify]] |
+| T-17 | 配置并发布 Apollo（mock 开关 + 券商品类型） | 已完成 | — | default cluster，release `20260908171459` |
+| T-18 | cart 补齐 DTO 券字段 + 修正为成对求交 | 已完成 | — | 原按年级/学科分别求交，会放行伪命中；已删 `intersect()` helper |
+| T-14 | cart 侧三处静默失败改抛异常 | 已完成 | — | `PreRegistrationCouponAssembler`：price/scopes/deductibleAmount 取不到不再返 0/空，改抛 `CommonsException`；编译通过 |
+| T-15 | 静态自测：三者交集算法走查 | 已完成 | — | 成对判定确认正确，未发现 bug；5 行真实数据推演 3 场景符合预期 |
+| T-16 | 部署 student-center + product-server 到可用泳道并跑自测 | 待办 | 等 T-13 泳道决策 | 需先定用 `test` 还是补全 test-gtbg-dev-3 |
+
+### T-13 自测进展（2026-09-08 订正）
+
+> ⚠️ 本节此前记「泳道是空壳、不可用」，**该结论是错的**，已订正。
+> 错因：① Apollo 查泳道 cluster 报 404 被误判成环境不可用 —— 实际 Apollo 读不到泳道会**自动回落 default**；
+> ② 查 pod 的时刻早于用户发布镜像的时刻（16:37）。
+
+**环境实际可用**：`test-gtbg-dev-3` 下 student-center pod Running / eureka UP，镜像 `feature-xuban-pre`。
+
+**已实测通过（反射调 `PreOrderCouponBiz#listCoupon`）**：
+
+| 场景 | 结果 |
+|---|---|
+| 空条件查询 | 3 条 mock 券返回 **2 条**，已结束券被默认状态过滤 ✅ |
+| productType | 全部 **8014** ✅ |
+| 状态文案 / 可勾选 | `使用中`/`待开始` + `selectable=true` ✅ |
+| 券名模糊「秋季」 | 精确命中 1 条 ✅ |
+| `couponIdList` 批量精确 | ✅ |
+
+**C 端仍跑不通，但原因不是环境**：`promotion.pre_order_activity` 里现存活动**全部 type=1 订金班**，
+没有 type=2 膨胀券活动；且 scope 表的 activity_number(9001/9002/9003) 是造的假号，与真实活动对不上。
+→ 需先在 B 端建一个膨胀券活动并配券范围，见 README 下一步 #1。
 
 ### T-04 order 侧范围收敛（重要）
 

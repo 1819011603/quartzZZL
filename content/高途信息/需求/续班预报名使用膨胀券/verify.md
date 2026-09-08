@@ -12,11 +12,12 @@ tags: [需求, 验证]
 
 | 项 | 值 |
 |---|---|
-| 泳道 | **test-gtbg-dev-3** |
+| 泳道 | **test-gtbg-dev-3** ✅ 已验证可用（student-center pod Running/UP，2026-09-08 16:37 发布 feature-xuban-pre 镜像） |
 | 数据库实例 | `gaotu_polar_test_03`（cluster_id **142**）· 库 `gaotu` |
-| DB 直连 | `gaotu-polar-test03.rwlb.rds.aliyuncs.com` / `gaotu_test_rw` / `gaotu@test2020` |
-| 券列表 mock 开关 | Apollo `pre.order.coupon.mock.enabled=true` —— **不开则调真接口必失败**（电商未提供） |
-| 券商品类型 | Apollo `pre.order.coupon.product.type=8014`（⚠️ 不是 8027） |
+| DB 直连 | host `gaotu-polar-test03.rwlb.rds.aliyuncs.com` · 账号 `gaotu_test_rw`（**密码见 Apollo `product` / TEST / `jdbc-mysql` 的 `jdbc.gaotu.password`**，本仓库是 public 不落密码） |
+| 券列表 mock 开关 | Apollo `pre.order.coupon.mock.enabled=true` ✅ **已发布**（default cluster，20260908171459-release）。Apollo 无泳道 cluster 时自动读 default，不必单独建 |
+| 券商品类型 | Apollo `pre.order.coupon.product.type=8014` ✅ **已发布**（⚠️ 不是 8027） |
+| 膨胀券白名单 | Apollo `pre.order.activity.coupon.renewalPlanIds` —— **不配则活动形式永远兜底成订金班，膨胀券链路进不去**，自测前必配 |
 
 ## 造好的测试数据
 
@@ -75,17 +76,25 @@ service_method=com.gaotu.product.service.renewal.preorder.PreOrderCouponIntersec
 
 - ✅ **可验**：券列表筛选与分页（走 mock）、券范围落库与唯一键校验、三者交集算法、
   发链接 path 切到 `/preSignUpCoupon`、订金班不回归
-- ❌ **验不了**：券真实名称/金额/状态（**电商券商品接口未提供**）、
-  C 端 `price`（上游只有抵扣额、无购买金额，当前恒返 0 并打 error）、
-  B 端活动详情回显券字段（promotion 表无券列）
-- ⚠️ 别把"上游没给"误判成"自己写错了" —— 上面三条现在就是空/0，是预期行为
+- ✅ **已实测通过（2026-09-08，泳道 test-gtbg-dev-3 反射调用）**：
+  - `PreOrderCouponBiz#listCoupon` 空条件 → **3 条 mock 券返回 2 条**，已结束券被默认状态过滤掉 ✅
+  - `productType` 全部为 **8014** ✅ · `couponStatusDesc`(使用中/待开始) 与 `selectable` 正确 ✅
+  - 券名称模糊查询「秋季」→ 精确命中 1 条 ✅ · `couponIdList` 批量精确查询 ✅
+  - 复现命令见每次调用返回的 curl，或用 `mcp baijia-invoke invoke_service`
+
+- ❌ **仍验不了**：券的**真实**名称/金额/状态（电商券商品接口未提供，当前全部走 mock）、
+  B 端活动详情回显券字段（promotion `pre_order_activity_product` 表无券列）
+- ⚠️ **C 端落地页自测的真正前提是「有 type=2 的膨胀券活动」**：
+  库里 `promotion.pre_order_activity` 现存活动**全部是 type=1 订金班**，
+  且 scope 表里的 activity_number(9001/9002/9003) 是造的假号，与真实活动对不上。
+  C 端要跑通，得先在 B 端建一个膨胀券活动、挂上券并配好范围。
 
 ## 新建的东西（上线 checklist 原料）
 
 | 类型 | 名称 | 位置 / 值 | 测试 | 线上 |
 |---|---|---|---|---|
 | 表 | `renewal_pre_order_activity_coupon_scope` | `gaotu_polar_test_03` · 库 gaotu | ✅ 已建（直连，未走工单） | 待建（马胜或提工单） |
-| Apollo | `pre.order.coupon.mock.enabled` | false | 待配 | **不要配**（mock 仅测试用） |
+| Apollo | `pre.order.coupon.mock.enabled` | true(测试) | **待配**（已核对 default 无此 key） | **不要配**（mock 仅测试用） |
 | Apollo | `pre.order.coupon.product.type` | 8014 | 待配 | 待配 |
 | Apollo | `renewal.content.config.map` | 加膨胀券 reportCode | 待配 | 待配（**不配则老师端无入口**） |
 | Apollo | `renewal.cStyle.preRegistrationCoupon.bgUrl` | 暂用订金班图 | 待配 | 待运营给图 |
