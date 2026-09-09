@@ -30,7 +30,7 @@ tags: [需求, 任务]
 | T-10 | `process/list` 出参补 `activityType` 区分订金班/膨胀券 | 已完成 | — | product-server `566380d4e`；复用已有活动详情，零额外 RPC |
 | T-11 | 测试环境建表 + 插 scope 测试数据 | 已完成 | — | `gaotu_polar_test_03`(cluster 142)；5 行数据，验过唯一键两个方向 |
 | T-12 | 五个仓库编译验证 | 已完成 | — | 全部 BUILD SUCCESS |
-| T-13 | 单测 + 功能自测 | 进行中 | C 端等膨胀券活动 | **B 端券列表已实测通过**，详见 [[verify]] |
+| T-13 | 单测 + 功能自测 | 进行中 | — | **B 端 detail 回显、C 端 scopes、couponStatusDesc 三处新代码单测已补齐**（T-29）；其余模块(order/cart 下单算价等)尚未补单测，功能自测详见 [[verify]] |
 | T-17 | 配置并发布 Apollo（mock 开关 + 券商品类型） | 已完成 | — | default cluster，release `20260908171459` |
 | T-18 | cart 补齐 DTO 券字段 + 修正为成对求交 | 已完成 | — | 原按年级/学科分别求交，会放行伪命中；已删 `intersect()` helper |
 | T-14 | cart 侧三处静默失败改抛异常 | 已完成 | — | `PreRegistrationCouponAssembler`：price/scopes/deductibleAmount 取不到不再返 0/空，改抛 `CommonsException`；编译通过 |
@@ -45,7 +45,9 @@ tags: [需求, 任务]
 | T-25 | 券范围落库：promotion-b 事务内回调 product-b 新增的只写接口 | 已完成 | — | product-server `86abd8914` / promotion `10a43258a`；事务内调用，Feign 失败即回滚活动 |
 | T-26 | 修 B 端 detail 券字段全空：`PreOrderCouponEnricher` 加 `enrichDTO` 挂到 `detail()` | 已完成 | — | promotion `81180aa45`；用真实电商券重建活动实测通过，`couponId/couponName/couponStatus/buyAmount/skuId` 全部正确回显 |
 | T-27 | C 端 listFromCache 补齐 scopes：product-server 新增批量查询 Feign + promotion 消费 | 已完成 | — | product-server `846a532ab` / promotion `7be4676b0`；测 cart 推荐接口时子 agent 发现的新缺口；中途踩了嵌套 Map 解码坑、RestTraceResponse 信封坑、promotion-b/promotion-c 双部署坑，见 [[apis]]；cart `preRegistration` 反射调用 `code:0` 实测通过 |
-| T-28 | `couponStatusDesc` 本地映射（永久方案，电商邓俊兵确认不会下发） | 已完成 | — | student-center `daa8c8516` / promotion `1083c43cf`；已部署到 test-gtbg-dev-3；单测由子 agent 并行编写中 |
+| T-28 | `couponStatusDesc` 本地映射（永久方案，电商邓俊兵确认不会下发） | 已完成 | — | student-center `daa8c8516` / promotion `1083c43cf`；已部署到 test-gtbg-dev-3 并实测(`coupon_status_desc: "使用中"`) |
+| T-29 | 补单测：`PreOrderCouponEnricher`/`fillCouponScopes`/`PreOrderCouponStatusEnum`/`listScopesByActivities` | 已完成 | — | promotion `83fec5087`(17 个测试方法) / student-center `c777976d9`(12 个) / product-server `c0a448b57`(8 个)；3 个 subagent 并行编写，主会话逐一读过源码确认质量后提交 |
+| T-30 | C 端三者交集精确匹配 —— 用真实数据端到端验证 | 已完成 | — | 直连 DB 造了一套年级学科真正匹配的数据（续班计划改指向真实券活动、目标年级学科对齐券范围），反射调 `preRegistration` 返回完整正确的推荐商品，详见 [[verify]] |
 
 ### T-13 自测进展（2026-09-08 订正）
 
@@ -82,8 +84,8 @@ student-data 收数也由订单侧现有消息覆盖。
 
 | 编号 | 整改项 | 谁提的 | 状态 | 备注 |
 |---|---|---|---|---|
-| R-01 | 一个膨胀券只能在一个活动中用么？ | 王永诗 | 阻塞 | 等王永诗答复 |
-| R-02 | 测试冲突问题 | — | 阻塞 | 未指派，含义待明确 |
+| R-01 | 一个膨胀券只能在一个活动中用么？ | 王永诗 | 已完成 | 王永诗确认：一张券可以跨多个活动用；同一活动内配置的「年级+学科」组合不能有交集（即活动内唯一，不是分别检查年级集合/学科集合）。与现有实现（`uk_act_grade_subject` 活动内唯一、跨活动放行）完全一致，**不用改代码** |
+| R-02 | 测试冲突问题 | — | 已取消 | 含义始终不清楚，用户决定不用管，不再跟进 |
 
 ## C- case 联调问题
 
@@ -95,11 +97,7 @@ student-data 收数也由订单侧现有消息覆盖。
 
 ## 阻塞详情
 
-### R-01 一个膨胀券只能在一个活动中用么？
-- **卡在**：王永诗（待办表里的处理人）
-- **需要谁**：王永诗给结论
-- **为什么重要**：直接决定券↔活动是一对多还是一对一，影响配置模块的数据模型与校验
-- **可以先做**：按「一券一活动」保守假设梳理配置模块，结论回来再调整
+R-01、R-02 均已闭环，当前无阻塞项。
 
 ### R-02 测试冲突问题
 - **卡在**：无处理人，**含义本身不清楚**

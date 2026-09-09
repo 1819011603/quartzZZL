@@ -376,6 +376,44 @@ params=[1, "577431949669312512", "514762045841821696", null]
    `gaotu_promotion`），promotion-c（serviceCode `gaotu_promotion_c`）一直跑老代码。
    补发 promotion-c 后才真正端到端通过。
 
+### ✅ C 端三者交集精确匹配 —— 已用真实数据端到端验证通过（2026-09-09 深夜）
+
+上面那次验证只解决了"scopes 传得到、不抛异常"，`product_list` 还是空的（测试数据年级学科
+没对上）。这次专门造了一套年级学科真正匹配的数据，验证完整推荐链路：
+
+**造数步骤**（直连 `gaotu_test_rw`，可复用）：
+1. `UPDATE gaotu.renewal_link_activity SET activity_number=578563007821410304 WHERE id=307`——
+   把续班计划 `577431949669312512` 改指向真实券活动（这个活动挂的是"木7"，
+   skuNumber `578534533488603137`，验证 detail 回显时用的那个）
+2. `UPDATE promotion.pre_order_activity SET activity_status=2, begin_time=<1小时前> WHERE number=578563007821410304`——
+   发布活动、开始时间改到过去
+3. `UPDATE gaotu.renew_master_ext SET relation_value='19' WHERE renew_master_number=577431949669312512
+   AND relation_type='COURSE_GRADE'`；同样把 `COURSE_SUBJECT` 改成 `'6'`——
+   把续班计划目标年级学科对齐到券的可用范围（大班/物理），这样三者才能交上
+4. **改完 DB 别忘了清缓存**：`mcp baijia-invoke invoke_service project=promotion
+   service_method=com.gaotu.promotion.domain.service.PreOrderActivityDomainService#clearAllVisibleActivityCache
+   params=[["578563007821410304"]]`——直接改 DB 不会自动失效 promotion 的 Redis 缓存
+
+**验证结果**（`RegistrationService#preRegistration(1, "577431949669312512",
+"514762045841821696", null)`）：
+```json
+"product_list": [{
+  "product_name": "木7", "price": 3000, "discount_price": 9000,
+  "grade_list": [{"grade": "19", "grade_name": "大班"}],
+  "scope_labels": ["大班", "物理"],
+  "renewal_msg": "适用于【大班-物理】系统班"
+}]
+```
+全部字段正确，`buyAmount`/`discountPrice`/`gradeList`/`scopeLabels`/`renewalMsg` 无一缺失——
+证明 detail 回显、C 端 scopes、`PreRegistrationCouponAssembler` 的成对求交、
+signUp 判定这条完整链路真的能跑通一个正例，不只是"不报错"。
+
+⚠️ **这次造数改的是共享测试数据，不是新增独立行**：续班计划 `577431949669312512`
+的 `COURSE_GRADE`/`COURSE_SUBJECT` 已从 `15`/`1` 改成 `19`/`6`，`renewal_link_activity`
+id=307 已从指向 `578559765060276224` 改成指向 `578563007821410304`。**如果后面有测试
+依赖这条续班计划原来的年级=15/学科=1，或依赖它关联老活动 `578559765060276224`，
+会发现对不上——不是环境坏了，是这次验证改过了这条数据。**
+
 ---
 
 # B 端页面复现手册（2026-09-09 实测走通）

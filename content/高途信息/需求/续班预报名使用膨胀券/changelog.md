@@ -68,7 +68,30 @@ tags: [需求, 日志]
   本地映射是永久方案"，避免下次又被"权威源在电商"这个已经过时的口径带偏。
 - 并行派 3 个 subagent 分别给 promotion（`PreOrderCouponEnricher`/`fillCouponScopes`）、
   student-center（`PreOrderCouponStatusEnum`/`PreOrderCouponWrapper`）、product-server
-  （`PreOrderActivityCouponScopeService#listScopesByActivities`）写单元测试，进行中。
+  （`PreOrderActivityCouponScopeService#listScopesByActivities`）写单元测试。三个都完成后
+  逐一读了测试源码（不只信 agent 自述）确认质量：promotion 17 个测试方法（`83fec5087`）、
+  student-center 12 个（`c777976d9`，顺手补了模块缺失的 junit-jupiter 依赖）、product-server
+  8 个（`c0a448b57`，专门守住了"必须返回扁平行不是嵌套 Map"这条今天真实踩过的坑）。
+  student-center 的 agent 发现 MapStruct 生成的 `PreOrderCouponWrapperImpl` 是编译前的旧版本
+  （没反映今天的字段映射改动），合理地跳过了这部分、只测了被验证过的核心枚举逻辑，
+  没有为了"测通过"去测一个过期的生成类。
+- 部署 promotion-b/promotion-c 到 test-gtbg-dev-3 后，反射调 `detail()` 实测确认
+  `coupon_status_desc: "使用中"` 正确回显，T-28 端到端闭环。
+- 收尾把 README/apis/tasks 三份文档的 commit 号更新为最终版本，`couponStatusDesc` 相关的
+  过时表述（"权威源在电商""等电商下发"）全部改成"电商确认不会下发、本地映射是永久方案"。
+
+### 👤 我
+- "继续干啊"
+
+### 🤖 Claude
+- **T-30**：之前"三者交集精确匹配"一直没真正验证过（只验证了不报错，`product_list` 是空的）。
+  直连 `gaotu_test_rw` 造了一套真正匹配的数据：把续班计划 `577431949669312512` 改指向
+  真实券活动 `578563007821410304`、发布该活动、把续班计划目标年级学科对齐到券的可用范围
+  （大班/物理），改完记得清 promotion 的 Redis 缓存（直接改 DB 不会自动失效）。
+  反射调 `preRegistration` 返回完整正确的推荐商品（`grade_list`/`scope_labels`/
+  `renewal_msg` 全部正确），链路首次真正端到端跑通一个正例。
+- ⚠️ 这次造数**改的是共享测试数据**（续班计划的目标年级学科、关联活动都变了），
+  已在 verify.md 标注，避免后面的测试因为"对不上"而误判环境坏了。
 
 ## 2026-09-09（第四轮 · 券范围落库改由 promotion-b 回调 product-b）
 

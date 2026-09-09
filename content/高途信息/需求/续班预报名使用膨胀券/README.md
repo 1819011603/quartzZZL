@@ -81,16 +81,17 @@ tags:
 | 阶段 | 开发中（**B 端 detail 回显、C 端 scopes 缺口均已修复并端到端实测通过**） |
 | 进度 | T 27/27 · R 0/2 · C 0/0 |
 | 排期 | 09-08~09-11 开发 · 09-14 自测 · 09-15~16 联调 · **提测 09-16** |
-| 当前卡点 | 🟢 B 端 detail 回显、C 端 scopes、`couponStatusDesc` 文案均**已解决**（见 [[apis]]）。<br>🔴 **上线前必查**：`promotion` 在这个环境有 `promotion-b`/`promotion-c` 两个独立部署，改动涉及 C 端链路时**两个都要发布**，本次会话因此漏发过一次 promotion-c，详见下方「必须知过的坑」 |
+| 当前卡点 | 🟢 B 端 detail 回显、C 端 scopes、`couponStatusDesc` 文案、**C 端三者交集精确匹配**均**已端到端实测通过**（见 [[apis]]、[[verify]]）。<br>🔴 **上线前必查**：`promotion` 在这个环境有 `promotion-b`/`promotion-c` 两个独立部署，改动涉及 C 端链路时**两个都要发布**，本次会话因此漏发过一次 promotion-c，详见下方「必须知过的坑」 |
 | 最近更新 | 2026-09-09
 
-**六仓库代码全部提交并推送，编译全绿（BUILD SUCCESS）**，但均未写单测、未跑功能自测。
+**六仓库代码全部提交并推送，编译全绿（BUILD SUCCESS）**。今天新增/改动的代码
+（B 端 detail 回显、C 端 scopes、couponStatusDesc 本地映射）已补单测，其余历史代码仍未写单测。
 
 | 仓库 | 最新 commit |
 |---|---|
-| student-center | `49a8c97ad` |
-| product-server | `846a532ab` |
-| promotion | `7be4676b0`（promotion-b **和** promotion-c 都需要发布这个 commit） |
+| student-center | `c777976d9`（含单测） |
+| product-server | `c0a448b57`（含单测） |
+| promotion | `83fec5087`（含单测；promotion-b **和** promotion-c 都需要发布这个 commit） |
 | promotion-management | `961cb892` |
 | order | `073dea69e2` |
 | cart | `a7646b67` |
@@ -105,8 +106,8 @@ tags:
 3. ⚠️ **自测/联调用的券 SKU 会过期**：coupon-a 测试环境的券数据会滚动重新生成，
    verify.md 里记的具体 sku 值随时可能失效，现查一次再用（见 [[verify]] 的警告和排障方法）。
 4. 跟前端对齐三个新字段名：`postProductId` / `postProductName` / `activityType`
-5. **可以真正跑一遍 C 端三者交集的精确匹配了**：目前只验证了"scopes 传得到、不抛异常"，
-   还没验过用真实匹配的年级学科数据走一遍完整交集判定（前置班学科 ∩ 后置班年级学科 ∩ 券配置范围）。
+5. ~~跑一遍 C 端三者交集的精确匹配~~ **已验证通过**（见 [[verify]]）：真实券"木7"完整推荐出来，
+   `grade_list`/`scope_labels`/`renewal_msg` 全部正确。
 6. R-01 找王永诗；R-02 问清「测试冲突」指什么
 
 ## 待确认
