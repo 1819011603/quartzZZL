@@ -105,3 +105,12 @@ tags: [需求, 链接]
 >
 > 券状态：**1 使用中 / 2 已失效 / 3 审核中 / 4 已暂停**（无「待开始」）。
 > 券名称是**左匹配**模糊（`name like '关键字%'`），不是全模糊。
+
+## promotion-management（B 端入口服务）
+
+| 类型 | 标题 | 链接 | 记录日期 |
+|---|---|---|---|
+| 其他 | promotion-management 仓库（本需求新增的第 7 个仓库） | http://git.baijia.com/gaotu/promotion-management | 2026-09-09 |
+
+> serviceCode `gaotu_promotion_management` · appId `promotionmanagement.gaotu100.com`
+> 链路位置：`OES 页面 → promotion-management → promotion-b`

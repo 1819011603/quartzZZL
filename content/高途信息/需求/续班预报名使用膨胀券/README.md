@@ -13,6 +13,7 @@ branches:
   - order:feature-xuban-pre
   - cart:feature-xuban-pre
   - student-center:feature-xuban-pre
+  - promotion-management:feature-xuban-pre
 updated: 2026-09-09
 tags:
   - 需求
@@ -134,6 +135,7 @@ tags:
 | /Users/gaotu/IdeaProjects/JavaProject/student-center | feature-xuban-pre | 券选品接口、发链接分流、券列表 mock |
 | /Users/gaotu/IdeaProjects/JavaProject/product-server | feature-xuban-pre | 活动配置、券范围表、三者交集、预警、C端样式 |
 | /Users/gaotu/IdeaProjects/JavaProject/promotion | feature-xuban-pre | 活动形式、券可用范围、baseUrl 分叉 |
+| /Users/gaotu/IdeaProjects/JavaProject/promotion-management | feature-xuban-pre | **B 端页面的真正入口**（OES→它→promotion-b）。`PreOrderActivityProductEditReq` 透传券字段、`PreOrderActivityDomainServiceImpl#detail` 判空 |
 | /Users/gaotu/IdeaProjects/JavaProject/order | feature-xuban-pre | 仅加购 + 购物车总价 |
 | /Users/gaotu/IdeaProjects/JavaProject/cart | feature-xuban-pre | C 端落地页取数与算价 |
 | /Users/gaotu/IdeaProjects/JavaProject/promotion-app | feature-xuban-pre | 仅 spec；满赠校验在此服务，本期不改 |
@@ -183,3 +185,9 @@ tags:
 - **青舟构建失败要先分辨真假**：`Aborted by uqun`(人为/并发中止) 与
   `JNLP4-connect failed`(agent 掉线) 都是假失败，`errors` 数组为空；
   日志里刷屏的「不支持的解析类型, XxxController」是 apidoc 噪音，不是原因。
+- 🔥 **B 端链路上还有 `promotion-management`，它不在最初那 6 个仓库里**。
+  路径是 `OES 页面 → promotion-management → promotion-b`，它是**纯透传层**，
+  但 DTO 落后于下游契约时会**静默丢字段**（Jackson 忽略未知属性），
+  表现极具迷惑性：页面配了可用范围却报「膨胀券必须配置可用范围」，
+  而且**报错发生在下游 promotion-b，promotion-management 自己的日志里看不出原因**。
+  ⚠️ **下游 promotion/product-server 加字段时，这一层必须同步加**，否则白改。
