@@ -52,6 +52,10 @@ tags:
 - **除 student-data 外，6 个仓库全是我的活**（含 promotion/promotion-app/order/cart/product-server）。
   反讲文档「项目关联方」写「待定」指的是对方服务对接人待定，**不是这活不是我的**。
 - 灰度按**续班计划 ID**；用**膨胀券商品ID**；C 端一券只能买一次、页面多选；加购上限来源=电商接口。
+- **券范围落库链路 = promotion-b 事务内回调 product-b**（2026-09-09 定）：
+  表留在 gaotu 库不动；promotion-b 落完活动后调 product-b 的
+  `POST /feign/preOrderActivity/couponScope/save`（**只写表、不调下游**，避免循环调用），
+  调用放在 `@Transactional` 内，Feign 失败即回滚活动。**前端不用改**。
 - **券信息全部实时取电商，不落库不做 mock**（2026-09-09）：ACL 直连
   `coupon-a` 的 `/feign/expandCoupon/queryList`。**mock 已全部删除**，
   也不做「真接口失败回落 mock」——会掩盖真实故障。
@@ -71,7 +75,7 @@ tags:
 | | |
 |---|---|
 | 阶段 | 开发中（**券列表真实链路已通，三服务在泳道 eureka UP**） |
-| 进度 | T 21/23 · R 0/2 · C 0/0 |
+| 进度 | T 23/25 · R 0/2 · C 0/0 |
 | 排期 | 09-08~09-11 开发 · 09-14 自测 · 09-15~16 联调 · **提测 09-16** |
 | 当前卡点 | 🔴 **B 端 detail 券字段全空**（2026-09-09 实测，traceId `2d0e9489...0.3`）：`detail()` 直读 DB 未挂 enricher，7 个券字段 null；且 promotion 的 mock 开关**从没配过**，C 端重建路径同样没生效。详见 [[apis]]。<br>🟡 **等电商券商品接口**（券名/金额/状态权威源）。缓存重建已由 **Apollo mock 顶替**(promotion `eb72e083f`)，C 端可跑通；⚠️「加 5 列落库」方案已 revert、工单 8025 已撤（**表不用加列**）。详见 [[verify]] |
 | 最近更新 | 2026-09-09
@@ -84,8 +88,8 @@ tags:
 | 仓库 | 最新 commit |
 |---|---|
 | student-center | `49a8c97ad` |
-| product-server | `417bf0cb2` |
-| promotion | `3b9f24af5` |
+| product-server | `86abd8914` |
+| promotion | `10a43258a` |
 | order | `073dea69e2` |
 | cart | `a7646b67` |
 | promotion-app | 仅 spec（本期不改代码） |
@@ -191,3 +195,13 @@ tags:
   表现极具迷惑性：页面配了可用范围却报「膨胀券必须配置可用范围」，
   而且**报错发生在下游 promotion-b，promotion-management 自己的日志里看不出原因**。
   ⚠️ **下游 promotion/product-server 加字段时，这一层必须同步加**，否则白改。
+- 🔥 **promotion-b 只连 promotion 库，scope 表在 gaotu 库**。
+  `GaotuDataSourceConfig` 这个类名极具误导性 —— 它读的是 `jdbc.promotion.*`，连的是
+  promotion 库。所以「让 promotion 直接连表写 scope」做不到，必须跨服务。
+- 🔥 **product-b 与 promotion-management 之间没有任何调用关系（两个方向都没有）**。
+  product-b 的 Feign 指向 **promotion-b**；promotion-management 的下游里没有 product。
+  `ServiceConstant.PRODUCT_SERVICE_NAME` 有定义但**无人使用**，且指向商品中心≠product-b。
+  排查链路归属时别被这个常量误导。
+- ⚠️ **别让 promotion-b 回调 product-b 的 `/b/renewal/preOrderActivity/edit`** ——
+  那个接口内部会调 promotion-b，会形成 **promotion-b → product-b → promotion-b 循环**。
+  必须用只写 scope 表的专用接口 `/feign/preOrderActivity/couponScope/save`。

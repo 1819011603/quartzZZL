@@ -10,6 +10,42 @@ tags: [需求, 日志]
 >
 > 两个执行者在**同一条时间轴**上：`🤖 Claude` 和 `👤 我`。
 
+## 2026-09-09（第四轮 · 券范围落库改由 promotion-b 回调 product-b）
+
+### 👤 我
+- 定方案：**库不变，由 promotion 通过 Feign 调 product-b 保存可用范围**，并要求**加事务保证原子性**
+- 提供 traceId `f346c23d`（scopes 丢失）与 `c7d123cc`（详情 NPE），指出 promotion-management 也要改
+- 打开了 `feature-expand-coupon` 前端并切到 test-gtbg-dev-3 泳道
+
+### 🤖 Claude
+- **promotion-management 三处修复**（`961cb892`，本需求第 7 个仓库）：
+  EditReq 补 scopes+券字段、detail NPE 判空、详情回显券字段。已发泳道 eureka UP。
+- **T-25 券范围落库链路**（product-server `86abd8914` / promotion `10a43258a`）：
+  - product-b 新增 `POST /feign/preOrderActivity/couponScope/save` —— **只写 scope 一张表、
+    不调任何下游**。刻意不复用 `/b/renewal/preOrderActivity/edit`：那个内部会调 promotion-b，
+    被回调就形成 **promotion-b → product-b → promotion-b 循环**。
+  - promotion-b 在 `createActivityWithProducts` / `updateActivityWithProducts` 两个
+    `@Transactional` 方法**内部**调用 —— Feign 抛异常即回滚活动，满足要求的原子性。
+  - client 模块不能反向依赖 domain，故在 client 侧另建了一份对外契约 DTO + 转换方法。
+- 两仓编译打包全绿，`local == remote` 已核对，已发泳道。
+
+### 🔍 排障过程中查清的三件事实（都写进 README 坑位了）
+
+1. **product-b ↔ promotionManagement 两个方向都没有调用关系**。
+   product-b 的 Feign 指向的是 **promotion-b**；promotion-management 的 9 个下游里没有 product。
+   `ServiceConstant.PRODUCT_SERVICE_NAME` 虽有定义但**无人使用**，且指向商品中心不是 product-b。
+2. **promotion-b 只连 promotion 库**。`GaotuDataSourceConfig` 名字唬人，读的是
+   `jdbc.promotion.*`。scope 表在 **gaotu 库**，所以 promotion-b 直接写不了 ——
+   这就是为什么必须跨服务，而不是「promotion 连表」。
+3. **两张表不同库**：`pre_order_activity*` 在 promotion，`renewal_..._coupon_scope` 在 gaotu
+   （information_schema 实证）。跨库 join 不可行。
+
+### 留给下次
+- ⚠️ **反向补偿缺口**：「product-b 已提交但 promotion 本地回滚」仍可能发生（非分布式事务）。
+  残留行挂在不存在的活动号上不会被查询命中，且对端幂等，当前判定风险可接受；
+  若要根治需引入本地消息表或定时对账。
+- `couponStatusDesc` 仍恒为 null（电商不下发文案），待产品决策。
+
 ## 2026-09-09（第三轮 · 下线 mock 接真实接口 + 三服务上泳道）
 
 ### 👤 我

@@ -42,6 +42,7 @@ tags: [需求, 任务]
 | T-22 | 券状态枚举按电商 coupon-a 定稿重写 + mock 改用电商真实字段名 | 已完成 | — | student-center `d8c7fb9cd` / promotion `3071f7335` / product-server `417bf0cb2`；**`COUPON_STATUS_IN_USE` 2→1 是资损向修复**；mock 补至 4 条覆盖四状态 |
 | T-23 | 下线全部 mock，ACL 直连电商 coupon-a + 三服务上泳道验证 | 已完成 | — | student-center `49a8c97ad` / promotion `3b9f24af5`；三服务 eureka UP，券列表实测 total=56 真数据 |
 | T-24 | promotion-management 补齐券字段透传 + 详情回显 + 修 detail NPE | 已完成 | — | `961cb892`；修掉 traceId `f346c23d`(scopes 被丢弃) 与 `c7d123cc`(detail NPE) |
+| T-25 | 券范围落库：promotion-b 事务内回调 product-b 新增的只写接口 | 已完成 | — | product-server `86abd8914` / promotion `10a43258a`；事务内调用，Feign 失败即回滚活动 |
 | T-21 | 推动 promotion 券字段落库 | 待办 | **卡 promotion 团队** | 🔴 上线阻塞，表无券列、缓存 miss 即丢，详见 [[verify]] |
 
 ### T-13 自测进展（2026-09-08 订正）
