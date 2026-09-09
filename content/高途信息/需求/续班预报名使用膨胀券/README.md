@@ -20,7 +20,7 @@ tags:
 
 # 续班预报名使用膨胀券
 
-> **本目录导航**：[[links|🔗 链接中心]] · [[tasks|✅ 任务板]] · [[changelog|📜 会话日志]] · [[verify|🧪 验证手册]] · [[curl|🌐 自测 cURL 集]] · `apifox-openapi.json`(导 Apifox)
+> **本目录导航**：[[links|🔗 链接中心]] · [[tasks|✅ 任务板]] · [[changelog|📜 会话日志]] · [[apis|🔌 接口台账]] · [[verify|🧪 验证手册]] · [[curl|🌐 自测 cURL 集]] · `apifox-openapi.json`(导 Apifox)
 > 技术方案在飞书反讲文档里（见 [[links]]），本地不留副本。
 > 续接这个需求：读完本文件即可。
 
@@ -69,7 +69,7 @@ tags:
 | 阶段 | 开发中（**B 端券列表自测已通过**） |
 | 进度 | T 19/21 · R 0/2 · C 0/0 |
 | 排期 | 09-08~09-11 开发 · 09-14 自测 · 09-15~16 联调 · **提测 09-16** |
-| 当前卡点 | 🟡 **等电商券商品接口**（券名/金额/状态权威源）。缓存重建已由 **Apollo mock 顶替**(promotion `eb72e083f`)，C 端可跑通；⚠️「加 5 列落库」方案已 revert、工单 8025 已撤（**表不用加列**）。详见 [[verify]] |
+| 当前卡点 | 🔴 **B 端 detail 券字段全空**（2026-09-09 实测，traceId `2d0e9489...0.3`）：`detail()` 直读 DB 未挂 enricher，7 个券字段 null；且 promotion 的 mock 开关**从没配过**，C 端重建路径同样没生效。详见 [[apis]]。<br>🟡 **等电商券商品接口**（券名/金额/状态权威源）。缓存重建已由 **Apollo mock 顶替**(promotion `eb72e083f`)，C 端可跑通；⚠️「加 5 列落库」方案已 revert、工单 8025 已撤（**表不用加列**）。详见 [[verify]] |
 | 最近更新 | 2026-09-09
 
 **六仓库代码全部提交并推送，编译全绿（BUILD SUCCESS）**，但均未写单测、未跑功能自测。
@@ -87,6 +87,17 @@ tags:
 | promotion-app | 仅 spec（本期不改代码） |
 
 ## 下一步
+
+0. 🔴 **修 B 端 detail 券字段全空**（本次会话实测复现，最高优先级）：
+   把 `PreOrderCouponMockEnricher#enrich()` 挂到 `PreOrderActivityService#detail`
+   （`promotion-app/.../preorder/PreOrderActivityService.java:356`）读 DB 之后、
+   `fillProductNames` 之前。注意 detail 在 promotion-app、enricher 在 promotion-domain，
+   挂 repository 出口还是 app 层要先定分层。根因与实测数据见 [[apis]]。
+0.5 **在 promotion 配 mock 开关**：`apollo_set_key app_id=promotion.gaotu100.com env=TEST`
+   `pre.order.coupon.mock.enabled=true` —— **现在这个 key 压根不存在**，
+   所以 C 端缓存重建路径的 mock 也没生效。配完记得发布。
+0.6 **给真活动造 scope 数据**：scope 表 5 行全是假活动号 9001/9002/9003，
+   真活动 `578363764011708416` 一行都没有，`scopes` 必空。
 
 1. ✅ **缓存 miss 补齐券字段**：已接 mock（`PreOrderCouponMockEnricher`，promotion `eb72e083f`），
    开关 `pre.order.coupon.mock.enabled` 默认 false。**不加列**（`product_type=8014` 已足以区分，

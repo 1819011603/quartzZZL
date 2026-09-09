@@ -356,3 +356,17 @@ tags: [需求, 日志]
 **过程教训**：本轮开工没先读需求归档 README，凭代码推理把已定稿的 `productType=8014`
 当成「还没定」，又把冗余方案叠上去，来回纠正四轮。已把「做业务需求前先按分支反查归档目录」
 写进全局 CLAUDE.md 硬性前置，「结论一被推翻同一轮就改文档」写进 requirement-docs skill。
+
+## 2026-09-09（下午·续接）
+
+### 🤖 Claude
+- 按 traceId `2d0e9489-5562-4963-9aa2-4d111707dbf9.0.3` 排查「B 端活动详情微坏」：
+  trace 全链路 200 无 error span，**是数据缺失不是异常**。
+- **定位根因**：`PreOrderActivityService#detail` 直接读 DB，而 `PreOrderCouponMockEnricher`
+  只挂在缓存重建路径（`PreOrderActivityDomainServiceImpl:238`）→ B 端 7 个券字段全 null。
+  实测活动 `578363764011708416` 只返回 5 个 DB 列。**尚未修，见 README 下一步 0**。
+- **附带发现两条**：① promotion 的 `pre.order.coupon.mock.enabled` **从没配过**
+  （verify.md 记的「已发布」是 student-center，两个 appId 混了）→ C 端重建路径 mock 也没生效；
+  ② scope 表 5 行全是假活动号，真活动一行没有。
+- 新建 [[apis]] 接口变更台账，登记 5 个接口 + 2 个跨模块方法 + 2 条契约缺口。
+- 修正 [[verify]] 两处过期结论（mock 开关归属、B 端回显从「验不了」改判为「缺陷」）。

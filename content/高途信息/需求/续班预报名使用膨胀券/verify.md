@@ -15,7 +15,8 @@ tags: [需求, 验证]
 | 泳道 | **test-gtbg-dev-3** ✅ 已验证可用（student-center pod Running/UP，2026-09-08 16:37 发布 feature-xuban-pre 镜像） |
 | 数据库实例 | `gaotu_polar_test_03`（cluster_id **142**）· 库 `gaotu` |
 | DB 直连 | host `gaotu-polar-test03.rwlb.rds.aliyuncs.com` · 账号 `gaotu_test_rw`（**密码见 Apollo `product` / TEST / `jdbc-mysql` 的 `jdbc.gaotu.password`**，本仓库是 public 不落密码） |
-| 券列表 mock 开关 | Apollo `pre.order.coupon.mock.enabled=true` ✅ **已发布**（default cluster，20260908171459-release）。Apollo 无泳道 cluster 时自动读 default，不必单独建 |
+| 券列表 mock 开关(student-center) | Apollo `pre.order.coupon.mock.enabled=true` ✅ **已发布**（default cluster，20260908171459-release） |
+| 券字段 mock 开关(**promotion**) | 🔴 **2026-09-09 实测：`promotion.gaotu100.com`/TEST 根本没有这个 key**，默认 false → **缓存重建路径的 mock 补齐现在没生效**。上面那条「已发布」指的是 student-center，两个服务是两个 appId，别混。要跑 C 端得先在 promotion 配上 |
 | 券商品类型 | Apollo `pre.order.coupon.product.type=8014` ✅ **已发布**（⚠️ 不是 8027） |
 | 膨胀券白名单 | Apollo `pre.order.activity.coupon.renewalPlanIds` —— **不配则活动形式永远兜底成订金班，膨胀券链路进不去**，自测前必配 |
 
@@ -90,8 +91,11 @@ service_method=com.gaotu.product.service.renewal.preorder.PreOrderCouponIntersec
   - 券名称模糊查询「秋季」→ 精确命中 1 条 ✅ · `couponIdList` 批量精确查询 ✅
   - 复现命令见每次调用返回的 curl，或用 `mcp baijia-invoke invoke_service`
 
-- ❌ **仍验不了**：券的**真实**名称/金额/状态（电商券商品接口未提供，当前全部走 mock）、
-  B 端活动详情回显券字段（promotion `pre_order_activity_product` 表无券列）
+- ❌ **仍验不了**：券的**真实**名称/金额/状态（电商券商品接口未提供，当前全部走 mock）
+- 🔴 **B 端活动详情回显券字段 —— 2026-09-09 已确认是缺陷，不只是「验不了」**：
+  `detail()` 直接读 DB 且**没挂 enricher**，7 个券字段全 null。
+  详情与根因见 [[apis]] 的「已知契约缺口」。原先记「表无券列所以回显不了」只说对了一半 ——
+  表无券列是既定口径没错，**但 C 端有 enricher 兜、B 端没有**，这才是真差异。
 - ⚠️ **C 端落地页自测的真正前提是「有 type=2 的膨胀券活动」**：
   库里 `promotion.pre_order_activity` 现存活动**全部是 type=1 订金班**，
   且 scope 表里的 activity_number(9001/9002/9003) 是造的假号，与真实活动对不上。
