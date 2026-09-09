@@ -386,7 +386,24 @@ await (await fetch('/promotionManagement/preOrderActivity/edit',{
 | **`renewal_pre_order_activity_coupon_scope` 表** | ❌ **仍只有手工插的 5 行，没有新数据** |
 | 券状态列 | ⚠️ 显示 `-`（电商不下发 `couponStatusDesc`，已知口径问题） |
 
-### 🔴 未解决：范围没落到 product-server 的表
+### ✅ 已解决（2026-09-09 第四轮）：改为 promotion-b 事务内回调 product-b
+
+**端到端实测通过**，活动 `578540635005407232`：
+
+| 验证项 | 结果 |
+|---|---|
+| 页面报文 → 活动创建 | ✅ `code:0` |
+| **范围自动落 scope 表** | ✅ id=8，`19/6`(大班物理)，**19 位雪花 ID 无精度截断** |
+| `listCouponDetail` 回显 | ✅ `{"grade_code":19,"grade_name":"大班","subject_code":6,"subject_name":"物理"}` |
+| **编辑改范围（幂等）** | ✅ 旧行 `is_del=1`、新行 `is_del=0`，全量置删+upsert 正确 |
+
+链路：`OES → promotion-management → promotion-b（落活动）→ 回调 product-b（落范围）`
+
+⚠️ 直接手工调 `/feign/preOrderActivity/couponScope/save` 时，**JSON 里的 19 位 ID 会被
+JS/JSON 精度截断**（末尾变 00）。真实 Feign 走 Java 对象序列化不受影响 —— 别拿手工调用的
+截断结果当 bug。
+
+### 🔴 历史记录（已修复，保留说明当时为什么卡住）
 
 **现象**：活动建成功了、scopes 也发出去了，但那张表一行没写。
 `listCouponDetail` 返回 `scopes:[]`，日志里 **`saveScopes` 从未执行**。

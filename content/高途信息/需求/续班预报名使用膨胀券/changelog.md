@@ -40,6 +40,12 @@ tags: [需求, 日志]
 3. **两张表不同库**：`pre_order_activity*` 在 promotion，`renewal_..._coupon_scope` 在 gaotu
    （information_schema 实证）。跨库 join 不可行。
 
+### ✅ 端到端实测通过（活动 `578540635005407232`）
+- 页面报文建活动 → 范围**自动落 scope 表** id=8（19/6 大班物理），19 位雪花 ID 无截断
+- `listCouponDetail` 回显正确（含 grade_name/subject_name）
+- 编辑改范围：旧行 `is_del=1` + 新行 `is_del=0`，**幂等与全量置删逻辑正确**
+- 这是本需求 scope 表**第一次通过链路真正写入**（此前只有手工插的 5 行）
+
 ### 留给下次
 - ⚠️ **反向补偿缺口**：「product-b 已提交但 promotion 本地回滚」仍可能发生（非分布式事务）。
   残留行挂在不存在的活动号上不会被查询命中，且对端幂等，当前判定风险可接受；
