@@ -304,3 +304,102 @@ cart 还额外把 `/test/acl/compare/**` 加进了 `MvcConfig` 的
 
 **活动 `578363764011708416` 挂的是 mock 假券 `801400001/2`**，电商里不存在，
 所以「从活动出发」的 C 端链路仍为空。要端到端跑通，需把活动改挂上面表里的真实券商品 ID。
+
+---
+
+# B 端页面复现手册（2026-09-09 实测走通）
+
+> 目的：下次要复现「新建/编辑膨胀券活动」不用再摸索。**每一步都实测过**。
+
+## 0. 两个前置，缺一个就白忙
+
+| 前置 | 怎么确认 |
+|---|---|
+| **前端必须是 `feature-expand-coupon` 分支** | 控制台跑 `document.cookie.match(/_app_br_=([^;]+)/)`，应含 `ark#feature-expand-coupon#xxx`。<br>❌ 若是 release 版：新建表单**没有「活动形式」单选**，选品框商品类型只有「课程」(6003)、**没有膨胀券(8014)** —— 根本建不出膨胀券活动 |
+| **后端泳道 `test-gtbg-dev-3`** | 页面加载的 JS 路径里应含 `promotions.release.test-gtbg-dev-3.umi.*.js` |
+
+页面：https://test-mi.gaotu100.com/ark/app-promotions/continuation-classes/pre-register-activity
+
+## 1. 用 Chrome + CDP 驱动（Claude 自动化时）
+
+```bash
+bash ~/.claude/chrome-mcp/chrome-mcp.sh "<页面URL>"      # 起 Chrome(9222) 并灌 Cookie
+# 若跳 CAS 登录页，重灌一次 Cookie 再导航：
+cd ~/.claude/chrome-mcp && N=/Users/gaotu/.nvm/versions/node/v22.21.1/bin && \
+  PATH="$N:/usr/bin:/bin" "$N/node" inject.mjs
+```
+
+⚠️ 页面是 **antd v5**，class 前缀是 `antv5-` 不是 `ant-`。选择器要用
+`[class*=picker-dropdown]` / `[class*=select-item-option]` 这种**模糊匹配**，
+写死 `.ant-picker-dropdown` 一律选不中。
+
+## 2. 新建膨胀券活动（逐步）
+
+1. 点「新建活动」
+2. 填「预报名活动」名称
+3. **「活动形式」选「膨胀券预报名」** ← 选完表单会重渲染，商品区变成
+   「+添加膨胀券」，列名变为 膨胀券名称/膨胀券ID/膨胀券商品ID/购买金额/抵扣金额/状态/**预报名可用范围**
+4. **活动时间**：⚠️ **不能直接往 input 填字符串** —— 两个值都会挤进「开始时间」一个框
+   （实测得到 `2026-09-09 20:00:002027-09-09 20:00:00`）。
+   必须点开日历面板点单元格再点「确 定」：
+   ```js
+   // 开始时间：点输入框 → 点日期格 → 点确定；结束时间面板会自动接上
+   [...document.querySelectorAll('[class*=picker-cell-in-view]')].find(c=>c.title==='2026-09-09')
+     .querySelector('div').click();
+   [...document.querySelectorAll('[class*=picker-ok] button')][0].click();
+   ```
+   ⚠️ **开始时间必须晚于当前时间**，否则保存报「活动开始时间必须大于当前时间」，
+   而且**弹窗会静默关闭、列表里没有新活动** —— 极易误判成「保存成功了但没落库」。
+5. 「+添加膨胀券」→ 选品框（实测拉到 **58 条电商真实券**）→ 勾选一张（如「木7」）→「确 定」
+6. 该行点「配置可用范围」→ 选「目标年级」+「目标学科」→「确 定」
+   → 行内「预报名可用范围」应显示如 `五年级数学`
+7. 点「保 存」
+
+## 3. 直接调接口造数（绕过 UI，更快）
+
+```js
+// 在页面控制台跑，自动带 Cookie 与泳道
+const now=Date.now();
+await (await fetch('/promotionManagement/preOrderActivity/edit',{
+  method:'POST', headers:{'Content-Type':'application/json'},
+  body: JSON.stringify({
+    name:"膨胀券验证-xxx", type:2,
+    preOrderActivityProductEditDTOS:[{
+      couponId:"578513860162539520", couponName:"木7", couponStatus:1,
+      buyAmount:3000, deductibleAmount:9000,
+      productNumber:"578513860277893121", productType:8014,
+      scopes:[{gradeCode:14, subjectCode:4}]
+    }],
+    userCondition:{userConditionType:0},
+    beginTime: now+3600*1000, endTime: now+30*24*3600*1000, activityStatus:0
+  })})).json();
+// 成功返回 {"code":0,"data":"<新活动号>"}
+```
+
+## 4. 2026-09-09 实测结论
+
+| 项 | 结果 |
+|---|---|
+| 前端膨胀券表单（活动形式/券选品/配范围） | ✅ 都在，交互正常 |
+| 券选品列表 | ✅ **58 条电商真实券**，走通 student-center→coupon-a |
+| **带 scopes 保存活动** | ✅ **`code:0`，活动 `578532447755464704` 创建成功** —— <br>**不再报「膨胀券必须配置可用范围」，promotion-management 修复①生效** |
+| **`renewal_pre_order_activity_coupon_scope` 表** | ❌ **仍只有手工插的 5 行，没有新数据** |
+| 券状态列 | ⚠️ 显示 `-`（电商不下发 `couponStatusDesc`，已知口径问题） |
+
+### 🔴 未解决：范围没落到 product-server 的表
+
+**现象**：活动建成功了、scopes 也发出去了，但那张表一行没写。
+`listCouponDetail` 返回 `scopes:[]`，日志里 **`saveScopes` 从未执行**。
+
+**原因**：B 端页面走的是
+```
+OES → promotionManagement/preOrderActivity/edit → promotion-b        ← 落 promotion 库
+```
+而 `saveScopes`（写 scope 表）挂在 **product-b 自己的**
+`/b/renewal/preOrderActivity/edit` 上（`PreOrderActivityService.edit` line 89）。
+**页面这条路径根本不经过 product-b**，所以表永远写不进去。
+
+**待定**：范围落库到底该由谁触发？两种方向——
+① 前端/promotion-management 改调 product-b 的 edit；
+② promotion-b 落库后发消息/回调给 product-b。
+这是**接口归属问题，需要和马胜/产品对齐**，不是改一行代码能定的。
