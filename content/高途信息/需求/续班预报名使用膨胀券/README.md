@@ -64,9 +64,13 @@ tags:
   来源 jar `com.gaotu:coupon-a-client:1.3.15` 的 `ExpandCouponDetailDto#couponStatus`
   （接口 `POST /feign/expandCoupon/queryList`，青舟 interfaceId=5453936）。
   **只有【1 使用中】可勾选**。`COUPON_STATUS_IN_USE` 已 2→1。
-- **券状态文案 `couponStatusDesc` 权威源在电商**（2026-09-09 定）：与 `couponStatus` 成对下发，
-  **本地一律不按状态码翻译、不做兜底**，电商没给就是 null。`PreOrderCouponStatusEnum` 只留
-  `selectable`（哪些状态可勾选，是业务规则不是文案），`descOfStatus()` 已删。
+- 🔴 **`couponStatusDesc` 文案本地维护是最终方案，不是临时过渡**（2026-09-09 晚间与电商
+  邓俊兵在群里对齐并确认，附截图证据：`@ApiModelProperty("券状态: 1 使用中 / 2 已失效 /
+  3 审核中 / 4 已暂停")`，与反编译 jar 看到的注释完全一致）——**电商原话"中文展示逻辑，
+  你们按需判断展示就行"，即电商不会再下发 `couponStatusDesc` 这个字段，映射永久由我们维护**。
+  之前"权威源在电商、等电商下发"的说法是错的，已作废。已实现：student-center
+  `PreOrderCouponStatusEnum.descOfStatus()`；promotion `PreOrderCouponEnricher.descOfCouponStatus()`
+  （B 端/C 端两条链路都补）。**不用再找电商推动这件事，这条待办已关闭。**
 - 三者交集 = 前置班学科 ∩ 后置班年级学科 ∩ 券配置范围，且仅【使用中】。**按「年级+学科」成对判定**，
   分别求交会放行「年级来自A组合、学科来自B组合」的伪命中。
 
@@ -74,10 +78,10 @@ tags:
 
 | | |
 |---|---|
-| 阶段 | 开发中（**B 端 detail 回显已修复实测通过；C 端 scopes 缺口已编码待部署验证**） |
+| 阶段 | 开发中（**B 端 detail 回显、C 端 scopes 缺口均已修复并端到端实测通过**） |
 | 进度 | T 27/27 · R 0/2 · C 0/0 |
 | 排期 | 09-08~09-11 开发 · 09-14 自测 · 09-15~16 联调 · **提测 09-16** |
-| 当前卡点 | 🟡 **C 端 listFromCache 不下发 scopes**（2026-09-09 晚间测 cart 推荐接口时发现）：cart 的 `PreRegistrationCouponAssembler` 依赖 promotion 的 `listFromCache` 返回 scopes，但 promotion 之前没有跨服务读接口去补，必然抛「膨胀券可用范围缺失」。已修（product-server `9b53b5a32` + promotion `e9053ab65`），**两边部署到 test-gtbg-dev-3 中，还没重新验证**。详见 [[apis]]、[[verify]]。<br>🟢 B 端 detail 回显缺口**已解决**（promotion `81180aa45`），用真实电商券实测通过，见 [[apis]]。<br>🟡 **等电商下发 `couponStatusDesc`**（权威源在电商，现恒为 null，符合既定口径不算 bug） |
+| 当前卡点 | 🟢 B 端 detail 回显、C 端 scopes、`couponStatusDesc` 文案均**已解决**（见 [[apis]]）。<br>🔴 **上线前必查**：`promotion` 在这个环境有 `promotion-b`/`promotion-c` 两个独立部署，改动涉及 C 端链路时**两个都要发布**，本次会话因此漏发过一次 promotion-c，详见下方「必须知过的坑」 |
 | 最近更新 | 2026-09-09
 
 **六仓库代码全部提交并推送，编译全绿（BUILD SUCCESS）**，但均未写单测、未跑功能自测。
@@ -85,8 +89,8 @@ tags:
 | 仓库 | 最新 commit |
 |---|---|
 | student-center | `49a8c97ad` |
-| product-server | `9b53b5a32` |
-| promotion | `e9053ab65` |
+| product-server | `846a532ab` |
+| promotion | `7be4676b0`（promotion-b **和** promotion-c 都需要发布这个 commit） |
 | promotion-management | `961cb892` |
 | order | `073dea69e2` |
 | cart | `a7646b67` |
@@ -94,18 +98,16 @@ tags:
 
 ## 下一步
 
-0. 🔴 **等 product-server(product-b) + promotion(promotion-b) 两条流水线部署完 test-gtbg-dev-3**
-   （product-server `9b53b5a32`、promotion `e9053ab65`，pipeline 1263238/1263239），
-   然后重新反射调 `RegistrationService#preRegistration(userId=1,
-   renewalNumber=577431949669312512, preClazzNumber=514762045841821696, null)`，
-   确认不再抛「膨胀券可用范围缺失」。这条数据链路(续班计划↔活动的关联)已经在
-   09-09 晚间造好，见 [[verify]]，不用重新造数据，直接调就行。
-1. detail 回显、券选品查询、B 端保存可用范围**已实测通过，不用再验**（见 [[apis]]「已解决」）。
-2. 找电商（邓俊兵）要 `couponStatusDesc` 文案下发，或产品决策改口径允许本地翻译。
+1. detail 回显、券选品查询、B 端保存可用范围、C 端 scopes 下发**全部已实测通过，不用再验**
+   （见 [[apis]]「已解决」）。
+2. ~~找电商推动下发 couponStatusDesc~~ **已关闭**：邓俊兵确认电商不会下发这个字段，
+   本地映射（`descOfStatus`/`descOfCouponStatus`）是永久方案，不用再跟进。
 3. ⚠️ **自测/联调用的券 SKU 会过期**：coupon-a 测试环境的券数据会滚动重新生成，
    verify.md 里记的具体 sku 值随时可能失效，现查一次再用（见 [[verify]] 的警告和排障方法）。
 4. 跟前端对齐三个新字段名：`postProductId` / `postProductName` / `activityType`
-5. R-01 找王永诗；R-02 问清「测试冲突」指什么
+5. **可以真正跑一遍 C 端三者交集的精确匹配了**：目前只验证了"scopes 传得到、不抛异常"，
+   还没验过用真实匹配的年级学科数据走一遍完整交集判定（前置班学科 ∩ 后置班年级学科 ∩ 券配置范围）。
+6. R-01 找王永诗；R-02 问清「测试冲突」指什么
 
 ## 待确认
 
@@ -158,9 +160,14 @@ tags:
   **这是预期行为**（不能静默失败）。别把它当回归 bug 去「修回」返 0。
 - **成对求交**：cart 原本把年级、学科**分别求交**，会放行「年级来自 A 组合、学科来自 B 组合」的
   伪命中，已改为按 `PreOrderActivityCouponScopeDTO` 整对比对，并删掉诱发该写法的 `intersect()` helper。
-- **别再给 `couponStatusDesc` 加本地兜底翻译**。看到 mock 关掉后文案变 null，第一反应会是
-  「加个 `descOfStatus` 兜一下」—— 那正是 2026-09-09 明确否掉的方案（文案权威源在电商）。
-  真缺文案应该找电商补，不是本地造一份会和电商分叉的映射。
+- 🔴 **`couponStatusDesc` 本地翻译这条口径 2026-09-09 晚间已反转两次，以最新为准**：
+  白天定的是"不做本地兜底、等电商下发"；晚上先改成"电商真的下发前本地按 jar 注释映射"；
+  再后来邓俊兵在群里直接确认"中文展示逻辑你们按需判断展示就行"——**电商压根不打算下发这个
+  字段，本地映射是永久方案**，不是过渡。**这条教训**：早期"权威源在 XX，等 XX 提供"这类决定
+  要小心，对方一句"你们自己判断"就能让"等对方"变成死等；下次遇到类似的"文案/枚举权威源在
+  下游"的设计，最好一开始就直接问清楚"你们会不会下发"，不要假设会。现状：
+  student-center `PreOrderCouponStatusEnum.descOfStatus()`、promotion
+  `PreOrderCouponEnricher.descOfCouponStatus()` 都已按永久方案实现，不用等电商。
 - 🔴 **别把券状态 2 当「使用中」**。这个值错过两次：最初写 1（当时枚举「1 待开始」）、
   09-08 改成 2（当时枚举「2 使用中」），而**电商真实枚举 2 = 已失效**。
   停在 2 会把失效券当可用券放行，是资损方向。判据只有一个：
@@ -204,3 +211,19 @@ tags:
   别的券或查不到。别直接复用文档里记的具体 sku 值，每次要用真实券自测先现查一次，
   详见 [[verify]]「电商 coupon-a 联调信息」段。排查"回显是空"先查日志里有没有
   `PreOrderCouponEnricher | 部分券在电商查不到`，别先怀疑代码逻辑。
+- 🔴 **`promotion` 在 test-gtbg-dev-3 有 `promotion-b`(serviceCode `gaotu_promotion`)和
+  `promotion-c`(serviceCode `gaotu_promotion_c`)两个独立部署**，同一份代码两份运行实例。
+  **B 端反射桥走的是 promotion-b，cart 走的是 promotion-c**——只发 promotion-b、
+  用反射桥调 `listFromCache` 验证通过，不代表 cart 端到端真的通了，因为 cart 打的是
+  另一个从没发过新代码的 pod。**判据**：`qingzhou-trace trace_tree` 里对应 span 的
+  `gapmApp`/`service` 字段会显示到底是哪个部署接的请求，别假设"发过一次就都发了"。
+  改动涉及 C 端链路(`listFromCache`/`calculate`/`calculateWhite`)的代码，
+  **promotion-b 和 promotion-c 都要重新发布**。
+- 🔥 **跨服务 Feign 契约里，嵌套泛型容器和响应信封是两个独立的坑，都会在真正联调时才暴露**：
+  ① `Map<Long, Map<Long, List<...>>>` 这类嵌套 Map，FastJson 的 Feign 解码器解不出来，
+  报 `parseLong error`——改成扁平 `List<Row>`；
+  ② Feign 方法声明的返回类型必须**精确对齐对端实际的 HTTP 响应体结构**，如果对端用
+  `RestTraceResponse<T>`（`{code,msg,data}`）包了一层，Feign 方法就不能直接声明成
+  裸 `T`，要声明成信封类型再手动 `.getData()`。**这两个坑都在 `void` 返回的写接口
+  （如 `save()`）上测不出来**——Feign 对 void 返回值压根不走解码器，得等第一个
+  真正有返回值的读接口才会暴露，别以为"跟 save() 抄的写法"就一定安全。

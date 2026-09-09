@@ -345,7 +345,7 @@ params=[{"skuNumbers":["随便填一个占位，反射桥的 List<Long> 参数�
 3. 只有查到"电商真的没这张券"才需要怀疑测试数据是不是过期了（见上面警告），
    不要先怀疑修复代码本身
 
-### 🟡 C 端 listFromCache 不下发 scopes——已编码，待部署验证
+### ✅ C 端 listFromCache 不下发 scopes——已修复并端到端实测通过
 
 **造数进展**（下次接着测可以直接复用）：
 - 直连 DB（`gaotu_test_rw`）在 `renewal_link_activity` 表插了一行，把
@@ -353,13 +353,28 @@ params=[{"skuNumbers":["随便填一个占位，反射桥的 List<Long> 参数�
   已过期的旧 sku，回显会是空，**只用于验证 scopes 链路，不要用它验证 detail 回显**）
 - 把该活动 `activity_status` 置为 2（发布）、`begin_time` 改到过去，使其对
   `promotionFacade` 可见
-- 反射调 `RegistrationService#preRegistration(userId=1, renewalNumber=577431949669312512,
-  preClazzNumber=514762045841821696, null)` 能成功走到膨胀券分支
-  （`buildCouponRegistrationVO`），此前是"活动不存在"
 
-**下一步要做的验证**：product-server `9b53b5a32` + promotion `e9053ab65` 部署完成后，
-重新跑一遍上面这条反射调用，确认不再抛「膨胀券可用范围缺失」，且返回的
-`productList` 里能看到年级/学科信息。
+**最终验证命令**（实测 `code:0`，`status:0`，不再抛异常）：
+```
+mcp baijia-invoke invoke_service project=cart traffic_env=test-gtbg-dev-3
+service_method=com.gaotu.renewal.RegistrationService#preRegistration
+params=[1, "577431949669312512", "514762045841821696", null]
+```
+返回 `product_list` 为空数组是因为这条造出来的测试数据年级学科没有落在三者交集内
+（造数据时只关心"能不能传到 scopes"，没关心是否精确匹配），**不是回归**。
+要验证真实交集匹配需要另造一套年级学科对得上的数据，见 README「下一步」。
+
+**中途踩的坑**（导致来回改了三版才通，按顺序遇到）：
+1. product-server 返回 `Map<Long, Map<Long, List<...>>>`，promotion 用 FastJson 解嵌套
+   Map 报 `parseLong error` → 改成扁平行 `List<PreOrderActivityCouponScopeRow>`
+2. Feign 方法声明成裸 `List<...>`，但对端实际包了 `RestTraceResponse<T>` 信封
+   （`{"code":0,"data":[...]}`），报 `field null expect '['` → 声明成信封类型
+   `PreOrderCouponScopeQueryResult`，手动 `.getData()`
+3. **最隐蔽**：改完代码、部署"成功"、用反射桥直接调 `listFromCache` 也验证通过了，
+   但 cart 端到端还是报同样的异常——查 `trace_tree` 才发现 cart 打的是
+   `promotion-c.gaotu100.com`，而前两轮部署都**只发了 promotion-b**（serviceCode
+   `gaotu_promotion`），promotion-c（serviceCode `gaotu_promotion_c`）一直跑老代码。
+   补发 promotion-c 后才真正端到端通过。
 
 ---
 

@@ -44,7 +44,8 @@ tags: [需求, 任务]
 | T-24 | promotion-management 补齐券字段透传 + 详情回显 + 修 detail NPE | 已完成 | — | `961cb892`；修掉 traceId `f346c23d`(scopes 被丢弃) 与 `c7d123cc`(detail NPE) |
 | T-25 | 券范围落库：promotion-b 事务内回调 product-b 新增的只写接口 | 已完成 | — | product-server `86abd8914` / promotion `10a43258a`；事务内调用，Feign 失败即回滚活动 |
 | T-26 | 修 B 端 detail 券字段全空：`PreOrderCouponEnricher` 加 `enrichDTO` 挂到 `detail()` | 已完成 | — | promotion `81180aa45`；用真实电商券重建活动实测通过，`couponId/couponName/couponStatus/buyAmount/skuId` 全部正确回显 |
-| T-27 | C 端 listFromCache 补齐 scopes：product-server 新增批量查询 Feign + promotion 消费 | 进行中 | 等两服务部署到 test-gtbg-dev-3 完成后重新跑 cart `preRegistration` 验证 | product-server `9b53b5a32` / promotion `e9053ab65`；测 cart 推荐接口时子 agent 发现的新缺口 |
+| T-27 | C 端 listFromCache 补齐 scopes：product-server 新增批量查询 Feign + promotion 消费 | 已完成 | — | product-server `846a532ab` / promotion `7be4676b0`；测 cart 推荐接口时子 agent 发现的新缺口；中途踩了嵌套 Map 解码坑、RestTraceResponse 信封坑、promotion-b/promotion-c 双部署坑，见 [[apis]]；cart `preRegistration` 反射调用 `code:0` 实测通过 |
+| T-28 | `couponStatusDesc` 本地映射（永久方案，电商邓俊兵确认不会下发） | 已完成 | — | student-center `daa8c8516` / promotion `1083c43cf`；已部署到 test-gtbg-dev-3；单测由子 agent 并行编写中 |
 
 ### T-13 自测进展（2026-09-08 订正）
 
@@ -119,7 +120,7 @@ student-data 收数也由订单侧现有消息覆盖。
 | 6 | 膨胀券专属背景图 | C 端样式 | Apollo `renewal.cStyle.preRegistrationCoupon.bgUrl`，暂用订金班同一张 |
 | 7 | 膨胀券 reportCode 取值 | Apollo 内容配置，不配则老师端无入口 | 暂写 `pre_registration_coupon_link` |
 | 8 | promotion 侧「按 renewalNumber 查活动」入口不存在 | 活动形式判定 | Adapter 占位签名；可用 Apollo 白名单强制判定自测 |
-| 9 | 🔴 **电商不下发 `couponStatusDesc`** | 前端拿不到券状态文案（现恒为 null） | 按定的口径「不做本地兜底」，需产品决策：推电商补字段 or 改口径允许本地翻译 |
+| 9 | ~~电商不下发 `couponStatusDesc`~~ **已解决** | — | 邓俊兵确认电商不会下发，本地映射是永久方案。student-center `daa8c8516` / promotion `1083c43cf` |
 
 ## 非本次范围（记着别忘）
 

@@ -40,6 +40,35 @@ tags: [需求, 日志]
   `listFromCache` 里回填（`e9053ab65`）。两边已 push 并触发部署(pipeline 1263238/1263239)，
   **本次会话结束时尚未重新验证**，下一步直接复用 subagent 造好的续班计划关联数据去验。
 - 同步更新 README/apis/verify/tasks 四份文档反映以上进展。
+- **收尾验证 T-27**：product-server 首版返回嵌套 `Map<Long, Map<Long, List<...>>>`，
+  promotion 用 FastJson 解码报 `parseLong error`，改成扁平行修复
+  （product-server `846a532ab`）；接着发现 Feign 方法返回类型必须对齐对端
+  `RestTraceResponse<T>` 信封，不能声明裸 `List`，又报 `field null expect '['`，
+  加信封类型 `PreOrderCouponScopeQueryResult` 修复（promotion `7be4676b0`）；
+  两版都部署后用反射桥调 `listFromCache` 验证通过，但 cart 端到端仍报同样异常——
+  查 `trace_tree` 发现 `promotion` 在这个环境有 `promotion-b`/`promotion-c` 两个独立部署，
+  之前只发了 promotion-b，补发 promotion-c（serviceCode `gaotu_promotion_c`）后，
+  反射调 `RegistrationService#preRegistration` 返回 `code:0`，**不再抛异常，T-27 收尾**。
+- 把 promotion-b/promotion-c 双部署这个坑、两个 Feign 契约坑都记进了 README「必须知过的坑」，
+  防止下次改 promotion 涉及 C 端链路的代码时只发一半。
+
+### 👤 我
+- 指出 `couponStatus` 字段上其实早就有注释写着状态文案（1使用中/2已失效/3审核中/4已暂停），
+  这份映射我们自己维护就行，不用死等电商下发 `couponStatusDesc`
+- 转发电商邓俊兵在群里的确认消息 + 截图：`@ApiModelProperty("券状态: 1 使用中 / 2 已失效 /
+  3 审核中 / 4 已暂停")`，原话"中文展示逻辑，你们按需判断展示就行"
+- 要求单测也要写，让派 subagent 去干
+
+### 🤖 Claude
+- **T-28**：反编译 jar 确认 `ExpandCouponDetailDto#couponStatus` 的官方注释与用户所说一致，
+  据此实现本地映射（不是猜的编码表）：student-center `PreOrderCouponStatusEnum.descOfStatus()`
+  恢复（`daa8c8516`）；promotion `PreOrderCouponEnricher.descOfCouponStatus()` 新增
+  （`1083c43cf`），B 端/C 端两条链路都补齐。两仓已部署到 test-gtbg-dev-3。
+- 看到用户转发邓俊兵确认后，把 README 里"等电商下发"的措辞改成"电商确认不会下发，
+  本地映射是永久方案"，避免下次又被"权威源在电商"这个已经过时的口径带偏。
+- 并行派 3 个 subagent 分别给 promotion（`PreOrderCouponEnricher`/`fillCouponScopes`）、
+  student-center（`PreOrderCouponStatusEnum`/`PreOrderCouponWrapper`）、product-server
+  （`PreOrderActivityCouponScopeService#listScopesByActivities`）写单元测试，进行中。
 
 ## 2026-09-09（第四轮 · 券范围落库改由 promotion-b 回调 product-b）
 
