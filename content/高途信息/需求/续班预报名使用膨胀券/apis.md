@@ -75,7 +75,7 @@ cart 类头的 TODO 也明确写了这是"promotion 缺口"。
 `product_list` 为空数组是因为这条造出来的测试数据年级学科没有落在三者交集内，
 不是回归——修复目标是"scopes 传得到、不抛异常"，交集精确性不是这次要验的东西。
 
-#### 🔥 中间踩了三个坑，全部记进了 README「必须知过的坑」
+#### 🔥 中间踩了三个坑，全部记进了 README「必须知道的坑」
 
 1. **嵌套 `Map<Long, Map<Long, List<...>>>` 返回类型，FastJson Feign 解码器解不出来**
    （报 `parseLong error`）——改成扁平行 `List<Row>` 规避
@@ -90,19 +90,15 @@ cart 类头的 TODO 也明确写了这是"promotion 缺口"。
 
 ### ✅ couponStatusDesc 本地映射 —— 已修复，永久方案（不是过渡）
 
-**口径反转两次**：白天定"不做本地兜底、等电商下发"；晚上先改成"电商下发前本地按 jar
-注释映射"；再后来电商邓俊兵在群里直接确认"中文展示逻辑你们按需判断展示就行"（附截图，
-与反编译 jar 的 `@ApiModelProperty("券状态: 1 使用中 / 2 已失效 / 3 审核中 / 4 已暂停")`
-注释完全一致）——**电商不会下发这个字段，本地映射是永久方案**。
+**定稿口径**：电商**不会下发**这个字段（2026-09-09 邓俊兵确认"中文展示逻辑你们按需判断展示就行"，
+附截图，与 jar 的 `@ApiModelProperty("券状态: 1 使用中 / 2 已失效 / 3 审核中 / 4 已暂停")` 一致），
+**本地映射是永久方案**。中间反复过两版（"等电商下发"→"临时本地兜底"→定稿），过程见 [[changelog]] 09-09。
 
-**已实现**：
+**已实现**（两处都遵循「只补为空字段，电商真给了就不覆盖」，将来电商若开始下发不用改代码）：
 - student-center `PreOrderCouponStatusEnum.descOfStatus()`（`daa8c8516`）+
-  `PreOrderCouponWrapper#convertCouponVO` 优先透传电商值、为空再本地补
+  `PreOrderCouponWrapper#convertCouponVO`
 - promotion `PreOrderCouponEnricher.descOfCouponStatus()`（`1083c43cf`），
-  `enrich()`/`enrichDTO()` 两条链路（B 端 detail + C 端缓存重建）都补
-
-两处都遵循"只补为空字段，电商真给了就不覆盖"的规则，万一电商哪天真的开始下发，
-不用改代码也能自动切换成透传。
+  `enrich()`/`enrichDTO()` 两条链路都补
 
 ## 已知契约缺口（仍未解决）
 

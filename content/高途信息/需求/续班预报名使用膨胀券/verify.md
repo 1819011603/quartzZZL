@@ -8,6 +8,10 @@ tags: [需求, 验证]
 > 回答一个问题：**想跑一遍，去哪跑、用哪条数据跑。**
 > 造好的数据属于当前状态（数据还在库里），所以在这儿而不是 changelog。
 > 术语（券ID vs 券商品ID）和推荐流程的两条分支说明见 [[README]]「核心概念」，这里不重复。
+> **请求示例/字段类型走同目录 `apifox-openapi.json`**（Apifox「导入数据 → OpenAPI/Swagger」选文件，
+> 9 个接口 + 分组 + 字段说明一次到位；项目 https://app.apifox.com/project/8815485）。
+> Apifox 自带 Cookie 管理不用配代理，但要在「环境 → 全局 Header」配一次 `traffic-env`。
+> ⚠️ `apifox-mcp-server` 只有 3 个**只读**工具，没有写接口的能力 → Apifox 侧只能手动导入。
 
 ## 环境
 
@@ -116,14 +120,15 @@ service_method=com.gaotu.product.service.renewal.InspectService#questionnaireLis
 params=[{"renewalNumber": "577431949669312512", "pager": {"current": 1, "pageSize": 5}}, 3]
 ```
 
-**排障方法留档**（下次遇到"回显还是空"先按这个顺序查，别猜）：
+**排障方法留档**（下次"回显还是空"按这个顺序查，别猜）：
 
-1. 先用 `mcp qingzhou-trace trace_tree` 看 traceId 有没有报错 span——没有报错不代表数据对，只能说明没崩
-2. 查日志 `mcp qingzhou-log get_tls_log_v2 queryStr='messages: PreOrderCouponEnricher'`，看有没有 `部分券在电商查不到` 的 WARN——**这条日志直接告诉你是不是券本身查不到**，比反复用不同接口测快得多
-3. 只有查到"电商真的没这张券"才需要怀疑测试数据是不是过期了，不要先怀疑修复代码本身
-4. 改完 DB 直接查缓存路径的接口（`listFromCache`/`detail`）**别忘了清 promotion 的 Redis 缓存**：
-   `service_method=com.gaotu.promotion.domain.service.PreOrderActivityDomainService#clearAllVisibleActivityCache params=[["活动号"]]`
-5. 用浏览器 `fetch` 调外部服务（如 `test-fuwu.baijia.com`）**必须带 `traffic-env: test-gtbg-dev-3` 请求头**，否则打到默认泳道，看不到测试泳道插的数据——反射桥（`invoke_service`）已经自动带了这个头，浏览器 fetch 要手动加
+1. `trace_tree` 看 traceId 有无报错 span（没报错≠数据对，只说明没崩）
+2. **查日志 `get_tls_log_v2 queryStr='messages: PreOrderCouponEnricher'`，看有没有
+   `部分券在电商查不到`** —— 这条直接告诉你是不是券本身查不到，比换接口反复试快得多
+3. 只有确认"电商真的没这张券"才怀疑测试数据过期，别先怀疑修复代码
+4. 改完 DB 查缓存路径接口（`listFromCache`/`detail`）**先清 promotion Redis 缓存**：
+   `PreOrderActivityDomainService#clearAllVisibleActivityCache params=[["活动号"]]`
+5. 浏览器 `fetch` 调外部服务**必须手动带 `traffic-env` 头**（反射桥已自动带）
 
 ## 反射桥调用地址（四个服务，均实测）
 
@@ -138,7 +143,16 @@ params=[{"renewalNumber": "577431949669312512", "pager": {"current": 1, "pageSiz
 
 🔴 **`promotion-management` 没有登记在 ROUTE_MAP 里，也没挂反射桥 Controller**——测它只能走真实业务接口（登录了 OES 页面的浏览器 fetch），见下方「B 端页面复现手册」。
 
-🔴 **`promotion` 项目在这个环境有 `promotion-b`（serviceCode `gaotu_promotion`）和 `promotion-c`（serviceCode `gaotu_promotion_c`）两个独立部署**，同一份代码两份运行实例：**反射桥走的是 promotion-b，cart 走的是 promotion-c**。只发 promotion-b、用反射桥验证通过，不代表 cart 端到端真的通了。判据：`trace_tree` 里对应 span 的 `gapmApp`/`service` 字段会显示到底是哪个部署接的请求。**改动涉及 C 端链路（`listFromCache`/`calculate`/`calculateWhite`）的代码，两个部署都要发布。**
+🔴 **反射桥走 `promotion-b`，而 cart 走 `promotion-c`（两个独立部署）** —— 反射桥验证通过≠cart 端到端通了。详见 [[README]]「必须知道的坑 · 部署/链路拓扑」。
+
+### 走 HTTP 直调时的两个致命前提（错一个全是 404 / 空数据）
+
+| 前提 | 值 | 错了会怎样 |
+|---|---|---|
+| **泳道头是 `traffic-env`（带连字符）** | `traffic-env: test-gtbg-dev-3` | 写成 `trafficenv` → 打到默认泳道，新接口一律 404，极易误判成「镜像没发上去」 |
+| **网关前缀不能猜** | student-center `/bgwApi/component/student-center`<br>product-b `/bgwApi/product-b/b`<br>promotion-b `/bgwApi/promotion/b`<br>cart `test-api.gaotu100.com/cart`（**不带 `/bgwApi`**） | 前缀错 → **不是 404 而是 `code:700 请重新登录`**（CAS 兜底），长得像 Cookie 失效。<br>`/bgwApi/component/{服务}` **只有 student-center 有**，别当通用规律。<br>`/noAuth/...` → 200 但 `code:3 登陆信息获取异常`（跳过鉴权拿不到用户上下文） |
+
+权威源是 `~/.local/mcp-servers/baijia_invoke.py` 的 `ROUTE_MAP`（`invoke_service` 按它拼 URL），以那份为准。
 
 ### 三个必踩的坑
 
@@ -178,11 +192,11 @@ cart 还额外把 `/test/acl/compare/**` 加进了 `MvcConfig` 的 `excludePathP
 
 ---
 
-# B 端页面复现手册
+## B 端页面复现手册
 
 > 目的：下次要复现「新建/编辑膨胀券活动」不用再摸索。**每一步都实测过**。
 
-## 0. 两个前置，缺一个就白忙
+### 0. 两个前置，缺一个就白忙
 
 | 前置 | 怎么确认 |
 |---|---|
@@ -191,7 +205,7 @@ cart 还额外把 `/test/acl/compare/**` 加进了 `MvcConfig` 的 `excludePathP
 
 页面：https://test-mi.gaotu100.com/ark/app-promotions/continuation-classes/pre-register-activity
 
-## 1. 用 Chrome + CDP 驱动（Claude 自动化时）
+### 1. 用 Chrome + CDP 驱动（Claude 自动化时）
 
 ```bash
 bash ~/.claude/chrome-mcp/chrome-mcp.sh "<页面URL>"      # 起 Chrome(9222) 并灌 Cookie
@@ -202,7 +216,7 @@ cd ~/.claude/chrome-mcp && N=/Users/gaotu/.nvm/versions/node/v22.21.1/bin && \
 
 ⚠️ 页面是 **antd v5**，class 前缀是 `antv5-` 不是 `ant-`。选择器要用 `[class*=picker-dropdown]` / `[class*=select-item-option]` 这种**模糊匹配**，写死 `.ant-picker-dropdown` 一律选不中。
 
-## 2. 新建膨胀券活动（逐步，通过页面点击）
+### 2. 新建膨胀券活动（逐步，通过页面点击）
 
 1. 点「新建活动」→ 填名称（**≤30 字符**，超了报「活动名称长度不能超过30个字符」）
 2. **「活动形式」选「膨胀券预报名」** ← 选完表单会重渲染，商品区变成「+添加膨胀券」，列名变为 膨胀券名称/膨胀券ID/膨胀券商品ID/购买金额/抵扣金额/状态/**预报名可用范围**
@@ -217,7 +231,7 @@ cd ~/.claude/chrome-mcp && N=/Users/gaotu/.nvm/versions/node/v22.21.1/bin && \
 5. 该行点「配置可用范围」→ 选「目标年级」+「目标学科」→「确 定」→ 行内「预报名可用范围」应显示如 `五年级数学`
 6. 点「保 存」
 
-## 3. 直接调接口造数（绕过 UI，更快，控制台里跑）
+### 3. 直接调接口造数（绕过 UI，更快，控制台里跑）
 
 ```js
 // 在页面控制台跑，自动带 Cookie 与泳道；couponId/productNumber 现查电商拿最新值，别抄旧的

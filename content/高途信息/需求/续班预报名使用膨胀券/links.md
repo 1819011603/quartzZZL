@@ -85,7 +85,6 @@ tags: [需求, 链接]
 
 > 导入源（择一）：
 > - **`apifox-openapi.json`（推荐）** —— OpenAPI 3.0，9 接口一次性导入，带分组与实测示例
-> - [[curl]] —— cURL 逐条粘，仅临时试单条时用
 >
 > `apifox-mcp-server` 只有只读工具，无法由 Claude 写入 Apifox，故只能手动导入。
 

@@ -50,27 +50,15 @@ tags: [需求, 任务]
 | T-30 | C 端三者交集精确匹配 —— 用真实数据端到端验证 | 已完成 | — | 直连 DB 造了一套年级学科真正匹配的数据（续班计划改指向真实券活动、目标年级学科对齐券范围），反射调 `preRegistration` 返回完整正确的推荐商品，详见 [[verify]] |
 | T-31 | 验证 `postProductId`/`postProductName`/`activityType`（预报名预警列表）字段真实可用 | 已完成 | — | 用户要求核实这三个字段是不是本次改过。查 git log 确认未改动（T-07/T-10 的老字段）；测试环境该列表原本查不到数据，直连插了一行 `questionnaire_inspect` 后调真实接口，`postProductId`/`postProductName` 由「前置班→后置班」推荐逻辑真实查出，非编造值，详见 [[verify]] |
 
-### T-13 自测进展（2026-09-08 订正）
+### T-13 自测进展
 
-> ⚠️ 本节此前记「泳道是空壳、不可用」，**该结论是错的**，已订正。
-> 错因：① Apollo 查泳道 cluster 报 404 被误判成环境不可用 —— 实际 Apollo 读不到泳道会**自动回落 default**；
-> ② 查 pod 的时刻早于用户发布镜像的时刻（16:37）。
+**当前状态**：B 端券选品、B 端 detail 回显、C 端 scopes、C 端三者交集、预警列表字段
+**全部真实数据端到端实测通过**（清单与命令见 [[verify]]「已验证清单」）。
+新代码（T-26/T-27/T-28）单测已补（T-29）；order/cart 下单算价等历史模块仍无单测。
 
-**环境实际可用**：`test-gtbg-dev-3` 下 student-center pod Running / eureka UP，镜像 `feature-xuban-pre`。
-
-**已实测通过（反射调 `PreOrderCouponBiz#listCoupon`）**：
-
-| 场景 | 结果 |
-|---|---|
-| 空条件查询 | 3 条 mock 券返回 **2 条**，已结束券被默认状态过滤 ✅ |
-| productType | 全部 **8014** ✅ |
-| 状态文案 / 可勾选 | `使用中`/`待开始` + `selectable=true` ✅ |
-| 券名模糊「秋季」 | 精确命中 1 条 ✅ |
-| `couponIdList` 批量精确 | ✅ |
-
-**C 端仍跑不通，但原因不是环境**：`promotion.pre_order_activity` 里现存活动**全部 type=1 订金班**，
-没有 type=2 膨胀券活动；且 scope 表的 activity_number(9001/9002/9003) 是造的假号，与真实活动对不上。
-→ 需先在 B 端建一个膨胀券活动并配券范围，见 README 下一步 #1。
+**中间踩过的两个坑**（结论已进 [[README]]「必须知道的坑」，过程见 [[changelog]] 09-08）：
+把「Apollo 查泳道 cluster 404」误判成环境不可用（实际读不到会回落 default）；
+查 pod 的时刻早于用户发布镜像的时刻。
 
 ### T-04 order 侧范围收敛（重要）
 
@@ -102,19 +90,20 @@ R-01、R-02 均已闭环，当前无阻塞项。
 
 ## 开发期新增待确认项（需反讲/前端/电商定稿）
 
-这些是写代码时冒出来的，**不在原待办表里**，定稿前代码里都是暂定值或 TODO：
+这些是写代码时冒出来的，**不在原待办表里**。
+
+**已解决（5 条）**：电商券接口已接通并删 mock ✅ · 券状态码定稿 1/2/3/4 ✅ ·
+`scopes` 落 product-server、promotion 跨服务查 ✅ · `postProductId`/`postProductName`/`activityType`
+验证为老字段无需改动 ✅ · `couponStatusDesc` 本地映射为永久方案 ✅（详见 [[README]]「已定共识」）
+
+**未定（4 条）**：
 
 | # | 待确认 | 影响 | 现状处理 |
 |---|---|---|---|
-| 1 | ~~电商券商品接口未提供~~ **已接通** | — | ✅ **2026-09-09 已接真实 Feign 并删除全部 mock**，泳道实测返回 56 条真数据 |
-| 2 | ~~券状态码取值~~ **已定稿**：1 使用中 / 2 已失效 / 3 审核中 / 4 已暂停 | — | ✅ 三仓已对齐，`COUPON_STATUS_IN_USE`=1；文案 mock 阶段本地按码补，真接口以电商为准 |
-| 3 | ~~`scopes` 落库方是 product-server 还是 promotion~~ **已解决** | — | ✅ 落 product-server，promotion 跨服务查询（T-27），端到端实测通过 |
-| 4 | ~~两列字段名 `postProductId`/`postProductName`、`activityType`~~ **已验证** | — | ✅ 2026-09-09 深夜直接调用真实接口验证，字段名、取值逻辑均正确（`postProductId=514767374124142592`，来自真实的「前置班→后置班」推荐查询），不是本次改的，本次也未改动这三个字段 |
 | 5 | `showDiscountAmount` 膨胀券口径 | 展示逻辑 | 暂定「任一张券抵扣金额>0 即展示」 |
 | 6 | 膨胀券专属背景图 | C 端样式 | Apollo `renewal.cStyle.preRegistrationCoupon.bgUrl`，暂用订金班同一张 |
-| 7 | 膨胀券 reportCode 取值 | Apollo 内容配置，不配则老师端无入口 | 暂写 `pre_registration_coupon_link` |
+| 7 | 膨胀券 reportCode 取值 | Apollo 内容配置，**不配则老师端无入口** | 暂写 `pre_registration_coupon_link` |
 | 8 | promotion 侧「按 renewalNumber 查活动」入口不存在 | 活动形式判定 | Adapter 占位签名；可用 Apollo 白名单强制判定自测 |
-| 9 | ~~电商不下发 `couponStatusDesc`~~ **已解决** | — | 邓俊兵确认电商不会下发，本地映射是永久方案。student-center `daa8c8516` / promotion `1083c43cf` |
 
 ## 非本次范围（记着别忘）
 
