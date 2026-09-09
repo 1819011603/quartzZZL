@@ -88,3 +88,20 @@ tags: [需求, 链接]
 > - [[curl]] —— cURL 逐条粘，仅临时试单条时用
 >
 > `apifox-mcp-server` 只有只读工具，无法由 Claude 写入 Apifox，故只能手动导入。
+
+## 电商膨胀券接口（券信息权威源）
+
+| 类型 | 标题 | 链接 | 记录日期 |
+|---|---|---|---|
+| 接口文档 | coupon-a 膨胀券列表分页查询 `POST /feign/expandCoupon/queryList` | https://qingzhou.baijia.com/#/cloud/apiDoc/search/detail?interfaceId=5453936&appId=coupon-a.gaotu100.com&branchName=feature-expand-coupon | 2026-09-09 |
+| 接口文档 | coupon-a 按膨胀券商品订单项批量查券 `POST /feign/expandCoupon/queryByOrderItems` | https://qingzhou.baijia.com/#/cloud/apiDoc/search/detail?interfaceId=5453954&appId=coupon-a.gaotu100.com&branchName=feature-expand-coupon | 2026-09-09 |
+
+**依赖**：`com.gaotu:coupon-a-client:1.3.15`（分支 `feature-expand-coupon`）
+
+> **契约以 jar 为准，不以任何文档为准**：
+> `com.gaotu.coupon.a.client.feign.ExpandCouponFeignService#queryList`
+> 入参 `ExpandCouponQueryRequest` / 出参 `ExpandCouponPageDto<ExpandCouponDetailDto>`。
+> 反编译：`mcp java-decompiler java_decompile_class`。
+>
+> 券状态：**1 使用中 / 2 已失效 / 3 审核中 / 4 已暂停**（无「待开始」）。
+> 券名称是**左匹配**模糊（`name like '关键字%'`），不是全模糊。

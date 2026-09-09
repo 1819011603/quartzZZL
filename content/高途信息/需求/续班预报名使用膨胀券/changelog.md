@@ -10,6 +10,32 @@ tags: [需求, 日志]
 >
 > 两个执行者在**同一条时间轴**上：`🤖 Claude` 和 `👤 我`。
 
+## 2026-09-09（第二轮 · 券状态枚举按电商定稿）
+
+### 👤 我
+- 给出电商膨胀券接口：青舟 interfaceId=5453936（coupon-a `POST /feign/expandCoupon/queryList`）
+  与依赖 `com.gaotu:coupon-a-client:1.3.15`
+- 明确：mock 不要去掉，按电商字段再 mock 一份
+
+### 🤖 Claude
+- 完成 T-22。拉 jar 反编译拿到权威契约 `ExpandCouponDetailDto` / `ExpandCouponQueryRequest`。
+- 🔴 **发现并修复资损向缺陷**：`COUPON_STATUS_IN_USE` = 2，而**电商的 2 是「已失效」**，
+  会把失效券当可用券放行。已 2→1（product-server `417bf0cb2`）。
+  这个值错过两次（最初 1、09-08 改 2），根因是一直在拿本地暂定枚举自洽，没有权威源。
+- 枚举重写（student-center `d8c7fb9cd`）：**1 使用中 / 2 已失效 / 3 审核中 / 4 已暂停**，
+  **没有「待开始」**；仅【使用中】可勾选，`defaultQueryStatusList` 从 2 个状态收窄为 1 个。
+- 两处 mock 的 JSON **字段名改用电商真名**（`couponNumber`/`skuNumber`/`deductPriceInCents`/
+  `buyPriceInCents`/`totalAmount`），并补 `toPromotionCoupon` 映射方法 ——
+  **接真实 Feign 时只需拆掉 mock 分支，映射逻辑一行不用改**。mock 补至 4 条覆盖四个状态。
+- 三仓并行编译全绿，`local == remote` 已核对。
+- `apifox-openapi.json` 去掉 `traffic-env` 参数（改为在 Apifox 环境全局 Header 配一次），
+  并按新枚举订正全部示例与字段说明。
+
+### 留给下次
+- **接真实 Feign**：ACL 层把 mock 分支换成 `ExpandCouponFeignService#queryList` 真调用
+  （契约已对齐，映射方法已就位）
+- ⚠️ **泳道 pod 还是旧镜像**，新枚举要生效必须重新发布 student-center/promotion/product-server
+
 ## 2026-09-09
 
 ### 🤖 Claude
