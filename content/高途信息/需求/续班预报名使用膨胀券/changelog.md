@@ -10,6 +10,26 @@ tags: [需求, 日志]
 >
 > 两个执行者在**同一条时间轴**上：`🤖 Claude` 和 `👤 我`。
 
+## 2026-09-09
+
+### 🤖 Claude
+- 完成 T-21：`PreOrderActivityProductDTO` 补 `couponStatusDesc`，与 `couponStatus` 成对全链路透传
+  - promotion `f7cd4dce2`：DTO/BO/CacheDTO/EditDTO 四个模型加字段 + 四处透传接线 + mock 补 desc
+  - product-server `9626a3026`：adaptor DTO / EditDTO / ScopeVO 加字段，`listCouponDetail` 填充
+  - cart `a7646b67`：cart-client DTO 副本加字段（C 端 VO 不展示券状态，仅保线上兼容）
+  - student-center `35462c689`：`PromotionCouponDTO` 加字段，MapStruct 同名自动映射
+- **定了：券状态文案权威源在电商，本地不做兜底翻译**（用户决策）。
+  `PreOrderCouponStatusEnum.descOfStatus()` 随之删除（已成死代码），
+  枚举只保留 `selectable` 业务规则；`desc` 降级为可读性注记，注释已标明不是下发文案。
+- mock 两处（promotion `PreOrderCouponMockEnricher`、student-center `PreOrderCouponMockProvider`）
+  的内置 JSON 同步补 `couponStatusDesc`，等电商真接口就绪后一并替换。
+- 四仓编译全绿，`local == remote` 已逐仓核对。
+  ⚠️ promotion 的 `git push` 因本地无 `origin/feature-xuban-pre` 跟踪 ref 报「需要一个单独的版本」，
+  实际已推成功（`git ls-remote` 核对 sha 一致）—— **别被这条报错骗去重推**。
+
+### 留给下次
+- 电商券商品接口就绪后：接真实 `couponStatusDesc`，关掉两处 mock 开关
+
 ---
 
 ## 2026-09-08（第六次会话 · 撤销落地页 path 分叉）

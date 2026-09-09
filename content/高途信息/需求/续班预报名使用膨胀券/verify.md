@@ -100,7 +100,7 @@ service_method=com.gaotu.product.service.renewal.preorder.PreOrderCouponIntersec
  "product_number":801400001, "product_type":8014, "deductible_amount":20000}
 ```
 
-**`couponId` / `couponName` / `skuId` / `buyAmount` / `couponStatus` / `scopes` 全部丢失。**
+**`couponId` / `couponName` / `skuId` / `buyAmount` / `couponStatus` / `couponStatusDesc` / `scopes` 全部丢失。**
 
 ### 为什么
 
@@ -153,7 +153,7 @@ select 是**硬拼列名、与值是否 null 无关**，一旦发布，`selectBy
 ### 原 bug 仍在：缓存 miss 丢券字段
 
 **撤的是错误修法，不是修好了。** 缓存 miss 从 DB 重建后，
-`couponName` / `buyAmount` / `couponStatus` / `skuId` 仍为 null：
+`couponName` / `buyAmount` / `couponStatus` / `couponStatusDesc` / `skuId` 仍为 null：
 
 - cart `PreRegistrationCouponAssembler:215` 取不到 `buyAmount` → 走兜底/抛异常
 - product-server `PreOrderCouponIntersectService:250` 取不到 `couponStatus` → 「未知即放行」，**过滤静默失效**
@@ -175,6 +175,10 @@ select 是**硬拼列名、与值是否 null 无关**，一旦发布，`selectBy
 | 对齐键 | `productNumber` = 券商品 ID（`couponSkuNumber`） |
 
 **内置 mock 的券商品 ID**：`801400001`(使用中) / `801400002`(待开始) / `801400003`(已结束)。
+
+**2026-09-09 起 mock 同时给出 `couponStatusDesc`**（使用中/待开始/已结束）——
+文案权威源在电商、本地不翻译，mock 不成对给就会一路 null 到前端。
+自定义 `pre.order.coupon.mock.data` 时**记得带上这个字段**，否则券列表状态列为空。
 ⚠️ 活动里挂的券商品 ID 必须是这三个之一才补得上，否则 `hit=0`。
 
 **行为边界**（刻意如此，别当 bug 改）：

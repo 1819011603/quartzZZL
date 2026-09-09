@@ -38,6 +38,7 @@ tags: [需求, 任务]
 | T-16 | 四服务部署到 test-gtbg-dev-3 + 反射桥全部打通 | 已完成 | — | student-center/promotion/cart/product-b 四个桥均实测 code:0 |
 | T-19 | 迁 AclServiceCompareController 到三仓库 | 已完成 | — | 三份逐字节相同、自带 RVO 内部类；cart 放行拦截器、B 侧加挂 /b 路径 |
 | T-20 | 建 type=2 膨胀券活动并发布 | 已完成 | — | `578363764011708416`，挂 801400001/2 两张券 |
+| T-21 | 券状态文案 `couponStatusDesc` 全链路补齐，文案权威源交给电商 | 已完成 | — | promotion `f7cd4dce2` / product-server `9626a3026` / cart `a7646b67` / student-center `35462c689`；四仓编译全绿 |
 | T-21 | 推动 promotion 券字段落库 | 待办 | **卡 promotion 团队** | 🔴 上线阻塞，表无券列、缓存 miss 即丢，详见 [[verify]] |
 
 ### T-13 自测进展（2026-09-08 订正）
@@ -106,7 +107,7 @@ student-data 收数也由订单侧现有消息覆盖。
 | # | 待确认 | 影响 | 现状处理 |
 |---|---|---|---|
 | 1 | **电商券商品接口未提供** | 券名称/金额/状态取不到，端到端跑不通 | Apollo mock 顶替（T-08）；`specs/004-xuban-pre/TODO-券信息接口.md` 记了接口诉求 |
-| 2 | 券状态码取值（暂定 使用中=1） | 状态过滤会错 | 收敛在 `isCouponInUse` 一处，对齐后只改这里 |
+| 2 | 券状态码取值（暂定 使用中=2）**与状态文案** | 状态过滤会错；文案直接透传电商，电商不给即 null | 状态码收敛在 `isCouponInUse` 一处；**文案本地不翻译**（2026-09-09 定），mock 已成对给出 |
 | 3 | `scopes` 落库方是 product-server 还是 promotion | promotion 侧回显会丢券字段 | 按 product-server 落库实现；scope 表已有回查方法 |
 | 4 | 两列字段名 `postProductId`/`postProductName`、`activityType` | 前端按名取值 | 后端已起名，需前端对齐 |
 | 5 | `showDiscountAmount` 膨胀券口径 | 展示逻辑 | 暂定「任一张券抵扣金额>0 即展示」 |
