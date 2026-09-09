@@ -10,6 +10,53 @@ tags: [需求, 日志]
 >
 > 两个执行者在**同一条时间轴**上：`🤖 Claude` 和 `👤 我`。
 
+## 2026-09-09（第三轮 · 下线 mock 接真实接口 + 三服务上泳道）
+
+### 👤 我
+- 电商接口有数据了，要求：**把 mock 都删了，直接用接口**，然后部署
+- 确认「上了吧」= 先验真实链路，不是合 release
+
+### 🤖 Claude
+- **删除全部 mock**：`PreOrderCouponMockProvider`、`PreOrderCouponMockEnricher`、
+  promotion 占位 Adapter、开关 `pre.order.coupon.mock.enabled` 全部下线。
+  不保留「真接口失败回落 mock」——会掩盖真实故障。
+- student-center `49a8c97ad` / promotion `3b9f24af5`：ACL 直连 coupon-a。
+- **三服务已发到 test-gtbg-dev-3 且全部 eureka UP**：
+  student-center `...c25ln` / promotion-b `...p6tcz` / product-b `...px7g6`
+- ✅ **真实链路已验证**：券列表返回 **total=56** 条电商真数据（电商全量 71，
+  差额是被【1 使用中】默认过滤掉的），`productType=8014`、`selectable` 均正确。
+- ✅ **资损修复线上验证**：product-b `isCouponInUse(1)=true` / `(2)=false`。
+- ✅ **跨泳道可达**：`test-gtbg-dev-3` 的 promotion-b 能调到 `test-eco-7` 的 coupon-a，
+  **不需要把 coupon-a 也发一份到我们泳道**。
+
+### 🔴 踩的三个坑（都写进代码注释了）
+
+1. **grpc 硬版本冲突**：`coupon-a-client` → common-core → sentinel → jetcd → grpc **1.24.0**，
+   student-center 用 **1.44.1**，两边都是硬区间 `[x,x]`，Maven 无法调和、直接构建失败。
+   解法：只用它的 DTO 与接口，`<exclusion>*:*</exclusion>` 排掉全部传递依赖。
+2. 🔥 **Feign 注解包不同导致启动失败（编译期发现不了）**：
+   jar 里 `ExpandCouponFeignService` 标的是**旧包** `spring.cloud.netflix.feign.FeignClient`，
+   而 student-center 用 **openfeign 3.0.3** 的 `spring.cloud.openfeign.FeignClient`。
+   **两者是不同注解类，`@EnableFeignClients` 只认新包那个**，怎么配 basePackages 都注册不上，
+   表现为 `APPLICATION FAILED TO START ... bean of type 'ExpandCouponFeignService' not found`，
+   pod 一直 Running 但 eureka 永远 None。
+   解法：**只复用 jar 的 DTO，接口用本仓库新注解重新声明**（`ExpandCouponAdapter`）。
+   ⚠️ **promotion 侧不用改**——它正好用旧包注解且扫描 `com.gaotu`，直接用 jar 接口没问题。
+   两仓不对称是 Spring Cloud 版本不同，不是笔误。
+3. **青舟构建失败有两种「假失败」**：`Aborted by uqun`（人为/并发中止）与
+   `JNLP4-connect ... failed`（Jenkins agent 掉线）。两者 `errors` 数组都是空的，
+   日志里那一大片「不支持的解析类型, XxxController」是 apidoc 扫描器噪音，**不是失败原因**。
+   判据：看 `Finished:` 那行 + errors 是否为空 + 其他服务是否同时正常构建。
+
+### 留给下次
+- 🔴 **`couponStatusDesc` 现在恒为 null** —— 电商 `ExpandCouponDetailDto` **不下发文案**，
+  而我们按定的口径「不做本地兜底翻译」。前端拿不到状态文案，需产品决策：
+  推动电商补字段，还是改口径允许本地翻译。
+- 🔴 **活动 `578363764011708416` 挂的仍是 mock 假券 `801400001/2`**（电商不存在），
+  端到端跑不通。要跑通需改挂真实券，如「木7」`578513860277893121`。
+- 反射桥传 `List<Long>` 时过滤失效（返回全量）——疑似 Gson 反序列化类型问题，
+  **真实 Feign 链路不受影响**（已验证 total=56 过滤正确），仅影响反射调试姿势。
+
 ## 2026-09-09（第二轮 · 券状态枚举按电商定稿）
 
 ### 👤 我

@@ -51,6 +51,9 @@ tags:
 - **除 student-data 外，6 个仓库全是我的活**（含 promotion/promotion-app/order/cart/product-server）。
   反讲文档「项目关联方」写「待定」指的是对方服务对接人待定，**不是这活不是我的**。
 - 灰度按**续班计划 ID**；用**膨胀券商品ID**；C 端一券只能买一次、页面多选；加购上限来源=电商接口。
+- **券信息全部实时取电商，不落库不做 mock**（2026-09-09）：ACL 直连
+  `coupon-a` 的 `/feign/expandCoupon/queryList`。**mock 已全部删除**，
+  也不做「真接口失败回落 mock」——会掩盖真实故障。
 - 🔴 **券状态枚举 = 电商 coupon-a 口径（2026-09-09 定稿）**：
   **1 使用中 / 2 已失效 / 3 已审核中 / 4 已暂停**，**没有「待开始」**。
   来源 jar `com.gaotu:coupon-a-client:1.3.15` 的 `ExpandCouponDetailDto#couponStatus`
@@ -66,8 +69,8 @@ tags:
 
 | | |
 |---|---|
-| 阶段 | 开发中（**B 端券列表自测已通过**） |
-| 进度 | T 19/21 · R 0/2 · C 0/0 |
+| 阶段 | 开发中（**券列表真实链路已通，三服务在泳道 eureka UP**） |
+| 进度 | T 21/23 · R 0/2 · C 0/0 |
 | 排期 | 09-08~09-11 开发 · 09-14 自测 · 09-15~16 联调 · **提测 09-16** |
 | 当前卡点 | 🔴 **B 端 detail 券字段全空**（2026-09-09 实测，traceId `2d0e9489...0.3`）：`detail()` 直读 DB 未挂 enricher，7 个券字段 null；且 promotion 的 mock 开关**从没配过**，C 端重建路径同样没生效。详见 [[apis]]。<br>🟡 **等电商券商品接口**（券名/金额/状态权威源）。缓存重建已由 **Apollo mock 顶替**(promotion `eb72e083f`)，C 端可跑通；⚠️「加 5 列落库」方案已 revert、工单 8025 已撤（**表不用加列**）。详见 [[verify]] |
 | 最近更新 | 2026-09-09
@@ -79,9 +82,9 @@ tags:
 
 | 仓库 | 最新 commit |
 |---|---|
-| student-center | `d8c7fb9cd` |
+| student-center | `49a8c97ad` |
 | product-server | `417bf0cb2` |
-| promotion | `3071f7335` |
+| promotion | `3b9f24af5` |
 | order | `073dea69e2` |
 | cart | `a7646b67` |
 | promotion-app | 仅 spec（本期不改代码） |
@@ -171,3 +174,12 @@ tags:
   09-08 改成 2（当时枚举「2 使用中」），而**电商真实枚举 2 = 已失效**。
   停在 2 会把失效券当可用券放行，是资损方向。判据只有一个：
   以 `coupon-a-client` jar 里的 `ExpandCouponDetailDto` 为准，别信任何本地文档的旧表述。
+- 🔥 **接外部 Feign jar 前先看它的注解是哪个包**。`coupon-a-client` 用的是旧包
+  `spring.cloud.netflix.feign.FeignClient`，student-center 用 `openfeign` 3.0.3 ——
+  **不同注解类，`@EnableFeignClients` 只认自己那个**，怎么配 basePackages 都注册不上。
+  症状是**编译全绿但启动即挂**（`bean of type XxxFeignService not found`），
+  pod 一直 Running 而 eureka 永远 None。解法：只复用 jar 的 DTO，接口本地重新声明。
+  ⚠️ promotion 用旧包注解所以能直接用 —— **两仓不对称是版本差异，别以为是笔误去"统一"**。
+- **青舟构建失败要先分辨真假**：`Aborted by uqun`(人为/并发中止) 与
+  `JNLP4-connect failed`(agent 掉线) 都是假失败，`errors` 数组为空；
+  日志里刷屏的「不支持的解析类型, XxxController」是 apidoc 噪音，不是原因。

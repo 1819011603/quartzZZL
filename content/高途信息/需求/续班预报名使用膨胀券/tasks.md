@@ -40,6 +40,7 @@ tags: [需求, 任务]
 | T-20 | 建 type=2 膨胀券活动并发布 | 已完成 | — | `578363764011708416`，挂 801400001/2 两张券 |
 | T-21 | 券状态文案 `couponStatusDesc` 全链路补齐，文案权威源交给电商 | 已完成 | — | promotion `f7cd4dce2` / product-server `9626a3026` / cart `a7646b67` / student-center `35462c689`；四仓编译全绿 |
 | T-22 | 券状态枚举按电商 coupon-a 定稿重写 + mock 改用电商真实字段名 | 已完成 | — | student-center `d8c7fb9cd` / promotion `3071f7335` / product-server `417bf0cb2`；**`COUPON_STATUS_IN_USE` 2→1 是资损向修复**；mock 补至 4 条覆盖四状态 |
+| T-23 | 下线全部 mock，ACL 直连电商 coupon-a + 三服务上泳道验证 | 已完成 | — | student-center `49a8c97ad` / promotion `3b9f24af5`；三服务 eureka UP，券列表实测 total=56 真数据 |
 | T-21 | 推动 promotion 券字段落库 | 待办 | **卡 promotion 团队** | 🔴 上线阻塞，表无券列、缓存 miss 即丢，详见 [[verify]] |
 
 ### T-13 自测进展（2026-09-08 订正）
@@ -107,7 +108,7 @@ student-data 收数也由订单侧现有消息覆盖。
 
 | # | 待确认 | 影响 | 现状处理 |
 |---|---|---|---|
-| 1 | ~~电商券商品接口未提供~~ **接口已出**：`POST /feign/expandCoupon/queryList`（coupon-a，jar `coupon-a-client:1.3.15`） | — | ✅ **契约已对齐**（字段名+枚举），但**尚未接真实 Feign 调用**，值仍走 mock。下一步是在 ACL 层接真调用 |
+| 1 | ~~电商券商品接口未提供~~ **已接通** | — | ✅ **2026-09-09 已接真实 Feign 并删除全部 mock**，泳道实测返回 56 条真数据 |
 | 2 | ~~券状态码取值~~ **已定稿**：1 使用中 / 2 已失效 / 3 审核中 / 4 已暂停 | — | ✅ 三仓已对齐，`COUPON_STATUS_IN_USE`=1；文案 mock 阶段本地按码补，真接口以电商为准 |
 | 3 | `scopes` 落库方是 product-server 还是 promotion | promotion 侧回显会丢券字段 | 按 product-server 落库实现；scope 表已有回查方法 |
 | 4 | 两列字段名 `postProductId`/`postProductName`、`activityType` | 前端按名取值 | 后端已起名，需前端对齐 |
@@ -115,6 +116,7 @@ student-data 收数也由订单侧现有消息覆盖。
 | 6 | 膨胀券专属背景图 | C 端样式 | Apollo `renewal.cStyle.preRegistrationCoupon.bgUrl`，暂用订金班同一张 |
 | 7 | 膨胀券 reportCode 取值 | Apollo 内容配置，不配则老师端无入口 | 暂写 `pre_registration_coupon_link` |
 | 8 | promotion 侧「按 renewalNumber 查活动」入口不存在 | 活动形式判定 | Adapter 占位签名；可用 Apollo 白名单强制判定自测 |
+| 9 | 🔴 **电商不下发 `couponStatusDesc`** | 前端拿不到券状态文案（现恒为 null） | 按定的口径「不做本地兜底」，需产品决策：推电商补字段 or 改口径允许本地翻译 |
 
 ## 非本次范围（记着别忘）
 

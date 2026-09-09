@@ -267,3 +267,40 @@ cart 还额外把 `/test/acl/compare/**` 加进了 `MvcConfig` 的
 | Apollo | `renewal.cStyle.preRegistrationCoupon.bgUrl` | 暂用订金班图 | 待配 | 待运营给图 |
 | Apollo | `pre.order.activity.coupon.renewalPlanIds` | 空 | 可选 | 白名单，用于强制判膨胀券自测 |
 | 代课权限 | `/renewal/pre/coupon/list`、`/couponScope/list` | sd.baijia.com | 待登记 | 待登记 |
+
+## 电商 coupon-a 联调信息（2026-09-09）
+
+| 项 | 值 |
+|---|---|
+| 接口 | `POST /feign/expandCoupon/queryList`（青舟 interfaceId=5453936） |
+| 依赖 | `com.gaotu:coupon-a-client:1.3.15`，分支 `feature-expand-coupon` |
+| **服务所在泳道** | **`test-eco-7`**（不在 `test-gtbg-dev-3`！） |
+| 跨泳道可达 | ✅ 已实测：`test-gtbg-dev-3` 的 promotion-b 能调到 `test-eco-7` 的 coupon-a |
+
+**真实券数据**（可直接用于自测，全部 `couponStatus=1 使用中`）：
+
+| 券名 | couponNumber(券ID) | skuNumber(券商品ID) | 买/抵(分) |
+|---|---|---|---|
+| 木7 | 578513860162539520 | **578513860277893121** | 3000/9000 |
+| 木10 | 578513802715254784 | 578513802834802689 | 3000/9000 |
+| 膨胀卷下单 | 578506687399362560 | 578506687592331265 | 10000/20000 |
+
+⚠️ **ID 是 19 位雪花数**，前端 JS 会精度截断 —— 出参需 `@JSONField(serializeUsing = ToStringSerializer.class)`。
+
+### 三服务泳道状态（2026-09-09 全部 eureka UP）
+
+| 服务 | pod |
+|---|---|
+| student-center | `student-center-6db9bcbb5-c25ln` |
+| promotion-b | `promotion-b-gaotu100-com-db5d948d-p6tcz` |
+| product-b | `product-b-7474dcf6f7-px7g6` |
+
+### 已验证
+
+- 券列表真实链路：`total=56`（电商全量 71，差额被【1 使用中】默认过滤掉）✅
+- 资损修复：product-b `isCouponInUse(1)=true` / `(2)=false` ✅
+
+### ⚠️ 仍跑不通的
+
+**活动 `578363764011708416` 挂的是 mock 假券 `801400001/2`**，电商里不存在，
+所以「从活动出发」的 C 端链路仍为空。要端到端跑通，需把活动改挂上面表里的真实券商品 ID。
