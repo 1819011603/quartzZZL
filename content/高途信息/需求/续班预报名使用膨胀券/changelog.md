@@ -273,3 +273,24 @@ tags: [需求, 日志]
 - R-01 找王永诗；R-02 先问清楚「测试冲突」指什么
 - 两条清完再按 6 个模块拆 `T-` 开发任务
 - README「上线影响面」五项目前全是"待定"，读完反讲的「数据库设计」和发布计划后填实
+
+## 2026-09-09 券字段落库方案撤销 + 改接 mock
+
+**结论推翻**：2026-09-08 的「`pre_order_activity_product` 加 5 列」方案是错的，已 revert。
+
+- 用户 review 指出：`product_number` 就是券商品 ID、`product_type=8014` 已能区分券与课程，
+  `coupon_id`/`sku_id` 属冗余；`coupon_name`/`buy_amount`/`coupon_status` 权威源在电商，
+  落库即快照，`coupon_status` 是流转状态尤其必脏。**表结构一列都不用加**。
+- DDL 工单 8025 已撤，测试环境表始终 8 列。
+- 🚨 顺带消除必挂故障：revert 前 `Base_Column_List` 已含 5 列而表里没有，
+  select 硬拼列名与 null 无关 → 一发布 `selectByExample` 必报 `Unknown column`，
+  **连订金班活动查询一起挂**。
+- promotion `8ed5fbab1` revert → 部署 pipeline 1261707 → pod eureka **UP** 已验证。
+
+**改接 mock**（promotion `eb72e083f`）：缓存重建路径由 `PreOrderCouponMockEnricher` 补齐券信息，
+与 student-center mock 同源，开关 `pre.order.coupon.mock.enabled` 默认 false。
+真接口(电商，找邓俊兵)就绪后按 verify 的下线步骤替换。
+
+**过程教训**：本轮开工没先读需求归档 README，凭代码推理把已定稿的 `productType=8014`
+当成「还没定」，又把冗余方案叠上去，来回纠正四轮。已把「做业务需求前先按分支反查归档目录」
+写进全局 CLAUDE.md 硬性前置，「结论一被推翻同一轮就改文档」写进 requirement-docs skill。

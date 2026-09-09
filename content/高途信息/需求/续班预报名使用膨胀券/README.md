@@ -61,7 +61,7 @@ tags:
 | 阶段 | 开发中（**B 端券列表自测已通过**） |
 | 进度 | T 16/18 · R 0/2 · C 0/0 |
 | 排期 | 09-08~09-11 开发 · 09-14 自测 · 09-15~16 联调 · **提测 09-16** |
-| 当前卡点 | 🔴 **缓存 miss 丢券字段**：正解是重建时用 `product_number` 调券商品详情补齐，但**电商接口未提供**，先接 Apollo mock。⚠️「加 5 列落库」方案 2026-09-09 已 revert、工单 8025 已撤（**表不用加列**），详见 [[verify]] |
+| 当前卡点 | 🟡 **等电商券商品接口**（券名/金额/状态权威源）。缓存重建已由 **Apollo mock 顶替**(promotion `eb72e083f`)，C 端可跑通；⚠️「加 5 列落库」方案已 revert、工单 8025 已撤（**表不用加列**）。详见 [[verify]] |
 | 最近更新 | 2026-09-09
 
 **六仓库代码全部提交并推送，编译全绿（BUILD SUCCESS）**，但均未写单测、未跑功能自测。
@@ -70,18 +70,18 @@ tags:
 |---|---|
 | student-center | `7425901f5` |
 | product-server | `566380d4e` + **未提交**（券状态码 1→2 修正，编译通过） |
-| promotion | `8ed5fbab1`（revert 券字段落库） |
+| promotion | `eb72e083f`（券信息 mock 补齐） |
 | order | `073dea69e2` |
 | cart | `0b529fa4` + **未提交**（DTO 补券字段 + 三处改抛异常 + 成对求交，编译通过） |
 | promotion-app | 仅 spec（本期不改代码） |
 
 ## 下一步
 
-1. 🔴 **缓存 miss 补齐券字段**（最高优先级，上线阻塞）：缓存重建后
-   `couponName`/`buyAmount`/`couponStatus`/`skuId` 全为 null（已实测，见 [[verify]]）。
-   **不加列**（`product_type=8014` 已足以区分，加列 = 冗余 + 电商数据脏快照，
-   2026-09-09 已 revert `a620a7e2f`、撤工单 8025）。正解是重建时用 `product_number`
-   调券商品详情补齐；电商接口未交付，**先接 Apollo mock**。
+1. ✅ **缓存 miss 补齐券字段**：已接 mock（`PreOrderCouponMockEnricher`，promotion `eb72e083f`），
+   开关 `pre.order.coupon.mock.enabled` 默认 false。**不加列**（`product_type=8014` 已足以区分，
+   加列 = 冗余 + 电商数据脏快照，已 revert `a620a7e2f`、撤工单 8025）。
+   ⚠️ 活动挂的券商品 ID 需为内置 mock 的 `801400001/2/3` 才补得上，见 [[verify]]。
+   真接口就绪后按 [[verify]] 的下线步骤替换。
 2. 券字段修好后再跑 C 端：活动 `578363764011708416` 已建好并发布（type=2，挂了两张券）。
 3. 配 `pre.order.activity.coupon.renewalPlanIds` → 跑 C 端落地页自测。
    ⚠️ `getByRenewalPlanId` 有 Redis 缓存，改配置不生效先想到缓存。
@@ -124,6 +124,7 @@ tags:
 | Apollo | ✅ 5 个 key，其中 `renewal.content.config.map` **不配则老师端无入口** |
 | 代课接口权限 | ✅ 2 个新接口待登记 |
 | **反射桥开关** | 🚨 **promotion / cart / product-server 三处 `AclServiceCompareController.enabled` 线上必须显式配 `false`**（代码默认 true，不配=开启）→ 见 [[verify]] |
+| **券 mock 开关** | 🚨 **promotion-b / student-center 两处 `pre.order.coupon.mock.enabled` 线上必须 false**（默认 false，建议显式配）→ 见 [[verify]] |
 | MQ | ❌ 券订单消息由订单团队发 |
 | ES | ❌ 写 ES 归马胜 |
 

@@ -162,6 +162,38 @@ select 是**硬拼列名、与值是否 null 无关**，一旦发布，`selectBy
 **阻塞**：电商券商品接口尚未提供（找邓俊兵，见 [[links]] 的 TODO-券信息接口），
 当前先接 student-center 已有的 Apollo mock 顶替。
 
+### 已接 Apollo mock 顶替（2026-09-09，promotion `eb72e083f`）
+
+电商接口没来之前，缓存重建路径先由 mock 补齐，让 C 端在**缓存过期后**也能跑通。
+
+| | |
+|---|---|
+| 类 | `promotion-domain` → `PreOrderCouponMockEnricher` |
+| 挂载点 | `PreOrderActivityDomainServiceImpl#convertPreOrderActivityProductCacheDTOS` 出口（DB 重建唯一必经处） |
+| 开关 | `pre.order.coupon.mock.enabled`，**默认 false**，线上不配即不生效 |
+| 数据 | `pre.order.coupon.mock.data`（不配用内置 3 条），与 student-center `PreOrderCouponMockProvider` **同源同字段** |
+| 对齐键 | `productNumber` = 券商品 ID（`couponSkuNumber`） |
+
+**内置 mock 的券商品 ID**：`801400001`(使用中) / `801400002`(待开始) / `801400003`(已结束)。
+⚠️ 活动里挂的券商品 ID 必须是这三个之一才补得上，否则 `hit=0`。
+
+**行为边界**（刻意如此，别当 bug 改）：
+- 只补 `product_type=8014` 的行，课程商品不碰
+- **只补为空的字段**，不覆盖缓存命中路径的真实值
+- 不补 `scopes`（权威源在 product-server）
+- **不做「真接口失败回落 mock」**——会让联调期真实故障被假数据掩盖
+- 每次生效打 `warn` 日志：`券信息由 MOCK 补齐(电商接口未提供)`，**日志里看到它就说明走的是假数据**
+
+🚨 **上线前必须处理**（两处 mock 都要）：
+
+| 服务 | Apollo key | 线上 |
+|---|---|---|
+| `promotion-b.gaotu100.com` | `pre.order.coupon.mock.enabled` | **必须 false 或不配**（默认 false，但建议显式配） |
+| `student-center` | `pre.order.coupon.mock.enabled` | **必须 false 或不配** |
+
+**下线步骤**：电商接口就绪 → 置开关 false 止血（不需发版）→ 把 `enrich()` 换成真实 ACL 调用
+→ 删 `PreOrderCouponMockEnricher` 与 student-center 的 `PreOrderCouponMockProvider` 及其 mock 分支。
+
 `scopes` 不落 promotion 库不变 —— 一对多，权威源在 product-server 的
 `renewal_pre_order_activity_coupon_scope` 表。
 
