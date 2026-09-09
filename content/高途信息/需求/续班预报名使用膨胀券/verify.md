@@ -123,23 +123,49 @@ service_method=com.gaotu.product.service.renewal.preorder.PreOrderCouponIntersec
 
 **C 端自测在此修复前跑不通**，且这是**上线阻塞项**，不是自测环境问题。
 
-### 修复进展（2026-09-08）
+### 修复进展（2026-09-09 修正：原方案已撤销）
 
-**代码已改完并提交**（promotion `a620a7e2f`），三处都补了：
+> ⚠️ 2026-09-08 的「加 5 列落库」方案**已作废并 revert**，工单 8025 **已撤**。
+> 下面是最终口径，看到旧结论以本节为准。
 
-| 位置 | 原问题 |
+**为什么撤**（用户 review 指出，已确认）：
+
+| 原方案加的列 | 为什么不需要 |
 |---|---|
-| `pre_order_activity_product` 表 | 无券列 → **DDL 工单 8025 已提，测试环境待审批发布** |
-| `PreOrderActivityProduct` Entity + Mapper XML | 无字段/无列映射 → 已补 5 字段 + resultMap + Base_Column_List + insertSelective |
-| `PreOrderActivityProductRepositoryImpl` | `batchInsert` 与 `convertPreOrderActivityProductBO` **两处都跳过券字段**（丢字段的直接原因） → 已双向补齐 |
+| `coupon_id` / `sku_id` | **冗余** —— `product_number` 存的就是券商品 ID（见 `PreOrderActivityProductEditDTO` 注释），券商品详情里能查到 sku。同一身份存两列，必然出现「以谁为准」 |
+| `coupon_name` / `buy_amount` / `coupon_status` | **权威源在电商，落库即快照**。券改名、状态流转后快照不会跟着变；`coupon_status` 尤其是会流转的状态，落库必脏 |
 
-**⏳ 卡在 DDL 工单审批**：https://sre.baijia.com/dms/mySql/detail?id=8025&env=/test-sql
-表加列生效后才能重新验证；在此之前 `listFromCache` 仍会返回 5 字段。
+**正确口径**：`product_type=8014` 已足以区分券商品与课程商品（`PreOrderActivityCouponConstant`，
+Apollo `gaotu.preOrderActivity.coupon.productType` 可配），**表结构一列都不用加**。
 
-`scopes` 仍不落 promotion 库 —— 它是一对多，权威源在 product-server 的
-`renewal_pre_order_activity_coupon_scope` 表，不需要挪。
+**已执行**（promotion `8ed5fbab1`，revert 掉 `a620a7e2f`）：
 
-**上线时线上库也要加这 5 列**（另提 prod 工单）。
+| 位置 | 状态 |
+|---|---|
+| DDL 工单 8025 | ✅ 已撤，测试环境表**始终是 8 列**，未加过列 |
+| `Base_Column_List` / resultMap / insertSelective | ✅ 已还原为 8 列 |
+| Entity 5 字段 + RepositoryImpl 双向补齐 | ✅ 已还原 |
+
+🚨 **顺带消除一个必挂故障**：revert 前 `Base_Column_List` 已含那 5 列，而表里没有。
+select 是**硬拼列名、与值是否 null 无关**，一旦发布，`selectByExample` / `selectByPrimaryKey`
+必报 `Unknown column`，**连订金班活动查询一起挂**（不限膨胀券）。revert 同时解决。
+
+### 原 bug 仍在：缓存 miss 丢券字段
+
+**撤的是错误修法，不是修好了。** 缓存 miss 从 DB 重建后，
+`couponName` / `buyAmount` / `couponStatus` / `skuId` 仍为 null：
+
+- cart `PreRegistrationCouponAssembler:215` 取不到 `buyAmount` → 走兜底/抛异常
+- product-server `PreOrderCouponIntersectService:250` 取不到 `couponStatus` → 「未知即放行」，**过滤静默失效**
+
+**正解**：重建时用 `product_number` 调**券商品详情**实时补齐（券改名、状态流转能同步，无快照问题）。
+**阻塞**：电商券商品接口尚未提供（找邓俊兵，见 [[links]] 的 TODO-券信息接口），
+当前先接 student-center 已有的 Apollo mock 顶替。
+
+`scopes` 不落 promotion 库不变 —— 一对多，权威源在 product-server 的
+`renewal_pre_order_activity_coupon_scope` 表。
+
+**上线时线上库不需要加列**（原「另提 prod 工单」作废）。
 
 ## 反射桥调用地址（四个服务，均实测）
 

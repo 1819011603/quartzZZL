@@ -13,7 +13,7 @@ branches:
   - order:feature-xuban-pre
   - cart:feature-xuban-pre
   - student-center:feature-xuban-pre
-updated: 2026-09-08
+updated: 2026-09-09
 tags:
   - 需求
 ---
@@ -61,8 +61,8 @@ tags:
 | 阶段 | 开发中（**B 端券列表自测已通过**） |
 | 进度 | T 16/18 · R 0/2 · C 0/0 |
 | 排期 | 09-08~09-11 开发 · 09-14 自测 · 09-15~16 联调 · **提测 09-16** |
-| 当前卡点 | 🔴 **promotion 券字段不落库**（表无券列，仅存 Redis，缓存 miss 即丢）→ C 端拿不到 scopes/buyAmount，交集必空、落地页必失败。**上线阻塞项**，见 [[verify]] |
-| 最近更新 | 2026-09-08
+| 当前卡点 | 🔴 **缓存 miss 丢券字段**：正解是重建时用 `product_number` 调券商品详情补齐，但**电商接口未提供**，先接 Apollo mock。⚠️「加 5 列落库」方案 2026-09-09 已 revert、工单 8025 已撤（**表不用加列**），详见 [[verify]] |
+| 最近更新 | 2026-09-09
 
 **六仓库代码全部提交并推送，编译全绿（BUILD SUCCESS）**，但均未写单测、未跑功能自测。
 
@@ -70,17 +70,18 @@ tags:
 |---|---|
 | student-center | `7425901f5` |
 | product-server | `566380d4e` + **未提交**（券状态码 1→2 修正，编译通过） |
-| promotion | `938590af5` |
+| promotion | `8ed5fbab1`（revert 券字段落库） |
 | order | `073dea69e2` |
 | cart | `0b529fa4` + **未提交**（DTO 补券字段 + 三处改抛异常 + 成对求交，编译通过） |
 | promotion-app | 仅 spec（本期不改代码） |
 
 ## 下一步
 
-1. 🔴 **找 promotion 对齐券字段落库**（最高优先级，上线阻塞）：
-   `pre_order_activity_product` 表只有 8 列、无券字段，`couponId`/`buyAmount`/`couponStatus`/`scopes`
-   只写进 Redis 缓存，**缓存 miss 从 DB 重建后全部为 null**（已实测复现，见 [[verify]]）。
-   需要加列或另建券信息表。**在此之前 C 端自测跑不通，且线上必然出问题。**
+1. 🔴 **缓存 miss 补齐券字段**（最高优先级，上线阻塞）：缓存重建后
+   `couponName`/`buyAmount`/`couponStatus`/`skuId` 全为 null（已实测，见 [[verify]]）。
+   **不加列**（`product_type=8014` 已足以区分，加列 = 冗余 + 电商数据脏快照，
+   2026-09-09 已 revert `a620a7e2f`、撤工单 8025）。正解是重建时用 `product_number`
+   调券商品详情补齐；电商接口未交付，**先接 Apollo mock**。
 2. 券字段修好后再跑 C 端：活动 `578363764011708416` 已建好并发布（type=2，挂了两张券）。
 3. 配 `pre.order.activity.coupon.renewalPlanIds` → 跑 C 端落地页自测。
    ⚠️ `getByRenewalPlanId` 有 Redis 缓存，改配置不生效先想到缓存。
@@ -119,7 +120,7 @@ tags:
 
 | 配置项 | 涉及 |
 |---|---|
-| MySQL DDL | ✅ 一张新表，测试已建、线上待建 |
+| MySQL DDL | ✅ 一张新表，测试已建、线上待建。⚠️ `pre_order_activity_product` **不加列**（工单 8025 已撤） |
 | Apollo | ✅ 5 个 key，其中 `renewal.content.config.map` **不配则老师端无入口** |
 | 代课接口权限 | ✅ 2 个新接口待登记 |
 | **反射桥开关** | 🚨 **promotion / cart / product-server 三处 `AclServiceCompareController.enabled` 线上必须显式配 `false`**（代码默认 true，不配=开启）→ 见 [[verify]] |
@@ -133,7 +134,9 @@ tags:
   别把「查泳道 cluster 404」当成环境不可用（我犯过这个错）。
 - **泳道名不能反推逻辑环境**：`test-gtbg-dev-3` 属于 **dev** 不是 test，只查 environment=test
   会误判「该泳道没 pod」。已修进 `pod_term.py pods`（默认聚合 test+dev，带 `--ns` 过滤）。
-- **promotion 券字段不落库**，只在 Redis 缓存里；插 DB 造不出可用的膨胀券活动。
+- **promotion 券字段不落库是设计如此**，只在 Redis 缓存里；插 DB 造不出可用的膨胀券活动。
+  ⚠️ 别再想着「给表加券列」——`product_number` 已是券商品 ID、`product_type=8014` 已能区分，
+  券名/金额/状态是电商权威数据，落库即脏快照。2026-09-09 试过一次已 revert（`a620a7e2f`→`8ed5fbab1`）。
 - **cart 侧三处已改为抛异常**（price / scopes / deductibleAmount）：上游字段缺失时落地页直接失败，
   **这是预期行为**（不能静默失败）。别把它当回归 bug 去「修回」返 0。
 - **成对求交**：cart 原本把年级、学科**分别求交**，会放行「年级来自 A 组合、学科来自 B 组合」的
