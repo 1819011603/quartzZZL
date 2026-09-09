@@ -48,6 +48,7 @@ tags: [需求, 任务]
 | T-28 | `couponStatusDesc` 本地映射（永久方案，电商邓俊兵确认不会下发） | 已完成 | — | student-center `daa8c8516` / promotion `1083c43cf`；已部署到 test-gtbg-dev-3 并实测(`coupon_status_desc: "使用中"`) |
 | T-29 | 补单测：`PreOrderCouponEnricher`/`fillCouponScopes`/`PreOrderCouponStatusEnum`/`listScopesByActivities` | 已完成 | — | promotion `83fec5087`(17 个测试方法) / student-center `c777976d9`(12 个) / product-server `c0a448b57`(8 个)；3 个 subagent 并行编写，主会话逐一读过源码确认质量后提交 |
 | T-30 | C 端三者交集精确匹配 —— 用真实数据端到端验证 | 已完成 | — | 直连 DB 造了一套年级学科真正匹配的数据（续班计划改指向真实券活动、目标年级学科对齐券范围），反射调 `preRegistration` 返回完整正确的推荐商品，详见 [[verify]] |
+| T-31 | 验证 `postProductId`/`postProductName`/`activityType`（预报名预警列表）字段真实可用 | 已完成 | — | 用户要求核实这三个字段是不是本次改过。查 git log 确认未改动（T-07/T-10 的老字段）；测试环境该列表原本查不到数据，直连插了一行 `questionnaire_inspect` 后调真实接口，`postProductId`/`postProductName` 由「前置班→后置班」推荐逻辑真实查出，非编造值，详见 [[verify]] |
 
 ### T-13 自测进展（2026-09-08 订正）
 
@@ -99,11 +100,6 @@ student-data 收数也由订单侧现有消息覆盖。
 
 R-01、R-02 均已闭环，当前无阻塞项。
 
-### R-02 测试冲突问题
-- **卡在**：无处理人，**含义本身不清楚**
-- **需要谁**：先找提出人问清楚指的是什么（多人共用测试环境？测试数据冲突？）
-- **可以先做**：无 —— 得先问清楚才能判断
-
 ## 开发期新增待确认项（需反讲/前端/电商定稿）
 
 这些是写代码时冒出来的，**不在原待办表里**，定稿前代码里都是暂定值或 TODO：
@@ -112,8 +108,8 @@ R-01、R-02 均已闭环，当前无阻塞项。
 |---|---|---|---|
 | 1 | ~~电商券商品接口未提供~~ **已接通** | — | ✅ **2026-09-09 已接真实 Feign 并删除全部 mock**，泳道实测返回 56 条真数据 |
 | 2 | ~~券状态码取值~~ **已定稿**：1 使用中 / 2 已失效 / 3 审核中 / 4 已暂停 | — | ✅ 三仓已对齐，`COUPON_STATUS_IN_USE`=1；文案 mock 阶段本地按码补，真接口以电商为准 |
-| 3 | `scopes` 落库方是 product-server 还是 promotion | promotion 侧回显会丢券字段 | 按 product-server 落库实现；scope 表已有回查方法 |
-| 4 | 两列字段名 `postProductId`/`postProductName`、`activityType` | 前端按名取值 | 后端已起名，需前端对齐 |
+| 3 | ~~`scopes` 落库方是 product-server 还是 promotion~~ **已解决** | — | ✅ 落 product-server，promotion 跨服务查询（T-27），端到端实测通过 |
+| 4 | ~~两列字段名 `postProductId`/`postProductName`、`activityType`~~ **已验证** | — | ✅ 2026-09-09 深夜直接调用真实接口验证，字段名、取值逻辑均正确（`postProductId=514767374124142592`，来自真实的「前置班→后置班」推荐查询），不是本次改的，本次也未改动这三个字段 |
 | 5 | `showDiscountAmount` 膨胀券口径 | 展示逻辑 | 暂定「任一张券抵扣金额>0 即展示」 |
 | 6 | 膨胀券专属背景图 | C 端样式 | Apollo `renewal.cStyle.preRegistrationCoupon.bgUrl`，暂用订金班同一张 |
 | 7 | 膨胀券 reportCode 取值 | Apollo 内容配置，不配则老师端无入口 | 暂写 `pre_registration_coupon_link` |

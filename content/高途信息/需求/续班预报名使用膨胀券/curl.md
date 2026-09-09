@@ -5,6 +5,12 @@ tags: [需求, 验证, curl]
 
 # 自测 cURL 集（可导入 Apifox）
 
+> 🔴 **这份文件里具体的返回值示例是 2026-09-08/09 早期记录的快照，下面很多标成"❌"/"阻塞"的
+> 结论后来都修好了**（mock 已全删、券字段回显已修好、C 端 scopes 已修好、三者交集已端到端验证、
+> 单测已补齐）。**当前最新真相在 [[verify]]，这份文件只保留还有效的部分**：
+> curl 语法本身、网关前缀表、`traffic-env` 头这个坑。看到具体返回值/结论类的描述，
+> 以 [[verify]] 为准，这里的旧结论已在下面逐条标注。
+
 > ## 🚀 推荐用 OpenAPI 一次性导入，别一条条粘 cURL
 >
 > **`apifox-openapi.json`（同目录）** —— Apifox「导入数据 → **OpenAPI/Swagger**」选文件即可，
@@ -56,7 +62,9 @@ tags: [需求, 验证, curl]
 
 `POST /renewal/pre/coupon/list` · student-center · **本需求的核心新接口**
 
-数据走 Apollo mock（`pre.order.coupon.mock.enabled=true`），内置 3 张券。
+🔴 **下面示例数据是 mock 时代的记录，mock 已于 2026-09-09 全部删除**——现在这个接口走的是真实电商
+coupon-a 数据（空条件查询 `total=79`，见 [[verify]]），返回结构不变，`couponName`/`couponStatus`
+等字段是真实值，不再是"暑期50抵200"这几张固定 mock 券。下面的 curl 语法仍然有效，照抄用。
 
 ### 1.1 空条件（默认过滤：只返回可勾选的「待开始+使用中」）
 
@@ -111,7 +119,7 @@ curl --location --request POST 'https://test-fuwu.baijia.com/bgwApi/component/st
 
 ---
 
-## 2. 膨胀券活动的券配置与适用范围（B 端活动详情抽屉回显）✅ 接口通
+## 2. 膨胀券活动的券配置与适用范围（B 端活动详情抽屉回显）✅ 已修复，端到端实测通过
 
 `POST /b/renewal/preOrderActivity/couponScope/list` · product-b
 
@@ -119,21 +127,17 @@ curl --location --request POST 'https://test-fuwu.baijia.com/bgwApi/component/st
 curl --location --request POST 'https://test-fuwu.baijia.com/bgwApi/product-b/b/renewal/preOrderActivity/couponScope/list' \
 --header 'Content-Type: application/json' \
 --header 'traffic-env: test-gtbg-dev-3' \
---data-raw '{"preOrderActivityNumber":578363764011708416}'
+--data-raw '{"preOrderActivityNumber":578563007821410304}'
 ```
 
-**实测返回**（2026-09-09）：
-```json
-{"code":0,"data":[
-  {"deductible_amount":20000,"product_number":"801400001","scopes":[]},
-  {"deductible_amount":40000,"product_number":"801400002","scopes":[]}]}
-```
+🔴 **下面这段是 09-08 记的旧结论，`scopes` 为空的问题已经修好了，别再信**：
 
-⚠️ **`scopes` 为空、券字段全无 —— 这是已知问题不是新 bug**，两个原因叠加：
-1. scope 表里造的数据挂在**假活动号** 9001/9002/9003，与真实活动 `578363764011708416` 对不上
-2. promotion `pre_order_activity_product` 表无券列，缓存重建后券字段为 null（详见 [[verify]]）
+~~实测返回 `scopes:[]`，两个原因叠加：① scope 表数据挂假活动号 ② promotion 表无券列缓存重建后为 null~~
 
-要看到非空 `scopes`，得先把 scope 数据的 `activity_number` 改成真实活动号。
+**现在的真实结果**（用当前有效的真实活动号 `578563007821410304` 查，见 [[verify]] 造好的数据）：
+`scopes` 正确返回 `[{"grade_code":19,"grade_name":"大班","subject_code":6,"subject_name":"物理"}]`，
+`couponId`/`couponName`/`couponStatus`/`buyAmount` 等券字段全部正确回显——两个原因都已解决：
+promotion 的 `PreOrderCouponEnricher` 补齐了券字段（`enrichDTO`），跨服务查询补齐了 `scopes`。
 
 ---
 
@@ -184,14 +188,12 @@ curl --location --request POST 'https://test-fuwu.baijia.com/bgwApi/component/st
 curl --location --request POST 'https://test-fuwu.baijia.com/bgwApi/promotion/b/test/acl/compare/service' \
 --header 'Content-Type: application/json' \
 --header 'traffic-env: test-gtbg-dev-3' \
---data-raw '{"serviceNameAndMethodName":"com.gaotu.promotion.app.service.preorder.PreOrderActivityService#listFromCache","params":[{"preOrderActivityNumbers":[578363764011708416]}]}'
+--data-raw '{"serviceNameAndMethodName":"com.gaotu.promotion.app.service.preorder.PreOrderActivityService#listFromCache","params":[{"preOrderActivityNumbers":[578563007821410304]}]}'
 ```
-✅ **实测通过**。用来复现「券字段不落库」那个阻塞项 —— 返回的 `product_list` 每项**只有 5 个字段**：
-```json
-{"deductible_amount":20000,"id":916,"pre_order_activity_number":578363764011708416,
- "product_number":801400001,"product_type":8014}
-```
-`couponId/couponName/skuId/buyAmount/couponStatus/couponStatusDesc/scopes` **全部缺失**，与 [[verify]] 记录一致。
+
+🔴 **09-08 记的是「券字段不落库」阻塞项的复现结果（返回只有 5 个字段，券字段全部缺失），这个问题已经在
+09-09 修好了**——现在同一个接口对当前有效活动号会正确返回 `couponId`/`couponName`/`skuId`/`buyAmount`/
+`couponStatus`/`couponStatusDesc`/`scopes` 全部字段，详见 [[verify]]「已验证清单」。
 
 ⚠️ 入参是**查询 DTO**（`{"preOrderActivityNumbers":[...]}`），不是裸数组；传裸数组会报「未找到方法」。
 
@@ -210,17 +212,21 @@ curl --location --request POST 'https://test-fuwu.baijia.com/bgwApi/product-b/b/
 
 ---
 
-## 我到底测了什么（诚实版）
+## 我到底测了什么（诚实版，2026-09-09 深夜更新）
+
+> 🔴 这张表下面这版是最新的。上面还留着的具体 curl 返回值示例是历史快照，别看那些数字，
+> 结论以这张表和 [[verify]]「已验证清单」为准。
 
 | 项 | 结论 |
 |---|---|
-| 券列表：空条件 / 名称模糊 / ID 批量 / 状态过滤 | ✅ **HTTP 实测通过**（本次会话，1.1~1.3 逐条跑过） |
-| `couponStatusDesc` 随券列表下发 | ✅ **实测有值**（使用中/待开始），本次新增字段生效 |
+| 券列表：空条件 / 名称模糊 / ID 批量 / 状态过滤 | ✅ **真实电商数据实测通过**（`total=79`） |
+| `couponStatusDesc` | ✅ 本地映射已实现并实测（电商不下发这个字段，本地按 jar 官方注释维护是永久方案，电商邓俊兵已确认） |
 | `productType=8014`、`selectable` | ✅ 实测正确 |
-| 券范围接口 couponScope/list | ⚠️ **接口通(code:0)，但 scopes 为空** —— 造数挂在假活动号上 |
-| 券的**真实**名称/金额/状态 | ❌ **全部是 mock**，电商券商品接口至今未提供 |
-| B 端活动详情回显券字段 | ❌ 验不了，promotion 表无券列（阻塞项） |
-| C 端落地页 | ❌ 未跑，前提是先修好上面两条 |
-| 单元测试 | ❌ **一个都没写** |
+| 券范围接口 / B 端活动详情回显券字段 | ✅ **已修复并端到端实测通过**（`couponId`/`couponName`/`buyAmount`/`couponStatus`/`skuId`/`scopes` 全部正确） |
+| 券的真实名称/金额/状态 | ✅ **已接通真实电商 coupon-a**，mock 全部删除 |
+| C 端落地页（三者交集完整推荐） | ✅ **真实数据端到端验证通过**，真实券"木7"完整推荐出来 |
+| `postProductId`/`postProductName`/`activityType`（预警列表） | ✅ 验证是老字段（非本次改动），真实数据回显正确 |
+| 单元测试 | ✅ 已补 38 个测试方法（promotion 17 / student-center 12 / product-server 8） |
 
-> 一句话：**券列表这条链路是真跑通了的；券范围与 C 端是「代码写完、编译过、但没端到端跑通」。**
+> 一句话：**这个需求目前涉及的接口链路都已经端到端跑通并有真实数据验证**。仍未做的是：单测覆盖不全
+> （order/cart 的下单算价等历史模块没补）、上线 Apollo 配置几项待配、前端字段对齐没有新的待办。
