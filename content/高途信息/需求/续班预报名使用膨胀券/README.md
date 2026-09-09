@@ -20,7 +20,7 @@ tags:
 
 # 续班预报名使用膨胀券
 
-> **本目录导航**：[[links|🔗 链接中心]] · [[tasks|✅ 任务板]] · [[changelog|📜 会话日志]] · [[verify|🧪 验证手册]]
+> **本目录导航**：[[links|🔗 链接中心]] · [[tasks|✅ 任务板]] · [[changelog|📜 会话日志]] · [[verify|🧪 验证手册]] · [[curl|🌐 自测 cURL 集]] · `apifox-openapi.json`(导 Apifox)
 > 技术方案在飞书反讲文档里（见 [[links]]），本地不留副本。
 > 续接这个需求：读完本文件即可。
 
@@ -51,6 +51,11 @@ tags:
 - **除 student-data 外，6 个仓库全是我的活**（含 promotion/promotion-app/order/cart/product-server）。
   反讲文档「项目关联方」写「待定」指的是对方服务对接人待定，**不是这活不是我的**。
 - 灰度按**续班计划 ID**；用**膨胀券商品ID**；C 端一券只能买一次、页面多选；加购上限来源=电商接口。
+- 🔴 **券状态枚举 = 电商 coupon-a 口径（2026-09-09 定稿）**：
+  **1 使用中 / 2 已失效 / 3 已审核中 / 4 已暂停**，**没有「待开始」**。
+  来源 jar `com.gaotu:coupon-a-client:1.3.15` 的 `ExpandCouponDetailDto#couponStatus`
+  （接口 `POST /feign/expandCoupon/queryList`，青舟 interfaceId=5453936）。
+  **只有【1 使用中】可勾选**。`COUPON_STATUS_IN_USE` 已 2→1。
 - **券状态文案 `couponStatusDesc` 权威源在电商**（2026-09-09 定）：与 `couponStatus` 成对下发，
   **本地一律不按状态码翻译、不做兜底**，电商没给就是 null。`PreOrderCouponStatusEnum` 只留
   `selectable`（哪些状态可勾选，是业务规则不是文案），`descOfStatus()` 已删。
@@ -68,13 +73,15 @@ tags:
 | 最近更新 | 2026-09-09
 
 **六仓库代码全部提交并推送，编译全绿（BUILD SUCCESS）**，但均未写单测、未跑功能自测。
-（2026-09-09：此前 product-server / cart 的两处未提交改动已随 T-21 一并提交。）
+（2026-09-09：commit 表此前把 product-server / cart 标成「有未提交改动」是**过期信息** ——
+那两处早在上一次会话就已提交（`9df15aa60` 券状态码 1→2、`47146d65` 券字段补齐与成对求交），
+表里只是没跟着更新 sha。**动手前以 `git status` 为准，别信这张表的备注。**）
 
 | 仓库 | 最新 commit |
 |---|---|
-| student-center | `35462c689` |
-| product-server | `9626a3026` |
-| promotion | `f7cd4dce2` |
+| student-center | `d8c7fb9cd` |
+| product-server | `417bf0cb2` |
+| promotion | `3071f7335` |
 | order | `073dea69e2` |
 | cart | `a7646b67` |
 | promotion-app | 仅 spec（本期不改代码） |
@@ -149,3 +156,7 @@ tags:
 - **别再给 `couponStatusDesc` 加本地兜底翻译**。看到 mock 关掉后文案变 null，第一反应会是
   「加个 `descOfStatus` 兜一下」—— 那正是 2026-09-09 明确否掉的方案（文案权威源在电商）。
   真缺文案应该找电商补，不是本地造一份会和电商分叉的映射。
+- 🔴 **别把券状态 2 当「使用中」**。这个值错过两次：最初写 1（当时枚举「1 待开始」）、
+  09-08 改成 2（当时枚举「2 使用中」），而**电商真实枚举 2 = 已失效**。
+  停在 2 会把失效券当可用券放行，是资损方向。判据只有一个：
+  以 `coupon-a-client` jar 里的 `ExpandCouponDetailDto` 为准，别信任何本地文档的旧表述。

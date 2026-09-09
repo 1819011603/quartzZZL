@@ -1,0 +1,876 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "续班预报名使用膨胀券",
+    "version": "2026-09-09.2",
+    "description": "# 续班预报名使用膨胀券 · 自测接口集\n\n分支 `feature-xuban-pre` · 泳道 **test-gtbg-dev-3**\n\n## ⚠️ 泳道头请在 Apifox 环境里全局配一次\n\n接口定义里**不带** `traffic-env`（避免每个接口重复维护）。请在 Apifox\n「环境管理 → 测试环境 → 全局 Header」加一条：\n\n| Header | 值 |\n|---|---|\n| `traffic-env` | `test-gtbg-dev-3` |\n\n⚠️ **必须是 `traffic-env`（带连字符）** —— 写成 `trafficenv` 会静默打到默认泳道，新接口全 404。\n\n## ⚠️ 网关前缀不能猜\n\n`/bgwApi/component/{服务}` **只有 student-center 有**；走 `/noAuth/...` 会返回 200 但\n`code:3 登陆信息获取异常`（该路由跳过鉴权拿不到用户上下文）。\n各服务反射桥前缀权威表在 `~/.local/mcp-servers/baijia_invoke.py` 的 `ROUTE_MAP`。\n\n## 券状态枚举（2026-09-09 电商定稿）\n\n来源：`com.gaotu:coupon-a-client:1.3.15` 的 `ExpandCouponDetailDto#couponStatus`\n\n| 码 | 含义 | 可勾选 |\n|---|---|---|\n| 1 | 使用中 | ✅ |\n| 2 | 已失效 | ❌ |\n| 3 | 审核中 | ❌ |\n| 4 | 已暂停 | ❌ |\n\n**没有「待开始」**。售卖期由 `saleStartTime`/`saleEndTime` 表达，不在状态码里。\n\n## 测到哪了（诚实版）\n\n| 项 | 结论 |\n|---|---|\n| 券列表 5 条 | ✅ HTTP 实测通过（枚举改版前） |\n| `couponStatusDesc` | ✅ 实测有值 |\n| 券范围 couponScope/list | ⚠️ 接口通但 scopes 空（造数挂假活动号） |\n| 反射桥 4 条 | ✅ 实测通过 |\n| 券的**真实**名称/金额/状态 | ❌ 仍是 mock，只是字段名/枚举已对齐电商真实契约 |\n| C 端落地页 / 单元测试 | ❌ 未跑 / 未写 |\n\n**Cookie**：Apifox 自带 Cookie 管理，无需配代理。"
+  },
+  "servers": [
+    {
+      "url": "https://test-fuwu.baijia.com",
+      "description": "B端网关(测试)"
+    }
+  ],
+  "tags": [
+    {
+      "name": "1-券选品(student-center)",
+      "description": "本需求核心新接口，5 条实测通过"
+    },
+    {
+      "name": "2-券配置回显(product-server)",
+      "description": "活动详情抽屉；scopes 当前为空"
+    },
+    {
+      "name": "3-反射桥(绕过网关鉴权)",
+      "description": "前端没开发时验业务逻辑最快的路"
+    }
+  ],
+  "paths": {
+    "/bgwApi/component/student-center/renewal/pre/coupon/list": {
+      "post": {
+        "tags": [
+          "1-券选品(student-center)"
+        ],
+        "summary": "券选品分页查询（空条件·默认过滤）",
+        "description": "空条件查询。不传 statusList 时**默认只返回【1 使用中】**（枚举改版后从 2 个状态收窄为 1 个）。\n\n内置 mock 有 4 张券覆盖四个状态，默认过滤后只剩「暑期膨胀券50抵200」。\n\n★ `couponStatusDesc` 为本需求新增字段。\n\n⚠️ 数据来自 Apollo mock（`pre.order.coupon.mock.enabled=true`）；mock 的**字段名已与电商 `ExpandCouponDetailDto` 对齐**，但值仍是假的。",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "couponName": {
+                    "type": "string",
+                    "description": "券名称，单项模糊匹配"
+                  },
+                  "couponIdList": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "format": "int64"
+                    },
+                    "description": "券ID批量精确，最多100"
+                  },
+                  "couponIdsStr": {
+                    "type": "string",
+                    "description": "券ID空格分隔串（兼容全角空格/逗号/换行）；与数组同传时数组优先"
+                  },
+                  "couponSkuNumberList": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "format": "int64"
+                    },
+                    "description": "券商品ID批量精确，最多100"
+                  },
+                  "couponSkuNumbersStr": {
+                    "type": "string",
+                    "description": "券商品ID空格分隔串"
+                  },
+                  "statusList": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    },
+                    "description": "券状态过滤：1 使用中 / 2 已失效 / 3 审核中 / 4 已暂停。不传默认只查【1 使用中】"
+                  },
+                  "pageNum": {
+                    "type": "integer",
+                    "default": 1,
+                    "minimum": 1
+                  },
+                  "pageSize": {
+                    "type": "integer",
+                    "default": 20,
+                    "minimum": 1,
+                    "maximum": 100
+                  },
+                  "identification": {
+                    "type": "string",
+                    "description": "来源标识"
+                  }
+                }
+              },
+              "example": {
+                "pageNum": 1,
+                "pageSize": 20
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "实测返回",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 0,
+                  "data": {
+                    "total": 1,
+                    "pageNum": 1,
+                    "pageSize": 20,
+                    "list": [
+                      {
+                        "couponName": "暑期膨胀券50抵200",
+                        "couponId": 10086,
+                        "couponSkuNumber": 801400001,
+                        "productType": 8014,
+                        "buyAmount": 5000,
+                        "deductibleAmount": 20000,
+                        "soldCount": 12,
+                        "totalCount": 1000,
+                        "creator": null,
+                        "couponStatus": 1,
+                        "couponStatusDesc": "使用中",
+                        "selectable": true
+                      }
+                    ]
+                  },
+                  "msg": ""
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bgwApi/component/student-center/renewal/pre/coupon/list?case=2": {
+      "post": {
+        "tags": [
+          "1-券选品(student-center)"
+        ],
+        "summary": "券选品·券名称模糊查询",
+        "description": "✅ 实测通过：命中 1 条「秋季膨胀券100抵400」。",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "couponName": {
+                    "type": "string",
+                    "description": "券名称，单项模糊匹配"
+                  },
+                  "couponIdList": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "format": "int64"
+                    },
+                    "description": "券ID批量精确，最多100"
+                  },
+                  "couponIdsStr": {
+                    "type": "string",
+                    "description": "券ID空格分隔串（兼容全角空格/逗号/换行）；与数组同传时数组优先"
+                  },
+                  "couponSkuNumberList": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "format": "int64"
+                    },
+                    "description": "券商品ID批量精确，最多100"
+                  },
+                  "couponSkuNumbersStr": {
+                    "type": "string",
+                    "description": "券商品ID空格分隔串"
+                  },
+                  "statusList": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    },
+                    "description": "券状态过滤：1 使用中 / 2 已失效 / 3 审核中 / 4 已暂停。不传默认只查【1 使用中】"
+                  },
+                  "pageNum": {
+                    "type": "integer",
+                    "default": 1,
+                    "minimum": 1
+                  },
+                  "pageSize": {
+                    "type": "integer",
+                    "default": 20,
+                    "minimum": 1,
+                    "maximum": 100
+                  },
+                  "identification": {
+                    "type": "string",
+                    "description": "来源标识"
+                  }
+                }
+              },
+              "example": {
+                "couponName": "秋季",
+                "pageNum": 1,
+                "pageSize": 20
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "实测返回",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 0,
+                  "data": {
+                    "total": 1,
+                    "pageNum": 1,
+                    "pageSize": 20,
+                    "list": [
+                      {
+                        "couponName": "秋季膨胀券100抵400",
+                        "couponId": 10087,
+                        "couponSkuNumber": 801400002,
+                        "productType": 8014,
+                        "buyAmount": 10000,
+                        "deductibleAmount": 40000,
+                        "soldCount": 0,
+                        "totalCount": 500,
+                        "creator": null,
+                        "couponStatus": 3,
+                        "couponStatusDesc": "审核中",
+                        "selectable": false
+                      }
+                    ]
+                  },
+                  "msg": ""
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bgwApi/component/student-center/renewal/pre/coupon/list?case=3": {
+      "post": {
+        "tags": [
+          "1-券选品(student-center)"
+        ],
+        "summary": "券选品·券ID批量精确（数组传法）",
+        "description": "✅ 实测通过。couponIdList 与 couponIdsStr 同传时**数组优先**。",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "couponName": {
+                    "type": "string",
+                    "description": "券名称，单项模糊匹配"
+                  },
+                  "couponIdList": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "format": "int64"
+                    },
+                    "description": "券ID批量精确，最多100"
+                  },
+                  "couponIdsStr": {
+                    "type": "string",
+                    "description": "券ID空格分隔串（兼容全角空格/逗号/换行）；与数组同传时数组优先"
+                  },
+                  "couponSkuNumberList": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "format": "int64"
+                    },
+                    "description": "券商品ID批量精确，最多100"
+                  },
+                  "couponSkuNumbersStr": {
+                    "type": "string",
+                    "description": "券商品ID空格分隔串"
+                  },
+                  "statusList": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    },
+                    "description": "券状态过滤：1 使用中 / 2 已失效 / 3 审核中 / 4 已暂停。不传默认只查【1 使用中】"
+                  },
+                  "pageNum": {
+                    "type": "integer",
+                    "default": 1,
+                    "minimum": 1
+                  },
+                  "pageSize": {
+                    "type": "integer",
+                    "default": 20,
+                    "minimum": 1,
+                    "maximum": 100
+                  },
+                  "identification": {
+                    "type": "string",
+                    "description": "来源标识"
+                  }
+                }
+              },
+              "example": {
+                "couponIdList": [
+                  10086,
+                  10087
+                ],
+                "pageNum": 1,
+                "pageSize": 20
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "实测返回",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 0,
+                  "data": {
+                    "total": 2,
+                    "pageNum": 1,
+                    "pageSize": 20,
+                    "list": [
+                      {
+                        "couponName": "暑期膨胀券50抵200",
+                        "couponId": 10086,
+                        "couponSkuNumber": 801400001,
+                        "productType": 8014,
+                        "buyAmount": 5000,
+                        "deductibleAmount": 20000,
+                        "soldCount": 12,
+                        "totalCount": 1000,
+                        "creator": null,
+                        "couponStatus": 1,
+                        "couponStatusDesc": "使用中",
+                        "selectable": true
+                      },
+                      {
+                        "couponName": "秋季膨胀券100抵400",
+                        "couponId": 10087,
+                        "couponSkuNumber": 801400002,
+                        "productType": 8014,
+                        "buyAmount": 10000,
+                        "deductibleAmount": 40000,
+                        "soldCount": 0,
+                        "totalCount": 500,
+                        "creator": null,
+                        "couponStatus": 3,
+                        "couponStatusDesc": "审核中",
+                        "selectable": false
+                      }
+                    ]
+                  },
+                  "msg": ""
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bgwApi/component/student-center/renewal/pre/coupon/list?case=4": {
+      "post": {
+        "tags": [
+          "1-券选品(student-center)"
+        ],
+        "summary": "券选品·券商品ID空格分隔串（运营粘贴场景）",
+        "description": "✅ 实测通过。分隔符兼容半角/全角空格、逗号、换行、Tab —— 运营从表格粘贴不会踩空。",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "couponName": {
+                    "type": "string",
+                    "description": "券名称，单项模糊匹配"
+                  },
+                  "couponIdList": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "format": "int64"
+                    },
+                    "description": "券ID批量精确，最多100"
+                  },
+                  "couponIdsStr": {
+                    "type": "string",
+                    "description": "券ID空格分隔串（兼容全角空格/逗号/换行）；与数组同传时数组优先"
+                  },
+                  "couponSkuNumberList": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "format": "int64"
+                    },
+                    "description": "券商品ID批量精确，最多100"
+                  },
+                  "couponSkuNumbersStr": {
+                    "type": "string",
+                    "description": "券商品ID空格分隔串"
+                  },
+                  "statusList": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    },
+                    "description": "券状态过滤：1 使用中 / 2 已失效 / 3 审核中 / 4 已暂停。不传默认只查【1 使用中】"
+                  },
+                  "pageNum": {
+                    "type": "integer",
+                    "default": 1,
+                    "minimum": 1
+                  },
+                  "pageSize": {
+                    "type": "integer",
+                    "default": 20,
+                    "minimum": 1,
+                    "maximum": 100
+                  },
+                  "identification": {
+                    "type": "string",
+                    "description": "来源标识"
+                  }
+                }
+              },
+              "example": {
+                "couponSkuNumbersStr": "801400001 801400002",
+                "pageNum": 1,
+                "pageSize": 20
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "实测返回",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 0,
+                  "data": {
+                    "total": 2,
+                    "pageNum": 1,
+                    "pageSize": 20,
+                    "list": [
+                      {
+                        "couponName": "暑期膨胀券50抵200",
+                        "couponId": 10086,
+                        "couponSkuNumber": 801400001,
+                        "productType": 8014,
+                        "buyAmount": 5000,
+                        "deductibleAmount": 20000,
+                        "soldCount": 12,
+                        "totalCount": 1000,
+                        "creator": null,
+                        "couponStatus": 1,
+                        "couponStatusDesc": "使用中",
+                        "selectable": true
+                      },
+                      {
+                        "couponName": "秋季膨胀券100抵400",
+                        "couponId": 10087,
+                        "couponSkuNumber": 801400002,
+                        "productType": 8014,
+                        "buyAmount": 10000,
+                        "deductibleAmount": 40000,
+                        "soldCount": 0,
+                        "totalCount": 500,
+                        "creator": null,
+                        "couponStatus": 3,
+                        "couponStatusDesc": "审核中",
+                        "selectable": false
+                      }
+                    ]
+                  },
+                  "msg": ""
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bgwApi/component/student-center/renewal/pre/coupon/list?case=5": {
+      "post": {
+        "tags": [
+          "1-券选品(student-center)"
+        ],
+        "summary": "券选品·显式查已失效券(statusList=[2])",
+        "description": "验证状态过滤：显式传 `statusList:[2]` 查【已失效】券。\n\n预期 `selectable=false`、`couponStatusDesc=已失效`。\n\n⚠️ 旧文档里 2 = 「使用中」是**错的**，电商定稿 2 = 已失效。",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "couponName": {
+                    "type": "string",
+                    "description": "券名称，单项模糊匹配"
+                  },
+                  "couponIdList": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "format": "int64"
+                    },
+                    "description": "券ID批量精确，最多100"
+                  },
+                  "couponIdsStr": {
+                    "type": "string",
+                    "description": "券ID空格分隔串（兼容全角空格/逗号/换行）；与数组同传时数组优先"
+                  },
+                  "couponSkuNumberList": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "format": "int64"
+                    },
+                    "description": "券商品ID批量精确，最多100"
+                  },
+                  "couponSkuNumbersStr": {
+                    "type": "string",
+                    "description": "券商品ID空格分隔串"
+                  },
+                  "statusList": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    },
+                    "description": "券状态过滤：1 使用中 / 2 已失效 / 3 审核中 / 4 已暂停。不传默认只查【1 使用中】"
+                  },
+                  "pageNum": {
+                    "type": "integer",
+                    "default": 1,
+                    "minimum": 1
+                  },
+                  "pageSize": {
+                    "type": "integer",
+                    "default": 20,
+                    "minimum": 1,
+                    "maximum": 100
+                  },
+                  "identification": {
+                    "type": "string",
+                    "description": "来源标识"
+                  }
+                }
+              },
+              "example": {
+                "statusList": [
+                  2
+                ],
+                "pageNum": 1,
+                "pageSize": 20
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "实测返回",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 0,
+                  "data": {
+                    "total": 1,
+                    "pageNum": 1,
+                    "pageSize": 20,
+                    "list": [
+                      {
+                        "couponName": "春季膨胀券30抵100(已失效)",
+                        "couponId": 10088,
+                        "couponSkuNumber": 801400003,
+                        "productType": 8014,
+                        "buyAmount": 3000,
+                        "deductibleAmount": 10000,
+                        "soldCount": 500,
+                        "totalCount": 500,
+                        "creator": null,
+                        "couponStatus": 2,
+                        "couponStatusDesc": "已失效",
+                        "selectable": false
+                      }
+                    ]
+                  },
+                  "msg": ""
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bgwApi/product-b/b/renewal/preOrderActivity/couponScope/list": {
+      "post": {
+        "tags": [
+          "2-券配置回显(product-server)"
+        ],
+        "summary": "膨胀券活动的券配置与适用范围（活动详情抽屉回显）",
+        "description": "⚠️ **实测：接口通(code:0) 但 `scopes` 为空**，这是已知问题不是新 bug，两个原因叠加：\n1. scope 表造数挂在**假活动号** 9001/9002/9003，与真实活动 578363764011708416 对不上\n2. promotion `pre_order_activity_product` 表无券列，缓存重建后券字段为 null\n\n要看到非空 scopes，需先把 scope 数据的 activity_number 改成真实活动号。",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "preOrderActivityNumber"
+                ],
+                "properties": {
+                  "preOrderActivityNumber": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "预报名活动编号"
+                  }
+                }
+              },
+              "example": {
+                "preOrderActivityNumber": 578363764011708416
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "实测返回（scopes 为空，见上）",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 0,
+                  "data": [
+                    {
+                      "deductible_amount": 20000,
+                      "product_number": "801400001",
+                      "scopes": []
+                    },
+                    {
+                      "deductible_amount": 40000,
+                      "product_number": "801400002",
+                      "scopes": []
+                    }
+                  ],
+                  "msg": "success！"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bgwApi/component/student-center/test/acl/compare/service": {
+      "post": {
+        "tags": [
+          "3-反射桥(绕过网关鉴权)"
+        ],
+        "summary": "反射调券列表编排层 PreOrderCouponBiz#listCoupon",
+        "description": "✅ 实测通过。前端没开发时验证业务逻辑最快的路 —— 不依赖 Controller 是否暴露、不依赖登录态。",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "serviceNameAndMethodName": {
+                    "type": "string",
+                    "description": "全类名#方法名"
+                  },
+                  "params": {
+                    "type": "array",
+                    "description": "按方法形参顺序"
+                  }
+                }
+              },
+              "example": {
+                "serviceNameAndMethodName": "com.gaotu.yunying.student.center.app.service.PreOrderCouponBiz#listCoupon",
+                "params": [
+                  {
+                    "pageNum": 1,
+                    "pageSize": 20
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "实测返回",
+            "content": {
+              "application/json": {
+                "example": {
+                  "total": 2,
+                  "pageNum": 1,
+                  "pageSize": 20,
+                  "list": [
+                    {
+                      "couponName": "暑期膨胀券50抵200",
+                      "couponId": 10086,
+                      "couponSkuNumber": 801400001,
+                      "productType": 8014,
+                      "buyAmount": 5000,
+                      "deductibleAmount": 20000,
+                      "soldCount": 12,
+                      "totalCount": 1000,
+                      "creator": "zhangzeling",
+                      "couponStatus": 2,
+                      "couponStatusDesc": "使用中",
+                      "selectable": true
+                    },
+                    {
+                      "couponName": "秋季膨胀券100抵400",
+                      "couponId": 10087,
+                      "couponSkuNumber": 801400002,
+                      "productType": 8014,
+                      "buyAmount": 10000,
+                      "deductibleAmount": 40000,
+                      "soldCount": 0,
+                      "totalCount": 500,
+                      "creator": "zhangzeling",
+                      "couponStatus": 1,
+                      "couponStatusDesc": "待开始",
+                      "selectable": true
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bgwApi/promotion/b/test/acl/compare/service": {
+      "post": {
+        "tags": [
+          "3-反射桥(绕过网关鉴权)"
+        ],
+        "summary": "反射调 promotion 活动详情（复现券字段丢失）",
+        "description": "✅ 实测通过。**用来复现阻塞项**：返回的 product_list 每项只有 5 个字段，\n`couponId/couponName/skuId/buyAmount/couponStatus/couponStatusDesc/scopes` 全部缺失。\n\n⚠️ 入参是**查询 DTO** `{\"preOrderActivityNumbers\":[...]}`，传裸数组会报「未找到方法」。",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "serviceNameAndMethodName": {
+                    "type": "string",
+                    "description": "全类名#方法名"
+                  },
+                  "params": {
+                    "type": "array",
+                    "description": "按方法形参顺序"
+                  }
+                }
+              },
+              "example": {
+                "serviceNameAndMethodName": "com.gaotu.promotion.app.service.preorder.PreOrderActivityService#listFromCache",
+                "params": [
+                  {
+                    "preOrderActivityNumbers": [
+                      578363764011708416
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "实测返回",
+            "content": {
+              "application/json": {
+                "example": {
+                  "com.gaotu.promotion.app.service.preorder.PreOrderActivityService#listFromCache": [
+                    {
+                      "activity_status": 3,
+                      "name": "膨胀券预报名自测-0908-v2",
+                      "number": 578363764011708416,
+                      "type": 2,
+                      "product_list": [
+                        {
+                          "deductible_amount": 20000,
+                          "id": 916,
+                          "pre_order_activity_number": 578363764011708416,
+                          "product_number": 801400001,
+                          "product_type": 8014
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bgwApi/product-b/b/test/acl/compare/service": {
+      "post": {
+        "tags": [
+          "3-反射桥(绕过网关鉴权)"
+        ],
+        "summary": "反射调三者交集 PreOrderCouponIntersectService#intersect",
+        "description": "✅ 实测通过：`activity_type=2` 膨胀券已正确识别，`empty=true`（交集空，因造数挂在假活动号上）。\n\n⚠️ 两个坑：前缀必须是 `/bgwApi/product-b/b`（少 `/b` → CAS 报 code:700 请重新登录，不是 404）；\n`intersect` 是**两个参数** (activityNumber, preCourseNumbers)，只传一个会报「未找到方法」。",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "serviceNameAndMethodName": {
+                    "type": "string",
+                    "description": "全类名#方法名"
+                  },
+                  "params": {
+                    "type": "array",
+                    "description": "按方法形参顺序"
+                  }
+                }
+              },
+              "example": {
+                "serviceNameAndMethodName": "com.gaotu.product.service.renewal.preorder.PreOrderCouponIntersectService#intersect",
+                "params": [
+                  578363764011708416,
+                  []
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "实测返回",
+            "content": {
+              "application/json": {
+                "example": {
+                  "com.gaotu.product.service.renewal.preorder.PreOrderCouponIntersectService#intersect": {
+                    "activity_number": 578363764011708416,
+                    "activity_type": 2,
+                    "coupon_pairs": {},
+                    "coupon_sku_numbers": [],
+                    "empty": true,
+                    "post_grades": [],
+                    "post_subjects": [],
+                    "pre_grades": [],
+                    "pre_subjects": []
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

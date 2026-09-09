@@ -23,12 +23,28 @@ tags: [需求, 日志]
   枚举只保留 `selectable` 业务规则；`desc` 降级为可读性注记，注释已标明不是下发文案。
 - mock 两处（promotion `PreOrderCouponMockEnricher`、student-center `PreOrderCouponMockProvider`）
   的内置 JSON 同步补 `couponStatusDesc`，等电商真接口就绪后一并替换。
-- 四仓编译全绿，`local == remote` 已逐仓核对。
+- 四仓编译全绿，`local == remote` 已逐仓核对。本次四个 commit **只含 `couponStatusDesc` 一件事**，无夹带。
+- ⚠️ 纠正本条最初的记述：我一度以为「顺手带上了 product-server / cart 的未提交改动」，
+  实际那两处（`9df15aa60` 券状态码 1→2、`47146d65` 券字段补齐与成对求交）**上次会话就已提交**，
+  是 README commit 表的 sha 没更新造成的误判。开工时 `git status` 本来就是干净的。
   ⚠️ promotion 的 `git push` 因本地无 `origin/feature-xuban-pre` 跟踪 ref 报「需要一个单独的版本」，
   实际已推成功（`git ls-remote` 核对 sha 一致）—— **别被这条报错骗去重推**。
 
+- 产出 [[curl]]：自测 cURL 集（可导入 Apifox），**10 条全部实测跑过**，不是照着代码抄的
+  - 券列表 5 条 ✅ 通过（空条件/名称模糊/ID批量/空格串/状态过滤）
+  - 券范围 1 条 ⚠️ 接口通但 scopes 空（造数挂在假活动号 9001/9002/9003 上）
+  - 反射桥 4 条 ✅ 通过（修正了 `listFromCache` 入参与 `intersect` 参数个数）
+- **踩坑记录（都写进 [[curl]] 了）**：
+  - 泳道头是 **`traffic-env` 带连字符**，写成 `trafficenv` → 静默打到默认泳道、新接口全 404，
+    我一度误判成「镜像没发上去」；反射调用能证明 Controller 其实在镜像里
+  - `/noAuth/student-center` 前缀会返回 200 但 `code:3 登陆信息获取异常`（该路由跳过鉴权）
+  - 各服务反射桥前缀不同，**权威表在 `~/.local/mcp-servers/baijia_invoke.py` 的 `ROUTE_MAP`**
+    （用户指出的，不该靠试）；cart 甚至换 host 到 `test-api.gaotu100.com` 且不带 `/bgwApi`
+- 结论：**`couponStatusDesc` 已在券列表 HTTP 链路实测有值**（使用中/待开始）
+
 ### 留给下次
 - 电商券商品接口就绪后：接真实 `couponStatusDesc`，关掉两处 mock 开关
+- 想让 couponScope/list 返回非空 scopes：把 scope 表的 `activity_number` 改成真实活动号 `578363764011708416`
 
 ---
 

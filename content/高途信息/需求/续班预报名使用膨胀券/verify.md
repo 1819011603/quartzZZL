@@ -47,6 +47,9 @@ tags: [需求, 验证]
 
 ## 怎么调
 
+> **HTTP cURL（可导入 Apifox）见 [[curl]]** —— 含实测通过的券列表 5 条、券范围 1 条、反射桥 4 条。
+> ⚠️ 泳道头是 **`traffic-env`（带连字符）**，写成 `trafficenv` 会静默打到默认泳道 → 新接口全 404。
+
 ```bash
 # 查 scope 数据
 mcp mysql-query mysql_query cluster_id=142 db_name=gaotu env=test \

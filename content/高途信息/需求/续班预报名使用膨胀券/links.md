@@ -76,3 +76,15 @@ tags: [需求, 链接]
 - **反讲 TODO** → 飞书后端反讲文档
 - **TAPD 工时任务** → TAPD 服务端，用 `tapd-task` 现查
 - **case** → case 平台，用 `banshan-case` 现查
+
+## Apifox
+
+| 类型 | 标题 | 链接 | 记录日期 |
+|---|---|---|---|
+| 其他 | Apifox 项目（自测接口导入到这里，按需求建目录） | https://app.apifox.com/project/8815485 | 2026-09-09 |
+
+> 导入源（择一）：
+> - **`apifox-openapi.json`（推荐）** —— OpenAPI 3.0，9 接口一次性导入，带分组与实测示例
+> - [[curl]] —— cURL 逐条粘，仅临时试单条时用
+>
+> `apifox-mcp-server` 只有只读工具，无法由 Claude 写入 Apifox，故只能手动导入。
