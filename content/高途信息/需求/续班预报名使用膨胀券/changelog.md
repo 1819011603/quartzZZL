@@ -10,6 +10,37 @@ tags: [需求, 日志]
 >
 > 两个执行者在**同一条时间轴**上：`🤖 Claude` 和 `👤 我`。
 
+## 2026-09-09（第五轮 · 修 detail 回显 + 发现并修 C 端 scopes 缺口）
+
+### 👤 我
+- 转发马胜消息确认架构：promotionManager=应用层(透传)，promotion-b/product-b=两个 domain
+- 要求自测：验证 promotion-management 那次修复(`961cb892`)是否真的能保存/回显
+- 指出反射桥登录失败可能是路由配错，让去查 `ROUTE_MAP`
+- 要求测所有相关接口，特别是"推荐接口"（C 端 `preRegistration`），可以派 subagent 并行
+- 看到 detail 回显仍是空后，要求修好它
+
+### 🤖 Claude
+- **排查 `ROUTE_MAP` 缺 `promotion-management` 的坑**：`baijia_invoke.py` 的
+  `ROUTE_MAP` 没登记这个服务，走兜底前缀打到不存在的路由，被 CAS 兜底成「请重新登录」，
+  跟 Cookie 无关；进一步发现该仓库压根没挂反射桥 Controller，改用真实业务接口
+  （chrome-devtools 操作已登录的 OES 页面 `fetch`）验证。
+- **T-26 修复 B 端 detail 券字段全空**（promotion `81180aa45`）：给
+  `PreOrderCouponEnricher` 加 `enrichDTO()` 重载并挂到 `detail()`。
+  第一次用 verify.md 里记的旧券 sku 测仍显示 null，一度以为修复没生效，
+  查 TLS 日志发现 `PreOrderCouponEnricher#enrichDTO | 部分券在电商查不到`，
+  才发现是**测试数据过期**（coupon-a 测试环境券 SKU 会滚动重新生成），
+  换当下真实存在的券重测后确认修复生效。已部署到 test-gtbg-dev-3(pipeline 1263216) 并验证。
+- 派 subagent 并行测「券选品查询接口」与「cart 推荐接口 `preRegistration`」：
+  券选品通过；cart 推荐接口在 subagent 造好续班计划关联数据、链路成功推进到膨胀券分支后，
+  发现一个**全新的、和 detail 缺口不同的契约缺口**——`listFromCache`（C 端取数用）
+  从来没有下发过 `scopes`，`PreRegistrationCouponAssembler` 必然抛异常。
+- **T-27 修复 C 端 scopes 缺口**：product-server 新增批量查询 Feign
+  `POST /feign/preOrderActivity/couponScope/listByActivityNumbers`（`9b53b5a32`），
+  promotion 新增 `PreOrderCouponScopeRemoteService#listByActivityNumbers` 消费并在
+  `listFromCache` 里回填（`e9053ab65`）。两边已 push 并触发部署(pipeline 1263238/1263239)，
+  **本次会话结束时尚未重新验证**，下一步直接复用 subagent 造好的续班计划关联数据去验。
+- 同步更新 README/apis/verify/tasks 四份文档反映以上进展。
+
 ## 2026-09-09（第四轮 · 券范围落库改由 promotion-b 回调 product-b）
 
 ### 👤 我

@@ -43,7 +43,8 @@ tags: [需求, 任务]
 | T-23 | 下线全部 mock，ACL 直连电商 coupon-a + 三服务上泳道验证 | 已完成 | — | student-center `49a8c97ad` / promotion `3b9f24af5`；三服务 eureka UP，券列表实测 total=56 真数据 |
 | T-24 | promotion-management 补齐券字段透传 + 详情回显 + 修 detail NPE | 已完成 | — | `961cb892`；修掉 traceId `f346c23d`(scopes 被丢弃) 与 `c7d123cc`(detail NPE) |
 | T-25 | 券范围落库：promotion-b 事务内回调 product-b 新增的只写接口 | 已完成 | — | product-server `86abd8914` / promotion `10a43258a`；事务内调用，Feign 失败即回滚活动 |
-| T-21 | 推动 promotion 券字段落库 | 待办 | **卡 promotion 团队** | 🔴 上线阻塞，表无券列、缓存 miss 即丢，详见 [[verify]] |
+| T-26 | 修 B 端 detail 券字段全空：`PreOrderCouponEnricher` 加 `enrichDTO` 挂到 `detail()` | 已完成 | — | promotion `81180aa45`；用真实电商券重建活动实测通过，`couponId/couponName/couponStatus/buyAmount/skuId` 全部正确回显 |
+| T-27 | C 端 listFromCache 补齐 scopes：product-server 新增批量查询 Feign + promotion 消费 | 进行中 | 等两服务部署到 test-gtbg-dev-3 完成后重新跑 cart `preRegistration` 验证 | product-server `9b53b5a32` / promotion `e9053ab65`；测 cart 推荐接口时子 agent 发现的新缺口 |
 
 ### T-13 自测进展（2026-09-08 订正）
 

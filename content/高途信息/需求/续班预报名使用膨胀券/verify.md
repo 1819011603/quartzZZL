@@ -277,19 +277,40 @@ cart 还额外把 `/test/acl/compare/**` 加进了 `MvcConfig` 的
 | **服务所在泳道** | **`test-eco-7`**（不在 `test-gtbg-dev-3`！） |
 | 跨泳道可达 | ✅ 已实测：`test-gtbg-dev-3` 的 promotion-b 能调到 `test-eco-7` 的 coupon-a |
 
-**真实券数据**（可直接用于自测，全部 `couponStatus=1 使用中`）：
+⚠️ **2026-09-09 晚间实测确认：下面这张表的 skuNumber 会过期，coupon-a 测试环境的券数据会滚动重新生成**。
+当天下午记的"木7 skuNumber=578513860277893121"，晚上用同一个 couponName 查已经变成了
+`578534533488603137`（couponNumber 也变了）。**不要直接抄这张表的值去建活动/测流程**，
+每次要用真实券自测前，现查一次：
+
+```
+mcp baijia-invoke invoke_service project=promotion traffic_env=test-gtbg-dev-3
+service_method=com.gaotu.coupon.a.client.feign.ExpandCouponFeignService#queryList
+params=[{"skuNumbers":["随便填一个占位，反射桥的 List<Long> 参数适配有 bug 不会真正过滤，
+        会直接返回默认分页"],"pageNum":1,"pageSize":20}]
+```
+
+⚠️ **踩过的坑**：`invoke_service` 反射桥调 `queryList` 时，`skuNumbers`/`pageSize` 这些
+`List<Long>`/复杂类型参数**不会正确生效**（传什么都返回同一页默认数据，pageSize 也不生效）——
+这是反射桥自身 JSON→Java 参数适配的缺陷，不代表 `queryList` 接口真的不支持过滤。
+**真实 Feign 调用（业务代码内部走 Java 对象序列化）不受影响**，只是拿反射桥这样单独测这个方法会误判。
+现查时直接看返回的 `list` 里挑一条 `coupon_status=1` 的券，用它当下最新的 `sku_number`/`coupon_number`。
+
+**下面是 2026-09-08 下午记录的快照，仅供参考具体字段长什么样，数值不可用**：
 
 | 券名 | couponNumber(券ID) | skuNumber(券商品ID) | 买/抵(分) |
 |---|---|---|---|
-| 木7 | 578513860162539520 | **578513860277893121** | 3000/9000 |
-| 木10 | 578513802715254784 | 578513802834802689 | 3000/9000 |
-| 膨胀卷下单 | 578506687399362560 | 578506687592331265 | 10000/20000 |
+| 木7 | 578513860162539520 | 578513860277893121 | 3000/9000（**已过期，见上方警告**） |
+| 木10 | 578513802715254784 | 578513802834802689 | 3000/9000（**已过期**） |
+| 膨胀卷下单 | 578506687399362560 | 578506687592331265 | 10000/20000（**已过期**） |
 
 ⚠️ **ID 是 19 位雪花数**，前端 JS 会精度截断 —— 出参需 `@JSONField(serializeUsing = ToStringSerializer.class)`。
 
-### 三服务泳道状态（2026-09-09 全部 eureka UP）
+### 三服务泳道状态
 
-| 服务 | pod |
+⚠️ **pod 名每次重新部署都会变**，下表是 2026-09-08 的快照，**别直接拿这几个 pod 名去用**——
+要确认当前状态用 `pod_term.py pods --service-code <serviceCode> --ns test-gtbg-dev-3` 现查。
+
+| 服务 | pod（2026-09-08 快照，已过期） |
 |---|---|
 | student-center | `student-center-6db9bcbb5-c25ln` |
 | promotion-b | `promotion-b-gaotu100-com-db5d948d-p6tcz` |
@@ -300,10 +321,45 @@ cart 还额外把 `/test/acl/compare/**` 加进了 `MvcConfig` 的
 - 券列表真实链路：`total=56`（电商全量 71，差额被【1 使用中】默认过滤掉）✅
 - 资损修复：product-b `isCouponInUse(1)=true` / `(2)=false` ✅
 
-### ⚠️ 仍跑不通的
+### ⚠️ 仍跑不通的（2026-09-08 记录，已被下面 09-09 的进展部分解决）
 
 **活动 `578363764011708416` 挂的是 mock 假券 `801400001/2`**，电商里不存在，
-所以「从活动出发」的 C 端链路仍为空。要端到端跑通，需把活动改挂上面表里的真实券商品 ID。
+所以「从活动出发」的 C 端链路仍为空。要端到端跑通，需把活动改挂真实券商品 ID
+（**别抄上面表里的旧值，现查一次**，见「电商 coupon-a 联调信息」段的警告）。
+
+## 2026-09-09 晚间：detail 回显修复 + C 端 scopes 缺口
+
+### ✅ B 端 detail 回显——已修复并实测通过
+
+用真实券"木7"（当时的 skuNumber `578534533488603137`，**这个值也会过期，别直接复用**）
+重新建活动 `578563007821410304`，`detail()` 与 `promotion-management` 透传层均正确
+回显 `couponId/couponName/couponStatus/buyAmount/skuId`。验证方法见 [[apis]] 的「已解决」段。
+
+**排障方法留档**（下次遇到"回显还是空"先按这个顺序查，别猜）：
+
+1. 先用 `mcp qingzhou-trace trace_tree` 看 traceId 有没有报错 span——没有报错不代表数据对，
+   只能说明没崩
+2. 查日志 `mcp qingzhou-log get_tls_log_v2 queryStr='messages: PreOrderCouponEnricher'`，
+   看有没有 `部分券在电商查不到` 的 WARN——**这条日志直接告诉你是不是券本身查不到**，
+   比反复用不同接口测快得多
+3. 只有查到"电商真的没这张券"才需要怀疑测试数据是不是过期了（见上面警告），
+   不要先怀疑修复代码本身
+
+### 🟡 C 端 listFromCache 不下发 scopes——已编码，待部署验证
+
+**造数进展**（下次接着测可以直接复用）：
+- 直连 DB（`gaotu_test_rw`）在 `renewal_link_activity` 表插了一行，把
+  `renewalNumber=577431949669312512` 关联到活动 `578559765060276224`（此活动用的是
+  已过期的旧 sku，回显会是空，**只用于验证 scopes 链路，不要用它验证 detail 回显**）
+- 把该活动 `activity_status` 置为 2（发布）、`begin_time` 改到过去，使其对
+  `promotionFacade` 可见
+- 反射调 `RegistrationService#preRegistration(userId=1, renewalNumber=577431949669312512,
+  preClazzNumber=514762045841821696, null)` 能成功走到膨胀券分支
+  （`buildCouponRegistrationVO`），此前是"活动不存在"
+
+**下一步要做的验证**：product-server `9b53b5a32` + promotion `e9053ab65` 部署完成后，
+重新跑一遍上面这条反射调用，确认不再抛「膨胀券可用范围缺失」，且返回的
+`productList` 里能看到年级/学科信息。
 
 ---
 

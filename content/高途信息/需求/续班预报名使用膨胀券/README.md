@@ -74,53 +74,38 @@ tags:
 
 | | |
 |---|---|
-| 阶段 | 开发中（**券列表真实链路已通，三服务在泳道 eureka UP**） |
-| 进度 | T 23/25 · R 0/2 · C 0/0 |
+| 阶段 | 开发中（**B 端 detail 回显已修复实测通过；C 端 scopes 缺口已编码待部署验证**） |
+| 进度 | T 27/27 · R 0/2 · C 0/0 |
 | 排期 | 09-08~09-11 开发 · 09-14 自测 · 09-15~16 联调 · **提测 09-16** |
-| 当前卡点 | 🔴 **B 端 detail 券字段全空**（2026-09-09 实测，traceId `2d0e9489...0.3`）：`detail()` 直读 DB 未挂 enricher，7 个券字段 null；且 promotion 的 mock 开关**从没配过**，C 端重建路径同样没生效。详见 [[apis]]。<br>🟡 **等电商券商品接口**（券名/金额/状态权威源）。缓存重建已由 **Apollo mock 顶替**(promotion `eb72e083f`)，C 端可跑通；⚠️「加 5 列落库」方案已 revert、工单 8025 已撤（**表不用加列**）。详见 [[verify]] |
+| 当前卡点 | 🟡 **C 端 listFromCache 不下发 scopes**（2026-09-09 晚间测 cart 推荐接口时发现）：cart 的 `PreRegistrationCouponAssembler` 依赖 promotion 的 `listFromCache` 返回 scopes，但 promotion 之前没有跨服务读接口去补，必然抛「膨胀券可用范围缺失」。已修（product-server `9b53b5a32` + promotion `e9053ab65`），**两边部署到 test-gtbg-dev-3 中，还没重新验证**。详见 [[apis]]、[[verify]]。<br>🟢 B 端 detail 回显缺口**已解决**（promotion `81180aa45`），用真实电商券实测通过，见 [[apis]]。<br>🟡 **等电商下发 `couponStatusDesc`**（权威源在电商，现恒为 null，符合既定口径不算 bug） |
 | 最近更新 | 2026-09-09
 
 **六仓库代码全部提交并推送，编译全绿（BUILD SUCCESS）**，但均未写单测、未跑功能自测。
-（2026-09-09：commit 表此前把 product-server / cart 标成「有未提交改动」是**过期信息** ——
-那两处早在上一次会话就已提交（`9df15aa60` 券状态码 1→2、`47146d65` 券字段补齐与成对求交），
-表里只是没跟着更新 sha。**动手前以 `git status` 为准，别信这张表的备注。**）
 
 | 仓库 | 最新 commit |
 |---|---|
 | student-center | `49a8c97ad` |
-| product-server | `86abd8914` |
-| promotion | `10a43258a` |
+| product-server | `9b53b5a32` |
+| promotion | `e9053ab65` |
+| promotion-management | `961cb892` |
 | order | `073dea69e2` |
 | cart | `a7646b67` |
 | promotion-app | 仅 spec（本期不改代码） |
 
 ## 下一步
 
-0. 🔴 **修 B 端 detail 券字段全空**（本次会话实测复现，最高优先级）：
-   把 `PreOrderCouponMockEnricher#enrich()` 挂到 `PreOrderActivityService#detail`
-   （`promotion-app/.../preorder/PreOrderActivityService.java:356`）读 DB 之后、
-   `fillProductNames` 之前。注意 detail 在 promotion-app、enricher 在 promotion-domain，
-   挂 repository 出口还是 app 层要先定分层。根因与实测数据见 [[apis]]。
-0.5 **在 promotion 配 mock 开关**：`apollo_set_key app_id=promotion.gaotu100.com env=TEST`
-   `pre.order.coupon.mock.enabled=true` —— **现在这个 key 压根不存在**，
-   所以 C 端缓存重建路径的 mock 也没生效。配完记得发布。
-0.6 **给真活动造 scope 数据**：scope 表 5 行全是假活动号 9001/9002/9003，
-   真活动 `578363764011708416` 一行都没有，`scopes` 必空。
-
-1. ✅ **缓存 miss 补齐券字段**：已接 mock（`PreOrderCouponMockEnricher`，promotion `eb72e083f`），
-   开关 `pre.order.coupon.mock.enabled` 默认 false。**不加列**（`product_type=8014` 已足以区分，
-   加列 = 冗余 + 电商数据脏快照，已 revert `a620a7e2f`、撤工单 8025）。
-   ⚠️ 活动挂的券商品 ID 需为内置 mock 的 `801400001/2/3` 才补得上，见 [[verify]]。
-   真接口就绪后按 [[verify]] 的下线步骤替换。
-2. 券字段修好后再跑 C 端：活动 `578363764011708416` 已建好并发布（type=2，挂了两张券）。
-3. 配 `pre.order.activity.coupon.renewalPlanIds` → 跑 C 端落地页自测。
-   ⚠️ `getByRenewalPlanId` 有 Redis 缓存，改配置不生效先想到缓存。
-   ⚠️ **「发链接 path 切换」自测已取消**（2026-09-08）：前端无 `/preSignUpCoupon` 页面，
-   落地页 path 不分叉，膨胀券与订金班同为 `/preSignUp`。发链接已无形式差异可验，
-   只需回归订金班不坏；若发出的链接出现 `/preSignUpCoupon` 即为缺陷。
-4. 找电商（邓俊兵）要券商品接口，确认券状态码枚举（现按 1待开始/2使用中/3已结束/4已下线）
-5. 跟前端对齐三个新字段名：`postProductId` / `postProductName` / `activityType`
-6. R-01 找王永诗；R-02 问清「测试冲突」指什么
+0. 🔴 **等 product-server(product-b) + promotion(promotion-b) 两条流水线部署完 test-gtbg-dev-3**
+   （product-server `9b53b5a32`、promotion `e9053ab65`，pipeline 1263238/1263239），
+   然后重新反射调 `RegistrationService#preRegistration(userId=1,
+   renewalNumber=577431949669312512, preClazzNumber=514762045841821696, null)`，
+   确认不再抛「膨胀券可用范围缺失」。这条数据链路(续班计划↔活动的关联)已经在
+   09-09 晚间造好，见 [[verify]]，不用重新造数据，直接调就行。
+1. detail 回显、券选品查询、B 端保存可用范围**已实测通过，不用再验**（见 [[apis]]「已解决」）。
+2. 找电商（邓俊兵）要 `couponStatusDesc` 文案下发，或产品决策改口径允许本地翻译。
+3. ⚠️ **自测/联调用的券 SKU 会过期**：coupon-a 测试环境的券数据会滚动重新生成，
+   verify.md 里记的具体 sku 值随时可能失效，现查一次再用（见 [[verify]] 的警告和排障方法）。
+4. 跟前端对齐三个新字段名：`postProductId` / `postProductName` / `activityType`
+5. R-01 找王永诗；R-02 问清「测试冲突」指什么
 
 ## 待确认
 
@@ -205,3 +190,17 @@ tags:
 - ⚠️ **别让 promotion-b 回调 product-b 的 `/b/renewal/preOrderActivity/edit`** ——
   那个接口内部会调 promotion-b，会形成 **promotion-b → product-b → promotion-b 循环**。
   必须用只写 scope 表的专用接口 `/feign/preOrderActivity/couponScope/save`。
+- 🔥 **`baijia_invoke.py` 的 `ROUTE_MAP` 没登记 `promotion-management`**，用
+  `mcp baijia-invoke invoke_service project=promotion-management` 会走兜底前缀
+  `/bgwApi/component/promotion-management`（不存在的路由），被 CAS 兜底成「请重新登录」——
+  跟 Cookie 没关系，是路由没配。且就算配对路由，**promotion-management 仓库压根没挂
+  `AclServiceCompareController`**（反射桥只在 student-center/promotion/cart/product-server
+  四个仓库里），测它只能走真实业务接口（登录了 OES 页面的浏览器 fetch）。
+- 🔥 **`invoke_service` 反射桥调 `queryList` 这类带 `List<Long>` 参数的方法时，参数不会真正生效**——
+  传什么 `skuNumbers`/改多小的 `pageSize` 都返回同一页默认数据，这是反射桥自身 JSON→Java
+  参数适配的缺陷，**不代表接口真的不支持过滤**。真实 Feign 调用（业务代码内部走 Java
+  对象序列化）不受影响。用这个反射桥测复杂参数方法前，先确认返回是不是「不管传什么都一样」。
+- 🔥 **coupon-a 测试环境的券 SKU 会滚动重新生成**，今天下午记的 skuNumber 晚上可能已经对应
+  别的券或查不到。别直接复用文档里记的具体 sku 值，每次要用真实券自测先现查一次，
+  详见 [[verify]]「电商 coupon-a 联调信息」段。排查"回显是空"先查日志里有没有
+  `PreOrderCouponEnricher | 部分券在电商查不到`，别先怀疑代码逻辑。
