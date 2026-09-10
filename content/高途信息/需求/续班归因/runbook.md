@@ -83,9 +83,15 @@ HTTP 入口：`POST /inner/renewal/reason/trigger`，body `{"clazzNumber":…, "
 
 ## 已知坑
 
-- **班名黑名单**：班名含 `赠课/测试/模拟课堂/家长会/体验/取消/伴学` 的班永远不会被班级 job 处理
+- **`handle_status=1` 不等于"分析过"**：被收窄掉的班也会 `markSuccess`，Job 汇总里的
+  `success: N` 只是"这 N 行处理完了"。判断 Job 有没有真干活要数
+  `dispatchClazzUsers | dispatched` 日志，见 [filter-analysis-2026-09-10.md](filter-analysis-2026-09-10.md)。
+- **实测最主要的两道拦截是 `inProduceWindow`**：`clazz ended`（班级已结课）与
+  `no post course`（无后置课程）。2026-09-10 实测 2,621 个班里 2,546 个挡在这层。
+- **班名黑名单**：班名含 `赠课/测试/模拟课堂/家长会/体验/取消/伴学` 的班不会被班级 job 处理
   （`CommonRuleFilter` → `inScope=false`）。单学员路径（trigger / handleSingleUser）**不过** `inScope`。
-  「2,621 个班只出 1 个班」优先怀疑这里。
+  ⚠️ 但排查时注意：日志里大量 `CommonRuleFilter` reject 来自**售后侧接口**（TID `after-sales.*`、
+  线程 `http-nio-*`），不是班级 Job。**必须按 TID/线程区分调用方**，否则会算错账。
 - **班级运行态锁 1 小时**：key `student_data_renewal_reason_job_<clazzNumber>`，连着重跑会静默跳过。
   **key 不存在反而说明班级压根没走到抢锁那步（被 inScope 挡了）**。
 - **内容级幂等**：源数据没变不会重复调模型，`handleCode=1`。要强制重算传 `refresh=true`。
