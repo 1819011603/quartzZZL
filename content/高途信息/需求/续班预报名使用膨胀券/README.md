@@ -109,21 +109,20 @@ C 端 `GET /web/renewal/preRegistration`（`cart` 的 `RegistrationService#preRe
 
 | | |
 |---|---|
-| 阶段 | 开发中（**B 端下单弹窗膨胀券 tab 的券范围过滤已编码+单测，待发泳道实测**） |
+| 阶段 | 开发中（**B 端下单弹窗膨胀券 tab 券范围过滤已端到端实测通过**）|
 | 进度 | T 32/32 · R 0/2 · C 0/0 |
 | 排期 | 09-08~09-11 开发 · 09-14 自测 · 09-15~16 联调 · **提测 09-16** |
-| 当前卡点 | 🟢 无阻塞。<br>🟠 **待实测**：T-32（膨胀券 tab 券列表按三者交集过滤）已提交但**尚未发泳道验证**，见「下一步」第 1 条。<br>🟡 **遗留（非阻塞）**：电商 `couponName` 只支持左匹配，中间词搜不到，需跨团队推动，见 [[apis]]「已知契约缺口」。<br>🔴 **上线前必查**：`promotion` 有 `promotion-b`/`promotion-c` 两个独立部署，改动涉及 C 端链路时**两个都要发布** |
-| 最近更新 | 2026-09-10（膨胀券 tab 券列表按三者交集过滤；tab 显隐口径反转成「常显」）
+| 当前卡点 | 🟢 无阻塞。T-32 已发 `test-gtbg-dev-3` 并端到端实测通过（6 条用例全绿，见 [[verify]]）。<br>🟡 **遗留（非阻塞）**：电商 `couponName` 只支持左匹配，中间词搜不到，需跨团队推动，见 [[apis]]「已知契约缺口」。<br>🔴 **上线前必查**：`promotion` 有 `promotion-b`/`promotion-c` 两个独立部署，改动涉及 C 端链路时**两个都要发布** |
+| 最近更新 | 2026-09-10（膨胀券 tab 券范围过滤已实测通过；联调修掉 3 个 bug：feign 服务名、解码器注解族、单测从未运行）
 
-**六仓库代码编译全绿（BUILD SUCCESS）**。⚠️ **T-32 的两笔提交（product-server `1de4533b9`、
-student-center `974b669a5`）已 commit 但尚未 push**，其余仓库此前均已推送。
-T-32 单测：product-server 16/16、student-center 16/16 通过。
+**六仓库代码编译全绿（BUILD SUCCESS）、全部已 push**。
+T-32 单测：product-server 16/16、student-center 16/16 通过；端到端 6 条用例全绿。
 ⚠️ `GradientAndDiscountTraceStrategyTest` 有 1 条失败，**stash 掉本次改动后同样失败，
 是分支上原有问题，与本需求无关**，未处理。
 
 | 仓库 | 最新 commit |
 |---|---|
-| student-center | `974b669a5`（含单测） |
+| student-center | `abe8a067d`（含单测；含 3 个联调修复）|
 | product-server | `1de4533b9`（含单测） |
 | promotion | `f4386aaf2`（含单测；promotion-b **和** promotion-c 都已发布该 commit） |
 | promotion-management | `961cb892` |
@@ -135,16 +134,11 @@ T-32 单测：product-server 16/16、student-center 16/16 通过。
 
 > 只列还没做的。做完的已删（历史见 [[changelog]]）。
 
-1. **实测膨胀券 tab 券列表的范围过滤**（T-32 已提交但未实测）：发 `test-gtbg-dev-3` 后调
-   `POST /component/student-center/renewal/pre/coupon/list`，传膨胀券续班计划的
-   `renewMasterNumber` → 期望只返回交集内且【使用中】的券；传订金班计划 → 期望空 list。
-   同时确认 product-b 的网关路由能通到
-   `/feign/preOrderActivity/couponScope/listDisplayableByRenewalPlan`。
-2. 🔴 **改动涉及 C 端链路时 `promotion-b` 和 `promotion-c` 两个部署都要发布** ——
+1. 🔴 **改动涉及 C 端链路时 `promotion-b` 和 `promotion-c` 两个部署都要发布** ——
    只发 b、用反射桥验证通过≠cart 端到端通了（见下方坑位）。
-3. 上线前：三处 `AclServiceCompareController.enabled` 显式配 `false`、
+2. 上线前：三处 `AclServiceCompareController.enabled` 显式配 `false`、
    线上建表、5 个 Apollo key、2 个代课接口权限登记（明细见 [[verify]]「新建的东西」）。
-4. R-01/R-02 已闭环。
+3. R-01/R-02 已闭环。
 
 ## 待确认
 
@@ -250,6 +244,22 @@ T-32 单测：product-server 16/16、student-center 16/16 通过。
 - **范围过滤失败绝不能降级**：降级成"空列表"运营会误判「没配券」；
   降级成"不过滤"会把电商全量券暴露给老师（越权展示，更严重）。故 ACL 层直接抛业务异常。
 
+- 🔥 **student-center 调 product-server 必须用 `ProductInterceptorFeignConfig`，且服务名是 `PRODUCT-B`**。
+  两个都错过一次，症状都极隐蔽：
+  ① 服务名写 `PRODUCT.GAOTU100.COM` → 指向 product **主部署**（我们的接口在 product-b 模块，只有
+  product-b 有）→ **404**。实测主部署 404 / product-b 200。口径同 promotion 的 `PRODUCT_B_NAME`。
+  ② `configuration` 用默认的 `FeignConfiguration` → 那个类**只是 RequestInterceptor 不含 decoder**，
+  解码落到普通 Jackson(camelCase)，而 product-server 出参是 **snake_case** →
+  **`data:[{}]`：数组长度对但每个元素是空对象**、字段全 null → 列表恒空，**不报错无异常日志**。
+  `ProductInterceptorFeignConfig` 内部是 `GaotuRcpHttpMessageConverter`（继承
+  `FastJsonHttpMessageConverter`），天生认 snake_case；`RenewalMasterFeignAdapter` 一直这么用。
+- ⚠️ **这条链路的解码器是 FastJson，别用 Jackson 的 `@JsonProperty`** —— 标了等于没标
+  （实测标完仍是 `data:[{}]`）。要显式标只能用 `@JSONField`；但正确做法是复用上面那份 config。
+  **判据：看 `@FeignClient(configuration=...)` 那个类里有没有 `Decoder` bean，没有就是默认 Jackson。**
+- 🔥 **`data:[{}]` 这个症状要会认**：数组长度正确 + 元素空对象 = **字段名映射错**（命名策略/注解族），
+  不是"没查到数据"、也不是"没部署上"。排它的顺序：先进 pod `unzip` 验注解在不在镜像里
+  （在 → 不是发布问题），再反编译那个 converter 看它是 Jackson 还是 FastJson。
+
 **测试 / 构建**
 - 🔥 **本仓库 `product-server-domain` 的 assertj 版本没有 `anySatisfy`/`noneMatch`**，
   误用会让**整个模块的 test 编译失败**（不是单个测试失败）→ 连带其他测试一个都跑不了。
@@ -257,6 +267,9 @@ T-32 单测：product-server 16/16、student-center 16/16 通过。
   **教训：单测提交前必须真跑一次**——`mvn compile` 过不代表 test 编译过，是两个独立阶段。
 - **跑单测必须带 `-am`**：只写 `-pl <模块>` 时兄弟模块未安装进本地仓库，
   会报一堆"找不到符号/程序包不存在"，那是**假错误**，不是代码问题。
+- ⚠️ **`pod_term.py` 不指定 `--pod-name` 会选错 pod**：`test-gtbg-dev-3` 里同时跑着别的分支的
+  student-center（如 `feature-gps-learn-situation`）。用它验"类进没进镜像"时选错 pod 会得到
+  `0` 的假结论（本次真踩到，一度以为镜像没发上去）。先 `pods --ns <泳道>` 拿到本次的 pod 名再 `--pod-name`。
 - student-center 跑单测踩的两个 test 域坑（已在 `student-center-service/pom.xml` 修掉并注释）：
   mockito `core 2.23.4` 与 `junit-jupiter 3.9.0` 版本冲突（`NoSuchMethodError:
   Plugins.getMockitoLogger`）→ 一起钉 3.3.3；`log4j-slf4j-impl` 与 `log4j-to-slf4j`

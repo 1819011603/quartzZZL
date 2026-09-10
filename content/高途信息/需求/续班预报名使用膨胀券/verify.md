@@ -120,7 +120,7 @@ curl -sk 'http://<coupon-a实例IP>:28688/feign/expandCoupon/queryList' \
 | B 端保存可用范围 | ✅ 页面报文 `code:0`，范围自动落 scope 表，编辑改范围幂等（旧行置删+新行 upsert） | chrome fetch 调 `/promotionManagement/preOrderActivity/edit` |
 | `postProductId`/`postProductName`（预警列表） | ✅ 由「前置班→后置班」推荐逻辑真实查出，非编造值 | 反射调 `InspectService#questionnaireList` |
 | 券范围唯一键 | ✅ 活动内唯一、跨活动放行，两个方向都验证过 | 直连 DB 插入验证 |
-| **券列表按三者交集过滤（T-32）** | ⏳ **待验**：已提交+单测通过，未发泳道 | 见下方「膨胀券 tab 券列表范围过滤」 |
+| **券列表按三者交集过滤（T-32）** | ✅ **2026-09-10 端到端实测通过**（6 条用例全绿，含「同 3 张券加了计划号只剩 1 张」的语义验证） | 见下方「膨胀券 tab 券列表范围过滤」 |
 
 **验证命令**：
 ```
@@ -154,12 +154,23 @@ params=[{"renewalNumber": "577431949669312512", "pager": {"current": 1, "pageSiz
    `PreOrderActivityDomainService#clearAllVisibleActivityCache params=[["活动号"]]`
 5. 浏览器 `fetch` 调外部服务**必须手动带 `traffic-env` 头**（反射桥已自动带）
 
-## 膨胀券 tab 券列表范围过滤（T-32，待验）
+## 膨胀券 tab 券列表范围过滤（T-32，✅ 已实测通过）
 
 口径：**tab 一直展示**，不做显隐校验；续班计划没配膨胀券就是列表空。
 范围 = 三者交集（在读班级学科 ∩ 续班班级年级学科 ∩ 活动券配置年级学科）且仅【使用中】。
 
-可以直接复用上面造好的数据（续班计划 `577431949669312512` 已对齐券范围 grade=19/subject=6）：
+**当前实际数据**（2026-09-10 实测，与本文上面那段「2026-09-09 造好的数据」已不同 ——
+续班计划 `577431949669312512` 现绑活动 `578667346476945408`，该活动配了 **3 张券**，
+范围都是 grade=16 六年级、subject 分别 1 数学 / 4 英语 / 5 语文，券状态都是 1）：
+
+| 对象 | 值 |
+|---|---|
+| 续班计划 | `577431949669312512` |
+| 绑定活动 | `578667346476945408`（`renewal_link_activity` id=307） |
+| 交集命中的券 | `578323391191220225`「退款口径膨胀券caseSDD_1788846422662」六年级+数学 |
+| 被交集挡掉的券 | `578323229840539649`（英语）、`578323085464207361`（语文） |
+
+复现命令：
 
 ```
 # 1) product-server 侧先单独验交集出口（应返回券 578534533488603137 一行，grade 19 / subject 6）
@@ -176,15 +187,23 @@ curl -X POST 'https://test-fuwu.baijia.com/bgwApi/component/student-center/renew
 #    「续班计划无可展示的膨胀券」
 ```
 
-判定要点：
+**实测结果（2026-09-10，pod `student-center-7b6d9977df-6f4p5` + `product-b-68fd8df7c5-r662v`，均 eureka UP）**：
 
-| 看什么 | 期望 |
+| 用例 | 期望 | 实测 |
+|---|---|---|
+| A 传膨胀券计划 | 只返交集内且状态1的券 | ✅ `total=1`，`productType=8014`、`couponStatus=1`、`couponStatusDesc=使用中`、`selectable=true` |
+| B 不传 `renewMasterNumber` | 不过滤，存量不回归 | ✅ `total=142` |
+| C 传计划号 + 范围内 sku | 求交后仍在 | ✅ `total=1` |
+| D 传计划号 + 范围外 sku | 空页，且不调电商 | ✅ `total=0`、`list=[]` |
+| E 传不存在/未绑活动的计划号 | 空页**不报错** | ✅ `code=0, total=0`（tab 仍在，点进去没数据） |
+| **F 交集语义（最关键）** | 同 3 张券，加计划号后只剩交集命中的 | ✅ 不传计划号查这 3 张 → `total=3`（都在电商、状态都是1）；**加计划号 → `total=1`**，英语/语文两张被交集挡掉 |
+
+> F 这条是「交集真的在过滤」的硬证据：三张券状态相同、电商都查得到，唯一差别就是年级学科是否与前置/后置课程成对匹配。
+
+| 边界 | 行为 |
 |---|---|
-| 传膨胀券计划 | 只返回交集内且 `couponStatus=1` 的券；`productType=8014` |
-| 传订金班/未绑活动的计划 | `total=0`、`list` 空（**不是报错**，tab 仍在，点进去没数据） |
-| 不传 `renewMasterNumber` | 不做范围过滤，行为与改动前一致（运营纯搜索/详情页复用不回归） |
-| 同时手填 `couponSkuNumberList` | 与范围**求交**：范围外的手填 ID 被过滤掉 |
-| product-b 路由不通时 | 报 `PRE_ORDER_COUPON_SCOPE_QUERY_FAIL`「查询膨胀券适用范围失败」，**不静默返空**（这是刻意的） |
+| product-b 路由不通 | 报 `PRE_ORDER_COUPON_SCOPE_QUERY_FAIL`「查询膨胀券适用范围失败」，**不静默返空**（刻意设计；本次正是靠它暴露了服务名写错）|
+| product-b 直调（绕过 student-center） | `POST http://<product-b podIP>:28688/feign/...`，入参空报 `code:5`，不存在的计划返 `data:[]` |
 
 ⚠️ `renewMasterNumber` 是大数字，**一律传字符串**，否则精度截断表现为"查无数据"。
 

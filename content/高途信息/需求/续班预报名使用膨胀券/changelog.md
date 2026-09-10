@@ -20,6 +20,45 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-09-10（第八轮 · 发泳道联调，修 3 个 bug 后端到端跑通）
+
+### 👤 我
+- 「现在发镜像」
+- 指出泳道是 `test-gtbg-dev-3`（我沿用了旧文档里的 `test-eco-7`）
+
+### 推翻了什么
+- **「product-b 单边验证通过」不等于链路通**。三个 bug 全部只在端到端暴露，
+  单测（16/16）和单边接口调用都是绿的。这轮最该记住的一条。
+- **snake_case 的药下错了一次**：先加 Jackson `@JsonProperty` → 部署后仍 `data:[{}]`。
+  真因是**这条链路的解码器是 FastJson**（`ProductInterceptorFeignConfig` 里的
+  `GaotuRcpHttpMessageConverter extends FastJsonHttpMessageConverter`），不认 Jackson 注解。
+  方向对（确实是命名不匹配），但注解族错。
+
+### 定了什么
+- **调 product-server 一律复用 `ProductInterceptorFeignConfig`，不自己拼 decoder、不手标注解**。
+  `RenewalMasterFeignAdapter` 一直这么用，是既有先例；我一开始照 `ProductAdapter` 抄了
+  服务名、却没抄 configuration，两处都踩了。
+- 服务名用 `PRODUCT-B`（与 promotion 的 `ServiceConstant.PRODUCT_B_NAME` 同口径），
+  不是 `PRODUCT.GAOTU100.COM`（那是 product 主部署，我们的接口只在 product-b 模块）。
+
+### 排障中查清的事实
+- **`data:[{}]`（数组长度对、元素是空对象）= 字段名映射错**，不是没查到数据、也不是没部署。
+  这个症状此前没人记过，已写进 README。
+- 排除"没发上去"的正确手段：进 pod `unzip -p app.jar BOOT-INF/lib/student-center-adapter-*.jar`
+  再 `strings | grep -c <注解值>`。⚠️ **`pod_term.py` 不指定 `--pod-name` 会选错 pod**
+  —— 该泳道还跑着 `feature-gps-learn-situation` 的 student-center，选错会得到 `0` 的假结论
+  （我因此一度以为镜像没发上去）。
+- **交集语义已用硬证据验证**：同 3 张券（状态都是 1、电商都查得到），不传计划号 `total=3`，
+  加计划号 `total=1` —— 英语/语文两张纯粹被「年级+学科成对匹配」挡掉。
+- 「失败抛异常不降级」这个设计在本轮直接兑现了价值：服务名写错时报出
+  `PRE_ORDER_COUPON_SCOPE_QUERY_FAIL`，我才发现 404。若当初降级成"不过滤"，
+  券列表照样有数据（全量券），这个 bug 会一路带到线上，把不该展示的券给老师。
+
+### 留给下次
+- 本需求侧无待验项。上线前事项见 [[README]]「下一步」。
+
+---
+
 ## 2026-09-10（第七轮 · B 端下单弹窗膨胀券 tab 券列表按三者交集过滤）
 
 ### 👤 我
