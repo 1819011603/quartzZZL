@@ -9,20 +9,20 @@ tags: [需求, 链接]
 
 ## 需求与方案
 
-| 类型 | 标题 | 链接 | 记录日期 |
-|---|---|---|---|
-| 需求wiki节点 | 【续班】预报名使用膨胀劵（父节点，下挂 5 份子文档） | https://gaotuedu.feishu.cn/wiki/W3SSwxr1AieysikF0D3csT4EnBh | 2026-09-08 |
-| PRD | 【PRD】续班预报名使用膨胀券 V1.0（2026-08-25） | https://gaotuedu.feishu.cn/wiki/N58DwzUDoi3sK3k1nCqcPOBMn3d | 2026-09-08 |
-| PRD | 膨胀券（定金膨胀）购买 PRD —— 券本体的售卖与配置 | https://gaotuedu.feishu.cn/wiki/UJf9w72zoinjMSk63DNcKkRTnOc | 2026-09-08 |
-| 技术反讲 | 预报名使用膨胀劵-**后端反讲文档**（v0.2，主文档） | https://gaotuedu.feishu.cn/wiki/RC4DwjusfinikRk9IM9c88l1nZW | 2026-09-08 |
-| 技术反讲 | 预报名整体技术方案 | https://gaotuedu.feishu.cn/wiki/BLlgwXUSniQ2DpkpKnmc8MeCnWe | 2026-09-08 |
-| 调研 | 预报名技术依赖梳理 | https://gaotuedu.feishu.cn/wiki/EkoFwKIVoi89U9kaYtic7l2gnIb | 2026-09-08 |
-| 调研 | 预报名前置 —— 需求解读与现状梳理（逐仓库代码核对结论） | https://gaotuedu.feishu.cn/wiki/ChowwoNm7iiPZukHmGDcVs7inlb | 2026-09-08 |
-| 前端反讲 | 续班预报名使用膨胀券-前端 EES & C 端部分 | https://gaotuedu.feishu.cn/wiki/GYLCw7WW6ikq1Ak30omcpK3XnIg | 2026-09-08 |
-| 前端反讲 | 预报名使用膨胀券—前端续班管理 & 预报名管理部分 | https://gaotuedu.feishu.cn/wiki/ZxPJwmDbaiNwPrkLdRFcDCQknzc | 2026-09-08 |
-| 待办表 | 教学服务迭代待办 ·【预报名】预报名支持膨胀劵（21 条） | https://gaotuedu.feishu.cn/wiki/VgbOwav5TigsvDkr0cYcVnF6nsh?table=tblWl0uXntBAdIHq | 2026-09-08 |
-| 其他 | 4. 订单域领域事件 | https://gaotuedu.feishu.cn/wiki/VHm7woAzyihahKkXGDvct7tbndd | 2026-09-08 |
-| 其他 | 开发操作SOP | https://gaotuedu.feishu.cn/wiki/IJ5VwuzBciJ8uNkY3fOcYNpYnuh | 2026-09-08 |
+| 类型       | 标题                               | 链接                                                                                 | 记录日期       |
+| -------- | -------------------------------- | ---------------------------------------------------------------------------------- | ---------- |
+| 需求wiki节点 | 【续班】预报名使用膨胀劵（父节点，下挂 5 份子文档）      | https://gaotuedu.feishu.cn/wiki/W3SSwxr1AieysikF0D3csT4EnBh                        | 2026-09-08 |
+| PRD      | 【PRD】续班预报名使用膨胀券 V1.0（2026-08-25） | https://gaotuedu.feishu.cn/wiki/N58DwzUDoi3sK3k1nCqcPOBMn3d                        | 2026-09-08 |
+| PRD      | 膨胀券（定金膨胀）购买 PRD —— 券本体的售卖与配置     | https://gaotuedu.feishu.cn/wiki/UJf9w72zoinjMSk63DNcKkRTnOc                        | 2026-09-08 |
+| 技术反讲     | 预报名使用膨胀劵-**后端反讲文档**（v0.2，主文档）    | https://gaotuedu.feishu.cn/wiki/RC4DwjusfinikRk9IM9c88l1nZW                        | 2026-09-08 |
+| 技术反讲     | 预报名整体技术方案                        | https://gaotuedu.feishu.cn/wiki/BLlgwXUSniQ2DpkpKnmc8MeCnWe                        | 2026-09-08 |
+| 调研       | 预报名技术依赖梳理                        | https://gaotuedu.feishu.cn/wiki/EkoFwKIVoi89U9kaYtic7l2gnIb                        | 2026-09-08 |
+| 调研       | 预报名前置 —— 需求解读与现状梳理（逐仓库代码核对结论）    | https://gaotuedu.feishu.cn/wiki/ChowwoNm7iiPZukHmGDcVs7inlb                        | 2026-09-08 |
+| 前端反讲     | 续班预报名使用膨胀券-前端 EES & C 端部分        | https://gaotuedu.feishu.cn/wiki/GYLCw7WW6ikq1Ak30omcpK3XnIg                        | 2026-09-08 |
+| 前端反讲     | 预报名使用膨胀券—前端续班管理 & 预报名管理部分        | https://gaotuedu.feishu.cn/wiki/ZxPJwmDbaiNwPrkLdRFcDCQknzc                        | 2026-09-08 |
+| 待办表      | 教学服务迭代待办 ·【预报名】预报名支持膨胀劵（21 条）    | https://gaotuedu.feishu.cn/wiki/VgbOwav5TigsvDkr0cYcVnF6nsh?table=tblWl0uXntBAdIHq | 2026-09-08 |
+| 其他       | 4. 订单域领域事件                       | https://gaotuedu.feishu.cn/wiki/VHm7woAzyihahKkXGDvct7tbndd                        | 2026-09-08 |
+| 其他       | 开发操作SOP                          | https://gaotuedu.feishu.cn/wiki/IJ5VwuzBciJ8uNkY3fOcYNpYnuh                        | 2026-09-08 |
 
 ## spec（每仓库一份，按上线依赖排序）
 
