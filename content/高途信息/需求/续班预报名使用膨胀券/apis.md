@@ -100,6 +100,55 @@ cart 类头的 TODO 也明确写了这是"promotion 缺口"。
 - promotion `PreOrderCouponEnricher.descOfCouponStatus()`（`1083c43cf`），
   `enrich()`/`enrichDTO()` 两条链路都补
 
+## 已解决（2026-09-10 本次会话）
+
+### ✅ B 端 detail 不下发 scopes —— 已修复并端到端实测通过
+
+**根因**（又一处「只在一条链路挂补齐」）：scopes 权威源在 product-server 的
+`renewal_pre_order_activity_coupon_scope` 表，promotion 自己不落库。09-09 加的跨服务读取
+**只挂在 C 端 `listFromCache`**，B 端 `detail` 这条路径没挂 → 范围明明已落库，
+详情页「预报名可用范围」恒显示「未配置」。
+
+**修法**（promotion）：`detail()` 里新增 `fillCouponScopesForDetail()`，走与 C 端同一个远端接口；
+把「拉取+分组」「映射」抽成 `loadCouponScopeRows` / `applyCouponScopes` 两个共用方法，
+C 端也改为复用 —— 就是因为两条链路各自独立补齐，才先后漏了两次。
+另给 `PreOrderActivityCouponScopeDTO` 补 `gradeName`/`subjectName`
+（原先只有 code，promotion-management 侧那两个名字字段恒为 null，页面只能显示数字）。
+
+**验证**：活动 `578653392472137728` 经页面接口 `/promotionManagement/preOrderActivity/detail`
+返回 `一年级/英语`、`四年级/生物`、`六年级/生物`，与 scope 表 id=12/13/14 逐条对得上。
+写入路径同步验过：新建活动落库 → 读回中文名正确；重复组合、空范围两条校验仍正常拦截。
+
+### ✅ 调电商券接口请求体 snake_case，筛选静默失效 —— 已修复并实测通过
+
+**根因**：`SuperSpringConfig` 把 FastJson **全局**命名策略设成 `SnakeCase`（promotion 对外
+API 口径，不能动），该全局实例同样作用于 Feign 请求体序列化；jar 的
+`ExpandCouponQueryRequest` 没有任何 `@JSONField` → 实际发出
+`{"sku_numbers":[..],"page_num":1,"page_size":3}`，而电商只认
+`skuNumbers/pageNum/pageSize`。
+
+**为什么极难定位**：未知字段被电商静默忽略 = 等价于「不带筛选」→ HTTP **200**、
+`list` **非空**（全量第一页 20 条）→ `queryCoupons` 既不抛异常、也不打
+「电商券信息全部取不到」告警（**日志里搜不到任何线索**）→ 但按 skuNumber 匹配全部 miss
+→ 券名/券ID/购买金额/状态恒为 null。**只有目标券恰好落在第一页时才「看起来是好的」。**
+
+**定位方式**：在 pod 里用 arthas 调 `JSON.toJSONString(request)` 打出真实请求体
+（`vmtool ... --express`），一眼看到 `sku_numbers`。此前靠日志、trace、Apollo 都查不出来。
+
+**修法**（promotion）：新增 `CamelExpandCouponQueryRequest` 继承 jar 入参类，覆写六个 getter
+加 `@JSONField(name=camelCase)`（优先级高于全局策略），enricher 里 `new` 换成它。
+**改动面 1 个新文件 + 1 处 4 行改动，不碰全局配置，不影响其它 Feign 调用。**
+
+**两个走不通的方案**（别再试）：① 改全局 SnakeCase → 波及 promotion 所有对外接口；
+② 换 Feign 编解码器 → jar 把 `configuration` 写死在注解上，且本仓库 spring-cloud 是
+**Edgware.SR5，`@FeignClient` 尚无 `contextId`**，同服务名重复声明 bean 名冲突（实测编译即报错）。
+
+**验证**：活动 `578667346476945408`（「造数」，挂 3 张券）修复前券字段全 null，
+修复后 B 端 `detail` 与 C 端 `listFromCache` 均完整返回券名/券ID/购买金额/`couponStatus=1 使用中`。
+C 端这条尤其关键：**修复前三者交集里的券状态判定拿到的是错的，属资损方向**。
+
 ## 已知契约缺口（仍未解决）
 
-目前没有已知的未解决契约缺口。
+| 缺口 | 影响 | 处理 |
+|---|---|---|
+| 电商 `couponName` 只支持**左匹配**（`like '关键字%'`） | 券选品搜索「口径」「caseSDD」等中间词一律 0 条，运营必须从券名开头输入 | 需推动电商改成 `%关键字%`，**跨团队，尚未提出** |

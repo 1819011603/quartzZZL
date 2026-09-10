@@ -57,7 +57,18 @@ DB 层唯一键 `uk_act_grade_subject(activity_number, grade_code, subject_code)
 | **服务所在泳道** | **`test-eco-7`**（不在 `test-gtbg-dev-3`！） |
 | 跨泳道可达 | ✅ 已实测：`test-gtbg-dev-3` 的 promotion-b 能调到 `test-eco-7` 的 coupon-a |
 
-🔴 **coupon-a 测试环境的券 SKU 会滚动重新生成，不要相信任何文档里记的具体 sku 值**——当天下午记的"木7 skuNumber=578513860277893121"，晚上用同一个 couponName 查已经变成了 `578534533488603137`（couponNumber 也变了）。每次要用真实券自测前，现查一次：
+❌ ~~**coupon-a 测试环境的券 SKU 会滚动重新生成**~~ —— **2026-09-10 证伪，这条是错的**。
+
+当时的观察（下午记的 `578513860277893121`，晚上查变成 `578534533488603137`）是真的，但**结论错了**：
+不是券被重新生成，而是**同名的两张不同券**（相隔约 3 小时各建了一张「木7」）。
+2026-09-10 实测按 `couponName=木7` 查，`total=2`，**两张 sku 至今都还在、`couponStatus` 都是 1**。
+
+真因是 `PreOrderCouponEnricher` 发给电商的请求体被序列化成 snake_case（`sku_numbers`），
+电商只认 camelCase，筛选被静默忽略 → 只返回全量第一页 → 目标券不在第一页就 miss。
+新建的券恰好排在第一页，于是「换张新券重测就正常」，造出了「旧 sku 失效」的错觉。
+已修（见 [[README]] 坑位「调电商请求体 snake_case」）。**文档里记的 sku 值可以放心复用。**
+
+查券命令（`couponName` 是**左匹配**，只能按开头搜）：
 
 ```
 mcp baijia-invoke invoke_service project=promotion traffic_env=test-gtbg-dev-3
@@ -65,7 +76,19 @@ service_method=com.gaotu.coupon.a.client.feign.ExpandCouponFeignService#queryLis
 params=[{"skuNumbers":["随便填"],"pageNum":1,"pageSize":20}]
 ```
 
-⚠️ **`invoke_service` 反射桥调 `queryList` 时，`skuNumbers`/`pageSize` 这些 `List<Long>`/复杂类型参数不会正确生效**（传什么都返回同一页默认数据）——这是反射桥自身 JSON→Java 参数适配的缺陷，不代表接口真的不支持过滤，真实 Feign 调用不受影响。现查时直接看返回的 `list` 里挑一条 `coupon_status=1` 的券，用它当下最新的 `sku_number`/`coupon_number`。
+⚠️ **`invoke_service` 反射桥调 `queryList` 时 `skuNumbers` 不生效**（传什么都返回同一页默认数据）。
+**2026-09-10 更正**：原先写「真实 Feign 调用不受影响」是**错的** —— 真实 Feign 同样中招，
+病根是 promotion 的全局 SnakeCase 把请求体发成了 `sku_numbers`（已修）。
+要精确按 sku 查，**直接 curl 打 coupon-a 实例**（camelCase 入参），别用反射桥：
+
+```bash
+# 实例 IP 每次重新部署会变，用 invoke_feign 现拿：
+#   mcp baijia-invoke invoke_feign service_name=COUPON-A.GAOTU100.COM \
+#     path=/feign/expandCoupon/queryList traffic_env=test-gtbg-dev-3 body='{"couponName":"木7","pageNum":1,"pageSize":10}'
+curl -sk 'http://<coupon-a实例IP>:28688/feign/expandCoupon/queryList' \
+  -H 'content-type: application/json' \
+  -d '{"skuNumbers":[578534533488603137],"pageNum":1,"pageSize":5}'
+```
 
 ⚠️ **ID 是 19 位雪花数**，前端 JS 会精度截断——出参需 `@JSONField(serializeUsing = ToStringSerializer.class)`；手工在浏览器/JSON 工具里粘贴大数字 ID 同样会截断，别拿手工调用的截断结果当 bug。
 

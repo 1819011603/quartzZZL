@@ -102,20 +102,22 @@ C 端 `GET /web/renewal/preRegistration`（`cart` 的 `RegistrationService#preRe
 
 | | |
 |---|---|
-| 阶段 | 开发中（**B 端 detail 回显、C 端 scopes 缺口均已修复并端到端实测通过**） |
+| 阶段 | 开发中（**B 端 detail scopes、调电商 snake_case 两个 bug 均已修复并端到端实测通过**） |
 | 进度 | T 27/27 · R 0/2 · C 0/0 |
 | 排期 | 09-08~09-11 开发 · 09-14 自测 · 09-15~16 联调 · **提测 09-16** |
-| 当前卡点 | 🟢 B 端 detail 回显、C 端 scopes、`couponStatusDesc` 文案、**C 端三者交集精确匹配**均**已端到端实测通过**（见 [[apis]]、[[verify]]）。<br>🔴 **上线前必查**：`promotion` 在这个环境有 `promotion-b`/`promotion-c` 两个独立部署，改动涉及 C 端链路时**两个都要发布**，本次会话因此漏发过一次 promotion-c，详见下方「必须知道的坑」 |
-| 最近更新 | 2026-09-10（近两轮只做文档治理，未动业务代码）
+| 当前卡点 | 🟢 无阻塞。B 端 detail scopes 回显、**调电商请求体 snake_case 导致筛选静默失效**（券字段全空的真凶）均已修复，promotion-b/-c 都已发布并实测通过。<br>🟡 **遗留（非阻塞）**：电商 `couponName` 只支持左匹配，中间词搜不到，需跨团队推动，见 [[apis]]「已知契约缺口」。<br>🔴 **上线前必查**：`promotion` 有 `promotion-b`/`promotion-c` 两个独立部署，改动涉及 C 端链路时**两个都要发布** |
+| 最近更新 | 2026-09-10（修 2 个 bug + 推翻「券 SKU 会滚动重生成」的错误结论）
 
-**六仓库代码全部提交并推送，编译全绿（BUILD SUCCESS）**。今天新增/改动的代码
-（B 端 detail 回显、C 端 scopes、couponStatusDesc 本地映射）已补单测，其余历史代码仍未写单测。
+**六仓库代码全部提交并推送，编译全绿（BUILD SUCCESS）**。本次两处改动均已补单测
+（promotion-app 9/9、promotion-domain 18/18 通过）。
+⚠️ `GradientAndDiscountTraceStrategyTest` 有 1 条失败，**stash 掉本次改动后同样失败，
+是分支上原有问题，与本需求无关**，未处理。
 
 | 仓库 | 最新 commit |
 |---|---|
 | student-center | `c777976d9`（含单测） |
 | product-server | `c0a448b57`（含单测） |
-| promotion | `83fec5087`（含单测；promotion-b **和** promotion-c 都需要发布这个 commit） |
+| promotion | `f4386aaf2`（含单测；promotion-b **和** promotion-c 都已发布该 commit） |
 | promotion-management | `961cb892` |
 | order | `073dea69e2` |
 | cart | `a7646b67` |
@@ -125,9 +127,8 @@ C 端 `GET /web/renewal/preRegistration`（`cart` 的 `RegistrationService#preRe
 
 > 只列还没做的。做完的已删（历史见 [[changelog]]）。
 
-1. ⚠️ **自测/联调前先现查一次券 SKU** —— coupon-a 测试环境的券数据会滚动重新生成，
-   [[verify]] 里记的具体 sku 值随时失效。排查"回显是空"先查日志有没有
-   `PreOrderCouponEnricher | 部分券在电商查不到`，别先怀疑代码（[[verify]]「电商 coupon-a 联调信息」）。
+1. ✅ ~~自测/联调前先现查一次券 SKU~~ —— **2026-09-10 已证伪并修复**，见下方坑位
+   「调电商请求体 snake_case」。券一直都在，之前「查不到」是我们发出去的筛选条件被静默忽略。
 2. 🔴 **改动涉及 C 端链路时 `promotion-b` 和 `promotion-c` 两个部署都要发布** ——
    只发 b、用反射桥验证通过≠cart 端到端通了（见下方坑位）。
 3. 上线前：三处 `AclServiceCompareController.enabled` 显式配 `false`、
@@ -189,7 +190,24 @@ C 端 `GET /web/renewal/preRegistration`（`cart` 的 `RegistrationService#preRe
 - **`couponStatusDesc` 由我们本地维护，是永久方案**（电商邓俊兵确认不会下发此字段）。
   已实现 `PreOrderCouponStatusEnum.descOfStatus()` / `PreOrderCouponEnricher.descOfCouponStatus()`。
   ⚠️ 教训：「权威源在下游、等下游提供」这类设计，一开始就要问清「你们会不会下发」，否则会死等。
-- **coupon-a 测试环境券 SKU 会滚动重新生成** —— 别复用文档里的具体 sku 值，用前现查（[[verify]]）。
+- ❌ ~~**coupon-a 测试环境券 SKU 会滚动重新生成**~~ —— **2026-09-10 证伪，别再信这条**。
+  实测旧 sku `578513860277893121`（曾被判定"已过期"）与 `578534533488603137` **两张都还在**，
+  只是恰好都叫「木7」（相隔 3 小时建的两张不同券）。当初"查不到"的真因是下面这条 snake_case bug：
+  筛选条件被电商静默忽略 → 只返回全量第一页 → 目标券不在第一页就 miss。
+  **新建的券恰好排在第一页，所以"换张新券重测就好了"，这才造出"旧 sku 失效"的错觉。**
+- 🔥 **调电商 coupon-a 的请求体会被序列化成 snake_case，筛选条件静默失效**（2026-09-10 修复）。
+  `SuperSpringConfig` 把 FastJson **全局**命名策略设为 `SnakeCase`（promotion 对外 API 口径，不能动），
+  该全局实例同样作用于 Feign 请求体；jar 的 `ExpandCouponQueryRequest` 又没有任何 `@JSONField`
+  → 实发 `{"sku_numbers":[..],"page_num":1}`，而电商只认 `skuNumbers/pageNum/pageSize`。
+  **症状极隐蔽**：未知字段被静默忽略 = 不带筛选 → HTTP 200、`list` 非空（全量第一页）→
+  既不抛异常也不打「全部取不到」告警（**日志里什么都搜不到**）→ 但按 skuNumber 匹配全 miss
+  → 券名/券ID/购买金额/状态恒为 null。
+  修法：`CamelExpandCouponQueryRequest` 继承 jar 入参类、覆写 getter 加 `@JSONField(name=camelCase)`
+  （其优先级高于全局策略）。**别改全局 SnakeCase**（波及所有对外接口）；
+  **也别想换 Feign 编解码器**——jar 把 `configuration` 写死在注解上，且本仓库
+  spring-cloud 是 **Edgware.SR5，`@FeignClient` 还没有 `contextId`**，同服务名重复声明会 bean 名冲突。
+- **膨胀券名称搜索只支持「左匹配」**（`like '关键字%'`，jar 注释写明）：搜「退款口径」能命中
+  「退款口径膨胀券caseSDD_x」，搜「口径」「caseSDD」一律 0 条。这是电商口径，我们只透传关键字。
 
 **部署 / 链路拓扑**
 - 🔴 **`promotion` 有 `promotion-b`(`gaotu_promotion`) 和 `promotion-c`(`gaotu_promotion_c`) 两个独立部署**。
@@ -226,7 +244,10 @@ C 端 `GET /web/renewal/preRegistration`（`cart` 的 `RegistrationService#preRe
   `parseLong error`）→ 改扁平 `List<Row>`；② 对端用 `RestTraceResponse<T>` 包了一层时，Feign 方法
   不能声明裸 `T`，要声明信封类型再 `.getData()`。
 - 🔥 **`invoke_service` 反射桥调带 `List<Long>` 等复杂参数的方法时参数不生效**（传什么都返回同一页
-  默认数据），是反射桥 JSON→Java 适配缺陷，**不代表接口不支持过滤**，真实 Feign 不受影响。
+  默认数据）。⚠️ **2026-09-10 更正**：原先写「是反射桥自身缺陷、真实 Feign 不受影响」，
+  **后半句是错的** —— 至少对 coupon-a 这条链路，真实 Feign 同样中招，病根就是上面那条
+  snake_case 序列化。当时拿反射桥的未过滤结果当证据，据此误判「券已过期」，绕了很大弯路。
+  **教训：反射桥返回「像是没过滤」时，先验证真实调用，别直接归因于工具缺陷。**
 - 🔥 **`baijia_invoke.py` 的 `ROUTE_MAP` 没登记 `promotion-management`**，且该仓库压根没挂反射桥
   Controller（只在 student-center/promotion/cart/product-server 四仓）→ 测它只能走真实业务接口。
   走兜底前缀被 CAS 兜底成「请重新登录」，**跟 Cookie 无关，是路由没配**。
