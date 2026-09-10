@@ -120,6 +120,7 @@ curl -sk 'http://<coupon-a实例IP>:28688/feign/expandCoupon/queryList' \
 | B 端保存可用范围 | ✅ 页面报文 `code:0`，范围自动落 scope 表，编辑改范围幂等（旧行置删+新行 upsert） | chrome fetch 调 `/promotionManagement/preOrderActivity/edit` |
 | `postProductId`/`postProductName`（预警列表） | ✅ 由「前置班→后置班」推荐逻辑真实查出，非编造值 | 反射调 `InspectService#questionnaireList` |
 | 券范围唯一键 | ✅ 活动内唯一、跨活动放行，两个方向都验证过 | 直连 DB 插入验证 |
+| **券列表按三者交集过滤（T-32）** | ⏳ **待验**：已提交+单测通过，未发泳道 | 见下方「膨胀券 tab 券列表范围过滤」 |
 
 **验证命令**：
 ```
@@ -152,6 +153,40 @@ params=[{"renewalNumber": "577431949669312512", "pager": {"current": 1, "pageSiz
 4. 改完 DB 查缓存路径接口（`listFromCache`/`detail`）**先清 promotion Redis 缓存**：
    `PreOrderActivityDomainService#clearAllVisibleActivityCache params=[["活动号"]]`
 5. 浏览器 `fetch` 调外部服务**必须手动带 `traffic-env` 头**（反射桥已自动带）
+
+## 膨胀券 tab 券列表范围过滤（T-32，待验）
+
+口径：**tab 一直展示**，不做显隐校验；续班计划没配膨胀券就是列表空。
+范围 = 三者交集（在读班级学科 ∩ 续班班级年级学科 ∩ 活动券配置年级学科）且仅【使用中】。
+
+可以直接复用上面造好的数据（续班计划 `577431949669312512` 已对齐券范围 grade=19/subject=6）：
+
+```
+# 1) product-server 侧先单独验交集出口（应返回券 578534533488603137 一行，grade 19 / subject 6）
+mcp baijia-invoke invoke_feign service_name=PRODUCT.GAOTU100.COM traffic_env=test-gtbg-dev-3 \
+  path=/feign/preOrderActivity/couponScope/listDisplayableByRenewalPlan \
+  body='{"renewMasterNumber":"577431949669312512"}'
+
+# 2) student-center 侧验券列表（应只返回交集内、状态为1的券）
+curl -X POST 'https://test-fuwu.baijia.com/bgwApi/component/student-center/renewal/pre/coupon/list' \
+  -H 'Content-Type: application/json' -H 'traffic-env: test-gtbg-dev-3' \
+  -d '{"renewMasterNumber":"577431949669312512","pageNum":1,"pageSize":20}'
+
+# 3) 反例：换一个订金班（或没绑活动的）续班计划 -> 期望 total=0 / list 空，且日志有
+#    「续班计划无可展示的膨胀券」
+```
+
+判定要点：
+
+| 看什么 | 期望 |
+|---|---|
+| 传膨胀券计划 | 只返回交集内且 `couponStatus=1` 的券；`productType=8014` |
+| 传订金班/未绑活动的计划 | `total=0`、`list` 空（**不是报错**，tab 仍在，点进去没数据） |
+| 不传 `renewMasterNumber` | 不做范围过滤，行为与改动前一致（运营纯搜索/详情页复用不回归） |
+| 同时手填 `couponSkuNumberList` | 与范围**求交**：范围外的手填 ID 被过滤掉 |
+| product-b 路由不通时 | 报 `PRE_ORDER_COUPON_SCOPE_QUERY_FAIL`「查询膨胀券适用范围失败」，**不静默返空**（这是刻意的） |
+
+⚠️ `renewMasterNumber` 是大数字，**一律传字符串**，否则精度截断表现为"查无数据"。
 
 ## 反射桥调用地址（四个服务，均实测）
 

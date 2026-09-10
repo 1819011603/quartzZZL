@@ -20,6 +20,58 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-09-10（第七轮 · B 端下单弹窗膨胀券 tab 券列表按三者交集过滤）
+
+### 👤 我
+- 给了 `recommendProductList` 的 URL 说「这个服务得加个接口，这个 tab 得续班计划配了膨胀卷才展示」
+- 贴需求截图（金瑞琳问「这个 tab 需要灰度控制吗」→ 王永诗 09-03 答「不用，续班计划不配膨胀券不展示」）
+- 追问「膨胀卷的列表接口是哪个」，纠正接口归属：**是 student-center 的膨胀券选择分页查询，不是 product-server 新接口**
+- **中途改口径**：「tab 一直展示，不用加灰度或者其他校验，不配膨胀券就点进去没数据」
+- 要求字段名用 `renewMasterNumber`（给了样例值 `500775609543200768`）
+- 指出我沿用了旧文档里的 `test-eco-7`，实际泳道是 `test-gtbg-dev-3`
+
+### 推翻了什么
+- **「不配膨胀券就不展示 tab」→「tab 常显，没数据即空」**。原按截图口径已在
+  `PreOrderCouponPageVO` 加了 `showCouponTab` 字段并在 Biz 里按活动形式短路，
+  用户改口径后**整体 revert**（该文件现零 diff）。
+  理由：既然 tab 不隐藏，"有没有数据"本就是交集过滤的自然结果，
+  再多一个显隐字段等于让前端和后端各存一份判断，多余且会分叉。
+- **一开始理解成「在 product-server 加接口」→ 实际是给 student-center 已有的
+  `/renewal/pre/coupon/list` 加过滤能力**。那个接口早就存在、8 列字段齐全，
+  缺的只是"范围"这一维。
+
+### 定了什么
+- **交集出口开在 product-server，student-center 只取结果不重算**。
+  `PreOrderCouponIntersectService` 的类注释早就点名三个调用方（发链接 / B 端下单弹窗券列表 /
+  C 端落地页）口径必须一致、"不得自行再算一遍"，本次就是第二个调用方。
+  在 student-center 重写一份交集 = 老师看到的券 ≠ 学员能买的券。
+- **新 feign 入参只要 `renewMasterNumber`**：活动号（→ 预报名节点 → 绑定活动）和
+  前置课程号（→ 续班关系表）在 product-server 都能自足反查。让调用方拼这两个值
+  等于把交集的输入口径散出去。
+- **ACL 失败抛异常不降级**：降级成空列表运营会误判「没配券」，
+  降级成"不过滤"会把电商全量券暴露给老师（更严重，属越权展示）。
+- **范围与用户手填的券商品ID求交**，不是二选一：范围覆盖检索条件会让搜索框失效，
+  只用检索条件则绕过范围限制。
+- 不做分批：product-server 侧单活动券上限 100，与 student-center 批量上限同值，
+  恰好不会超；对端若放宽该上限，这里要改成分批（已写进代码注释）。
+
+### 顺带修掉
+- **`c0a448b57` 那条提交带的单测其实一直没编译过**（用了本仓库 assertj 版本没有的
+  `anySatisfy`/`noneMatch`），把整个 `product-server-domain` 的 test 编译卡死 ——
+  也就是说那轮"已补单测"实际从未运行。已改成等价显式写法，8/8 通过。
+  教训：单测提交前必须真跑一次，"写完编译过"不等于"测试跑过"（test 编译是独立阶段）。
+- student-center 两个只影响 test 域的环境坑：mockito `core 2.23.4` 与
+  `junit-jupiter 3.9.0` 版本冲突（`NoSuchMethodError: Plugins.getMockitoLogger`）→ 一起钉 3.3.3；
+  `log4j-slf4j-impl` 与 `log4j-to-slf4j` 双桥接使 `@Slf4j` 类静态初始化即失败 → 排掉后者。
+
+### 留给下次
+- **接口实测还没做**（需发 `test-gtbg-dev-3`）：验 `renewMasterNumber` 传膨胀券计划
+  只返回交集内且【使用中】的券、传订金班计划返空 list。发完先确认 eureka UP。
+- product-b 的网关路由能否通到 `/feign/preOrderActivity/couponScope/listDisplayableByRenewalPlan`
+  需联调实测一次（adapter 用的服务名 `PRODUCT.GAOTU100.COM` 与仓库既有写法一致）。
+
+---
+
 ## 2026-09-10（第六轮 · 补 B 端 detail scopes + 揪出 snake_case 序列化根因）
 
 ### 👤 我

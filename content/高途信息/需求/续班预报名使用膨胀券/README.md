@@ -65,6 +65,13 @@ tags:
   （`POST /feign/expandCoupon/queryList`，青舟 interfaceId=5453936）。
 - 🔴 **`couponStatusDesc` 文案由我们本地维护，是最终方案不是过渡**（2026-09-09 电商邓俊兵确认
   「中文展示逻辑你们按需判断展示就行」，即电商不会下发此字段）。已实现，**不用再找电商推动**。
+- 🔴 **B 端下单弹窗膨胀券 tab「一直展示」，不做灰度、不做显隐校验**（2026-09-10 用户定稿）。
+  续班计划没配膨胀券时**点进去没数据**（列表空），不是把 tab 藏起来。
+  ⚠️ 需求截图里王永诗 09-03 答的「不配膨胀券不展示」**已被推翻**，别再照它加 `showCouponTab`
+  之类的显隐字段（试写过一次已 revert，见 [[changelog]] 09-10 第七轮）。
+- **券列表的范围过滤入口 = `/renewal/pre/coupon/list` 的可选入参 `renewMasterNumber`**：
+  传了才按三者交集过滤，不传不过滤（运营纯券搜索 / 详情页复用同一接口，存量行为不能变）。
+  交集**只在 product-server 算**（`listDisplayableByRenewalPlan`），student-center 不重算。
 - 三者交集 = 前置班学科 ∩ 后置班年级学科 ∩ 券配置范围，且仅【使用中】。**按「年级+学科」成对判定**，
   分别求交会放行「年级来自A组合、学科来自B组合」的伪命中。
 
@@ -102,21 +109,22 @@ C 端 `GET /web/renewal/preRegistration`（`cart` 的 `RegistrationService#preRe
 
 | | |
 |---|---|
-| 阶段 | 开发中（**B 端 detail scopes、调电商 snake_case 两个 bug 均已修复并端到端实测通过**） |
-| 进度 | T 27/27 · R 0/2 · C 0/0 |
+| 阶段 | 开发中（**B 端下单弹窗膨胀券 tab 的券范围过滤已编码+单测，待发泳道实测**） |
+| 进度 | T 32/32 · R 0/2 · C 0/0 |
 | 排期 | 09-08~09-11 开发 · 09-14 自测 · 09-15~16 联调 · **提测 09-16** |
-| 当前卡点 | 🟢 无阻塞。B 端 detail scopes 回显、**调电商请求体 snake_case 导致筛选静默失效**（券字段全空的真凶）均已修复，promotion-b/-c 都已发布并实测通过。<br>🟡 **遗留（非阻塞）**：电商 `couponName` 只支持左匹配，中间词搜不到，需跨团队推动，见 [[apis]]「已知契约缺口」。<br>🔴 **上线前必查**：`promotion` 有 `promotion-b`/`promotion-c` 两个独立部署，改动涉及 C 端链路时**两个都要发布** |
-| 最近更新 | 2026-09-10（修 2 个 bug + 推翻「券 SKU 会滚动重生成」的错误结论）
+| 当前卡点 | 🟢 无阻塞。<br>🟠 **待实测**：T-32（膨胀券 tab 券列表按三者交集过滤）已提交但**尚未发泳道验证**，见「下一步」第 1 条。<br>🟡 **遗留（非阻塞）**：电商 `couponName` 只支持左匹配，中间词搜不到，需跨团队推动，见 [[apis]]「已知契约缺口」。<br>🔴 **上线前必查**：`promotion` 有 `promotion-b`/`promotion-c` 两个独立部署，改动涉及 C 端链路时**两个都要发布** |
+| 最近更新 | 2026-09-10（膨胀券 tab 券列表按三者交集过滤；tab 显隐口径反转成「常显」）
 
-**六仓库代码全部提交并推送，编译全绿（BUILD SUCCESS）**。本次两处改动均已补单测
-（promotion-app 9/9、promotion-domain 18/18 通过）。
+**六仓库代码编译全绿（BUILD SUCCESS）**。⚠️ **T-32 的两笔提交（product-server `1de4533b9`、
+student-center `974b669a5`）已 commit 但尚未 push**，其余仓库此前均已推送。
+T-32 单测：product-server 16/16、student-center 16/16 通过。
 ⚠️ `GradientAndDiscountTraceStrategyTest` 有 1 条失败，**stash 掉本次改动后同样失败，
 是分支上原有问题，与本需求无关**，未处理。
 
 | 仓库 | 最新 commit |
 |---|---|
-| student-center | `c777976d9`（含单测） |
-| product-server | `c0a448b57`（含单测） |
+| student-center | `974b669a5`（含单测） |
+| product-server | `1de4533b9`（含单测） |
 | promotion | `f4386aaf2`（含单测；promotion-b **和** promotion-c 都已发布该 commit） |
 | promotion-management | `961cb892` |
 | order | `073dea69e2` |
@@ -127,13 +135,16 @@ C 端 `GET /web/renewal/preRegistration`（`cart` 的 `RegistrationService#preRe
 
 > 只列还没做的。做完的已删（历史见 [[changelog]]）。
 
-1. ✅ ~~自测/联调前先现查一次券 SKU~~ —— **2026-09-10 已证伪并修复**，见下方坑位
-   「调电商请求体 snake_case」。券一直都在，之前「查不到」是我们发出去的筛选条件被静默忽略。
+1. **实测膨胀券 tab 券列表的范围过滤**（T-32 已提交但未实测）：发 `test-gtbg-dev-3` 后调
+   `POST /component/student-center/renewal/pre/coupon/list`，传膨胀券续班计划的
+   `renewMasterNumber` → 期望只返回交集内且【使用中】的券；传订金班计划 → 期望空 list。
+   同时确认 product-b 的网关路由能通到
+   `/feign/preOrderActivity/couponScope/listDisplayableByRenewalPlan`。
 2. 🔴 **改动涉及 C 端链路时 `promotion-b` 和 `promotion-c` 两个部署都要发布** ——
    只发 b、用反射桥验证通过≠cart 端到端通了（见下方坑位）。
 3. 上线前：三处 `AclServiceCompareController.enabled` 显式配 `false`、
    线上建表、5 个 Apollo key、2 个代课接口权限登记（明细见 [[verify]]「新建的东西」）。
-4. R-01/R-02 已闭环；接口链路已全部端到端实测通过，无待验项。
+4. R-01/R-02 已闭环。
 
 ## 待确认
 
@@ -149,8 +160,8 @@ C 端 `GET /web/renewal/preRegistration`（`cart` 的 `RegistrationService#preRe
 
 | 仓库 | 分支 | 关键位置 |
 |---|---|---|
-| /Users/gaotu/IdeaProjects/JavaProject/student-center | feature-xuban-pre | 券选品接口、发链接分流、券列表 mock |
-| /Users/gaotu/IdeaProjects/JavaProject/product-server | feature-xuban-pre | 活动配置、券范围表、三者交集、预警、C端样式 |
+| /Users/gaotu/IdeaProjects/JavaProject/student-center | feature-xuban-pre | 券选品接口 `PreOrderCouponController#listCoupon`/`PreOrderCouponBiz#listCoupon`（含按 `renewMasterNumber` 的范围过滤）、`PreOrderCouponScopeAclService`、发链接分流 `PreOrderActivityFormResolver` |
+| /Users/gaotu/IdeaProjects/JavaProject/product-server | feature-xuban-pre | 活动配置、券范围表、三者交集 `PreOrderCouponIntersectService`、按计划查可展示券 `PreOrderDisplayableCouponService` + `PreOrderCouponScopeFeignController`、预警 `InspectService`、C端样式 |
 | /Users/gaotu/IdeaProjects/JavaProject/promotion | feature-xuban-pre | 活动形式、券可用范围、baseUrl 分叉 |
 | /Users/gaotu/IdeaProjects/JavaProject/promotion-management | feature-xuban-pre | **B 端页面的真正入口**（OES→它→promotion-b）。`PreOrderActivityProductEditReq` 透传券字段、`PreOrderActivityDomainServiceImpl#detail` 判空 |
 | /Users/gaotu/IdeaProjects/JavaProject/order | feature-xuban-pre | 仅加购 + 购物车总价 |
@@ -232,6 +243,24 @@ C 端 `GET /web/renewal/preRegistration`（`cart` 的 `RegistrationService#preRe
   不能静默返 0。
 - **成对求交**：年级、学科必须按 `PreOrderActivityCouponScopeDTO` **整对**比对；分别求交会放行
   「年级来自 A 组合、学科来自 B 组合」的伪命中（诱发该写法的 `intersect()` helper 已删）。
+- **三者交集只有 `PreOrderCouponIntersectService` 一份实现，任何新调用方都只能"取结果"**。
+  它的类注释点名了三个调用方（发链接 / B 端下单弹窗券列表 / C 端落地页）。
+  在别的服务里重算一遍 = 老师看到的券 ≠ 学员能买的券。
+  跨服务取用走 product-b 的 `couponScope/listDisplayableByRenewalPlan`（只要续班计划号）。
+- **范围过滤失败绝不能降级**：降级成"空列表"运营会误判「没配券」；
+  降级成"不过滤"会把电商全量券暴露给老师（越权展示，更严重）。故 ACL 层直接抛业务异常。
+
+**测试 / 构建**
+- 🔥 **本仓库 `product-server-domain` 的 assertj 版本没有 `anySatisfy`/`noneMatch`**，
+  误用会让**整个模块的 test 编译失败**（不是单个测试失败）→ 连带其他测试一个都跑不了。
+  `c0a448b57` 就这么埋了一个"从未运行过"的单测，直到 09-10 才发现。
+  **教训：单测提交前必须真跑一次**——`mvn compile` 过不代表 test 编译过，是两个独立阶段。
+- **跑单测必须带 `-am`**：只写 `-pl <模块>` 时兄弟模块未安装进本地仓库，
+  会报一堆"找不到符号/程序包不存在"，那是**假错误**，不是代码问题。
+- student-center 跑单测踩的两个 test 域坑（已在 `student-center-service/pom.xml` 修掉并注释）：
+  mockito `core 2.23.4` 与 `junit-jupiter 3.9.0` 版本冲突（`NoSuchMethodError:
+  Plugins.getMockitoLogger`）→ 一起钉 3.3.3；`log4j-slf4j-impl` 与 `log4j-to-slf4j`
+  双桥接使 `@Slf4j` 类静态初始化就抛 `LoggingException` → 在 infrastructure 依赖上排掉后者。
 
 **工具 / 环境**
 - 🔥 **接外部 Feign jar 前先看它的注解是哪个包**。`coupon-a-client` 用旧包

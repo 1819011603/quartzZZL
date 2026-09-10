@@ -3,7 +3,7 @@
   "info": {
     "title": "续班预报名使用膨胀券",
     "version": "2026-09-09.2",
-    "description": "# 续班预报名使用膨胀券 · 自测接口集\n\n分支 `feature-xuban-pre` · 泳道 **test-gtbg-dev-3**\n\n## ⚠️ 泳道头请在 Apifox 环境里全局配一次\n\n接口定义里**不带** `traffic-env`（避免每个接口重复维护）。请在 Apifox\n「环境管理 → 测试环境 → 全局 Header」加一条：\n\n| Header | 值 |\n|---|---|\n| `traffic-env` | `test-gtbg-dev-3` |\n\n⚠️ **必须是 `traffic-env`（带连字符）** —— 写成 `trafficenv` 会静默打到默认泳道，新接口全 404。\n\n## ⚠️ 网关前缀不能猜\n\n`/bgwApi/component/{服务}` **只有 student-center 有**；走 `/noAuth/...` 会返回 200 但\n`code:3 登陆信息获取异常`（该路由跳过鉴权拿不到用户上下文）。\n各服务反射桥前缀权威表在 `~/.local/mcp-servers/baijia_invoke.py` 的 `ROUTE_MAP`。\n\n## 券状态枚举（2026-09-09 电商定稿）\n\n来源：`com.gaotu:coupon-a-client:1.3.15` 的 `ExpandCouponDetailDto#couponStatus`\n\n| 码 | 含义 | 可勾选 |\n|---|---|---|\n| 1 | 使用中 | ✅ |\n| 2 | 已失效 | ❌ |\n| 3 | 审核中 | ❌ |\n| 4 | 已暂停 | ❌ |\n\n**没有「待开始」**。售卖期由 `saleStartTime`/`saleEndTime` 表达，不在状态码里。\n\n## 测到哪了（诚实版）\n\n| 项 | 结论 |\n|---|---|\n| 券列表 5 条 | ✅ HTTP 实测通过（枚举改版前） |\n| `couponStatusDesc` | ✅ 实测有值 |\n| 券范围 couponScope/list | ⚠️ 接口通但 scopes 空（造数挂假活动号） |\n| 反射桥 4 条 | ✅ 实测通过 |\n| 券的**真实**名称/金额/状态 | ❌ 仍是 mock，只是字段名/枚举已对齐电商真实契约 |\n| C 端落地页 / 单元测试 | ❌ 未跑 / 未写 |\n\n**Cookie**：Apifox 自带 Cookie 管理，无需配代理。"
+    "description": "# 续班预报名使用膨胀券 · 自测接口集\n\n分支 `feature-xuban-pre` · 泳道 **test-gtbg-dev-3**\n\n## ⚠️ 泳道头请在 Apifox 环境里全局配一次\n\n接口定义里**不带** `traffic-env`（避免每个接口重复维护）。请在 Apifox\n「环境管理 → 测试环境 → 全局 Header」加一条：\n\n| Header | 值 |\n|---|---|\n| `traffic-env` | `test-gtbg-dev-3` |\n\n⚠️ **必须是 `traffic-env`（带连字符）** —— 写成 `trafficenv` 会静默打到默认泳道，新接口全 404。\n\n## ⚠️ 网关前缀不能猜\n\n`/bgwApi/component/{服务}` **只有 student-center 有**；走 `/noAuth/...` 会返回 200 但\n`code:3 登陆信息获取异常`（该路由跳过鉴权拿不到用户上下文）。\n各服务反射桥前缀权威表在 `~/.local/mcp-servers/baijia_invoke.py` 的 `ROUTE_MAP`。\n\n## 券状态枚举（2026-09-09 电商定稿）\n\n来源：`com.gaotu:coupon-a-client:1.3.15` 的 `ExpandCouponDetailDto#couponStatus`\n\n| 码 | 含义 | 可勾选 |\n|---|---|---|\n| 1 | 使用中 | ✅ |\n| 2 | 已失效 | ❌ |\n| 3 | 审核中 | ❌ |\n| 4 | 已暂停 | ❌ |\n\n**没有「待开始」**。售卖期由 `saleStartTime`/`saleEndTime` 表达，不在状态码里。\n\n## 测到哪了（诚实版）\n\n| 项 | 结论 |\n|---|---|\n| 券列表 5 条 | ✅ HTTP 实测通过（枚举改版前） |\n| `couponStatusDesc` | ✅ 实测有值 |\n| 券范围 couponScope/list | ⚠️ 接口通但 scopes 空（造数挂假活动号） |\n| 反射桥 4 条 | ✅ 实测通过 |\n| 券的**真实**名称/金额/状态 | ✅ **2026-09-09 起实时取电商 coupon-a，mock 已全部删除** |\n| C 端落地页 | ✅ 2026-09-09 端到端实测通过（cart `preRegistration` code:0） |\n| 单元测试 | ✅ 已补：product-server 16/16、student-center 16/16 |\n\n## 2026-09-10 新增\n\n- `POST /bgwApi/component/student-center/renewal/pre/coupon/list` 入参加可选 `renewMasterNumber`\n  （续班计划号）：传了按三者交集过滤券范围，不传不过滤。\n- product-server 新增 `POST /feign/preOrderActivity/couponScope/listDisplayableByRenewalPlan`\n  （内部 feign，按续班计划查可展示券，返回扁平行）。\n\n膨胀券 tab **一直展示**，不做灰度与显隐校验；续班计划没配膨胀券时列表为空（点进去没数据）。\n\n**Cookie**：Apifox 自带 Cookie 管理，无需配代理。"
   },
   "servers": [
     {
@@ -89,6 +89,11 @@
                   "identification": {
                     "type": "string",
                     "description": "来源标识"
+                  },
+                  "renewMasterNumber": {
+                    "type": "string",
+                    "description": "续班计划号（可选）。B端下单弹窗膨胀券tab传入，券范围按三者交集过滤（在读班级学科 ∩ 续班班级年级学科 ∩ 活动券配置年级学科，仅【使用中】）；不传则不做范围过滤。⚠️ 大数字，传字符串避免精度截断",
+                    "example": "577431949669312512"
                   }
                 }
               },
@@ -198,6 +203,11 @@
                   "identification": {
                     "type": "string",
                     "description": "来源标识"
+                  },
+                  "renewMasterNumber": {
+                    "type": "string",
+                    "description": "续班计划号（可选）。B端下单弹窗膨胀券tab传入，券范围按三者交集过滤（在读班级学科 ∩ 续班班级年级学科 ∩ 活动券配置年级学科，仅【使用中】）；不传则不做范围过滤。⚠️ 大数字，传字符串避免精度截断",
+                    "example": "577431949669312512"
                   }
                 }
               },
@@ -308,6 +318,11 @@
                   "identification": {
                     "type": "string",
                     "description": "来源标识"
+                  },
+                  "renewMasterNumber": {
+                    "type": "string",
+                    "description": "续班计划号（可选）。B端下单弹窗膨胀券tab传入，券范围按三者交集过滤（在读班级学科 ∩ 续班班级年级学科 ∩ 活动券配置年级学科，仅【使用中】）；不传则不做范围过滤。⚠️ 大数字，传字符串避免精度截断",
+                    "example": "577431949669312512"
                   }
                 }
               },
@@ -435,6 +450,11 @@
                   "identification": {
                     "type": "string",
                     "description": "来源标识"
+                  },
+                  "renewMasterNumber": {
+                    "type": "string",
+                    "description": "续班计划号（可选）。B端下单弹窗膨胀券tab传入，券范围按三者交集过滤（在读班级学科 ∩ 续班班级年级学科 ∩ 活动券配置年级学科，仅【使用中】）；不传则不做范围过滤。⚠️ 大数字，传字符串避免精度截断",
+                    "example": "577431949669312512"
                   }
                 }
               },
@@ -559,6 +579,11 @@
                   "identification": {
                     "type": "string",
                     "description": "来源标识"
+                  },
+                  "renewMasterNumber": {
+                    "type": "string",
+                    "description": "续班计划号（可选）。B端下单弹窗膨胀券tab传入，券范围按三者交集过滤（在读班级学科 ∩ 续班班级年级学科 ∩ 活动券配置年级学科，仅【使用中】）；不传则不做范围过滤。⚠️ 大数字，传字符串避免精度截断",
+                    "example": "577431949669312512"
                   }
                 }
               },
@@ -720,7 +745,7 @@
                       "deductibleAmount": 20000,
                       "soldCount": 12,
                       "totalCount": 1000,
-                      "creator": "zhangzeling",
+                      "creator": null,
                       "couponStatus": 2,
                       "couponStatusDesc": "使用中",
                       "selectable": true
@@ -734,9 +759,9 @@
                       "deductibleAmount": 40000,
                       "soldCount": 0,
                       "totalCount": 500,
-                      "creator": "zhangzeling",
+                      "creator": null,
                       "couponStatus": 1,
-                      "couponStatusDesc": "待开始",
+                      "couponStatusDesc": "使用中",
                       "selectable": true
                     }
                   ]

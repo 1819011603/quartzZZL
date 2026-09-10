@@ -15,7 +15,8 @@ tags: [需求, 接口]
 | promotion-b | `/domain/promotion/b/preOrderActivity/detail` | `PreOrderActivityService#detail` | 字段新增 | 返回体 product 项加券字段：`couponId`/`couponName`/`skuId`/`buyAmount`/`couponStatus`（`couponStatusDesc`/`scopes` 不在这次修复范围） | B 端活动详情页 `/promotionManagement/preOrderActivity/detail`；product-server `PromotionAclService#getPreOrderActivityDetail` | ✅ **2026-09-09 已修复并实测通过**，见下方「已解决」 |
 | promotion-c | `POST /domain/promotion/c/preOrderActivity/listFromCache` | `PreOrderActivityService#listFromCache` | 字段新增 | 返回体 product 项补齐 `scopes`（新增内部方法 `fillCouponScopes`，调 product-server 新接口） | cart `PreRegistrationCouponAssembler#resolveCouponScope`（之前必抛「膨胀券可用范围缺失」） | ✅ **2026-09-09 已修复并端到端实测通过**（cart `preRegistration` 反射调用 `code:0` 不再抛异常） |
 | product-server(b) | `POST /feign/preOrderActivity/couponScope/listByActivityNumbers` | `PreOrderCouponScopeFeignController#listByActivityNumbers` | 新增 | 按活动号批量查 scopes，返回**扁平行** `List<PreOrderActivityCouponScopeRow>`（不是嵌套 Map，见下方坑①），供 promotion 的 `listFromCache` 消费 | promotion `PreOrderCouponScopeRemoteService` | ✅ **已修复并实测通过** |
-| student-center | `/renewal/pre/coupon/list` | `PreOrderCouponController` → `PreOrderCouponBiz#pageQueryCoupon` | 新增 | B 端券选品列表，**已接真实电商数据**（mock 已删） | 老师端选品弹窗 | ✅ 自测通过（total=79，模糊查/精确查均正常） |
+| product-server(b) | `POST /feign/preOrderActivity/couponScope/listDisplayableByRenewalPlan` | `PreOrderCouponScopeFeignController#listDisplayableByRenewalPlan` | **2026-09-10 新增** | 按**续班计划号**查可展示的膨胀券（已按三者交集过滤 + 仅【使用中】）。入参只要 `renewMasterNumber`，活动号与前置课程号都由 product-server 自行反查；返回**扁平行** `List<PreOrderDisplayableCouponRow>`（券×命中的年级学科组合，同一张券多行）。未绑活动/订金班/无交集一律返回**空列表不抛异常** | student-center `PreOrderCouponScopeAclService`（B 端券列表范围过滤） | ✅ 单测 8/8，**接口实测待发泳道** |
+| student-center | `/renewal/pre/coupon/list` | `PreOrderCouponController#listCoupon` → `PreOrderCouponBiz#listCoupon` | 新增 + **2026-09-10 字段新增** | B 端券选品列表，**已接真实电商数据**（mock 已删）。**2026-09-10**：入参加可选 `renewMasterNumber`（续班计划号）——传了就按三者交集限定券范围（与预报名链接一致），并与用户手填的券商品ID求交；范围为空直接返空页且**不再调电商**。不传则不过滤，存量行为不变 | 老师端选品弹窗（B 端下单弹窗膨胀券 tab）；下游 product-server `listDisplayableByRenewalPlan` | ✅ 自测通过（total=79）；范围过滤单测 5/5，**接口实测待发泳道** |
 | student-center | `/renewal/pre/couponScope/list` | `PreOrderCouponController` | 新增 | 券可用范围查询 | 老师端 | ✅ 自测通过 |
 | product-server | 券范围落库/校验 | `PreOrderActivityCouponScopeService` | 新增 | 活动级唯一键 `uk_act_grade_subject` | B 端活动配置保存 | ✅ 自测通过 |
 
@@ -26,6 +27,8 @@ tags: [需求, 接口]
 | 服务 | 类#方法 | 变更类型 | 改了什么 | 谁在调 |
 |---|---|---|---|---|
 | product-server | `PreOrderCouponIntersectService#intersect` | 新增 | 三者交集，按「年级+学科」成对判定 | C 端落地页取数 |
+| product-server | `PreOrderDisplayableCouponService#listDisplayableCoupons` | **2026-09-10 新增** | 按续班计划反查（活动号 + 前置课程号）后**委托** `PreOrderCouponIntersectService#intersect`，再把结果拍平成扁平行。**本类不自行求交** | `PreOrderCouponScopeFeignController#listDisplayableByRenewalPlan` |
+| student-center | `PreOrderCouponScopeAclService#listDisplayableCouponSkuNumbers` | **2026-09-10 新增** | 取 product-server 的交集结果并按券去重；**下游失败抛异常不降级**（降级成空=运营误判「没配券」，降级成不过滤=全量券越权展示） | `PreOrderCouponBiz#listCoupon` |
 | promotion | `PreOrderCouponEnricher#enrich` | 新增 | 券字段实时补齐（**已从 mock 切换为真实电商 coupon-a**），挂在缓存重建路径 | `PreOrderActivityDomainServiceImpl:238` |
 | promotion | `PreOrderCouponEnricher#enrichDTO` | **2026-09-09 新增** | `enrich()` 的重载版本，针对 `detail()` 用的 `PreOrderActivityProductDTO`（字段集与 `enrich()` 完全一致） | `PreOrderActivityService#detail` |
 | promotion | `PreOrderActivityService#fillCouponScopes` | **2026-09-09 新增** | `listFromCache` 补齐 scopes，调 product-server 新增的批量查询接口 | `PreOrderActivityService#listFromCache` |

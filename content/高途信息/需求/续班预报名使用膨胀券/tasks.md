@@ -46,15 +46,16 @@ tags: [需求, 任务]
 | T-26 | 修 B 端 detail 券字段全空：`PreOrderCouponEnricher` 加 `enrichDTO` 挂到 `detail()` | 已完成 | — | promotion `81180aa45`；用真实电商券重建活动实测通过，`couponId/couponName/couponStatus/buyAmount/skuId` 全部正确回显 |
 | T-27 | C 端 listFromCache 补齐 scopes：product-server 新增批量查询 Feign + promotion 消费 | 已完成 | — | product-server `846a532ab` / promotion `7be4676b0`；测 cart 推荐接口时子 agent 发现的新缺口；中途踩了嵌套 Map 解码坑、RestTraceResponse 信封坑、promotion-b/promotion-c 双部署坑，见 [[apis]]；cart `preRegistration` 反射调用 `code:0` 实测通过 |
 | T-28 | `couponStatusDesc` 本地映射（永久方案，电商邓俊兵确认不会下发） | 已完成 | — | student-center `daa8c8516` / promotion `1083c43cf`；已部署到 test-gtbg-dev-3 并实测(`coupon_status_desc: "使用中"`) |
-| T-29 | 补单测：`PreOrderCouponEnricher`/`fillCouponScopes`/`PreOrderCouponStatusEnum`/`listScopesByActivities` | 已完成 | — | promotion `83fec5087`(17 个测试方法) / student-center `c777976d9`(12 个) / product-server `c0a448b57`(8 个)；3 个 subagent 并行编写，主会话逐一读过源码确认质量后提交 |
+| T-29 | 补单测：`PreOrderCouponEnricher`/`fillCouponScopes`/`PreOrderCouponStatusEnum`/`listScopesByActivities` | 已完成 | — | promotion `83fec5087`(17 个测试方法) / student-center `c777976d9`(12 个) / product-server `c0a448b57`(8 个)；3 个 subagent 并行编写，主会话逐一读过源码确认质量后提交。⚠️ **2026-09-10 更正**：product-server 那 8 个当时其实**编译不过、从未运行**（误用老版 assertj 没有的 `anySatisfy`/`noneMatch`，且连带整个 domain 模块 test 编译失败），已在 T-32 修好，现 8/8 通过 |
 | T-30 | C 端三者交集精确匹配 —— 用真实数据端到端验证 | 已完成 | — | 直连 DB 造了一套年级学科真正匹配的数据（续班计划改指向真实券活动、目标年级学科对齐券范围），反射调 `preRegistration` 返回完整正确的推荐商品，详见 [[verify]] |
 | T-31 | 验证 `postProductId`/`postProductName`/`activityType`（预报名预警列表）字段真实可用 | 已完成 | — | 用户要求核实这三个字段是不是本次改过。查 git log 确认未改动（T-07/T-10 的老字段）；测试环境该列表原本查不到数据，直连插了一行 `questionnaire_inspect` 后调真实接口，`postProductId`/`postProductName` 由「前置班→后置班」推荐逻辑真实查出，非编造值，详见 [[verify]] |
+| T-32 | B 端下单弹窗膨胀券 tab：券列表按三者交集过滤 | 已完成 | — | product-server `1de4533b9` / student-center `974b669a5`。product-server 新增 `PreOrderDisplayableCouponService` + feign 出口 `listDisplayableByRenewalPlan`（交集全部委托 `PreOrderCouponIntersectService`，不重算）；student-center `/renewal/pre/coupon/list` 入参加可选 `renewMasterNumber`，传了才过滤。**tab 一直展示不做校验**（口径反转，见 [[changelog]] 09-10）。顺带修复分支上 `c0a448b57` 带的单测用了老版 assertj 不支持的 `anySatisfy`/`noneMatch`、一直编译不过卡死整个 domain 模块 test 编译。单测 product-server 8/8、student-center 5/5，**接口实测待发泳道** |
 
 ### T-13 自测进展
 
 **当前状态**：B 端券选品、B 端 detail 回显、C 端 scopes、C 端三者交集、预警列表字段
 **全部真实数据端到端实测通过**（清单与命令见 [[verify]]「已验证清单」）。
-新代码（T-26/T-27/T-28）单测已补（T-29）；order/cart 下单算价等历史模块仍无单测。
+新代码（T-26/T-27/T-28）单测已补（T-29）；T-32 的范围过滤单测已补；order/cart 下单算价等历史模块仍无单测。
 
 **中间踩过的两个坑**（结论已进 [[README]]「必须知道的坑」，过程见 [[changelog]] 09-08）：
 把「Apollo 查泳道 cluster 404」误判成环境不可用（实际读不到会回落 default）；
