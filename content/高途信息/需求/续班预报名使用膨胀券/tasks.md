@@ -53,6 +53,8 @@ tags: [需求, 任务]
 
 | T-33 | 券选品列表补「预报名可用范围」与「单人持有上限」，并双端拦截售罄券 | 进行中 | — | student-center `c92427fd8`（前两个字段 `e5d9a817c`/`619aa6564`）、promotion `2aee304de`。① `availableScope`：三者交集结果里本就带命中的年级学科，此前在 ACL 层被去重成券商品ID时丢了，改为透传扁平行、Biz 层按券聚合成文案（同券多组合用「、」连接，`LinkedHashSet` 保序避免文案抖动）；② `holdLimit`：电商 `ExpandCouponDetailDto` 本就有，透传即可；③ **售罄双端拦截** —— student-center 列表 `selectable` 置 false（与有没有续班计划无关）、promotion `edit`/`editAndPublish` 服务端拦截（置灰只是前端提示，绕过照样能提交）。前两个字段已实测通过（`availableScope` 3 张券年级学科与页面逐条一致、`holdLimit:1`）；**售罄拦截仅单测覆盖**（`efa4b13fc`，售罄/超卖/未售罄/数量缺失 4 条，共 10/10 通过）——环境里没有真正售罄的券，**且踩到 OES 页面「已售/总量」列不是电商真值这个坑**（详见 [[verify]]），端到端待造数后补验 |
 
+| T-34 | `holdLimit` 改展示文案 + 订金班满班拦截 | 进行中 | — | student-center `f1fa6b232`、promotion `6fcfe8827`。① `holdLimit` 由 `Integer` 改 `String`：电商用 0 表达不限，透传会显示成「0 张」语义相反，改由后端出文案（映射写在 `PreOrderCouponWrapper` 的 `@Mapping expression` 里，MapStruct 遇 Integer→String 会自动 `String.valueOf` 必须显式覆盖）；② 订金班保存时拦截满班课程（`validateClazzNotFull`），与膨胀券售罄同位。新增 `ClazzAclService#listClazzSignUpInfo` 走 `clazzSearchList`（既有 `listByNumbers` 返回的 `ClazzVO` 没有已报名数）。**`capacity=-1` 不限班容必须放行**。单测 10/10 通过，两仓已部署待实测 |
+
 ### T-13 自测进展
 
 **当前状态**：B 端券选品、B 端 detail 回显、C 端 scopes、C 端三者交集、预警列表字段

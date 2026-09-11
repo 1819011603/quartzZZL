@@ -214,7 +214,7 @@ curl -X POST 'https://test-fuwu.baijia.com/bgwApi/component/student-center/renew
 | 字段 | 口径 | 实测 |
 |---|---|---|
 | `availableScope` | 预报名可用范围文案，同券多组合用「、」连接。**仅传 `renewMasterNumber` 时下发**，不传为 null | ✅ 3 张券分别回「六年级数学」「六年级英语」「六年级语文」，与 OES 活动管理页该列逐条一致 |
-| `holdLimit` | 单人持有上限，0=不限。电商 `ExpandCouponDetailDto` 原生字段，透传 | ✅ 返回 `1` |
+| `holdLimit` | 单人持有上限，**String 展示文案**：电商原值 0 → 「不限」，否则数字字符串 | ✅ 透传数字版已实测返回 `1`；**改文案版待复验**（09-11 二次发布） |
 | `selectable` | 原本只看状态，**09-11 加售罄判定**：已售≥总量置 `false`，与有没有续班计划无关 | ⚠️ 单测 4 条覆盖（售罄/超卖/未售罄/数量缺失），**端到端未验 —— 环境里没有真正售罄的券** |
 
 ### ⚠️ 别拿 OES 页面的「已售/总量」当电商真值
@@ -231,6 +231,19 @@ curl -X POST 'https://test-fuwu.baijia.com/bgwApi/component/student-center/renew
 ① 列表里该券 `selectable` 应为 `false`；
 ② 加进膨胀券活动保存（`/promotionManagement/preOrderActivity/editAndPublish`）
 应报「膨胀券已售罄，不可添加到活动，券商品编号：xxx（已售 N/M）」。
+
+### 订金班满班拦截（2026-09-11，同批次）
+
+同一个 `editAndPublish`，`type=1` 订金班分支：**在班 ≥ 班容的班级不可选进活动商品**。
+
+数据来源与 B 端选班列表 `/course-center/b/clazz/list/search/fullAuth` 同源
+（`IClazzFeignService#clazzSearchList`），页面「在班/班容」列即 `signUpCount`/`capacity`。
+
+⚠️ **`capacity = -1` 是「不限班容」**（页面显示「2 / 不限制」），**必须放行**。
+测试环境大量班级都是不限班容 —— 漏了这条会把它们全拦掉，属于最容易犯且影响面最大的错。
+
+待验：造一个 `signUpCount >= capacity` 且 `capacity > 0` 的班级，加进订金班活动保存，
+应报「班级班容已满，不可添加到活动，班级：xxx（在班 N/M）」。
 
 反射桥直查电商券真值（排障第一手段）：
 ```

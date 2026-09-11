@@ -122,9 +122,9 @@ T-32 单测：product-server 16/16、student-center 16/16 通过；端到端 6 �
 
 | 仓库 | 最新 commit |
 |---|---|
-| student-center | `c92427fd8`（09-11：可用范围/持有上限/售罄置灰）|
+| student-center | `f1fa6b232`（09-11：可用范围/持有上限文案/售罄置灰）|
 | product-server | `1de4533b9`（含单测） |
-| promotion | `2aee304de`（09-11：售罄拦截。⚠️ **只发了 promotion-b，promotion-c 未发**——本次改的是 B 端写链路校验，不涉及 C 端） |
+| promotion | `6fcfe8827`（09-11：售罄 + 满班拦截。⚠️ **只发了 promotion-b，promotion-c 未发**——本次改的是 B 端写链路校验，不涉及 C 端） |
 | promotion-management | `961cb892` |
 | order | `073dea69e2` |
 | cart | `a7646b67` |
@@ -134,15 +134,18 @@ T-32 单测：product-server 16/16、student-center 16/16 通过；端到端 6 �
 
 > 只列还没做的。做完的已删（历史见 [[changelog]]）。
 
-1. **验 T-33 的售罄拦截**（其余两个字段已实测通过，售罄逻辑仅单测覆盖）——
-   **卡在没有售罄券可用**：需先造一张 `sold_count >= total_amount` 且 `coupon_status=1` 的券。
-   ⚠️ 别拿 OES 页面「已售/总量」列当依据，它读的是 promotion 缓存不是电商实时值
-   （实测页面显示 10/10 的券，电商真值是 `sold_count=0` 且状态已失效）→ 见 [[verify]]。
-2. 🔴 **改动涉及 C 端链路时 `promotion-b` 和 `promotion-c` 两个部署都要发布** ——
+1. **验「卖不出去的不许进活动」两条校验**（T-33/T-34，均已发布、仅单测覆盖）：
+   - **膨胀券售罄** —— 卡在没有售罄券：需造 `sold_count >= total_amount` 且 `coupon_status=1` 的券。
+     ⚠️ 别拿 OES 页面「已售/总量」列当依据，它读 promotion 缓存不是电商实时值
+     （实测页面显示 10/10 的券，电商真值 `sold_count=0` 且状态已失效）→ 见 [[verify]]。
+   - **订金班满班** —— 需造 `signUpCount >= capacity` 且 `capacity > 0` 的班级。
+     ⚠️ 测试环境大量班级是「不限制」（`capacity=-1`），这些**必须能正常保存**，也要一并回归。
+2. **复验 `holdLimit`** 现在返回的是文案（不限→「不限」）而非数字。
+3. 🔴 **改动涉及 C 端链路时 `promotion-b` 和 `promotion-c` 两个部署都要发布** ——
    只发 b、用反射桥验证通过≠cart 端到端通了（见下方坑位）。
-3. 上线前：三处 `AclServiceCompareController.enabled` 显式配 `false`、
+4. 上线前：三处 `AclServiceCompareController.enabled` 显式配 `false`、
    线上建表、5 个 Apollo key、2 个代课接口权限登记（明细见 [[verify]]「新建的东西」）。
-4. R-01/R-02 已闭环。
+5. R-01/R-02 已闭环。
 
 ## 待确认
 
