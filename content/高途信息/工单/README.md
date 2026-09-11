@@ -17,3 +17,6 @@
 ## 索引
 
 - [企微侧边栏](企微侧边栏/README.md) — 目前 1 条：改姓名亲密称呼跟着变，是前端展示兜底不是 bug，王永诗确认不用改
+- [退费预测分层配置](退费预测分层配置/README.md) — 目前 2 条：花名册"AI预测退费意向"批量误判"高危"，
+  根因是 `predict_intent_config` 阈值配置缺某个业务线×学部×学期×stage×年级组合，静默退化到兜底档；
+  可复用排查方法在 student-data 仓库的 `refund-intent-threshold-debug` skill
