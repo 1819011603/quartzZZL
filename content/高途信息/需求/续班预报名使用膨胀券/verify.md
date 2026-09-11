@@ -25,6 +25,22 @@ tags: [需求, 验证]
 
 ⚠️ **mock 已全部删除**（2026-09-09 起券信息全部实时取电商 coupon-a），别再找 `pre.order.coupon.mock.enabled` 这类开关或 `PreOrderCouponMockEnricher`/`PreOrderCouponMockProvider` 这些类——它们已经不存在，如果哪份旧记录还提就是过时的。
 
+## 联调登录（测试环境不发短信）
+
+测试环境 gt-passport-api 不真发短信，H5 填任何验证码都报「验证码不正确」（底层 5008 over-limit / 2104 not-matched）。
+用脚本往护照 Redis 塞一条正常短信验证码记录（走正规校验，不改代码），即可登录：
+
+```bash
+cd "脚本"   # 本目录下
+python3 set_test_smscode.py --mobile 17900911102 --client 613156985,613156986 --clear-limit
+# 前端：手机号 17900911102，验证码 1234
+```
+
+- **验证码按 clientId 隔离，不通用**：高途课堂 `613156985` / 途途课堂 `613156986`，各存一份（脚本已一次带上两个）。
+- **一次性**：登录成功后护照 `deletePassCode` 会删掉该码，**每次登录前都要重跑脚本**（长 TTL 只保证"存了没登也不过期"）。
+- clientId 全表、原理、`--code/--ttl` 参数见 `脚本/set_test_smscode.py` 头部注释。
+- ⚠️ 仅测试环境；gt-passport-api 是护照团队（wanghongyang）的共享服务。
+
 ## 券的可用范围唯一键（活动内唯一、跨活动放行）
 
 ```

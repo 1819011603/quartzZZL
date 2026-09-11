@@ -73,6 +73,8 @@ tags: [需求, 任务]
 **order 侧我们只负责「膨胀券商品能加购」+ 购物车总价**，下单、支付成功、退款由订单团队自行兼容，
 student-data 收数也由订单侧现有消息覆盖。
 
+| T-36 | 券展示口径统一为「使用中且开售中」，且状态白名单改 Apollo 可配 | 进行中 | — | student-center `PreOrderCouponBiz#filterOnSale`、cart `PreRegistrationCouponAssembler#isSellable` + `PreRegistrationCouponConfig`、promotion 两个 DTO + `PreOrderCouponEnricher` 透传 `saleStatus`。<br>**① 口径反转（2026-09-11 用户定稿，推翻同日早些时候的 T-35 决定）**：B 端选品列表由「置灰不可勾」改为**直接不展示**，且**两种场景都卡**（此前 `saleStatus` 只在传了 `renewMasterNumber` 的推荐场景卡，运营纯券搜索放行）。⚠️ 副作用：运营想提前配置一张尚未开售的券，列表里将搜不到它。<br>**② C 端落地页新增同款过滤**：此前 `PreRegistrationCouponAssembler` 对券状态**完全不过滤**，只做三者交集。<br>**③ 状态为空一律不展示**（用户明确要求的从严口径，与售罄判定「缺数据不改判」相反）——⚠️ 平台券 `saleStatus` 天然为空，**会被一并滤掉**。<br>**④ 两个维度的白名单均 Apollo 可配**，配成空串即关掉该维度过滤，后续支持其他状态改配置不必发版。<br>**⑤ promotion 补下发 `saleStatus`**：此前只有 student-center 经电商直查拿得到，promotion 的 `PreOrderActivityProductDTO`/`PreOrderActivityProductCacheDTO` 都没有这个字段，C 端拿不到。`needEnrich`/`enrichDTO` 的判空条件同步加上它，否则缓存里已有五个字段的老行会跳过补齐、`saleStatus` 永远为 null。<br>**⚠️ 已知限制**：B 端过滤发生在**分页之后**，`total` 仍是电商未过滤总数、单页可能不足 `pageSize`。要精确需电商在 `ExpandCouponQueryRequest` 支持 `saleStatus` 入参（jar 1.3.17 不支持）。<br>单测 student-center 16/16（含反向验证：注掉过滤后 5 条用例确实失败）；全量 27/27 通过。三仓编译全绿。**尚未部署、未端到端实测** |
+
 ## R- 反讲整改项
 
 > 来源：飞书待办表「技术反讲」阶段的 TODO 项（**那张表才是真相源**）。

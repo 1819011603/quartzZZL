@@ -24,6 +24,7 @@ tags:
 > **本目录导航**：[[links|🔗 链接中心]] · [[tasks|✅ 任务板]] · [[changelog|📜 会话日志]] · [[apis|🔌 接口台账]] · [[verify|🧪 验证手册]] · `apifox-openapi.json`(导 Apifox)
 > 技术方案在飞书反讲文档里（见 [[links]]），本地不留副本。
 > 续接这个需求：读完本文件即可。
+> **联调登录**：测试环境不发短信，跑 `脚本/set_test_smscode.py` 塞验证码即可登（手机号 17900911102 / 码 1234），详见 [[verify]]「联调登录」。
 
 ## 一句话
 
@@ -65,8 +66,13 @@ tags:
   权威源：jar `com.gaotu:coupon-a-client:1.3.17` 的 `ExpandCouponDetailDto#couponStatus`
   （`POST /feign/expandCoupon/queryList`，青舟 interfaceId=5453936）。
 - 🔴 **`saleStatus` 是第二个状态维度**（1.3.17 新增）：券**商品**售卖状态 1 停售中 / 2 开售中，
-  平台券为空。与 `couponStatus` 正交。**只在传了 `renewMasterNumber`（推荐给学员）时才卡**，
-  运营纯券搜索只看券状态 —— 配活动时券未必立刻开卖，卡了会挡住正常的提前配置。为空时不改判。
+  平台券为空。与 `couponStatus` 正交。
+  ⚠️ **2026-09-11 口径反转（T-36，推翻同日早些时候的 T-35 决定）**：
+  由「置灰 + 只在推荐场景卡」改为 **B/C 两端都「直接不展示」，且两种场景都卡**，
+  **状态为空也不展示**（平台券会被一并滤掉）。两个维度的白名单均 **Apollo 可配**：
+  `pre.order.coupon.display.couponStatus` / `.saleStatus`（student-center）、
+  `preRegistration.coupon.display.couponStatus` / `.saleStatus`（cart），
+  配成**空串即关掉该维度过滤**。⚠️ 副作用：运营无法在列表里搜到尚未开售的券来提前配置。
 - **`creator` 下发的是「王金峰03」这种 CAS displayName**，不是工号。
   电商只给工号，本仓库查两跳转换（teacher-basic 拿 accountId → CAS 拿 displayName），
   查不到则保留工号原值。
@@ -120,7 +126,7 @@ C 端 `GET /web/renewal/preRegistration`（`cart` 的 `RegistrationService#preRe
 | 进度 | T 32/32 · R 0/2 · C 0/0 |
 | 排期 | 09-08~09-11 开发 · 09-14 自测 · 09-15~16 联调 · **提测 09-16** |
 | 当前卡点 | 🟢 无阻塞。T-32 已端到端实测通过（6 条用例全绿，见 [[verify]]）。<br>🟡 **T-33 售罄拦截待实测**：`availableScope`/`holdLimit` 已实测通过，**售罄拦截刚发布未验**（可用截图里 10/10 那张 `578845069455599617` 做数据）。<br>🟡 **遗留（非阻塞）**：电商 `couponName` 只支持左匹配，中间词搜不到，需跨团队推动，见 [[apis]]「已知契约缺口」。<br>🔴 **上线前必查**：`promotion` 有 `promotion-b`/`promotion-c` 两个独立部署，改动涉及 C 端链路时**两个都要发布** |
-| 最近更新 | 2026-09-11（券选品列表补 `availableScope`/`holdLimit`；售罄券双端拦截）
+| 最近更新 | 2026-09-11（T-36 券展示口径统一为「使用中且开售中」、B/C 两端均改为不展示、状态白名单 Apollo 可配）
 
 **六仓库代码编译全绿（BUILD SUCCESS）、全部已 push**。
 T-32 单测：product-server 16/16、student-center 16/16 通过；端到端 6 条用例全绿。
@@ -196,7 +202,7 @@ T-32 单测：product-server 16/16、student-center 16/16 通过；端到端 6 �
 | 配置项 | 涉及 |
 |---|---|
 | MySQL DDL | ✅ 一张新表，测试已建、线上待建。⚠️ `pre_order_activity_product` **不加列**（工单 8025 已撤） |
-| Apollo | ✅ 5 个 key，其中 `renewal.content.config.map` **不配则老师端无入口** |
+| Apollo | ✅ 5 个 key，其中 `renewal.content.config.map` **不配则老师端无入口**。<br>T-36 新增 4 个**可选** key（不配走代码默认「使用中+开售中」）：student-center `pre.order.coupon.display.couponStatus`/`.saleStatus`、cart `preRegistration.coupon.display.couponStatus`/`.saleStatus` |
 | 代课接口权限 | ✅ 2 个新接口待登记 |
 | **反射桥开关** | 🚨 **promotion / cart / product-server 三处 `AclServiceCompareController.enabled` 线上必须显式配 `false`**（代码默认 true，不配=开启）→ 见 [[verify]] |
 | MQ | ❌ 券订单消息由订单团队发 |
@@ -212,6 +218,24 @@ T-32 单测：product-server 16/16、student-center 16/16 通过；端到端 6 �
 ## 必须知道的坑
 
 > 只留「不知道就会走错路」的，每条一句结论 + 一句判据。调查过程见 [[changelog]]。
+
+**前端 / 文案**
+- 🔥 **C 端落地页的券名称不是后端 `productName` 渲染的，是前端按 `couponNameType` 自己拼的**
+  （2026-09-11 实测定位）。页面显示「六年级数学**抵扣券**」而后端 `preRegistration` 明明返回
+  「退款口径膨胀券caseSDD_1788846422662」，两者对不上就是这个原因 —— 页面同时调了
+  `/cs/api/renewal/cStyleConfig/render`（product-b `ProcessService`），它只下发**类型**
+  `couponNameType`：`productName`=用后端商品名 / `defaultName`=前端用「年级+学科+抵扣券」自拼。
+  **该续班计划没配 C 端样式 → 走 `defaultCStyleConfig` → `couponNameType=defaultName`**，
+  所以后端名字被无视。实测 `renderCStyleConfig(578668076965308416,"preRegistration")` 返回
+  `configMode:"default"` / `couponNameType:"defaultName"` / `activityType:2`。
+  触发点在 `ProcessService#renderCStyleConfig`：**只有存了 `configMode=custom` 才用自定义值**，
+  否则整份回落默认。要显示真实券名 → 给该计划配 C 端样式并把 `couponNameType` 设为 `productName`
+  （运营配置，不用发版；合法值只有 `productName` / `defaultName`，其余报「优惠名称不支持」）。
+  ⚠️ 由此还能解释另一件事：`ProcessService` 里 `COUPON_NAME_TEXT="优惠券"` 是**预留常量、当前没人用**，
+  而 cart 的 `PreRegistrationCouponTexts.COUPON_SUFFIX="优惠券"` 只在
+  **后端自己兜底拼名**时才用得上 —— 后端有真名时根本走不到，所以改它也改不动页面。
+  **「抵扣券→优惠券」的落点在 mweb，不在任何一个后端仓库**（product-server 那段注释 2026-09-08 已写明）。
+  判据：页面名字与 `preRegistration` 出参不一致时，先调 `render` 看 `couponNameType`，别去后端找字面量。
 
 **ID / 枚举**
 - **膨胀券 `productType` = 8014**。8027 是课时包商品（两个仓库都已占用），27 是老优惠券概念。
