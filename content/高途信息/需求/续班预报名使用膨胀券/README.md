@@ -131,7 +131,7 @@ T-32 单测：product-server 16/16、student-center 16/16 通过；端到端 6 �
 |---|---|
 | student-center | `ab44f86e3`（09-11：可用范围/持有上限文案/售罄置灰/jar 1.3.17 + saleStatus/建券人姓名）|
 | product-server | `1de4533b9`（含单测） |
-| promotion | `30b1f5509`（09-11：售罄 + 满班拦截 + jar 1.3.17。⚠️ **只发了 promotion-b，promotion-c 未发**——本次改的是 B 端写链路校验，不涉及 C 端） |
+| promotion | `c9fbefb83`（09-11：售罄 + 满班拦截 + jar 1.3.17 + 文案对齐 PRD。⚠️ **只发了 promotion-b，promotion-c 未发**——本次改的是 B 端写链路校验，不涉及 C 端） |
 | promotion-management | `961cb892` |
 | order | `073dea69e2` |
 | cart | `a7646b67` |
