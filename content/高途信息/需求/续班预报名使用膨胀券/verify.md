@@ -214,7 +214,7 @@ curl -X POST 'https://test-fuwu.baijia.com/bgwApi/component/student-center/renew
 | 字段 | 口径 | 实测 |
 |---|---|---|
 | `availableScope` | 预报名可用范围文案，同券多组合用「、」连接。**仅传 `renewMasterNumber` 时下发**，不传为 null | ✅ 3 张券分别回「六年级数学」「六年级英语」「六年级语文」，与 OES 活动管理页该列逐条一致 |
-| `holdLimit` | 单人持有上限，**String 展示文案**：电商原值 0 → 「不限」，否则数字字符串 | ✅ 透传数字版已实测返回 `1`；**改文案版待复验**（09-11 二次发布） |
+| `holdLimit` | 单人持有上限，**String 展示文案**：电商原值 0 → 「不限」，否则数字字符串 | ✅ 实测返回 `"1"`（字符串）。原值为 0 的「不限」分支暂无数据可验 |
 | `selectable` | 原本只看状态，**09-11 加售罄判定**：已售≥总量置 `false`，与有没有续班计划无关 | ⚠️ 单测 4 条覆盖（售罄/超卖/未售罄/数量缺失），**端到端未验 —— 环境里没有真正售罄的券** |
 
 ### ⚠️ 别拿 OES 页面的「已售/总量」当电商真值
@@ -252,9 +252,30 @@ invoke_service promotion \
   [["<skuNumber>"]] --traffic-env test-gtbg-dev-3
 ```
 
-⚠️ **`creator`（创建人）恒为 null 是已知且无解的**——电商 `ExpandCouponDetailDto` 里
-压根没有这个字段（2026-09-11 反编译 `coupon-a-client:1.3.15` 确认）。
-要填这列只能推动电商在报文里加，别再当 bug 查。
+✅ **`creator`（创建人）已可用**（2026-09-11 晚，jar 升 1.3.17）——
+电商新增 `creatorEmployeeId`，已接上。此前「1.3.15 里没这个字段、只能永远为空」的结论**已作废**。
+⚠️ 下发的是**工号不是姓名**，页面显示为数字；要姓名需再查员工服务（本期未做）。
+
+### 两个状态字段（1.3.17 起）
+
+| 字段 | 含义 | 取值 |
+|---|---|---|
+| `couponStatus` | **券本身**是否生效 | 1 使用中 / 2 已失效 / 3 审核中（**「4 已暂停」1.3.17 已删**）|
+| `saleStatus` | **券商品**在不在卖 | 1 停售中 / 2 开售中；**平台券为空** |
+
+两者正交：券可以是【使用中】但商品【停售中】。`selectable` = 券使用中 ∧ 商品未停售 ∧ 未售罄。
+`saleStatus` 为空（平台券）时不改判 —— 缺数据置灰会误杀正常券。
+
+✅ **2026-09-11 实测到了这个正交场景**（`renewMasterNumber=578668076965308416` 那 3 张券）：
+`couponStatus:1 使用中` 但 `saleStatus:1 停售中` → `selectable:false`。
+原因是这几张券 `saleEndTime` 已过。**只看 `couponStatus` 会误判成可选**，
+这正是接第二个状态字段的价值。完整返回：
+
+```json
+{"couponName":"退款口径膨胀券caseSDD_1788846422662","holdLimit":"1","creator":"8277",
+ "couponStatus":1,"couponStatusDesc":"使用中","saleStatus":1,"saleStatusDesc":"停售中",
+ "selectable":false,"availableScope":"六年级数学","soldCount":0,"totalCount":10}
+```
 
 ## 反射桥调用地址（四个服务，均实测）
 

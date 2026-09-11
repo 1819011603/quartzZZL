@@ -55,6 +55,8 @@ tags: [需求, 任务]
 
 | T-34 | `holdLimit` 改展示文案 + 订金班满班拦截 | 进行中 | — | student-center `f1fa6b232`、promotion `6fcfe8827`。① `holdLimit` 由 `Integer` 改 `String`：电商用 0 表达不限，透传会显示成「0 张」语义相反，改由后端出文案（映射写在 `PreOrderCouponWrapper` 的 `@Mapping expression` 里，MapStruct 遇 Integer→String 会自动 `String.valueOf` 必须显式覆盖）；② 订金班保存时拦截满班课程（`validateClazzNotFull`），与膨胀券售罄同位。新增 `ClazzAclService#listClazzSignUpInfo` 走 `clazzSearchList`（既有 `listByNumbers` 返回的 `ClazzVO` 没有已报名数）。**`capacity=-1` 不限班容必须放行**。单测 10/10 通过，两仓已部署待实测 |
 
+| T-35 | `coupon-a-client` 升 1.3.17，接入券商品售卖状态 | 进行中 | — | student-center `100c7abe9`、promotion `30b1f5509`。jar 三处变化：① `couponStatus` 删「4 已暂停」→ 两仓同步删枚举/分支与对应断言；② 新增 `saleStatus`（券**商品**售卖状态，与券状态正交）→ 新建 `PreOrderCouponSaleStatusEnum`，透传 `saleStatus`+`saleStatusDesc`，**停售中置 `selectable=false`**（为空的平台券不改判）；③ 新增 `creatorEmployeeId` → `creator` 接上，**此前「电商没有创建人」的结论作废**（下发的是工号不是姓名）。单测 student-center 21/21、promotion 13/13 通过。**✅ 已端到端实测通过**：`saleStatus:1/"停售中"`、`creator:"8277"`、`holdLimit:"1"`，且正好验到正交场景 —— 3 张券 `couponStatus:1 使用中` 但商品停售 → `selectable:false`（只看券状态会误判成可选） |
+
 ### T-13 自测进展
 
 **当前状态**：B 端券选品、B 端 detail 回显、C 端 scopes、C 端三者交集、预警列表字段

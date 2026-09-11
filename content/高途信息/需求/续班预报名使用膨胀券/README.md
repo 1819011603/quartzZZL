@@ -59,10 +59,13 @@ tags:
 - **券信息全部实时取电商，不落库不做 mock**（2026-09-09）：ACL 直连
   `coupon-a` 的 `/feign/expandCoupon/queryList`。**mock 已全部删除**，
   也不做「真接口失败回落 mock」——会掩盖真实故障。
-- 🔴 **券状态枚举 = 电商 coupon-a 口径（2026-09-09 定稿）**：**1 使用中 / 2 已失效 / 3 审核中 / 4 已暂停**，
+- 🔴 **券状态枚举 = 电商 coupon-a 口径**：**1 使用中 / 2 已失效 / 3 审核中**
+  （2026-09-09 定稿四个值，**09-11 随 jar 升 1.3.17 删掉「4 已暂停」**）。
   **没有「待开始」**（售卖期由 `saleStartTime`/`saleEndTime` 表达）。**只有【1 使用中】可勾选**。
-  权威源：jar `com.gaotu:coupon-a-client:1.3.15` 的 `ExpandCouponDetailDto#couponStatus`
+  权威源：jar `com.gaotu:coupon-a-client:1.3.17` 的 `ExpandCouponDetailDto#couponStatus`
   （`POST /feign/expandCoupon/queryList`，青舟 interfaceId=5453936）。
+- 🔴 **`saleStatus` 是第二个状态维度**（1.3.17 新增）：券**商品**售卖状态 1 停售中 / 2 开售中，
+  平台券为空。与 `couponStatus` 正交，**`selectable` 要两者都满足**；为空时不改判。
 - 🔴 **`couponStatusDesc` 文案由我们本地维护，是最终方案不是过渡**（2026-09-09 电商邓俊兵确认
   「中文展示逻辑你们按需判断展示就行」，即电商不会下发此字段）。已实现，**不用再找电商推动**。
 - 🔴 **B 端下单弹窗膨胀券 tab「一直展示」，不做灰度、不做显隐校验**（2026-09-10 用户定稿）。
@@ -122,9 +125,9 @@ T-32 单测：product-server 16/16、student-center 16/16 通过；端到端 6 �
 
 | 仓库 | 最新 commit |
 |---|---|
-| student-center | `f1fa6b232`（09-11：可用范围/持有上限文案/售罄置灰）|
+| student-center | `100c7abe9`（09-11：可用范围/持有上限文案/售罄置灰/jar 1.3.17 + saleStatus）|
 | product-server | `1de4533b9`（含单测） |
-| promotion | `6fcfe8827`（09-11：售罄 + 满班拦截。⚠️ **只发了 promotion-b，promotion-c 未发**——本次改的是 B 端写链路校验，不涉及 C 端） |
+| promotion | `30b1f5509`（09-11：售罄 + 满班拦截 + jar 1.3.17。⚠️ **只发了 promotion-b，promotion-c 未发**——本次改的是 B 端写链路校验，不涉及 C 端） |
 | promotion-management | `961cb892` |
 | order | `073dea69e2` |
 | cart | `a7646b67` |
@@ -196,8 +199,9 @@ T-32 单测：product-server 16/16、student-center 16/16 通过；端到端 6 �
 
 **ID / 枚举**
 - **膨胀券 `productType` = 8014**。8027 是课时包商品（两个仓库都已占用），27 是老优惠券概念。
-- **券状态 = 电商口径 `1 使用中 / 2 已失效 / 3 审核中 / 4 已暂停`，没有「待开始」**。
-  这个值错过两次（1→2→1）。**2 是已失效**，停在 2 会把失效券当可用券放行，是资损方向。
+- **券状态 = 电商口径，`1 使用中 / 2 已失效 / 3 审核中`，没有「待开始」**。
+  ⚠️ **1.3.17 起「4 已暂停」也被电商删了**（本地枚举已同步删 `PAUSED`）。
+  这个值错过三次（1→2→1，再删 4）。**2 是已失效**，停在 2 会把失效券当可用券放行，是资损方向。
   判据只认 `coupon-a-client` jar 的 `ExpandCouponDetailDto`，别信任何本地文档旧表述。
 - **`couponStatusDesc` 由我们本地维护，是永久方案**（电商邓俊兵确认不会下发此字段）。
   已实现 `PreOrderCouponStatusEnum.descOfStatus()` / `PreOrderCouponEnricher.descOfCouponStatus()`。
@@ -221,8 +225,13 @@ T-32 单测：product-server 16/16、student-center 16/16 通过；端到端 6 �
 - 🔥 **OES 页面的「已售/总量」列不是电商真值**（2026-09-11 实测）：页面读 promotion 活动商品缓存，
   实测显示 10/10 的券，电商真值是 `sold_count=0`、`coupon_status=2`(已失效)。
   判断一张券的真实售卖/状态，**只认反射桥直查电商**（命令见 [[verify]]）。
-- **`creator`（创建人）恒为 null 且无解** —— 电商 `ExpandCouponDetailDto` 里没有这个字段
-  （反编译 `coupon-a-client:1.3.15` 确认）。要填只能推动电商加报文，别再当 bug 查。
+- ❌ ~~`creator` 恒为 null 且无解~~ —— **2026-09-11 已作废**。电商 1.3.17 新增了
+  `creatorEmployeeId`，已接上。⚠️ 下发的是**工号不是姓名**，页面会显示成数字；
+  要显示姓名需再查员工服务（本期未做）。
+- 🔴 **券有两个状态字段，别混用**（1.3.17 起）：`couponStatus` 是**券本身**是否生效
+  （1 使用中 / 2 已失效 / 3 审核中），`saleStatus` 是**券商品**在不在卖（1 停售中 / 2 开售中，
+  平台券为空）。一张券可以是【使用中】但商品【停售中】—— 选了也卖不出去，
+  故 `selectable` 要两者都满足（再叠加售罄判定）。
 - **膨胀券名称搜索只支持「左匹配」**（`like '关键字%'`，jar 注释写明）：搜「退款口径」能命中
   「退款口径膨胀券caseSDD_x」，搜「口径」「caseSDD」一律 0 条。这是电商口径，我们只透传关键字。
 
