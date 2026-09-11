@@ -252,9 +252,18 @@ invoke_service promotion \
   [["<skuNumber>"]] --traffic-env test-gtbg-dev-3
 ```
 
-✅ **`creator`（创建人）已可用**（2026-09-11 晚，jar 升 1.3.17）——
-电商新增 `creatorEmployeeId`，已接上。此前「1.3.15 里没这个字段、只能永远为空」的结论**已作废**。
-⚠️ 下发的是**工号不是姓名**，页面显示为数字；要姓名需再查员工服务（本期未做）。
+✅ **`creator`（创建人）已展示姓名**（2026-09-11 晚）——
+电商 1.3.17 新增 `creatorEmployeeId`（**工号**），本仓库再查两跳转成 CAS displayName：
+
+```
+employeeId 8277
+  → TeacherBasicAclService#getEmployeeInfoByEmployeeIdList  → baseInfo.accountId = 101968
+  → CasAclService#listByAccountIdListCache                  → displayName = "王金峰03"
+```
+
+两跳**各调一次批量接口**（工号先去重），不按券逐个查。
+查不到保留工号原值（不清空 —— 工号难读但至少能查到人），整条链路异常只记日志不影响列表返回。
+实测 `creator:"王金峰03"`。此前「电商没有创建人、只能永远为空」的结论**已作废**。
 
 ### 两个状态字段（1.3.17 起）
 
@@ -263,19 +272,28 @@ invoke_service promotion \
 | `couponStatus` | **券本身**是否生效 | 1 使用中 / 2 已失效 / 3 审核中（**「4 已暂停」1.3.17 已删**）|
 | `saleStatus` | **券商品**在不在卖 | 1 停售中 / 2 开售中；**平台券为空** |
 
-两者正交：券可以是【使用中】但商品【停售中】。`selectable` = 券使用中 ∧ 商品未停售 ∧ 未售罄。
-`saleStatus` 为空（平台券）时不改判 —— 缺数据置灰会误杀正常券。
+两者正交：券可以是【使用中】但商品【停售中】。
 
-✅ **2026-09-11 实测到了这个正交场景**（`renewMasterNumber=578668076965308416` 那 3 张券）：
-`couponStatus:1 使用中` 但 `saleStatus:1 停售中` → `selectable:false`。
-原因是这几张券 `saleEndTime` 已过。**只看 `couponStatus` 会误判成可选**，
-这正是接第二个状态字段的价值。完整返回：
+🔴 **`saleStatus` 只在「传了 `renewMasterNumber`」时才卡**（2026-09-11 用户定稿）：
 
-```json
-{"couponName":"退款口径膨胀券caseSDD_1788846422662","holdLimit":"1","creator":"8277",
- "couponStatus":1,"couponStatusDesc":"使用中","saleStatus":1,"saleStatusDesc":"停售中",
- "selectable":false,"availableScope":"六年级数学","soldCount":0,"totalCount":10}
+| 场景 | `selectable` 判据 |
+|---|---|
+| 传了续班计划（**推荐给学员**） | 券使用中 ∧ **商品在售** ∧ 未售罄 |
+| 不传（运营纯券搜索 / 配活动商品） | 券使用中 ∧ 未售罄（**不看商品售卖状态**）|
+
+理由：推荐场景的券是要让学员立刻买的，商品不在卖就是死链接；
+运营配活动时券未必立刻开卖，卡售卖状态会挡住正常的提前配置。
+`saleStatus` 为空（平台券）时两种场景都不改判。
+
+✅ **2026-09-11 用同 3 张券做了对照实测**（它们 `saleEndTime` 已过，电商给 `saleStatus=1`）：
+
 ```
+                          couponStatus  saleStatus   selectable
+A 传 renewMasterNumber      1 使用中      1 停售中     false   ← 卡住
+B 不传（按 sku 查同 3 张）   1 使用中      1 停售中     true    ← 不卡
+```
+
+**只看 `couponStatus` 两种场景都会判成可选** —— 这正是接第二个状态字段的价值。
 
 ## 反射桥调用地址（四个服务，均实测）
 
