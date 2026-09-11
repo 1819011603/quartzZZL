@@ -51,6 +51,8 @@ tags: [需求, 任务]
 | T-31 | 验证 `postProductId`/`postProductName`/`activityType`（预报名预警列表）字段真实可用 | 已完成 | — | 用户要求核实这三个字段是不是本次改过。查 git log 确认未改动（T-07/T-10 的老字段）；测试环境该列表原本查不到数据，直连插了一行 `questionnaire_inspect` 后调真实接口，`postProductId`/`postProductName` 由「前置班→后置班」推荐逻辑真实查出，非编造值，详见 [[verify]] |
 | T-32 | B 端下单弹窗膨胀券 tab：券列表按三者交集过滤 | 已完成 | — | product-server `1de4533b9` / student-center `abe8a067d`（初版 `974b669a5` + 2 个联调修复）。product-server 新增 `PreOrderDisplayableCouponService` + feign 出口 `listDisplayableByRenewalPlan`（交集全部委托 `PreOrderCouponIntersectService`，不重算）；student-center `/renewal/pre/coupon/list` 入参加可选 `renewMasterNumber`，传了才过滤。**tab 一直展示不做校验**（口径反转，见 [[changelog]] 09-10）。顺带修复分支上 `c0a448b57` 带的单测用了老版 assertj 不支持的 `anySatisfy`/`noneMatch`、一直编译不过卡死整个 domain 模块 test 编译。单测 product-server 8/8、student-center 5/5。**2026-09-10 已发 test-gtbg-dev-3 端到端实测通过**（6 条用例全绿，含「同 3 张券加计划号只剩 1 张」的交集语义验证，见 [[verify]]）。联调期修掉 3 个 bug：feign 服务名错(`c92abfca4`)、解码器注解族错→`data:[{}]`(`abe8a067d`)、以及上面 T-29 那个从未运行的单测 |
 
+| T-33 | 券选品列表补「预报名可用范围」与「单人持有上限」，并双端拦截售罄券 | 进行中 | — | student-center `c92427fd8`（前两个字段 `e5d9a817c`/`619aa6564`）、promotion `2aee304de`。① `availableScope`：三者交集结果里本就带命中的年级学科，此前在 ACL 层被去重成券商品ID时丢了，改为透传扁平行、Biz 层按券聚合成文案（同券多组合用「、」连接，`LinkedHashSet` 保序避免文案抖动）；② `holdLimit`：电商 `ExpandCouponDetailDto` 本就有，透传即可；③ **售罄双端拦截** —— student-center 列表 `selectable` 置 false（与有没有续班计划无关）、promotion `edit`/`editAndPublish` 服务端拦截（置灰只是前端提示，绕过照样能提交）。前两个字段已实测通过（`availableScope` 3 张券年级学科与页面逐条一致、`holdLimit:1`）；**售罄拦截仅单测覆盖**（`efa4b13fc`，售罄/超卖/未售罄/数量缺失 4 条，共 10/10 通过）——环境里没有真正售罄的券，**且踩到 OES 页面「已售/总量」列不是电商真值这个坑**（详见 [[verify]]），端到端待造数后补验 |
+
 ### T-13 自测进展
 
 **当前状态**：B 端券选品、B 端 detail 回显、C 端 scopes、C 端三者交集、预警列表字段

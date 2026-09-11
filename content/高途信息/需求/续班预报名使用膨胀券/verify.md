@@ -207,6 +207,42 @@ curl -X POST 'https://test-fuwu.baijia.com/bgwApi/component/student-center/renew
 
 ⚠️ `renewMasterNumber` 是大数字，**一律传字符串**，否则精度截断表现为"查无数据"。
 
+## 券选品列表的三个新字段（T-33，2026-09-11）
+
+同一个接口 `/renewal/pre/coupon/list`，curl 与上面 T-32 完全一样（`renewMasterNumber=578668076965308416`）。
+
+| 字段 | 口径 | 实测 |
+|---|---|---|
+| `availableScope` | 预报名可用范围文案，同券多组合用「、」连接。**仅传 `renewMasterNumber` 时下发**，不传为 null | ✅ 3 张券分别回「六年级数学」「六年级英语」「六年级语文」，与 OES 活动管理页该列逐条一致 |
+| `holdLimit` | 单人持有上限，0=不限。电商 `ExpandCouponDetailDto` 原生字段，透传 | ✅ 返回 `1` |
+| `selectable` | 原本只看状态，**09-11 加售罄判定**：已售≥总量置 `false`，与有没有续班计划无关 | ⚠️ 单测 4 条覆盖（售罄/超卖/未售罄/数量缺失），**端到端未验 —— 环境里没有真正售罄的券** |
+
+### ⚠️ 别拿 OES 页面的「已售/总量」当电商真值
+
+排查售罄用例时踩到：OES 活动管理页显示 `578845069455599617` 是 **10/10**（看着已售罄），
+但反射桥直查电商 `PreOrderCouponEnricher#queryCouponsBySkuNumbers` 拿到的是
+**`sold_count: 0`、`total_amount: 10`、`coupon_status: 2`（已失效）** —— 三项全对不上。
+
+判据：**页面那列读的是 promotion 活动商品缓存，不是电商实时值**；
+券状态=2 时 student-center 列表默认只查状态=1，所以这张券在选品接口里根本查不到（`total:0`），
+不是接口 bug。要确认一张券的真实售卖情况，**只认反射桥直查电商的结果**。
+
+**售罄链路端到端待验**（需先造一张 `sold_count >= total_amount` 且 `coupon_status=1` 的券）：
+① 列表里该券 `selectable` 应为 `false`；
+② 加进膨胀券活动保存（`/promotionManagement/preOrderActivity/editAndPublish`）
+应报「膨胀券已售罄，不可添加到活动，券商品编号：xxx（已售 N/M）」。
+
+反射桥直查电商券真值（排障第一手段）：
+```
+invoke_service promotion \
+  com.gaotu.promotion.domain.service.impl.PreOrderCouponEnricher#queryCouponsBySkuNumbers \
+  [["<skuNumber>"]] --traffic-env test-gtbg-dev-3
+```
+
+⚠️ **`creator`（创建人）恒为 null 是已知且无解的**——电商 `ExpandCouponDetailDto` 里
+压根没有这个字段（2026-09-11 反编译 `coupon-a-client:1.3.15` 确认）。
+要填这列只能推动电商在报文里加，别再当 bug 查。
+
 ## 反射桥调用地址（四个服务，均实测）
 
 | 服务 | 调用地址 | 状态 |

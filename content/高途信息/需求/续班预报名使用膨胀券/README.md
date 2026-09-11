@@ -14,7 +14,7 @@ branches:
   - cart:feature-xuban-pre
   - student-center:feature-xuban-pre
   - promotion-management:feature-xuban-pre
-updated: 2026-09-10
+updated: 2026-09-11
 tags:
   - 需求
 ---
@@ -112,8 +112,8 @@ C 端 `GET /web/renewal/preRegistration`（`cart` 的 `RegistrationService#preRe
 | 阶段 | 开发中（**B 端下单弹窗膨胀券 tab 券范围过滤已端到端实测通过**）|
 | 进度 | T 32/32 · R 0/2 · C 0/0 |
 | 排期 | 09-08~09-11 开发 · 09-14 自测 · 09-15~16 联调 · **提测 09-16** |
-| 当前卡点 | 🟢 无阻塞。T-32 已发 `test-gtbg-dev-3` 并端到端实测通过（6 条用例全绿，见 [[verify]]）。<br>🟡 **遗留（非阻塞）**：电商 `couponName` 只支持左匹配，中间词搜不到，需跨团队推动，见 [[apis]]「已知契约缺口」。<br>🔴 **上线前必查**：`promotion` 有 `promotion-b`/`promotion-c` 两个独立部署，改动涉及 C 端链路时**两个都要发布** |
-| 最近更新 | 2026-09-10（膨胀券 tab 券范围过滤已实测通过；联调修掉 3 个 bug：feign 服务名、解码器注解族、单测从未运行）
+| 当前卡点 | 🟢 无阻塞。T-32 已端到端实测通过（6 条用例全绿，见 [[verify]]）。<br>🟡 **T-33 售罄拦截待实测**：`availableScope`/`holdLimit` 已实测通过，**售罄拦截刚发布未验**（可用截图里 10/10 那张 `578845069455599617` 做数据）。<br>🟡 **遗留（非阻塞）**：电商 `couponName` 只支持左匹配，中间词搜不到，需跨团队推动，见 [[apis]]「已知契约缺口」。<br>🔴 **上线前必查**：`promotion` 有 `promotion-b`/`promotion-c` 两个独立部署，改动涉及 C 端链路时**两个都要发布** |
+| 最近更新 | 2026-09-11（券选品列表补 `availableScope`/`holdLimit`；售罄券双端拦截）
 
 **六仓库代码编译全绿（BUILD SUCCESS）、全部已 push**。
 T-32 单测：product-server 16/16、student-center 16/16 通过；端到端 6 条用例全绿。
@@ -122,9 +122,9 @@ T-32 单测：product-server 16/16、student-center 16/16 通过；端到端 6 �
 
 | 仓库 | 最新 commit |
 |---|---|
-| student-center | `abe8a067d`（含单测；含 3 个联调修复）|
+| student-center | `c92427fd8`（09-11：可用范围/持有上限/售罄置灰）|
 | product-server | `1de4533b9`（含单测） |
-| promotion | `f4386aaf2`（含单测；promotion-b **和** promotion-c 都已发布该 commit） |
+| promotion | `2aee304de`（09-11：售罄拦截。⚠️ **只发了 promotion-b，promotion-c 未发**——本次改的是 B 端写链路校验，不涉及 C 端） |
 | promotion-management | `961cb892` |
 | order | `073dea69e2` |
 | cart | `a7646b67` |
@@ -134,11 +134,15 @@ T-32 单测：product-server 16/16、student-center 16/16 通过；端到端 6 �
 
 > 只列还没做的。做完的已删（历史见 [[changelog]]）。
 
-1. 🔴 **改动涉及 C 端链路时 `promotion-b` 和 `promotion-c` 两个部署都要发布** ——
+1. **验 T-33 的售罄拦截**（其余两个字段已实测通过，售罄逻辑仅单测覆盖）——
+   **卡在没有售罄券可用**：需先造一张 `sold_count >= total_amount` 且 `coupon_status=1` 的券。
+   ⚠️ 别拿 OES 页面「已售/总量」列当依据，它读的是 promotion 缓存不是电商实时值
+   （实测页面显示 10/10 的券，电商真值是 `sold_count=0` 且状态已失效）→ 见 [[verify]]。
+2. 🔴 **改动涉及 C 端链路时 `promotion-b` 和 `promotion-c` 两个部署都要发布** ——
    只发 b、用反射桥验证通过≠cart 端到端通了（见下方坑位）。
-2. 上线前：三处 `AclServiceCompareController.enabled` 显式配 `false`、
+3. 上线前：三处 `AclServiceCompareController.enabled` 显式配 `false`、
    线上建表、5 个 Apollo key、2 个代课接口权限登记（明细见 [[verify]]「新建的东西」）。
-3. R-01/R-02 已闭环。
+4. R-01/R-02 已闭环。
 
 ## 待确认
 
@@ -211,6 +215,11 @@ T-32 单测：product-server 16/16、student-center 16/16 通过；端到端 6 �
   （其优先级高于全局策略）。**别改全局 SnakeCase**（波及所有对外接口）；
   **也别想换 Feign 编解码器**——jar 把 `configuration` 写死在注解上，且本仓库
   spring-cloud 是 **Edgware.SR5，`@FeignClient` 还没有 `contextId`**，同服务名重复声明会 bean 名冲突。
+- 🔥 **OES 页面的「已售/总量」列不是电商真值**（2026-09-11 实测）：页面读 promotion 活动商品缓存，
+  实测显示 10/10 的券，电商真值是 `sold_count=0`、`coupon_status=2`(已失效)。
+  判断一张券的真实售卖/状态，**只认反射桥直查电商**（命令见 [[verify]]）。
+- **`creator`（创建人）恒为 null 且无解** —— 电商 `ExpandCouponDetailDto` 里没有这个字段
+  （反编译 `coupon-a-client:1.3.15` 确认）。要填只能推动电商加报文，别再当 bug 查。
 - **膨胀券名称搜索只支持「左匹配」**（`like '关键字%'`，jar 注释写明）：搜「退款口径」能命中
   「退款口径膨胀券caseSDD_x」，搜「口径」「caseSDD」一律 0 条。这是电商口径，我们只透传关键字。
 
