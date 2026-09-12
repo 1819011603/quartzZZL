@@ -65,6 +65,28 @@ tags:
   **没有「待开始」**（售卖期由 `saleStartTime`/`saleEndTime` 表达）。**只有【1 使用中】可勾选**。
   权威源：jar `com.gaotu:coupon-a-client:1.3.17` 的 `ExpandCouponDetailDto#couponStatus`
   （`POST /feign/expandCoupon/queryList`，青舟 interfaceId=5453936）。
+- 🔴 **coupon-a `queryList` 的服务端过滤：`couponStatuses` 真过滤，`saleStatuses` 假的**
+  （2026-09-12 test-eco-7 实测，参数就是 jar 1.3.17 `ExpandCouponQueryRequest` 里那两个 `List<Integer>` 字段）：
+  传 `couponStatuses:[2]` → `total` 从 189 变 19、返回全部 `couponStatus=2`，**确实按它过滤**；
+  传 `saleStatuses:[1]` 或 `[2]` → `total`/列表跟不传时**完全一样**，服务端静默忽略。
+  **所以 B 端「券状态」这一维度可以让 coupon-a 服务端过滤（total 准）；
+  「券商品状态(saleStatus)」这一维度目前只能继续我们自己内存二次过滤（total 仍不准）**。
+  🔍 **2026-09-12 拉了 `gaotu/coupon` 仓库 `feature-expand-coupon` 分支验证根因**（clone 在
+  `/Users/gaotu/IdeaProjects/JavaProject/coupon`）：电商 `dengjunbing` 09-11 14:27 commit `22283ca6d`
+  **已经把 `saleStatuses` 的服务端过滤实现了**（mapper 加 `sale_status in (...)`，其 SQL 验证
+  `sale_status in (2) and status in (1)` 得 5 条、去掉该条件得 155 条，AND 语义成立）——
+  但同日 14:30 commit `c8772ddb1` 把 `coupon-a-client` 从 1.3.16 再升到 **1.3.17**，
+  而 **Nexus 上 1.3.17 早在当天 06:30 就已经发布过一个更早的构建**（含 `saleStatuses` 字段但
+  mapper 未接、过滤不生效）——**releases 仓禁止覆盖同版本号**，所以这次修复实际上**还没能发出来**。
+  **本质是版本号被占用，不是代码没写**。
+  ⚠️ **我们是走 Feign/HTTP 调它的服务，不是编译期依赖它的 jar**——`saleStatuses`/`couponStatuses`
+  字段我们现在用的 1.3.17 里已经有，用户点出"跟我们的 jar 版本没关系"是对的：我们不需要等他们发新
+  jar，只需要等他们**实际跑着的服务**部署上这个 fix。jar 版本号发布失败只是间接信号（他们的构建流水线
+  可能发包和部署绑在一起），不是我们要等的东西本身。
+  所以监控已改为**直接轮询真实接口**（不看 Nexus）：每 3 分钟经 Eureka 找 `COUPON-A.GAOTU100.COM`
+  的全部实例，各打一次 `queryList` 带 `saleStatuses:[2]`，`total` 只要不再是基线 189 就说明服务端
+  过滤已经生效——这时才要动代码。
+  ⚠️ **`couponStatuses` 现在就能用**（老部署已经支持，不用等新版本），可以先单独把这一维度改成服务端过滤。
 - 🔴 **`saleStatus` 是第二个状态维度**（1.3.17 新增）：券**商品**售卖状态 1 停售中 / 2 开售中，
   平台券为空。与 `couponStatus` 正交。
   ⚠️ **2026-09-11 口径反转（T-36，推翻同日早些时候的 T-35 决定）**：

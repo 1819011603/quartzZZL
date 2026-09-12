@@ -20,6 +20,29 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-09-12（第十轮 · 排查 coupon-a 服务端过滤能力）
+
+### 定了什么 / 查清了什么
+- 用户先给了个新链接 `coupon-management.gaotu100.com` 的 `/coupon/b/expandCoupon/queryList`
+  （分支 `feature-expand-coupon`），一度以为是要接入的新服务；实测该服务两个可达实例（test/test-eco-7）
+  都还是老代码（只有失效券两个接口），这条线索**没有继续**——用户随后澄清还是用 `coupon-a`。
+- **实测查清 `coupon-a` 服务端过滤行为**（test-eco-7 真实调用，非看 jar 字段）：
+  `couponStatuses:[2]` → total 189→19 且返回全部 `couponStatus=2`，**服务端真过滤**；
+  `saleStatuses:[1]/[2]` → total/列表跟不传一样，**服务端静默忽略**。
+  结论已进 [[README]]「已定共识」与 [[tasks]] T-36。
+- 用户确认：电商会出**新版本号**（不是 1.3.17）来修 `saleStatuses` 过滤，两个状态字段到时候
+  按需分别用。已起一个 Monitor 轮询 Nexus `coupon-a-client` 的 `maven-metadata.xml`，
+  版本变化会通知——**这是本轮的待办**，不是最终结论，等通知后再改代码升版本号。
+- 用户要求拉 `coupon-a` 源码验证分支到底改没改。查到 serviceCode 是 `gaotu_coupon_a`
+  （不是直觉猜的 `coupon-a`/`coupon-a.gaotu100.com`，后者是 appId 不是 serviceCode，两者混用会查不到），
+  clone 到 `/Users/gaotu/IdeaProjects/JavaProject/coupon`（`coupon-a` 是这个共享仓库里的一个模块）。
+  确认 `feature-expand-coupon` 分支上 `saleStatuses` 过滤**代码已经写了**（commit `22283ca6d`，
+  mapper 加 SQL 条件，本人 SQL 验证过 5/155 条），**卡在版本号**：同日另一提交把
+  `coupon-a-client` 升到 1.3.17，但 Nexus 上 1.3.17 已经被更早一次构建占用（releases 不可覆盖），
+  这次真正修复的版本还没能发出来。
+
+---
+
 ## 2026-09-11（第九轮 · 券选品列表补两个字段 + 售罄双端拦截）
 
 ### 👤 我
