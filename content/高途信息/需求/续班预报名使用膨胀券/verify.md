@@ -47,7 +47,7 @@ python3 set_test_smscode.py --mobile 17900911102 --client 613156985,613156986 --
 
 测试前先查询上述数据仍存在且状态满足用例。共享数据不得直接假定保持不变。
 
-### 计划 `578668076965308416` 当前绑定的券（2026-09-14 换新后）
+### 计划 `578668076965308416` 当前绑定的券
 
 | 槽位 | couponId | 券商品 ID | 券名 | 已售/总量 | 持有上限 | 买价/抵扣(分) |
 |---|---|---|---|---|---|---|
@@ -55,23 +55,20 @@ python3 set_test_smscode.py --mobile 17900911102 --client 613156985,613156986 --
 | 六年级英语(16,4) | `579426455071498240` | `579426455627266049` | 膨胀券-脚本 | 0/10 | 1 | 10000 / 20000 |
 | 六年级语文(16,5) | `579394599487844352` | `579394599632533505` | Q8 | 3/10 | 3 | 2000 / 6000 |
 
-三张全部 `使用中/开售中`、`selectable=true`。原先的 caseSDD 三张券已全部替换下线。
+三张全部 `使用中/开售中`、`selectable=true`。
 
-### 可用膨胀券（2026-09-14 实测，`使用中` + `开售中`）
+### 可用膨胀券（`使用中` + `开售中`）
 
 `/renewal/pre/coupon/list` 不传 `renewMasterNumber` 时 `total=40`，**全部** `couponStatus=1`
-且 `saleStatus=2`、`selectable=true`。下面是挑出来常用的几张，按“还能买多少”排序：
+且 `saleStatus=2`、`selectable=true`。常用两张：
 
 | couponId | 券商品 ID(skuNumber) | 券名 | 已售/总量 | 持有上限 | 买价/抵扣(分) | 备注 |
 |---|---|---|---|---|---|---|
 | `578839415256780800` | `578839415380715521` | zks | 0/100000 | 1 | 100 / 200 | 库存几乎无限，**跑量首选** |
 | `579417711627513856` | `579417711732357121` | Q1 | 0/20 | 3 | 2000 / 6000 | 用户指定；`holdLimit=3` 可测多次持有 |
-| `579426455071498240` | `579426455627266049` | 膨胀券-脚本 | 0/10 | 1 | 10000 / 20000 | 金额较大，测算价明显 |
-| `579394599487844352` | `579394599632533505` | Q8 | 3/10 | 3 | 2000 / 6000 | 已有销量，测部分售出 |
-| `579394549091184640` | `579394549208610817` | Q1 | 8/20 | 3 | 2000 / 6000 | 同名不同券，测重名场景 |
 
-⚠️ 这批券**没有一张是售罄的**（`soldCount < totalCount`），
-因此 **T-33 的售罄用例仍未解锁**，见「待补边界验证 / 售罄券」。
+⚠️ 当前 40 张可用券**没有一张是售罄的**（`soldCount < totalCount`），
+**T-33 的售罄用例仍未解锁**，见「待补边界验证 / 售罄券」。
 
 重新拉取当前可用券：
 
@@ -84,16 +81,12 @@ curl -sk -x "${AGENT_PROXY_URL:-http://127.0.0.1:8888}" \
 
 ### ⚠️ 下单必须在 `test` 泳道
 
-下单链路要求走 `test` 泳道，但 **`test` 跑的是 master 镜像，没有本需求代码**，2026-09-14 实测：
-
-- `traffic-env: test` 调 `/renewal/pre/coupon/list` → `404 Not Found`。
-- `traffic-env: test` 反射 `PreOrderCouponAclService` → 「未找到服务…的实现类」。
-
-券数据在 coupon-a，是跨泳道共享的，所以上表这些券在 `test` 同样存在；
-缺的是**本需求的代码**。要在 `test` 下单，必须先把相关服务发一版到 `test`，
+下单链路要求走 `test` 泳道，但 **`test` 跑的是 master 镜像，没有本需求代码**：
+`traffic-env: test` 调 `/renewal/pre/coupon/list` → `404`；反射 `PreOrderCouponAclService` → 找不到实现类。
+券数据在 coupon-a 跨泳道共享，缺的是**本需求的代码**——要在 `test` 下单，必须先把相关服务发一版到 `test`，
 否则只能在 `test-gtbg-dev-3` 验证到加购之前的链路。
 
-### mock 支付页面（2026-09-14 实测可用）
+### mock 支付页面
 
 下单后需要支付才能推进订单状态时，用速搭的 mock 支付页，不用走真实支付：
 
@@ -104,9 +97,6 @@ https://sd.baijia.com/projectItem/myreview/79ab6125-96cb-4da3-a944-ab32f5772dc1/
 
 ⚠️ 这里的「订单号」不是下单返回的订单号，是 **OES 付款记录页的批次单号**。
 取法：OES → 订单管理 → 付款记录，用学员 userId 或手机号查批次单列表，取对应批次单号。
-
-2026-09-14 实测记录：批次单号 `428826139177255000` → 成功，
-`pay_order_number=102609142523008272`、`rid=ec28a8c4b5db832f77cdee44bbff2ef5`。
 
 ## 核心验证
 
@@ -158,7 +148,7 @@ params=[1,"577431949669312512","514762045841821696",null]
 - 不同活动使用相同券和年级学科组合：保存成功。
 - 唯一键：`uk_act_grade_subject(activity_number, grade_code, subject_code)`。
 
-### 券列表返回空的排查口径（2026-09-14 实测）
+### 券列表返回空的排查口径
 
 `/renewal/pre/coupon/list` 传 `renewMasterNumber` 返回 `total=0` 时，按下面顺序定位，
 **不要先怀疑三者交集或解码器**：
@@ -175,7 +165,7 @@ params=[1,"577431949669312512","514762045841821696",null]
 `578667318880518144` → `578667318880518100`），交集因此返回 `empty=true`，
 看起来像"没配范围"，其实是入参已经不是那个 ID 了。
 
-### 🔴 券展示的两个数据源必须同时满足（2026-09-14 踩坑）
+### 🔴 券展示的两个数据源必须同时满足
 
 一张券要出现在 `/renewal/pre/coupon/list`，**两处都要有它**：
 
@@ -200,27 +190,17 @@ params=[1,"577431949669312512","514762045841821696",null]
 ### 进行中的活动怎么改券
 
 活动 `activity_status=3`（进行中）时 `/preOrderActivity/edit` 只允许改结束时间
-（`validateActivityStatusForEdit`，只有 `0 待发布` 能全字段编辑）。
-测试环境换券的做法（2026-09-14 实测可行）：
-
-```sql
--- 1. 临时改成待发布
-UPDATE promotion.pre_order_activity SET activity_status=0 WHERE number=578842182125903872;
--- 2. 调 /preOrderActivity/edit（beginTime 必须晚于当前时间，否则报"活动开始时间必须大于当前时间"）
--- 3. 改回进行中并还原时间窗
-UPDATE promotion.pre_order_activity SET activity_status=3,
-  begin_time='2026-09-11 10:35:13', end_time='2026-09-29 10:30:13'
-WHERE number=578842182125903872;
-```
+（`validateActivityStatusForEdit`，只有 `0 待发布` 能全字段编辑）。测试环境换券：先把
+`activity_status` 临时改成 `0`，调 `/preOrderActivity/edit`（`beginTime` 必须晚于当前时间），
+再改回 `3` 并还原原时间窗（`578842182125903872` 的原窗口：
+`2026-09-11 10:35:13` ~ `2026-09-29 10:30:13`）。
 
 ## 待补边界验证
 
 ### 售罄券
 
-⚠️ 2026-09-14 复查：当前 40 张可用券**全部未售罄**（见「可用膨胀券」表），
-最接近的是 `579394549091184640`（8/20）。仍需造数或把某张券买到售罄。
-`578839415256780800` 总量 100000，不适合用来刷售罄；
-优先挑 `totalCount=5` 的小库存券（如 `579394614104993792` 券 Q13，1/5）买满。
+当前 40 张可用券全部未售罄（见「可用膨胀券」表），需造数：优先挑小库存券
+（如 `579394614104993792`，1/5）买满，`578839415256780800` 总量 100000 不适合拿来刷售罄。
 
 准备 `couponStatus=1` 且 `sold_count >= total_amount` 的真实券：
 
@@ -253,16 +233,9 @@ WHERE number=578842182125903872;
 
 ## 上线配置
 
-| 类型 | 名称 | 上线要求 |
-|---|---|---|
-| MySQL | `renewal_pre_order_activity_coupon_scope` | 线上建表；`pre_order_activity_product` 不加列 |
-| Apollo | `pre.order.coupon.product.type` | `8014` |
-| Apollo | `renewal.content.config.map` | 增加膨胀券 reportCode，否则老师端无入口 |
-| Apollo | `renewal.cStyle.preRegistrationCoupon.bgUrl` | 配置最终背景图 |
-| Apollo | student-center `pre.order.coupon.display.couponStatus` / `.saleStatus` | 默认 `1` / `2` |
-| Apollo | cart `preRegistration.coupon.display.couponStatus` / `.saleStatus` | 默认 `1` / `2` |
-| Apollo | 三个 `AclServiceCompareController.enabled` | promotion、cart、product-server 均显式设为 `false` |
-| 代课权限 | `/renewal/pre/coupon/list`、`/renewal/pre/couponScope/list` | 上线前登记 |
+详细清单见 README「上线影响面」；具体 Apollo key 名：`pre.order.coupon.product.type`（`8014`）、
+`renewal.content.config.map`（膨胀券 reportCode）、`renewal.cStyle.preRegistrationCoupon.bgUrl`（背景图）、
+student-center/cart 各自的 `couponStatus`/`saleStatus` 白名单 key（默认 `1`/`2`）。
 
 ## 页面复现
 

@@ -7,6 +7,15 @@ tags: [需求, 日志]
 
 > 只保留仍能解释当前设计的决定。最终口径以 README/apis/verify/tasks 为准。
 
+## 2026-09-15
+
+- `listScopeByCouponSkuNumbers` 入参最终定为裸 `List<Long>`，不用包装 DTO：根因是 controller 用
+  `implements XxxFeignClient` 复用接口方法时必须在实现类自己的方法上重声明 `@RequestBody`/`@PostMapping`，
+  Spring 不从接口继承参数注解，漏了会静默退化成表单绑定；此前怀疑的 FastJson/JaCoCo 冲突是误诊，见 [[apis]]。
+- 一个预报名活动只应绑定一个续班计划：`578842182125903872` 曾被误绑两个，已删除无效的那个（详见 [[verify]]）。
+- `RenewalServiceImpl#listRenewalMasterByNumbers` 遗漏前置课关系、course-center 的 `calculate_renewal_type`
+  测试值配错，两处都是既有代码/数据问题而非本需求引入，顺手修复，是否合并到 master 待评估（见 README 下一步）。
+
 ## 2026-09-14
 
 - 复核可用券基线：`total=40`，全部 `couponStatus=1` + `saleStatus=2` + `selectable=true`，

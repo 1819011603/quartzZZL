@@ -20,6 +20,7 @@ tags: [需求, 接口]
 | student-center | `POST /renewal/pre/couponScope/list` | `PreOrderCouponController#listCouponScopes` | 查询券可用范围 | 老师端 | 自测通过 |
 | cart | `GET /web/renewal/preRegistration` | `RegistrationService#preRegistration` | 按活动形式分订金班/膨胀券；膨胀券走三者交集和双状态过滤，返回统一 `RegistrationProductVO` | C 端落地页 | 联调通过 |
 | promotion-b | `/promotionManagement/preOrderActivity/edit`、`/editAndPublish` | `PreOrderActivityService#validateProductListByType` | 膨胀券售罄时报 `PARAMS_ERROR`；订金班满班时报 `PARAMS_ERROR`，`capacity=-1` 放行 | OES 活动管理 | 已编码，待边界实测 |
+| product-b | `POST /feign/preOrderCoupon/listScopeByCouponSkuNumbers` | `PreOrderCouponFeignController#listScopeByCouponSkuNumbers` | 按券商品 ID 批量反查预报名范围（`activityNumber`/`renewalNumber`/`scopes`）；入参**裸 `List<Long>`**，不是包装对象；查不到续班计划的券不返回 | student-data 券回溯链路 | 2026-09-15 联调通过 |
 
 ## 跨模块方法
 
@@ -31,6 +32,16 @@ tags: [需求, 接口]
 | promotion | `PreOrderCouponEnricher#enrich` / `#enrichDTO` | 使用 camelCase 请求查询 coupon-a，补齐缓存与详情两条链路的券字段 | promotion-b/c |
 | promotion | `PreOrderActivityService#validateCouponNotSoldOut` | 批量查询券库存，保存活动时拦截售罄券 | edit/editAndPublish |
 | promotion | `PreOrderActivityService#validateClazzNotFull` | 使用 `signUpCount`/`capacity` 拦截有限班容满班课程 | edit/editAndPublish |
+
+## 已知陷阱
+
+- product-b 的 controller 若通过 `implements XxxFeignClient` 复用接口方法签名，**必须在实现类自己的方法上重新声明
+  `@PostMapping`/`@RequestBody`**——Spring 不从接口继承参数级注解，漏了会静默退化成 `@ModelAttribute` 表单绑定：
+  包装对象入参时字段全部绑成 `null`（无异常，返回 200 空结果），裸 `List` 入参时直接抛
+  `BeanInstantiationException`。`listScopeByCouponSkuNumbers` 上踩过，同目录 `QuestionnaireFeignService` 是正确写法可参考。
+- 入参优先用裸集合类型（如 `List<Long>`），避免用包一层的请求 DTO——本仓库这类包装对象在这条 FastJson +
+  JaCoCo 离线插桩的消息转换链路下曾出现字段绑定失败的怀疑（后来定位为上一条注解问题，但裸类型本身也是
+  `listByActivityNumbers` 已验证可行的写法，风险更低）。
 
 ## 当前兼容规则
 

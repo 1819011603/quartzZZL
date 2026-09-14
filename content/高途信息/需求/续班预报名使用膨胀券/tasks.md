@@ -17,6 +17,7 @@ tags: [需求, 任务]
 | T-34 | 持有上限文案与订金班满班拦截 | 进行中 | 缺少真实满班数据 | `holdLimit` 已改字符串文案；需验证 `capacity>0 && signUpCount>=capacity` 被拦截，并回归 `capacity=-1` 放行。 |
 | T-35 | 接入 coupon-a-client 1.3.17 的售卖状态与创建人 | 已完成 | — | `saleStatus`/`saleStatusDesc` 与创建人姓名链路已接入并验证。 |
 | T-36 | B/C 端统一过滤“使用中且开售中” | 已完成 | — | student-center `3e6bba891`；状态条件由 coupon-a 服务端过滤，端到端 `total=23` 且状态全部符合默认白名单。 |
+| T-37 | 打通 student-data 券预报名回溯（`backDwsPresaleHandler`） | 已完成 | — | 2026-09-15：ES `presaleSubject`/`gradePresaleSubject` 验证有值，修复细节见 [[changelog]]。 |
 
 ## 当前阻塞
 

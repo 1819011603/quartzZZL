@@ -14,7 +14,8 @@ branches:
   - cart:feature-xuban-pre
   - student-center:feature-xuban-pre
   - promotion-management:feature-xuban-pre
-updated: 2026-09-14
+  - student-data:feature-xuban-pre
+updated: 2026-09-15
 tags: [需求]
 ---
 
@@ -34,7 +35,9 @@ tags: [需求]
 - 运营配置活动、券商品及适用年级学科。
 - 订金班范围读取可续关系；膨胀券范围读取券配置的年级+学科。
 - order 侧只负责膨胀券商品加购与购物车总价；订单后续链路由订单团队兼容。
-- student-data 字段与指标归马胜，本需求代码不修改 student-data。
+- student-data 券预报名字段与指标归马胜的分支代码（`feature-xuban-pre` 上已有 `预报名支持膨胀券` 等提交）；
+  2026-09-15 因联调 `backDwsPresaleHandler` 回溯打通链路，zhangzeling 补了 product-server 侧的下游接口与两处底层 bug 修复，
+  student-data 侧只改了一处 Feign 调用签名（配合 product-b 契约变更），未改动业务逻辑，详见 [[changelog]]。
 
 ## 最终口径
 
@@ -50,16 +53,19 @@ tags: [需求]
 - `creator` 返回 CAS displayName；电商给工号后，经 teacher-basic 取 accountId，再查 CAS，失败时保留工号。
 - promotion-b 保存活动时在事务内调用 product-b `POST /feign/preOrderActivity/couponScope/save` 写范围；失败回滚活动。
 - 售罄券和满班课程由 promotion 保存接口服务端拦截；`capacity=-1` 表示不限班容，必须放行。
+- student-data 券回溯（`backDwsPresaleHandler`）依赖的 `/feign/preOrderCoupon/listScopeByCouponSkuNumbers` 已在 product-b 补齐，
+  入参是裸 `List<Long>`（不是包装对象），详见 [[apis]]；`renewalNumber` 反查经
+  `activityNumber -> RenewalLinkActivity.processNumber -> ProcessConfig.renewalNumber` 两跳，一个活动只应绑一个有效续班计划。
 
 ## 现在什么情况
 
 | | |
 |---|---|
-| 阶段 | 开发中；核心 B/C 链路已打通，剩余边界验证 |
-| 进度 | T 3/6 · R 0/0 · C 0/0 |
+| 阶段 | 开发中；核心 B/C 链路已打通，student-data 回溯链路已端到端验证通过，剩余边界验证 |
+| 进度 | T 4/7 · R 0/0 · C 0/0 |
 | 部署泳道 | 本需求服务 `test-gtbg-dev-3`；coupon-a `test-eco-7`，两者均属于 dev 逻辑环境 |
 | 当前卡点 | 缺少真实售罄券（40 张可用券全部未售罄）；缺少有限班容且已满班的班级；下单需 `test` 泳道但该泳道无本需求代码 |
-| 最近更新 | 2026-09-14：计划 `578668076965308416` 的 3 张券已全量换成新券（Q1/膨胀券-脚本/Q8）并验证通过；同时定位两条关键口径——券展示需 scope 表与活动商品列表**同时**命中、槽位数由交集的年级学科对数封顶，均已写入 [[verify]]；另记录 mock 支付页用法（订单号填 OES 付款记录的**批次单号**，非下单返回的订单号），见 [[verify]] |
+| 最近更新 | 2026-09-15：`backDwsPresaleHandler` 券回溯链路端到端跑通并在 ES 验证生效（`presaleSubject`/`gradePresaleSubject` 有值）。过程中定位并修复 5 层问题：product-b 缺 `listScopeByCouponSkuNumbers` 接口、controller 未在实现类重声明 `@RequestBody`/`@PostMapping` 导致静默退化成表单绑定、测试活动误绑两个续班计划、`listRenewalMasterByNumbers` 未传前置课关系导致 `preCourseList` 恒空、course-center 测试后置课的 `calculate_renewal_type` 配置错误。前三处已随 product-server/student-data 提交到 `feature-xuban-pre`；后两处是 product-server 既有代码的通用 bug，修复已提交到本分支但**尚未评估是否要 cherry-pick 到 master**，见 [[changelog]] 与下一步。 |
 
 ## 下一步
 
@@ -69,6 +75,11 @@ tags: [需求]
 4. 补 order/cart 下单算价等未覆盖的自动化测试。
 5. 下单验证前，先把本需求服务发布到 `test` 泳道（当前 `test` 无本需求代码，接口 404）。
 6. 上线前完成 DDL、Apollo、代课权限，并把三处反射桥开关显式设为 `false`。
+7. 找马胜确认 student-data 侧的一处调用签名改动（`PreOrderActivityCouponAclServiceImpl` 改传裸 `List<Long>`）无异议。
+8. 评估 `RenewalServiceImpl#listRenewalMasterByNumbers` 补前置课关系、`PreOrderCouponFeignController` 补 `@RequestBody`
+   这两处修复要不要从 `feature-xuban-pre` 单独 cherry-pick 到 master（是通用 bug，不止本需求受影响）。
+9. 排查是否还有其它测试活动像 `578842182125903872` 一样误绑了多个续班计划（`renewal_link_activity` 同 `activity_number`
+   出现多行 `is_del=0`），避免同样的歧义复现。
 
 ## 待确认
 
