@@ -1,162 +1,48 @@
 ---
-title: 续班预报名使用膨胀券 · 接口变更台账
+title: 续班预报名使用膨胀券 · 接口契约
 tags: [需求, 接口]
 ---
 
-# 接口变更台账
+# 接口契约
 
-> 这个需求动了哪些服务的哪些接口。反讲/上线 checklist 的接口章节从这里抄；联调对不上先查这张表。
-> 字段类型走 `apifox-openapi.json`，这里记「改了什么、为什么、谁调、缺什么」。
+> 只记录当前生效的跨服务契约。字段类型和请求示例以 `apifox-openapi.json` 为准。
 
 ## 接口清单
 
-| 服务 | 接口路径 | 方法/类 | 变更类型 | 改了什么 | 下游影响 | 状态 |
-|---|---|---|---|---|---|---|
-| promotion-b | `/domain/promotion/b/preOrderActivity/detail` | `PreOrderActivityService#detail` | 字段新增 | 返回体 product 项加券字段：`couponId`/`couponName`/`skuId`/`buyAmount`/`couponStatus`（`couponStatusDesc`/`scopes` 不在这次修复范围） | B 端活动详情页 `/promotionManagement/preOrderActivity/detail`；product-server `PromotionAclService#getPreOrderActivityDetail` | ✅ **2026-09-09 已修复并实测通过**，见下方「已解决」 |
-| promotion-c | `POST /domain/promotion/c/preOrderActivity/listFromCache` | `PreOrderActivityService#listFromCache` | 字段新增 | 返回体 product 项补齐 `scopes`（新增内部方法 `fillCouponScopes`，调 product-server 新接口） | cart `PreRegistrationCouponAssembler#resolveCouponScope`（之前必抛「膨胀券可用范围缺失」） | ✅ **2026-09-09 已修复并端到端实测通过**（cart `preRegistration` 反射调用 `code:0` 不再抛异常） |
-| product-server(b) | `POST /feign/preOrderActivity/couponScope/listByActivityNumbers` | `PreOrderCouponScopeFeignController#listByActivityNumbers` | 新增 | 按活动号批量查 scopes，返回**扁平行** `List<PreOrderActivityCouponScopeRow>`（不是嵌套 Map，见下方坑①），供 promotion 的 `listFromCache` 消费 | promotion `PreOrderCouponScopeRemoteService` | ✅ **已修复并实测通过** |
-| product-server(b) | `POST /feign/preOrderActivity/couponScope/listDisplayableByRenewalPlan` | `PreOrderCouponScopeFeignController#listDisplayableByRenewalPlan` | **2026-09-10 新增** | 按**续班计划号**查可展示的膨胀券（已按三者交集过滤 + 仅【使用中】）。入参只要 `renewMasterNumber`，活动号与前置课程号都由 product-server 自行反查；返回**扁平行** `List<PreOrderDisplayableCouponRow>`（券×命中的年级学科组合，同一张券多行）。未绑活动/订金班/无交集一律返回**空列表不抛异常** | student-center `PreOrderCouponScopeAclService`（B 端券列表范围过滤） | ✅ 单测 8/8 + **2026-09-10 端到端实测通过** |
-| student-center | `/renewal/pre/coupon/list` | `PreOrderCouponController#listCoupon` → `PreOrderCouponBiz#listCoupon` | 新增 + **2026-09-10/09-11 字段新增** | B 端券选品列表，**已接真实电商数据**（mock 已删）。**09-10**：入参加可选 `renewMasterNumber`（续班计划号）——传了就按三者交集限定券范围（与预报名链接一致），并与用户手填的券商品ID求交；范围为空直接返空页且**不再调电商**。不传则不过滤，存量行为不变。**09-11 出参加 3 个字段**：`availableScope`（预报名可用范围文案，如「六年级数学」，同券多组合用「、」连接，**仅传 `renewMasterNumber` 时下发**）、`holdLimit`（单人持有上限，**String 类型的展示文案**：不限时为「不限」否则为数字字符串。电商用 `0` 表达不限，透传数字会被前端显示成「0 张」语义正好相反）。**09-11 随 jar 升 1.3.17 再加 3 个**：`saleStatus`+`saleStatusDesc`（券**商品**售卖状态 1 停售/2 开售，平台券为空，**与 couponStatus 正交**）、`creator`（建券人，1.3.17 新增 `creatorEmployeeId` 给的是**工号**，本仓库查两跳转成 CAS displayName「王金峰03」，此前「电商没有创建人」的结论作废）。**`selectable` 判据分场景**：传了 `renewMasterNumber`（推荐给学员）= 券使用中 ∧ 商品在售 ∧ 未售罄；不传（运营纯券搜索）= 券使用中 ∧ 未售罄，**不看商品售卖状态**、`selectable` 增加售罄判定（已售≥总量置 false，**与有没有续班计划无关**） | 老师端选品弹窗（B 端下单弹窗膨胀券 tab）；下游 product-server `listDisplayableByRenewalPlan` | ✅ **09-10 范围过滤端到端实测通过**（传计划号 total=1、不传 total=142、范围外 sku 返空；单测 5/5）；**09-11 `availableScope`/`holdLimit` 实测通过**（3 条券分别回「六年级数学/英语/语文」，`holdLimit:1`） |
-| student-center | `/renewal/pre/couponScope/list` | `PreOrderCouponController` | 新增 | 券可用范围查询 | 老师端 | ✅ 自测通过 |
-| product-server | 券范围落库/校验 | `PreOrderActivityCouponScopeService` | 新增 | 活动级唯一键 `uk_act_grade_subject` | B 端活动配置保存 | ✅ 自测通过 |
-| promotion-b | `/promotionManagement/preOrderActivity/edit` · `/editAndPublish` | `PreOrderActivityService#validateProductListByType` | **2026-09-11 校验新增** | 保存/发布活动时按形式各加一条「卖不出去的东西不许入活动」校验：**膨胀券**已售≥发放总量 → 报「膨胀券已售罄，不可添加」；**订金班**在班≥班容 → 报「班级班容已满，不可添加」（`capacity=-1` 不限班容放行）。均报 `PARAMS_ERROR`。B 端列表置灰只是前端提示、绕过照样能提交，故服务端必须拦。**文案已对齐 PRD 原文并统一补券名/ID 后缀**（一次可勾 100 张，只报「已售罄」运营不知道是哪张）| OES 预报名活动管理页「添加膨胀券」/「添加课程」 | 🔄 已编码已发布，待实测 |
+| 服务 | 接口 | 方法/类 | 当前契约 | 调用方 | 状态 |
+|---|---|---|---|---|---|
+| promotion-b | `/domain/promotion/b/preOrderActivity/detail` | `PreOrderActivityService#detail` | product 项返回券 ID、券名、商品 ID、金额、双状态、状态文案、创建人及 scopes | promotion-management、product-server | 联调通过 |
+| promotion-c | `POST /domain/promotion/c/preOrderActivity/listFromCache` | `PreOrderActivityService#listFromCache` | 返回活动形式及完整券字段/scopes，供 C 端组装 | cart | 联调通过 |
+| product-b | `POST /feign/preOrderActivity/couponScope/save` | `PreOrderCouponScopeFeignController#save` | 只写券范围表，不调用 promotion；由 promotion-b 事务内调用 | promotion-b | 自测通过 |
+| product-b | `POST /feign/preOrderActivity/couponScope/listByActivityNumbers` | `PreOrderCouponScopeFeignController#listByActivityNumbers` | 按活动号批量返回扁平 scope 行 | promotion-b/c | 联调通过 |
+| product-b | `POST /feign/preOrderActivity/couponScope/listDisplayableByRenewalPlan` | `PreOrderCouponScopeFeignController#listDisplayableByRenewalPlan` | 按续班计划计算三者交集，返回扁平的券×年级学科组合；未绑活动、订金班或无交集返回空列表 | student-center | 联调通过 |
+| student-center | `POST /renewal/pre/coupon/list` | `PreOrderCouponController#listCoupon` | `renewMasterNumber` 只控制范围过滤；双状态条件始终透传 coupon-a。返回 `availableScope`、字符串 `holdLimit`、双状态文案及 `creator`；售罄用 `selectable=false` | B 端选品弹窗 | 联调通过 |
+| student-center | `POST /renewal/pre/couponScope/list` | `PreOrderCouponController#listCouponScopes` | 查询券可用范围 | 老师端 | 自测通过 |
+| cart | `GET /web/renewal/preRegistration` | `RegistrationService#preRegistration` | 按活动形式分订金班/膨胀券；膨胀券走三者交集和双状态过滤，返回统一 `RegistrationProductVO` | C 端落地页 | 联调通过 |
+| promotion-b | `/promotionManagement/preOrderActivity/edit`、`/editAndPublish` | `PreOrderActivityService#validateProductListByType` | 膨胀券售罄时报 `PARAMS_ERROR`；订金班满班时报 `PARAMS_ERROR`，`capacity=-1` 放行 | OES 活动管理 | 已编码，待边界实测 |
 
-**状态枚举**：`设计中` / `已编码` / `自测通过` / `联调通过` / `已上线`
+## 跨模块方法
 
-## 内部方法契约（跨模块）
+| 服务 | 类#方法 | 当前职责 | 调用方 |
+|---|---|---|---|
+| product-server | `PreOrderCouponIntersectService#intersect` | 唯一的三者交集实现，按年级学科整对判断 | B/C 范围链路 |
+| product-server | `PreOrderDisplayableCouponService#listDisplayableCoupons` | 反查活动和课程后委托交集服务并拍平结果 | scope Feign controller |
+| student-center | `PreOrderCouponScopeAclService#listDisplayableCoupons` | 读取 product-b 交集结果；失败直接抛业务异常 | `PreOrderCouponBiz#listCoupon` |
+| promotion | `PreOrderCouponEnricher#enrich` / `#enrichDTO` | 使用 camelCase 请求查询 coupon-a，补齐缓存与详情两条链路的券字段 | promotion-b/c |
+| promotion | `PreOrderActivityService#validateCouponNotSoldOut` | 批量查询券库存，保存活动时拦截售罄券 | edit/editAndPublish |
+| promotion | `PreOrderActivityService#validateClazzNotFull` | 使用 `signUpCount`/`capacity` 拦截有限班容满班课程 | edit/editAndPublish |
 
-| 服务 | 类#方法 | 变更类型 | 改了什么 | 谁在调 |
-|---|---|---|---|---|
-| product-server | `PreOrderCouponIntersectService#intersect` | 新增 | 三者交集，按「年级+学科」成对判定 | C 端落地页取数 |
-| product-server | `PreOrderDisplayableCouponService#listDisplayableCoupons` | **2026-09-10 新增** | 按续班计划反查（活动号 + 前置课程号）后**委托** `PreOrderCouponIntersectService#intersect`，再把结果拍平成扁平行。**本类不自行求交** | `PreOrderCouponScopeFeignController#listDisplayableByRenewalPlan` |
-| student-center | `PreOrderCouponScopeAclService#listDisplayableCoupons` | **2026-09-10 新增 · 09-11 改签名** | 取 product-server 的交集结果；**下游失败抛异常不降级**（降级成空=运营误判「没配券」，降级成不过滤=全量券越权展示）。⚠️ 09-11 由 `listDisplayableCouponSkuNumbers(): List<Long>` 改为 `listDisplayableCoupons(): List<ProductDisplayableCouponDTO>` —— 原先在防腐层就去重成券商品ID，把命中的年级学科丢了，而「预报名可用范围」文案正是要用它。**去重改到调用方做** | `PreOrderCouponBiz#listCoupon` |
-| promotion | `PreOrderCouponEnricher#queryCouponsBySkuNumbers` | **2026-09-11 新增** | 把私有的 `queryCoupons` 开放给**写链路校验**复用，为的是复用它规避 FastJson SnakeCase 的写法（必须用 `CamelExpandCouponQueryRequest`，否则 `skuNumbers` 发成 `sku_numbers` 被电商静默忽略→筛选失效返全量） | `PreOrderActivityService#validateCouponNotSoldOut` |
-| promotion | `PreOrderActivityService#validateCouponNotSoldOut` | **2026-09-11 新增** | 保存/发布活动时拦截已售罄（已售≥发放总量）的券。挂在 `validateCouponProductList` 末尾，`edit`/`editAndPublish` 两条路径都经过。**一次批量查完**不逐张调（100 张券=100 次 RPC）；**券查不到直接放行**（电商抖动误杀正常配置的代价 > 漏拦一次，且售罄可追加库存恢复） | `PreOrderActivityService#validateProductListByType` |
-| promotion | `PreOrderActivityService#validateClazzNotFull` | **2026-09-11 新增** | 订金班分支的同位校验：拦截班容已满（在班≥班容）的班级。⚠️ **`capacity = -1` 是「不限班容」必须放行**，漏了会把所有不限班容的班全拦掉；班级查不到同样放行 | `PreOrderActivityService#validateProductListByType` |
-| promotion | `ClazzAclService#listClazzSignUpInfo` | **2026-09-11 新增** | 批量查班级「在班/班容」。**不能用既有的 `listByNumbers`** —— 它返回的 `ClazzVO` 只有 `capacity` 没有已报名数。改走班级大全搜索 `IClazzFeignService#clazzSearchList`（与 B 端选班列表 `/b/clazz/list/search/fullAuth` 同源），`ClazzListQueryResponseDto` 才同时下发 `signUpCount`+`capacity` | `PreOrderActivityService#validateClazzNotFull` |
-| promotion | `PreOrderCouponEnricher#enrich` | 新增 | 券字段实时补齐（**已从 mock 切换为真实电商 coupon-a**），挂在缓存重建路径 | `PreOrderActivityDomainServiceImpl:238` |
-| promotion | `PreOrderCouponEnricher#enrichDTO` | **2026-09-09 新增** | `enrich()` 的重载版本，针对 `detail()` 用的 `PreOrderActivityProductDTO`（字段集与 `enrich()` 完全一致） | `PreOrderActivityService#detail` |
-| promotion | `PreOrderActivityService#fillCouponScopes` | **2026-09-09 新增** | `listFromCache` 补齐 scopes，调 product-server 新增的批量查询接口 | `PreOrderActivityService#listFromCache` |
+## 当前兼容规则
 
-## 已解决（2026-09-09 本次会话）
+- 所有 19 位 ID 以字符串序列化。
+- product-b 返回 `RestTraceResponse<T>` 信封，跨服务复杂集合使用扁平行。
+- promotion 调 coupon-a 使用 `CamelExpandCouponQueryRequest`，避免全局 SnakeCase 改写请求字段。
+- student-center 调 product-b 使用 `PRODUCT-B` 与 `ProductInterceptorFeignConfig`。
+- `couponStatusDesc` 由本地映射；`creator` 查询失败保留工号。
+- 状态白名单配置为空串时关闭对应维度过滤。
 
-### ✅ B 端 detail 券字段全空 —— 已修复并实测通过
+## 当前契约缺口
 
-**根因**（挂载点缺口，不是新 bug）：`detail()` 直接读 DB（表只有 8 列无券字段），
-不像列表页那样经过缓存重建路径，`PreOrderCouponEnricher` 之前完全没有挂在这条链路上。
-
-**修法**：给 `PreOrderCouponEnricher` 加 `enrichDTO()` 重载，在 `detail()` 里
-`fillProductNames` 之前调用（promotion `81180aa45`）。
-
-**验证**（用当下真实存在的电商券"木7" skuNumber=578534533488603137 重新建活动 `578563007821410304`）：
-`detail()` 返回 `coupon_id`/`coupon_name`/`coupon_status`/`buy_amount`/`sku_id` 全部正确回显；
-经 `promotion-management` 透传层（`961cb892`）后同样正确。**排查过程踩了一个坑**：
-第一次用 verify.md 里记的旧 skuNumber(578513860277893121，标注"木7") 测，一直显示 null，
-以为是修复没生效——查日志发现 `PreOrderCouponEnricher#enrichDTO | 部分券在电商查不到`，
-换真实当下存在的 sku 重测才通过。**结论：coupon-a 测试环境的券 SKU 会滚动重新生成，
-verify.md 里记的具体 sku 值会过期，不能当长期有效的测试数据用**，见 [[verify]]。
-
-`scopes` 与 `couponStatusDesc` 当时仍是 null（不在 detail 那次修复范围）：
-- `couponStatusDesc`：后续已单独修复，见下方「✅ couponStatusDesc 本地映射」
-- `scopes`：权威源在 product-server，见下一条
-
-### ✅ C 端 listFromCache 不下发 scopes —— 已修复并端到端实测通过
-
-**发现过程**：测 cart 的 `preRegistration` 推荐接口时，子 agent 造数据打通了续班计划关联，
-链路推进到膨胀券分支后卡在 `PreRegistrationCouponAssembler#resolveCouponScope` 抛异常
-「膨胀券可用范围缺失」。追查发现 `listFromCache` 返回的 `PreOrderActivityProductDTO.scopes`
-**恒为 null**——promotion 自己不落 scopes（权威源在 product-server 的
-`renewal_pre_order_activity_coupon_scope` 表），但**之前完全没有跨服务读接口去补**，
-cart 类头的 TODO 也明确写了这是"promotion 缺口"。
-
-**这是和 detail 缺口完全不同的另一个接口**：`detail()` 是 B 端详情页用的，`listFromCache`
-才是 C 端取数用的，两边各自独立没有互相补齐，**这次一次性修了两个**。
-
-**最终方案**：product-server 新增 `POST /feign/preOrderActivity/couponScope/listByActivityNumbers`
-（product-server `846a532ab`，返回**扁平行**），按活动号批量查 scope 表；promotion 新增
-`PreOrderCouponScopeRemoteService#listByActivityNumbers` 消费（promotion `7be4676b0`），
-在 `listFromCache` 里按 `productNumber`(=couponSkuNumber) 回填到对应券商品行。
-只映射 `gradeCode`/`subjectCode`，年级学科中文名不需要（cart 只校验这两个字段非空）。
-
-**验证**：直接反射调 `RegistrationService#preRegistration(1, "577431949669312512",
-"514762045841821696", null)`，返回 `code:0`，`status:0`（正常），**不再抛异常**。
-`product_list` 为空数组是因为这条造出来的测试数据年级学科没有落在三者交集内，
-不是回归——修复目标是"scopes 传得到、不抛异常"，交集精确性不是这次要验的东西。
-
-#### 🔥 中间踩了三个坑，全部记进了 README「必须知道的坑」
-
-1. **嵌套 `Map<Long, Map<Long, List<...>>>` 返回类型，FastJson Feign 解码器解不出来**
-   （报 `parseLong error`）——改成扁平行 `List<Row>` 规避
-2. **Feign 方法返回类型必须对齐对端的 `RestTraceResponse<T>` 信封**，不能声明成裸
-   `List<...>`——`save()` 是 void 返回，Feign 压根不走解码，之前一直没暴露这个问题
-3. **🔴 最隐蔽的一个**：`promotion` 项目在 test-gtbg-dev-3 有 `promotion-b` 和
-   `promotion-c` **两个独立部署**，cart 走的是 `promotion-c`。前两轮反复部署都**只发了
-   promotion-b**，promotion-c 一直跑老代码，导致改完代码、部署"成功"、直接反射调
-   `listFromCache`(走 promotion-b) 都验证通过了，但 cart 端到端就是不生效——
-   **靠 trace_tree 看到 span 里 `gapmApp` 是 `promotion-c.gaotu100.com` 才发现**。
-   以后改 promotion 涉及 C 端链路的代码，**两个部署都要发**。
-
-### ✅ couponStatusDesc 本地映射 —— 已修复，永久方案（不是过渡）
-
-**定稿口径**：电商**不会下发**这个字段（2026-09-09 邓俊兵确认"中文展示逻辑你们按需判断展示就行"，
-附截图，与 jar 的 `@ApiModelProperty("券状态: 1 使用中 / 2 已失效 / 3 审核中 / 4 已暂停")` 一致），
-**本地映射是永久方案**。中间反复过两版（"等电商下发"→"临时本地兜底"→定稿），过程见 [[changelog]] 09-09。
-
-**已实现**（两处都遵循「只补为空字段，电商真给了就不覆盖」，将来电商若开始下发不用改代码）：
-- student-center `PreOrderCouponStatusEnum.descOfStatus()`（`daa8c8516`）+
-  `PreOrderCouponWrapper#convertCouponVO`
-- promotion `PreOrderCouponEnricher.descOfCouponStatus()`（`1083c43cf`），
-  `enrich()`/`enrichDTO()` 两条链路都补
-
-## 已解决（2026-09-10 本次会话）
-
-### ✅ B 端 detail 不下发 scopes —— 已修复并端到端实测通过
-
-**根因**（又一处「只在一条链路挂补齐」）：scopes 权威源在 product-server 的
-`renewal_pre_order_activity_coupon_scope` 表，promotion 自己不落库。09-09 加的跨服务读取
-**只挂在 C 端 `listFromCache`**，B 端 `detail` 这条路径没挂 → 范围明明已落库，
-详情页「预报名可用范围」恒显示「未配置」。
-
-**修法**（promotion）：`detail()` 里新增 `fillCouponScopesForDetail()`，走与 C 端同一个远端接口；
-把「拉取+分组」「映射」抽成 `loadCouponScopeRows` / `applyCouponScopes` 两个共用方法，
-C 端也改为复用 —— 就是因为两条链路各自独立补齐，才先后漏了两次。
-另给 `PreOrderActivityCouponScopeDTO` 补 `gradeName`/`subjectName`
-（原先只有 code，promotion-management 侧那两个名字字段恒为 null，页面只能显示数字）。
-
-**验证**：活动 `578653392472137728` 经页面接口 `/promotionManagement/preOrderActivity/detail`
-返回 `一年级/英语`、`四年级/生物`、`六年级/生物`，与 scope 表 id=12/13/14 逐条对得上。
-写入路径同步验过：新建活动落库 → 读回中文名正确；重复组合、空范围两条校验仍正常拦截。
-
-### ✅ 调电商券接口请求体 snake_case，筛选静默失效 —— 已修复并实测通过
-
-**根因**：`SuperSpringConfig` 把 FastJson **全局**命名策略设成 `SnakeCase`（promotion 对外
-API 口径，不能动），该全局实例同样作用于 Feign 请求体序列化；jar 的
-`ExpandCouponQueryRequest` 没有任何 `@JSONField` → 实际发出
-`{"sku_numbers":[..],"page_num":1,"page_size":3}`，而电商只认
-`skuNumbers/pageNum/pageSize`。
-
-**为什么极难定位**：未知字段被电商静默忽略 = 等价于「不带筛选」→ HTTP **200**、
-`list` **非空**（全量第一页 20 条）→ `queryCoupons` 既不抛异常、也不打
-「电商券信息全部取不到」告警（**日志里搜不到任何线索**）→ 但按 skuNumber 匹配全部 miss
-→ 券名/券ID/购买金额/状态恒为 null。**只有目标券恰好落在第一页时才「看起来是好的」。**
-
-**定位方式**：在 pod 里用 arthas 调 `JSON.toJSONString(request)` 打出真实请求体
-（`vmtool ... --express`），一眼看到 `sku_numbers`。此前靠日志、trace、Apollo 都查不出来。
-
-**修法**（promotion）：新增 `CamelExpandCouponQueryRequest` 继承 jar 入参类，覆写六个 getter
-加 `@JSONField(name=camelCase)`（优先级高于全局策略），enricher 里 `new` 换成它。
-**改动面 1 个新文件 + 1 处 4 行改动，不碰全局配置，不影响其它 Feign 调用。**
-
-**两个走不通的方案**（别再试）：① 改全局 SnakeCase → 波及 promotion 所有对外接口；
-② 换 Feign 编解码器 → jar 把 `configuration` 写死在注解上，且本仓库 spring-cloud 是
-**Edgware.SR5，`@FeignClient` 尚无 `contextId`**，同服务名重复声明 bean 名冲突（实测编译即报错）。
-
-**验证**：活动 `578667346476945408`（「造数」，挂 3 张券）修复前券字段全 null，
-修复后 B 端 `detail` 与 C 端 `listFromCache` 均完整返回券名/券ID/购买金额/`couponStatus=1 使用中`。
-C 端这条尤其关键：**修复前三者交集里的券状态判定拿到的是错的，属资损方向**。
-
-## 已知契约缺口（仍未解决）
-
-| 缺口 | 影响 | 处理 |
+| 缺口 | 影响 | 当前处理 |
 |---|---|---|
-| 电商 `couponName` 只支持**左匹配**（`like '关键字%'`） | 券选品搜索「口径」「caseSDD」等中间词一律 0 条，运营必须从券名开头输入 | 需推动电商改成 `%关键字%`，**跨团队，尚未提出** |
+| coupon-a 的 `couponName` 只支持左匹配 | 输入券名中间词无法命中 | B 端提示从券名开头输入；需推动电商支持包含匹配 |
