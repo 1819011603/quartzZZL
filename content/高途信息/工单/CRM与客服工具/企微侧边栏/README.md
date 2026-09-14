@@ -1,6 +1,6 @@
 # 企微侧边栏工单记录
 
-通用日志查询、ACL 重放和字段排查方法维护在 `crm-service/.claude/skills/wk-student-info-replay/SKILL.md`；这里仅保存案例当前快照。
+通用日志查询、ACL 重放和字段排查方法见 [`Scripts/`](Scripts/)；这里仅保存案例当前快照。
 
 ## 2026-09-11 改姓名后亲密称呼跟着变化
 
@@ -34,4 +34,4 @@
 
 - 仓库 / 服务：`crm-service`、企微侧边栏前端
 - 代码 / 数据：`StudentMdmController#getDynamicWkStudentInfo`、`#updateDynamicWkStudentInfo`，`StudentMdmService#getUpdateDimensionInfos`，字段 `10001`、`60008`
-- 排查 runbook：`crm-service/.claude/skills/wk-student-info-replay/SKILL.md`
+- 排查 runbook：[`Scripts/README.md`](Scripts/README.md)（主流程）、[`Scripts/wk-student-info-replay.md`](Scripts/wk-student-info-replay.md)（字段回显/ACL 重放）

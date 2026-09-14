@@ -1,0 +1,57 @@
+# 可续分母 / 可续锁在别的订单
+
+触发条件：问题是「不算可续分母」「可续锁在别的订单」「想把可续挪到指定订单」时读。
+
+## 6.5 「某学员不算可续分母」三步定位（2026-08-19 实战验证）
+
+> 完整可续数据链路 / 可续截止时间在哪配 / 配置被删导致回溯空转的死结，见 memory `project-can-renewal-debug-and-back-sop`。本节只补「调课链路里可续被锁在别的订单」这一类，以及**怎么把可续挪到指定订单**。
+
+### 第一步：三条 SQL 一次问清（cluster 259 / gaotu_stat）
+
+```sql
+-- ① 当前标记结果（1 可续-未续 / 2 可续-已续 / 5 已退款 / 6 过可续时间 / 7 调课可续修正 …）
+SELECT order_number, subclazz_number, can_renewal_status, can_renewal_time, can_renewal_term, create_time
+FROM performance_regular_can_renewal_sign_x WHERE order_number IN (...);
+-- ② 人话原因，step=1 首次标记 / step=2 修正，sign_detail 里直接打印了整条调课链路 ★排查首选
+SELECT order_number, step, sign_reason, sign_detail FROM performance_regular_can_renewal_sign_reason
+WHERE order_number IN (...) ORDER BY order_number, id;
+-- ③ 订单级可续池（回溯会覆盖这里的 can_renewal_time）
+SELECT * FROM performance_regular_can_renewal_config WHERE order_number IN (...);
+```
+
+`can_renewal_term` 是**后置课程学季**（C-X 暑假 / C-Q 秋季）。老师说"不算分母"常常不是数据丢了，而是**可续锁在调课前那个班，学季还是上一季** —— 先把这句话说清楚，再谈要不要改。
+
+`首个普通课节开课时间`（回溯校验用）：`clazz_lesson_base_info_stat`，字段 `clazz_lesson_type`(=0 普通课节) / `lesson_norm_begin_time` / `lesson_norm_end_time`；可续锁定时间就是第 `lesson_idx` 个普通课节的 `end_time`，能用来反验配置。
+
+### 第二步：读懂调课修正的保留规则
+
+`RenewalSignRegularStrategy#correctNewLogicV2`（:519-643），链路内优先级：
+**有「2 可续-已续」→ 全保留** > **第一个「可续锁定后才退款」的可续订单**（:571-602）> **兜底保留链路最后一单**（:603-617）。
+
+第二档四个限定词都要同时满足，缺一个就跳过：
+- 按 `paidTime` **升序**第一个（命中即 break）
+- **排除链路最后一单**（`lastAllOrderNumber`）
+- 自己第一步结果在 `CAN_RENEWAL_STATUS = {1,2,8}` 里
+- `refundTime > canRenewalTime`（锁定那刻人还在、钱没退）
+
+其余可续订单一律降 7「不可续-调课可续修正」，防同一学员在多个班重复计一次可续分母。
+
+### 第三步：想把可续挪到指定订单 —— 只有一条路
+
+**铁律：`correctXxx` 只降不升，只有 `doSign` 会重新标记。** 所以目标订单**必须出现在回溯 Excel 里**，否则它永远停在 7。
+唯一杠杆是「按订单可续回溯」会把 Excel 里的时间**覆盖写回** `config.can_renewal_time`（`CanRenewalServiceImpl#handleOrderCanRenewalBack` :479-506，随后 doSign → 调课修正 → 退款修正 → 灰名单修正）。配方：
+
+| 目标 | Excel 行（`订单号` | `可续截止时间`，两列都设文本） |
+|---|---|
+| 落到**在读的最后一单** | 把前面所有「锁定后退款的可续单」的时间改到**它自己退款时间之后**（→ 变 5 退出候选）；同时把最后一单**按原值**填一行（仅为触发重标记）→ 无候选 → 兜底保留最后一单 |
+| 落到**中间某单 X** | X 填一个 `(X 首个普通课节开课时间, X 退款时间)` 之间的值（→ 第一步变 1）；同时把它前面的可续单改到各自退款时间之后（→ 变 5）→ X 成为第一个「锁定后退款的可续单」 |
+
+回溯 Excel 8 道校验里最容易撞的两条（`CanRenewalBackExcelListener` :220-260）：**可续截止时间必须 > 首个普通课节开课时间**、**订单必须在 `performance_regular_can_renewal_config` 有记录**；另外必须是长期班、订单状态合法、文件内订单号不重复。
+
+跑完验 `sign_x`（`update_time` + status），ES `canRenewal` 字段有 600s Caffeine 缓存，看板约 10 分钟后才变。
+
+### 必须对用户说明的三条风险
+
+1. 这是在**篡改可续截止时间**（本应由班级配置按讲次自动算），改完 `config.can_renewal_time` 与 `wide_clazz_protect_window_config` 就不一致，后续动班级配置或整班回溯可能冲回去。
+2. 每日修正任务只扫**当天 `create_time`** 的 sign 行（`RenewalOrderCorrectHandler` + `getMinMaxIdByTimePeriod` 按 `create_time` 取 id 区间）→ 历史链路不会被自动重算：**回溯当天会再跑一遍但结果一致**；反过来说**工单直改 `sign_x.can_renewal_status` 也不会被自动冲掉**（代价是数据与规则对不上，谁再回溯就打回）。
+3. 把分母落在一个**已全额退款的中转单**上，续报率口径说不通 —— 遇到用户指定这种单，先把「在读那单」作为替代方案摆出来让他选。

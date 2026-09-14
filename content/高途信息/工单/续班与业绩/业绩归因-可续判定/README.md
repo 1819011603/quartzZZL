@@ -37,4 +37,4 @@
   - `AbstractRenewalSignStrategy.java`（renewalSignCore 139-290+ 行，判 4 逻辑 148-173 行，已购/未购判断 245-290 行，signNotBuyAfterCourse 535-580 行，getClazzNumbersByCourseNumbers 220-233 行）
   - `RenewalSignRegularStrategy.java`（227-234 行取订单，调课修正 correctNewLogicV2 519-643 行）
   - 表：`course_center.course_relation_map`（cluster 317，relation_type=1 续报课程、relation_number=前置课程、course_number=后置课程、calculate_renewal_type≠2）
-- 排查 runbook：`/Users/gaotu/.claude/skills/attribution-judge-debug/references/can-renewal.md`；memory `project-can-renewal-debug-and-back-sop`
+- 排查 runbook：[`Scripts/README.md`](Scripts/README.md)，可续判定细节见 [`Scripts/references/can-renewal.md`](Scripts/references/can-renewal.md)

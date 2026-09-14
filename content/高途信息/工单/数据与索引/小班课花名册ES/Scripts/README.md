@@ -1,0 +1,151 @@
+# 小班课花名册 ES 索引排查 · 可执行手册
+
+> 本文件原为 `student-data/.claude/skills/small-clazz-es-debug/SKILL.md`，2026-09-14 迁入案例库。
+> 同级 `../README.md` 是案例（发生过什么），本文件是方法（怎么做）。
+> 触发词：small_clazz_v3、花名册搜不到、班级搜不到、ES 数据缺失、宽表索引、MQ consumer 没消费。
+
+```
+/small-clazz-es-debug <问题描述或clazzNumber>
+```
+
+示例：`/small-clazz-es-debug 班级 123456 搜不到`
+
+## What This Skill Does
+
+1. 提供 `small_clazz_v3` 索引的完整数据写入链路
+2. 按 SOP 引导排查班级数据缺失问题
+3. 快速定位是哪个 Consumer / Binder 环节出了问题
+
+---
+
+## 一、索引架构概览
+
+索引名：`small_clazz_v3`（Apollo 配置 `wide.smallClazz.es.indexName`）
+
+基于公司宽表框架 `AbstractWideIndexBizService` 构建，核心类：
+
+| 类 | 路径 | 职责 |
+|---|---|---|
+| WideSmallClazzIndexService | `student-data-service/.../domain/smallclazz/core/WideSmallClazzIndexService.java` | 索引入口，提供 autoTriggerIndex / manualIndex |
+| WideSmallClazzConfiguration | `student-data-service/.../domain/smallclazz/core/WideSmallClazzConfiguration.java` | 宽表配置，注册所有 Binder |
+| WideSmallClazzEsModel | `student-data-service/.../domain/smallclazz/model/WideSmallClazzEsModel.java` | ES 文档模型 |
+| WideSmallClazzDao | `student-data-service/.../domain/smallclazz/repository/WideSmallClazzDao.java` | ES 读写 DAO |
+
+### ItemType 枚举（数据维度）
+
+`WideSmallClazzItemType` 定义了宽表的 8 个数据维度，每个维度由对应的 Binder 负责组装：
+
+| ItemType | 含义 | Binder 类 |
+|---|---|---|
+| COURSE | 课程信息 | WideSmallClazzCourseBinder |
+| CLAZZ | 班级信息 | WideSmallClazzClazzBinder |
+| COMMODITY | 班级关联商品 | WideSmallClazzCommodityBinder |
+| CLAZZ_TYPE | 班型信息 | WideSmallClazzTypeBinder |
+| SUB_CLAZZ | 辅导班/老师/学员 | WideSmallClazzSubClazzBinder |
+| TEACHING | 课节/上课时间/主讲 | WideSmallClazzTeachingBinder |
+| OWNER | 归属信息 | WideSmallClazzOwnerBinder |
+| RENEWAL | 续报信息 | WideSmallClazzRenewalBinder |
+
+Binder 路径统一在：`student-data-service/.../domain/smallclazz/binder/`
+
+---
+
+## 二、MQ Consumer 完整链路
+
+所有 Consumer 最终调用 `WideSmallClazzIndexService.autoTriggerIndex(clazzNumberList)` 触发宽表重建。
+
+### 2.1 班级创建（新文档写入的唯一入口）
+
+| Consumer | Topic | Tag | 说明 |
+|---|---|---|---|
+| **SmallClazzChangeConsumer** | `course-center-field-event` | `clazz_create` | 班级创建，**只有 arrangeModeType==4 才写入** |
+| 同上 | 同上 | `right_package_clazz_edit` | 权益包班级编辑 |
+
+文件：`student-data-facade/.../mq/smallclazz/clazz/SmallClazzChangeConsumer.java`
+
+**关键过滤逻辑（第 92 行）**：
+```java
+if(clazzVOList.get(0).getArrangeModeType() != 4) {
+    return OrderAction.Success;  // 非排课模式4的班级直接跳过
+}
+```
+
+### 2.2 关联数据变更（更新已有文档）
+
+| Consumer | Topic | Tag | 说明 | 文件 |
+|---|---|---|---|---|
+| SmallClazzUserChangeConsumer | `student-data_ads_small_clazz_user_ordered` | `student_detail_tag` | 学员变更 | `.../mq/smallclazz/user/SmallClazzUserChangeConsumer.java` |
+| SmallClazzSubClazzChangeConsumer | `gaotu_subclazz_operation_event` | `TAG_SMALL_Subclazz_Create\|\|Close` | 辅导班创建/关闭 | `.../mq/smallclazz/subclazz/SmallClazzSubClazzChangeConsumer.java` |
+| SmallClazzSubClazzStudentConsumer | `gaotu_subclazz_student_event` | `TAG_SMALL_Subclazz_Quit\|\|Enter\|\|Transfer` | 学员进出/转班 | `.../mq/smallclazz/subclazzstudent/SmallClazzSubClazzStudentConsumer.java` |
+| SmallClazzClazzLessonChangeConsumer | `course-center-field-event` | `right_package_clazz_lesson_edit` | 课节变更 | `.../mq/smallclazz/clazzlesson/SmallClazzClazzLessonChangeConsumer.java` |
+| SmallClazzStaffChangeConsumer | `gaotu_staff_event` | — | 员工变更 | `.../mq/smallclazz/staff/SmallClazzStaffChangeConsumer.java` |
+| ClazzTypeChangeConsumer | `ces_teach_product_service` | `CLAZZ_TYPE_EDIT` | 班型变更 | `.../mq/smallclazz/clazzType/ClazzTypeChangeConsumer.java` |
+| ClazzProductChangeConsumer | `ces_teach_product_service` | `TEACH_PRODUCT_EDIT` | 教学商品变更 | `.../mq/smallclazz/clazzProduct/ClazzProductChangeConsumer.java` |
+| RenewalChangeConsumer | `gaotu_product_renew_master_event` | `renew_master_publish\|\|..._edit_pre_course\|\|..._time_edit` | 续报变更 | `.../mq/smallclazz/renewal/RenewalChangeConsumer.java` |
+
+---
+
+## 三、排查 SOP
+
+### Step 1: 确认班级基本信息
+
+拿到搜不到的 clazzNumber 后，先确认：
+- `arrangeModeType` 是否为 4（只有排课模式4的班级才会写入 ES）
+- 班级是否真的已在课程中心创建成功
+- 通过 `ClazzQueryAdapter.listByNumbers()` 能否查到该班级
+
+### Step 2: 检查 Consumer 日志
+
+按 clazzNumber 搜索以下日志关键字：
+- `SmallClazzChangeConsumer` — 看是否收到 `clazz_create` 消息
+- `query clazz fail` — 如果出现说明课程中心接口查询失败/延迟
+- `SmallClazzChangeConsumer fail` — 消费异常
+
+### Step 3: 检查 ES 文档
+
+通过 ES 查询确认文档是否存在：
+- 索引名：`small_clazz_v3`
+- 文档 ID 即 clazzNumber
+- 检查文档各字段是否完整（对应 8 个 ItemType 维度）
+
+### Step 4: 手动触发重建索引
+
+如果确认消息丢失或消费失败，可手动触发：
+
+方式一：调用 `WideSmallClazzIndexService.manualIndex(clazzNumber)`
+
+方式二：调用 `WideSmallClazzIndexService.batchRetryIndex(clazzNumberList)` 批量重建
+
+方式三：通过 `GpsManualController` 接口触发（查看 `student-data-facade/.../facade/api/GpsManualController.java`）
+
+### Step 5: 检查 Binder 数据源
+
+如果文档存在但某些字段缺失，按 ItemType 检查对应 Binder：
+- 读取对应 Binder 的 `apply` 方法，确认数据源接口是否正常
+- 检查 ACL 层的 Feign 调用是否超时或返回空
+
+---
+
+## 四、常见问题速查
+
+| 现象 | 可能原因 | 排查方向 |
+|---|---|---|
+| 班级完全搜不到 | arrangeModeType != 4 | 确认班级排课模式 |
+| 班级完全搜不到 | clazz_create 消息未投递 | 检查课程中心消息发送 |
+| 班级完全搜不到 | Consumer 消费失败 | 看 SmallClazzChangeConsumer fail 日志 |
+| 班级存在但字段缺失 | 对应 Binder 数据源异常 | 按 ItemType 逐个排查 Binder |
+| 班级信息未更新 | 变更消息未消费 | 检查对应 Consumer 的 topic/tag |
+| Apollo 开关关闭 | `SmallClazzChangeConsumer.effect=false` | 检查 Apollo 配置 |
+| 跳过了异常 | `SmallClazzChangeConsumer.skipUnknownError=true` | 异常被吞掉，检查 Apollo |
+
+---
+
+## 五、关键 Apollo 配置项
+
+| 配置 | 默认值 | 说明 |
+|---|---|---|
+| `wide.smallClazz.es.indexName` | `small_clazz_v3` | 索引名 |
+| `SmallClazzChangeConsumer.effect` | `true` | 是否消费 |
+| `SmallClazzChangeConsumer.skipUnknownError` | `false` | 是否跳过异常 |
+| `wide.smallClazz.forceStopIndex` | `false` | 强制停止索引 |
+| `wide.smallClazz.skipkeys` | `[]` | 跳过的 clazzNumber 列表 |

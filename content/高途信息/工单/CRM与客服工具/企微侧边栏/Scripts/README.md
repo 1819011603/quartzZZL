@@ -1,0 +1,96 @@
+# 企微侧边栏排查 · 可执行手册
+
+> 本文件原为全局 skill `qiwei-sidebar-debug`，2026-09-14 迁入案例库。
+> 同级 `../README.md` 是案例（发生过什么），本文件是方法（怎么做）。
+> 字段回显/ACL 重放见同级 [`wk-student-info-replay.md`](wk-student-info-replay.md)。
+> 触发词：企微侧边栏、侧边栏排查、企微权限、wkAuth、corp/list、getCorpUserInfo、企微客服没权限。
+
+三个固定接口已封进脚本（走代理、不漏 header）。skill 只负责按序调 + 判定。
+**不是 MCP 工具**，已降级为 CLI 以省常驻上下文：
+
+```bash
+~/.local/mcp-servers/mcpcli.py qiwei_sidebar <tool> -k key=value
+~/.local/mcp-servers/mcpcli.py qiwei_sidebar --list      # 忘了参数时先跑这个
+```
+
+代课切身份用 `baijia-invoke` 的 `cosplay_login`。默认 `env=prod`；用户说查测试时才传 `env=test`。
+注意：第 2、3 步底层都是 acl/compare 反射桥，**恒走 test 段，与 env 无关**（prod 段 `/crmApp/acl/compare/services` 网关 404）。`env` 入参仅用于回显，不影响实际路由。
+
+## 0. 代课 cosplay（**不可跳过**）
+问 **cosAccountName**（如 `zhangzeling`）→ `baijia-invoke` 的 `cosplay_login`（`success:true` 即成功）。
+失败/失效 → 提醒重新登录后**停止**。
+查完记得 `cosplay_logout` 还原身份。
+
+⚠️ **用户已经给了 corpId，也照样要先代课。** corpId 只省掉第 1 步，第 2 步查的是「**当前身份**在这个主体下的授权」——
+没代课就等于在查你自己（zhangzeling）的授权。这个误查**不会报错**：一样返回 `allRoles` 非空、一样打勾、
+一样提示 currentRole 不对，只有 `name`/`accountId` 能看出查错了人。
+用户只给邮箱前缀/userId 而没给 cosAccountName 时：**先问**（邮箱前缀通常就是 cosAccountName，但要确认），别直接往下跑。
+
+## 1. 查 corpId — `qiwei_list_corps`（**本步不需要代课**）
+问**主体中文名**。跑
+`mcpcli.py qiwei_sidebar qiwei_list_corps -k corp_name=<主体名>`，
+脚本按 `corpName` 匹配并高亮 **corpId**。
+匹配不到/多条 → 把返回的 corpName 列表给用户确认。corpId 供第 2、3 步用。
+
+`cas_id` **不用传**（默认 `zhangzeling`）。实测 2026-09-10：后端不按 casId 过滤 ——
+`zhangzeling` / `cuimeng01` / 甚至不存在的账号，返回的都是同一份**全量 26 条**主体清单，
+排序后逐字节相同。所以这一步与身份无关，**不要**为了它去代课；
+也别把它的返回当成「该客服属于哪些主体」（它是全量池，不含归属信息）。
+
+## 1b. 只有 userId、不知道主体名 → 撞库反查
+因为第 1 步能无条件拿到全量 corpId，可以拿 userId 去逐个撞第 3 步，命中的即所属主体：
+`qiwei_list_corps` 取全部 corpId → 对每个并行调
+`qiwei_get_corp_user -k user_id=<userId> -k corp_id=<corpId>` → 返回到 name/email 的那个就是。
+26 次调用、可并行、也不需要代课（第 3 步恒走 test 桥）。
+注意 `wxe9347c2f779b96ca`（高途集团）是 **wx** 前缀、其余都是 **ww**，撞库时别漏。
+
+**按命中数分三种处置：**
+
+| 命中 | 处置 |
+| --- | --- |
+| 1 条 | 直接用它，不必回头问用户主体名 |
+| **多条** | **停下来问用户是哪个**（列出 corpId + corpName + 查到的 name/email 供其辨认）。**禁止**默认取第一条 —— 主体选错，第 2 步查的授权就是错的，且一样会返回像样的结果、不报错 |
+| 0 条 | 别当成「无权限」。先核 userId 是否为企微 userid（这次的 `17710580392` 是手机号形态，不是 `zhayan01` 那种），再看登录态/桥是否正常 |
+
+实测（2026-09-10）`userId=17710580392` → 26 个主体里**唯一命中** `wxe9347c2f779b96ca`（高途集团，
+name=笑笑学姐 / email=cuimeng01@zhenrenhao9.com），可作自检基准。
+
+## 2. 查 SCRM 授权 — `qiwei_check_scrm_auth`
+跑 `mcpcli.py qiwei_sidebar qiwei_check_scrm_auth -k corp_id=<corpId> -k env=prod`。
+
+**先核身份再读结论**：回显的 `账号: accountId=… name=…` 必须等于第 0 步代课的 cosAccountName。
+不等（尤其是等于你自己 `zhangzeling`）→ 代课没生效或没做，**这份结果作废**，回第 0 步，别拿它下判断。
+
+确认身份对得上后，看 **allRoles**：
+- 空 → 无权限，继续第 3 步。
+- 非空 → 有权限。脚本会同时回显 accountId / 角色列表 / **currentRole**。
+  ⚠️ 侧边栏一般要求 **currentRole 本身**是企微/二讲角色（tag 含 `qiwei` 或 `assistant`），
+  只挂在 allRoles 里不生效。脚本检测到 currentRole 不是这类角色会额外提示 —— 
+  此时让用户在 CRM 里切到对应 SCRM 角色后复测，别直接下「权限没问题」的结论。
+- 返回 `code=70009` 等鉴权错误码（**不是** allRoles 空）：多为代课后浏览器 Cookie 未刷新。
+  **Cookie 刷新已内置在脚本里**，等价于手工执行：
+  ```bash
+  curl -s -XPOST http://127.0.0.1:8765/api/v1/bridge/refresh \
+    -d '{"domains":"fuwu.baijia.com","wait":true,"timeout":60}'
+  ```
+  该端点 `wait`(默认 true) **服务端同步阻塞**到扩展回报或 timeout，返回 `{ok,seq,completed,count,elapsedMs}`。
+  关键：**看 `completed` 不是 `ok`**（`ok` 恒 True），且客户端 timeout 必须 > 服务端 timeout。
+  脚本最多刷 3 轮（`QIWEI_REFRESH_ATTEMPTS` 可调），并按结果三态给不同处置：
+  | 结果 | 含义 | 处置 |
+  | --- | --- | --- |
+  | `completed` 但仍 70009 | Cookie 确实刷新了 | 不是刷新问题 → 该身份对此主体真没 acl 权限，或 cosplay 没代到目标客服 |
+  | `timeout` | 扩展没回报 | 浏览器打开并停留在 fuwu.baijia.com 标签页后重试 |
+  | `unreachable` | 本地 Cookie proxy 挂了 | 确认 `agent_cookie_proxy.py` 在跑 |
+
+  所以**不要**因为这个错误就手动重跑，脚本自己会收敛并告诉你是哪一种。
+  **不要**把这种错误当成「无权限」。
+
+## 3. 查企微用户 email — `qiwei_get_corp_user`
+问 **userId**（企微成员 userid，如 `zhayan01`）。跑
+`mcpcli.py qiwei_sidebar qiwei_get_corp_user -k user_id=<userId> -k corp_id=<corpId>`
+（env 入参对本步无效，恒 test 桥）。看 **email**：
+- 空 → 告知「email 为空」。
+- 非空 → 报出 email 值。
+
+## 登录失效
+脚本返回登录失效提示时：提醒用户重新登录 *.baijia.com（必要时先 cosplay），**停止**不重试。

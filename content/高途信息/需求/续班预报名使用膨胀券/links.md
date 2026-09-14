@@ -44,6 +44,7 @@ tags: [需求, 链接]
 | 类型 | 标题 | 链接 | 记录日期 |
 |---|---|---|---|
 | TAPD | 续班预报名增加膨胀券形式 · story 1122531521001392077 | https://www.tapd.cn/tapd_fe/22531521/story/detail/1122531521001392077?from_iteration_id=1122531521001014792 | 2026-09-08 |
+| mock支付 | 速搭 mock 支付页（订单号填 OES 批次单号） | https://sd.baijia.com/projectItem/myreview/79ab6125-96cb-4da3-a944-ab32f5772dc1/4e76c321-2ace-45d3-a387-0b5973ef4096 | 2026-09-14 |
 | case |  |  |  |
 | MR |  |  |  |
 | 接口文档 |  |  |  |
