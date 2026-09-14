@@ -36,6 +36,8 @@ python3 set_test_smscode.py --mobile 17900911102 --client 613156985,613156986 --
 | 对象 | 值 | 用途 |
 |---|---|---|
 | 膨胀券活动 | `578563007821410304` | B 端详情、C 端推荐 |
+| 膨胀券活动(已换新券) | `578842182125903872` | 绑定计划 `578668076965308416`，3 张券已于 2026-09-14 全量换成新券 |
+| 续班计划(新券) | `578668076965308416` | 六年级 数学/英语/语文 三槽位 |
 | 券 ID | `578534533350174720` | 券定义标识 |
 | 券商品 ID | `578534533488603137` | 活动商品 `productNumber`/`skuId` |
 | 券范围 | grade `19`、subject `6` | 三者交集 |
@@ -44,6 +46,16 @@ python3 set_test_smscode.py --mobile 17900911102 --client 613156985,613156986 --
 | 预警数据 | `questionnaire_inspect.id=261` | `postProductId`/`postProductName` 验证 |
 
 测试前先查询上述数据仍存在且状态满足用例。共享数据不得直接假定保持不变。
+
+### 计划 `578668076965308416` 当前绑定的券（2026-09-14 换新后）
+
+| 槽位 | couponId | 券商品 ID | 券名 | 已售/总量 | 持有上限 | 买价/抵扣(分) |
+|---|---|---|---|---|---|---|
+| 六年级数学(16,1) | `579417711627513856` | `579417711732357121` | Q1 | 0/20 | 3 | 2000 / 6000 |
+| 六年级英语(16,4) | `579426455071498240` | `579426455627266049` | 膨胀券-脚本 | 0/10 | 1 | 10000 / 20000 |
+| 六年级语文(16,5) | `579394599487844352` | `579394599632533505` | Q8 | 3/10 | 3 | 2000 / 6000 |
+
+三张全部 `使用中/开售中`、`selectable=true`。原先的 caseSDD 三张券已全部替换下线。
 
 ### 可用膨胀券（2026-09-14 实测，`使用中` + `开售中`）
 
@@ -137,17 +149,54 @@ params=[1,"577431949669312512","514762045841821696",null]
 **不要先怀疑三者交集或解码器**：
 
 1. 直调 product-b `/feign/preOrderActivity/couponScope/listDisplayableByRenewalPlan`
-   （服务名 `PRODUCT-B`，19 位 ID 传字符串）。返回非空即交集正常。
+   （服务名 `PRODUCT-B`，⚠️ 入参字段是 `renewMasterNumber`，**不是** `renewalPlanNumber`；
+   19 位 ID 传字符串）。返回非空即交集正常。
 2. 拿交集返回的 `coupon_sku_number`，用 `couponSkuNumberList`（**不是** `couponSkuNumbers`，
    写错字段名会被静默忽略并返回全量，极易误判成"过滤没生效"）查列表。
 3. 仍为空则直查 coupon-a：反射 `PreOrderCouponAclService#pageQueryCoupon`，
    看这些券的 `couponStatus` / `saleStatus` 真实值。
 
-已知实例：计划 `578668076965308416` 与 `577431949669312512` 命中的券
-（`578323391191220225` / `578323229840539649` / `578323085464207361`）
-`couponStatus=1` 但 `saleStatus=1`（停售中），被默认白名单 `saleStatus=2` 滤掉 → 空页。
-**这是配置口径生效，不是 bug。** `saleStatusList` 由 Apollo
-`pre.order.coupon.display.saleStatus` 决定，请求体传不进去。
+⚠️ **反射桥的 19 位 ID 必须传字符串**：传数字会被截断（实测
+`578667318880518144` → `578667318880518100`），交集因此返回 `empty=true`，
+看起来像"没配范围"，其实是入参已经不是那个 ID 了。
+
+### 🔴 券展示的两个数据源必须同时满足（2026-09-14 踩坑）
+
+一张券要出现在 `/renewal/pre/coupon/list`，**两处都要有它**：
+
+1. `gaotu.renewal_pre_order_activity_coupon_scope` —— 范围行（年级+学科）
+2. **promotion 活动的商品列表** `promotion.pre_order_activity_product` —— 活动商品行
+
+`PreOrderCouponIntersectService` 先取活动详情拿商品列表，再拿范围行求交，
+**只改 scope 表不改活动商品，券会在交集阶段被丢掉**（实测：只改 scope 表后列表从 3 张掉到 1 张）。
+所以换券必须走 promotion 的 `/preOrderActivity/edit`，由它在事务内回调 product-b 写范围。
+
+### 槽位数量上限
+
+券能展示几张，由**交集出来的「年级+学科」对数**决定，不是想加几张就加几张：
+
+- 唯一键 `uk_act_grade_subject(activity_number, grade_code, subject_code)`
+  ⇒ **一个「活动 + 年级 + 学科」只能放一张券**。
+- 计划 `578668076965308416` 实测 `post_grades=[16]`、`post_subjects=[1,4,5]`
+  ⇒ 六年级 × 数学/英语/语文，**只有 3 个槽位**，最多展示 3 张券。
+
+要展示更多券，只能换一个后置学科更多的续班计划，或新建活动绑到别的计划。
+
+### 进行中的活动怎么改券
+
+活动 `activity_status=3`（进行中）时 `/preOrderActivity/edit` 只允许改结束时间
+（`validateActivityStatusForEdit`，只有 `0 待发布` 能全字段编辑）。
+测试环境换券的做法（2026-09-14 实测可行）：
+
+```sql
+-- 1. 临时改成待发布
+UPDATE promotion.pre_order_activity SET activity_status=0 WHERE number=578842182125903872;
+-- 2. 调 /preOrderActivity/edit（beginTime 必须晚于当前时间，否则报"活动开始时间必须大于当前时间"）
+-- 3. 改回进行中并还原时间窗
+UPDATE promotion.pre_order_activity SET activity_status=3,
+  begin_time='2026-09-11 10:35:13', end_time='2026-09-29 10:30:13'
+WHERE number=578842182125903872;
+```
 
 ## 待补边界验证
 
