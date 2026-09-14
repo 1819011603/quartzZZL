@@ -9,6 +9,11 @@ tags: [需求, 日志]
 
 ## 2026-09-14
 
+- 复核可用券基线：`total=40`，全部 `couponStatus=1` + `saleStatus=2` + `selectable=true`，
+  常用 5 张记入 [[verify]]。当前**无售罄券**，T-33 只能靠造数或买满小库存券解锁。
+- 确认下单所需的 `test` 泳道运行 master 镜像，不含本需求代码（接口 404 / 反射找不到实现类）。
+  券数据在 coupon-a 跨泳道共享，缺的是代码，下单验证前必须先发版到 `test`。
+
 - B/C 端默认只展示 `couponStatus=1` 且 `saleStatus=2` 的券；两个白名单均支持 Apollo 配置，状态为空不展示。
 - coupon-a 已支持 `couponStatuses`/`saleStatuses` 服务端过滤，student-center 直接透传条件并删除本地二次过滤，保证分页 `total` 与列表一致。
 - 采用服务端过滤，因为分页后本地过滤会导致总数和页内容不一致。
