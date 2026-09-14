@@ -60,7 +60,8 @@ curl -X POST 'https://test-fuwu.baijia.com/bgwApi/component/student-center/renew
 
 - 只返回三者交集范围内的券。
 - 每条同时满足默认 `couponStatus=1`、`saleStatus=2`。
-- `total` 与返回列表一致；2026-09-14 最近一次有效实测为 `total=23`。
+- `total` 与返回列表一致。不传 `renewMasterNumber` 时 2026-09-14 实测 `total=35`；
+  传 `577431949669312512` 当前实测为 `0`（命中券 `saleStatus=1` 被白名单滤掉，非缺陷，见下方排查口径）。
 - `availableScope` 为年级学科文案，`holdLimit` 为字符串，`creator` 为姓名或兜底工号。
 - 不传 `renewMasterNumber` 时不做续班计划范围过滤，但状态过滤仍生效。
 
@@ -93,6 +94,24 @@ params=[1,"577431949669312512","514762045841821696",null]
 - 同活动的相同年级学科组合：保存失败。
 - 不同活动使用相同券和年级学科组合：保存成功。
 - 唯一键：`uk_act_grade_subject(activity_number, grade_code, subject_code)`。
+
+### 券列表返回空的排查口径（2026-09-14 实测）
+
+`/renewal/pre/coupon/list` 传 `renewMasterNumber` 返回 `total=0` 时，按下面顺序定位，
+**不要先怀疑三者交集或解码器**：
+
+1. 直调 product-b `/feign/preOrderActivity/couponScope/listDisplayableByRenewalPlan`
+   （服务名 `PRODUCT-B`，19 位 ID 传字符串）。返回非空即交集正常。
+2. 拿交集返回的 `coupon_sku_number`，用 `couponSkuNumberList`（**不是** `couponSkuNumbers`，
+   写错字段名会被静默忽略并返回全量，极易误判成"过滤没生效"）查列表。
+3. 仍为空则直查 coupon-a：反射 `PreOrderCouponAclService#pageQueryCoupon`，
+   看这些券的 `couponStatus` / `saleStatus` 真实值。
+
+已知实例：计划 `578668076965308416` 与 `577431949669312512` 命中的券
+（`578323391191220225` / `578323229840539649` / `578323085464207361`）
+`couponStatus=1` 但 `saleStatus=1`（停售中），被默认白名单 `saleStatus=2` 滤掉 → 空页。
+**这是配置口径生效，不是 bug。** `saleStatusList` 由 Apollo
+`pre.order.coupon.display.saleStatus` 决定，请求体传不进去。
 
 ## 待补边界验证
 
