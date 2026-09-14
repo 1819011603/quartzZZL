@@ -17,7 +17,7 @@ tags: [需求, 验证]
 
 | 项 | 值 |
 |---|---|
-| 泳道 | **test-gtbg-dev-3**（`test-gtbg-dev-3` 属于 **dev** 逻辑环境，别用 `--env test` 单独查，会漏 pod） |
+| 泳道 | **test-gtbg-dev-3**（下游电商 coupon-a 在 **test-eco-7**）。**两者都属 dev 逻辑环境**，`test-` 前缀不代表 test，别用 `--env test` 单独查，会漏 pod |
 | 数据库实例 | `gaotu_polar_test_03`（cluster_id **142**）· 库 `gaotu`（scope 表、questionnaire_inspect 表都在这）；`promotion` 库放活动主数据 |
 | DB 直连 | host `gaotu-polar-test03.rwlb.rds.aliyuncs.com` · 账号 `gaotu_test_rw`（密码见 Apollo `product`/TEST/`jdbc-mysql` 的 `jdbc.gaotu.password`，本仓库是 public 不落密码）；`mysql-query` MCP 是只读账号，写操作要用这个账号直连（python `pymysql`） |
 | 券商品类型 | Apollo `pre.order.coupon.product.type=8014` ✅ 已发布（⚠️ 不是 8027） |

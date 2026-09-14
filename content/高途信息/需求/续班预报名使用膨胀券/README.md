@@ -132,7 +132,7 @@ C 端 `GET /web/renewal/preRegistration`（`cart` 的 `RegistrationService#preRe
 |---|---|
 | 阶段 | 开发中（**B 端下单弹窗膨胀券 tab 券范围过滤已端到端实测通过**）|
 | 进度 | T 32/32 · R 0/2 · C 0/0 |
-| 部署泳道 | **`test-gtbg-dev-3`**（本需求 6 个仓库全部发这里）。例外：下游电商 **`coupon-a` 在 `test-eco-7`**，跨泳道已实测可达。<br>⚠️ `test-gtbg-dev-3` 属 **dev** 逻辑环境，不是 test；泳道头是 `traffic-env`（带连字符）。详见 [[verify]]「环境」 |
+| 部署泳道 | **`test-gtbg-dev-3`**（本需求 6 个仓库全部发这里）。例外：下游电商 **`coupon-a` 在 `test-eco-7`**，跨泳道已实测可达。<br>⚠️ 两个泳道都属 **dev** 逻辑环境（`test-` 前缀不代表 test）——查 pod 用 `--env dev`，用 `--env test` 会查不到、误判成「该泳道没 pod」。泳道头是 `traffic-env`（带连字符）。详见 [[verify]]「环境」 |
 | 排期 | 09-08~09-11 开发 · 09-14 自测 · 09-15~16 联调 · **提测 09-16** |
 | 当前卡点 | 🟢 无阻塞。T-32 已端到端实测通过（6 条用例全绿，见 [[verify]]）。<br>🟡 **T-33 售罄拦截待实测**：`availableScope`/`holdLimit` 已实测通过，**售罄拦截刚发布未验**（可用截图里 10/10 那张 `578845069455599617` 做数据）。<br>🟡 **遗留（非阻塞）**：电商 `couponName` 只支持左匹配，中间词搜不到，需跨团队推动，见 [[apis]]「已知契约缺口」。<br>🔴 **上线前必查**：`promotion` 有 `promotion-b`/`promotion-c` 两个独立部署，改动涉及 C 端链路时**两个都要发布** |
 | 最近更新 | 2026-09-11（T-36 券展示口径统一为「使用中且开售中」、B/C 两端均改为不展示、状态白名单 Apollo 可配）
@@ -370,7 +370,7 @@ T-32 单测：product-server 16/16、student-center 16/16 通过；端到端 6 �
   Controller（只在 student-center/promotion/cart/product-server 四仓）→ 测它只能走真实业务接口。
   走兜底前缀被 CAS 兜底成「请重新登录」，**跟 Cookie 无关，是路由没配**。
 - **Apollo 没有泳道 cluster 是正常的**，读不到会回落 `default`，别把「查泳道 cluster 404」当环境不可用。
-- **泳道名不能反推逻辑环境**：`test-gtbg-dev-3` 属 **dev** 不是 test，只查 environment=test 会误判
-  「该泳道没 pod」。已修进 `pod_term.py pods`。
+- **泳道名不能反推逻辑环境**：`test-` 前缀不代表 test —— 本需求用到的 `test-gtbg-dev-3` 和 `test-eco-7`
+  **都属 dev**，只查 environment=test 会误判「该泳道没 pod」。已修进 `pod_term.py pods`。
 - **青舟构建失败先分辨真假**：`Aborted by uqun`（人为/并发中止）、`JNLP4-connect failed`（agent 掉线）
   都是假失败，`errors` 数组为空；日志刷屏的「不支持的解析类型, XxxController」是 apidoc 噪音。
