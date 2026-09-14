@@ -38,9 +38,6 @@ python3 set_test_smscode.py --mobile 17900911102 --client 613156985,613156986 --
 | 膨胀券活动 | `578563007821410304` | B 端详情、C 端推荐 |
 | 膨胀券活动(已换新券) | `578842182125903872` | 绑定计划 `578668076965308416`，3 张券已于 2026-09-14 全量换成新券 |
 | 续班计划(新券) | `578668076965308416` | 六年级 数学/英语/语文 三槽位 |
-| 券 ID | `578534533350174720` | 券定义标识 |
-| 券商品 ID | `578534533488603137` | 活动商品 `productNumber`/`skuId` |
-| 券范围 | grade `19`、subject `6` | 三者交集 |
 | 续班计划 | `577431949669312512` | B/C 范围过滤 |
 | 前置班/课程 | `514762045841821696` | C 端推荐入参 |
 | 预警数据 | `questionnaire_inspect.id=261` | `postProductId`/`postProductName` 验证 |
@@ -92,11 +89,8 @@ curl -sk -x "${AGENT_PROXY_URL:-http://127.0.0.1:8888}" \
 
 https://sd.baijia.com/projectItem/myreview/79ab6125-96cb-4da3-a944-ab32f5772dc1/4e76c321-2ace-45d3-a387-0b5973ef4096
 
-用法：环境选 `test`，订单号填**批次单号**，点「支付」。返回 `结果=成功` 并带
-`pay_order_number` 和 `rid` 即支付成功。
-
-⚠️ 这里的「订单号」不是下单返回的订单号，是 **OES 付款记录页的批次单号**。
-取法：OES → 订单管理 → 付款记录，用学员 userId 或手机号查批次单列表，取对应批次单号。
+用法：环境选 `test`，订单号填**批次单号**（⚠️ 不是下单返回的订单号，是 OES 订单管理→付款记录页里
+按学员 userId/手机号查到的批次单号），点「支付」，返回 `结果=成功` 并带 `pay_order_number`/`rid` 即成功。
 
 ## 核心验证
 
@@ -109,14 +103,10 @@ curl -X POST 'https://test-fuwu.baijia.com/bgwApi/component/student-center/renew
   -d '{"renewMasterNumber":"577431949669312512","pageNum":1,"pageSize":20}'
 ```
 
-预期：
-
-- 只返回三者交集范围内的券。
-- 每条同时满足默认 `couponStatus=1`、`saleStatus=2`。
-- `total` 与返回列表一致。不传 `renewMasterNumber` 时 2026-09-14 实测 `total=35`；
-  传 `577431949669312512` 当前实测为 `0`（命中券 `saleStatus=1` 被白名单滤掉，非缺陷，见下方排查口径）。
-- `availableScope` 为年级学科文案，`holdLimit` 为字符串，`creator` 为姓名或兜底工号。
-- 不传 `renewMasterNumber` 时不做续班计划范围过滤，但状态过滤仍生效。
+预期：只返回三者交集范围内的券，每条同时满足默认 `couponStatus=1`、`saleStatus=2`，`total` 与列表一致；
+`availableScope` 为年级学科文案、`holdLimit` 为字符串、`creator` 为姓名或兜底工号；不传 `renewMasterNumber`
+时不做续班计划范围过滤但状态过滤仍生效。传 `577431949669312512` 返回 `total=0` 属正常（命中券
+`saleStatus=1` 被白名单滤掉，非缺陷），见下方排查口径。
 
 ### B 端活动详情
 
@@ -150,42 +140,30 @@ params=[1,"577431949669312512","514762045841821696",null]
 
 ### 券列表返回空的排查口径
 
-`/renewal/pre/coupon/list` 传 `renewMasterNumber` 返回 `total=0` 时，按下面顺序定位，
-**不要先怀疑三者交集或解码器**：
+`/renewal/pre/coupon/list` 传 `renewMasterNumber` 返回 `total=0` 时，**不要先怀疑三者交集或解码器**，按序定位：
 
-1. 直调 product-b `/feign/preOrderActivity/couponScope/listDisplayableByRenewalPlan`
-   （服务名 `PRODUCT-B`，⚠️ 入参字段是 `renewMasterNumber`，**不是** `renewalPlanNumber`；
-   19 位 ID 传字符串）。返回非空即交集正常。
-2. 拿交集返回的 `coupon_sku_number`，用 `couponSkuNumberList`（**不是** `couponSkuNumbers`，
-   写错字段名会被静默忽略并返回全量，极易误判成"过滤没生效"）查列表。
-3. 仍为空则直查 coupon-a：反射 `PreOrderCouponAclService#pageQueryCoupon`，
-   看这些券的 `couponStatus` / `saleStatus` 真实值。
+1. 直调 product-b `/feign/preOrderActivity/couponScope/listDisplayableByRenewalPlan`（服务名 `PRODUCT-B`，
+   ⚠️ 入参字段是 `renewMasterNumber` 不是 `renewalPlanNumber`；19 位 ID 传字符串）。返回非空即交集正常。
+2. 拿交集返回的 `coupon_sku_number`，用 `couponSkuNumberList`（不是 `couponSkuNumbers`，写错字段名会被
+   静默忽略并返回全量，极易误判成"过滤没生效"）查列表。
+3. 仍为空则直查 coupon-a：反射 `PreOrderCouponAclService#pageQueryCoupon`，看券的真实状态值。
 
-⚠️ **反射桥的 19 位 ID 必须传字符串**：传数字会被截断（实测
-`578667318880518144` → `578667318880518100`），交集因此返回 `empty=true`，
-看起来像"没配范围"，其实是入参已经不是那个 ID 了。
+⚠️ 反射桥的 19 位 ID 必须传字符串，传数字会被截断（`578667318880518144` → `578667318880518100`），
+交集因此误判为 `empty=true`。
 
 ### 🔴 券展示的两个数据源必须同时满足
 
-一张券要出现在 `/renewal/pre/coupon/list`，**两处都要有它**：
-
-1. `gaotu.renewal_pre_order_activity_coupon_scope` —— 范围行（年级+学科）
-2. **promotion 活动的商品列表** `promotion.pre_order_activity_product` —— 活动商品行
-
-`PreOrderCouponIntersectService` 先取活动详情拿商品列表，再拿范围行求交，
-**只改 scope 表不改活动商品，券会在交集阶段被丢掉**（实测：只改 scope 表后列表从 3 张掉到 1 张）。
-所以换券必须走 promotion 的 `/preOrderActivity/edit`，由它在事务内回调 product-b 写范围。
+一张券要出现在 `/renewal/pre/coupon/list`，两处都要有它：`gaotu.renewal_pre_order_activity_coupon_scope`
+（范围行）与 promotion 活动的商品列表 `promotion.pre_order_activity_product`（活动商品行）。
+`PreOrderCouponIntersectService` 先取活动详情拿商品列表，再拿范围行求交，**只改 scope 表不改活动商品，
+券会在交集阶段被丢掉**。所以换券必须走 promotion 的 `/preOrderActivity/edit`，由它在事务内回调 product-b 写范围。
 
 ### 槽位数量上限
 
-券能展示几张，由**交集出来的「年级+学科」对数**决定，不是想加几张就加几张：
-
-- 唯一键 `uk_act_grade_subject(activity_number, grade_code, subject_code)`
-  ⇒ **一个「活动 + 年级 + 学科」只能放一张券**。
-- 计划 `578668076965308416` 实测 `post_grades=[16]`、`post_subjects=[1,4,5]`
-  ⇒ 六年级 × 数学/英语/语文，**只有 3 个槽位**，最多展示 3 张券。
-
-要展示更多券，只能换一个后置学科更多的续班计划，或新建活动绑到别的计划。
+券能展示几张，由**交集出来的「年级+学科」对数**决定：唯一键
+`uk_act_grade_subject(activity_number, grade_code, subject_code)` ⇒ 一个「活动+年级+学科」只能放一张券。
+计划 `578668076965308416` 的 `post_grades=[16]`、`post_subjects=[1,4,5]` ⇒ 六年级×数学/英语/语文，只有
+3 个槽位。要展示更多券，只能换一个后置学科更多的续班计划，或新建活动绑到别的计划。
 
 ### 进行中的活动怎么改券
 
@@ -202,18 +180,14 @@ params=[1,"577431949669312512","514762045841821696",null]
 当前 40 张可用券全部未售罄（见「可用膨胀券」表），需造数：优先挑小库存券
 （如 `579394614104993792`，1/5）买满，`578839415256780800` 总量 100000 不适合拿来刷售罄。
 
-准备 `couponStatus=1` 且 `sold_count >= total_amount` 的真实券：
-
-1. `/renewal/pre/coupon/list` 返回该券时 `selectable=false`。
-2. `/promotionManagement/preOrderActivity/editAndPublish` 添加该券时返回“膨胀券已售罄，不可添加”。
-3. 库存判据以 coupon-a 返回为准，不使用 OES 活动缓存中的已售/总量。
+用 `couponStatus=1` 且 `sold_count >= total_amount` 的真实券验证：`/renewal/pre/coupon/list` 返回该券
+时 `selectable=false`；`/promotionManagement/preOrderActivity/editAndPublish` 添加该券时报"膨胀券已售罄，
+不可添加"；库存判据以 coupon-a 返回为准，不使用 OES 活动缓存中的已售/总量。
 
 ### 满班课程
 
-准备 `capacity>0` 且 `signUpCount>=capacity` 的班级：
-
-1. 订金班活动保存时报“班级班容已满，不可添加”。
-2. 使用 `capacity=-1` 的班级回归，必须允许保存。
+用 `capacity>0` 且 `signUpCount>=capacity` 的班级验证：订金班活动保存时报"班级班容已满，不可添加"，
+`capacity=-1` 的班级必须允许保存（回归）。
 
 ### 持有上限
 
