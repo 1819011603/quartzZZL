@@ -65,28 +65,14 @@ tags:
   **没有「待开始」**（售卖期由 `saleStartTime`/`saleEndTime` 表达）。**只有【1 使用中】可勾选**。
   权威源：jar `com.gaotu:coupon-a-client:1.3.17` 的 `ExpandCouponDetailDto#couponStatus`
   （`POST /feign/expandCoupon/queryList`，青舟 interfaceId=5453936）。
-- 🔴 **coupon-a `queryList` 的服务端过滤：`couponStatuses` 真过滤，`saleStatuses` 假的**
-  （2026-09-12 test-eco-7 实测，参数就是 jar 1.3.17 `ExpandCouponQueryRequest` 里那两个 `List<Integer>` 字段）：
-  传 `couponStatuses:[2]` → `total` 从 189 变 19、返回全部 `couponStatus=2`，**确实按它过滤**；
-  传 `saleStatuses:[1]` 或 `[2]` → `total`/列表跟不传时**完全一样**，服务端静默忽略。
-  **所以 B 端「券状态」这一维度可以让 coupon-a 服务端过滤（total 准）；
-  「券商品状态(saleStatus)」这一维度目前只能继续我们自己内存二次过滤（total 仍不准）**。
-  🔍 **2026-09-12 拉了 `gaotu/coupon` 仓库 `feature-expand-coupon` 分支验证根因**（clone 在
-  `/Users/gaotu/IdeaProjects/JavaProject/coupon`）：电商 `dengjunbing` 09-11 14:27 commit `22283ca6d`
-  **已经把 `saleStatuses` 的服务端过滤实现了**（mapper 加 `sale_status in (...)`，其 SQL 验证
-  `sale_status in (2) and status in (1)` 得 5 条、去掉该条件得 155 条，AND 语义成立）——
-  但同日 14:30 commit `c8772ddb1` 把 `coupon-a-client` 从 1.3.16 再升到 **1.3.17**，
-  而 **Nexus 上 1.3.17 早在当天 06:30 就已经发布过一个更早的构建**（含 `saleStatuses` 字段但
-  mapper 未接、过滤不生效）——**releases 仓禁止覆盖同版本号**，所以这次修复实际上**还没能发出来**。
-  **本质是版本号被占用，不是代码没写**。
-  ⚠️ **我们是走 Feign/HTTP 调它的服务，不是编译期依赖它的 jar**——`saleStatuses`/`couponStatuses`
-  字段我们现在用的 1.3.17 里已经有，用户点出"跟我们的 jar 版本没关系"是对的：我们不需要等他们发新
-  jar，只需要等他们**实际跑着的服务**部署上这个 fix。jar 版本号发布失败只是间接信号（他们的构建流水线
-  可能发包和部署绑在一起），不是我们要等的东西本身。
-  所以监控已改为**直接轮询真实接口**（不看 Nexus）：每 3 分钟经 Eureka 找 `COUPON-A.GAOTU100.COM`
-  的全部实例，各打一次 `queryList` 带 `saleStatuses:[2]`，`total` 只要不再是基线 189 就说明服务端
-  过滤已经生效——这时才要动代码。
-  ⚠️ **`couponStatuses` 现在就能用**（老部署已经支持，不用等新版本），可以先单独把这一维度改成服务端过滤。
+- 🟢 **coupon-a `queryList` 的服务端过滤：`couponStatuses`/`saleStatuses` 现在都真的生效了**
+  （2026-09-14 双泳道 test / test-eco-7 实测确认，电商已修复）。
+  根因是 coupon-c 侧 `CouponExpandConfigRepositoryImpl#normalize()` 当初漏拷了 `saleStatuses`
+  字段（已告知电商、电商已修），过程与排查见 [[changelog]] 09-12/09-14。
+  **本仓库已把两个维度都改成透传给 Feign 做服务端过滤**（`PreOrderCouponBiz`/
+  `PreOrderCouponAclServiceImpl`），不再自行二次过滤，`total` 现在是准确值——
+  端到端实测 `test-gtbg-dev-3`：`PreOrderCouponBiz#listCoupon` 返回 `total=23`，
+  全部命中 `couponStatus=1`(使用中) + `saleStatus=2`(开售中)。
 - 🔴 **`saleStatus` 是第二个状态维度**（1.3.17 新增）：券**商品**售卖状态 1 停售中 / 2 开售中，
   平台券为空。与 `couponStatus` 正交。
   ⚠️ **2026-09-11 口径反转（T-36，推翻同日早些时候的 T-35 决定）**：
@@ -146,6 +132,7 @@ C 端 `GET /web/renewal/preRegistration`（`cart` 的 `RegistrationService#preRe
 |---|---|
 | 阶段 | 开发中（**B 端下单弹窗膨胀券 tab 券范围过滤已端到端实测通过**）|
 | 进度 | T 32/32 · R 0/2 · C 0/0 |
+| 部署泳道 | **`test-gtbg-dev-3`**（本需求 6 个仓库全部发这里）。例外：下游电商 **`coupon-a` 在 `test-eco-7`**，跨泳道已实测可达。<br>⚠️ `test-gtbg-dev-3` 属 **dev** 逻辑环境，不是 test；泳道头是 `traffic-env`（带连字符）。详见 [[verify]]「环境」 |
 | 排期 | 09-08~09-11 开发 · 09-14 自测 · 09-15~16 联调 · **提测 09-16** |
 | 当前卡点 | 🟢 无阻塞。T-32 已端到端实测通过（6 条用例全绿，见 [[verify]]）。<br>🟡 **T-33 售罄拦截待实测**：`availableScope`/`holdLimit` 已实测通过，**售罄拦截刚发布未验**（可用截图里 10/10 那张 `578845069455599617` 做数据）。<br>🟡 **遗留（非阻塞）**：电商 `couponName` 只支持左匹配，中间词搜不到，需跨团队推动，见 [[apis]]「已知契约缺口」。<br>🔴 **上线前必查**：`promotion` 有 `promotion-b`/`promotion-c` 两个独立部署，改动涉及 C 端链路时**两个都要发布** |
 | 最近更新 | 2026-09-11（T-36 券展示口径统一为「使用中且开售中」、B/C 两端均改为不展示、状态白名单 Apollo 可配）
@@ -297,7 +284,9 @@ T-32 单测：product-server 16/16、student-center 16/16 通过；端到端 6 �
   它是独立的**上架/下架开关**，不是按时间窗算出来的。
   ⚠️ 别因此以为「在售卖期内 = 开售中」。售卖期本身**可以手动改**，
   所以要造一张【开售中】的券，改售卖期不一定够，得让券真的上架。
-  ⚠️ **两者不是简单相与** —— `saleStatus` 只在推荐场景（传了续班计划）才卡，见「已定共识」。
+  ⚠️ 此前「`saleStatus` 只在推荐场景才卡」的口径**已作废**（09-11 反转为两种场景都卡，
+  09-14 起改成透传给 coupon-a 服务端过滤，两个场景走的是同一条查询路径，
+  不存在"只在某场景卡"的分支了），见「已定共识」。
 - **膨胀券名称搜索只支持「左匹配」**（`like '关键字%'`，jar 注释写明）：搜「退款口径」能命中
   「退款口径膨胀券caseSDD_x」，搜「口径」「caseSDD」一律 0 条。这是电商口径，我们只透传关键字。
 

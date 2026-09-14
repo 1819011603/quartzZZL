@@ -20,6 +20,26 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-09-14（第十一轮 · 落地服务端过滤 + 电商修复验证）
+
+### 👤 我
+- 把 09-12 排查到的 `normalize()` 漏拷字段的问题告诉了电商
+- 指示「先把我这边筛选改成调用 Feign 接口的，不要自己来筛选」——不等电商修完再改，先把代码架构改对
+- 电商修完后，指示复测 test-eco-7 和 test 两个泳道
+
+### 定了什么
+- `PreOrderCouponBiz`/`PreOrderCouponAclServiceImpl` 改成把 `couponStatuses`/`saleStatuses`
+  两个维度都透传给 coupon-a 服务端过滤，删掉原来查全量再内存二次过滤的 `filterOnSale()`。
+  **交集为空时不能把空列表传给电商**（电商 mapper 里空列表语义是"不限"而非"不匹配"，
+  与"没查到"正相反），这种情况要在本仓库内部短路成空页，不能继续往下传。
+- 09-14 复测确认电商已修复 `saleStatuses` 过滤（test/test-eco-7 双泳道 total 从 194 分别过滤成
+  25/169，和为 194，回归 couponStatuses 正常）。端到端实测 `test-gtbg-dev-3` 上新代码，
+  `PreOrderCouponBiz#listCoupon` 返回 `total=23`（两个维度都生效后的准确值）。
+- 此轮 commit `3e6bba891`，部署 `test-gtbg-dev-3` 第一次触发遇到假失败
+  （`JNLP4-connect connection failed`，构建 agent 掉线，checkout 都没做完），重试即过。
+
+---
+
 ## 2026-09-12（第十轮 · 排查 coupon-a 服务端过滤能力）
 
 ### 定了什么 / 查清了什么
