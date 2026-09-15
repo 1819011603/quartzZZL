@@ -18,8 +18,49 @@ tags: [需求, 任务]
 | T-35 | 接入 coupon-a-client 1.3.17 的售卖状态与创建人 | 已完成 | — | `saleStatus`/`saleStatusDesc` 与创建人姓名链路已接入并验证。 |
 | T-36 | B/C 端统一过滤“使用中且开售中” | 已完成 | — | student-center `3e6bba891`；状态条件由 coupon-a 服务端过滤，端到端 `total=23` 且状态全部符合默认白名单。 |
 | T-37 | 打通 student-data 券预报名回溯（`backDwsPresaleHandler`） | 已完成 | — | 2026-09-15：ES `presaleSubject`/`gradePresaleSubject` 验证有值，修复细节见 [[changelog]]。回溯用法与维度见 [[verify]]「怎么回溯」。 |
-| T-38 | `presaleOrderTime` 口径订正为「取最新」 | 待验证 | 缺少两张不同支付时间的券 | 2026-09-15 按需求第 75 行改 6 处 `min → max`（大小班 × 增量/全量 4 个文件），4 个单测同步翻转。当前测试券两张支付时间相同（均 11:03:45）测不出差异，需造不同时间的券；另需与马胜确认原「取最早」是否另有上下文。详见 [[changelog]]。 |
-| T-39 | 验证「券与订金班取并集」 | 未开始 | 零数据覆盖（两表交集 0 行） | 需求第 73/74/75 行的并集规则从未被真实数据走过。造数方案（直接插库 / 走真实链路）与 ES 期望值见 [[verify]]「券与订金班并存」，含退券后应只回落券那部分的验证。 |
+| T-38 | `presaleOrderTime` 口径订正为「取最新」 | 进行中 | 缺少两张不同支付时间的券 | 2026-09-15 按需求第 75 行改 6 处 `min → max`（大小班 × 增量/全量 4 个文件），4 个单测同步翻转。当前测试券两张支付时间相同（均 11:03:45）测不出差异，需造不同时间的券；另需与马胜确认原「取最早」是否另有上下文。详见 [[changelog]]。 |
+| T-39 | 验证「券与订金班取并集」 | 待办 | 零数据覆盖（两表交集 0 行） | 需求第 73/74/75 行的并集规则从未被真实数据走过。造数方案（直接插库 / 走真实链路）与 ES 期望值见 [[verify]]「券与订金班并存」，含退券后应只回落券那部分的验证。 |
+
+## 合入现状（2026-09-15，MR 已建）
+
+> MR 链接见 [[links]]「上线 → Merge Request」。源分支统一 `feature-xuban-pre`；
+> **目标分支不统一**：promotion 走 `master`，其余走 `release`，依据各仓库 `origin/HEAD`。
+
+| 仓库 | 目标 | vs 目标分支 | MR | 备注 |
+|---|---|---|---|---|
+| student-data | release | ahead 5 / behind 0 | !1645 | 已同步 release；T-38 改动已提交推送（`0109fc498`，合并马胜 `9fef6f55f` 后为 `dd5b6e587`） |
+| student-center | release | ahead 26 / behind 4 | !1437 | origin/HEAD 本就是 release，最干净 |
+| product-server | release | ahead 25 / behind 41 | !747 | 用 `feature-xuban-pre`，**不含**建品那 10 个提交 |
+| cart | release | ahead 7 / behind 0 | !269 | release 祖先，可直接合 |
+| promotion-management | release | ahead 7 / behind 0 | !171 | release 祖先，可直接合 |
+| promotion | **master** | ahead 25 / behind 0 | !669 | 见下「为什么走 master」 |
+| order | — | — | 不提 | **不在本期范围**（2026-09-15 确认），改动归订单团队 |
+| promotion-app | — | — | 不提 | 用户明确排除，仅 spec 文档 |
+
+### 为什么 promotion 走 master
+
+该仓库 `release` 与 `master` **无共同祖先**（`git merge-base` 退出码 1，两条独立历史线，
+`release..master` ahead 1 / behind 5924）。本分支从 `master` 拉出且 `behind master = 0`，
+合 master 是快进式的正常合并；若强行合 release 会变成无关历史合并，风险极高。
+仓库 `origin/HEAD` 也指向 master，与此一致。
+
+> ⚠️ README「必须知道的判据」记有 promotion 存在 `promotion-b` / `promotion-c` 两个部署，
+> 改 C 端链路时两个都要发布，上线时注意。
+
+### order 不在本期范围
+
+2026-09-15 确认 order **不随本需求上线**，本期不提 MR。该仓库 `feature-xuban-pre` 上已有 3 个提交
+（膨胀券加购与购物车总价），归订单团队自行管理与发布。
+
+> 附记：当时尝试建 MR 时 `gaotu/order` 稳定返回 `LOGIN_EXPIRED`，而同一时刻其它仓库正常、
+> 刷新 Cookie 后依旧，判断为无该仓库访问权限。既然已移出本期，无需再申请权限。
+
+### 其它
+
+- 所有 MR 标题均带 **WIP** 前缀，避免被误合。
+- `student-data` 合并时发现马胜 14:31 推了 `9fef6f55f`（改同一文件 +183 行），已自动合并无冲突，
+  `presaleOrderTime` 取最新的 6 处改动经复核全部保留。
+- 各仓库未跟踪的 `.run/`（IDE 配置）未提交。
 
 ## 当前阻塞
 

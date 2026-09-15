@@ -10,7 +10,6 @@ branches:
   - promotion:feature-xuban-pre
   - promotion-app:feature-xuban-pre
   - product-server:feature-xuban-pre
-  - order:feature-xuban-pre
   - cart:feature-xuban-pre
   - student-center:feature-xuban-pre
   - promotion-management:feature-xuban-pre
@@ -21,7 +20,7 @@ tags: [需求]
 
 # 续班预报名使用膨胀券
 
-> [[links|链接中心]] · [[tasks|当前任务板]] · [[apis|接口契约]] · [[verify|验证手册]] · [[changelog|决策摘要]] · [`脚本/`](脚本/) · `apifox-openapi.json`
+> [[links|链接中心]] · [[tasks|当前任务板]] · [[apis|接口契约]] · [[verify|验证手册]] · [`build-data.md`](build-data.md) · [[changelog|决策摘要]] · [`脚本/`](脚本/) · `apifox-openapi.json`
 > 本文件只保留当前最终口径。续接时先读这里，再按问题进入对应文件。
 
 ## 一句话
@@ -34,7 +33,7 @@ tags: [需求]
 - 学员可在 C 端预报名落地页选择膨胀券；一券只能买一次，支持多选。
 - 运营配置活动、券商品及适用年级学科。
 - 订金班范围读取可续关系；膨胀券范围读取券配置的年级+学科。
-- order 侧只负责膨胀券商品加购与购物车总价；订单后续链路由订单团队兼容。
+- order 侧只负责膨胀券商品加购与购物车总价；**2026-09-15 确认 order 不在本期上线范围**，其分支与后续链路均由订单团队自行管理。
 - student-data 券预报名字段与指标归马胜的分支代码（`feature-xuban-pre` 上已有 `预报名支持膨胀券` 等提交）；
   2026-09-15 因联调 `backDwsPresaleHandler` 回溯打通链路，zhangzeling 补了 product-server 侧的下游接口与两处底层 bug 修复，
   student-data 侧只改了一处 Feign 调用签名（配合 product-b 契约变更），未改动业务逻辑，详见 [[changelog]]。
@@ -67,7 +66,7 @@ tags: [需求]
 | 进度 | T 4/9 · R 0/0 · C 0/0 |
 | 部署泳道 | 本需求服务 `test-gtbg-dev-3`；coupon-a `test-eco-7`，两者均属于 dev 逻辑环境 |
 | 当前卡点 | 缺少真实售罄券（40 张可用券全部未售罄）；缺少有限班容且已满班的班级；下单需 `test` 泳道但该泳道无本需求代码；**「券与订金班取并集」零数据覆盖，需造数** |
-| 最近更新 | 2026-09-15（二）：按需求第 75 行把 `presaleOrderTime` 口径从「取最早」订正为「取最新」（6 处 `min→max`，大小班 × 增量/全量 4 个文件，4 个单测同步翻转）；并发现「券与订金班取并集」规则**零数据覆盖**（两表按学员+学年+学期交集 0 行），造数方案与回溯用法已写入 [[verify]]，见 T-38/T-39。<br>2026-09-15（一）：`backDwsPresaleHandler` 券回溯链路端到端跑通并在 ES 验证生效（`presaleSubject`/`gradePresaleSubject` 有值）。过程中定位并修复 5 层问题：product-b 缺 `listScopeByCouponSkuNumbers` 接口、controller 未在实现类重声明 `@RequestBody`/`@PostMapping` 导致静默退化成表单绑定、测试活动误绑两个续班计划、`listRenewalMasterByNumbers` 未传前置课关系导致 `preCourseList` 恒空、course-center 测试后置课的 `calculate_renewal_type` 配置错误。前三处已随 product-server/student-data 提交到 `feature-xuban-pre`；后两处是 product-server 既有代码的通用 bug，修复已提交到本分支但**尚未评估是否要 cherry-pick 到 master**，见 [[changelog]] 与下一步。 |
+| 最近更新 | 2026-09-15（三）：6 个仓库 WIP MR 已建（promotion 走 **master**，其余走 release；order 与 promotion-app 不在本期范围），链接见 [[links]]，口径见 [[tasks]]。<br>2026-09-15（二）：按需求第 75 行把 `presaleOrderTime` 口径从「取最早」订正为「取最新」（6 处 `min→max`，大小班 × 增量/全量 4 个文件，4 个单测同步翻转）；并发现「券与订金班取并集」规则**零数据覆盖**（两表按学员+学年+学期交集 0 行），造数方案与回溯用法已写入 [[verify]]，见 T-38/T-39。<br>2026-09-15（一）：`backDwsPresaleHandler` 券回溯链路端到端跑通并在 ES 验证生效（`presaleSubject`/`gradePresaleSubject` 有值）。过程中定位并修复 5 层问题：product-b 缺 `listScopeByCouponSkuNumbers` 接口、controller 未在实现类重声明 `@RequestBody`/`@PostMapping` 导致静默退化成表单绑定、测试活动误绑两个续班计划、`listRenewalMasterByNumbers` 未传前置课关系导致 `preCourseList` 恒空、course-center 测试后置课的 `calculate_renewal_type` 配置错误。前三处已随 product-server/student-data 提交到 `feature-xuban-pre`；后两处是 product-server 既有代码的通用 bug，修复已提交到本分支但**尚未评估是否要 cherry-pick 到 master**，见 [[changelog]] 与下一步。 |
 
 ## 下一步
 
@@ -104,7 +103,7 @@ tags: [需求]
 | `/Users/gaotu/IdeaProjects/JavaProject/promotion` | `feature-xuban-pre` | `PreOrderActivityService`、`PreOrderCouponEnricher`、`PreOrderCouponScopeRemoteService` |
 | `/Users/gaotu/IdeaProjects/JavaProject/promotion-management` | `feature-xuban-pre` | B 端 OES 到 promotion-b 的 DTO 透传层 |
 | `/Users/gaotu/IdeaProjects/JavaProject/cart` | `feature-xuban-pre` | `RegistrationService#preRegistration`、`PreRegistrationCouponAssembler` |
-| `/Users/gaotu/IdeaProjects/JavaProject/order` | `feature-xuban-pre` | 膨胀券加购与购物车总价 |
+| ~~`/Users/gaotu/IdeaProjects/JavaProject/order`~~ | `feature-xuban-pre` | 膨胀券加购与购物车总价；**不在本期范围**，归订单团队 |
 | `/Users/gaotu/IdeaProjects/JavaProject/promotion-app` | `feature-xuban-pre` | 仅 spec，本期不改代码 |
 
 ## 上线影响面
