@@ -57,6 +57,33 @@ tags: [需求, 链接]
 | 发布计划 |  |  |  |
 | 工单 |  |  |  |
 
+### Merge Request（2026-09-15 建，均为 WIP）
+
+> 全部源分支统一为 `feature-xuban-pre`。**目标分支不统一**：promotion 走 `master`，其余走 `release`——
+> 依据是各仓库 `origin/HEAD`，详见 [[tasks]]「合入 release 现状」。
+
+| 仓库 | 源 → 目标 | MR | 状态 |
+|---|---|---|---|
+| student-data | `feature-xuban-pre` → `release` | [!1645](https://git.baijia.com/gaotu/yunying_workbench/student-data/-/merge_requests/1645) | 复用已存在的 open MR |
+| student-center | `feature-xuban-pre` → `release` | [!1437](http://git.baijia.com/gaotu/yunying_workbench/student-center/-/merge_requests/1437) | 本次新建 |
+| product-server | `feature-xuban-pre` → `release` | [!747](https://git.baijia.com/gaotu/product-server/-/merge_requests/747) | 复用已存在的 open MR |
+| cart | `feature-xuban-pre` → `release` | [!269](http://git.baijia.com/gaotu/cart/-/merge_requests/269) | 本次新建 |
+| promotion-management | `feature-xuban-pre` → `release` | [!171](http://git.baijia.com/gaotu/promotion-management/-/merge_requests/171) | 本次新建 |
+| promotion | `feature-xuban-pre` → **`master`** | [!669](http://git.baijia.com/gaotu/promotion/-/merge_requests/669) | 本次新建 |
+| order | — | — | **不在本期范围**（2026-09-15 确认），归订单团队 |
+| promotion-app | — | — | 本轮不提（用户明确排除，仅 spec 文档） |
+
+#### order 不在本期范围
+
+2026-09-15 确认 order **不随本需求上线**，本期不提 MR，改动归订单团队自行管理。
+（当时接口返回 `LOGIN_EXPIRED` 判断为无仓库权限，既已移出本期则无需再申请。）
+
+#### product-server 分支选择
+
+该仓库曾有两个分支：`feature-xuban-pre`（25 commits，本需求的 ACL / 券范围查询）与
+`feature-xuban-pre-expand-coupon`（36 commits = 前者 + 10 个「膨胀券建品 / 模板 / 品类」提交）。
+2026-09-15 确认**只提 `feature-xuban-pre`**，建品那 10 个提交属于另一条线，不随本需求上线。
+
 ## 跨会话检索锚点
 
 > 需求会改名，这些 ID / 分支名不会。`rg -l "<锚点>" 需求根目录` 即可反查到本目录。
