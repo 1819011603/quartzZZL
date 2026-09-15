@@ -199,6 +199,12 @@ POST https://test-mi.gaotu100.com/promotionManagement/preOrderActivity/editAndPu
 
 | 坑 | 判据 |
 |---|---|
+| **下单一律传 `traffic-env: test`** | 2026-09-15 用户明确口径：进班 0 元单、膨胀券单、小班课单全部走 `test` 泳道；验证本需求接口才用 `test-gtbg-dev-3`。两段分工见 [[verify]] |
+| 大班课在读关系查 `gaotu.order_info`，不是 `course_center.clazz_student` | 大班课进班后 `clazz_student` 可能为 0 行，据此判断「班里没人」是**错的**；大班课按 `order_info.clazz_number` 统计（小班课才落 `clazz_student`） |
+| 大班课 0 元进班单返回 `needPay:false`「无需支付，订单已成功」 | 这类单**不需要 mock_pay**；此时调 mock_pay 必然回 `code:1 失败`，属预期噪音，不代表进班失败。以 `order_info.order_status=2` 为准 |
+| **mock_pay 对膨胀券单会误报「失败」** | 券单调 mock_pay 返回 `data.code=1 失败`，但订单其实已成功。判断购券是否生效要看 C 端落地页该券 `sign_up=1`（并已下沉排序），**不要信 mock_pay 的返回码** |
+| 同一学员连下两张券会被「存在待支付订单」拦住 | 返回 `code:62014`。重下时传 `force:true` 可绕过 |
+| 小班课下单用 `productType=6003`（不是 2） | `productType=2` 对小班课班级报 `code:400 无此商品`；6003=旧版小班课(1v1/1vN)，`clazzNumber` 直接当 `productNumber` |
 | `python3` 用系统自带的，不要用别的版本 | 某些环境装的 `python3`（如 3.14）缺 `jsonschema` 包会导致相关脚本报错；改用 `/usr/bin/python3` 执行 |
 | `bind_pre_course` 是覆盖式 SET | 调用前必须先查当前已绑定的前置课程列表，把旧值和新值**合并**后一起传，否则会冲掉已有绑定（见第 4 节） |
 | `promotionmanagement_preorderactivity_edit` 这个 data-agent tool 的 schema 缺券字段 | 造膨胀券活动不能只用这个 tool 的默认参数，`scopes`/`couponId`/`couponName`/`skuId`/`buyAmount` 要直调接口手动补上（见第 7 节） |

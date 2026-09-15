@@ -45,7 +45,8 @@ tags: [需求, 链接]
 |---|---|---|---|
 | TAPD | 续班预报名增加膨胀券形式 · story 1122531521001392077 | https://www.tapd.cn/tapd_fe/22531521/story/detail/1122531521001392077?from_iteration_id=1122531521001014792 | 2026-09-08 |
 | mock支付 | 速搭 mock 支付页（订单号填 OES 批次单号） | https://sd.baijia.com/projectItem/myreview/79ab6125-96cb-4da3-a944-ab32f5772dc1/4e76c321-2ace-45d3-a387-0b5973ef4096 | 2026-09-14 |
-| case |  |  |  |
+| case | banshan 用例集【PRD】续班预报名使用膨胀券（case 49252）·冒烟 33 条 / 功能用例 144 条 / 线上回归 33 条 | https://qa.baijia.com/banshan/#/caseManager/171/49252/69604/3 | 2026-09-15 |
+| case | 上一轮（0910）执行记录：已跑 25 条 · 通过 17 / 跑不了 4 / 有异议 3 / 失败 1 | https://gaotuedu.feishu.cn/wiki/Efp4wWQSLizF1Xk4wQ6ceC96ncf | 2026-09-15 |
 | MR |  |  |  |
 | 接口文档 |  |  |  |
 
@@ -95,6 +96,7 @@ tags: [需求, 链接]
 - PRD token：`N58DwzUDoi3sK3k1nCqcPOBMn3d`
 - 待办表：base `VaqXbgkElanMhbs8ZCmcnNtJnog` / table `tblWl0uXntBAdIHq`
 - TAPD story_id：`1122531521001392077`（workspace `22531521`，iteration `1122531521001014792`）
+- banshan caseId：`49252`（冒烟 record `69604` / 功能用例 `69605` / 线上回归 `69606`）
 
 ## 只存链接，不镜像明细
 
