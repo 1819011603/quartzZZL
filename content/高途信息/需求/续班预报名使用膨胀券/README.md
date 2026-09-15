@@ -42,6 +42,8 @@ tags: [需求]
 ## 最终口径
 
 - `productType=8014`；8027 是课时包商品，27 是老优惠券概念。
+- `presaleOrderTime` 取**最新**（多张券之间、券与订金班之间都取最新），依据需求第 75 行；
+  2026-09-15 前实现为取最早，已订正，见 [[changelog]]。
 - 活动商品行的 `productNumber`/`skuId` 都是券商品 ID（`skuNumber`）；`couponId` 是券定义 ID。
 - 券范围唯一键为 `uk_act_grade_subject(activity_number, grade_code, subject_code)`：活动内年级学科组合唯一，同一张券可跨活动使用。
 - 券不参与满赠；落地页统一使用 `/preSignUp`，不按活动形式拆 path。
@@ -62,23 +64,25 @@ tags: [需求]
 | | |
 |---|---|
 | 阶段 | 开发中；核心 B/C 链路已打通，student-data 回溯链路已端到端验证通过，剩余边界验证 |
-| 进度 | T 4/7 · R 0/0 · C 0/0 |
+| 进度 | T 4/9 · R 0/0 · C 0/0 |
 | 部署泳道 | 本需求服务 `test-gtbg-dev-3`；coupon-a `test-eco-7`，两者均属于 dev 逻辑环境 |
-| 当前卡点 | 缺少真实售罄券（40 张可用券全部未售罄）；缺少有限班容且已满班的班级；下单需 `test` 泳道但该泳道无本需求代码 |
-| 最近更新 | 2026-09-15：`backDwsPresaleHandler` 券回溯链路端到端跑通并在 ES 验证生效（`presaleSubject`/`gradePresaleSubject` 有值）。过程中定位并修复 5 层问题：product-b 缺 `listScopeByCouponSkuNumbers` 接口、controller 未在实现类重声明 `@RequestBody`/`@PostMapping` 导致静默退化成表单绑定、测试活动误绑两个续班计划、`listRenewalMasterByNumbers` 未传前置课关系导致 `preCourseList` 恒空、course-center 测试后置课的 `calculate_renewal_type` 配置错误。前三处已随 product-server/student-data 提交到 `feature-xuban-pre`；后两处是 product-server 既有代码的通用 bug，修复已提交到本分支但**尚未评估是否要 cherry-pick 到 master**，见 [[changelog]] 与下一步。 |
+| 当前卡点 | 缺少真实售罄券（40 张可用券全部未售罄）；缺少有限班容且已满班的班级；下单需 `test` 泳道但该泳道无本需求代码；**「券与订金班取并集」零数据覆盖，需造数** |
+| 最近更新 | 2026-09-15（二）：按需求第 75 行把 `presaleOrderTime` 口径从「取最早」订正为「取最新」（6 处 `min→max`，大小班 × 增量/全量 4 个文件，4 个单测同步翻转）；并发现「券与订金班取并集」规则**零数据覆盖**（两表按学员+学年+学期交集 0 行），造数方案与回溯用法已写入 [[verify]]，见 T-38/T-39。<br>2026-09-15（一）：`backDwsPresaleHandler` 券回溯链路端到端跑通并在 ES 验证生效（`presaleSubject`/`gradePresaleSubject` 有值）。过程中定位并修复 5 层问题：product-b 缺 `listScopeByCouponSkuNumbers` 接口、controller 未在实现类重声明 `@RequestBody`/`@PostMapping` 导致静默退化成表单绑定、测试活动误绑两个续班计划、`listRenewalMasterByNumbers` 未传前置课关系导致 `preCourseList` 恒空、course-center 测试后置课的 `calculate_renewal_type` 配置错误。前三处已随 product-server/student-data 提交到 `feature-xuban-pre`；后两处是 product-server 既有代码的通用 bug，修复已提交到本分支但**尚未评估是否要 cherry-pick 到 master**，见 [[changelog]] 与下一步。 |
 
 ## 下一步
 
 1. 造售罄券（建议把小库存券如 `579394614104993792` 买满），验证 B 端不可选和 promotion 保存拦截。
 2. 造 `capacity>0 && signUpCount>=capacity` 的班级，验证满班拦截，并回归 `capacity=-1` 放行。
 3. 复验 `holdLimit=0` 返回“不限”文案。
-4. 补 order/cart 下单算价等未覆盖的自动化测试。
-5. 下单验证前，先把本需求服务发布到 `test` 泳道（当前 `test` 无本需求代码，接口 404）。
-6. 上线前完成 DDL、Apollo、代课权限，并把三处反射桥开关显式设为 `false`。
-7. 找马胜确认 student-data 侧的一处调用签名改动（`PreOrderActivityCouponAclServiceImpl` 改传裸 `List<Long>`）无异议。
-8. 评估 `RenewalServiceImpl#listRenewalMasterByNumbers` 补前置课关系、`PreOrderCouponFeignController` 补 `@RequestBody`
+4. 造「同一学员 + 同一学年学期 + 订金班与券并存」的数据，验证取并集与退券只回落券那部分（T-39，方案见 [[verify]]）。
+5. 造两张支付时间不同的券，验证 `presaleOrderTime` 取最新（T-38）；并找马胜确认原「取最早」是否另有上下文。
+6. 补 order/cart 下单算价等未覆盖的自动化测试。
+7. 下单验证前，先把本需求服务发布到 `test` 泳道（当前 `test` 无本需求代码，接口 404）。
+8. 上线前完成 DDL、Apollo、代课权限，并把三处反射桥开关显式设为 `false`。
+9. 找马胜确认 student-data 侧的一处调用签名改动（`PreOrderActivityCouponAclServiceImpl` 改传裸 `List<Long>`）无异议。
+10. 评估 `RenewalServiceImpl#listRenewalMasterByNumbers` 补前置课关系、`PreOrderCouponFeignController` 补 `@RequestBody`
    这两处修复要不要从 `feature-xuban-pre` 单独 cherry-pick 到 master（是通用 bug，不止本需求受影响）。
-9. 排查是否还有其它测试活动像 `578842182125903872` 一样误绑了多个续班计划（`renewal_link_activity` 同 `activity_number`
+11. 排查是否还有其它测试活动像 `578842182125903872` 一样误绑了多个续班计划（`renewal_link_activity` 同 `activity_number`
    出现多行 `is_del=0`），避免同样的歧义复现。
 
 ## 待确认

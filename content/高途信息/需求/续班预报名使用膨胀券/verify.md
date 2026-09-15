@@ -194,6 +194,131 @@ params=[1,"577431949669312512","514762045841821696",null]
 - `holdLimit>0` 返回数字字符串。
 - `holdLimit=0` 返回“不限”。
 
+### 🔴 券与订金班并存（取并集）—— 零数据覆盖
+
+需求第 73/74/75 行都写了「两种方式都配置，**取并集**」，代码实现了，但**线上线下都没有一条这样的数据**，
+这条规则从未被真实数据走过。2026-09-15 实测（test，cluster 149 `ees_data`）：
+
+| 表 | 总行数 | 学员数 | 有效行(is_del=0) |
+|---|---|---|---|
+| `dws_fuwu_clazz_user_presale_coupon`（券） | 9 | **2** | 9 |
+| `dws_fuwu_clazz_user_presale_subject`（订金班） | 415 | 259 | 339 |
+| `dws_fuwu_small_clazz_user_presale_subject`（小班） | 79 | 66 | 76 |
+
+按「学员 + 学年 + 学期」join 两张表，`is_del=0` 的交集为 **0 行**——券的 2 个学员与订金班的 259 个学员完全不重叠。
+
+并集发生在 `PresaleSubjectServiceImpl#refreshByUserTermYear`：两张表捞进同一个 list，
+`presaleStatus` 用 `anyMatch`、`presaleSubject` 用 `flatMap + distinct`，天然并集。
+**粒度是「学员 + 学年 + 学期」，不是班级。**
+
+> 这也是「取最早 / 取最新」口径分歧长期没暴露的原因：跨形态合并分支从来没跑过真实数据。
+
+#### 为什么必须造数（不能只靠单测）
+
+单测已覆盖合并逻辑本身（`PresaleSubjectServiceImplTest#should_合流券科目并取最新下单时间_when_券与订金班并存` 等），
+但 mock 不掉的是**两条独立写入链路在同一个学员身上并发收敛**：订金班由花名册进退班消息驱动，
+券由订单事件驱动，两者落不同表、各自触发 refresh。要验的是它们合流后 ES 的最终值，这只有真实数据能验。
+
+#### 造数方案 A：直接插库（推荐，最快）
+
+并集只读这两张表，不关心记录从哪来。给一个**已有订金班预报名记录**的学员补一条券记录即可：
+
+```sql
+-- 1. 挑一个有有效订金班记录的学员，记下 user_id / school_year_id / school_term_id / clazz_number / course_number
+SELECT user_id, clazz_number, course_number, school_year_id, school_term_id,
+       presale_subject_id, grades, course_type, course_tags
+FROM ees_data.dws_fuwu_clazz_user_presale_subject
+WHERE is_del = 0
+ORDER BY id DESC LIMIT 10;
+
+-- 2. 按同一「学年+学期」补一条券记录，presale_subject_id 故意取一个订金班没有的学科，便于验证并集
+--    course_type 必须是付费课（40），course_tags 不能含排除标签（默认 13,4,26,11,27）否则会被判成赠课而不计入
+INSERT INTO ees_data.dws_fuwu_clazz_user_presale_coupon
+  (user_id, clazz_number, course_number, grades, course_type, course_tags,
+   school_term_id, school_year_id, coupon_sku_number, renewal_number,
+   pre_order_activity_number, coupon_order_item_number, presale_subject_id,
+   presale_order_time, is_del)
+VALUES
+  (<user_id>, <clazz_number>, <course_number>, '[16]', 40, '[35]',
+   '<school_term_id>', <school_year_id>, 579394599632533505, 578668076965308416,
+   578842182125903872, 999999999999999999, '[<订金班没有的学科ID>]',
+   '2026-09-20 10:00:00', 0);
+```
+
+`presale_order_time` 建议**设成比订金班订单支付时间更早**，这样能顺带验证「取最新」口径
+（期望取订金班的时间，不是券的）——这正是 2026-09-15 修正的那处，见 [[changelog]]。
+
+写完跑回溯触发重算（见下节「怎么回溯」），然后查 ES 期望：
+
+| 字段 | 期望 |
+|---|---|
+| `presaleStatus` | `1` |
+| `presaleSubject` | 订金班学科 ∪ 券学科（去重、按学科 ID 升序） |
+| `gradePresaleSubject` | 同上，按年级归组 |
+| `presaleOrderTime` | 两者中**较晚**的一个 |
+
+⚠️ `course_type=40`、`course_tags` 不含排除标签是硬前提：`listPresaleSubjectId()` 会因非付费课或赠课返回空列表，
+造出来的数据不计入并集，看起来像"并集没生效"。
+
+#### 造数方案 B：走真实链路（更贴近线上，成本高）
+
+挑一个已进预报名班（订金班）的学员，再给他买一张膨胀券，要求券的「年级+学科」能匹配上他前置课的**可续后置课**
+（`calculate_renewal_type=2`），且学年学期与订金班记录一致。匹配不上不会落券记录，只有一条 INFO 日志。
+成本主要在凑「同一学员 + 同一学年学期 + 年级学科可匹配」这三个条件。
+
+#### 退款侧也要验
+
+并集建立后再退券：期望回落成**只剩订金班那部分**（`presaleSubject` 去掉券学科、`presaleStatus` 仍为 `1`、
+`presaleOrderTime` 回到订金班的时间），而不是整个清空。这条是券退款不会误伤订金班的关键保证。
+
+## 怎么回溯
+
+两个 XXL-Job，大小班各一个：
+
+| Handler | 管什么 |
+|---|---|
+| `backDwsPresaleHandler` | 大班课预报名 |
+| `backSmallDwsPresaleHandler` | 小班课预报名 |
+
+入参两种格式：
+
+```
+[3001234,3001235]
+    只回溯订金班，行为与加券前完全一致（控制台历史参数就是这个格式）
+
+{"clazzNumbers":[3001234,3001235],"couponSkuNumbers":[579394599632533505]}
+    额外回溯膨胀券；couponSkuNumbers 不传或传 [] 等价于老格式
+```
+
+`couponSkuNumbers` 本身就是开关，没有另设 Apollo 开关。
+
+### 维度：班级驱动，但券的落点与传入班级无关
+
+两个字段角色不对称：`clazzNumbers` 是**驱动源**（决定遍历哪些学员，必填），
+`couponSkuNumbers` 只是**过滤器**（订单侧反查都要 userId，光给券号找不到购买者）。
+实际路径是「班级 → 捞该班学员 → 按 userId 回溯」；券记录落在哪由
+「券 → 续班计划 → 前置课 → 学员在前置课的在班班级」决定。
+
+由此三条实操判据：
+
+1. **必须传学员的在读班（前置班）**。传预报名班时券部分会空跑——纯券学员不在预报名班花名册里。
+2. **传 A 班可能改的是 B 班的 ES 字段**，A 班字段不动是正常现象。
+3. **本 job 只能填大班班级号**。订金班那半的 `getPostPresaleRecords` 没有班型过滤，
+   填小班号会往大班预报名表插脏行；小班走 `backSmallDwsPresaleHandler`。
+
+### 券没收上来先查这三个
+
+券订单项还要过三道门槛：`confirmedTime` 非空、`orderStatus` 命中
+`back.presale.coupon.paid.order.status`（默认 `[2,4]`）、`refundType=0`。
+再看日志里 `券回溯完成` 那行的 `failedUserIds` 是否为空。
+
+### 不适合挂 cron
+
+`clazzNumbers` 是必填驱动源，定时跑等于把班级清单写死后反复重刷同一批班。
+若为"新券上线补数"临时挂了定时，跑完要把 `couponSkuNumbers` 清掉。
+券部分纯串行、每个学员多一串 RPC，几千人的大班先拿单个班验证再放量
+（限速 `back.dws.presale.coupon.batch.sleep.millis`，默认 200ms，大小班两个 job 共用此 key）。
+
 ## 反射桥地址
 
 | 服务 | 地址 |

@@ -9,6 +9,18 @@ tags: [需求, 日志]
 
 ## 2026-09-15
 
+- **`presaleOrderTime` 口径由「取最早」订正为「取最新」**，依据需求《大班课字段及数据指标》
+  「续班服务-花名册」第 75 行：「如果预报名多个班级，取最新下单」「如果下单多个膨胀券，取最新下单」
+  「两种方式都配置，取最新时间」。原实现是**有意**取最早（注释写「语义上取学员首次预报名下单的时间」），
+  与需求相反。共改 6 处 `min → max`，分布在 4 个文件——增量链路与全量(回溯)链路、大班与小班都必须同步改，
+  只改一边会让 ES 值在两条链路之间来回跳：
+  `PresaleSubjectServiceImpl#calcPresaleOrderTime`、`PresaleSubjectDataQueryServiceV2#getPresaleOrderTime`、
+  `SmallPresaleSubjectServiceImpl#getPresaleOrderTime`、`SmallPresaleStatusDataQueryServiceV2#getPresaleOrderTime`。
+  `RenewalOrderTimeQueryService#getLatestOrderTime` 未动（内部本就是 `max`）。4 个钉住旧口径的单测同步改名并翻转期望值。
+  **存量数据不会自动纠正**，需跑回溯才会刷成新口径；当前券表仅 2 个学员且无跨形态并存数据，实际无存量待刷。
+  待与马胜确认原「取最早」是否另有未写进注释的上下文。
+- **发现「取并集」规则零数据覆盖**：券表与订金班表按「学员+学年+学期」交集为 0 行，
+  这条需求规则从未被真实数据走过——也是上面口径分歧长期未暴露的原因。造数方案记入 [[verify]]。
 - `listScopeByCouponSkuNumbers` 入参最终定为裸 `List<Long>`，不用包装 DTO：根因是 controller 用
   `implements XxxFeignClient` 复用接口方法时必须在实现类自己的方法上重声明 `@RequestBody`/`@PostMapping`，
   Spring 不从接口继承参数注解，漏了会静默退化成表单绑定；此前怀疑的 FastJson/JaCoCo 冲突是误诊，见 [[apis]]。
