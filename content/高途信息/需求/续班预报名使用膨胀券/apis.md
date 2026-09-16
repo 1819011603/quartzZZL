@@ -22,12 +22,18 @@ tags: [需求, 接口]
 | promotion-b | `/promotionManagement/preOrderActivity/edit`、`/editAndPublish` | `PreOrderActivityService#validateProductListByType` | 膨胀券售罄时报 `PARAMS_ERROR`；订金班满班时报 `PARAMS_ERROR`，`capacity=-1` 放行 | OES 活动管理 | 已编码，待边界实测 |
 | product-b | `POST /feign/preOrderCoupon/listScopeByCouponSkuNumbers` | `PreOrderCouponFeignController#listScopeByCouponSkuNumbers` | 按券商品 ID 批量反查预报名范围（`activityNumber`/`renewalNumber`/`scopes`）；入参**裸 `List<Long>`**，不是包装对象；查不到续班计划的券不返回 | student-data 券回溯链路 | 2026-09-15 联调通过 |
 
-## 待建接口（T-43）
+## T-43 落地（用户确认接口）
 
-- OES「添加商品」选品弹窗目前**没有对应后端查询接口**：`PreOrderActivityFeignController#listProduct`（promotion-management，`POST /product/list`）是未接实现的空桩（`return null`），请求 DTO `PreOrderProductListReq` 无任何字段；`PreOrderCouponEnricher`（promotion）只按已知 `skuNumber` 批量补字段，不支持按 `couponStatuses`/`saleStatuses`/`couponName` 筛选搜索。
-- 底层能力已具备：`ExpandCouponFeignService#queryList`（`coupon-a-client:1.3.17`）已支持 `couponStatuses`/`saleStatuses`（均 `List<Integer>` 多选）、`couponName`（模糊）、`skuNumbers`/`couponNumbers` 筛选，响应 `ExpandCouponDetailDto` 已含双状态字段。
-- 需要新增/补齐字段：`PreOrderActivityProductVO`（promotion-management，OES 列表展示）、`PreOrderActivityProductEditReq`（promotion-management，编辑回显）都缺 `saleStatus`；`PreOrderActivityProductDTO`（promotion）已有 `couponStatus`/`saleStatus`，可复用。
-- 待定：新搜索接口落在 promotion-management 还是 promotion（领域层调 coupon-a 更合适，promotion-management 只做 DTO 透传）。
+- 用户明确指出：目标接口就是 `student-center` 的 `POST /renewal/pre/coupon/list`（`PreOrderCouponController#listCoupon`），即 T-36 已实现的那个膨胀券选品接口，OES「添加商品」弹窗与「老师下单弹窗」复用同一套接口。之前两轮代码排查走的 promotion-management/product-server 方向（`spuSearch` 等）是误判，本需求不涉及那条链路。
+- 用户口径：**去掉 Apollo 展示白名单**，`statusList`/`saleStatusList` **不传即全量**（不按该维度过滤）——默认勾选【使用中】【开售中】由前端决定，服务端不再补默认值；传了就原样透传给电商（原白名单是老师下单弹窗的安全网，会把 OES 想看的【审核中/已失效/停售中】也拦掉，2026-09-16 已去掉）。
+- ⚠️ 2026-09-16 用户已确认电商侧 `saleStatuses` 服务端过滤的已知限制**已修复**（此前 coupon-c `CouponExpandConfigRepositoryImpl#normalize()` 漏拷字段，传了等于没传），筛选可正常生效。
+- 已实现（2026-09-16，student-center，已提交 `49a2a9ab7`，已推送，部署中）：
+  - `PreOrderCouponListRequest` 新增 `saleStatusList`（`List<Integer>`），与既有 `statusList` 对称；`obtainStatusList()`/`obtainSaleStatusList()` 改为「未传返回 `null`」（不再补默认值）。
+  - `PreOrderCouponBiz` 删除 `displayCouponStatusConfig`/`displaySaleStatusConfig` 两个 Apollo 白名单字段及 `resolveCouponStatuses`/`parseStatusConfig`/`toQueryStatusesOrNull`；`statusList`/`saleStatusList` 直接用 `request.obtainStatusList()`/`obtainSaleStatusList()` 下发给电商（`null` 时电商按不限处理）。
+  - 新增 `revokeSelectableWhenNotOnSaleInUse`：非【开售中】的券 `selectable` 置 `false`（`PreOrderCouponWrapper` 里 `selectable` 只按 `couponStatus` 算，这一层补 `saleStatus` 维度），配合已有的 `selectableOfStatus`（couponStatus 维度）与售罄判定，三层共同保证「只能勾选使用中且售卖中」。
+  - 响应字段（`couponStatus`/`couponStatusDesc`/`saleStatus`/`saleStatusDesc`）此前已存在，**未改动**，OES 列表展示无需额外开发。
+  - 同步改了 `PreOrderCouponBizScopeFilterTest`：删掉引用已删 Apollo 字段的反射 setter；把几条基于「本地过滤删行」的旧断言（2026-09-14 服务端过滤重构后已经名不副实）改写成按 `selectable` 断言，并补了状态透传/全量的用例。**18 条全过**。
+- ⚠️ **行为变化提醒**：老师下单弹窗（B 端）如果前端不显式传 `statusList=[1]`/`saleStatusList=[2]`，现在会看到全部状态的券（只是不可选状态置灰）——依赖前端按原 UX 默认勾选传参，不再靠服务端兜底。
 
 ## 跨模块方法
 

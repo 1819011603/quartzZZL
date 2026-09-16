@@ -87,7 +87,7 @@ tags: [需求]
 
 ## 下一步
 
-0. **T-43（新增，2026-09-16 PRD 变更）**：OES 创建/编辑活动的「添加商品」选品弹窗 + 已选商品列表需加「使用状态」「售卖状态」筛选与列，且弹窗列表范围收窄为只能选【使用中且售卖中】。**目前没有对应后端查询接口**（现有 `PreOrderActivityFeignController#listProduct` 是空桩，`PreOrderCouponEnricher` 只按已知 skuNumber 批量补字段不支持搜索），需先定接口归属（promotion-management 还是 promotion）再排期，详见 [[tasks]] T-43、[[apis]]。
+0. **T-43（2026-09-16 PRD 变更，代码已提交部署中）**：OES 选品弹窗复用 `/renewal/pre/coupon/list`（T-36 同一接口），加了 `saleStatusList` 筛选参数并去掉 Apollo 展示白名单——`statusList`/`saleStatusList` **不传即全量**，默认勾选由前端决定；非「使用中且售卖中」的券现在会展示但 `selectable=false`。已编译、18 条单测全过、已提交（student-center `49a2a9ab7`）、已推送，正在发布到 `test-gtbg-dev-3`，待联调实测，详见 [[tasks]] T-43、[[apis]]。
 1. 上线时 **product-c 先于 cart**（cart 启动即依赖其新接口）。前端 `userId` 改造已完成。
 2. 造售罄券（建议把小库存券如 `579394614104993792` 买满），验证 B 端不可选和 promotion 保存拦截。
 3. 造 `capacity>0 && signUpCount>=capacity` 的班级，验证满班拦截，并回归 `capacity=-1` 放行。
