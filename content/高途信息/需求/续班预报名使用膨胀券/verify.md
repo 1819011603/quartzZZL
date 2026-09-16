@@ -182,6 +182,96 @@ cart 调 product-c 一度稳定复现 404，trace 显示泳道标记**正确**�
 真因是新旧 pod 并存（`instanceCount` 13→14），feign 负载均衡打到了未下线的旧 pod。
 旧 pod 下线后自动恢复。**发完版立刻验证时遇到 404/接口不存在，先查是不是这个**，不要改代码。
 
+## 预报名科目与看板取数（2026-09-16 打通，含正确步骤）
+
+> 原归档与飞书文档都记过「ES 无数据 / 无写入路径 / 等离线跑批或找马胜灌数」——**三条都不成立**，
+> 已作废。真实链路分两段，**两段用不同的索引**，这是排查时最容易走错的一步。
+
+### 第一段 · K 模块（预报名科目）：跑券回溯
+
+xjob test 任务 `6648`「回溯预报名信息」，**必须指定泳道 pod**（否则落到 base 老镜像）：
+
+```bash
+cd ~/.local/mcp-servers
+./mcpcli.py xjob_admin xjob_resolve_address -k namespace=test-gtbg-dev-3 -k service=student-data -k job_group=688
+./mcpcli.py xjob_admin xjob_trigger_job -k job_id=6648 \
+  -k 'executor_param={"clazzNumbers":[578667321965428736],"couponSkuNumbers":[579602402548676609,579602410226350081,579597950383060993]}' \
+  -k execute_address=<上一步的 recommendedAddress> -k confirm=true
+```
+
+`clazzNumbers` 填**学员的在读前置班**（不是预报名班）；`couponSkuNumbers` 只是过滤器。
+`backDwsPresaleHandler` → `PresaleCouponBackService#backfillByUser` → `PresaleCouponServiceImpl#dealCouponPaid`，
+末尾 `refresh(...)` **同时写 MySQL 与 ES**（类注释：「落库与刷 ES 直接复用增量链路，不写第二套」）。
+
+核对落点：MySQL `ees_data.dws_fuwu_clazz_user_presale_coupon`（cluster **149**，不是 142）、
+ES `ads_large_subclazz_user_index` 的 `presaleSubject`。
+
+**⚠️ 券订单三道门槛**：`confirmedTime` 非空 + `orderStatus ∈ [2,4]` + `refundType=0`。
+「跑了但没收到数」先查这三项。学员 `7542292905` 的 3 笔订单均 `order_status=3` 且有 `cancel_time`
+（**已取消**，不是待支付，mock 支付页付不了），回溯正确跳过；
+归档早前记的「该学员已购数学+英语券」**与事实不符**。
+
+### 第二段 · I 模块（预报名率与看板）：跑看板 job
+
+xjob test 任务 `5900`「续班看板」，参数 `[578668076965308416]`，同样指定泳道 pod。
+该 job **依次查两个索引**：
+
+| 步骤 | 索引 | 集群 | 条件 |
+|---|---|---|---|
+| ① 查辅导班 | `subclazz_search` | **阿里云 subclazz 集群** | `renewalPlanId` + `assistantNumber` exists |
+| ② 聚合学员 | `ads_large_subclazz_user_index` | studentServe | **`canRenewal ∈ [1,2,8]`** + `subclazzNumber` |
+
+⚠️ 代码里 `largeSubclazzUserIndex` 这个常量**在该方法中并未被使用**，第一段索引取自
+`StudentESTypeEnum.ADS_SUBCLAZZ_ES`。照着常量去查会得出完全错误的结论。
+
+### 🔴 真正的卡点：`canRenewal=0`
+
+新造的学员默认不可续，被第②步全部滤掉 → 聚合为空 → 不调 `insert()` → 快照表零写入。
+此时 job 仍返回 `handleCode=200` 且**不打任何 `Inserting batch of...` 日志**，
+极易误判成「跑成功了但库找错了」。**判据就是有没有这行日志。**
+
+解法（直接改 ES，凭证取自 Apollo `student-data / TEST / **es**` namespace 的 `student.serve.es.*`；
+测试环境是自建域名、非阿里云实例，不走 SRE 工单）：
+
+```bash
+curl -u 'gaotu_student_archive:gaotustudentarchivetest123' \
+  -XPOST 'http://esclustercommon-test.baijia.com:9200/ads_large_subclazz_user_index/_update_by_query?refresh=true&conflicts=proceed' \
+  -H 'Content-Type: application/json' -d '{
+  "query": {"bool": {"must": [
+    {"terms": {"subclazzNumber": ["36166710321086848","36177643862098432","36225439398363520","36178241120764288","36178263845765504","36178237989716352"]}},
+    {"term": {"canRenewal": "0"}}
+  ]}},
+  "script": {"source": "ctx._source.canRenewal = 1", "lang": "painless"}
+}'
+# → updated: 26, failures: []
+```
+
+改完重跑 job 5900，快照表即有数据。
+
+### 验证结果（cluster 200 `student_data_renewal_test.sub_clazz_renewal_process_snapshot`）
+
+| 辅导班 | 名称 | 带班老师 | 可续 | 已预报名 | 预报名率 |
+|---|---|---|---|---|---|
+| 36166710321086848 | 弓雪萌SX161001 | 弓雪萌 | 18 | 3 | 16.7% |
+| 36177643862098432 | 弓雪萌SX1002 | 弓雪萌 | 8 | 4 | 50% |
+
+合计 26 可续、7 已预报名，与 ES 中 `presaleStatus=1` 的 7 条自洽。`snapshot_time=2026-09-16`。
+
+⚠️ 该表里每天 `00:00:00` 的固定 19 条是**另一条离线管道**的产出，与本 job 无关，别拿它当判据。
+
+### K 模块可用样本
+
+| 用例 | 学员 | presaleSubject | 说明 |
+|---|---|---|---|
+| K TC0001 单科目 | `7489622238` | `[4]` 英语 | ES 文档 `36166710321086848-7489622238` |
+| K TC0002 多科目 | `7489622226` | `[1,5]` 数学+语文 | 期望展示「数学/语文」，数学1 < 语文5 |
+| （备选多科目） | `7489622230` | `[1,4]` 数学+英语 | |
+
+### ⚠️ 雪花 ID 一律传字符串
+
+查 ES / 反射桥时传数字会被 JSON 精度截断（`36166710321086848` → `...850`、
+`578668076965308416` → `...400`），命中 0 条，极易误判成「数据不存在」。本轮因此误判两次。
+
 ## 核心验证
 
 ### B 端券列表
