@@ -7,6 +7,29 @@ tags: [需求, 日志]
 
 > 只保留仍能解释当前设计的决定。最终口径以 README/apis/verify/tasks 为准。
 
+## 2026-09-16 · 【待开始】活动放开修改开始时间
+
+**背景**：B 端编辑预报名活动（`/promotionManagement/preOrderActivity/edit`）时，
+【待开始】状态报「当前活动状态为[待开始]，只允许更新结束时间，不能修改其他字段」。
+造券验证时经常需要把开始时间往前挪让活动立刻生效，卡在这条校验上。
+
+**决定**：**只给【待开始】放开 `beginTime`**，【发布中】/【进行中】维持原样（仍只能改结束时间）。
+
+**为什么只放开待开始**：活动还没开跑，改开始时间不影响任何已发生的业务；
+而【进行中】已经产生预报名数据，回改开始时间会让统计口径失真。
+
+**改动**（promotion，2 个文件）：
+- `PreOrderActivityStatusEnum#canEditBeginTime`：新增，仅 `WAIT_START` 返回 true。
+- `PreOrderActivityService`：
+  - `hasNonEndTimeFieldChanges` 增加状态入参，待开始时 `beginTime` 不再算「其它字段」；
+  - `buildUpdateActivityBO` 非全字段分支落 `beginTime`（**否则只是放过校验但存不进库**）；
+  - `onlyEditEndTime` 放开 `endTime` 必填（待开始且只改开始时间时可不传），
+    并校验开始时间早于结束时间（`endTime` 没传则取库里现值比较）；
+  - 报错文案按状态动态化：待开始显示「只允许更新开始时间和结束时间」。
+
+⚠️ **校验与落库是两处，必须一起改** —— 只改 `hasNonEndTimeFieldChanges` 会出现
+「接口返回成功但开始时间没变」的静默失败。
+
 ## 2026-09-16
 
 - **券匹配口径从「三者交集」订正为「两者匹配 + 学员维度收窄」**，依据 PRD
