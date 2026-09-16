@@ -119,7 +119,7 @@ tags: [需求]
 
 | 配置项 | 当前要求 |
 |---|---|
-| MySQL DDL | 新建 `renewal_pre_order_activity_coupon_scope`；`pre_order_activity_product` 不加列 |
+| MySQL DDL | ①新建 `renewal_pre_order_activity_coupon_scope`；`pre_order_activity_product` 不加列。<br>②**`questionnaire_inspect` 新增 `activity_type`**（`int NULL DEFAULT 1`，**必须可空**——`insertSelective` 对 null 字段跳过写入，声明 NOT NULL 会在漏设值时报错，注释「预报名活动类型:1订金班 2膨胀券」）——膨胀券形式下 `pre_course_number` 存的是**后置产品号**，与订金班同表不同语义，靠该列区分。test 工单 **8048** 已提交待发布，**上线前 PROD 需另提**；<br>⚠️ **该列未建时预警任务写入会失败**，代码与 DDL 必须同步上线 |
 | Apollo | 配置商品类型、入口内容、C 端样式和 B/C 状态白名单；明细见 [[verify]] |
 | 代课权限 | 登记 `/renewal/pre/coupon/list`、`/renewal/pre/couponScope/list` |
 | 反射桥 | promotion/cart/product-server 的 `AclServiceCompareController.enabled=false` |
