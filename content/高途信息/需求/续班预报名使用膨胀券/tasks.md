@@ -23,6 +23,7 @@ tags: [需求, 任务]
 | T-41 | cart C 端对齐学员维度口径 | 已完成 | — | 2026-09-16 已改调 product-c 新接口 `/c/renewMaster/listDisplayableCoupons`，删掉原「计划目标年级」近似口径及失效的 `resolveCouponScope`/`CouponScope`。B/C 端返回**完全一致**；订金班链路实测未受影响。commit：cart `95fe9572`；依赖 `product-server-client:1.5.4-SNAPSHOT`（已发 Nexus）。 |
 | T-42 | 打通预报名科目与看板取数（K/I 四条用例） | 已完成 | — | 2026-09-16：跑券回溯 job 6648 写通 MySQL+ES；发现看板 job 5900 真正卡点是学员 `canRenewal=0` 被第二段索引条件滤掉（非「ES 无数据」），`_update_by_query` 改 26 条为可续后快照表出数（26 可续 / 7 已预报名）。完整步骤见 [[verify]]「预报名科目与看板取数」。**原「6 条卡在同一 ES 索引、需等离线跑批」的结论已作废。** |
 | T-39 | 验证「券与订金班取并集」 | 待办 | 零数据覆盖（两表交集 0 行） | 需求第 73/74/75 行的并集规则从未被真实数据走过。造数方案（直接插库 / 走真实链路）与 ES 期望值见 [[verify]]「券与订金班并存」，含退券后应只回落券那部分的验证。 |
+| T-43 | OES 创建/编辑活动的「添加商品」选品页补使用状态/售卖状态 | 待办 | 需先定接口归属再排期 | 2026-09-16 PRD 变更（活动商品章节）：①添加商品弹窗筛选区加「使用状态」「售卖状态」多选（枚举分别是【审核中/使用中/已失效】【售卖中/停止售卖】）；②弹窗列表字段、添加后活动页展示列表字段都加这两列；③弹窗列表范围收窄为**只能选【使用中且售卖中】**的膨胀券。排查结论：**该选品弹窗目前没有对应的后端查询接口**——`PreOrderActivityFeignController#listProduct`（promotion-management）是未接实现的空桩（`return null`，请求 DTO `PreOrderProductListReq` 无字段），`PreOrderCouponEnricher`（promotion）只按已知 skuNumber 批量补字段、不支持筛选/搜索。底层 `ExpandCouponFeignService#queryList` 已支持 `couponStatuses`/`saleStatuses`/`couponName` 多选筛选且响应含双状态，缺的是一层 OES 可调的搜索接口；`PreOrderActivityProductVO`/`PreOrderActivityProductEditReq` 也还没有 `saleStatus` 字段（`PreOrderActivityProductDTO` 已有）。下单侧口径（第③点对应的最终展示范围）与 T-36 已实现的「使用中且售卖中」白名单**规则一致**，不算新工作。 |
 
 ## 合入现状（2026-09-15，MR 已建）
 
