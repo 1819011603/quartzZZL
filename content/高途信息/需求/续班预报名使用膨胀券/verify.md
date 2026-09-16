@@ -38,7 +38,7 @@ python3 set_test_smscode.py --mobile 17900911102 --client 613156985,613156986 --
 
 | 对象 | 值 | 用途 |
 |---|---|---|
-| **膨胀券活动（当前）** | **`579607430990692352`** | zzl-膨胀券-案系列-0915，已发布已绑定，3 张券均使用中 |
+| **膨胀券活动（当前）** | **`579607430990692352`** | zzl-膨胀券-案系列-0915，3 张券均使用中。<br>⚠️ **它并未绑定到计划 `578668076965308416`**——该计划实际绑的是 `578667303502106624`，见下方「排查记录」 |
 | 续班计划 | `578668076965308416` | 六年级 数学/英语/语文 三槽位，已绑上面的活动 |
 | 前置班/课程 | 班级 `578667321965428736`（`16SX26C4H511001`）/ 课程 `578667318880518144` | 六年级·数学，**16 名在读学员** |
 | 后置课程 | 数学 `578667723368869888` / 英语 `578667772899405824` / 语文 `578667774495338496` | 三者交集的「后置产品年级学科」 |
@@ -95,6 +95,19 @@ python3 set_test_smscode.py --mobile 17900911102 --client 613156985,613156986 --
 学员就绪前，B 端花名册与三者交集里的 `pre_subjects` 都是空的，K-TC0014 跑不了。
 
 ### 计划 `578668076965308416` 当前绑定的券
+
+> 🔴 **2026-09-16 15:16 实测订正**：该计划实际绑定的活动是 **`578667303502106624`**
+> （zzl-P0-膨胀券预报名-0910），**不是**本文件上方「当前测试数据」里写的 `579607430990692352`。
+> 绑定关系以库为准，反查两跳：
+> `renewal_number -> process_config.number -> renewal_link_activity.activity_number`（`is_del=0`）。
+>
+> ⚠️ **该活动的券范围行已被 `gongxuemeng@baijia.com` 于 2026-09-16 15:16:16 全部软删**
+> （`gaotu.renewal_pre_order_activity_coupon_scope` 3 行全部 `is_del=1`），
+> 因此 `/renewal/pre/coupon/list` 传该计划时**对任何 userId 都返回空**——
+> 这是**数据被删**，不是代码缺陷，也与 `userId` 无关。详见下方「排查记录」。
+>
+> 下表是被软删前的槽位配置，恢复数据后才重新有效。
+
 
 | 槽位 | couponId | 券商品 ID | 券名 | 已售/总量 | 持有上限 | 买价/抵扣(分) |
 |---|---|---|---|---|---|---|
@@ -551,3 +564,119 @@ student-center/cart 各自的 `couponStatus`/`saleStatus` 白名单 key（默认
 3. 新建活动，活动形式选“膨胀券预报名”，活动开始时间必须晚于当前时间。
 4. 添加当前状态符合白名单的券，配置年级和学科范围后保存。
 5. 编辑详情应完整回显券字段和范围；scope 表应按活动/年级/学科保持唯一。
+
+
+## 排查记录：`/renewal/pre/coupon/list` 返回空（2026-09-16）
+
+**现象**：`{"userId":7489622228,"renewMasterNumber":"578668076965308416"}` 返回空列表，
+traceId `2e3143df-a0ec-49dc-9022-25eb44487107.0.0`（15:16:57）。
+
+**结论：数据问题，非代码缺陷。** 链路 230 span **0 error**、全程 HTTP 200、泳道正确
+（`test-gtbg-dev-3`），是正常业务分支返回空，不是异常。
+
+逐段验证（全部实测，均正常）：
+
+| 段 | 结论 |
+|---|---|
+| 学员在读（花名册） | ✅ `7489622228` 在读前置课 `578667318880518144`，`status=1`、`isdel=0` |
+| 计划前置课 | ✅ 3 门：`578667318880518144` / `578851790032846848` / `578851839439650816` |
+| 后置课反查 | ✅ 返回数学/英语/语文 3 门（`578667723368869888` / `...772899405824` / `...774495338496`） |
+| 券状态 | ✅ coupon-a 返回 3 张 `couponStatus=1` + `saleStatus=2` |
+| **券范围 scope 行** | ❌ **3 行全部 `is_del=1`**，被 15:16:16 软删 |
+
+`PreOrderCouponIntersectService#intersect` 在 `scopeRows` 为空时直接
+`return PreOrderCouponIntersectResult.empty(...)`，故券列表为空。
+
+**复现/验证命令**（表名是 `renewal_pre_order_activity_coupon_scope`，不是 `pre_order_activity_coupon_scope`）：
+
+```sql
+-- 1. 计划 -> 活动（两跳）
+SELECT pc.renewal_number, rla.activity_number, rla.is_del
+FROM gaotu.process_config pc
+LEFT JOIN gaotu.renewal_link_activity rla ON rla.process_number = pc.number
+WHERE pc.renewal_number = 578668076965308416;
+
+-- 2. 活动 -> 券范围（is_del 必须有 0 行才会出券）
+SELECT activity_number, coupon_sku_number, grade_code, subject_code, is_del, operator, update_time
+FROM gaotu.renewal_pre_order_activity_coupon_scope
+WHERE activity_number = 578667303502106624;
+```
+
+**恢复办法**：在 B 端重新保存该活动的券适用范围（会重新插 `is_del=0` 行），
+或直接改库把这 3 行置回 `is_del=0`。恢复后无需重发服务即可生效。
+
+**可用的对照数据**：`renewal_pre_order_activity_coupon_scope` 仍有 40 行 `is_del=0`、覆盖 23 个活动，
+表本身正常。这三门前置课的在读学员（`gaotu.subclazz_student`，均 `status=1`）：
+
+| 前置课 | 在读人数 | 说明 |
+|---|---|---|
+| `578667318880518144` | 30 | 含 `7489622228` |
+| `578851790032846848` | 2 | `7489620185` / `7542292979` |
+| `578851839439650816` | 2 | `7489620185` / `7542292979` |
+
+`7489620185` 与 `7542292979` **三门前置课全在读**，适合验证多在读班合并后置范围的场景。
+
+⚠️ **花名册表在 `gaotu` 库不在 `clazz_dist` 库**：`clazz_dist.subclazz_student` 查这几门课恒 0 行，
+正确的是 `gaotu.subclazz_student`。查错库极易误判成「学员不在读」。
+
+⚠️ **Feign 入参字段名是 `courseNumberList` 不是 `courseNumbers`**
+（`SubclazzStudentByCourseNumberAndUserIdRequest`），传错名字段为空，接口返回 `[]` 且不报错。
+
+
+## 排查记录二：换活动后仍空 —— 券售卖期过期（2026-09-16 15:26）
+
+**换绑后**：计划 `578668076965308416` 已改绑活动 **`579785105883561984`**（15:24:10），
+券范围 3 行均 `is_del=0`（六年级 × 数学/英语/语文），**product-b 已正常返回 3 条**：
+
+```bash
+# 实测返回 3 条，说明 scope/在读/后置 全链路已通
+curl -sk 'http://<product-b>/feign/preOrderActivity/couponScope/listDisplayableByRenewalPlan' \
+  -H 'content-type: application/json' -H 'traffic-env: test-gtbg-dev-3' \
+  --data-raw '{"renewMasterNumber":"578668076965308416","userId":"7489622228"}'
+```
+
+**但 student-center `/renewal/pre/coupon/list` 仍空**，原因在最后一道券状态闸：
+
+| skuNumber | 券名 | couponStatus | saleStatus | 售卖结束 |
+|---|---|---|---|---|
+| `579603771085060097` | 案10券2（数学） | 1 ✅ | **1 ❌** | 2026-09-16 15:23:46 |
+| `579603756914604033` | 案4券v6（英语） | 1 ✅ | **1 ❌** | 2026-09-16 15:23:39 |
+| `579603763728250881` | 案10券1（语文） | 1 ✅ | **1 ❌** | 2026-09-16 15:23:43 |
+
+三张券**售卖期只有 24 小时**（09-15 15:23 ~ 09-16 15:23），在 15:23 全部到期，
+`saleStatus` 由 2 回落为 1。展示口径要求 `couponStatus=1` **且** `saleStatus=2`，
+故 student-center 短路成空页。
+
+⚠️ **与「排查记录一」是两个不同原因**：一是 scope 行被软删（product-b 就空），
+二是券售卖期过期（product-b 有数、student-center 空）。
+**按「product-b 有没有数」即可区分这两类**。
+
+### 选券硬要求（造数时必须满足）
+
+1. `couponStatus=1`（使用中）
+2. `saleStatus=2`（开售中）且 **`sale_end_time` 未过期**
+3. **售卖期要留足** —— 脚本默认只给 24h，隔天复测必失效。这是本轮踩的坑。
+
+```sql
+-- 选当前真正可售的券（本 SQL 已含未过期判断）
+SELECT ec.sku_number, c.name, ec.sale_status, FROM_UNIXTIME(ec.sale_end_time/1000) AS sale_end
+FROM gaotu.coupon_expand_config ec LEFT JOIN gaotu.coupon c ON c.number = ec.coupon_number
+WHERE ec.sale_status = 2 AND ec.sale_end_time > UNIX_TIMESTAMP()*1000 AND c.status = 1
+ORDER BY ec.sale_end_time DESC;
+```
+
+**推荐长效券**（售卖期到 9/24 之后，适合反复复测）：
+
+| skuNumber | 券名 | 售卖结束 |
+|---|---|---|
+| `579417711732357121` | Q1 | 2026-09-27 |
+| `579394599632533505` | Q8 | 2026-09-26 |
+| `579394606764947457` | Q11 | 2026-09-26 |
+| `579394614417455105` | Q13 | 2026-09-26 |
+| `579563199997704193` | 自动化-自动激活 | 2026-10-15 |
+
+### 年级学科怎么配
+
+**范围本身不用改** —— 计划 `578668076965308416` 的后置课是六年级数学/英语/语文，
+现配的 `(16,1) / (16,4) / (16,5)` **完全正确**，product-b 三条全命中。
+要做的只是**把过期券换成上表中未过期的券**（活动挂券 + scope 的 `coupon_sku_number` 同步换）。
