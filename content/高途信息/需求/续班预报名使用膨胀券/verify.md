@@ -182,6 +182,34 @@ cart 调 product-c 一度稳定复现 404，trace 显示泳道标记**正确**�
 真因是新旧 pod 并存（`instanceCount` 13→14），feign 负载均衡打到了未下线的旧 pod。
 旧 pod 下线后自动恢复。**发完版立刻验证时遇到 404/接口不存在，先查是不是这个**，不要改代码。
 
+## C 端券状态过滤（2026-09-16 复核通过）
+
+原冒烟轮记有一条功能性缺陷「C 端落地页未按券状态过滤，已暂停/已失效的券照样展示可购」（方向资损）。
+**2026-09-16 复核：已修复。**
+
+判据在 `PreRegistrationCouponAssembler#isSellable`（cart）：
+
+```java
+if (statusAllowed(couponConfig.getDisplayCouponStatuses(), couponStatus)
+        && statusAllowed(couponConfig.getDisplaySaleStatuses(), saleStatus)) {
+    return true;
+}
+// 不满足 -> assemble 循环里 continue，不下发给学员，并打 warn 留痕
+```
+
+- 两个白名单由 Apollo `preRegistration.coupon.display.couponStatus` / `.saleStatus` 控制，
+  **代码默认值 `1`（仅「使用中」）**；测试环境未覆盖该配置，走默认，过滤生效。
+- **两个状态都要卡**：`couponStatus` 管券本身是否生效、`saleStatus` 管券商品在不在卖，二者正交——
+  券可以是【使用中】但商品【停售中】，展示了学员也买不成。
+- **状态取不到（为空）一律不展示**：C 端是直接成单链路，查不到即视为不可售。
+- 任一白名单配成空串会**关掉**该维度过滤，改配置时注意。
+
+受影响用例 **H TC0002**、**TC-G004** 的券状态过滤分支应改判为通过。
+
+> ⚠️ 想用真实失效券端到端复验时注意：木系列 3 张券虽已 `couponStatus=2`，但其活动
+> `578669527399682048` 当前**未绑任何续班计划**（已被案系列替换），走不了 C 端链路，
+> 需先绑计划或另造混合状态活动。
+
 ## 预报名科目与看板取数（2026-09-16 打通，含正确步骤）
 
 > 原归档与飞书文档都记过「ES 无数据 / 无写入路径 / 等离线跑批或找马胜灌数」——**三条都不成立**，

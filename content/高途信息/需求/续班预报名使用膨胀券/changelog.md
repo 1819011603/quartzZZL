@@ -52,6 +52,18 @@ tags: [需求, 日志]
   `PreOrderDisplayableCouponService`，故只受「删前置过滤」影响（与 PRD 的
   「膨胀券预警逻辑：后置产品的年级学科与活动膨胀券的年级学科匹配」一致）。
 
+- **打通预报名科目与看板取数，推翻「等离线跑批」的旧结论**。原记「6 条用例卡在 ES 索引
+  `ads_large_subclazz_user_index` 无数据、无写入路径、需等离线或找马胜灌数」——三条都不成立：
+  索引本就有百万级文档；写入路径就在本仓库（`backDwsPresaleHandler` 的 `refresh(...)` 同时写
+  MySQL 与 ES）；跑一次回溯 job 即可。看板 job 5900 的真正卡点是**学员 `canRenewal=0`**——
+  该 job 分两段查**不同索引**（① `subclazz_search` 查辅导班、② `ads_large_subclazz_user_index`
+  按 `canRenewal ∈ [1,2,8]` 聚合学员），新造学员默认不可续被第②段滤空，
+  于是 `handleCode=200` 但不打 `Inserting batch of...` 日志、快照表零写入。
+  `_update_by_query` 把 26 条改为可续后，快照表即出数（26 可续 / 7 已预报名，与 ES
+  `presaleStatus=1` 的 7 条自洽）。完整步骤与踩坑见 [[verify]]。
+  排查中两处教训已记档：**代码里 `largeSubclazzUserIndex` 常量在该方法未被使用**，
+  照它查索引会得出完全错误的结论；**雪花 ID 传数字会被 JSON 精度截断**导致误判「数据不存在」。
+
 - **⚠️ 发现 cart 的 C 端是另一套近似实现，本轮未改，需单独决策**：
   `RegistrationService#listPostClazzGrades` 取的是**续班计划自身的目标年级**
   (`RenewalMasterDTO#getCourseGradeList`)，而不是「前置班映射到的后置班级」年级，
