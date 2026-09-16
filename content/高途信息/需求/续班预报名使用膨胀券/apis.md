@@ -34,6 +34,10 @@ tags: [需求, 接口]
   - 响应字段（`couponStatus`/`couponStatusDesc`/`saleStatus`/`saleStatusDesc`）此前已存在，**未改动**，OES 列表展示无需额外开发。
   - 同步改了 `PreOrderCouponBizScopeFilterTest`：删掉引用已删 Apollo 字段的反射 setter；把几条基于「本地过滤删行」的旧断言（2026-09-14 服务端过滤重构后已经名不副实）改写成按 `selectable` 断言，并补了状态透传/全量的用例。**18 条全过**。
 - ⚠️ **行为变化提醒**：老师下单弹窗（B 端）如果前端不显式传 `statusList=[1]`/`saleStatusList=[2]`，现在会看到全部状态的券（只是不可选状态置灰）——依赖前端按原 UX 默认勾选传参，不再靠服务端兜底。
+- **2026-09-16 已在 `test-gtbg-dev-3` 实测通过**（student-center `49a2a9ab7`，pipeline 1272566，eureka UP 后验证）：
+  - 不传 `statusList`/`saleStatusList` → `total=297`，返回全量混合状态，`selectable` 按「couponStatus=1 且 saleStatus=2」正确置位（如「已失效+停售中」「使用中+停售中」「审核中+开售中」均为 `false`）。
+  - 显式传 `statusList=[1]`、`saleStatusList=[2]` → `total=48`，全部为【使用中+开售中】、`selectable=true`。
+  - 显式传 `statusList=[3]`（审核中）、`saleStatusList=[1]`（停售中）→ `total=4`，全部按请求状态返回、`selectable=false`——确认电商侧 `saleStatuses` 服务端过滤已修复生效（此前的已知限制已作废）。
 
 ## 跨模块方法
 

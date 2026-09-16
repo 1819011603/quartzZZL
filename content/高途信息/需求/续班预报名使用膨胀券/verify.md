@@ -680,3 +680,30 @@ ORDER BY ec.sale_end_time DESC;
 **范围本身不用改** —— 计划 `578668076965308416` 的后置课是六年级数学/英语/语文，
 现配的 `(16,1) / (16,4) / (16,5)` **完全正确**，product-b 三条全命中。
 要做的只是**把过期券换成上表中未过期的券**（活动挂券 + scope 的 `coupon_sku_number` 同步换）。
+
+
+## 预警邮件怎么验（2026-09-16）
+
+**`sendPreRegistration` 会真的发邮件**，没有「只拼正文不发送」的办法——
+`MailServiceIHandler` 是真实 SMTP，无测试环境开关。别指望反射调它来「只看正文」。
+
+**测试数据计划默认不发**：`send()` 里 `is_test_data=1` 且 `renewal.send.test=false` 时直接跳过。
+本需求的计划 `578668076965308416` 正是 `is_test_data=1`，所以默认收不到邮件，
+**既无报错日志也无邮件**，极易误判成「邮件功能坏了」。
+
+```
+Apollo product-b / TEST: renewal.send.test = true   # 验证时打开
+```
+⚠️ **验完必须改回 `false`**（2026-09-16 已改回），否则每次定时任务都会给所有测试计划的
+负责人发邮件。改完要在 Apollo 后台**发布**才生效。
+
+**收件人**来自续班计划的 `renew_master_ext` 中 `relation_type='ADMIN'` 的行：
+
+```sql
+-- 把自己加进负责人以便收测试邮件（accountId 从 CAS 查）
+INSERT INTO gaotu.renew_master_ext (renew_master_number, relation_type, relation_value, isdel)
+VALUES (578668076965308416, 'ADMIN', '109942', 0);
+```
+
+**触发**：`POST /b/renewal/insect/send`（无参，遍历全部「进行中/待开始」计划，
+会给其它计划的负责人也发信，注意打扰面）。
