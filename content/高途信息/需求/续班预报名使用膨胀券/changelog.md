@@ -7,6 +7,65 @@ tags: [需求, 日志]
 
 > 只保留仍能解释当前设计的决定。最终口径以 README/apis/verify/tasks 为准。
 
+## 2026-09-16
+
+- **券匹配口径从「三者交集」订正为「两者匹配 + 学员维度收窄」**，依据 PRD
+  （`N58DwzUDoi3sK3k1nCqcPOBMn3d`「续班服务-膨胀券推荐逻辑」）与产品流程图。两处改动：
+
+  1. **删掉前置学科过滤**（`PreOrderCouponIntersectService`）。PRD 三处（发链接 / B 端下单弹窗 /
+     C 端落地页）的匹配句都只有「用膨胀券的适用年级学科，**和后置续班产品的年级学科做匹配**」两者；
+     同段那句「根据【在读班级学科、续班班级年级学科、预报名活动膨胀券年级学科】确定范围」
+     是在**列举链路涉及的数据**，不是三重过滤条件——流程图里前置课程为白色不参与匹配，
+     只做「定位续班计划」和「串到后置课程」的中转，参与匹配的是券范围与后置课程（绿色）。
+     原实现多了一层 `preSubjects.contains(subjectCode)`，会在**扩科**场景漏券：
+     学员在读数学、后置含英语、活动配了英语券时该券被滤掉，而扩科正是膨胀券的主要用途。
+     一并删掉 `preSubjects.isEmpty()` 的早返回（前置既不参与匹配，它为空就不该让结果清零）；
+     `preSubjects`/`preGrades` 保留计算与返回，仅作排查观测值。
+
+  2. **券范围由「计划级」改为「学员级」**。原口径取续班计划配置的**全部**前置课程求交，
+     同计划下所有学员看到的券一致；PRD 与流程图要求起点是「**当前在读班**」。
+     现改为：计划配置的全部前置课程作**候选池** → 用花名册筛出该学员**真正在读**的那几门 →
+     以此为起点反查后置课程。`/renewal/pre/coupon/list` 因此**新增必填入参 `userId`**。
+
+     **收窄边界（2026-09-16 确认）**：取的是「该学员在**当前续班计划的前置班级**里的全部在读班」，
+     **不是**该学员全局的在读班。两点含义：(1) 候选池必须先由计划的前置课程限定，
+     下游返回的计划外课程要剔除，否则会串到该学员在其它续班计划/学年下的班级，推出不该给的券；
+     (2) 取的是计划前置课程下该学员**全部**在读班，不只是「当前点进来的那一个班」——
+     产品流程图里「当前在读班」与「其他在读班级」两条线最终汇入同一个后置课程集合。
+
+- **在读数据源选花名册（clazz-distribution），不用 student-data 的
+  `dws_fuwu_clazz_user_presale_subject`**。该表有两个硬伤：(1) `is_del=0` 不等于在读——
+  学员不在班时 `PresaleSubjectServiceImpl#getPresaleRecords` 仍会插 `clazzNumber=0` 的
+  「辅助预报名记录」，`isDel` 同为 false；(2) 该表只在学员**已进后置班**时才落行，
+  而券推荐的目标人群恰恰是「在读前置班、**还没买**后置」的学员，用它筛会把目标人群整体漏掉。
+  改调 `ClazzDistSubclazzStudentService#listSubclazzStudentByCourseNumbersAndUserId`——
+  正是 student-data 自己筛在读时用的那个接口，实时权威、无 MQ 延迟与补数偏差。
+  product-server **已依赖** `clazz-distribution-server-client`，故 student-data **一行未改**、不必发包。
+  在读状态取 `ACTIVE/INACTIVE/HOLD` 三态，与 student-data `SubclazzStudentStatusEnum#getAllStatus()` 对齐。
+
+- **学员无在读前置班时返回空列表，不退化为计划级**（2026-09-16 产品确认）。
+  同理 student-center 侧传了 `renewMasterNumber` 却缺 `userId` 时直接空页，
+  避免"少传一个参数就多推一批不该给该学员的券"。
+
+- **预警链路（`InspectService`）不加学员维度**：巡检场景没有单个学员上下文，
+  PRD 规定预警按「前置班级 + 后置班级」维度统计。它仍直接调 `intersect`，不经过
+  `PreOrderDisplayableCouponService`，故只受「删前置过滤」影响（与 PRD 的
+  「膨胀券预警逻辑：后置产品的年级学科与活动膨胀券的年级学科匹配」一致）。
+
+- **⚠️ 发现 cart 的 C 端是另一套近似实现，本轮未改，需单独决策**：
+  `RegistrationService#listPostClazzGrades` 取的是**续班计划自身的目标年级**
+  (`RenewalMasterDTO#getCourseGradeList`)，而不是「前置班映射到的后置班级」年级，
+  方法上原有 TODO 已写明这是近似（「可能比严格口径宽，表现为多展示券，不会漏展示」）。
+  匹配动作本身（`PreRegistrationCouponAssembler#assembleOne` 按年级+学科成对判定）是对的，
+  **错的是喂给它的原料**。因此 C 端目前既没有学员维度、也没有真正的后置班级年级。
+  要对齐 B 端口径，需让 cart 改调 product-server 的 `listDisplayableByRenewalPlan`；
+  但 cart 调 product 走的是 `clientv4` jar（`RenewalMasterFeignService`）而非本地 feign 接口，
+  新增方法要发 jar 版本，改动比 B 端大，故拆出单独评估。
+
+- **「每个膨胀券只能用在一个预报名活动中」不实现**：PRD 有这句且给了错误文案，
+  但设计上有意支持跨活动复用，唯一键 `uk_act_grade_subject(activity_number, grade_code, subject_code)`
+  保持不变（2026-09-16 用户确认：「prd 只是这么说，设计上考虑多个」）。
+
 ## 2026-09-15
 
 - **`presaleOrderTime` 口径由「取最早」订正为「取最新」**，依据需求《大班课字段及数据指标》

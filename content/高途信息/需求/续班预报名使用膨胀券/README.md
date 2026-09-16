@@ -50,7 +50,14 @@ tags: [需求]
 - 默认只展示 `couponStatus=1`（使用中）且 `saleStatus=2`（开售中）的券；任一状态为空不展示。
 - 状态白名单由 Apollo 配置。student-center 将 `couponStatuses`/`saleStatuses` 透传 coupon-a 服务端过滤，不做分页后本地过滤。
 - B 端膨胀券 tab 始终展示。`renewMasterNumber` 只控制续班计划范围过滤；不传时仍执行状态过滤。
-- 三者交集为前置班学科、后置班年级学科、券配置范围，按“年级+学科”整对判断；只在 product-server 计算。
+- **券匹配是「两者」不是「三者」**（2026-09-16 按 PRD 订正）：券配置的年级学科 × 后置班年级学科，
+  按“年级+学科”整对判断；**前置班不参与匹配**，只作为定位续班计划与反查后置课程的起点。
+  原多的一层前置学科过滤会在扩科场景漏券，已删除。只在 product-server 计算。
+- **券范围按「学员级」不是「计划级」**（2026-09-16）：计划配置的全部前置课程作候选池，
+  再用花名册筛出该学员真正在读的那几门作为起点。`/renewal/pre/coupon/list` 新增**必填** `userId`；
+  学员无在读前置班 → 返回空，不退化为计划级。在读数据源是 clazz-distribution 花名册
+  （非 student-data 的预报名表，原因见 [[changelog]]），状态取 ACTIVE/INACTIVE/HOLD 三态。
+- 预警链路（`InspectService`）**不加**学员维度，PRD 规定预警按「前置班级+后置班级」统计。
 - `creator` 返回 CAS displayName；电商给工号后，经 teacher-basic 取 accountId，再查 CAS，失败时保留工号。
 - promotion-b 保存活动时在事务内调用 product-b `POST /feign/preOrderActivity/couponScope/save` 写范围；失败回滚活动。
 - 售罄券和满班课程由 promotion 保存接口服务端拦截；`capacity=-1` 表示不限班容，必须放行。
@@ -86,7 +93,8 @@ tags: [需求]
 
 ## 待确认
 
-- PRD 的“每个膨胀券只能用于一个预报名活动”与当前“允许跨活动使用”冲突，等待产品最终确认。
+- ~~PRD 的“每个膨胀券只能用于一个预报名活动”与当前“允许跨活动使用”冲突~~ —— 2026-09-16 已确认：
+  PRD 只是那么写，**设计上有意支持跨活动复用**，唯一键保持不变，不实现该限制。
 - 一个前置班级可脱离续班计划配置时，如何保证只属于一个续班计划。
 - 新续班计划活动与老非续班计划活动并存时是否取并集，等待马胜确认。
 - `showDiscountAmount` 的膨胀券展示口径。
