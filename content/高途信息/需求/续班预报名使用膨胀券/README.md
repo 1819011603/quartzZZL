@@ -69,14 +69,15 @@ tags: [需求]
 
 | | |
 |---|---|
-| 阶段 | 开发中；核心 B/C 链路已打通，student-data 回溯链路已端到端验证通过，剩余边界验证 |
-| 进度 | T 4/9 · R 0/0 · C 0/0 |
+| 阶段 | 开发中；核心 B/C 链路已打通并于 2026-09-16 完成**学员维度口径订正**的端到端验证，剩余边界验证 |
+| 进度 | T 6/11 · R 0/0 · C 0/0 |
 | 部署泳道 | 本需求服务 `test-gtbg-dev-3`；coupon-a `test-eco-7`，两者均属于 dev 逻辑环境 |
 | 当前卡点 | 缺少真实售罄券（40 张可用券全部未售罄）；缺少有限班容且已满班的班级；下单需 `test` 泳道但该泳道无本需求代码；**「券与订金班取并集」零数据覆盖，需造数** |
-| 最近更新 | 2026-09-15（三）：6 个仓库 WIP MR 已建（promotion 走 **master**，其余走 release；order 与 promotion-app 不在本期范围），链接见 [[links]]，口径见 [[tasks]]。<br>2026-09-15（二）：按需求第 75 行把 `presaleOrderTime` 口径从「取最早」订正为「取最新」（6 处 `min→max`，大小班 × 增量/全量 4 个文件，4 个单测同步翻转）；并发现「券与订金班取并集」规则**零数据覆盖**（两表按学员+学年+学期交集 0 行），造数方案与回溯用法已写入 [[verify]]，见 T-38/T-39。<br>2026-09-15（一）：`backDwsPresaleHandler` 券回溯链路端到端跑通并在 ES 验证生效（`presaleSubject`/`gradePresaleSubject` 有值）。过程中定位并修复 5 层问题：product-b 缺 `listScopeByCouponSkuNumbers` 接口、controller 未在实现类重声明 `@RequestBody`/`@PostMapping` 导致静默退化成表单绑定、测试活动误绑两个续班计划、`listRenewalMasterByNumbers` 未传前置课关系导致 `preCourseList` 恒空、course-center 测试后置课的 `calculate_renewal_type` 配置错误。前三处已随 product-server/student-data 提交到 `feature-xuban-pre`；后两处是 product-server 既有代码的通用 bug，修复已提交到本分支但**尚未评估是否要 cherry-pick 到 master**，见 [[changelog]] 与下一步。 |
+| 最近更新 | 2026-09-16：按 PRD 与产品流程图订正券匹配口径并完成端到端验证。**两处改动**：①删掉前置学科过滤（匹配只有「券范围 × 后置年级学科」两者，前置仅作定位起点）——原实现会在**扩科**场景漏券，而扩科正是膨胀券主要用途；②券范围由「计划级」改为「学员级」（该学员在当前计划前置班级里的全部在读班），`/renewal/pre/coupon/list` 新增**必填** `userId`。在读数据源选 clazz-distribution 花名册而非 student-data 预报名表（后者 `is_del=0` 不等于在读、且只在已进后置班时落行，会漏掉目标人群），故 **student-data 一行未改**。cart 的 C 端同步改调 product-c 新接口，与 B 端同源，删掉原「计划目标年级」近似实现。四服务已发 `test-gtbg-dev-3`，8 个场景验证通过，订金班链路实测未受影响，详见 [[verify]]。<br>2026-09-15（三）：6 个仓库 WIP MR 已建（promotion 走 **master**，其余走 release；order 与 promotion-app 不在本期范围），链接见 [[links]]，口径见 [[tasks]]。<br>2026-09-15（二）：按需求第 75 行把 `presaleOrderTime` 口径从「取最早」订正为「取最新」（6 处 `min→max`，大小班 × 增量/全量 4 个文件，4 个单测同步翻转）；并发现「券与订金班取并集」规则**零数据覆盖**（两表按学员+学年+学期交集 0 行），造数方案与回溯用法已写入 [[verify]]，见 T-38/T-39。<br>2026-09-15（一）：`backDwsPresaleHandler` 券回溯链路端到端跑通并在 ES 验证生效（`presaleSubject`/`gradePresaleSubject` 有值）。过程中定位并修复 5 层问题：product-b 缺 `listScopeByCouponSkuNumbers` 接口、controller 未在实现类重声明 `@RequestBody`/`@PostMapping` 导致静默退化成表单绑定、测试活动误绑两个续班计划、`listRenewalMasterByNumbers` 未传前置课关系导致 `preCourseList` 恒空、course-center 测试后置课的 `calculate_renewal_type` 配置错误。前三处已随 product-server/student-data 提交到 `feature-xuban-pre`；后两处是 product-server 既有代码的通用 bug，修复已提交到本分支但**尚未评估是否要 cherry-pick 到 master**，见 [[changelog]] 与下一步。 |
 
 ## 下一步
 
+0. 上线时 **product-c 先于 cart**（cart 启动即依赖其新接口）。前端 `userId` 改造已完成。
 1. 造售罄券（建议把小库存券如 `579394614104993792` 买满），验证 B 端不可选和 promotion 保存拦截。
 2. 造 `capacity>0 && signUpCount>=capacity` 的班级，验证满班拦截，并回归 `capacity=-1` 放行。
 3. 复验 `holdLimit=0` 返回“不限”文案。
@@ -122,6 +123,9 @@ tags: [需求]
 | Apollo | 配置商品类型、入口内容、C 端样式和 B/C 状态白名单；明细见 [[verify]] |
 | 代课权限 | 登记 `/renewal/pre/coupon/list`、`/renewal/pre/couponScope/list` |
 | 反射桥 | promotion/cart/product-server 的 `AclServiceCompareController.enabled=false` |
+| ~~前端改造~~ | ✅ **2026-09-16 前端已改完**。`/renewal/pre/coupon/list` 的 `userId` 必填：传了 `renewMasterNumber` 却不传 `userId` 返回空页；不传 `renewMasterNumber` 的运营纯券搜索/详情页不受影响（实测 `total=63` 正常） |
+| **jar 依赖** | cart 依赖 `product-server-client:1.5.4-SNAPSHOT`（已发 Nexus，含 `/c/renewMaster/listDisplayableCoupons`）。提测前定版发 RELEASE 并同步改 cart pom |
+| **发布顺序** | product-c 必须**先于** cart 上线：cart 启动即依赖该接口，否则 C 端膨胀券落地页拿不到范围。product-b 服务 B 端，两者是不同部署单元 |
 | MQ | 券订单消息由订单团队负责 |
 | ES | student-data 写入由马胜负责 |
 

@@ -19,8 +19,8 @@ tags: [需求, 任务]
 | T-36 | B/C 端统一过滤“使用中且开售中” | 已完成 | — | student-center `3e6bba891`；状态条件由 coupon-a 服务端过滤，端到端 `total=23` 且状态全部符合默认白名单。 |
 | T-37 | 打通 student-data 券预报名回溯（`backDwsPresaleHandler`） | 已完成 | — | 2026-09-15：ES `presaleSubject`/`gradePresaleSubject` 验证有值，修复细节见 [[changelog]]。回溯用法与维度见 [[verify]]「怎么回溯」。 |
 | T-38 | `presaleOrderTime` 口径订正为「取最新」 | 进行中 | 缺少两张不同支付时间的券 | 2026-09-15 按需求第 75 行改 6 处 `min → max`（大小班 × 增量/全量 4 个文件），4 个单测同步翻转。当前测试券两张支付时间相同（均 11:03:45）测不出差异，需造不同时间的券；另需与马胜确认原「取最早」是否另有上下文。详见 [[changelog]]。 |
-| T-40 | 券匹配口径订正：删前置学科过滤 + 学员维度收窄 | 待验证 | 待部署联调 | 2026-09-16 已编码：product-server 删 `preSubjects` 过滤、加 `narrowToInClazzCourses`（走花名册）；student-center 三层加 `userId` 必填透传。product-server 编译通过。需部署后端到端验证：①扩科券能出（原被前置学科滤掉）②不同学员看到不同券 ③学员无在读前置班返回空。 |
-| T-41 | cart C 端对齐学员维度口径 | 待办 | 需评估 clientv4 发包 | C 端 `listPostClazzGrades` 用的是**续班计划自身目标年级**（原 TODO 已标注为近似），既非真后置班级年级、也无学员维度。对齐需 cart 改调 product-b `listDisplayableByRenewalPlan`，但 cart 走 clientv4 jar 而非本地 feign，要发 jar 版本。详见 [[changelog]] 2026-09-16。 |
+| T-40 | 券匹配口径订正：删前置学科过滤 + 学员维度收窄 | 已完成 | — | 2026-09-16 四服务已发 `test-gtbg-dev-3` 并端到端验证通过（8 个场景，见 [[verify]]「学员维度券匹配」）。**扩科券不再被漏**已实测确认。commit：product-server `598c36183`、student-center `76e1e5d9c`。 |
+| T-41 | cart C 端对齐学员维度口径 | 已完成 | — | 2026-09-16 已改调 product-c 新接口 `/c/renewMaster/listDisplayableCoupons`，删掉原「计划目标年级」近似口径及失效的 `resolveCouponScope`/`CouponScope`。B/C 端返回**完全一致**；订金班链路实测未受影响。commit：cart `95fe9572`；依赖 `product-server-client:1.5.4-SNAPSHOT`（已发 Nexus）。 |
 | T-39 | 验证「券与订金班取并集」 | 待办 | 零数据覆盖（两表交集 0 行） | 需求第 73/74/75 行的并集规则从未被真实数据走过。造数方案（直接插库 / 走真实链路）与 ES 期望值见 [[verify]]「券与订金班并存」，含退券后应只回落券那部分的验证。 |
 
 ## 合入现状（2026-09-15，MR 已建）
