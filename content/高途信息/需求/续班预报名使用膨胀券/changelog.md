@@ -7,6 +7,27 @@ tags: [需求, 日志]
 
 > 只保留仍能解释当前设计的决定。最终口径以 README/apis/verify/tasks 为准。
 
+## 2026-09-17 · 预警邮件入口订正：HTTP `/insect/send` 是 `deal()` 不是 `send()`
+
+**现象**：反复触发预警却一封邮件都收不到，预警数据（`questionnaire_inspect`）的行 id 还一直在变。
+
+**根因**：`RenewalInsectController#send()` 里调的是 **`inspectService.deal()`**（重算预警），
+方法名与路径都叫 `send`，极易误判成「发邮件入口」。真正发信的是 XXL-Job
+**`RenewalInsectHandler` → `InspectService#send()`**；`RenewalInsectDealHandler` 才是重算。
+
+**附带效应**：`deal()` 会把该计划的预警行**整个重建**（id 467→497→527），
+`update_time` 刷新，运营刚点的「已处理」被冲回「预警中」。
+
+**手动发信**：用 product-b 反射桥直接调 `InspectService#send()`（见 [[verify]]「预警邮件怎么验」）。
+
+**定时任务（只注册在 prod，test 没有）**：`RenewalInsectHandler` jobId `10746` / group `372` /
+cron `0 0 9 * * ?`（每天 09:00 发信）；`RenewalInsectDealHandler` jobId `10745` / group `372` /
+cron `0 30 * * * ?`（每 30 分钟重算）。所以「刚标已处理又变回预警中」是 `deal()` 重建所致。
+
+**收件人**：计划 ADMIN 的 CAS `mail`（`@gaotu.cn`，不是常用的 `@baijia.com`）；
+SMTP 本身正常（测试邮件实测可达 @baijia.com）。**「预报名状态」列是硬编码「未绑定」**，
+因为该预警只含未被券覆盖的后置产品。
+
 ## 2026-09-17 · 花名册回溯默认带上膨胀券，券清单按班级推导
 
 **背景**：花名册回溯（`backDwsPresaleHandler`/`backSmallDwsPresaleHandler`）原先券部分是**选做**的：

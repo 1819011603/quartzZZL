@@ -846,16 +846,60 @@ INSERT INTO gaotu.renew_master_ext (renew_master_number, relation_type, relation
 VALUES (578668076965308416, 'ADMIN', '109942', 0);
 ```
 
-**触发**：`POST /b/renewal/insect/send`（无参，遍历全部「进行中/待开始」计划，
-会给其它计划的负责人也发信，注意打扰面）。
+**🔴 触发入口（2026-09-17 踩坑，务必看清）**：
 
-网关地址（B 端，浏览器/Cookie 走代理）：
-`POST https://test-fuwu.baijia.com/bgwApi/product-b/b/renewal/insect/send`，header `traffic-env`。
-**无定时、只能手动触发**，`InspectService#send` 也不打「已发送」日志（只有失败才 `log.error`），
-所以「没收到邮件」先确认**有没有调过这个接口**（判据：日志里有没有 `postCas` 解析收件人）。
+| 入口 | 实际调用 | 作用 |
+|---|---|---|
+| XXL-Job **`RenewalInsectHandler`** | `InspectService#send()` | ✅ **发预警邮件** |
+| XXL-Job `RenewalInsectDealHandler` | `InspectService#deal()` | 重算预警数据 |
+| HTTP `POST /b/renewal/insect/send` | `inspectService.**deal()**`（`RenewalInsectController:84`） | ⚠️ **只重算、不发邮件**（名字骗人） |
 
-**2026-09-17 实测**：本需求计划 `578668076965308416` 满足全部发送条件
-（status=2 进行中、`is_test_data=0`、`questionnaire_inspect` id 467/468 均 `activity_type=2` 且
-`inspect_status=0`），但**此前从未调用过 `send`**，故一直没发。手动触发后返回 `code:0`，
-日志 `UCenterService | postCas ... code=200`（4 次，逐个计划解析收件人）成功；
-该计划 ADMIN 邮箱解析结果为张梦26/唐稳01/张泽灵/弓雪萌（`zhangzeling@gaotu.cn` 在其中）。
+**两个 job 的注册信息（2026-09-17 查，⚠️ 只在 prod、test 没有，test 只能桥调）**：
+
+| 作用 | jobId | jobGroup（执行器） | handler | cron |
+|---|---|---|---|---|
+| 发预警邮件（「续班计划巡检告警」） | `10746` | `372`「商品后台job」 | `RenewalInsectHandler` | `0 0 9 * * ?`（每天 09:00） |
+| 重算预警（「续班计划预报名-问卷巡检」） | `10745` | `372`「商品后台job」 | `RenewalInsectDealHandler` | `0 30 * * * ?`（每 30 分钟） |
+
+⇒ 线上节奏：**每 30 分钟重算预警、每天 09:00 发信**。`deal()` 每次会重建预警行（id/`update_time` 变），
+运营点的「已处理」会在下一次巡检被冲回——排查「刚处理又变预警中」先想到这个。
+
+**「触发一次没收到邮件」先看是不是打成了 HTTP `/insect/send`** —— 它跑的是 `deal()`，
+不但不发信，还会把 `questionnaire_inspect` 的预警行整个重建（实测 id 467→497→527，`update_time`
+跟着变），运营刚点的「已处理」也会被冲掉。
+
+**手动发信正确姿势**（B 端反射桥，`traffic_env` 带泳道）：
+
+```bash
+~/.local/mcp-servers/mcpcli.py baijia_invoke invoke_service \
+  '{"project":"product-server","traffic_env":"test-gtbg-dev-3",
+    "service_method":"com.gaotu.product.service.renewal.InspectService#send","params":[]}'
+```
+
+`send()` **不打「已发送」日志**（只有失败才 `log.error("发送邮件功能异常！")`），
+判据是日志里有没有 `UCenterService | postCas ... code=200`（逐个计划解析收件人）。
+
+**收件人 = 计划 ADMIN 的 CAS `mail`，这里是 `@gaotu.cn` 不是 `@baijia.com`**：
+
+| 负责人 | accountId | CAS 邮箱 |
+|---|---|---|
+| 张泽灵 | 109942 | `zhangzeling@gaotu.cn` |
+| 张梦26 | 49311 | `zhangmeng26@gaotu.cn` |
+| 唐稳01 | 90247 | `tangwen01@gaotu.cn` |
+| 弓雪萌 | 177071 | `gongxuemeng@gaotu.cn` |
+
+SMTP 本身正常（同一 `MailServiceIHandler#sendEmailMsg` 可经反射桥手动发，发往
+`zhangzeling@baijia.com` 实测收到）。**所以收不到先区分是「没调到 send()」还是「收件箱看错了」。**
+另：汇总邮件发往 Apollo `administrator.list`（默认 `["yanxu","509"]`，非邮箱，实际发不出，无妨）。
+
+**2026-09-17 实测通过**：计划 `578668076965308416`（status=2 进行中、`is_test_data=0`、
+`questionnaire_inspect` 2 行 `activity_type=2`/`inspect_status=0`）；桥调 `InspectService#send()`
+后收到「预报名预警」邮件，2 行：
+
+| 后置产品ID | 后置产品名称 | 部门 | 年级 | 科目 | 预报名状态 | 更新时间 |
+|---|---|---|---|---|---|---|
+| `578667772899405824` | 六年级英语-后置 | 测*_10007722 | 六年级 | 英语 | 未绑定 | 2026-09-17 16:07:08 |
+| `578667774495338496` | 六年级语文-后置 | 测*_10007722 | 六年级 | 语文 | 未绑定 | 2026-09-17 16:07:08 |
+
+**「预报名状态」列目前是硬编码「未绑定」**（`InspectService:298`），因为该预警只收录
+「未被券覆盖的后置产品」，所以显示未绑定是对的，不是漏算。
