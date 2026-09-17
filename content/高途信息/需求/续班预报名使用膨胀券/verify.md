@@ -687,15 +687,25 @@ ORDER BY ec.sale_end_time DESC;
 **`sendPreRegistration` 会真的发邮件**，没有「只拼正文不发送」的办法——
 `MailServiceIHandler` 是真实 SMTP，无测试环境开关。别指望反射调它来「只看正文」。
 
-**测试数据计划默认不发**：`send()` 里 `is_test_data=1` 且 `renewal.send.test=false` 时直接跳过。
-本需求的计划 `578668076965308416` 正是 `is_test_data=1`，所以默认收不到邮件，
-**既无报错日志也无邮件**，极易误判成「邮件功能坏了」。
+**测试数据计划默认不发**：`send()` 里 `is_test_data=1` 且 `renewal.send.test=false` 时直接跳过
+（[`InspectService.java:174`](../../../../IdeaProjects/JavaProject/product-server/product-server-domain/src/main/java/com/gaotu/product/service/renewal/InspectService.java)，
+判定是 `isTestData == 1 && !sendTest`）。
+
+**2026-09-17 复查订正**：本需求的计划 `578668076965308416` 的 `is_test_data` **已是 `0`**
+（2026-09-16 20:09:51 改的，就在 20:12 生成预警之前），因此**它不受这个开关影响，照常发邮件**，
+不需要为验证它而打开 `renewal.send.test`。此前本节写的「该计划是 `is_test_data=1`」已过期。
+
+⚠️ **同日发现开关并未按记录复位**：`renewal.send.test` 在 Apollo 上一直是 `true`
+（已发布值与草稿都是），2026-09-16 记的「已改回 false」并未真正生效。
+2026-09-17 09:48 已改回 `false` 并**发布**（release `20260917094831-release`）。
+教训：改 Apollo 后要用 `apollo_diff` / 重新读一次已发布值确认，别只凭记忆记「已改回」。
 
 ```
-Apollo product-b / TEST: renewal.send.test = true   # 验证时打开
+Apollo product-b / TEST: renewal.send.test
+  = false   # 常态。计划 is_test_data=0 时不影响本需求验证
+  = true    # 仅当要验 is_test_data=1 的计划时临时打开，验完立刻改回并发布
 ```
-⚠️ **验完必须改回 `false`**（2026-09-16 已改回），否则每次定时任务都会给所有测试计划的
-负责人发邮件。改完要在 Apollo 后台**发布**才生效。
+打开它的副作用是**所有**测试计划的负责人都会收到预警邮件，注意打扰面。
 
 **收件人**来自续班计划的 `renew_master_ext` 中 `relation_type='ADMIN'` 的行：
 
