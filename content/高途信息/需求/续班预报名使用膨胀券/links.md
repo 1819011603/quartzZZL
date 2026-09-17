@@ -28,16 +28,16 @@ tags: [需求, 链接]
 
 > 路径统一 `specs/004-xuban-pre/tech_spec.md`，分支统一 `feature-xuban-pre`。
 
-| 类型 | 仓库 | 链接 | 记录日期 |
-|---|---|---|---|
-| spec | promotion | https://git.baijia.com/gaotu/promotion/-/blob/feature-xuban-pre/specs/004-xuban-pre/tech_spec.md | 2026-09-08 |
-| spec | product-server | https://git.baijia.com/gaotu/product-server/-/blob/feature-xuban-pre/specs/004-xuban-pre/tech_spec.md | 2026-09-08 |
-| spec | order | https://git.baijia.com/gaotu/order/-/blob/feature-xuban-pre/specs/004-xuban-pre/tech_spec.md | 2026-09-08 |
-| spec | cart | https://git.baijia.com/gaotu/cart/-/blob/feature-xuban-pre/specs/004-xuban-pre/tech_spec.md | 2026-09-08 |
-| spec | student-center | https://git.baijia.com/gaotu/yunying_workbench/student-center/-/blob/feature-xuban-pre/specs/004-xuban-pre/tech_spec.md | 2026-09-08 |
-| spec | student-data | https://git.baijia.com/gaotu/yunying_workbench/student-data/-/blob/feature-xuban-pre/specs/004-xuban-pre/tech_spec.md | 2026-09-08 |
-| spec | **promotion-app**（反讲文档漏掉的第六个服务，满赠校验在此） | https://git.baijia.com/gaotu/promotion-app/-/blob/feature-xuban-pre/specs/004-xuban-pre/tech_spec.md | 2026-09-08 |
-| 其他 | ~~TODO-券信息接口~~（历史文件名，🔴 **已过时**：电商接口已于 2026-09-09 接通，mock 已全部删除，见 [[links]]「电商膨胀券接口」段的真实接口文档） | https://git.baijia.com/gaotu/yunying_workbench/student-center/-/blob/feature-xuban-pre/specs/004-xuban-pre/TODO-券信息接口.md | 2026-09-08 |
+| 类型   | 仓库                                                                                            | 链接                                                                                                                       | 记录日期       |
+| ---- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | ---------- |
+| spec | promotion                                                                                     | https://git.baijia.com/gaotu/promotion/-/blob/feature-xuban-pre/specs/004-xuban-pre/tech_spec.md                         | 2026-09-08 |
+| spec | product-server                                                                                | https://git.baijia.com/gaotu/product-server/-/blob/feature-xuban-pre/specs/004-xuban-pre/tech_spec.md                    | 2026-09-08 |
+| spec | order                                                                                         | https://git.baijia.com/gaotu/order/-/blob/feature-xuban-pre/specs/004-xuban-pre/tech_spec.md                             | 2026-09-08 |
+| spec | cart                                                                                          | https://git.baijia.com/gaotu/cart/-/blob/feature-xuban-pre/specs/004-xuban-pre/tech_spec.md                              | 2026-09-08 |
+| spec | student-center                                                                                | https://git.baijia.com/gaotu/yunying_workbench/student-center/-/blob/feature-xuban-pre/specs/004-xuban-pre/tech_spec.md  | 2026-09-08 |
+| spec | student-data                                                                                  | https://git.baijia.com/gaotu/yunying_workbench/student-data/-/blob/feature-xuban-pre/specs/004-xuban-pre/tech_spec.md    | 2026-09-08 |
+| spec | **promotion-app**（反讲文档漏掉的第六个服务，满赠校验在此）                                                        | https://git.baijia.com/gaotu/promotion-app/-/blob/feature-xuban-pre/specs/004-xuban-pre/tech_spec.md                     | 2026-09-08 |
+| 其他   | ~~TODO-券信息接口~~（历史文件名，🔴 **已过时**：电商接口已于 2026-09-09 接通，mock 已全部删除，见 [[links]]「电商膨胀券接口」段的真实接口文档） | https://git.baijia.com/gaotu/yunying_workbench/student-center/-/blob/feature-xuban-pre/specs/004-xuban-pre/TODO-券信息接口.md | 2026-09-08 |
 
 ## 开发与测试
 
@@ -55,7 +55,7 @@ tags: [需求, 链接]
 | 类型 | 标题 | 链接 | 记录日期 |
 |---|---|---|---|
 | 上线checklist |  |  |  |
-| 发布计划 |  |  |  |
+| 发布计划 | 【A-续班-20260901】膨胀券预报名 · id 23592（22 个服务：后端 12 + 前端 10） | https://qingzhou.baijia.com/#/publishArrangement/subPublishArrangement/publishPlan/detail?storyId=&pageNum=1&id=23592&action=edit | 2026-09-17 |
 | 工单 |  |  |  |
 
 ### Merge Request（2026-09-15 建，均为 WIP）
@@ -90,6 +90,8 @@ tags: [需求, 链接]
 > 需求会改名，这些 ID / 分支名不会。`rg -l "<锚点>" 需求根目录` 即可反查到本目录。
 
 - **分支名（6 仓库统一）**：`feature-xuban-pre`
+- **分支名（前端）：`feature-coupon-20260901`**（cronus / gaotu-fe-promotions / mweb 三个仓库）
+- **青舟发布计划 id**：`23592`（22 个服务，后端 12 + 前端 10）
 - **spec 目录名**：`004-xuban-pre`
 - 需求 wiki 节点 token：`W3SSwxr1AieysikF0D3csT4EnBh`
 - 后端反讲 token：`RC4DwjusfinikRk9IM9c88l1nZW`

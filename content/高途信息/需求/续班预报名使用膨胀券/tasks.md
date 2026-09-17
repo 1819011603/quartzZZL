@@ -28,6 +28,7 @@ tags: [需求, 任务]
 | T-45 | 券回溯收数口径订正：一券多活动/一活动多计划 + 后置课改取续班关系 | 已完成 | — | 2026-09-17 两件事：①券范围按 **(券,活动,续班计划) 三元组**返回，不再只取首个活动/首个计划；student-data 唯一键无活动计划维度，撞键时年级学科取并集（`mergeByUniqueKey`）。②膨胀券后置课改取 `calculateRenewalType=1`（续班关系），原先复用订金班的 `mapPostCourseByNumber`（=2）取到的是学员并不可续的后置课；product-server `listPostCourseNumbers` 此前**完全没过滤**，已补上。订金班口径未动。commit：student-data `74c6e6b78`、product-server `fe076a536`（cherry-pick `c1937337e`）。单测 27 条全过，桥验证见 [[verify]]「后置课续班关系口径订正的验证」。**2026-09-17 端到端复测通过：首推因 student-data-dws 镜像滞后（`5c63f8ba`，跑旧 =2 方法）未落库；重发含 `74c6e6b78` 的镜像（pipeline 1273324）后重推消息，落库 + 小班 ES 写入均通过，见 [[verify]]「复测通过」。** |
 
 | T-46 | 花名册回溯默认带上膨胀券 + 抽公共 handler helper | 已完成 | — | 2026-09-17：券清单不必手填，改为按「班级 → 续班计划 → 计划下可展示券」自动推导（`RenewalMasterAclService#listCouponSkuNumbersByRenewal`，下游 `listDisplayableCoupons` 不传 userId=计划级）；`BackPresaleParam` 加 `backCoupon`（缺省 true），`couponSkuNumbers` 降为可选过滤器；两个 job 的公共骨架抽到 `PresaleBackfillHelper`（差异只在 dealSubclazzStudent 用哪个服务）。commit student-data `cd56fb484`，单测 27 条全过，已发 `test-gtbg-dev-3` 并实测两个 job 均自动推导出券清单、券回溯落库，见 [[verify]]「花名册回溯默认带上膨胀券」。 |
+| T-47 | 组装青舟发布计划 23592（22 个服务） | 已完成 | — | 2026-09-17：按仓库拉全量部署（`getAllServiceCode` 按 `gitProjectName` 分组），补齐「一个仓库多部署」的漏项——product-server 补 product-task、promotion 补 promotion-task、student-data 补 student-data-gps、mweb 补 lexue-m-fe/gongkao-m，共 22 个服务（后端 12 + 前端 10）。产物镜像自动取各分支最新一条，配置行(SQL/MQ + Apollo key)从 `getStructureConfig` 原样回传避免被清空。promotion 两条上线分支**保持 release**（master 无镜像，2026-09-17 决定不改）。2026-09-17：TAPD story 下张泽灵 7 条任务全部置「已完成」（工时按预估填满）。见 [[links]]「上线」。 |
 
 ## 合入现状（2026-09-15，MR 已建）
 
