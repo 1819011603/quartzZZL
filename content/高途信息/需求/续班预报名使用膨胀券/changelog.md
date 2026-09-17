@@ -7,6 +7,30 @@ tags: [需求, 日志]
 
 > 只保留仍能解释当前设计的决定。最终口径以 README/apis/verify/tasks 为准。
 
+## 2026-09-17 · 膨胀券后置课改取「续班关系」，不再复用订金班的预报名关系
+
+**口径**：`CourseRenewalRelationMapVO#calculateRenewalType` 中 **1 = 续班关系（计算可续）、
+2 = 预报名关系（不计算可续）**。膨胀券预报名要匹配的是「学员真正能续的后置产品」，因此取 **1**；
+原实现复用了订金班的 `mapPostCourseByNumber`（筛 **2**），拿到的是学员并不可续的后置课。
+
+**订金班口径不变**：`mapPostCourseByNumber`（=2）一行未动，订金班仍按预报名关系取后置课。
+两条链路口径不同，**不可互相替代或合并**。
+
+| 仓库 | 改动 |
+|---|---|
+| student-data | 新增 `CourseNotNormalAclService#mapRenewalPostCourseByNumber`（筛 =1），`PresaleCouponServiceImpl` 的取数点切过去 |
+| product-server | `PreOrderCouponIntersectService#listPostCourseNumbers` 原先**完全没按 `calculateRenewalType` 过滤**，续班关系与预报名关系混取，券列表里会多出学员其实续不了的券；已补上只取 =1 |
+
+**product-server 这一处是三端同源实现**：`PreOrderCouponIntersectService` 同时服务
+「花名册发链接 / B 端下单弹窗 / C 端落地页」的交集口径与预警链路，改一处三处同时生效。
+
+**大班小班不需要分别改**：`buildRecords` 取后置课时不做班型过滤（券本身不区分大小班），
+班型分流发生在其后的 `refresh` 阶段，由 `PresaleCouponClazzTypeFilter` 按前置课的
+`arrangeModeType` 决定刷大班还是小班字段，一处改动对两者同时生效。
+
+**提交**：student-data `feature-xuban-pre` `74c6e6b78`；product-server `feature-xuban-pre` `fe076a536`，
+同一改动 cherry-pick 到 `feature-xuban-pre-expand-coupon` `c1937337e`。
+
 ## 2026-09-17 · 券范围放开「一券多活动 / 一活动多计划」，并订正两处环境记录
 
 **背景**：券回溯只落到一个活动/一个计划，是上游 `listScopesByCoupons` 的分组粒度不够。

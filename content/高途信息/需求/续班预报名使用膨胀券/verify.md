@@ -492,6 +492,43 @@ VALUES
 并集建立后再退券：期望回落成**只剩订金班那部分**（`presaleSubject` 去掉券学科、`presaleStatus` 仍为 `1`、
 `presaleOrderTime` 回到订金班的时间），而不是整个清空。这条是券退款不会误伤订金班的关键保证。
 
+## 后置课续班关系口径订正的验证（2026-09-17）
+
+对应 [[changelog]]「膨胀券后置课改取续班关系」。
+
+**单测**：`PresaleCouponServiceImplTest` 27 个用例全过，其中 4 个为多活动场景新增
+（多活动都收数、坏活动跳过而不丢整张券、撞唯一键取并集、全部活动不可用不落库）。
+
+**反射桥实测（product-b）**：券 `579434436486002689`
+修复前返回空数组 `[]`；修复后返回 1 条——activity `579811561793671168` /
+renewal `556560317436436480` / scopes `grade 12` + `subject 12`。
+该券另挂的两个未绑续班流程的活动被正确跳过，年级学科没有串进 scopes。
+
+**`preCourseList` 恒为空的既有缺陷已确认修复**（commit `e7bbfaacc`，product 主服务部署后）：
+`queryRenewalMasterInfoElseException(556560317436436480)` 返回 `preCourseList: [17218465768538824]`。
+
+**小班回溯链路已打通**：
+
+```
+券 579434436486002689
+ → 活动 579811561793671168
+ → 续班计划 556560317436436480「续班计划-新的-小班课」
+ → 前置课 17218465768538824「前置-三年级-历史-王金峰-2026-2027春」（arrangeModeType=4 小班）
+ → 学员 7542297028 在班：clazzNumber 551005295197935616、
+   subclazzNumber 34438197699674624、status=1
+```
+
+**消费验证**：消息 `0ADAFACF0001379CE046514F6031125A`（topic `gaotu_order_event_test`，
+tag `OrderPaySuccessEvent`）推给消费组
+`GID_student-data_dws_presale_coupon_order_test_test-gtbg-dev-3`，返回 `CR_SUCCESS` / 1314ms
+（耗时非 0，不是泳道隔离的假成功），日志确认新代码生效。
+
+**当时未落数的原因**：前置课 `17218465768538824` 在 course-center 没有配「计算可续」
+（`calculateRenewalType=1`）的后置课程，交集为空所以不落记录——**属数据缺失，非代码缺陷**。
+该后置课关系后续已补配两门：`17218465768538707`「后置-二年级-历史-尹超」、
+`17218465768538626`「后置-二年级-历史-梅涛林」，均 `grades=[12]` `subjects=[12]`
+`arrangeModeType=4`（小班），与券范围 `grade 12` + `subject 12` 成对匹配。
+
 ## 怎么回溯
 
 两个 XXL-Job，大小班各一个：
@@ -526,6 +563,18 @@ VALUES
 2. **传 A 班可能改的是 B 班的 ES 字段**，A 班字段不动是正常现象。
 3. **本 job 只能填大班班级号**。订金班那半的 `getPostPresaleRecords` 没有班型过滤，
    填小班号会往大班预报名表插脏行；小班走 `backSmallDwsPresaleHandler`。
+
+### 🔴 消费者在 student-data-dws，不在 student-data
+
+膨胀券实时收数的消费者 `DwsCouponPresaleOrderConsumer` 属于 **student-data-dws** 模块，
+独立部署（serviceCode `baijia.gaotu.Business.counseling-workbench.student-data-dws`）。
+发 `student-data` 服务**不承载这个消费者**——验证实时收数必须发 dws，否则跑的还是旧镜像。
+
+### 消费组名带泳道后缀
+
+测试环境实际消费组名是「配置里的 group 名 + `_泳道名`」，例如
+`GID_student-data_dws_presale_coupon_order_test_test-gtbg-dev-3`。
+按裸 group 名做消费验证会报「该 group 当前无在线消费端」，不是消费端挂了。
 
 ### 券没收上来先查这三个
 

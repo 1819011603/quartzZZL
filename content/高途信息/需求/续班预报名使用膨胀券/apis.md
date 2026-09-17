@@ -56,6 +56,8 @@ tags: [需求, 接口]
 | 服务 | 类#方法 | 当前职责 | 调用方 |
 |---|---|---|---|
 | product-server | `PreOrderCouponIntersectService#intersect` | 唯一的匹配实现：**券范围 × 后置年级学科两者**按整对判断（2026-09-16 删除前置学科过滤） | B/C 范围链路 |
+| product-server | `PreOrderCouponIntersectService#listPostCourseNumbers` | 反查后置课程时**只取 `calculateRenewalType=1`（续班关系）**，排除预报名关系（=2）的后置课（2026-09-17 补过滤）。发链接 / B 端弹窗 / C 端落地页 / 预警四处同源 | `#intersect` |
+| student-data | `CourseNotNormalAclService#mapRenewalPostCourseByNumber` | 膨胀券专用：按 `calculateRenewalType=1` 取后置课。订金班仍走 `mapPostCourseByNumber`（=2），**两者口径不同，不可互换** | `PresaleCouponServiceImpl` |
 | product-server | `PreOrderCouponIntersectService#narrowToInClazzCourses` | 学员维度收窄：候选前置课程 → 该学员真正在读的那几门；走花名册 `ClazzDistSubclazzStudentDao#listInClazzStudentByUidAndCourseNos` | `PreOrderDisplayableCouponService` |
 | product-server | `PreOrderDisplayableCouponService#listDisplayableCoupons` | **两个签名**：`(renewMasterNumber)` = 计划级不收窄（B 端）；`(renewMasterNumber, userId)` = `userId` 有效才按在读收窄（C 端），`userId` 为 null/≤0 等价于计划级 | B 端 scope Feign controller / C 端 RenewalMasterController |
 | student-center | `PreOrderCouponScopeAclService#listDisplayableCoupons` | 入参只有 `renewMasterNumber`；读取 product-b 计划级匹配结果；失败直接抛业务异常 | `PreOrderCouponBiz#listCoupon` |
