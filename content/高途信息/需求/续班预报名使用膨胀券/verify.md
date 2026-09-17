@@ -518,16 +518,70 @@ renewal `556560317436436480` / scopes `grade 12` + `subject 12`。
    subclazzNumber 34438197699674624、status=1
 ```
 
-**消费验证**：消息 `0ADAFACF0001379CE046514F6031125A`（topic `gaotu_order_event_test`，
-tag `OrderPaySuccessEvent`）推给消费组
-`GID_student-data_dws_presale_coupon_order_test_test-gtbg-dev-3`，返回 `CR_SUCCESS` / 1314ms
-（耗时非 0，不是泳道隔离的假成功），日志确认新代码生效。
-
-**当时未落数的原因**：前置课 `17218465768538824` 在 course-center 没有配「计算可续」
-（`calculateRenewalType=1`）的后置课程，交集为空所以不落记录——**属数据缺失，非代码缺陷**。
-该后置课关系后续已补配两门：`17218465768538707`「后置-二年级-历史-尹超」、
+**数据侧已就绪**：前置课 `17218465768538824`（「前置-三年级-历史-王金峰-2026-2027春」）
+在 course-center 配了两门后置课 `17218465768538707`「后置-二年级-历史-尹超」、
 `17218465768538626`「后置-二年级-历史-梅涛林」，均 `grades=[12]` `subjects=[12]`
 `arrangeModeType=4`（小班），与券范围 `grade 12` + `subject 12` 成对匹配。
+
+### 🔴 2026-09-17 复测：端到端未落库，根因是**消费端镜像滞后**（非代码/数据问题）
+
+重推消息 `0ADAFACF0001379CE046514F6031125A`（消费组
+`GID_student-data_dws_presale_coupon_order_test_test-gtbg-dev-3`）返回 `CR_SUCCESS` / 698ms，
+但 `ees_data.dws_fuwu_clazz_user_presale_coupon` 仍无 `user_id=7542297028` 的记录。
+
+日志（pod `student-data-dws-858f45c68d-gzjnd`）显示消费端调的是**旧方法** `mapPostCourseByNumberBatch`：
+
+```
+CourseNotNormalAclServiceImpl:195 mapPostCourseByNumberBatch ｜ response is {17218465768538824=[
+    CourseRenewalRelationMapVO(courseNumber=17218465768538626, calculateRenewalType=1),
+    CourseRenewalRelationMapVO(courseNumber=17218465768538707, calculateRenewalType=1)]}
+PresaleCouponServiceImpl:369 buildRecords | 前置课没有可续的后置课程，跳过, courseNumber:17218465768538824
+PresaleCouponServiceImpl:124 dealCouponPaid | 券适用范围与可续后置课的年级学科无匹配,
+    activityNumber:579811561793671168, scopes:[{gradeCode:12,subjectCode:12}]
+```
+
+旧方法筛 `calculateRenewalType=2`，而数据全是 `=1` → 全被滤掉 → 不落库。**这恰好反证改动的必要性。**
+
+**真因**：部署镜像 `student-data-dws:feature-xuban-pre-5c63f8ba-20260917102049`（构建 10:20）
+基于提交 `5c63f8ba2`（10:01），而 `74c6e6b78`（11:03）**不是它的祖先**（`git merge-base --is-ancestor` 退出 1），
+即该镜像不含 =1 改动。**把它发到 `test-gtbg-dev-3` 后重推同一消息即可落库**（`scopeSize:1` 说明券范围链路已通，
+只剩后置课过滤这一处）。
+
+> ⚠️ 此前记的「消费验证日志确认新代码生效」有误——当时只确认了 `CR_SUCCESS`，未核对日志里调用的方法名，
+> 实际跑的是旧代码。**判定消费端是否含改动，认日志里的方法名/镜像 commit，别只看消费结果码。**
+> 消息重推（控制台「消费验证」）会生成**新的 msgId**（本次 `0BC1F0C0...`，trace 与旧消息相同），
+> 按旧 msgId 搜日志会漏，用 `messages: <userId>` 或原 traceId 查。
+
+### ✅ 复测通过（2026-09-17 11:56，重发 dws 后）
+
+把 `feature-xuban-pre`（含 `74c6e6b78`）发到 `test-gtbg-dev-3` 的 student-data-dws
+（pipeline `1273324`，新 pod `student-data-dws-7f7b465bd6-94l5s`，eureka UP），重推同一消息
+`0ADAFACF0001379CE046514F6031125A`（新 msgId `0BC1F0C0...`），`CR_SUCCESS` / 713ms。
+
+日志：`buildRecords | matched ... postCourseNos:[17218465768538707, 17218465768538626], grades:[12], subjects:[12]`
+→ `dealCouponPaid | saved, records size:1`。
+
+落库（cluster 149）：
+
+| 列 | 值 |
+|---|---|
+| `id` | 94 |
+| `user_id` | 7542297028 |
+| `clazz_number` | 551005295197935616 |
+| `course_number` | 17218465768538824（前置课） |
+| `coupon_sku_number` | 579434436486002689 |
+| `renewal_number` | 556560317436436480 |
+| `pre_order_activity_number` | 579811561793671168 |
+| `grades` / `presale_subject_id` | `[12]` / `[12]` |
+| `presale_order_time` | 2026-09-16 18:55:56 |
+| `is_del` | 0 |
+
+小班刷新链路同时走通（前置课 `arrangeModeType=4`）：`SmallPresaleSubjectServiceImpl#refreshByCouponRecords`
+→ `updatePresaleStatusAndOrderTime`（`presaleStatus=1`）→ `updatePresaleSubject`（`smallSubjectIds:[12]`），
+ES `ads_small_clazz_user_index_v4` doc `551005295197935616-7542297028` 实测：
+`smallPresaleStatus=1`、`smallPresaleSubject=[12]`、`smallPresaleOrderTime=1789556156465`（=2026-09-16 18:55:56）。
+
+**结论**：T-45 ②号改动（后置课取续班关系）端到端落库 + ES 写入全部通过。
 
 ## 怎么回溯
 
