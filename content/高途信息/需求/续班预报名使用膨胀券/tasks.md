@@ -16,13 +16,14 @@ tags: [需求, 任务]
 | T-33 | 券列表补可用范围/持有上限，并双端拦截售罄 | 进行中 | 无售罄券（2026-09-14 复核 40 张全部未售罄） | `availableScope`、`holdLimit` 已验证；可用券基线见 [[verify]]。需把小库存券（如 `579394614104993792`，1/5）买满造出售罄态，再验证列表不可选及活动保存拦截。 |
 | T-34 | 持有上限文案与订金班满班拦截 | 进行中 | 缺少真实满班数据 | `holdLimit` 已改字符串文案；需验证 `capacity>0 && signUpCount>=capacity` 被拦截，并回归 `capacity=-1` 放行。 |
 | T-35 | 接入 coupon-a-client 1.3.17 的售卖状态与创建人 | 已完成 | — | `saleStatus`/`saleStatusDesc` 与创建人姓名链路已接入并验证。 |
-| T-36 | B/C 端统一过滤“使用中且开售中” | 已完成 | — | student-center `3e6bba891`；状态条件由 coupon-a 服务端过滤，端到端 `total=23` 且状态全部符合默认白名单。 |
+| T-36 | B/C 端统一过滤“使用中且售卖中” | 已完成 | — | student-center `3e6bba891`；状态条件由 coupon-a 服务端过滤，端到端 `total=23` 且状态全部符合默认白名单。 |
 | T-37 | 打通 student-data 券预报名回溯（`backDwsPresaleHandler`） | 已完成 | — | 2026-09-15：ES `presaleSubject`/`gradePresaleSubject` 验证有值，修复细节见 [[changelog]]。回溯用法与维度见 [[verify]]「怎么回溯」。 |
 | T-38 | `presaleOrderTime` 口径订正为「取最新」 | 进行中 | 缺少两张不同支付时间的券 | 2026-09-15 按需求第 75 行改 6 处 `min → max`（大小班 × 增量/全量 4 个文件），4 个单测同步翻转。当前测试券两张支付时间相同（均 11:03:45）测不出差异，需造不同时间的券；另需与马胜确认原「取最早」是否另有上下文。详见 [[changelog]]。 |
 | T-40 | 券匹配口径订正：删前置学科过滤 + 学员维度收窄 | 已完成 | — | 2026-09-16 四服务已发 `test-gtbg-dev-3` 并端到端验证通过（8 个场景，见 [[verify]]「学员维度券匹配」）。**扩科券不再被漏**已实测确认。commit：product-server `598c36183`、student-center `76e1e5d9c`。 |
 | T-41 | cart C 端对齐学员维度口径 | 已完成 | — | 2026-09-16 已改调 product-c 新接口 `/c/renewMaster/listDisplayableCoupons`，删掉原「计划目标年级」近似口径及失效的 `resolveCouponScope`/`CouponScope`。B/C 端返回**完全一致**；订金班链路实测未受影响。commit：cart `95fe9572`；依赖 `product-server-client:1.5.4-SNAPSHOT`（已发 Nexus）。 |
 | T-42 | 打通预报名科目与看板取数（K/I 四条用例） | 已完成 | — | 2026-09-16：跑券回溯 job 6648 写通 MySQL+ES；发现看板 job 5900 真正卡点是学员 `canRenewal=0` 被第二段索引条件滤掉（非「ES 无数据」），`_update_by_query` 改 26 条为可续后快照表出数（26 可续 / 7 已预报名）。完整步骤见 [[verify]]「预报名科目与看板取数」。**原「6 条卡在同一 ES 索引、需等离线跑批」的结论已作废。** |
 | T-39 | 验证「券与订金班取并集」 | 待办 | 零数据覆盖（两表交集 0 行） | 需求第 73/74/75 行的并集规则从未被真实数据走过。造数方案（直接插库 / 走真实链路）与 ES 期望值见 [[verify]]「券与订金班并存」，含退券后应只回落券那部分的验证。 |
+| T-44 | promotion-b 保存活动时校验膨胀券必须【使用中且售卖中】 | 已完成 | — | 排查发现保存链路（`PreOrderActivityService#validateProductListByType`）此前只校验售罄和满班，couponStatus/saleStatus 只做回显、从未拦截过——已失效/审核中/停止售卖的券没售罄就能被绑定保存，靠 student-center 的 selectable 置灰完全挡不住（前端提示可绕过）。已新增 `validateCouponInUseAndOnSale`，与售罄校验共用同一次电商查询。promotion `6fb3da3a0`，已发 `test-gtbg-dev-3` 并反射调用 `create` 实测：绑定当前停止售卖的真实券被拒绝（报错「膨胀券状态不是【使用中且售卖中】...」），绑定使用中+售卖中的券创建成功（已清理测试活动）。⚠️ 顺带发现活动 `579607430990692352` 当前绑定的 3 张券售卖状态都已变成停止售卖，之后编辑保存会被新校验拦住，需要先恢复券状态或换券，见 [[apis]]。 |
 | T-43 | OES 选品弹窗（复用 `/renewal/pre/coupon/list`）补售卖状态筛选、去白名单 | 已完成 | — | 2026-09-16 PRD 变更：筛选区加「使用状态」「售卖状态」多选（**不传即全量**，默认勾选由前端决定）；列表字段两列响应早已有未改；只有【使用中且售卖中】可勾选。接口复用 T-36 的 `/renewal/pre/coupon/list`，未新建接口。改动：`PreOrderCouponListRequest` 加 `saleStatusList`，`obtainStatusList()`/`obtainSaleStatusList()` 未传返回 `null`；`PreOrderCouponBiz` 删掉 Apollo 白名单，新增 `revokeSelectableWhenNotOnSaleInUse` 补 `saleStatus` 维度的 selectable 判定。单测 18 条全过。已发布 `test-gtbg-dev-3`（student-center `49a2a9ab7`，pipeline 1272566）并实测通过：不传筛选返回全量 297 条且 selectable 正确；显式传状态/售卖状态筛选均正确透传生效（含此前疑似失效的 `saleStatuses` 电商过滤，现已确认修复）。细节见 [[apis]]「T-43 落地」。 |
 
 ## 合入现状（2026-09-15，MR 已建）

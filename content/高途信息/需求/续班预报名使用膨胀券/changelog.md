@@ -7,6 +7,44 @@ tags: [需求, 日志]
 
 > 只保留仍能解释当前设计的决定。最终口径以 README/apis/verify/tasks 为准。
 
+## 2026-09-17 · 券范围放开「一券多活动 / 一活动多计划」，并订正两处环境记录
+
+**背景**：券回溯只落到一个活动/一个计划，是上游 `listScopesByCoupons` 的分组粒度不够。
+本轮按 **(券, 活动, 续班计划) 三元组**返回，两处收敛全部打开。
+
+| 层 | 原写法 | 问题 |
+|---|---|---|
+| 券 → 活动 | 按券单级分组，取 `couponRows.get(0).getActivityNumber()` | 首行落在哪个活动取决于 DB 返回顺序；且 `scopes` 装了该券**全部**行，年级学科跨活动串味 |
+| 活动 → 计划 | `resolveRenewalNumbers` 返回 `Map<Long, Long>`，`result.containsKey` 只留第一条 | **一个活动绑多个续班计划是合法数据形态**，被丢的计划永远收不到该券的预报名数据 |
+
+**「一活动多计划」不是脏数据**——线下 `renewal_link_activity` 实测有 **11 个** `is_del=0`
+的活动绑了多条流程（最多 3 个）。此前 README 第 12 条把它当作「误绑、要排查清理」是判断错了，
+应按合法形态支持。DAO 同时补 `order by coupon_sku_number, activity_number, id` 让返回顺序可复现。
+
+**student-data 侧不用改逻辑**：唯一键 `uk_user_clazz_course_sku(user_id, clazz_number,
+course_number, coupon_sku_number)` 里**既无活动也无计划维度**，原 `mergeByUniqueKey` 按
+`clazzNumber_courseNumber` 合并已同时覆盖两条撞键路径，年级学科取并集的口径不变；
+只补了注释与日志（新增 `keptRenewalNumber`/`droppedRenewalNumber`，便于排查被合并掉的是哪个计划）。
+
+**接口契约未变**：`PreOrderCouponScopeFeignVO` 字段与类型一个没动，只是 list 里可能多出元素；
+改的 `resolveRenewalNumbers` 是 `private` 方法。
+
+### 两处环境记录订正（原记录与实际不符）
+
+- **`renewal.send.test` 并未按记录复位**：verify.md 记「2026-09-16 已改回 false」，
+  实际 Apollo 上已发布值与草稿**一直是 `true`**。2026-09-17 09:48 已真正改回 `false` 并发布
+  （release `20260917094831-release`）。**教训：改完 Apollo 要重新读一次已发布值确认，别凭记忆记「已改回」。**
+- **计划 `578668076965308416` 的 `is_test_data` 已是 `0`**（2026-09-16 20:09:51 改的，
+  就在 20:12 生成预警之前），因此它**不受 `renewal.send.test` 影响、照常发邮件**。
+  verify.md 原写的「该计划是 `is_test_data=1`，验证前要打开开关」已过期。
+
+### 分支与部署
+
+`feature-xuban-pre` 合入 `feature-xuban-pre-expand-coupon`（product-server）。
+两分支各有一条同名的「按(券,活动)二级分组」提交（`b59343f4f` / `56113cc14`，同一改动提交了两次），
+合并时在该方法体冲突，取 `feature-xuban-pre` 一侧（多计划版本是单计划版本的超集）。
+**student-data 没有 `-expand-coupon` 分支**，仍用 `feature-xuban-pre`，两服务部署分支不同。
+
 ## 2026-09-16 · 预警落库改后置产品维度：4 处读路径 + 2 个独立缺陷
 
 **口径定稿**：膨胀券预警 = **一个未被券覆盖的后置产品一条**（按后置产品号去重）。
@@ -58,10 +96,10 @@ tags: [需求, 日志]
   `PreOrderCouponController#listCoupon`，不新建接口。这否定了之前两轮代码排查往 promotion-management/
   product-server（`spuSearch` 等）方向找"独立选品接口"的猜测——那条路线根本不对，本需求不涉及那些仓库。
 - **白名单去掉，且不传即全量**（而不是保留默认值只放开显式覆盖）：原 Apollo 白名单
-  （`displayCouponStatusConfig`/`displaySaleStatusConfig`，默认【使用中】【开售中】）是 2026-09-14 加的
-  安全网，专为老师下单弹窗设计；OES 弹窗要能查看【审核中/已失效/停售中】，若保留"调用方传的状态 ∩ 白名单"
+  （`displayCouponStatusConfig`/`displaySaleStatusConfig`，默认【使用中】【售卖中】）是 2026-09-14 加的
+  安全网，专为老师下单弹窗设计；OES 弹窗要能查看【审核中/已失效/停止售卖】，若保留"调用方传的状态 ∩ 白名单"
   会把这类搜索直接拦掉。用户进一步拍板：**不传状态筛选就是全量**（不再由服务端补默认值），默认勾选
-  【使用中】【开售中】的 UX 交给前端实现，服务端不兜底——这样两个调用方（OES/老师弹窗）用同一套接口语义
+  【使用中】【售卖中】的 UX 交给前端实现，服务端不兜底——这样两个调用方（OES/老师弹窗）用同一套接口语义
   一致，不用按 `identification` 区分身份加特殊分支。
 - **可选性判定分三层**，都不靠"从结果里删行"（那是 2026-09-14 之前的做法，已废弃）：
   ① `PreOrderCouponWrapper` 按 `couponStatus` 算（既有）；② 新增 `revokeSelectableWhenNotOnSaleInUse`

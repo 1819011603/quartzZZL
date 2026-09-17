@@ -25,19 +25,31 @@ tags: [需求, 接口]
 ## T-43 落地（用户确认接口）
 
 - 用户明确指出：目标接口就是 `student-center` 的 `POST /renewal/pre/coupon/list`（`PreOrderCouponController#listCoupon`），即 T-36 已实现的那个膨胀券选品接口，OES「添加商品」弹窗与「老师下单弹窗」复用同一套接口。之前两轮代码排查走的 promotion-management/product-server 方向（`spuSearch` 等）是误判，本需求不涉及那条链路。
-- 用户口径：**去掉 Apollo 展示白名单**，`statusList`/`saleStatusList` **不传即全量**（不按该维度过滤）——默认勾选【使用中】【开售中】由前端决定，服务端不再补默认值；传了就原样透传给电商（原白名单是老师下单弹窗的安全网，会把 OES 想看的【审核中/已失效/停售中】也拦掉，2026-09-16 已去掉）。
+- 用户口径：**去掉 Apollo 展示白名单**，`statusList`/`saleStatusList` **不传即全量**（不按该维度过滤）——默认勾选【使用中】【售卖中】由前端决定，服务端不再补默认值；传了就原样透传给电商（原白名单是老师下单弹窗的安全网，会把 OES 想看的【审核中/已失效/停止售卖】也拦掉，2026-09-16 已去掉）。
 - ⚠️ 2026-09-16 用户已确认电商侧 `saleStatuses` 服务端过滤的已知限制**已修复**（此前 coupon-c `CouponExpandConfigRepositoryImpl#normalize()` 漏拷字段，传了等于没传），筛选可正常生效。
 - 已实现（2026-09-16，student-center，已提交 `49a2a9ab7`，已推送，部署中）：
   - `PreOrderCouponListRequest` 新增 `saleStatusList`（`List<Integer>`），与既有 `statusList` 对称；`obtainStatusList()`/`obtainSaleStatusList()` 改为「未传返回 `null`」（不再补默认值）。
   - `PreOrderCouponBiz` 删除 `displayCouponStatusConfig`/`displaySaleStatusConfig` 两个 Apollo 白名单字段及 `resolveCouponStatuses`/`parseStatusConfig`/`toQueryStatusesOrNull`；`statusList`/`saleStatusList` 直接用 `request.obtainStatusList()`/`obtainSaleStatusList()` 下发给电商（`null` 时电商按不限处理）。
-  - 新增 `revokeSelectableWhenNotOnSaleInUse`：非【开售中】的券 `selectable` 置 `false`（`PreOrderCouponWrapper` 里 `selectable` 只按 `couponStatus` 算，这一层补 `saleStatus` 维度），配合已有的 `selectableOfStatus`（couponStatus 维度）与售罄判定，三层共同保证「只能勾选使用中且售卖中」。
+  - 新增 `revokeSelectableWhenNotOnSaleInUse`：非【售卖中】的券 `selectable` 置 `false`（`PreOrderCouponWrapper` 里 `selectable` 只按 `couponStatus` 算，这一层补 `saleStatus` 维度），配合已有的 `selectableOfStatus`（couponStatus 维度）与售罄判定，三层共同保证「只能勾选使用中且售卖中」。
   - 响应字段（`couponStatus`/`couponStatusDesc`/`saleStatus`/`saleStatusDesc`）此前已存在，**未改动**，OES 列表展示无需额外开发。
   - 同步改了 `PreOrderCouponBizScopeFilterTest`：删掉引用已删 Apollo 字段的反射 setter；把几条基于「本地过滤删行」的旧断言（2026-09-14 服务端过滤重构后已经名不副实）改写成按 `selectable` 断言，并补了状态透传/全量的用例。**18 条全过**。
 - ⚠️ **行为变化提醒**：老师下单弹窗（B 端）如果前端不显式传 `statusList=[1]`/`saleStatusList=[2]`，现在会看到全部状态的券（只是不可选状态置灰）——依赖前端按原 UX 默认勾选传参，不再靠服务端兜底。
 - **2026-09-16 已在 `test-gtbg-dev-3` 实测通过**（student-center `49a2a9ab7`，pipeline 1272566，eureka UP 后验证）：
-  - 不传 `statusList`/`saleStatusList` → `total=297`，返回全量混合状态，`selectable` 按「couponStatus=1 且 saleStatus=2」正确置位（如「已失效+停售中」「使用中+停售中」「审核中+开售中」均为 `false`）。
-  - 显式传 `statusList=[1]`、`saleStatusList=[2]` → `total=48`，全部为【使用中+开售中】、`selectable=true`。
-  - 显式传 `statusList=[3]`（审核中）、`saleStatusList=[1]`（停售中）→ `total=4`，全部按请求状态返回、`selectable=false`——确认电商侧 `saleStatuses` 服务端过滤已修复生效（此前的已知限制已作废）。
+  - 不传 `statusList`/`saleStatusList` → `total=297`，返回全量混合状态，`selectable` 按「couponStatus=1 且 saleStatus=2」正确置位（如「已失效+停止售卖」「使用中+停止售卖」「审核中+售卖中」均为 `false`）。
+  - 显式传 `statusList=[1]`、`saleStatusList=[2]` → `total=48`，全部为【使用中+售卖中】、`selectable=true`。
+  - 显式传 `statusList=[3]`（审核中）、`saleStatusList=[1]`（停止售卖）→ `total=4`，全部按请求状态返回、`selectable=false`——确认电商侧 `saleStatuses` 服务端过滤已修复生效（此前的已知限制已作废）。
+- **2026-09-17 补充**：传了 `renewMasterNumber`（下单场景）时，调用方不传状态默认按【使用中】【售卖中】（不能退化成全量）；不传 `renewMasterNumber`（OES 纯搜索/选品配置）才是全量。已在 `PreOrderCouponBiz` 里用 `renewMasterNumber` 是否非空区分场景，20 条单测覆盖（含默认值、显式覆盖两种路径）。
+- **2026-09-17 售卖状态文案对齐 PRD**：`saleStatusDesc` 原文案是「开售中/停售中」，现改为 PRD 措辞「售卖中/停止售卖」（`PreOrderCouponSaleStatusEnum` 的 `desc`），状态码含义不变（1=停止售卖 / 2=售卖中）。student-center `cfd1b4bda`，已发 `test-gtbg-dev-3` 实测确认（`saleStatusDesc` 返回值已核对为「售卖中」「停止售卖」）。
+
+## 保存活动时的膨胀券状态校验（promotion-b）
+
+- **PRD 口径**：活动创建/编辑保存时只能绑定【使用中且售卖中】状态的膨胀券——这是准入校验，跟 student-center 选品接口的「展示但不可选」（`selectable`）是两回事，前端置灰绕不过后端校验。
+- **排查发现（2026-09-17 之前）**：`PreOrderActivityService#validateProductListByType` 保存链路只校验了「售罄」（`soldCount>=totalAmount`）和订金班「满班」，`couponStatus`/`saleStatus` 只用于回显补齐，从未参与准入判断——已失效、审核中或停止售卖的券只要没售罄照样能绑定保存。
+- **已实现**（promotion `6fb3da3a0`）：新增 `PreOrderActivityService#validateCouponInUseAndOnSale`，与既有 `validateCouponNotSoldOut` 共用同一次批量查询（按 `skuNumbers` 查电商），要求 `couponStatus==1`（使用中）**且** `saleStatus==2`（售卖中）才放行，否则 `PARAMS_ERROR`：「膨胀券状态不是【使用中且售卖中】，不可添加：{券名}（券ID:xxx，券商品ID:xxx）」。状态常量落在 `PreOrderActivityCouponConstant.COUPON_STATUS_IN_USE`/`COUPON_SALE_STATUS_ON_SALE`，与 student-center 侧枚举口径一致。
+- **2026-09-17 已在 `test-gtbg-dev-3` 实测通过**（promotion-b pipeline 1272838，eureka UP 后验证，走 `PreOrderActivityService#create` 反射调用）：
+  - 绑定当前 `saleStatus=1`（停止售卖）的真实券「案4券v5」→ 保存被拒绝，报错与设计一致，未创建活动。
+  - 绑定当前 `couponStatus=1`+`saleStatus=2` 的真实券「转班券」→ 创建成功（活动号 `579925438785155072`），验证后已 `delete` 清理。
+  - ⚠️ 顺带发现：活动 `579607430990692352`（zzl-膨胀券-案系列-0915，已发布/进行中）当前绑定的 3 张券 `saleStatus` 都已回落成 `1`（停止售卖）——若该活动之后要编辑保存，会被新校验拦住，需要先把这 3 张券恢复成售卖中，或换券。
 
 ## 跨模块方法
 

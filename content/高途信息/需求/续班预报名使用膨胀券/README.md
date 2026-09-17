@@ -14,7 +14,7 @@ branches:
   - student-center:feature-xuban-pre
   - promotion-management:feature-xuban-pre
   - student-data:feature-xuban-pre
-updated: 2026-09-16
+updated: 2026-09-17
 tags: [需求]
 ---
 
@@ -47,7 +47,7 @@ tags: [需求]
 - 券范围唯一键为 `uk_act_grade_subject(activity_number, grade_code, subject_code)`：活动内年级学科组合唯一，同一张券可跨活动使用。
 - 券不参与满赠；落地页统一使用 `/preSignUp`，不按活动形式拆 path。
 - 券信息实时读取 coupon-a，不落业务库、不使用 mock；`couponStatusDesc` 由本地枚举维护。
-- 默认只展示 `couponStatus=1`（使用中）且 `saleStatus=2`（开售中）的券；任一状态为空不展示。
+- 默认只展示 `couponStatus=1`（使用中）且 `saleStatus=2`（售卖中）的券；任一状态为空不展示。
 - 状态白名单由 Apollo 配置。student-center 将 `couponStatuses`/`saleStatuses` 透传 coupon-a 服务端过滤，不做分页后本地过滤。
 - B 端膨胀券 tab 始终展示。`renewMasterNumber` 只控制续班计划范围过滤；不传时仍执行状态过滤。
 - **券匹配是「两者」不是「三者」**（2026-09-16 按 PRD 订正）：券配置的年级学科 × 后置班年级学科，
@@ -68,6 +68,8 @@ tags: [需求]
   实现上是同一个方法两种签名：`listDisplayableCoupons(planNumber)` 计划级 /
   `listDisplayableCoupons(planNumber, userId)` 学员级，`narrowToInClazzCourses` 仅 C 端调用。
 - 预警链路（`InspectService`）**不加**学员维度，PRD 规定预警按「前置班级+后置班级」统计。
+- 券范围按 **(券, 活动, 续班计划) 三元组**返回：一张券可挂多个活动，一个活动可绑多个续班计划，
+  两者都是合法形态，不做收敛。student-data 侧唯一键无活动/计划维度，撞键时年级学科取并集。
 - `creator` 返回 CAS displayName；电商给工号后，经 teacher-basic 取 accountId，再查 CAS，失败时保留工号。
 - promotion-b 保存活动时在事务内调用 product-b `POST /feign/preOrderActivity/couponScope/save` 写范围；失败回滚活动。
 - 售罄券和满班课程由 promotion 保存接口服务端拦截；`capacity=-1` 表示不限班容，必须放行。
@@ -80,10 +82,10 @@ tags: [需求]
 | | |
 |---|---|
 | 阶段 | 开发中；核心 B/C 链路已打通并于 2026-09-16 完成**学员维度口径订正**的端到端验证，剩余边界验证 |
-| 进度 | T 8/13 · R 0/0 · C 0/0 |
+| 进度 | T 9/14 · R 0/0 · C 0/0 |
 | 部署泳道 | 本需求服务 `test-gtbg-dev-3`；coupon-a `test-eco-7`，两者均属于 dev 逻辑环境 |
 | 当前卡点 | 缺少真实售罄券（40 张可用券全部未售罄）；缺少有限班容且已满班的班级；下单需 `test` 泳道但该泳道无本需求代码；**「券与订金班取并集」零数据覆盖，需造数** |
-| 最近更新 | 2026-09-16（T-43）：PRD 追加 OES 选品弹窗需求（筛选区/列表加使用状态与售卖状态），复用 `/renewal/pre/coupon/list`（未新建接口）。去掉 Apollo 展示白名单，`statusList`/`saleStatusList` 改为**不传即全量**（默认勾选交给前端决定）；非「使用中且售卖中」的券展示但 `selectable=false`（新增 `revokeSelectableWhenNotOnSaleInUse` 补售卖状态维度判定）。student-center `49a2a9ab7`，已发 `test-gtbg-dev-3` 并实测：不传筛选 `total=297` 全量且 selectable 正确；显式传状态筛选正确透传（含确认此前记录的 coupon-c `saleStatuses` 过滤失效问题已修复）。详见 [[apis]]「T-43 落地」、[[tasks]] T-43。<br>2026-09-16：按 PRD 与产品流程图订正券匹配口径并完成端到端验证。**两处改动**：①删掉前置学科过滤（匹配只有「券范围 × 后置年级学科」两者，前置仅作定位起点）——原实现会在**扩科**场景漏券，而扩科正是膨胀券主要用途；②券范围由「计划级」改为「学员级」（该学员在当前计划前置班级里的全部在读班），`/renewal/pre/coupon/list` 新增**必填** `userId`。在读数据源选 clazz-distribution 花名册而非 student-data 预报名表（后者 `is_del=0` 不等于在读、且只在已进后置班时落行，会漏掉目标人群），故 **student-data 一行未改**。cart 的 C 端同步改调 product-c 新接口，与 B 端同源，删掉原「计划目标年级」近似实现。四服务已发 `test-gtbg-dev-3`，8 个场景验证通过，订金班链路实测未受影响，详见 [[verify]]。<br>2026-09-15（三）：6 个仓库 WIP MR 已建（promotion 走 **master**，其余走 release；order 与 promotion-app 不在本期范围），链接见 [[links]]，口径见 [[tasks]]。<br>2026-09-15（二）：按需求第 75 行把 `presaleOrderTime` 口径从「取最早」订正为「取最新」（6 处 `min→max`，大小班 × 增量/全量 4 个文件，4 个单测同步翻转）；并发现「券与订金班取并集」规则**零数据覆盖**（两表按学员+学年+学期交集 0 行），造数方案与回溯用法已写入 [[verify]]，见 T-38/T-39。<br>2026-09-15（一）：`backDwsPresaleHandler` 券回溯链路端到端跑通并在 ES 验证生效（`presaleSubject`/`gradePresaleSubject` 有值）。过程中定位并修复 5 层问题：product-b 缺 `listScopeByCouponSkuNumbers` 接口、controller 未在实现类重声明 `@RequestBody`/`@PostMapping` 导致静默退化成表单绑定、测试活动误绑两个续班计划、`listRenewalMasterByNumbers` 未传前置课关系导致 `preCourseList` 恒空、course-center 测试后置课的 `calculate_renewal_type` 配置错误。前三处已随 product-server/student-data 提交到 `feature-xuban-pre`；后两处是 product-server 既有代码的通用 bug，修复已提交到本分支但**尚未评估是否要 cherry-pick 到 master**，见 [[changelog]] 与下一步。 |
+| 最近更新 | 2026-09-17：售卖状态文案对齐 PRD，`saleStatusDesc` 由「开售中/停售中」改为「售卖中/停止售卖」（`PreOrderCouponSaleStatusEnum`），状态码含义不变。student-center `cfd1b4bda`，已发 `test-gtbg-dev-3` 实测确认返回值。<br>2026-09-17（T-44）：排查发现 promotion-b 保存活动时从未校验券状态（只查过售罄/满班），已失效/审核中/停止售卖的券只要没售罄就能绑定保存，前端置灰挡不住。新增 `validateCouponInUseAndOnSale`，要求 `couponStatus=1` 且 `saleStatus=2` 才放行。promotion `6fb3da3a0`，已发 `test-gtbg-dev-3`，反射调用实测：停止售卖真实券被拒绝、使用中+售卖中真实券创建成功（已清理）。⚠️ 现有测试活动 `579607430990692352` 绑的 3 张券售卖状态都已变停止售卖，之后编辑会被拦，需先恢复。详见 [[apis]]「保存活动时的膨胀券状态校验」、[[tasks]] T-44。<br>2026-09-16（T-43）：PRD 追加 OES 选品弹窗需求（筛选区/列表加使用状态与售卖状态），复用 `/renewal/pre/coupon/list`（未新建接口）。去掉 Apollo 展示白名单，`statusList`/`saleStatusList` 改为**不传即全量**（默认勾选交给前端决定）；非「使用中且售卖中」的券展示但 `selectable=false`（新增 `revokeSelectableWhenNotOnSaleInUse` 补售卖状态维度判定）。student-center `49a2a9ab7`，已发 `test-gtbg-dev-3` 并实测：不传筛选 `total=297` 全量且 selectable 正确；显式传状态筛选正确透传（含确认此前记录的 coupon-c `saleStatuses` 过滤失效问题已修复）。详见 [[apis]]「T-43 落地」、[[tasks]] T-43。<br>2026-09-16：按 PRD 与产品流程图订正券匹配口径并完成端到端验证。**两处改动**：①删掉前置学科过滤（匹配只有「券范围 × 后置年级学科」两者，前置仅作定位起点）——原实现会在**扩科**场景漏券，而扩科正是膨胀券主要用途；②券范围由「计划级」改为「学员级」（该学员在当前计划前置班级里的全部在读班），`/renewal/pre/coupon/list` 新增**必填** `userId`。在读数据源选 clazz-distribution 花名册而非 student-data 预报名表（后者 `is_del=0` 不等于在读、且只在已进后置班时落行，会漏掉目标人群），故 **student-data 一行未改**。cart 的 C 端同步改调 product-c 新接口，与 B 端同源，删掉原「计划目标年级」近似实现。四服务已发 `test-gtbg-dev-3`，8 个场景验证通过，订金班链路实测未受影响，详见 [[verify]]。<br>2026-09-15（三）：6 个仓库 WIP MR 已建（promotion 走 **master**，其余走 release；order 与 promotion-app 不在本期范围），链接见 [[links]]，口径见 [[tasks]]。<br>2026-09-15（二）：按需求第 75 行把 `presaleOrderTime` 口径从「取最早」订正为「取最新」（6 处 `min→max`，大小班 × 增量/全量 4 个文件，4 个单测同步翻转）；并发现「券与订金班取并集」规则**零数据覆盖**（两表按学员+学年+学期交集 0 行），造数方案与回溯用法已写入 [[verify]]，见 T-38/T-39。<br>2026-09-15（一）：`backDwsPresaleHandler` 券回溯链路端到端跑通并在 ES 验证生效（`presaleSubject`/`gradePresaleSubject` 有值）。过程中定位并修复 5 层问题：product-b 缺 `listScopeByCouponSkuNumbers` 接口、controller 未在实现类重声明 `@RequestBody`/`@PostMapping` 导致静默退化成表单绑定、测试活动误绑两个续班计划、`listRenewalMasterByNumbers` 未传前置课关系导致 `preCourseList` 恒空、course-center 测试后置课的 `calculate_renewal_type` 配置错误。前三处已随 product-server/student-data 提交到 `feature-xuban-pre`；后两处是 product-server 既有代码的通用 bug，修复已提交到本分支但**尚未评估是否要 cherry-pick 到 master**，见 [[changelog]] 与下一步。 |
 
 ## 下一步
 
@@ -99,14 +101,15 @@ tags: [需求]
 10. 找马胜确认 student-data 侧的一处调用签名改动（`PreOrderActivityCouponAclServiceImpl` 改传裸 `List<Long>`）无异议。
 11. 评估 `RenewalServiceImpl#listRenewalMasterByNumbers` 补前置课关系、`PreOrderCouponFeignController` 补 `@RequestBody`
    这两处修复要不要从 `feature-xuban-pre` 单独 cherry-pick 到 master（是通用 bug，不止本需求受影响）。
-12. 排查是否还有其它测试活动像 `578842182125903872` 一样误绑了多个续班计划（`renewal_link_activity` 同 `activity_number`
-   出现多行 `is_del=0`），避免同样的歧义复现。
+12. ~~排查是否还有其它测试活动误绑了多个续班计划~~ —— 2026-09-17 订正：**一个活动绑多个续班计划是合法数据形态**，
+   不是误绑（线下实测 11 个活动如此，最多绑 3 个）。代码已改为每个计划各出一条，不再只认首个，见 [[changelog]]。
 
 ## 待确认
 
 - ~~PRD 的“每个膨胀券只能用于一个预报名活动”与当前“允许跨活动使用”冲突~~ —— 2026-09-16 已确认：
   PRD 只是那么写，**设计上有意支持跨活动复用**，唯一键保持不变，不实现该限制。
 - 一个前置班级可脱离续班计划配置时，如何保证只属于一个续班计划。
+  （注：活动侧「一活动多计划」已确认合法并支持，与此条是两件事。）
 - 新续班计划活动与老非续班计划活动并存时是否取并集，等待马胜确认。
 - `showDiscountAmount` 的膨胀券展示口径。
 - 膨胀券专属背景图和 reportCode 最终值。
