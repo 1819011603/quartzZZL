@@ -7,6 +7,33 @@ tags: [需求, 日志]
 
 > 只保留仍能解释当前设计的决定。最终口径以 README/apis/verify/tasks 为准。
 
+## 2026-09-17 · 花名册回溯默认带上膨胀券，券清单按班级推导
+
+**背景**：花名册回溯（`backDwsPresaleHandler`/`backSmallDwsPresaleHandler`）原先券部分是**选做**的：
+必须手填 `couponSkuNumbers` 才跑，不填就只回溯订金班。运维想给一批班补券数据得先自己枚举券商品号。
+
+**决定**：券回溯**默认开启**，`couponSkuNumbers` 从「开关」降为**可选过滤器**。
+不传时按「**班级 → 续班计划 → 计划下可展示券**」自动推导券清单。
+
+**为什么不用「按 userId 查该学员全部订单项」**：order 侧只有「学员 ∩ 商品」的收窄查询，
+虽然 SDK 有 `listByUserId`，但那要拉全量订单项再内存过滤，且属于动 order 契约。
+班级 → 计划 → 券 这条链路上的数据本来就是「这个班该卖哪些券」的权威来源，更准、更省。
+
+**券清单取计划级（不按学员收窄）**：`listDisplayableCoupons` 的 `userId` 传了会退化成
+「学员在读前置课命中的券」，而花名册回溯面对整班，要的是计划能卖的全部券；所以 ACL 方法
+`listCouponSkuNumbersByRenewal` 干脆不暴露 userId，避免调用方误传。
+
+**结果语义**：落库与刷花名册是「**订金班 + 券**」的并集 —— 并集本身由
+`PresaleSubjectServiceImpl#refreshByUserTermYear` 既有合流逻辑完成，本次不改合流。
+
+**公共骨架**：两个 job 流程一致、只差「订金班那半用哪个服务」，抽到 `PresaleBackfillHelper`，
+以回调传入 `dealSubclazzStudent`，避免两套实现日后走偏。
+
+**兼容**：老数组格式 `[123]` 仍可解析，但语义从「只回溯订金班」变为「默认带上券」；
+要纯订金班回溯用 `{"clazzNumbers":[123],"backCoupon":false}`。
+
+**提交**：student-data `feature-xuban-pre` `cd56fb484`。
+
 ## 2026-09-17 · 膨胀券后置课改取「续班关系」，不再复用订金班的预报名关系
 
 **口径**：`CourseRenewalRelationMapVO#calculateRenewalType` 中 **1 = 续班关系（计算可续）、

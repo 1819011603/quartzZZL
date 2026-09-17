@@ -643,6 +643,34 @@ ES `ads_small_clazz_user_index_v4` doc `551005295197935616-7542297028` 实测：
 券部分纯串行、每个学员多一串 RPC，几千人的大班先拿单个班验证再放量
 （限速 `back.dws.presale.coupon.batch.sleep.millis`，默认 200ms，大小班两个 job 共用此 key）。
 
+## 花名册回溯默认带上膨胀券（2026-09-17 新增，已验证）
+
+**改动**：花名册回溯（`backDwsPresaleHandler` 大班 / `backSmallDwsPresaleHandler` 小班）
+**默认同时回溯膨胀券**，落库与刷花名册是「订金班 + 券」的并集。券清单不再要求手填：
+
+```
+班级 → 续班计划（RenewalMasterAclService.queryRenewalMasterInfo(clazz)）
+     → 计划下可展示券（listCouponSkuNumbersByRenewal → 下游 /c/renewMaster/listDisplayableCoupons，userId 不传=计划级）
+```
+
+- `BackPresaleParam` 新增 `backCoupon`（缺省 `true`）；`couponSkuNumbers` 降为**可选过滤器**，
+  传了就不再自动推导。显式 `{"clazzNumbers":[...],"backCoupon":false}` 退回纯订金班回溯。
+- 两个 job 的公共骨架抽到 `PresaleBackfillHelper`，差异只有「订金班那半用哪个服务」。
+- commit：student-data `cd56fb484`，已发 `test-gtbg-dev-3`（pipeline `1273791`，pod `student-data-5678cd8799-rc869`）。
+
+**实测**（老数组格式，即默认开券）：
+
+| job | 入参 | 推导出的券清单 |
+|---|---|---|
+| `backDwsPresaleHandler`（6648） | `[578667321965428736]` | 计划 `578668076965308416` → `[579603771085060097]` |
+| `backSmallDwsPresaleHandler`（8611） | `[551005295197935616]` | 计划 `556560317436436480` → `[579434436486002689]` |
+
+小班那批里 `7542297028` 命中：`backfillByUser | deal paid` → `dealCouponPaid | saved, records size:1`，
+券记录（id 94）刷新成功。大班那批该券无人购买，全部 `无命中的已支付券订单项，跳过`（属预期）。
+
+⚠️ **本 job 仍只能填对应班型的班级号**（大班 job 填大班号、小班 job 填小班号），
+合并入口会往错误的花名册表插脏行。
+
 ## 反射桥地址
 
 | 服务 | 地址 |
@@ -820,3 +848,14 @@ VALUES (578668076965308416, 'ADMIN', '109942', 0);
 
 **触发**：`POST /b/renewal/insect/send`（无参，遍历全部「进行中/待开始」计划，
 会给其它计划的负责人也发信，注意打扰面）。
+
+网关地址（B 端，浏览器/Cookie 走代理）：
+`POST https://test-fuwu.baijia.com/bgwApi/product-b/b/renewal/insect/send`，header `traffic-env`。
+**无定时、只能手动触发**，`InspectService#send` 也不打「已发送」日志（只有失败才 `log.error`），
+所以「没收到邮件」先确认**有没有调过这个接口**（判据：日志里有没有 `postCas` 解析收件人）。
+
+**2026-09-17 实测**：本需求计划 `578668076965308416` 满足全部发送条件
+（status=2 进行中、`is_test_data=0`、`questionnaire_inspect` id 467/468 均 `activity_type=2` 且
+`inspect_status=0`），但**此前从未调用过 `send`**，故一直没发。手动触发后返回 `code:0`，
+日志 `UCenterService | postCas ... code=200`（4 次，逐个计划解析收件人）成功；
+该计划 ADMIN 邮箱解析结果为张梦26/唐稳01/张泽灵/弓雪萌（`zhangzeling@gaotu.cn` 在其中）。
