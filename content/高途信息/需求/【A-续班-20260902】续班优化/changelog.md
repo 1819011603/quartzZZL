@@ -7,6 +7,19 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-09-18
+
+### 🤖 Claude
+- 深挖【问卷匹配优化】现状：定位到真正匹配实现不在 student-data/student-center，而在 **product-server**（即 Feign 名 `product-b`）——绑定层 `QuestionnaireService#match:928`、记录归属层 `ComputeUserService` 规则链(`OriginUser`/`Mobile`/`Name`/`RelationId`，全部限定班级内)、跨班兜底 `QuestionnaireRecordService#dealNotExistedComputeUserId:253`（混候选取第一个 `subclazzDTOS.get(0)`）。订正原 README「6级规则本仓未实现需新建匹配服务」的表述：规则链已存在且 Apollo 可插拔，改造是扩规则而非从零新建。
+- 补 teacher-tool 侧：明细表 `user_questionnaire_record` 无续班计划字段，查询 SQL 只按 `type+project_number+clazz_number+user_id` 过滤；手工绑定只能改 user 不能改 clazz。
+- 调课调班同步订正：student-data `SubclazzUserSyncConsumer` 已消费 `TAG_Subclazz_Transfer`，但只刷续班状态/科目，未刷问卷字段。
+- 用户提供飞书分析文档《续班问卷跨班错配问题：现状、成因与产品解法》，与代码结论互相印证（其描述的"扩范围+混候选+取第一个"即 `dealNotExistedComputeUserId`）；已登记 links。可借鉴点：根因论据、6级规则仅"少猜错"不能归零、"待认领+改派"与存量修复是需求未覆盖项。
+
+### 👤 我
+- 要求弄清【问卷匹配优化】的现状/改动/影响/代码改动，并提供此前写的跨班错配分析文档供借鉴。
+
+---
+
 ## 2026-09-17
 
 ### 🤖 Claude

@@ -4,7 +4,7 @@ aliases: [续班优化(秋季批), 续班问卷匹配优化, 续班退费AI模�
 status: 需求评审
 owner: zhangzeling
 branches:
-updated: 2026-09-17
+updated: 2026-09-18
 tags: [需求]
 ---
 
@@ -53,7 +53,7 @@ tags: [需求]
 | 进度 | T 5/5（代码定位）· R 0/0 · C 0/0 |
 | 部署泳道 | 未部署 |
 | 当前卡点 | 数据落表需数仓侧先定落表方式（本仓已有直连 Doris 先例，不止 MQ 一条路）；续班确认表金额口径需电商侧确认；扩科"在读"过滤的3个条件需新建过滤器 |
-| 最近更新 | 2026-09-17：核对PRD原文+重跑两仓库代码定位，订正多处代码结论（详见 changelog），待初评 |
+| 最近更新 | 2026-09-18：定位到真正匹配实现在 product-server（规则链+跨班兜底），补 teacher-tool 明细表结论，订正调课调班同步现状；已登记跨班错配分析文档 |
 
 ## 下一步
 
@@ -83,8 +83,12 @@ tags: [需求]
 |---|---|---|
 | student-data | 未建 | `infrastructure/acl/QuestionnaireAclService`(+Impl) 封装问卷中心调用；`app/service/syncdata/RenewalQuestionnaireStatusServiceV2`(`buildData:73` 写 `renewalQuestionnaireStatus`) 计算花名册字段；**问卷状态刷新共有 4 条路径**，`facade/mq/renewal/RenewalQuestionnaireConsumer`（topic `gaotu_product_renew_master_event_test`，三个 tag 全是续班计划/前置课程变更、无调班）只是其中之一，另有 `DwsRenewalQuestionnaireConsumer`(topic `product-renewal-questionnaire-record-event-test`)、`AdsLessonUserMultipleOrderConsumer`(触达回执 `reachSceneCode=renewal_send_question`)、`SubclazzUserBcpJobTemplate`(定时 basicQuery 重算 + `repairData` 直写 `ads_large_subclazz_user_index`)；`infrastructure/dao/entity/StudentSubclazzQuestionnaire` 是**孤立实体**（字段 userId/clazzNumber/subclazzNumber/teacherNumber/accountId/paperId），全仓零引用、无 Mapper/DDL，**不是实际落库路径** |
 | student-center | 未建 | `domain/service/roster/RenewalService#queryQuestionnaireInfo:1925`（调 `questionnaireFeignAdapter.match()`，Redis key `QUESTIONNAIRE_MATCH_KEY + renewalPlanId + ":" + clazzNumber`）是入口**之一**，另一入口 `#questionnaireTitles:566` → `RenewalQuestionnaireAclServiceImpl#queryQuestionnaireMatchResult:67-73`（同调 match，无缓存）；`#getRenewalPlanId:1902`（一班级绑多续班计划直接抛异常）；**多次提交去重在 `#pageQuestionnaire:746`（`:782` 用 `toMap(RenewalQuestionnaire::getUserId,...,(v1,v2)->v1)`）**，不是 `#pageQueryQuestionnaire:889`；`job/mq/consumer/ons/questionnaireListener`（问卷提交，topic `gaotu_questionnaire_add_answer_test`）；`StudentQuestionnaireBehaviorListener`（问卷完成，topic `teacher_tool_questionnaire_finish_test`） |
+| **product-server**（=Feign 的 `product-b`，真正匹配实现） | 未建 | ①**绑定层** `domain/service/renewal/questionnaire/QuestionnaireService#match:928`：按 `clazzNumber→courseNumber` + `renewalNumber` 查 `renew_master_course_relation` 取 `questionnaireNumber`，返回 bizId+name（`matchResult:962` 无 project 名，student-data 侧用这个）。②**记录归属层** `QuestionnaireRecordService#dealCDSMsg:145`：`ComputeUserService#compute:21` 按 Apollo `compute.rule.name.list`（默认 `[originUserRuleService,mobileRuleService,nameRuleService,relationIdService]`）顺序跑规则，**全部限定在链接绑定班级内**：`OriginUserRuleService`(CDS userId∈班级学员)、`MobileRuleService`(报名手机号∈班级)、`NameRuleService`(姓名∈班级，同名取 userId 小)、`RelationIdService`(亲属手机号∈班级，取 userId 小)。③**跨班兜底** `QuestionnaireRecordService#dealNotExistedComputeUserId:253`：把 originUserId/手机号反查(`.get(0)`)/亲属ID/姓名模糊查询(limit 20) 混成一个 userId 集合 → 查这些人在问卷前置课下的小班 → 按 `assistantNumber.accountId == bindData.accountId` 选班，**选不到就 `subclazzDTOS.get(0)` 取第一个**(:322-325)；开关 `across.clazz.questionnaire.submit.switch:122`。这正是飞书那篇「跨班错配」文档描述的根因。④问卷记录经 MQ `product-renewal-questionnaire-record-event-test` 发出 |
+| **teacher-tool** | `feature-xuban-multi-clazz` | 问卷明细存储 `user_questionnaire_record`（字段 `questionnaire_id/type/user_id/clazz_number/project_number/account_id/questionnaire_group_id`，**无续班计划字段**）；查询 `UserQuestionnaireRecordDaoImpl#pageQuestionnaireInfoMultiByClazz:147` → `UserQuestionnaireRecordMapper.xml#queryRecordsMultiByClazz:114`，SQL 过滤维度 = `type + project_number(问卷bizId) + clazz_number + user_id`（「问卷+班级」硬校验，「辅导老师」由 student-center 传本人带班 userId 范围实现，**无续班计划条件**）；`QuestionnaireServiceImpl#bindUserQuestionnaire:232`/`manualQuestionnaireRecordUser`(product-server) 手工绑定**只能改 user、不能改 clazz** |
 
-**设计草案**：问卷匹配范围收紧改造点在 student-center `RenewalService#queryQuestionnaireInfo` 及下游，需新增按辅导老师维度的判断（现在完全没有）。匹配优先级6级规则**本仓未实现**（真正 match 在 product-b/teacher-tool，不在本仓），需新建匹配服务（可仿`CommonRuleFilter`风格）。调课调班同步**不需要新建事件**：调班事件源已存在（topic `gaotu_subclazz_student_event_test` + `TAG_Subclazz_Transfer`，student-data 已在消费），student-center 侧只是 `SyncSubclazzStudentListener` 未订阅该 tag（现只订阅 Enter/Quit），改造即补订阅后刷新花名册问卷字段；注意A/B必须绑定同一问卷才共享。
+**设计草案**：匹配范围收紧 = 在 product-server 记录归属层把「续班计划」变成硬约束、并把 `dealNotExistedComputeUserId` 的"混候选取第一个"替换成 PRD 的**确定性 6 级优先级**（现状 4 条规则全部"班级内"，新规则每条再拆"同班级/同续班计划"两级：(1)(2)手机号、(3)(4)姓名、(5)(6)亲属手机号，最高优仍是 CDS userId=班级学员 userId）。`ComputeUserService` 的 Apollo 规则链天然支持插拔，可新增 plan 级规则或给规则加 scope 参数。绑定层 `QuestionnaireService#match` 已按 renewalNumber 过滤，无需大改。调课调班同步**不需要新建事件**：调班事件源已存在（topic `gaotu_subclazz_student_event_test` + `TAG_Subclazz_Transfer`），student-data `SubclazzUserSyncConsumer:116` 已在消费但只刷 `renewalStateStatus/renewalSubject/renewalExpansionSubject`（`transferInsertFieldNames:82`），**未刷问卷字段**；student-center `SyncSubclazzStudentListener` 只订阅 Enter/Quit、未订阅 Transfer。要做的是：调班后对旧班(A)+新班(B)分别重算/回写续班问卷字段（ES `renewalQuestionnaireStatus`/`renewalQuestionnaireSubmitTime`），并让 teacher-tool 明细在 A、B 各出一行（现有 `DwsRenewalQuestionnaireConsumer#sendTeacherToolQuestionMsg:544` 已按 share clazz 拆多行+mock uniqueBizId 去重，可复用）。注意A/B必须绑定同一问卷才共享。
+**可 0 开发止血**：`across.clazz.questionnaire.submit.switch:false` 即可停用"取第一个"兜底，提交落 `computedUserId=0` 的未匹配记录（`clazzNumber` 仍是链接班，明细可按 `queryNotMatched` 展示并手工绑定）——即需求"收紧范围"的最小可用形态。
+**多班 fan-out 已存在**：`getShareCourseNumbers:513` 只取同一 `renewMasterNumber` 下的 preCourseNumbers，下游按 `shareCourseNumbers`+`queryShareSubclazzList` 刷所有同计划同问卷班级的状态/花名册，所以"同计划多班都匹配"的下游链路基本现成，主要缺口在"匹配到谁"与调班后旧班(A)的回写。
 
 ### 子需求2 小班续班主讲数据+下单优化
 
@@ -131,7 +135,7 @@ tags: [需求]
 
 | 子需求 | Apollo | ES | MySQL DDL | MQ | 代课接口权限 |
 |---|---|---|---|---|---|
-| 问卷匹配优化 | 待定 | 待定(花名册续班问卷字段) | 待定 | 待定(调班事件，student-center 需补订阅) | 待定 |
+| 问卷匹配优化 | 待定(可能新增 plan 级规则开关) | 是(花名册续班问卷字段需在调班时重算) | 否(teacher-tool 表无续班计划字段，若硬约束需加列) | 否(调班事件已存在且 student-data 已消费，需扩 `transferInsertFieldNames` 重算问卷字段) | 待定 |
 | 主讲数据+下单优化 | 待定 | 待定(统计指标字段) | 待定 | 待定 | 待定 |
 | 扩科推荐优化 | 否(预计) | 待定 | 待定(product-server 侧续班计划新增【推荐排除】字段) | 否 | 待定 |
 | 数据落表 | 待定 | 待定 | 待定 | 待定(走MQ新增；走Doris直写则无) | 否 |

@@ -17,6 +17,7 @@ tags: [需求, 链接]
 | PRD | 【PRD】小班课续班服务-问卷（问卷匹配优化-当前逻辑参考） | https://gaotuedu.feishu.cn/wiki/Fpyqw45MqiImJxkXjLzcNcO1n8A | 2026-09-17 |
 | PRD | 小班课字段+指标（主讲数据+下单优化-主讲角色统计指标6-9行） | https://gaotuedu.feishu.cn/wiki/YdvUwruDDiSKNzkwKsWcnnAqnCg | 2026-09-17 |
 | PRD | 【PRD】扩科推荐（扩科推荐优化-现状逻辑参考） | https://gaotuedu.feishu.cn/wiki/ZForwjdptifaaqkP2aFckFYWnWh | 2026-09-17 |
+| 分析文档 | 续班问卷跨班错配问题：现状、成因与产品解法（TAPD #1131170363001466791，根因=product-server `dealNotExistedComputeUserId` 混候选取第一个） | https://gaotuedu.feishu.cn/wiki/DzAfwt4H5i5ILtkX6cHcx4Nznnd | 2026-09-18 |
 
 ## 开发与测试
 
@@ -43,6 +44,7 @@ tags: [需求, 链接]
 - 数据落表 wiki token：`D89iwm9U1iL6vWkEOgwcg8otnqc`（document_id: `InPJdfxzcol34ixhLfFcw1DKnsg`）
 - AI模块配置化 wiki token：`AH5ewehsEiXohfkDgQEcKQjHnad`（document_id: `Cea4d57Ueo5uoxxwiEvcLjmNn0c`）
 - PRD wiki token：问卷 `Fpyqw45MqiImJxkXjLzcNcO1n8A`、小班课字段+指标 `YdvUwruDDiSKNzkwKsWcnnAqnCg`、扩科推荐 `ZForwjdptifaaqkP2aFckFYWnWh`
+- 跨班错配分析文档 wiki token：`DzAfwt4H5i5ILtkX6cHcx4Nznnd`（document_id: `ZzZEdjMQsoFWisxVJz3cyzTfnGQ`）
 
 ## 只存链接，不镜像明细
 
