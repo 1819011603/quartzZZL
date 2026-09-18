@@ -12,7 +12,8 @@ tags: [需求]
 
 > **本目录导航**：[[links|🔗 链接中心]] · [[tasks|✅ 当前任务板]] · [[changelog|📜 决策摘要]]
 > 技术方案在飞书反讲文档里（见 [[links]]），本地不留副本。
-> 飞书归档（我建，个人空间）：需求目录 https://gaotuedu.feishu.cn/wiki/VcOgwHkfeijOM5knBiAcbrLlnY6 → 需求总入口 https://gaotuedu.feishu.cn/wiki/Qox8wFcmHiXBgnkxFBtcd82gnsh → 5 个子页面（问卷匹配 / 主讲数据+下单 / 扩科推荐 / 数据落表 / AI模块配置化，均为「现状·改动·风险」）
+> 飞书归档：需求目录 https://gaotuedu.feishu.cn/wiki/VcOgwHkfeijOM5knBiAcbrLlnY6 → 需求总入口 https://gaotuedu.feishu.cn/wiki/Qox8wFcmHiXBgnkxFBtcd82gnsh → **技术反讲（1/2/5 合并）https://gaotuedu.feishu.cn/wiki/EC45wOefUi0buMkO7O0cipp9nEc**（挂在需求总入口下面）。
+> ⚠️ 此前 5 个「现状·改动·风险」子页面已删除（2026-09-18），由反讲替代；扩科/数据落表结论只在本地 README。
 > 续接这个需求：读完本文件即可。
 
 ## 一句话
@@ -26,24 +27,24 @@ tags: [需求]
 | 优先级 | 子需求 | 一句话 | 子项P级 |
 |---|---|---|---|
 | 1 | [问卷匹配优化](#子需求1-问卷匹配优化) | 问卷匹配范围收紧+6级匹配优先级规则+调课调班同步问卷数据 | 匹配逻辑优化 未标 / 调课调班同步 P1 |
-| 2 | [主讲数据+下单优化](#子需求2-小班续班主讲数据下单优化) | 续班服务按角色(主讲/班主任)展示数据；快速加购组合商品；续班确认表 | 主讲数据 P0 / 加购组合商品 P0 / 续班确认表 P1 |
+| 2 | [小班续班适配主讲](#子需求2-小班续班主讲数据下单优化) | 小班续班服务按角色(主讲/班主任)展示数据；**2026-09-18 范围缩小：下单优化(快速加购组合商品/续班确认表)不做** | 主讲 P0 |
 | 3 | [扩科推荐优化](#子需求3-续班扩科推荐优化) | 续班计划新增【推荐排除】，避免大小班在读学员被错误推荐已在读学科 | — |
 | 4 | [数据落表](#子需求4-续班退费数据落表) | 续班/退费数据落表到大数据支持导数分析 | — |
 | 5 | [AI模块配置化](#子需求5-续班退费ai模块配置化) | 续班AI/退费AI按部门配置功能模块开关，降本 | — |
 
 - **给谁用**：主讲、班主任(二讲)；学部运营（数据落表供其导数分析）。
 - **判定做完的标准**：5个子需求各自评审通过、反讲、开发、上线，以子需求粒度跟踪（见 [[tasks]]）。
-- **明确不做**：所有子需求历史数据均不回溯/不重算（各子需求已定共识里逐条注明）。
+- **明确不做**：**本批只做子需求 1/2/5；子需求3(扩科推荐)、4(数据落表)不做**；子需求2 的**下单优化(快速加购组合商品 P0、续班确认表 P1)也不做**，只做"小班续班服务适配主讲"（2026-09-18 用户确认）。所有子需求历史数据均不回溯/不重算（各子需求已定共识里逐条注明）。
 
 ## 已定共识
 
 - 5个子需求彼此独立，互不依赖，可并行推进，不要求同批上线（2026-09-17 拆分归档时确认，如需求方另有说明再更正）。
 - 问卷匹配优化：问卷匹配范围调整为【问卷+续班计划+班级+辅导老师】，问卷和续班计划必须完全匹配；历史数据不回溯（2026-09-05 PRD）。
 - 问卷匹配·调课调班同步：前提是班级A/B绑定同一份续班问卷（不同问卷不共享）；填过问卷则A/B两班明细（2条，按班级信息区分）+花名册都展示，先填后调/先调后填均成立；全程未填则A/B都无数据。备注 P1（2026-09-05 PRD）。
-- AI模块配置化：未配置的模块要同时做到"前端不可用+AI不分析"，不是只隐藏前端；续班AI 8个 + 退费AI 6个，共14个模块（2026-09-05 PRD）。
+- AI模块配置化：未配置的模块要同时做到"前端不可用+AI不分析"，不是只隐藏前端；续班AI 8个 + 退费AI 6个，共14个模块（2026-09-05 PRD）。**2026-09-18 产品确认：未配置的模块不展示（隐藏）**，即不做"保留可查"。**2026-09-18 代码核实**：`AiAppSceneEnum` 实为 6 个(1用户画像/2沟通摘要/3沟通建议评分/4服务建议评分/5未续跟进/6已续总结)，PRD 的 8 个明细本地无存档；退费侧 `RefundReasoningEnum` 5 个 + `RefundPredictionService` 1 个 = 6 个，数量吻合。**续班AI 8 个已定（2026-09-18 用户确认）= 代码 6 个 + 分层原因(`levelReasonAndHistory`) + 意向预测(`renewalIntentionPredictLevel`)**。
 - 数据落表：续班落表覆盖大小班课，退费落表仅大班课（2026-09-05 PRD）。
-- 主讲数据+下单：角色数据权限**仅小班适用**——主讲展示主讲数据、班主任展示班主任数据、双角色展示主讲数据；大班花名册没有主讲字段（只有班主任/销售）。小班现状是"主讲 OR 班主任(+岗位标签)"合并可见范围、数据可见范围无角色分支（2026-09-05 PRD / 2026-09-17 代码定位）。
-- 主讲数据+下单：快速加购组合商品(P0)、续班确认表(P1) 在 master 全仓**均不存在，属新功能**；续班确认表各项金额口径由电商提供（2026-09-05 PRD / 2026-09-17 代码定位）。
+- 主讲数据+下单：角色数据权限**仅小班适用**——主讲展示主讲数据、班主任展示班主任数据、双角色展示主讲数据；大班花名册没有主讲字段（只有班主任/销售）。小班现状是"主讲 OR 班主任(+岗位标签)"合并可见范围、数据可见范围无角色分支（2026-09-05 PRD / 2026-09-17 代码定位）。**2026-09-18 代码核实**：三处均 OR 合并无角色分支（统计 `SmallRenewalService:637-638`、搜索 `:794-795`、权限 `SmallClazzUserPermissionFilterService:71-84`、班级筛选 `SmallFilterComponentServiceImpl:632/664`）；`mainTeacherAccountIds` 是**班级级**字段，OR 会把全班学员都算进主讲口径（这正是要解决的缺口）；`SmallRenewalStatVO` 无角色字段、统计只有一套口径。已有角色分支先例可参考 `SmallClazzUserJurisdictionUserCountService:74`（主讲优先、班主任时 mustNot 同时是主讲）。
+- 小班续班适配主讲：**下单优化(快速加购组合商品 P0、续班确认表 P1)本批不做**（2026-09-18 用户确认）。原"快速加购组合商品/续班确认表属新功能"结论作废：组合商品加购底层链路 master 已存在（见「必须知道的坑」）。
 - 扩科推荐优化：【推荐排除】默认空，仅扩科推荐为【是】时可编辑；若需回溯则历史数据按【无排除】处理（PRD 为条件句，当前口径是不回溯）；PRD"在读"8 个条件中 5 个已有现成过滤器可复用，仅"授课模式/上课形式线上/订单未全部退款"3 项需新建（2026-09-05 PRD / 2026-09-17 代码定位）。
 
 ## 现在什么情况
@@ -54,7 +55,7 @@ tags: [需求]
 | 进度 | T 5/9（代码定位完成，问卷匹配 4 项开发待办）· R 0/0 · C 0/0 |
 | 部署泳道 | 未部署 |
 | 当前卡点 | 数据落表需数仓侧先定落表方式（本仓已有直连 Doris 先例，不止 MQ 一条路）；续班确认表金额口径需电商侧确认；扩科"在读"过滤的3个条件需新建过滤器 |
-| 最近更新 | 2026-09-18：定位到真正匹配实现在 product-server（规则链+跨班兜底），补 teacher-tool 明细表结论；**订正：`TAG_Subclazz_Transfer` 是转辅导班不是调课调班，真正调课调班是 `gaotu_after_sale_event_test`+`TRANSFER_TOUCH_EVENT`（目前只有 reach-service 消费）** |
+| 最近更新 | 2026-09-18：定位到真正匹配实现在 product-server（规则链+跨班兜底），补 teacher-tool 明细表结论；**订正：`TAG_Subclazz_Transfer` 是转辅导班不是调课调班，真正调课调班是 `gaotu_after_sale_event_test`+`TRANSFER_TOUCH_EVENT`（目前只有 reach-service 消费）**；**订正：组合商品加购底层链路 master 已存在（非全新功能）；`AiAppSceneEnum` 仅 6 个（非 8）** |
 
 ## 下一步
 
@@ -62,15 +63,14 @@ tags: [需求]
 2. 【数据落表】找数仓侧确认落表方式：MQ推送 / binlog直拉 / 直连 Doris(SelectDB) Stream Load（本仓已有先例），这决定要不要开发。
 3. 【主讲数据+下单】找电商侧确认续班确认表各项金额口径（PRD 备注"各项金额由电商提供"）。
 4. 【扩科推荐】【主讲数据+下单】确认跨仓库(cart/product-server/order/reach-service)改动由哪个团队承接。
-5. 产出反讲文档（可能按子需求拆分，也可能合并一份，视TAPD拆story方式而定）。
+5. 反讲已产出（1/2/5 合并，评审前草案，个人空间）：https://gaotuedu.feishu.cn/docx/GiqcdeCakoAsvfxH43accvD4nHf —— 见 [[links]]。
 
 ## 待确认
 
 - [ ] 【数据落表】落表方式：MQ推送 / binlog直拉 / 直连 Doris —— 需数仓侧确认
 - [ ] 【数据落表】"续班服务所有字段"/"退费管控所有字段"具体清单，含GAIA动态字段如何落表 —— 等细评
-- [ ] 【主讲数据+下单】续班确认表各项金额口径（PRD 备注"各项金额由电商提供"） —— 等电商侧补充
 - [ ] 【扩科推荐】"授课模式/上课形式线上/订单未全部退款"3 个条件的在读数据源与口径 —— 等细评
-- [ ] 【主讲数据+下单】小班花名册列表页权限的具体账号字段名来自 DB 配置(`EsGaiaMapping`)，代码不可见，是否含主讲字段 —— 未验证
+- [ ] 【主讲适配】小班花名册列表页权限的账号字段名来自 DB 配置表 `es_query_config`(type=5, account/postTag)，非 `EsGaiaMapping`；仓库 SQL(`doc/smallClazz/clazz-user.sql:18-21`)已有 `smallClazzRoster` 的 `mainTeacherAccountIds`/`assistantAccountId`，但线上 `microContinuationService` identification 是否有对应配置未验证 —— 需线上配置确认
 - [ ] 【问卷匹配】**调课调班事件要新增消费**（订正 2026-09-18）：`TAG_Subclazz_Transfer` 是**转辅导班**（同班换班主任，`SubclazzStudentMqDto.type=7`）**不是**调课调班；真正的调课调班是 topic `gaotu_after_sale_event_test` + tag `TRANSFER_TOUCH_EVENT`，目前只有 reach-service 消费（"只给触达使用"），student-data `DwsAfterSaleSyncConsumer` 只处理退费 tag —— 由谁新增消费待定
 - [ ] 【问卷匹配】**调课调班同步由谁承接**：product-server 不消费 `TRANSFER_TOUCH_EVENT`、`QuestionnaireRecordDao` 无"按 computedUserId+questionnaireNumber 查记录"方法（`page()` 只支持 bizId/recordId/clazzNumbers/questionnaireNumbers）；若由 product-server 承接需新增 consumer + DAO 方法，否则扩 student-data `DwsAfterSaleSyncConsumer` 的 tag 分支 —— 待评审定
 - [ ] 【问卷匹配】**明细 A、B 两行的 fan-out 在 student-data**，不在 product-server/teacher-tool 手上；student-data 不改则"调课同步"做不完整 —— 待确认承接
@@ -80,7 +80,10 @@ tags: [需求]
 - [ ] 【问卷匹配】product-server plan 级姓名规则要扫计划内全部班级学员（班内版已 2000/批 scroll），建议改走 `listByStudentName`(限100)+计划过滤，性能待压测 —— 待细评
 - [ ] 【问卷匹配】群发场景（一次几百人提交）压测：MQ 5 线程有序消费 + 每条最坏 11-12 次串行 RPC —— 待测试
 - [ ] 【问卷匹配】规则改动影响**所有续班问卷匹配（大班+小班）**，回归范围要覆盖两仓两侧 —— 待测试确认
-- [ ] 【AI模块配置化】student-center 那份 `RenewalAiCommSceneConfigService` 无 `@ApolloJsonValue` 部门 Map，需新增；配置粒度(部门整体 vs 细分到年级/学科)、关闭后历史数据隐藏还是保留可查 —— 等细评
+- [ ] 【AI模块配置化】student-center 那份 `RenewalAiCommSceneConfigService` 无 `@ApolloJsonValue` 部门 Map，需新增；配置粒度(部门整体 vs 细分到年级/学科) —— 等细评
+- [ ] 【AI模块配置化】部门 key 口径不一致：圈选侧 `renewal.ai.select.dept.config` 用 `departmentIdPaths.get(0)` 整条路径 contains，归因侧 `renewal.reason.unrenewed.dept-agent` 取 `split("/")[1]` 二级部门 —— 新配置按哪种 key
+- [ ] 【AI模块配置化】student-center 展示侧仅 type 1/2 有读取口（`ai/clazzUser/userPortrait`、`ai/clazzUser/commSummary`），type 3/4 无实现、`refundNps` 无独立接口；"前端不可见"要落到哪些接口/字段 —— 需产品/前端确认
+- [ ] 【AI模块配置化】`UserFeedbackController`(`/user/feedback`，@Api 标注 1v1 学员列表) 与续班AI 关联存疑，是否算模块 —— 需确认
 
 ## 涉及的代码
 
@@ -135,7 +138,7 @@ tags: [需求]
 | product-server（商品范围查询） | 未建 | 组合商品范围查询（学年/学期/部门/年级/科目 + `upStatus` 非未上架）：`ProductEsDao:181-220`、`IProductService#combineProductSpuSearchFromEs`、内部 Feign 出口 `CombinedProductFeignController#searchNoAuth`(`POST /feign/combinedProduct/searchSpuNoAuth`) |
 | 已有但非适配器 | 未建 | student-data `app/service/CartEventService`（**含真实业务逻辑**，不是 Feign ACL）：`processCartEvent:79` 查购物车→算 `renewalShopSubject`→写 ES；`queryCartSubjects:124/151`、`resolveCombineProductClazzNumbers:241`。真正的 ACL 适配器只有 `OrderBCartAdapter`、`CartTokenAdapter`、`OrderPromotionAdapter`(×2) |
 
-**设计草案**：改造方向是权限判断处先查登录人在该班级上的角色（`mainTeacherList`/`assistantList`），再决定返回主讲维度还是班主任维度指标，而非简单 should 合并。新增指标字段的计算应加在 `DataQueryServiceV2` 实现（如 `SmallClazzUserRenewalSubjectQueryService#buildData`）并同步 Apollo `ads.sync.small.clazz.user.insert/update.fieldNames`——`AdsSmallClazzUserOrderedService` 只是 ES 写入器(`docAsUpsert`)、`DwsSmallClazzUserService` 只是字段筛选转发器，**都不是计算处**；`SmallRenewalService` 侧聚合分支在 `queryStatisticStudents:634` + `calculateSmallRenewalStat:710`。快速加购组合商品(P0) 是新功能：范围查询落 product-server、加购写购物车落 order。续班确认表(P1) 改动面：student-center `domain/service/contentReport/`（新增 `ContentReportType` 值 + 新 Strategy，复用 `PersonalReport` 的截图/导出/触达骨架）+ 导出中心(`ContentProductExportSerivce#generateResultFileDO:120` 压缩包) + 触达(`ReachPortalController#mixCreate`、`ReachMixCreateBiz`；真正微信助手群发在 **reach-service** `ReportContentHandler`)；student-data 侧无对应实现。
+**设计草案**：改造方向是权限判断处先查登录人在该班级上的角色（`mainTeacherList`/`assistantList`），再决定返回主讲维度还是班主任维度指标，而非简单 should 合并。新增指标字段的计算应加在 `DataQueryServiceV2` 实现（如 `SmallClazzUserRenewalSubjectQueryService#buildData`）并同步 Apollo `ads.sync.small.clazz.user.insert/update.fieldNames`——`AdsSmallClazzUserOrderedService` 只是 ES 写入器(`docAsUpsert`)、`DwsSmallClazzUserService` 只是字段筛选转发器，**都不是计算处**；`SmallRenewalService` 侧聚合分支在 `queryStatisticStudents:634` + `calculateSmallRenewalStat:710`。快速加购组合商品(P0)：**底层能力 master 已存在**（范围查询 product-server `ProductEsDao#getQueryBuilderFromReqModel:181-220` + `CombinedProductFeignController#searchNoAuth:55`；加购 order `POST /orderComponent/b/cart/addCart`→`CartService#addCart:156`→`CombinedProductCartHelper`；下游 student-data `CartEventConsumer`(topic `order_b_cart_event_test`)→`CartEventService#processCartEvent:79`），"快速加购"新增的入口/流程待确认。续班确认表(P1) 改动面：student-center `domain/service/contentReport/`（新增 `ContentReportType` 值 + 新 Strategy，复用 `PersonalReport` 的截图/导出/触达骨架）+ 导出中心(`ContentProductExportSerivce#generateResultFileDO:120` 压缩包) + 触达(`ReachPortalController#mixCreate`、`ReachMixCreateBiz`；真正微信助手群发在 **reach-service** `ReportContentHandler`)；student-data 侧无对应实现。
 
 ### 子需求3 续班扩科推荐优化
 
@@ -182,5 +185,6 @@ tags: [需求]
 - 跨仓库范围比想象大：除 student-data/student-center 外，还有 **product-server**(扩科配置+组合商品范围查询)、**order**(B端加购写购物车)、**cart**(C端推荐商品+选品过滤)、**reach-service**(微信助手群发)。
 - "主讲数据"只针对**小班**：大班花名册没有主讲字段（只有 `assistantAccountId` 或 `assistantAccountId OR salesAccountId`），改权限别按两仓对称去估。
 - **别把 `TAG_Subclazz_Transfer` 当调课调班**：它是**转辅导班**（同班内换班主任，`SubclazzStudentMqDto.type=7`，消息只带一个 `clazzNumber` + old/new `subclazzNumber`）。PRD 说的"班级 A 调课到班级 B"对应 topic `gaotu_after_sale_event_test` + tag `TRANSFER_TOUCH_EVENT`，**目前只有 reach-service 消费**，student-data `DwsAfterSaleSyncConsumer` 只处理退费 tag——调课调班同步是要**新增消费**。
-- 快速加购组合商品、续班确认表是**全新功能**，在现有代码里找不到"要改的地方"；续班确认表照抄 `ContentReportType.PERSONAL_REPORT`（阶段汇总报告）那套骨架。
+- **下单优化(快速加购组合商品/续班确认表)本批不做**（2026-09-18 用户确认）；组合商品加购底层链路 master 已存在，若日后重启别当全新功能估。
+- **主讲口径的坑**：`mainTeacherAccountIds` 是**班级级**字段，写到该班每个学生文档上；现状 OR 合并会把**全班学员**都算进主讲可见范围（不只他管的），这正是"适配主讲"要解决的缺口。数据模型里**没有**「主讲→subclazz 归属」字段，班主任才有（`small_clazz_v3.subclazzList[].assistantNumber`）；主讲 `managedStudentCount` 是全班，班主任是按辅导班。
 - `StudentSubclazzQuestionnaire` 是**零引用孤立实体**，别当它是问卷落库表去改。

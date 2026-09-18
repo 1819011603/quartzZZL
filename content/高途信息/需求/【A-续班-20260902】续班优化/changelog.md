@@ -7,6 +7,33 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-09-18（晚）
+
+### 🤖 Claude
+- 产出【A-续班-20260902】续班优化 技术反讲（子需求 1/2/5 合并，评审前草案）：https://gaotuedu.feishu.cn/wiki/EC45wOefUi0buMkO7O0cipp9nEc（docx `GiqcdeCakoAsvfxH43accvD4nHf`）。含交接摘要、背景/名词/关联方、现状链路、方案对比（每子需求方案一/二+建议）、详细设计与 `path:line`、接口清单、影响面、风险、发布计划、待确认，7 张 mermaid 图。
+- **位置规则（用户明确）**：反讲必须挂在**需求总入口 `Qox8wFcmHiXBgnkxFBtcd82gnsh`**（【A-续班-20260902】续班优化）下面，不是个人空间根目录。已写进 skill `tech-review-doc`。
+- **删除此前 5 个「现状·改动·风险」子页面**（问卷匹配/主讲数据+下单/扩科推荐/数据落表/AI模块配置化）。核对出入：主讲页仍写"快速加购/续班确认表属新功能、要做"（实际下单优化不做、底层已存在）、权限字段名写成 `EsGaiaMapping`（实际 DB 表 `es_query_config`）；AI 页 8 模块清单与"6+2"口径不一致、"关闭后历史数据待定"（已定隐藏）。
+- 建 skill `tech-review-doc` 并把「换会话能续接」「反讲挂原需求节点下」定为硬要求。
+
+### 👤 我
+- 要求：只做 1/2/5；写飞书技术反讲（一篇合并、评审前草案）；反讲要清晰、有图、有代码位置/接口/影响范围；换 AI 会话后能接住上下文；建一个专门写技术反讲的 skill；反讲要挂在原需求下面；旧的 5 个子页面可删。
+
+---
+
+## 2026-09-18（晚 · 代码深挖）
+
+### 🤖 Claude
+- **【主讲数据+下单】组合商品加购底层链路 master 已存在**（order `CombinedProductCartHelper`/`CartService#getProductInfos` 的 `COMBINE_PRODUCT` 分支、product-server `CombinedProductFeignController#searchNoAuth`/`ProductEsDao` 组合过滤、student-data `CartEventService#resolveCombineProductClazzNumbers`/`CartEventConsumer`），原"快速加购组合商品属全新功能"作废；"快速加购"具体新增什么待需求方明确。续班确认表确实无实现。
+  - **【AI模块配置化】`AiAppSceneEnum` 仅 6 个(1-6)非 8 个**；退费侧 `RefundReasoningEnum` 5 个 + `RefundPredictionService` 1 个 = 6 个吻合。续班第 7/8 个模块 PRD 明细本地无存档。
+- 同时核实接口/消息准确路径与行号（反讲素材）：`/feign/questionnaire/match`、teacher-tool `/feign/questionnaire/user/page/multiByClazz`、`/orderComponent/b/cart/addCart`、`ai/clazzUser/userPortrait` 等；product-server 确认不消费 `TRANSFER_TOUCH_EVENT`，student-data `DwsAfterSaleSyncConsumer` 只处理退费 tag。
+- 待确认新增 5 项（快速加购定义、续班AI 8 模块清单、部门 key 口径、展示侧 type3/4 无接口、UserFeedbackController 归类）。
+- 建 skill `tech-review-doc`：固化反讲骨架、接口七列表、影响面六项、图规范，并把「换会话能续接」定为硬要求（正文最前必须放交接摘要）。
+
+### 👤 我
+- 要求：只做 1/2/5 三个子需求；写飞书技术反讲（一篇合并、个人空间新建、评审前草案）；反讲要清晰、有图、有代码位置/接口/影响范围；换 AI 会话后能接住上下文；先派 agent 深挖代码再汇总问缺口；并建一个专门写技术反讲的 skill。
+
+---
+
 ## 2026-09-18（下午）
 
 ### 🤖 Claude
