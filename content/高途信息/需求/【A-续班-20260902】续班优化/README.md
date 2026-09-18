@@ -12,7 +12,7 @@ tags: [需求]
 
 > **本目录导航**：[[links|🔗 链接中心]] · [[tasks|✅ 当前任务板]] · [[changelog|📜 决策摘要]]
 > 技术方案在飞书反讲文档里（见 [[links]]），本地不留副本。
-> 飞书需求总入口：https://gaotuedu.feishu.cn/wiki/Qox8wFcmHiXBgnkxFBtcd82gnsh （子页面「问卷匹配优化：匹配逻辑现状·改动方案·风险」）
+> 飞书归档（我建，个人空间）：需求目录 https://gaotuedu.feishu.cn/wiki/VcOgwHkfeijOM5knBiAcbrLlnY6 → 需求总入口 https://gaotuedu.feishu.cn/wiki/Qox8wFcmHiXBgnkxFBtcd82gnsh → 5 个子页面（问卷匹配 / 主讲数据+下单 / 扩科推荐 / 数据落表 / AI模块配置化，均为「现状·改动·风险」）
 > 续接这个需求：读完本文件即可。
 
 ## 一句话
@@ -54,7 +54,7 @@ tags: [需求]
 | 进度 | T 5/9（代码定位完成，问卷匹配 4 项开发待办）· R 0/0 · C 0/0 |
 | 部署泳道 | 未部署 |
 | 当前卡点 | 数据落表需数仓侧先定落表方式（本仓已有直连 Doris 先例，不止 MQ 一条路）；续班确认表金额口径需电商侧确认；扩科"在读"过滤的3个条件需新建过滤器 |
-| 最近更新 | 2026-09-18：定位到真正匹配实现在 product-server（规则链+跨班兜底），补 teacher-tool 明细表结论，订正调课调班同步现状；已登记跨班错配分析文档 |
+| 最近更新 | 2026-09-18：定位到真正匹配实现在 product-server（规则链+跨班兜底），补 teacher-tool 明细表结论；**订正：`TAG_Subclazz_Transfer` 是转辅导班不是调课调班，真正调课调班是 `gaotu_after_sale_event_test`+`TRANSFER_TOUCH_EVENT`（目前只有 reach-service 消费）** |
 
 ## 下一步
 
@@ -71,8 +71,8 @@ tags: [需求]
 - [ ] 【主讲数据+下单】续班确认表各项金额口径（PRD 备注"各项金额由电商提供"） —— 等电商侧补充
 - [ ] 【扩科推荐】"授课模式/上课形式线上/订单未全部退款"3 个条件的在读数据源与口径 —— 等细评
 - [ ] 【主讲数据+下单】小班花名册列表页权限的具体账号字段名来自 DB 配置(`EsGaiaMapping`)，代码不可见，是否含主讲字段 —— 未验证
-- [ ] 【问卷匹配】调班事件源已存在(topic `gaotu_subclazz_student_event_test` + `TAG_Subclazz_Transfer`，student-data 已消费)，student-center `SyncSubclazzStudentListener` 未订阅该 tag —— 改造方式待定（补订阅 vs 新建）
-- [ ] 【问卷匹配】**调课调班同步由谁承接**：product-server 不消费调班事件、`QuestionnaireRecordDao` 无"按 computedUserId+questionnaireNumber 查记录"方法（`page()` 只支持 bizId/recordId/clazzNumbers/questionnaireNumbers）；若由 product-server 承接需新增 consumer + DAO 方法，否则依赖 student-data —— 待评审定
+- [ ] 【问卷匹配】**调课调班事件要新增消费**（订正 2026-09-18）：`TAG_Subclazz_Transfer` 是**转辅导班**（同班换班主任，`SubclazzStudentMqDto.type=7`）**不是**调课调班；真正的调课调班是 topic `gaotu_after_sale_event_test` + tag `TRANSFER_TOUCH_EVENT`，目前只有 reach-service 消费（"只给触达使用"），student-data `DwsAfterSaleSyncConsumer` 只处理退费 tag —— 由谁新增消费待定
+- [ ] 【问卷匹配】**调课调班同步由谁承接**：product-server 不消费 `TRANSFER_TOUCH_EVENT`、`QuestionnaireRecordDao` 无"按 computedUserId+questionnaireNumber 查记录"方法（`page()` 只支持 bizId/recordId/clazzNumbers/questionnaireNumbers）；若由 product-server 承接需新增 consumer + DAO 方法，否则扩 student-data `DwsAfterSaleSyncConsumer` 的 tag 分支 —— 待评审定
 - [ ] 【问卷匹配】**明细 A、B 两行的 fan-out 在 student-data**，不在 product-server/teacher-tool 手上；student-data 不改则"调课同步"做不完整 —— 待确认承接
 - [ ] 【问卷匹配】teacher-tool `user_questionnaire_record` **是否加 `renewal_number` 列**：问卷↔续班计划当前 1:1、`project_number` 已隐含计划，建议不加；若评审坚持硬校验则需 DDL 工单 —— 待评审
 - [ ] 【问卷匹配】**同名/亲属手机号歧义无解**：链接不带"人"，同名或一号多孩时任何算法只能猜（取 userId 小）；范围扩大到计划级会放大同名歧义面，靠算法无法归零 —— 需产品决策（待认领/改派/一人一链）
@@ -95,7 +95,7 @@ tags: [需求]
 | **product-server**（=Feign 的 `product-b`，真正匹配实现） | 未建 | ①**绑定层** `domain/service/renewal/questionnaire/QuestionnaireService#match:928`：按 `clazzNumber→courseNumber` + `renewalNumber` 查 `renew_master_course_relation` 取 `questionnaireNumber`，返回 bizId+name（`matchResult:962` 无 project 名，student-data 侧用这个）。②**记录归属层** `QuestionnaireRecordService#dealCDSMsg:145`：`ComputeUserService#compute:21` 按 Apollo `compute.rule.name.list`（默认 `[originUserRuleService,mobileRuleService,nameRuleService,relationIdService]`）顺序跑规则，**全部限定在链接绑定班级内**：`OriginUserRuleService`(CDS userId∈班级学员)、`MobileRuleService`(报名手机号∈班级)、`NameRuleService`(姓名∈班级，同名取 userId 小)、`RelationIdService`(亲属手机号∈班级，取 userId 小)。③**跨班兜底** `QuestionnaireRecordService#dealNotExistedComputeUserId:253`：把 originUserId/手机号反查(`.get(0)`)/亲属ID/姓名模糊查询(limit 20) 混成一个 userId 集合 → 查这些人在问卷前置课下的小班 → 按 `assistantNumber.accountId == bindData.accountId` 选班，**选不到就 `subclazzDTOS.get(0)` 取第一个**(:322-325)；开关 `across.clazz.questionnaire.submit.switch:122`。这正是飞书那篇「跨班错配」文档描述的根因。④问卷记录经 MQ `product-renewal-questionnaire-record-event-test` 发出 |
 | **teacher-tool** | `feature-xuban-multi-clazz` | 问卷明细存储 `user_questionnaire_record`（字段 `questionnaire_id/type/user_id/clazz_number/project_number/account_id/questionnaire_group_id`，**无续班计划字段**）；查询 `UserQuestionnaireRecordDaoImpl#pageQuestionnaireInfoMultiByClazz:147` → `UserQuestionnaireRecordMapper.xml#queryRecordsMultiByClazz:114`，SQL 过滤维度 = `type + project_number(问卷bizId) + clazz_number + user_id`（「问卷+班级」硬校验，「辅导老师」由 student-center 传本人带班 userId 范围实现，**无续班计划条件**）；`QuestionnaireServiceImpl#bindUserQuestionnaire:232`/`manualQuestionnaireRecordUser`(product-server) 手工绑定**只能改 user、不能改 clazz** |
 
-**设计草案**：匹配范围收紧 = 在 product-server 记录归属层把「续班计划」变成硬约束、并把 `dealNotExistedComputeUserId` 的"混候选取第一个"替换成 PRD 的**确定性 6 级优先级**（现状 4 条规则全部"班级内"，新规则每条再拆"同班级/同续班计划"两级：(1)(2)手机号、(3)(4)姓名、(5)(6)亲属手机号，最高优仍是 CDS userId=班级学员 userId）。`ComputeUserService` 的 Apollo 规则链天然支持插拔，可新增 plan 级规则或给规则加 scope 参数。绑定层 `QuestionnaireService#match` 已按 renewalNumber 过滤，无需大改。调课调班同步**不需要新建事件**：调班事件源已存在（topic `gaotu_subclazz_student_event_test` + `TAG_Subclazz_Transfer`），student-data `SubclazzUserSyncConsumer:116` 已在消费但只刷 `renewalStateStatus/renewalSubject/renewalExpansionSubject`（`transferInsertFieldNames:82`），**未刷问卷字段**；student-center `SyncSubclazzStudentListener` 只订阅 Enter/Quit、未订阅 Transfer。要做的是：调班后对旧班(A)+新班(B)分别重算/回写续班问卷字段（ES `renewalQuestionnaireStatus`/`renewalQuestionnaireSubmitTime`），并让 teacher-tool 明细在 A、B 各出一行（现有 `DwsRenewalQuestionnaireConsumer#sendTeacherToolQuestionMsg:544` 已按 share clazz 拆多行+mock uniqueBizId 去重，可复用）。注意A/B必须绑定同一问卷才共享。
+**设计草案**：匹配范围收紧 = 在 product-server 记录归属层把「续班计划」变成硬约束、并把 `dealNotExistedComputeUserId` 的"混候选取第一个"替换成 PRD 的**确定性 6 级优先级**（现状 4 条规则全部"班级内"，新规则每条再拆"同班级/同续班计划"两级：(1)(2)手机号、(3)(4)姓名、(5)(6)亲属手机号，最高优仍是 CDS userId=班级学员 userId）。`ComputeUserService` 的 Apollo 规则链天然支持插拔，可新增 plan 级规则或给规则加 scope 参数。绑定层 `QuestionnaireService#match` 已按 renewalNumber 过滤，无需大改。调课调班同步**要新增消费**（订正 2026-09-18）：`TAG_Subclazz_Transfer` 是**转辅导班**（同班内换班主任，`SubclazzStudentMqDto.type=7`，消息只带一个 `clazzNumber` + old/new `subclazzNumber`），**不是** PRD 说的"从班级 A 调课到班级 B"，之前把它当调班事件是错的。真正的调课调班事件是 topic `gaotu_after_sale_event_test` + tag `TRANSFER_TOUCH_EVENT`（`LlsTransferCourseMessageDto`，含 `targetOrderInfo.clazzNumber`），目前**只有 reach-service 消费**（`TransferCourseClazzTriggerConsumer`，"只给触达使用"）；student-data `DwsAfterSaleSyncConsumer` 虽也订了这个 topic，但只处理退费 APPLY/SUCCESS/CANCEL/FAIL，**不处理调课调班**。所以要做的是：新增对 `TRANSFER_TOUCH_EVENT` 的消费，调班后对旧班(A)+新班(B)分别重算/回写续班问卷字段（ES `renewalQuestionnaireStatus`/`renewalQuestionnaireSubmitTime`），并让 teacher-tool 明细在 A、B 各出一行（现有 `DwsRenewalQuestionnaireConsumer#sendTeacherToolQuestionMsg:544` 已按 share clazz 拆多行+mock uniqueBizId 去重，可复用）。注意A/B必须绑定同一问卷才共享。
 **可 0 开发止血**：`across.clazz.questionnaire.submit.switch:false` 即可停用"取第一个"兜底，提交落 `computedUserId=0` 的未匹配记录（`clazzNumber` 仍是链接班，明细可按 `queryNotMatched` 展示并手工绑定）——即需求"收紧范围"的最小可用形态。
 **多班 fan-out 已存在**：`getShareCourseNumbers:513` 只取同一 `renewMasterNumber` 下的 preCourseNumbers，下游按 `shareCourseNumbers`+`queryShareSubclazzList` 刷所有同计划同问卷班级的状态/花名册，所以"同计划多班都匹配"的下游链路基本现成，主要缺口在"匹配到谁"与调班后旧班(A)的回写。
 
@@ -115,7 +115,7 @@ tags: [需求]
 2. **改派（跨班改）能力**（需求缺口，建议本期补）：`QuestionnaireServiceImpl#bindUserQuestionnaire:232` 只改 `user_id`，加改 `clazz_number` 并同步同 `questionnaire_group_id` 的其余行；`UserQuestionnaireRecordDaoImpl` 加 update。
 3. 明细查询 `queryRecordsMultiByClazz` 已有 `queryNotMatched`，未匹配可查可绑，无需改；A/B 两行只依赖 student-data 发来 B 的行。
 
-**调课调班同步的归属待定**：product-server **不消费**调班事件（已核实），`QuestionnaireRecordDao` 也没有"按 computedUserId+questionnaireNumber 查记录"的方法（`page()` 只支持 bizId/recordId/clazzNumbers/questionnaireNumbers）。若由 product-server 承接需新增 consumer + DAO 方法；**建议放 student-data**（它已消费 `TAG_Subclazz_Transfer`）。详见待确认。
+**调课调班同步的归属待定**：product-server **不消费** `TRANSFER_TOUCH_EVENT`（已核实），`QuestionnaireRecordDao` 也没有"按 computedUserId+questionnaireNumber 查记录"的方法（`page()` 只支持 bizId/recordId/clazzNumbers/questionnaireNumbers）。若由 product-server 承接需新增 consumer + DAO 方法；否则放 student-data（它已订 `gaotu_after_sale_event_test`，但 `DwsAfterSaleSyncConsumer` 现只处理退费 tag，需扩 tag 分支）。详见待确认。
 
 **性能评估（2026-09-18，需压测验证）**：
 
@@ -170,7 +170,7 @@ tags: [需求]
 
 | 子需求 | Apollo | ES | MySQL DDL | MQ | 代课接口权限 |
 |---|---|---|---|---|---|
-| 问卷匹配优化 | 待定(可能新增 plan 级规则开关) | 是(花名册续班问卷字段需在调班时重算) | 否(teacher-tool 表无续班计划字段，若硬约束需加列) | 否(调班事件已存在且 student-data 已消费，需扩 `transferInsertFieldNames` 重算问卷字段) | 待定 |
+| 问卷匹配优化 | 待定(可能新增 plan 级规则开关) | 是(花名册续班问卷字段需在调班时重算) | 否(teacher-tool 表无续班计划字段，若硬约束需加列) | 是(调课调班需新增消费 `gaotu_after_sale_event_test`+`TRANSFER_TOUCH_EVENT`) | 待定 |
 | 主讲数据+下单优化 | 待定 | 待定(统计指标字段) | 待定 | 待定 | 待定 |
 | 扩科推荐优化 | 否(预计) | 待定 | 待定(product-server 侧续班计划新增【推荐排除】字段) | 否 | 待定 |
 | 数据落表 | 待定 | 待定 | 待定 | 待定(走MQ新增；走Doris直写则无) | 否 |
@@ -181,6 +181,6 @@ tags: [需求]
 - 数据落表**不是只有 MQ 一条路**：student-data 已有直连 Doris(SelectDB) Stream Load 直写先例（`DorisStreamLoadService` + `*DashBoardHandler`），别默认"只能发 MQ"。
 - 跨仓库范围比想象大：除 student-data/student-center 外，还有 **product-server**(扩科配置+组合商品范围查询)、**order**(B端加购写购物车)、**cart**(C端推荐商品+选品过滤)、**reach-service**(微信助手群发)。
 - "主讲数据"只针对**小班**：大班花名册没有主讲字段（只有 `assistantAccountId` 或 `assistantAccountId OR salesAccountId`），改权限别按两仓对称去估。
-- 调班事件**已存在**（`gaotu_subclazz_student_event_test` + `TAG_Subclazz_Transfer`，student-data 已在消费），student-center 只是 `SyncSubclazzStudentListener` 没订阅该 tag——不要当成要新建事件。
+- **别把 `TAG_Subclazz_Transfer` 当调课调班**：它是**转辅导班**（同班内换班主任，`SubclazzStudentMqDto.type=7`，消息只带一个 `clazzNumber` + old/new `subclazzNumber`）。PRD 说的"班级 A 调课到班级 B"对应 topic `gaotu_after_sale_event_test` + tag `TRANSFER_TOUCH_EVENT`，**目前只有 reach-service 消费**，student-data `DwsAfterSaleSyncConsumer` 只处理退费 tag——调课调班同步是要**新增消费**。
 - 快速加购组合商品、续班确认表是**全新功能**，在现有代码里找不到"要改的地方"；续班确认表照抄 `ContentReportType.PERSONAL_REPORT`（阶段汇总报告）那套骨架。
 - `StudentSubclazzQuestionnaire` 是**零引用孤立实体**，别当它是问卷落库表去改。
