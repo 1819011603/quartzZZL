@@ -12,6 +12,7 @@ tags: [需求]
 
 > **本目录导航**：[[links|🔗 链接中心]] · [[tasks|✅ 当前任务板]] · [[changelog|📜 决策摘要]]
 > 技术方案在飞书反讲文档里（见 [[links]]），本地不留副本。
+> 飞书需求总入口：https://gaotuedu.feishu.cn/wiki/Qox8wFcmHiXBgnkxFBtcd82gnsh （子页面「问卷匹配优化：匹配逻辑现状·改动方案·风险」）
 > 续接这个需求：读完本文件即可。
 
 ## 一句话
@@ -50,7 +51,7 @@ tags: [需求]
 | | |
 |---|---|
 | 阶段 | 需求评审 |
-| 进度 | T 5/5（代码定位）· R 0/0 · C 0/0 |
+| 进度 | T 5/9（代码定位完成，问卷匹配 4 项开发待办）· R 0/0 · C 0/0 |
 | 部署泳道 | 未部署 |
 | 当前卡点 | 数据落表需数仓侧先定落表方式（本仓已有直连 Doris 先例，不止 MQ 一条路）；续班确认表金额口径需电商侧确认；扩科"在读"过滤的3个条件需新建过滤器 |
 | 最近更新 | 2026-09-18：定位到真正匹配实现在 product-server（规则链+跨班兜底），补 teacher-tool 明细表结论，订正调课调班同步现状；已登记跨班错配分析文档 |
@@ -71,6 +72,14 @@ tags: [需求]
 - [ ] 【扩科推荐】"授课模式/上课形式线上/订单未全部退款"3 个条件的在读数据源与口径 —— 等细评
 - [ ] 【主讲数据+下单】小班花名册列表页权限的具体账号字段名来自 DB 配置(`EsGaiaMapping`)，代码不可见，是否含主讲字段 —— 未验证
 - [ ] 【问卷匹配】调班事件源已存在(topic `gaotu_subclazz_student_event_test` + `TAG_Subclazz_Transfer`，student-data 已消费)，student-center `SyncSubclazzStudentListener` 未订阅该 tag —— 改造方式待定（补订阅 vs 新建）
+- [ ] 【问卷匹配】**调课调班同步由谁承接**：product-server 不消费调班事件、`QuestionnaireRecordDao` 无"按 computedUserId+questionnaireNumber 查记录"方法（`page()` 只支持 bizId/recordId/clazzNumbers/questionnaireNumbers）；若由 product-server 承接需新增 consumer + DAO 方法，否则依赖 student-data —— 待评审定
+- [ ] 【问卷匹配】**明细 A、B 两行的 fan-out 在 student-data**，不在 product-server/teacher-tool 手上；student-data 不改则"调课同步"做不完整 —— 待确认承接
+- [ ] 【问卷匹配】teacher-tool `user_questionnaire_record` **是否加 `renewal_number` 列**：问卷↔续班计划当前 1:1、`project_number` 已隐含计划，建议不加；若评审坚持硬校验则需 DDL 工单 —— 待评审
+- [ ] 【问卷匹配】**同名/亲属手机号歧义无解**：链接不带"人"，同名或一号多孩时任何算法只能猜（取 userId 小）；范围扩大到计划级会放大同名歧义面，靠算法无法归零 —— 需产品决策（待认领/改派/一人一链）
+- [ ] 【问卷匹配】**重试 Job 放大**：改"不唯一→0"后 `dealNotExistedComputeUser` 会重复重跑同一批未匹配记录（3 天窗口内），需同步加"终态未匹配/重试次数"标记 —— 待细评
+- [ ] 【问卷匹配】product-server plan 级姓名规则要扫计划内全部班级学员（班内版已 2000/批 scroll），建议改走 `listByStudentName`(限100)+计划过滤，性能待压测 —— 待细评
+- [ ] 【问卷匹配】群发场景（一次几百人提交）压测：MQ 5 线程有序消费 + 每条最坏 11-12 次串行 RPC —— 待测试
+- [ ] 【问卷匹配】规则改动影响**所有续班问卷匹配（大班+小班）**，回归范围要覆盖两仓两侧 —— 待测试确认
 - [ ] 【AI模块配置化】student-center 那份 `RenewalAiCommSceneConfigService` 无 `@ApolloJsonValue` 部门 Map，需新增；配置粒度(部门整体 vs 细分到年级/学科)、关闭后历史数据隐藏还是保留可查 —— 等细评
 
 ## 涉及的代码
@@ -89,6 +98,32 @@ tags: [需求]
 **设计草案**：匹配范围收紧 = 在 product-server 记录归属层把「续班计划」变成硬约束、并把 `dealNotExistedComputeUserId` 的"混候选取第一个"替换成 PRD 的**确定性 6 级优先级**（现状 4 条规则全部"班级内"，新规则每条再拆"同班级/同续班计划"两级：(1)(2)手机号、(3)(4)姓名、(5)(6)亲属手机号，最高优仍是 CDS userId=班级学员 userId）。`ComputeUserService` 的 Apollo 规则链天然支持插拔，可新增 plan 级规则或给规则加 scope 参数。绑定层 `QuestionnaireService#match` 已按 renewalNumber 过滤，无需大改。调课调班同步**不需要新建事件**：调班事件源已存在（topic `gaotu_subclazz_student_event_test` + `TAG_Subclazz_Transfer`），student-data `SubclazzUserSyncConsumer:116` 已在消费但只刷 `renewalStateStatus/renewalSubject/renewalExpansionSubject`（`transferInsertFieldNames:82`），**未刷问卷字段**；student-center `SyncSubclazzStudentListener` 只订阅 Enter/Quit、未订阅 Transfer。要做的是：调班后对旧班(A)+新班(B)分别重算/回写续班问卷字段（ES `renewalQuestionnaireStatus`/`renewalQuestionnaireSubmitTime`），并让 teacher-tool 明细在 A、B 各出一行（现有 `DwsRenewalQuestionnaireConsumer#sendTeacherToolQuestionMsg:544` 已按 share clazz 拆多行+mock uniqueBizId 去重，可复用）。注意A/B必须绑定同一问卷才共享。
 **可 0 开发止血**：`across.clazz.questionnaire.submit.switch:false` 即可停用"取第一个"兜底，提交落 `computedUserId=0` 的未匹配记录（`clazzNumber` 仍是链接班，明细可按 `queryNotMatched` 展示并手工绑定）——即需求"收紧范围"的最小可用形态。
 **多班 fan-out 已存在**：`getShareCourseNumbers:513` 只取同一 `renewMasterNumber` 下的 preCourseNumbers，下游按 `shareCourseNumbers`+`queryShareSubclazzList` 刷所有同计划同问卷班级的状态/花名册，所以"同计划多班都匹配"的下游链路基本现成，主要缺口在"匹配到谁"与调班后旧班(A)的回写。
+
+**改动清单（2026-09-18 确认 product-server + teacher-tool 归我）**：
+
+*product-server（主改动，P0）*
+1. `model/ComputeParams` 加 `renewalNumber` + `planCourseNumbers`（计划内同问卷前置课程）。
+2. `QuestionnaireRecordService#dealCDSMsg:145`：**把 questionnaire→processConfig→renewalNumber、renewMasterCourseRelation→preCourseNumbers 的解析前移到 `compute` 之前**（现解析在 :171-177，compute 在 :164），再 set 进 computeParams；`dealCDSMsgList:599` 批量组装处同样补。
+3. 新增 3 条 plan 级规则（手机号/姓名/亲属手机号），查范围用 `ClazzDistributionFeignService#listSubclazzStudentByCourseNumbersAndUserId(planCourseNumbers, userId)`（已存在）；**建议抽 `AbstractUserRuleService`**，现有 3 条班内规则与 3 条 plan 级规则只差"查范围"，避免 6 个重复类。
+4. `ComputeUserService` Apollo `compute.rule.name.list` 默认值改 6 级顺序（规则是"命中即从待算集合移除"，顺序即优先级，天然满足 PRD）。
+5. **兜底 `dealNotExistedComputeUserId` 的 `subclazzDTOS.get(0)` 必须去掉**：6 级规则覆盖跨班后，改"不唯一→不置人(computedUserId=0)"或直接删除该方法；`dealCDSMsg:165` + `dealCDSMsgList:631` 两个调用点同步。
+6. `dealNotExistedQuestionBindNumber:378` 无绑定号路径：把跨 `bizId` 的 preCourseNumbers 收敛到该问卷所属续班计划（满足"续班计划完全匹配"）。
+7. 明细 A/B 两行的 fan-out 在 student-data，product-server 不改结构（保证 `computedUserId` 正确 + `shareCourseNumbers` 全计划即可）。
+
+*teacher-tool（次改动，按评审结论定）*
+1. **是否加 `renewal_number` 列**：问卷↔续班计划当前 1:1、`project_number` 已隐含计划，**建议不加列**（加则要 DDL + model + MQ DTO 透传 + `QuestionnaireConsumer` 写入）。
+2. **改派（跨班改）能力**（需求缺口，建议本期补）：`QuestionnaireServiceImpl#bindUserQuestionnaire:232` 只改 `user_id`，加改 `clazz_number` 并同步同 `questionnaire_group_id` 的其余行；`UserQuestionnaireRecordDaoImpl` 加 update。
+3. 明细查询 `queryRecordsMultiByClazz` 已有 `queryNotMatched`，未匹配可查可绑，无需改；A/B 两行只依赖 student-data 发来 B 的行。
+
+**调课调班同步的归属待定**：product-server **不消费**调班事件（已核实），`QuestionnaireRecordDao` 也没有"按 computedUserId+questionnaireNumber 查记录"的方法（`page()` 只支持 bizId/recordId/clazzNumbers/questionnaireNumbers）。若由 product-server 承接需新增 consumer + DAO 方法；**建议放 student-data**（它已消费 `TAG_Subclazz_Transfer`）。详见待确认。
+
+**性能评估（2026-09-18，需压测验证）**：
+
+- **最高风险：重试 Job 被未匹配记录淹没**。`dealNotExistedComputeUser:534`（XXL-Job `QuestionnaireRecordComputeHandler`）每轮捞 `computedUserId=0` 且 3 天内的记录，按 100/批、16 线程**重跑整条规则链**。现在这些记录被兜底强行匹配掉；改成"不唯一→0"后它们**永远匹配不上**（歧义是确定性的），每轮重复处理同一批直到 3 天过期，且规则链从 4 条→7 条（单条成本 ×1.75）。→ **必须同步改造重试策略**（加"已重试/终态未匹配"标记跳过，或限次数/缩短窗口），否则稳定负载和下游 RPC 量显著上升。
+- **每条提交 RPC 数上升且串行**。`compute` 是顺序 for + "命中即移除"：正常（手机号命中）只跑 1-2 条；最坏（全不中）现状约 7-8 次 RPC，加 3 条 plan 级后约 11-12 次。`QuestionnaireRecordConsumer` 仅 5 线程有序消费，**群发场景（一次几百人同时提交）会排队**。→ 高命中率规则放前；plan 级规则用 Apollo 单独开关；压测群发 500 并发。
+- **plan 级姓名规则最贵**。班内 `NameRuleService` 是"scroll 班级学员(2000/批) + `listByUserIds`(最多 2000)"，本就重（且现实现命中失败即 return，实际只扫首页 2000，是既有正确性缺陷，别照抄）。plan 级若按班遍历 → N 班 × 重查询。→ 改用 `userAclService.listByStudentName`（限 100）先拿候选 userId，再按计划课程过滤；或设上限/降级。
+- **不贵的部分**：绑定层 `match` 不变；teacher-tool 查询不变；plan 级手机号/亲属号用 `listSubclazzStudentByCourseNumbersAndUserId`（500/批，计划课程数通常 <500 = 1 次/候选人），候选集小，成本可控。
+- **兜底开关是天然灰度**：`compute.rule.name.list` 在 Apollo，可单独开关/重排任一条规则，性能劣化时无需发版即可降级。
 
 ### 子需求2 小班续班主讲数据+下单优化
 

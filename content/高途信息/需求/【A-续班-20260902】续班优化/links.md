@@ -9,6 +9,8 @@ tags: [需求, 链接]
 
 | 类型 | 标题 | 链接 | 记录日期 |
 |---|---|---|---|
+| 需求总入口（我建，个人空间） | 【A-续班-20260902】续班优化 | https://gaotuedu.feishu.cn/wiki/Qox8wFcmHiXBgnkxFBtcd82gnsh | 2026-09-18 |
+| 子页面（我建，个人空间） | 问卷匹配优化：匹配逻辑现状·改动方案·风险 | https://gaotuedu.feishu.cn/wiki/KR7qwGZdEiGXW4k360NckPnxnnf | 2026-09-18 |
 | 需求wiki节点 | 续班优化：问卷匹配优化 | https://gaotuedu.feishu.cn/wiki/Ijz3w9ZgAi8ncakFs3jcKZI9nxi | 2026-09-17 |
 | 需求wiki节点 | 小班续班优化：主讲数据+下单优化 | https://gaotuedu.feishu.cn/wiki/LYCYwqS7ziljApknUlbclPSrnzh | 2026-09-17 |
 | 需求wiki节点 | 续班优化：扩科推荐优化 | https://gaotuedu.feishu.cn/wiki/ZEerwf5ZMi9B0Ok9nopcgvoenl2 | 2026-09-17 |
@@ -45,6 +47,9 @@ tags: [需求, 链接]
 - AI模块配置化 wiki token：`AH5ewehsEiXohfkDgQEcKQjHnad`（document_id: `Cea4d57Ueo5uoxxwiEvcLjmNn0c`）
 - PRD wiki token：问卷 `Fpyqw45MqiImJxkXjLzcNcO1n8A`、小班课字段+指标 `YdvUwruDDiSKNzkwKsWcnnAqnCg`、扩科推荐 `ZForwjdptifaaqkP2aFckFYWnWh`
 - 跨班错配分析文档 wiki token：`DzAfwt4H5i5ILtkX6cHcx4Nznnd`（document_id: `ZzZEdjMQsoFWisxVJz3cyzTfnGQ`）
+- 我建的需求总入口 node token：`Qox8wFcmHiXBgnkxFBtcd82gnsh`（obj_token `InlzdmROjosSd1xDbHYcApzfn5d`，个人空间 `7485951460694425602`）
+- 我建的问卷匹配子页面 node token：`KR7qwGZdEiGXW4k360NckPnxnnf`（obj_token `Uy1add0KYo7I8VxSUsycdqN1nHg`）
+- ⚠️ 我建的文档落在**个人空间**（`my_library`），不在原需求 wiki 空间 `7521677387233722372`——对该空间无建节点权限（131006）。
 
 ## 只存链接，不镜像明细
 
