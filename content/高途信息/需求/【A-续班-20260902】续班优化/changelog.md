@@ -7,6 +7,27 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-09-18（晚 · 扩科推荐重新纳入）
+
+### 🤖 Claude
+- 用户更正：**子需求3 扩科推荐要做**（此前误判为不做）。范围由 1/2/5 改为 **1/2/3/5**。
+- 派 2 个只读 agent 重新探索扩科推荐，产出精确证据并补进反讲（现状 / 方案对比 / 详细设计 / 接口 / 影响面 / 风险 / 待确认）：
+  - 配置侧：`ExpandSubjectConfigDTO`（product-server-client，字段 expandSubject/forceBuy/allowDuplicate/beginTime/endTime/recommendList）、B 端 `NodeExtConfigVO.extConfig`、表 `node_config.ext_config` + `renewal_expand_subject_recommend`；B 端 `ProcessController#edit/list/expandSubject*`。**三仓 grep `推荐排除/excludeSubject` 零命中 → 该字段不存在，需新建。**
+  - 计算侧：student-data 扩科集合收口点 = 大班 `RenewalInfoServiceImpl#groupGradeCurrentRenewalSubjectMap`（最终 subtract）、小班 `SmallRenewalSubjectService#getRenewalSubjectInfo`（:474-483）。PRD「在读」8 条件中 5 项已有过滤器，仅「授课模式/上课形式线上/订单未全部退款」3 项需新建。
+  - 推荐侧：cart `RenewalService#getRenewalDetail:217`→`ExpandSubjectRecommendService#recommend`（**仅按年级过滤**）；B 端 `recommendProductList`/`recommendClazzList` 结果来自 cart；**下单页选品与推荐不共用扩科逻辑**。
+  - 短链：`recommendUrl` 短链实际走 REACH-SERVICE（README 原说 PROMOTION-B 只对 appInfo 成立）。
+- 反讲补：标题/摘要改 1/2/3/5；新增子需求3 现状+方案+详细设计（各带 mermaid 图）；接口变更补扩科（`/product-b/b/renewal/process/edit` 保存、`/process/list` 查看回显、`expandSubject/*`、cart 推荐/选品、B 端 recommend*）；影响面加扩科行；风险/规避/待确认各补；变更历史加 v0.2；依赖的接口补 cart C 端推荐 + B 端老师推荐。
+- 用户补充接口：C 端推荐 `GET /cart/web/renewal/cart`、B 端老师推荐 `POST /product-b/b/renewMaster/recommendProductList`、B 端 `POST /product-b/b/renewal/process/edit`（保存）与 `/process/list`（查看）也要改。
+
+### 👤 我
+- 「3 要做 我弄错了，再加一个，都改一下」；给出推荐链接、cart C 端 curl、B 端老师推荐接口、B 端 process/edit 接口；给出扩科 PRD 原文与链接（LYCYwqS7ziljApknUlbclPSrnzh），指出「扩科班级不区分大小班可随意选，所以才加配置」。
+
+### 🤖 Claude（读 PRD 原文订正扩科口径）
+- 读扩科 PRD 原文，解除歧义：**【推荐排除】不是手填清单，而是扩科推荐为【是】时可编辑、默认空、单选的枚举【无排除】/【排除不同授课模式在读】**；选后者按「不同授课模式在读学科」动态排除（当前课程大班→排小班在读学科；小班→排大班在读学科）。问题根源=扩科班级/商品不区分大小班可随意选。B端/C端按「纯续+扩科推荐范围」展示。
+- 反讲订正：现状加问题根源与跨模式重复推荐；方案一改为 PRD 精确口径；详细设计改动点 1/2/4 重写、补 B端/C端展示适配；待确认 11 改为「过滤收口层」、12 改为「选品是否同过滤」，删除已解决的粒度/维度问题。
+
+---
+
 ## 2026-09-18（晚）
 
 ### 🤖 Claude

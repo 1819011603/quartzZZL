@@ -18,6 +18,7 @@ tags: [需求, 任务]
 | T-07 | 【问卷匹配】product-server 重试 Job `dealNotExistedComputeUser` 加「终态未匹配/重试次数」标记 | 待办 | 与 T-06 同批，否则被未匹配记录拖垮 | 性能风险见 README 子需求1「性能评估」 |
 | T-08 | 【问卷匹配】teacher-tool 改动（是否加 renewal_number 列、补「改派」能力） | 待办 | 续班计划列待评审 | 建议不加列；改派是需求缺口 |
 | T-09 | 【问卷匹配】新增调课调班事件消费并确认承接方（product-server 新建 consumer+DAO vs 扩 student-data `DwsAfterSaleSyncConsumer` tag 分支） | 待办 | 待评审 | 调课调班= topic `gaotu_after_sale_event_test`+`TRANSFER_TOUCH_EVENT`（非 `TAG_Subclazz_Transfer`）；明细 A/B fan-out 在 student-data |
+| T-10 | 【扩科推荐】新增【推荐排除】：product-server 配置（`ExpandSubjectConfigDTO`/`NodeExtConfigVO` + B 端 `process/edit`·`process/list`）+ student-data 计算侧过滤（大班/小班 subtract）+ cart 推荐/选品适配 + 「授课模式/上课形式线上/订单未全部退款」3 个新建条件 | 待办 | 跨四仓承接方待定；排除粒度待产品定 | 详见反讲「扩科推荐」；`推荐排除` 字段三仓零命中，需新建 |
 
 ## R- 反讲整改项
 
