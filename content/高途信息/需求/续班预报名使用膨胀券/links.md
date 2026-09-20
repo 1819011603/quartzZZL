@@ -47,6 +47,7 @@ tags: [需求, 链接]
 | mock支付 | 速搭 mock 支付页（订单号填 OES 批次单号） | https://sd.baijia.com/projectItem/myreview/79ab6125-96cb-4da3-a944-ab32f5772dc1/4e76c321-2ace-45d3-a387-0b5973ef4096 | 2026-09-14 |
 | case | banshan 用例集【PRD】续班预报名使用膨胀券（case 49252）·冒烟 33 条 / 功能用例 144 条 / 线上回归 33 条 | https://qa.baijia.com/banshan/#/caseManager/171/49252/69604/3 | 2026-09-15 |
 | case | 上一轮（0910）执行记录：已跑 25 条 · 通过 17 / 跑不了 4 / 有异议 3 / 失败 1 | https://gaotuedu.feishu.cn/wiki/Efp4wWQSLizF1Xk4wQ6ceC96ncf | 2026-09-15 |
+| 代码评审 | Code Review · feature-xuban-pre vs master（OCR，product-server 61 文件） | https://deeper.baijia.com/gpsprdhtml/25e85e44-de08-4fa3-b5f4-0bd0b7718d72-ocr-review-feature-xuban-pre.html | 2026-09-20 |
 | MR |  |  |  |
 | 接口文档 |  |  |  |
 
@@ -54,7 +55,7 @@ tags: [需求, 链接]
 
 | 类型 | 标题 | 链接 | 记录日期 |
 |---|---|---|---|
-| 上线checklist |  |  |  |
+| 上线checklist | 续班预报名使用膨胀券 · 上线 checklist（挂在需求 wiki 节点下） | https://gaotuedu.feishu.cn/wiki/ZIHEwKmsFiViZMkjcx1cNurInEe | 2026-09-20 |
 | 发布计划 | 【A-续班-20260901】膨胀券预报名 · id 23592（22 个服务：后端 12 + 前端 10） | https://qingzhou.baijia.com/#/publishArrangement/subPublishArrangement/publishPlan/detail?storyId=&pageNum=1&id=23592&action=edit | 2026-09-17 |
 | 工单 |  |  |  |
 
