@@ -9,7 +9,7 @@ tags: [设计, DDD]
 
 # 问卷匹配优化 · DDD 建模方案
 
-> 本文是 [[README|需求 README]] 子需求1「问卷匹配优化」的**领域建模方案**，不是任务板。
+> 本文是 [[README|需求 README]] 子需求1「问卷匹配优化」的**领域建模素材**——按 `tech-review-doc` 规范，它是飞书技术反讲的 `# 领域建模` **一节**，不单独成文；反讲落笔时并入即可。
 > 代码位置以 product-server `feature-xuban-pre`（= `origin/master`，问卷匹配未在本需求分支改动）为准。
 > 配套：[[README|最终口径/改动清单]] · [[changelog|决策摘要]]。
 
@@ -242,6 +242,10 @@ candidates(identity, scope) {
 ## 待确认
 
 - [ ] Phase 0/1 是否与本需求同批上线，还是先合 master 单独上（属通用重构，不依赖本需求）
+      —— owner: zhangzeling；触发：评审定排期时
 - [ ] `MatchEvidence` 是否要落库（用于线上排查"为什么匹配到这个人"），落则需 DDL
+      —— owner: zhangzeling；触发：Phase 2 开工前
 - [ ] plan 级姓名规则的成本（README 性能评估已标为最贵），是否加独立 Apollo 开关
+      —— owner: zhangzeling；触发：压测出结果后
 - [ ] `AbstractAttributionRule` 放 product-server-domain 还是抽到 client 供他仓复用（倾向前者，YAGNI）
+      —— owner: zhangzeling；触发：Phase 0 开工时定

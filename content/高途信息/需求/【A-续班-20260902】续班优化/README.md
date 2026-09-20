@@ -10,7 +10,7 @@ tags: [需求]
 
 # 【A-续班-20260902】续班优化
 
-> **本目录导航**：[[links|🔗 链接中心]] · [[tasks|✅ 当前任务板]] · [[changelog|📜 决策摘要]] · [[问卷匹配-DDD建模方案|🧩 子需求1 DDD 建模方案]]
+> **本目录导航**：[[links|🔗 链接中心]] · [[tasks|✅ 当前任务板]] · [[changelog|📜 决策摘要]] · [[问卷匹配-DDD建模方案|🧩 子需求1 领域建模素材（并入反讲）]]
 > 技术方案在飞书反讲文档里（见 [[links]]），本地不留副本。
 > 飞书归档：需求目录 https://gaotuedu.feishu.cn/wiki/VcOgwHkfeijOM5knBiAcbrLlnY6 → 需求总入口 https://gaotuedu.feishu.cn/wiki/Qox8wFcmHiXBgnkxFBtcd82gnsh → **技术反讲（1/2/5 合并）https://gaotuedu.feishu.cn/wiki/EC45wOefUi0buMkO7O0cipp9nEc**（挂在需求总入口下面）。
 > ⚠️ 此前 5 个「现状·改动·风险」子页面已删除（2026-09-18），由反讲替代；扩科/数据落表结论只在本地 README。
