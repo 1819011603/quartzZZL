@@ -14,8 +14,8 @@ tags: [需求, 任务]
 | T-03 | 代码定位：扩科推荐优化 | 已完成 | — | 结论见 README 子需求3 |
 | T-04 | 代码定位：数据落表 | 已完成 | — | 结论见 README 子需求4；需数仓侧确认落表方式才能继续 |
 | T-05 | 代码定位：AI模块配置化 | 已完成 | — | 结论见 README 子需求5 |
-| T-06 | 【问卷匹配】product-server 改动（ComputeParams 扩字段/解析前移、3 条 plan 级规则、Apollo 6 级顺序、去兜底取第一个、无绑定号收敛计划） | 待办 | 归属已确认给我 | 详见 README 子需求1「改动清单」；飞书子页面 https://gaotuedu.feishu.cn/wiki/KR7qwGZdEiGXW4k360NckPnxnnf |
-| T-07 | 【问卷匹配】product-server 重试 Job `dealNotExistedComputeUser` 加「终态未匹配/重试次数」标记 | 待办 | 与 T-06 同批，否则被未匹配记录拖垮 | 性能风险见 README 子需求1「性能评估」 |
+| T-06 | 【问卷匹配】product-server 改动（ComputeParams 扩字段/解析前移、3 条 plan 级规则、Apollo 7 档顺序、去兜底取第一个、无绑定号收敛计划） | 待办 | 归属已确认给我 | 详见飞书反讲「详细设计·问卷匹配」 |
+| T-07 | 【问卷匹配】product-server 重试 Job `dealNotExistedComputeUser` 加「终态未匹配/重试次数」标记 | 待办 | 与 T-06 同批，否则被未匹配记录拖垮 | 性能风险见飞书反讲「风险管理」 |
 | T-08 | 【问卷匹配】teacher-tool 改动（是否加 renewal_number 列、补「改派」能力） | 待办 | 续班计划列待评审 | 建议不加列；改派是需求缺口 |
 | T-09 | 【问卷匹配】新增调课调班事件消费并确认承接方（product-server 新建 consumer+DAO vs 扩 student-data `DwsAfterSaleSyncConsumer` tag 分支） | 待办 | 待评审 | 调课调班= topic `gaotu_after_sale_event_test`+`TRANSFER_TOUCH_EVENT`（非 `TAG_Subclazz_Transfer`）；明细 A/B fan-out 在 student-data |
 | T-10 | 【扩科推荐】新增【推荐排除】：product-server 配置（`ExpandSubjectConfigDTO`/`NodeExtConfigVO` + B 端 `process/edit`·`process/list`）+ student-data 计算侧过滤（大班/小班 subtract）+ cart 推荐/选品适配 + 「授课模式/上课形式线上/订单未全部退款」3 个新建条件 | 待办 | 跨四仓承接方待定；排除粒度待产品定 | 详见反讲「扩科推荐」；`推荐排除` 字段三仓零命中，需新建 |
@@ -36,3 +36,13 @@ tags: [需求, 任务]
 - **卡在**：落表方式未定（MQ推送 or 数仓侧binlog直拉）
 - **需要谁**：数仓侧
 - **可以先做**：其他4个子需求的评审和设计可并行推进，不受此阻塞
+
+## 完成判据
+
+> 每个未闭环任务「怎样才算完成」的可检查判据；完成一项删一行，全部闭环后本节为空。
+
+- T-06 7 档规则生效：手机号 / 姓名 / 亲属号 × 同班 / 同计划 组合用例匹配正确；多命中取学员 ID 小的；无绑定号路径收敛到本计划；不再有"取第一个"兜底。
+- T-07 `computedUserId=0` 记录不再每轮重复重跑（有终态未匹配 / 重试次数标记），重试 Job 负载不高于改造前。
+- T-08 按评审结论：不加列则无 DDL；若加「改派」，跨班改后同 `questionnaire_group_id` 的其余行同步更新。
+- T-09 调课调班后 A、B 两班（绑定同一问卷）的花名册问卷字段与问卷明细都正确。
+- T-10 选【排除不同授课模式在读】时，大班在读学科不再被小班推荐、反之亦然；【无排除】保持现状；B 端 / C 端 / 选品过滤一致。
