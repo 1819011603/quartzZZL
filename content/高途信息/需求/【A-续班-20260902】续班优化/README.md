@@ -12,7 +12,7 @@ tags: [需求]
 
 > **本目录导航**：[[links|🔗 链接中心]] · [[tasks|✅ 当前任务板]] · [[changelog|📜 决策摘要]] · [问卷匹配-DDD建模方案.md](问卷匹配-DDD建模方案.md)
 > 技术方案（现状 / 方案对比 / 详细设计 / 接口 / 风险）在飞书反讲里，见 [[links]]；本文件只留当前结论和指针。
-> 飞书：需求总入口 https://gaotuedu.feishu.cn/wiki/Qox8wFcmHiXBgnkxFBtcd82gnsh → **技术反讲（子需求 1/2/3/5）https://gaotuedu.feishu.cn/wiki/EC45wOefUi0buMkO7O0cipp9nEc**
+> 飞书：需求总入口 https://gaotuedu.feishu.cn/wiki/Qox8wFcmHiXBgnkxFBtcd82gnsh → **技术反讲（子需求 1/2/3/5）https://gaotuedu.feishu.cn/wiki/EC45wOefUi0buMkO7O0cipp9nEc** → **待产品确认清单（21 条，可直接转发产品）https://gaotuedu.feishu.cn/docx/L2yrdOPEAoIOMux1JLXcGtR4nde**
 > 续接这个需求：读完本文件即可。
 
 ## 一句话
@@ -53,7 +53,7 @@ tags: [需求]
 | 进度 | T 5/10（代码定位完成；问卷匹配 4 项 + 扩科 1 项待办）· R 0/0 · C 0/0 |
 | 部署泳道 | 未部署 |
 | 当前卡点 | 数据落表需数仓侧定落表方式；扩科"在读"3 个条件需新建过滤器；跨仓承接方未定 |
-| 最近更新 | 2026-09-21：README 瘦身（详细设计归飞书反讲）+ tasks 补「完成判据」；飞书反讲订正（补 Non-goals / 验收判据 / 交付门禁；AI 部门口径按 PRD 改「虚拟架构部门」；修正 compute 行号等） |
+| 最近更新 | 2026-09-21：**按 `origin/master` 全量核验反讲全部代码位置（4 组并行、约 90 处）**，反讲升 v0.4 订正 8 处（`UnificationSwitchService` 实际在 student-center、subtract :236-238、`refactorMainTeacherStudentInfo` 无角色分支、移除 origin/master 不存在的 `predictLevelReason`、`ProcessController`/`NodeExtConfigVO` 行号偏移、teacher-tool 查询条件、退款口径位置、`DwsRenewalQuestionnaireConsumer` 消费在 :187）；目标/Non-goals 归位；子需求2 统一为「现状 OR 已满足 PRD、本批无需开发」；问卷匹配 MySQL DDL 由否改是；补《发问卷整体技术方案》7 项现状/风险。新建**《待产品确认清单》21 条**（见 [[links]]） |
 
 ## 下一步
 
@@ -80,6 +80,15 @@ tags: [需求]
 - [ ] 【AI 配置化】部门 key 口径（PRD 写「虚拟架构部门」；圈选侧用整条路径 contains、归因侧用二级部门 code）—— 评审
 - [ ] 【AI 配置化】"不展示"要落到哪些接口 / 字段 —— 产品 + 前端
 - [ ] 跨仓承接方：product-server / teacher-tool 是否归本团队 —— 评审
+- [ ] **产品侧问题汇总（21 条）见飞书《待产品确认清单》** https://gaotuedu.feishu.cn/docx/L2yrdOPEAoIOMux1JLXcGtR4nde —— 产品/数仓/电商/前端
+- [ ] 【下单优化】快速加购组合商品（PRD 标 **P0**）本批是否做、是否需电商(order)支持 —— 产品 + 电商（反讲待确认 14）
+- [ ] 【问卷匹配】同名/一号多孩歧义的产品解法（待认领 / 改派 / 一人一链）；是否补「改派（改班级）」—— 产品
+- [ ] 【问卷匹配】「同一手机号多次提交只展示最新」是新增开发还是已有能力；明细是否补班级名称/ID 字段 —— 产品
+- [ ] 【扩科】【推荐排除】与已有【纯续和扩科是否重复推荐】是否合并；作用粒度（计划级/节点级/逐商品）—— 产品
+- [ ] 【AI】配置入口与形态（原计划 GAIA，预期「先选部门再选 AI 模块」）；关闭模块后历史数据是否展示 —— 产品
+- [ ] 【AI】续班 AI 8 个模块与代码 6 个场景枚举的对应关系（「用户反馈」「主管点评」是否算 AI 模块）—— 产品
+- [ ] 【主讲适配】统计口径「实时 vs 离线」需统一（指标 sheet 写实时、需求评论答离线）—— 产品
+- [ ] 线上 Apollo 现状核实：`compute.rule.name.list` 是否未配置、共享开关 `all.share.questionnaire.renewal` 实际值 —— 本团队（线上）
 
 ## 涉及的代码
 

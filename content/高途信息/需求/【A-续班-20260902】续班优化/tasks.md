@@ -24,6 +24,10 @@ tags: [需求, 任务]
 
 | 编号 | 整改项 | 谁提的 | 状态 | 备注 |
 |---|---|---|---|---|
+| R-01 | 反讲按 `origin/master` 全量核验代码位置（4 组并行 ~90 处），订正 8 处并升 v0.4 | 我 | 已完成 | 见反讲「变更历史 v0.4」 |
+| R-02 | 反讲：目标/Non-goals 归位、子需求2 口径统一（无需开发）、问卷匹配 DDL 否→是、移除不存在的 `predictLevelReason`、补《发问卷整体技术方案》7 项现状/风险 | 我 | 已完成 | 同上 |
+| R-03 | 新建《待产品确认清单》21 条（按 5 子需求分组，可直接转发产品） | 用户 | 已完成 | https://gaotuedu.feishu.cn/docx/L2yrdOPEAoIOMux1JLXcGtR4nde |
+| R-04 | 线上核实 Apollo：`compute.rule.name.list` 是否未配置、共享开关 `all.share.questionnaire.renewal` 实际值（本机 PROD Apollo 不可达） | 我 | 待办 | 反讲待确认 20 |
 
 ## C- case 联调问题
 
