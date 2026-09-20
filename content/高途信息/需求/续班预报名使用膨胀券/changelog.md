@@ -7,6 +7,40 @@ tags: [需求, 日志]
 
 > 只保留仍能解释当前设计的决定。最终口径以 README/apis/verify/tasks 为准。
 
+## 2026-09-20 · C 端券被全滤的根因：cache→DTO 转换漏拷 saleStatus
+
+**现象**：C 端预报名落地页券列表恒为空（`isSellable` 把所有券判 false）。
+
+**根因**：promotion `listFromCache` 读缓存后走 `convertPreOrderActivityProductDTO(CacheDTO)`
+转对外 DTO，该方法漏拷 `saleStatus`（`enrich` 只把值补进**缓存 DTO**，C 端这条链路不经过
+`enrichDTO`）。cart 用 `saleStatus` 对照 Apollo 白名单 `preRegistration.coupon.display.saleStatus`
+（默认 `{2}`），null 一律不放行。
+
+**实测坐实**：同一活动同一份缓存，缓存层 `listVisibleActivityByNumbersFromCache` 返回
+`sale_status:1`，`listFromCache` 返回**无该字段**；coupon-a `queryList` 也确认这些券
+`saleStatus=1`（非 null）。TEST 环境两个白名单 key 配的是空串（不过滤）所以没暴露，
+PROD 走代码默认值 `2` 会直接白屏。
+
+**决定**：在 `convertPreOrderActivityProductDTO(CacheDTO)` 补 `setSaleStatus`。
+BO→DTO 那处**不能补**（`PreOrderActivityProductBO` 无该字段，券状态不落库），
+`detail()` 链路由 `enrichDTO` 负责。
+
+**顺带**：`updateActivityWithProducts` 无条件回调 `saveCouponScopes`，未提交商品（只改名称/
+用户范围）时空列表会让 product-b `clearRemovedCoupons(空集)` 把该活动券范围整体置删——
+改为仅在 `productEditDTOS != null` 时回调。⚠️ 09-20 的 `f0b0da8e9` 只堵了 `type==null`，
+堵不住「type 有值但商品为空」。
+
+**B7/B8 不改**：「每个膨胀券只能用于一个预报名活动」已在 promotion `d6982e89b` 实现
+（`validateCouponNotUsedByOtherActivity`），跨活动复用券不再可能，故券意向串单、
+退款按 (userId,sku) 整批软删都不再触发。
+
+## 2026-09-20 · 退款事件不再静默 ack
+
+`PresaleCouponOrderService#doConsume` 原对 pay/refund 一律返回 `Success`；`dealRefund`
+回查订单项为空时只打日志 return → 退款被 ack 后永久丢失（本链路对 `is_del` 无反向恢复入口）。
+改为 `doConsume` 按处理结果返回，未成功/抛异常一律 `Suspend` 重投；`dealRefund` 返回 boolean，
+回查不到订单项或拿不到 userId 返回 false。
+
 ## 2026-09-17 · 预警邮件入口订正：HTTP `/insect/send` 是 `deal()` 不是 `send()`
 
 **现象**：反复触发预警却一封邮件都收不到，预警数据（`questionnaire_inspect`）的行 id 还一直在变。

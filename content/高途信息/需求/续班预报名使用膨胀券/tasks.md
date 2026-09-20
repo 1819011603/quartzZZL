@@ -30,6 +30,8 @@ tags: [需求, 任务]
 | T-46 | 花名册回溯默认带上膨胀券 + 抽公共 handler helper | 已完成 | — | 2026-09-17：券清单不必手填，改为按「班级 → 续班计划 → 计划下可展示券」自动推导（`RenewalMasterAclService#listCouponSkuNumbersByRenewal`，下游 `listDisplayableCoupons` 不传 userId=计划级）；`BackPresaleParam` 加 `backCoupon`（缺省 true），`couponSkuNumbers` 降为可选过滤器；两个 job 的公共骨架抽到 `PresaleBackfillHelper`（差异只在 dealSubclazzStudent 用哪个服务）。commit student-data `cd56fb484`，单测 27 条全过，已发 `test-gtbg-dev-3` 并实测两个 job 均自动推导出券清单、券回溯落库，见 [[verify]]「花名册回溯默认带上膨胀券」。 |
 | T-47 | 组装青舟发布计划 23592（22 个服务） | 已完成 | — | 2026-09-17：按仓库拉全量部署（`getAllServiceCode` 按 `gitProjectName` 分组），补齐「一个仓库多部署」的漏项——product-server 补 product-task、promotion 补 promotion-task、student-data 补 student-data-gps、mweb 补 lexue-m-fe/gongkao-m，共 22 个服务（后端 12 + 前端 10）。产物镜像自动取各分支最新一条，配置行(SQL/MQ + Apollo key)从 `getStructureConfig` 原样回传避免被清空。promotion 两条上线分支**保持 release**（master 无镜像，2026-09-17 决定不改）。2026-09-17：TAPD story 下张泽灵 7 条任务全部置「已完成」（工时按预估填满）。见 [[links]]「上线」。 |
 
+| T-48 | 代码审查修复 B1/B2/B4/B9 + 部署 | 已完成 | — | 2026-09-20：**B1** promotion `listFromCache` cache→DTO 漏拷 `saleStatus` → C 端券被全滤/白屏，补 `setSaleStatus`（`feb8c6192`，实测返回 `sale_status:1`）；**B2** 未提交商品时不再回调 `saveCouponScopes`，避免清空券范围（同 commit）；**B4** student-data 退款回查失败改 `Suspend` 重投（`5bdf4f86b`）；**B9** student-center 批量券 ID 格式错误返回参数提示（`97458ad43`）。4 部署已发 `test-gtbg-dev-3`（promotion-b `1277459`、promotion-c `1277460`、student-data-dws `1277461`、student-center `1277462`）。B7/B8 因 `d6982e89b` 已实现「一券一活动」不改；B10 用户确认不改。 |
+
 ## 合入现状（2026-09-15，MR 已建）
 
 > MR 链接见 [[links]]「上线 → Merge Request」。源分支统一 `feature-xuban-pre`；
