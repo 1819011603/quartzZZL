@@ -32,6 +32,8 @@ tags: [需求, 任务]
 
 | T-48 | 代码审查修复 B1/B2/B4/B9 + 部署 | 已完成 | — | 2026-09-20：**B1** promotion `listFromCache` cache→DTO 漏拷 `saleStatus` → C 端券被全滤/白屏，补 `setSaleStatus`（`feb8c6192`，实测返回 `sale_status:1`）；**B2** 未提交商品时不再回调 `saveCouponScopes`，避免清空券范围（同 commit）；**B4** student-data 退款回查失败改 `Suspend` 重投（`5bdf4f86b`）；**B9** student-center 批量券 ID 格式错误返回参数提示（`97458ad43`）。4 部署已发 `test-gtbg-dev-3`（promotion-b `1277459`、promotion-c `1277460`、student-data-dws `1277461`、student-center `1277462`）。B7/B8 因 `d6982e89b` 已实现「一券一活动」不改；B10 用户确认不改。 |
 
+| T-49 | 第二轮修复：C 端券ID、平台券不可选、coupon 1.3.21 | 已完成 | — | 2026-09-20：**#3** cart C 端 `couponId` 误用活动商品行主键 `id` → 改 `getCouponId()`（`b22bfd9b`）；**#5** student-center 平台券（`saleStatus=null`）原可勾选 → `blocksSelection` 严格化为只有【售卖中(2)】放行（`9be876621`）；`coupon-a-client` 1.3.17→**1.3.21** 正式包（promotion `57182fd20`、student-center `e28e1886b`）。部署 `test-gtbg-dev-3`：cart `1277649`、promotion-b `1277650`、promotion-c `1277651`、student-center `1277652`。 |
+
 ## 合入现状（2026-09-15，MR 已建）
 
 > MR 链接见 [[links]]「上线 → Merge Request」。源分支统一 `feature-xuban-pre`；

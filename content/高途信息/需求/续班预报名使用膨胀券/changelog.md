@@ -7,6 +7,24 @@ tags: [需求, 日志]
 
 > 只保留仍能解释当前设计的决定。最终口径以 README/apis/verify/tasks 为准。
 
+## 2026-09-20 · 「一券一活动」严格限死（历史数据不宽限）
+
+**决定**：严格按 PRD——每张膨胀券只能绑一个预报名活动。
+
+- 校验 `validateCouponNotUsedByOtherActivity`：本活动未绑定的券，只要被任何**未删除、未作废**活动占用即拦截。
+- **历史多活动数据不放行**：测试环境实测有券绑到 7 个活动（如 `579394599632533505`），这些活动之后编辑/保存会被拦，属预期（严格限死）；运营需自行摘券收敛。
+- **已结束(4) 仍算占用**（只豁免已作废 6）：已结束活动无法编辑摘券，该券会被永久锁死，属严格口径的代价。
+- 曾评估「只拦新增、宽限本活动已绑定的券」，**已否决**（用户明确要求历史数据不放行）。
+
+## 2026-09-20 · C 端券 ID 取错字段 + 平台券不可勾选 + coupon 1.3.21
+
+- **#3** cart `PreRegistrationCouponAssembler` 的 `vo.setCouponId(couponProduct.getId())` 取的是
+  `pre_order_activity_product` 主键（如 959），非券定义 ID（`couponId`，如 579602402418638848）→ 改 `getCouponId()`。
+- **#5** `PreOrderCouponSaleStatusEnum.blocksSelection` 原对 `saleStatus=null`（平台券）不挡，
+  导致平台券可勾选；改严格口径：**只有售卖中(2) 放行**，null/未知一律挡（PRD：只能选【使用中且售卖中】）。
+- `coupon-a-client` 1.3.17 → **1.3.21**（正式包）：1.3.21 本模块契约未变，仅 1.3.18/1.3.19 对
+  `queryByOrderItems` 增量加字段；promotion/student-center 只用 `queryList`，升级安全。
+
 ## 2026-09-20 · C 端券被全滤的根因：cache→DTO 转换漏拷 saleStatus
 
 **现象**：C 端预报名落地页券列表恒为空（`isSellable` 把所有券判 false）。
