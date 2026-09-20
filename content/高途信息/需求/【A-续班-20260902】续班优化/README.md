@@ -39,11 +39,11 @@ tags: [需求]
 ## 已定共识
 
 - 5个子需求彼此独立，互不依赖，可并行推进，不要求同批上线（2026-09-17 拆分归档时确认，如需求方另有说明再更正）。
-- 问卷匹配优化：问卷匹配范围调整为【问卷+续班计划+班级+辅导老师】，问卷和续班计划必须完全匹配；历史数据不回溯（2026-09-05 PRD）。
+- 问卷匹配优化：问卷匹配范围【问卷+续班计划+班级+辅导老师】，**问卷和续班计划必须完全匹配；班级、辅导老师不做强校验**；匹配规则为 **6 级优先级（同班/同计划 × 手机号→姓名→亲属手机号）**，**匹配到多个学员取学员ID小的**（2026-09-20 读 PRD 原文订正；原"不唯一就置0"是误读，PRD 给的是确定性 tie-break）；历史数据不回溯（2026-09-05 PRD）。
 - 问卷匹配·调课调班同步：前提是班级A/B绑定同一份续班问卷（不同问卷不共享）；填过问卷则A/B两班明细（2条，按班级信息区分）+花名册都展示，先填后调/先调后填均成立；全程未填则A/B都无数据。备注 P1（2026-09-05 PRD）。
-- AI模块配置化：未配置的模块要同时做到"前端不可用+AI不分析"，不是只隐藏前端；续班AI 8个 + 退费AI 6个，共14个模块（2026-09-05 PRD）。**2026-09-18 产品确认：未配置的模块不展示（隐藏）**，即不做"保留可查"。**2026-09-18 代码核实**：`AiAppSceneEnum` 实为 6 个(1用户画像/2沟通摘要/3沟通建议评分/4服务建议评分/5未续跟进/6已续总结)，PRD 的 8 个明细本地无存档；退费侧 `RefundReasoningEnum` 5 个 + `RefundPredictionService` 1 个 = 6 个，数量吻合。**续班AI 8 个已定（2026-09-18 用户确认）= 代码 6 个 + 分层原因(`levelReasonAndHistory`) + 意向预测(`renewalIntentionPredictLevel`)**。
+- AI模块配置化：未配置的模块要同时做到"前端不可用+AI不分析"，不是只隐藏前端；续班AI 8个 + 退费AI 6个，共14个模块（2026-09-05 PRD）。**2026-09-18 产品确认：未配置的模块不展示（隐藏）**，即不做"保留可查"。**2026-09-18 代码核实**：`AiAppSceneEnum` 实为 6 个(1用户画像/2沟通摘要/3沟通建议评分/4服务建议评分/5未续跟进/6已续总结)，PRD 的 8 个明细本地无存档；退费侧 `RefundReasoningEnum` 5 个 + `RefundPredictionService` 1 个 = 6 个，数量吻合。**续班AI 8 个（2026-09-20 按 PRD 订正）= 续班用户画像 / 意向预测 / 沟通概况 / 已续未续跟进 / 沟通建议&评分 / 服务建议&评分 / 用户反馈 / 主管点评**；原"代码 6 个 + 分层原因 + 意向预测"**作废**——PRD 的「用户反馈/主管点评」在展示侧有实现（`UserFeedbackController` / `ManagerEvaluateService`），而「分层原因」不在 PRD 的 8 个里。模块↔代码映射见「子需求5」。
 - 数据落表：续班落表覆盖大小班课，退费落表仅大班课（2026-09-05 PRD）。
-- 主讲数据+下单：角色数据权限**仅小班适用**——主讲展示主讲数据、班主任展示班主任数据、双角色展示主讲数据；大班花名册没有主讲字段（只有班主任/销售）。小班现状是"主讲 OR 班主任(+岗位标签)"合并可见范围、数据可见范围无角色分支（2026-09-05 PRD / 2026-09-17 代码定位）。**2026-09-18 代码核实**：三处均 OR 合并无角色分支（统计 `SmallRenewalService:637-638`、搜索 `:794-795`、权限 `SmallClazzUserPermissionFilterService:71-84`、班级筛选 `SmallFilterComponentServiceImpl:632/664`）；`mainTeacherAccountIds` 是**班级级**字段，OR 会把全班学员都算进主讲口径（这正是要解决的缺口）；`SmallRenewalStatVO` 无角色字段、统计只有一套口径。已有角色分支先例可参考 `SmallClazzUserJurisdictionUserCountService:74`（主讲优先、班主任时 mustNot 同时是主讲）。
+- 主讲数据+下单：角色数据权限**仅小班适用**——主讲展示主讲数据、班主任展示班主任数据、双角色展示主讲数据；大班花名册没有主讲字段（只有班主任/销售）。小班现状是"主讲 OR 班主任(+岗位标签)"合并可见范围、数据可见范围无角色分支（2026-09-05 PRD / 2026-09-17 代码定位）。**2026-09-18 代码核实**：三处均 OR 合并无角色分支（统计 `SmallRenewalService:637-638`、搜索 `:794-795`、权限 `SmallClazzUserPermissionFilterService:71-84`、班级筛选 `SmallFilterComponentServiceImpl:632/664`）；`mainTeacherAccountIds` 是**班级级**字段——**这个 OR 恰好等于 PRD 要的分角色口径**：主讲（含双角色）经班级级 `mainTeacherAccountIds` 命中全班 → 班级维度；仅班主任只经 `assistantAccountId` 命中自己辅导班 → 辅导班维度；「A班主讲+B班班主任」分别按各自角色算再加和（正是 PRD「多班级计算逻辑」）。原"OR 把全班算进主讲口径是**缺口**"的说法 **2026-09-20 读 PRD 订正、作废**——全班对主讲本就是对的，**子需求2 很可能无需开发**（只剩展示层标注口径之类）；`SmallRenewalStatVO` 无角色字段、统计只有一套口径。已有角色分支先例可参考 `SmallClazzUserJurisdictionUserCountService:74`（主讲优先、班主任时 mustNot 同时是主讲）。
 - 小班续班适配主讲：**下单优化(快速加购组合商品 P0、续班确认表 P1)本批不做**（2026-09-18 用户确认）。原"快速加购组合商品/续班确认表属新功能"结论作废：组合商品加购底层链路 master 已存在（见「必须知道的坑」）。
 - 扩科推荐优化：**问题根源=扩科推荐的班级/商品不区分大小班、可随意选**，导致跨授课模式重复推荐（大班在读数学、小班在读语文，大班却推语文 → 退费/重复缴费/业绩重算）。**【推荐排除】= 扩科推荐为【是】时可编辑、默认空、单选，枚举【无排除】/【排除不同授课模式在读】**（2026-09-05 PRD）；选后者按"不同授课模式在读学科"排除：当前课程是大班课则排除在读小班课学科、是小班课则排除在读大班课学科；"在读"8 条件（相同学年学期/授课模式/上课形式线上/不含赠课等标签/订单未全部退款/专题系列课/非纯预售/非成人）中 5 个已有现成过滤器可复用，仅"授课模式/上课形式线上/订单未全部退款"3 项需新建；B端/C端按"纯续+扩科推荐范围"展示；若回溯则历史数据按【无排除】处理（当前口径不回溯）（2026-09-17 代码定位 / 2026-09-18 读 PRD 原文订正）。
 
@@ -169,6 +169,35 @@ tags: [需求]
 
 **设计草案**：新增 Apollo 配置 `Map<部门code, Set<模块枚举>>`（`@ApolloJsonValue`），扩展 `AiAppSceneEnum` 思路，给续班AI、退费AI各自模块建枚举。"部门"取"课程所在的主数据部门"code（字符串数字，如 `10012667`）；**查中文名实际走 `MedusaSyncAclService#getDepartmentPathNameByNumber`（student-data-client，调用点两仓 `ComprehensiveDepartmentFilter:56`），不是 `TeachDepartmentAclService`（那个用于 GPS 组 `departmentIds`→名称）**。生效点两处都要改：student-data 分析侧（未配置模块不跑分析，省成本）+ student-center 展示侧（未配置模块前端不可见/接口拒绝）。
 
+**模块 ↔ 代码映射（2026-09-20 逐个对，标「待确认」的需产品/开发复核）**
+
+续班 AI 8 个（PRD）：
+
+| PRD 模块 | 分析侧 student-data | 展示侧 student-center |
+|---|---|---|
+| 续班用户画像 | `AiAppSceneEnum.USER_PORTRAIT(1)` | `ai/clazzUser/userPortrait` |
+| 意向预测 | `RenewalIntentionPredictDataQueryServiceV2` | `ai/clazzUser/predictLevelReason`（续班分层，**新增、未上线**，scene=1，查分层变化记录+某次预测的分层原因）、`levelReasonAndHistory`（分层原因和变化记录） |
+| 沟通概况 | `AiAppSceneEnum.COMMUNICATION_SUMMARY(2)` | `ai/clazzUser/commSummary` |
+| 已续/未续跟进 | `AiAppSceneEnum.UNRENEWED_FOLLOW_UP(5)` + `RENEWED_SUMMARY(6)` | `ai/renewal/reason/detail` |
+| 沟通建议&评分 | `AiAppSceneEnum.COMMUNICATION_SUGGESTION_AND_SCORE(3)` | `problem/fulfillProblem/overview` |
+| 服务建议&评分 | `AiAppSceneEnum.SERVICE_SUGGESTION_AND_SCORE(4)` | `fulfillSop/overview` |
+| 用户反馈 | **无（手工填写/保存，不走 AI 分析）** | `user/feedback/edit`、`user/feedback/query` |
+| 主管点评 | **无（手工填写/保存，不走 AI 分析）** | `ai/clazzUser/managerEvaluate`（保存）、`teacherEvaluate`、`evaluateQuery` |
+
+退费 AI 6 个（PRD）：
+
+| PRD 模块 | 代码 |
+|---|---|
+| 退费分析 | `RefundController#/analysis`、`AiRefundAnalysisController#/analysis/time`（入口/总览） |
+| 意向预测 | `RefundPredictionService` |
+| 手填退费原因 | 待确认 |
+| AI预测退费原因 | `RefundReasoningEnum.REFUND_ROOT_CAUSE`（退费根因） |
+| 课程体验 | `RefundReasoningEnum.LEARNING`（课程体验） |
+| 退费沟通旅程 | `RefundReasoningEnum.TUTORING`（退费旅程分析） |
+
+未进 PRD 6 的代码模块：`RefundReasoningEnum.SATISFACTION`（满意度归因）、`SERVICE_SUGGESTION`（服务建议）——归属待确认（可能是「退费分析」的组成部分）。
+
+
 ## 上线影响面
 
 | 子需求 | Apollo | ES | MySQL DDL | MQ | 代课接口权限 |
@@ -186,5 +215,5 @@ tags: [需求]
 - "主讲数据"只针对**小班**：大班花名册没有主讲字段（只有 `assistantAccountId` 或 `assistantAccountId OR salesAccountId`），改权限别按两仓对称去估。
 - **别把 `TAG_Subclazz_Transfer` 当调课调班**：它是**转辅导班**（同班内换班主任，`SubclazzStudentMqDto.type=7`，消息只带一个 `clazzNumber` + old/new `subclazzNumber`）。PRD 说的"班级 A 调课到班级 B"对应 topic `gaotu_after_sale_event_test` + tag `TRANSFER_TOUCH_EVENT`，**目前只有 reach-service 消费**，student-data `DwsAfterSaleSyncConsumer` 只处理退费 tag——调课调班同步是要**新增消费**。
 - **下单优化(快速加购组合商品/续班确认表)本批不做**（2026-09-18 用户确认）；组合商品加购底层链路 master 已存在，若日后重启别当全新功能估。
-- **主讲口径的坑**：`mainTeacherAccountIds` 是**班级级**字段，写到该班每个学生文档上；现状 OR 合并会把**全班学员**都算进主讲可见范围（不只他管的），这正是"适配主讲"要解决的缺口。数据模型里**没有**「主讲→subclazz 归属」字段，班主任才有（`small_clazz_v3.subclazzList[].assistantNumber`）；主讲 `managedStudentCount` 是全班，班主任是按辅导班。
+- **主讲口径的坑（2026-09-20 订正）**：`mainTeacherAccountIds` 是**班级级**字段，写到该班每个学生文档上——**主讲（含双角色）看到全班正是 PRD 要的**（班级维度），**不是缺口**；要"只看自己辅导班"的是**班主任**（靠单值 `assistantAccountId`）。原"OR 把全班算进主讲口径是缺口"**作废**。数据模型里没有「主讲→subclazz 归属」字段、**也不需要**；班主任才有（`small_clazz_v3.subclazzList[].assistantNumber`）；主讲 `managedStudentCount` 是全班，班主任是按辅导班。
 - `StudentSubclazzQuestionnaire` 是**零引用孤立实体**，别当它是问卷落库表去改。
