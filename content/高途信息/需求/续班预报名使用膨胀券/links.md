@@ -49,6 +49,8 @@ tags: [需求, 链接]
 | case | 上一轮（0910）执行记录：已跑 25 条 · 通过 17 / 跑不了 4 / 有异议 3 / 失败 1 | https://gaotuedu.feishu.cn/wiki/Efp4wWQSLizF1Xk4wQ6ceC96ncf | 2026-09-15 |
 | 代码评审 | Code Review · feature-xuban-pre vs master（OCR，product-server 61 文件） | https://deeper.baijia.com/gpsprdhtml/25e85e44-de08-4fa3-b5f4-0bd0b7718d72-ocr-review-feature-xuban-pre.html | 2026-09-20 |
 | 修复结论 | 续班预报名使用膨胀券 · 代码评审（OCR）修复结论（28 条逐条 改/不改） | https://gaotuedu.feishu.cn/wiki/PrXlwEHYgiN4u7kTe6McVybanBf | 2026-09-20 |
+| 代码评审 | Code Review · feature-xuban-pre（CR 20260920，product-server 51 条） | https://deeper.baijia.com/gpsprdhtml/ac6a6eb8-ddd1-4063-b983-4b1a40adbaa2-CR_feature-xuban-pre_20260920.html | 2026-09-20 |
+| 修复结论 | 代码评审（CR 20260920）逐条结论（51 条逐条 改/不改） | https://gaotuedu.feishu.cn/wiki/YTE3wZMAjiN8H3k7GXVcj6Kanfc | 2026-09-20 |
 | MR |  |  |  |
 | 接口文档 |  |  |  |
 
