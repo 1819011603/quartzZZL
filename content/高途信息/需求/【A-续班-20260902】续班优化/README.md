@@ -128,7 +128,9 @@ tags: [需求]
 - **主讲口径**：`mainTeacherAccountIds` 是**班级级**字段，主讲（含双角色）看到全班**正是 PRD 要的**；要"只看自己辅导班"的是**班主任**（单值 `assistantAccountId`）。
 - `StudentSubclazzQuestionnaire` 是**零引用孤立实体**，不是问卷落库表。
 - 跨仓库范围比想象大：product-server、order、cart、reach-service、teacher-tool。
+- **续班后置（前置→后置关系）有缓存机制但线上关了**：cart `RenewalDataService#listRenewalMasterByRenewalNumber`（Guava+Redis），开关 `renewal.query.cache.enabled` 代码默认 true、**PROD 实查 = false** → 线上实时调 product-server、无缓存滞后；其余 cart 缓存（clazz/course）线上未配、默认 1800s 开启。
 - **在读科目表可能不准，有回溯手段**：表是 MQ + 外部数据拼的（进/退班消息丢失/乱序、课程缓存过期、退款未同步、判定逻辑变更后老数据未重算、`is_del` 不一致）。回溯：**大班** `dws_fuwu_clazz_user_subject` → XXL-Job `BackClazzUserSubjectHandler`（`{"clazzNumbers":[...]}` 或 `{"beginId":..,"endId":..}`）；**小班** `dws_small_clazz_user_subject` → 手动接口 `POST /gps/manual/back/smallClazzUser/subject`、`/back/smallClazz`、`/back/smallRelationLargeClazzUser`、`/back/smallClazzUser`（校验用 `POST /gps/manual/check/smallClazzUser/subject`）。
+- **扩科排除：加开关、不新写回溯逻辑** —— 配置本身即 per-计划开关（【无排除】），再加全局 Apollo 降级开关（如在读表脏时一键回退【无排除】）；回溯沿用在读科目表现成 Job/接口，**不内联进推荐链路**（C 端高频、且会重复实现口径）；若要自动只做离线对账。
 - **AI 部门匹配有现成先例**：`RenewalAiCommRealTimeSelectHandleService#getDeptAiConfig:214-224` 就是 `departmentPath.contains(configKey)` + `@ApolloJsonValue Map`（部门取课程/班级的 `courseDO.getDepartmentIdPaths().get(0)`）。注意：①"用谁的部门"（班级部门 vs 老师部门）要定，展示侧要同口径；②`contains` 是子串匹配，数字部门 id 会前缀误命中（`1000005` 命中 `10000056`）。
 - **在读科目数据来自 student-data 自己的表**（不是查询时调外部）：小班 `dws_small_clazz_user_subject`、大班 `dws_fuwu_clazz_user_subject`，再由 `calRenewalInfo`/`calGradeRenewalInfo` 算出；表的原料是外部（进/退班 MQ `gaotu_subclazz_student_event_test` + 课程中心 + 订单）。→ 「对方模式在读学科」集合可由 student-data 直接透出给 cart。
 - **扩科推荐在 cart 算**（`ExpandSubjectRecommendService#recommend`，小班 :32 / 大班 :69，**只按年级匹配**）；`recommendProductList` 只是把 cart 结果转 B 端列表。**cart 没有"在读学科"数据**（全仓无在班/在读查询）→ 加排除过滤的**真正难点是"对方模式在读学科"从哪来**：建议由 student-data 透出（复用 `checkFilter`/`isValidClazz` 的 8 条件口径），cart 只做过滤；否则 cart 要复刻 8 条件、口径会漂移。

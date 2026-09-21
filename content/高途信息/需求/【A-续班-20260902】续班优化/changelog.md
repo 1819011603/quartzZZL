@@ -37,6 +37,7 @@ tags: [需求, 日志]
 - 【问卷匹配】重试 Job = product-server `QuestionnaireRecordService#dealNotExistedComputeUser`（每轮重跑 3 天内 `computed_user_id=0` 记录）—— 是否同批改造仍待评审。
 - 【AI】部门匹配**有现成先例**：`RenewalAiCommRealTimeSelectHandleService#getDeptAiConfig:214-224` 即 `departmentPath.contains(configKey)` + `@ApolloJsonValue Map`（部门取课程/班级 `courseDO.getDepartmentIdPaths().get(0)`）。待定：①用班级部门还是老师部门（展示侧要同口径）；②`contains` 子串匹配对数字部门 id 会前缀误命中，需带分隔符。已写入反讲「详细设计·AI」。
 - 【扩科】在读科目表**可能不准 & 回溯手段**：表由 MQ+外部数据拼成（消息丢失/乱序、课程缓存过期、退款未同步、判定变更后未重算、is_del 不一致）。回溯：大班 `dws_fuwu_clazz_user_subject` → XXL-Job `BackClazzUserSubjectHandler`（按 clazzNumbers 或 beginId/endId）；小班 `dws_small_clazz_user_subject` → 手动接口 `/gps/manual/back/smallClazzUser/subject` 等（校验 `/gps/manual/check/smallClazzUser/subject`）。已写入反讲。
+- 【扩科】风险应对**结论：加开关、不新写回溯逻辑** —— 配置本身即 per-计划开关，再加全局 Apollo 降级开关（脏数据一键回退【无排除】）；回溯沿用现成 Job/接口、不内联进推荐链路（C 端高频 + 口径重复）；要自动只做离线对账。已写入反讲「风险管理」。
 
 ### 🤖 Claude（订正产物）
 - 飞书清单已按答复回填 ✅（1/3/4/5/6/7/8），并在顶部加「确认进度」callout；反讲「待确认项」#2/#3/#5 与 14-20 段同步回填。
