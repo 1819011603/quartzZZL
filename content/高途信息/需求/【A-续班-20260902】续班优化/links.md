@@ -56,6 +56,7 @@ tags: [需求, 链接]
 - **技术反讲（1/2/5 合并）node token：`EC45wOefUi0buMkO7O0cipp9nEc`（obj_token `GiqcdeCakoAsvfxH43accvD4nHf`），父节点 = 需求总入口 `Qox8wFcmHiXBgnkxFBtcd82gnsh`。⚠️ 反讲必须挂在需求总入口下面，不要只放个人空间根目录。**
 - **待产品确认清单 docx token：`L2yrdOPEAoIOMux1JLXcGtR4nde`**（2026-09-21 建，父节点 = 需求总入口 `Qox8wFcmHiXBgnkxFBtcd82gnsh`）
 - **扩科风险说明 docx token：`H4yodcxmDoBkVgxThPGcYHQSnp9`**（2026-09-21 建，父节点 = 需求总入口 `Qox8wFcmHiXBgnkxFBtcd82gnsh`）
+- **教学交付空间「教学服务」下的快捷方式**：node `K6qPwaKmqiq7emkT8F4cpfFxnwh`（shortcut → 需求总入口 `Qox8wFcmHiXBgnkxFBtcd82gnsh`），父节点 = 「教学服务」`G3FgwZMidiPLHNk34Occadv0ngc`，空间 `7501250181476663298`（教学交付）。URL https://gaotuedu.feishu.cn/wiki/K6qPwaKmqiq7emkT8F4cpfFxnwh
 - ⚠️ **2026-09-18 删除**：此前建的 5 个「现状·改动·风险」子页面（问卷匹配 `KR7qwGZdEiGXW4k360NckPnxnnf`、主讲数据+下单 `H5hwwnFbbi7GVRkz2VtcUzJpnFb`、扩科推荐 `IcwmwG8IViAohkkIHWCccrWSnxb`、数据落表 `F7XDwJwtNiwznWkWyS2cjdKUnec`、AI模块配置化 `M8fFwc6QXiu2azkWWHRc94K0n1g`）**已全部删除**，内容由本反讲替代（反讲只覆盖 1/2/5；扩科/数据落表的结论只在本地 README）。
 - ⚠️ 我建的文档落在**个人空间**（`my_library`，space `7485951460694425602`），不在原需求 wiki 空间 `7521677387233722372`——对该空间无建节点权限（131006，因该知识库未把应用 `cli_aad217a2a5b89be3` 加进去）。
 
