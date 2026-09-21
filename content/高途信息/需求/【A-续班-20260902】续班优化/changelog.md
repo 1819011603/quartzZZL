@@ -18,7 +18,7 @@ tags: [需求, 日志]
 - 子需求1：①同名/一号多孩**不做产品侧解法**，按规则写；②改派**在问**→ 后经王永诗确认**不用做**（手工绑定维持现状）；③「同一手机号多次提交只展示最新」**EES 已有**（已核 teacher-tool `QuestionnaireConsumer#handleRenewalQuestion`）；④明细班级名称/ID 字段**已有**；⑤teacher-tool **不加**续班计划列。
 - 子需求2：⑥下单优化本期**不做**；⑦主讲适配**确认无需开发**；⑧统计口径**实时**（《小班课字段+指标》指标页 6-9 行）。
 - 子需求3：⑨【推荐排除】为**新增配置**（不合并）；⑩粒度 **续班计划级**；⑪下单页选品 + B 端 `recommendProductList` + C 端**均按「纯续+扩科推荐范围」展示**；⑫「在读」口径**不变**（只是推荐商品少几个），退款状态口径不变。
-- 子需求5：⑯配置入口**先用 Apollo 后端配置**（先搞简单点；王永诗曾建议用 GAIA 统一，用户 2026-09-21 定"先 Apollo"）；⑰部门 key = **contains**；⑱「用户反馈」「主管点评」算 AI 模块；⑲无需枚举映射；⑳「不展示」落点 = 前端仓 `ees/aianalysisinformations`（分支 `feature-refund-reason-20260825`）的接口；㉑关闭模块后历史数据按**隐藏**。
+- 子需求5：⑯配置入口**先用 Apollo 后端配置**（先搞简单点）—— 续班/退费各一个 `Map<虚拟架构部门, Set<模块>>`（如 `{虚拟架构部门A:[1,2,3], 虚拟架构部门B:[1,2,3,4,5]}`）；王永诗曾建议用 GAIA 统一，用户 2026-09-21 定"先 Apollo，能按部门配就行"；⑰部门 key = **contains**；⑱「用户反馈」「主管点评」算 AI 模块；⑲无需枚举映射；⑳「不展示」落点 = 前端仓 `ees/aianalysisinformations`（分支 `feature-refund-reason-20260825`）的接口；㉑关闭模块后历史数据按**隐藏**。
 - 子需求4（13-15 数据落表）：本批不做，仅登记，未答。
 
 ### 👤 我（飞书群 · 王永诗答复）
@@ -35,6 +35,7 @@ tags: [需求, 日志]
 - 【扩科】**「在读科目」数据来源核实**：来自 **student-data 自己的表**（小班 `dws_small_clazz_user_subject`、大班 `dws_fuwu_clazz_user_subject`），查询走本地 DAO，不是调外部接口；表的原料才是外部的（进/退班 MQ `gaotu_subclazz_student_event_test` + 课程中心 + 订单）。→ 「对方模式在读学科」集合可由 student-data 直接透出给 cart。已写入反讲「详细设计·扩科推荐」。
 - 【AI】部门→模块配置放 **student-center 的 Apollo**（问卷匹配的 `compute.rule.name.list` 仍需在 product 公共 namespace `gt.product-public-app` 新增）。
 - 【问卷匹配】重试 Job = product-server `QuestionnaireRecordService#dealNotExistedComputeUser`（每轮重跑 3 天内 `computed_user_id=0` 记录）—— 是否同批改造仍待评审。
+- 【AI】部门匹配**有现成先例**：`RenewalAiCommRealTimeSelectHandleService#getDeptAiConfig:214-224` 即 `departmentPath.contains(configKey)` + `@ApolloJsonValue Map`（部门取课程/班级 `courseDO.getDepartmentIdPaths().get(0)`）。待定：①用班级部门还是老师部门（展示侧要同口径）；②`contains` 子串匹配对数字部门 id 会前缀误命中，需带分隔符。已写入反讲「详细设计·AI」。
 
 ### 🤖 Claude（订正产物）
 - 飞书清单已按答复回填 ✅（1/3/4/5/6/7/8），并在顶部加「确认进度」callout；反讲「待确认项」#2/#3/#5 与 14-20 段同步回填。

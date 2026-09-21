@@ -74,7 +74,7 @@ tags: [需求]
 - ✅ 【扩科推荐】【推荐排除】为**新增配置**（不与【纯续和扩科是否重复推荐】合并）；粒度 = **续班计划级**。
 - ✅ 【扩科推荐】下单页选品 + B 端 `POST /product-b/b/renewMaster/recommendProductList` + C 端接口**均按「纯续+扩科推荐范围」展示**。
 - ✅ 【扩科推荐】「在读」口径：**复用 student-data 现有 + 补 2 条** —— 现有在读科目链路已覆盖 非成人 / 专题系列课 / 不含赠课标签 / 非纯预售（`OdsSmallRenewalSubjectSyncService:189-221`、`DwsRenewalSubjectConsumer#checkFilter`、`BackClazzUserSubjectService#isValidClazz`），相同学年学期靠 `yearTermGrade` 分组、授课模式靠数据源（小班在读科目来自小班课在班）；**但「上课形式为线上(operationMode)」与「订单未全部退款」现有链路没有，需补**（退款状态现网有 {6,10} / {6} 两套，需统一）。
-- ✅ 【AI 配置化】配置入口**先用 Apollo 后端配置**（先搞简单点，GAIA 页面后续再议）；部门 key = **整条部门路径 contains**。
+- ✅ 【AI 配置化】配置入口**先用 Apollo 后端配置**（先搞简单点，GAIA 页面后续再议）：续班 / 退费各一个 `Map<虚拟架构部门, Set<模块>>`，如 `{虚拟架构部门A:[1,2,3], 虚拟架构部门B:[1,2,3,4,5]}`；部门 key = **整条部门路径 contains**。
 - ✅ 【AI 配置化】「用户反馈」「主管点评」**算 AI 模块**；无需枚举映射；关闭模块后历史数据按**隐藏**处理。
 - ✅ 【AI 配置化】「不展示」落点 = 前端仓 `ees/aianalysisinformations`（分支 `feature-refund-reason-20260825`）：沟通建议 `/component/student-center/problem/fulfillProblem/overview`、服务建议 `/component/student-center/fulfillSop/overview`、退费 tab 接口（`src/tabs/refund/*`），入参统一 `{ userId, clazzNumber, subclazzNumber }`。
 - ✅ 【AI 配置化】部门→模块配置放 **student-center 的 Apollo**（`compute.rule.name.list` 是问卷匹配的、仍需在 product 公共 namespace `gt.product-public-app` 新增）。
@@ -128,5 +128,6 @@ tags: [需求]
 - **主讲口径**：`mainTeacherAccountIds` 是**班级级**字段，主讲（含双角色）看到全班**正是 PRD 要的**；要"只看自己辅导班"的是**班主任**（单值 `assistantAccountId`）。
 - `StudentSubclazzQuestionnaire` 是**零引用孤立实体**，不是问卷落库表。
 - 跨仓库范围比想象大：product-server、order、cart、reach-service、teacher-tool。
+- **AI 部门匹配有现成先例**：`RenewalAiCommRealTimeSelectHandleService#getDeptAiConfig:214-224` 就是 `departmentPath.contains(configKey)` + `@ApolloJsonValue Map`（部门取课程/班级的 `courseDO.getDepartmentIdPaths().get(0)`）。注意：①"用谁的部门"（班级部门 vs 老师部门）要定，展示侧要同口径；②`contains` 是子串匹配，数字部门 id 会前缀误命中（`1000005` 命中 `10000056`）。
 - **在读科目数据来自 student-data 自己的表**（不是查询时调外部）：小班 `dws_small_clazz_user_subject`、大班 `dws_fuwu_clazz_user_subject`，再由 `calRenewalInfo`/`calGradeRenewalInfo` 算出；表的原料是外部（进/退班 MQ `gaotu_subclazz_student_event_test` + 课程中心 + 订单）。→ 「对方模式在读学科」集合可由 student-data 直接透出给 cart。
 - **扩科推荐在 cart 算**（`ExpandSubjectRecommendService#recommend`，小班 :32 / 大班 :69，**只按年级匹配**）；`recommendProductList` 只是把 cart 结果转 B 端列表。**cart 没有"在读学科"数据**（全仓无在班/在读查询）→ 加排除过滤的**真正难点是"对方模式在读学科"从哪来**：建议由 student-data 透出（复用 `checkFilter`/`isValidClazz` 的 8 条件口径），cart 只做过滤；否则 cart 要复刻 8 条件、口径会漂移。
