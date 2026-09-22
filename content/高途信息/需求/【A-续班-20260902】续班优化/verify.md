@@ -67,6 +67,32 @@ tags: [需求, 验证]
 | 先填后调：B 班花名册 `renewalQuestionnaireStatus` | 数据源已验（student-data ACL 能查到 B 明细）；**仅剩宽表重建的触发时机**待验——teacher-tool 明细保存 MQ 只触发 AI，不刷花名册 |
 | 先调后填端到端 | 靠计划级规则 + 主链路扇出（7 档逻辑已验证，未跑完整 submit→ES/明细 链路） |
 
+## 第二批：扩科【推荐排除】（2026-09-22，`feature-xuban-expand-exclude`）
+
+**部署**：`product-b` / `product` / `student-data` / `cart` 均 `test-gtbg-dev-3`、eureka UP。
+**坑**：cart 是 Boot1.5 + Netflix feign，**不能依赖 `student-data-client`**（带 Boot2.x/openfeign 类 → 启动崩）→ 改 cart 自持 DTO + Netflix `@FeignClient`。
+
+### 已验证
+
+| 项 | 例 | 实测 |
+|---|---|---|
+| student-data 透出接口 `RenewalInReadSubjectService#listOtherModeInReadSubjects` | 学员 `7542297028` 当前**大班** → 取小班在读 | ✅ `[12]`（历史） |
+| 同上 | 当前**小班** → 取大班在读（该学员无大班在读） | ✅ `[]` |
+| 同上 | 学员 `7542292905`（无小班在读） | ✅ `[]` |
+| 同上 | 不存在学员 / 非法 mode | ✅ `[]` |
+| cart 过滤 | `ExpandSubjectRecommendServiceTest` | ✅ 7 passed（本地） |
+| product-server 配置读回 | DB 给扩科节点(id 772 / 计划 `546943017307740160`) 的 ext_config 写 `excludeMode:1` → `ProcessService#listProcess` 返回 `extConfig.excludeMode=1` | ✅ |
+| product-server 字段级合并 | `ProcessService#convertNodeConfig` 传**不带** `excludeMode` 的 extConfig → 返回仍带 `excludeMode:1`（未被清空） | ✅ |
+
+### 待验
+| 项 | 卡点 |
+|---|---|
+| B/C 端推荐端到端（配 `excludeMode=1` → 推荐里排除对方模式在读学科） | 需 cart `getRenewalDetail`/product-b `recommendProductList` 造一条完整链路 |
+
+> **TEST 查库直连即可**：DMS(`mysql_query`) test 侧常登录失效；用 `gaotu_test_rw` 直连（`mysql_query.resolve_rw_dsn(库名)` 取 host/密码 + pymysql），已写进 mysql-query skill。
+
+**查法**：student-data 桥走 pathInfo 前缀 `/student-data/**` → `https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service`；报 700 先 `POST http://127.0.0.1:8765/api/v1/bridge/refresh` 刷 Cookie。
+
 ## 反射桥地址
 
 | 服务 | 地址 |
