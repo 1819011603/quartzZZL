@@ -84,10 +84,12 @@ tags: [需求, 验证]
 | product-server 配置读回 | DB 给扩科节点(id 772 / 计划 `546943017307740160`) 的 ext_config 写 `excludeMode:1` → `ProcessService#listProcess` 返回 `extConfig.excludeMode=1` | ✅ |
 | product-server 字段级合并 | `ProcessService#convertNodeConfig` 传**不带** `excludeMode` 的 extConfig → 返回仍带 `excludeMode:1`（未被清空） | ✅ |
 
-### 待验
+### 待验（受阻于测试泳道基础设施，非产品 bug）
 | 项 | 卡点 |
 |---|---|
-| B/C 端推荐端到端（配 `excludeMode=1` → 推荐里排除对方模式在读学科） | 需 cart `getRenewalDetail`/product-b `recommendProductList` 造一条完整链路 |
+| B/C 端推荐端到端（配 `excludeMode=1` → 推荐里排除对方模式在读学科） | cart→student-data 的 Feign 返回空：**cart 未透传 `traffic-env`** → 打到 base `test` 泳道（那里该学员无小班在读）。已加 `FeignTrafficEnvForwardConfig`（测试环境透传、Apollo `feign.traffic.env.forward.enabled` 默认 false）+ TEST 置 true + 重部署，**但新 jar 里没打进该类**（`unzip -l app.jar` 0 命中），E2E 仍空。线上无泳道，此 Feign 本应通 |
+
+**排查要点**：cart 调 student-data 的 Feign 名必须用 eureka 名 `STUDENT-DATA`（不是 `student-data`）；cart 无 `traffic-env` 透传 → 泳道内验证需补拦截器。
 
 > **TEST 查库直连即可**：DMS(`mysql_query`) test 侧常登录失效；用 `gaotu_test_rw` 直连（`mysql_query.resolve_rw_dsn(库名)` 取 host/密码 + pymysql），已写进 mysql-query skill。
 
