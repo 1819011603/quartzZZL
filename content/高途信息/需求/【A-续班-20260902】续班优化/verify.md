@@ -115,7 +115,30 @@ tags: [需求, 验证]
 报 `ConfigurationPropertiesBindingPostProcessorRegistrar.class not found`）——这是**调用手段的副作用**，
 走正常 Spring 路径（acl 桥 / 业务链路）正常。验这个 Feign 用 acl 桥，别用 arthas。
 
-**`FeignTrafficEnvForwardConfig` 待定**：它解决的不是本问题（Ribbon 本就选对了实例），去留待定。
+**`FeignTrafficEnvForwardConfig` 已回退**（commit `6deaa256`）：它是按错误判断加的，Ribbon 本就选对了实例；
+连同 Apollo 开关 `feign.traffic.env.forward.enabled` 一并去掉。
+
+### 排除逻辑端到端（2026-09-23，已验证）
+
+B/C 端真实入口跑不通（见下「待验」），改在 cart JVM 内直调大班重载
+`ExpandSubjectRecommendService#recommend(userId, config, courseDTOMap, purchasedProducts)`，
+**真实走 Feign 到 student-data**，只跳过商品详情组装。学员 `7542297028`（小班在读 subject=12），
+推荐列表配两条：`grade=13/subject=12`(商品 111111) 与 `grade=13/subject=4`(商品 222222)。
+
+| 例 | 入参 | 期望 | 实测 |
+|---|---|---|---|
+| 开排除 | `excludeMode=1` | 只剩 subject=4 | ✅ 仅返回 `productId=222222, configuredSubject=4` |
+| 对照 | `excludeMode=0` | 两条都在 | ✅ 返回 `111111`(subject 12) + `222222`(subject 4) |
+
+**复现**（`-c <classloader hash>` 每次部署会变，先 `sc -d com.gaotu.feignclient.studentdata.OtherModeInReadSubjectReq` 取）：
+
+```bash
+~/.local/mcp-servers/venv/bin/python "$HOME/.claude/skills/pod-terminal/pod_term.py" arthas \
+  --service-code gaotu_cart --env test --command "$(cat /tmp/e1.txt)"
+# e1.txt 内容见本节说明：vmtool -x 3 -c <hash> --action getInstances \
+#   --className com.gaotu.renewal.small.service.ExpandSubjectRecommendService \
+#   --express '(#cfg=new ...ExpandSubjectConfigBO(), #cfg.setExcludeMode(1), ... instances[0].recommend(7542297028L,#cfg,#m,new java.util.HashSet()))'
+```
 
 **排查要点**：cart 调 student-data 的 Feign 名必须用 eureka 名 `STUDENT-DATA`（不是 `student-data`）。
 

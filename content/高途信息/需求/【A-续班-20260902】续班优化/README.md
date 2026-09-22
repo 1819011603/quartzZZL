@@ -55,8 +55,8 @@ tags: [需求]
 | 阶段 | 开发中（第一批：问卷匹配） |
 | 进度 | T 9/10（问卷匹配 product-server + teacher-tool 已实现并验证；扩科待办）· R 3/4 · C 0/0 |
 | 部署泳道 | 第一批：`product-task`/`product-b`/`student-data`/`teacher-tool`；第二批：`product-b`/`product`/`student-data`/`cart` —— 均 `test-gtbg-dev-3` |
-| 当前卡点 | 先填后调 B 班花名册 ES 数据源已验，仅剩宽表重建触发时机待验；完整 submit→ES/明细 链路未跑端到端；【扩科推荐】B/C 端 E2E 缺测试数据（扩科节点时间窗 9/25 才开始 + 无推荐配置行） |
-| 最近更新 | 2026-09-23：**修掉扩科推荐一个线上会复现的真 bug** —— cart fastjson 全局 SnakeCase 把 Feign 请求体发成 `user_id`，student-data 绑不上、`otherModeInReadSubjects` 恒返回空；改用 `CesCamelCaseFeignConfig`（`96e334b8`），`test` 与 `test-gtbg-dev-3` 两泳道实测 `[12]`。原先「受阻于测试泳道基础设施、非产品 bug」的判断已更正（见 [[verify]]） |
+| 当前卡点 | 先填后调 B 班花名册 ES 数据源已验，仅剩宽表重建触发时机待验；完整 submit→ES/明细 链路未跑端到端。【扩科推荐】排除逻辑已端到端验证（含真实 Feign 跳），**仅剩 B/C 端真实入口未跑** —— 测试环境找不到「在某个配了扩科的计划前置班里 + 有对方模式在读」的学员，需要真造一份计划数据才能跑 |
+| 最近更新 | 2026-09-23：**修掉扩科推荐一个线上会复现的真 bug** —— cart fastjson 全局 SnakeCase 把 Feign 请求体发成 `user_id`，student-data 绑不上、`otherModeInReadSubjects` 恒返回空；改用 `CesCamelCaseFeignConfig`（`96e334b8`），两泳道实测 `[12]`。排除逻辑 E2E 已验（开排除只剩 subject=4 / 关排除两条都在）。按错误判断加的 `FeignTrafficEnvForwardConfig` 已回退（`6deaa256`）。原先「受阻于测试泳道基础设施、非产品 bug」的结论已更正（见 [[verify]]） |
 
 ## 下一步
 
