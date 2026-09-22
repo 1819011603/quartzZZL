@@ -58,11 +58,13 @@ tags: [需求, 验证]
 
 **结论**：原班续班明细复制到新班正确、幂等（不产生重复数据）、先调后填/全程未填 no-op 均通过。
 
+**补充（2026-09-22）**：student-data 的 `QuestionnaireAclService#batchQuestionnaires([B],[20001])` 已能查到 B 明细（`uniqueBizId 72615972506173953`）——即宽表重建时 `renewalQuestionnaireStatus` 会推导成 COMMIT。**查法坑**：① 路由要用 pathInfo `/student-data/**` → `https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service`（不是 `/bgwApi/student-data/...`）；② 报 `700 请重新登录`/`code:3` 时先**刷新 baijia-proxy Cookie**（`POST http://127.0.0.1:8765/api/v1/bridge/refresh`）即可。
+
 ## 待验
 
 | 项 | 卡点 |
 |---|---|
-| 先填后调：B 班花名册 `renewalQuestionnaireStatus` | teacher-tool 明细保存 MQ（`RenewalQuestionnaireSaveTriggerAiConsumer`）**只触发 AI**，不刷花名册；ES 靠宽表重建推导，顺序风险待验 |
+| 先填后调：B 班花名册 `renewalQuestionnaireStatus` | 数据源已验（student-data ACL 能查到 B 明细）；**仅剩宽表重建的触发时机**待验——teacher-tool 明细保存 MQ 只触发 AI，不刷花名册 |
 | 先调后填端到端 | 靠计划级规则 + 主链路扇出（7 档逻辑已验证，未跑完整 submit→ES/明细 链路） |
 
 ## 反射桥地址
