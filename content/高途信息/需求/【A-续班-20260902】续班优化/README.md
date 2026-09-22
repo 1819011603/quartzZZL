@@ -55,8 +55,8 @@ tags: [需求]
 | 阶段 | 开发中（第一批：问卷匹配） |
 | 进度 | T 9/10（问卷匹配 product-server + teacher-tool 已实现并验证；扩科待办）· R 3/4 · C 0/0 |
 | 部署泳道 | 第一批：`product-task`/`product-b`/`student-data`/`teacher-tool`；第二批：`product-b`/`product`/`student-data`/`cart` —— 均 `test-gtbg-dev-3` |
-| 当前卡点 | 先填后调 B 班花名册 ES 数据源已验，仅剩宽表重建触发时机待验；完整 submit→ES/明细 链路未跑端到端 |
-| 最近更新 | 2026-09-22：第一批开发中——product-server 7 档规则 + 去兜底、Q3 重试 Job、teacher-tool 调课明细同步均已实现并部署 `test-gtbg-dev-3`；**7 档逻辑 6 例 + 调课明细同步 4 例反射实测全过**（见 [[verify]]） |
+| 当前卡点 | 先填后调 B 班花名册 ES 数据源已验，仅剩宽表重建触发时机待验；完整 submit→ES/明细 链路未跑端到端；【扩科推荐】B/C 端 E2E 缺测试数据（扩科节点时间窗 9/25 才开始 + 无推荐配置行） |
+| 最近更新 | 2026-09-23：**修掉扩科推荐一个线上会复现的真 bug** —— cart fastjson 全局 SnakeCase 把 Feign 请求体发成 `user_id`，student-data 绑不上、`otherModeInReadSubjects` 恒返回空；改用 `CesCamelCaseFeignConfig`（`96e334b8`），`test` 与 `test-gtbg-dev-3` 两泳道实测 `[12]`。原先「受阻于测试泳道基础设施、非产品 bug」的判断已更正（见 [[verify]]） |
 
 ## 下一步
 

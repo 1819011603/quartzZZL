@@ -84,12 +84,46 @@ tags: [需求, 验证]
 | product-server 配置读回 | DB 给扩科节点(id 772 / 计划 `546943017307740160`) 的 ext_config 写 `excludeMode:1` → `ProcessService#listProcess` 返回 `extConfig.excludeMode=1` | ✅ |
 | product-server 字段级合并 | `ProcessService#convertNodeConfig` 传**不带** `excludeMode` 的 extConfig → 返回仍带 `excludeMode:1`（未被清空） | ✅ |
 
-### 待验（受阻于测试泳道基础设施，非产品 bug）
+### 已修复：cart→student-data Feign 恒返回空（2026-09-23）
+
+**此前结论「受阻于测试泳道基础设施，非产品 bug」是错的**，真因是请求体命名风格，**线上同样会复现**。
+
+| 证据（arthas 实测） | 值 |
+|---|---|
+| cart 传进 Feign 代理的对象 | 有值（`getUserId()=7542297028`） |
+| cart 实际发出的 body | `{"current_room_type":1,"user_id":7542297028}` ← **snake_case** |
+| student-data 侧 watch 到的入参 | `userId=null, currentRoomType=null` → 返回 `[]` |
+| cart Ribbon 实际选中的实例 | 13/13 次全打到正确的 base test 实例 `10.255.164.233`（**不存在打错泳道**） |
+
+**根因**：cart 的 `cart-controller/.../MvcConfig.java:100` 把 fastjson 全局 `SerializeConfig` 设为 `SnakeCase`，
+而 student-data 契约是 camelCase，服务端绑不上 → 两字段全 null → 接口恒返回空集合。
+
+**修复**（commit `96e334b8`）：`RenewalInReadSubjectFeignService` 的 `configuration` 由 `FeignConfig`
+改为仓库已有的 `CesCamelCaseFeignConfig`（fastjson 编/解码强制驼峰）。
+
+**修复后实测**：
+
+| 例 | 泳道 | 实测 |
+|---|---|---|
+| cart 出站 body | test | ✅ `{"currentRoomType":1,"userId":7542297028}` |
+| cart→student-data，学员 `7542297028` 当前大班(mode=1) | test | ✅ `[12]`（修复前 `[]`） |
+| 同上 | test-gtbg-dev-3 | ✅ `[12]` |
+| 同上，当前小班(mode=2)（该学员无大班在读） | test | ✅ `[]`（证明入参真的生效，非恒空） |
+| cart 解码 product-server 的扩科配置（计划 `546943017307740160`） | test | ✅ `excludeMode=1`、`expandSubject=true` |
+
+**坑**：用 arthas `vmtool` 直接调该 Feign 会抛 `HystrixRuntimeException`（子上下文在 arthas 线程里初始化失败，
+报 `ConfigurationPropertiesBindingPostProcessorRegistrar.class not found`）——这是**调用手段的副作用**，
+走正常 Spring 路径（acl 桥 / 业务链路）正常。验这个 Feign 用 acl 桥，别用 arthas。
+
+**`FeignTrafficEnvForwardConfig` 待定**：它解决的不是本问题（Ribbon 本就选对了实例），去留待定。
+
+**排查要点**：cart 调 student-data 的 Feign 名必须用 eureka 名 `STUDENT-DATA`（不是 `student-data`）。
+
+### 待验（受阻于测试数据）
+
 | 项 | 卡点 |
 |---|---|
-| B/C 端推荐端到端（配 `excludeMode=1` → 推荐里排除对方模式在读学科） | cart→student-data 的 Feign 返回空：**cart 未透传 `traffic-env`** → 打到 base `test` 泳道（那里该学员无小班在读）。已加 `FeignTrafficEnvForwardConfig`（测试环境透传、Apollo `feign.traffic.env.forward.enabled` 默认 false）+ TEST 置 true + 重部署，**但新 jar 里没打进该类**（`unzip -l app.jar` 0 命中），E2E 仍空。线上无泳道，此 Feign 本应通 |
-
-**排查要点**：cart 调 student-data 的 Feign 名必须用 eureka 名 `STUDENT-DATA`（不是 `student-data`）；cart 无 `traffic-env` 透传 → 泳道内验证需补拦截器。
+| B/C 端推荐端到端（配 `excludeMode=1` → 推荐里排除对方模式在读学科） | 计划 `546943017307740160` 的扩科节点（`node_config` id 772）时间窗是 **2026-09-25 04:00 ~ 09-26**，当前未开始，`ExpandSubjectConfigSubBuilder` 会直接 return；且 `renewal_expand_subject_recommend` 里**没有该节点(`580163733947547649`)的推荐行**。要跑通须改时间窗 + 造推荐行 |
 
 > **TEST 查库直连即可**：DMS(`mysql_query`) test 侧常登录失效；用 `gaotu_test_rw` 直连（`mysql_query.resolve_rw_dsn(库名)` 取 host/密码 + pymysql），已写进 mysql-query skill。
 

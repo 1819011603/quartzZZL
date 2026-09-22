@@ -28,7 +28,7 @@ tags: [需求, 任务]
 | T-07 | 【问卷匹配】重试 Job `dealNotExistedComputeUser` 加「重试次数」标记 | 已完成 | — | `questionnaire_record.retry_count`（TEST DDL 已加）+ `no.compute.user.max.retry.count:3`；未归属记录累加、达阈值不再重试 |
 | T-08 | 【问卷匹配】teacher-tool 明细改动 | 已完成 | — | 不加续班计划列；改派不做。改为**新增调课调班消费者**（见 T-09） |
 | T-09 | 【问卷匹配】调课调班同步（**已定 teacher-tool 承接**，非 student-data） | 已完成 | — | 新增 `TransferCourseQuestionnaireConsumer`：原班续班明细复制到新班（同 group、幂等 skip）。反射实测 4 例全过（见 [[verify]]）。ES 靠宽表重建，顺序风险待验 |
-| T-10 | 【扩科推荐】新增【推荐排除】：product-server 配置（`ExpandSubjectConfigDTO`/`NodeExtConfigVO` + B 端 `process/edit`·`process/list`）+ student-data 计算侧过滤（大班/小班 subtract）+ cart 推荐/选品适配 + 「授课模式/上课形式线上/订单未全部退款」3 个新建条件 | 进行中 | 端到端未验 | 分支 `feature-xuban-expand-exclude`（product-server/student-data/cart，已提交已部署 `test-gtbg-dev-3`）；配置 + 透出接口 + cart 过滤已实现并编译。**坑**：cart 是 Boot1.5/Netflix feign，不能依赖 student-data-client（带 Boot2.x/openfeign 类）→ 改用本地 DTO+Netflix feign；「订单未全部退款/线上」按用户确认为老逻辑、不再补；client 已发 Nexus 1.5.9-SNAPSHOT / 0.0.52.5-SNAPSHOT |
+| T-10 | 【扩科推荐】新增【推荐排除】：product-server 配置（`ExpandSubjectConfigDTO`/`NodeExtConfigVO` + B 端 `process/edit`·`process/list`）+ student-data 计算侧过滤（大班/小班 subtract）+ cart 推荐/选品适配 + 「授课模式/上课形式线上/订单未全部退款」3 个新建条件 | 进行中 | B/C 端 E2E 缺测试数据 | 分支 `feature-xuban-expand-exclude`（product-server/student-data/cart，已提交；已部署 `test-gtbg-dev-3` 与 base `test`）；配置 + 透出接口 + cart 过滤已实现并编译。**坑**：cart 是 Boot1.5/Netflix feign，不能依赖 student-data-client（带 Boot2.x/openfeign 类）→ 改用本地 DTO+Netflix feign；「订单未全部退款/线上」按用户确认为老逻辑、不再补；client 已发 Nexus 1.5.9-SNAPSHOT / 0.0.52.5-SNAPSHOT。**2026-09-23 修掉一个真 bug**：cart fastjson 全局 SnakeCase 导致 Feign 请求体发成 `user_id`，服务端绑不上、接口恒返回空（**线上同样会坏**），改用 `CesCamelCaseFeignConfig`（commit `96e334b8`），两泳道实测 `[12]`（见 [[verify]]）。剩余 E2E 卡在扩科节点时间窗未开始（9/25 起）+ 无推荐配置行 |
 
 ## R- 反讲整改项
 
