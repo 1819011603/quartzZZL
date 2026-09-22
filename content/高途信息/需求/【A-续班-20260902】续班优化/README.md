@@ -1,16 +1,19 @@
 ---
 title: 【A-续班-20260902】续班优化
 aliases: [续班优化(秋季批), 续班问卷匹配优化, 续班退费AI模块配置化, 续班退费数据落表, 小班续班主讲数据下单优化, 续班扩科推荐优化]
-status: 需求评审
+status: 开发中
 owner: zhangzeling
 branches:
-updated: 2026-09-21
+  - product-server:feature-xuban-match-opt
+  - student-data:feature-xuban-match-opt
+  - teacher-tool:feature-xuban-match-opt
+updated: 2026-09-22
 tags: [需求]
 ---
 
 # 【A-续班-20260902】续班优化
 
-> **本目录导航**：[[links|🔗 链接中心]] · [[tasks|✅ 当前任务板]] · [[changelog|📜 决策摘要]] · [问卷匹配-DDD建模方案.md](问卷匹配-DDD建模方案.md)
+> **本目录导航**：[[links|🔗 链接中心]] · [[tasks|✅ 当前任务板]] · [[verify|🧪 验证手册]] · [[changelog|📜 决策摘要]] · [问卷匹配-DDD建模方案.md](问卷匹配-DDD建模方案.md)
 > 技术方案（现状 / 方案对比 / 详细设计 / 接口 / 风险）在飞书反讲里，见 [[links]]；本文件只留当前结论和指针。
 > 飞书：需求总入口 https://gaotuedu.feishu.cn/wiki/Qox8wFcmHiXBgnkxFBtcd82gnsh → **技术反讲（子需求 1/2/3/5）https://gaotuedu.feishu.cn/wiki/EC45wOefUi0buMkO7O0cipp9nEc** → **待产品确认清单（21 条，可直接转发产品）https://gaotuedu.feishu.cn/docx/L2yrdOPEAoIOMux1JLXcGtR4nde**
 > 续接这个需求：读完本文件即可。
@@ -49,19 +52,19 @@ tags: [需求]
 
 | | |
 |---|---|
-| 阶段 | 需求评审 |
-| 进度 | T 5/10（代码定位完成；问卷匹配 4 项 + 扩科 1 项待办）· R 0/0 · C 0/0 |
-| 部署泳道 | 未部署 |
-| 当前卡点 | 数据落表需数仓侧定落表方式；扩科"在读"3 个条件需新建过滤器；跨仓承接方未定 |
-| 最近更新 | 2026-09-21：**按 `origin/master` 全量核验反讲全部代码位置（4 组并行、约 90 处）**，反讲升 v0.4 订正 8 处（`UnificationSwitchService` 实际在 student-center、subtract :236-238、`refactorMainTeacherStudentInfo` 无角色分支、移除 origin/master 不存在的 `predictLevelReason`、`ProcessController`/`NodeExtConfigVO` 行号偏移、teacher-tool 查询条件、退款口径位置、`DwsRenewalQuestionnaireConsumer` 消费在 :187）；目标/Non-goals 归位；子需求2 统一为「现状 OR 已满足 PRD、本批无需开发」；问卷匹配 MySQL DDL 由否改是；补《发问卷整体技术方案》7 项现状/风险。新建**《待产品确认清单》21 条**（见 [[links]]） |
+| 阶段 | 开发中（第一批：问卷匹配） |
+| 进度 | T 9/10（问卷匹配 product-server + teacher-tool 已实现并验证；扩科待办）· R 3/4 · C 0/0 |
+| 部署泳道 | `product-task` / `product-b` / `student-data` / `teacher-tool` = `test-gtbg-dev-3` |
+| 当前卡点 | 先填后调时 B 班花名册 ES 字段靠宽表重建（顺序风险待验）；完整 submit→ES/明细 链路未跑端到端 |
+| 最近更新 | 2026-09-22：第一批开发中——product-server 7 档规则 + 去兜底、Q3 重试 Job、teacher-tool 调课明细同步均已实现并部署 `test-gtbg-dev-3`；**7 档逻辑 6 例 + 调课明细同步 4 例反射实测全过**（见 [[verify]]） |
 
 ## 下一步
 
-1. 参与初评：按优先级过 5 个子需求的设计草案（飞书反讲）。
-2. 【数据落表】找数仓侧确认落表方式：MQ 推送 / binlog 直拉 / 直连 Doris Stream Load（本仓有先例）。
-3. 【扩科推荐】确认跨仓(cart / product-server / order / reach-service)改动承接方；"在读"3 个条件的数据源与口径。
-4. 【问卷匹配】确认调课调班同步承接方与旧班 A 的来源。
-5. 【AI 配置化】定部门 key 口径与"不展示"落到的接口 / 字段。
+1. 【问卷匹配】调课调班端到端验证：需发 `gaotu_after_sale_event_test` + `TRANSFER_TOUCH_EVENT`（阿里云控制台无发消息接口，走真实调课或 DB 模拟）。
+2. 【问卷匹配】花名册 ES 顺序风险验证：先填后调时 B 班 `renewalQuestionnaireStatus` 是否随宽表重建更新（teacher-tool 明细保存 MQ 只触发 AI，不刷花名册）。
+3. 【扩科推荐】开发：product-server 配置（`ExpandSubjectConfigDTO`/`NodeExtConfigVO`）+ cart `ExpandSubjectRecommendService` 两个重载加排除过滤 + student-data 补「上课形式线上 / 订单未全部退款」2 条件。
+4. 【AI 配置化】开发：student-data 分析侧 + student-center 展示侧 部门→模块开关。
+5. 【数据落表】找数仓侧确认落表方式（本批不做）。
 
 ## 已定（2026-09-21 产品 / 数据确认）
 
@@ -94,7 +97,7 @@ tags: [需求]
 
 ## 涉及的代码
 
-本需求**尚无分支**，主仓当前 checkout 在 `feature-xuban-pre`（属另一需求），下表结论取自 `origin/master`。主仓路径 `/Users/gaotu/IdeaProjects/JavaProject/{student-data,student-center}`；另涉及 product-server / cart / order / reach-service / teacher-tool / clazz-distribution-server。完整 `path:line` 见飞书反讲「详细设计」。
+本需求第一批已建分支（从 `origin/release`）：product-server / student-data / teacher-tool = `feature-xuban-match-opt`（student-center 的 TT 字段属另一需求，走 `feature-tutu-active-time`）。主仓路径 `/Users/gaotu/IdeaProjects/JavaProject/{student-data,student-center}`；另涉及 product-server / cart / order / reach-service / teacher-tool / clazz-distribution-server。完整 `path:line` 见飞书反讲「详细设计」。
 
 | 子需求 | 仓库 | 关键入口 |
 |---|---|---|
