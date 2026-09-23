@@ -71,17 +71,20 @@ tags: [需求, 验证]
 
 **坑**：`sendNormalMessage(topic, String body)` 会把 String body 再 JSON 序列化（发成 `"{...}"`），consumer fastjson 报 `syntax error, expect {, actual string, pos 0`；**要传对象**走 `sendNormalMessage(String, List, Object)` 重载。
 
-### 花名册 ES 顺序风险（2026-09-23，结论已定·**ES 落值受限未验**）
+### 花名册 ES 顺序风险（2026-09-23，机制已定·**存在真实顺序风险**）
 
-- **代码结论**：调课 MQ 只被 teacher-tool `TransferCourseQuestionnaireConsumer` 消费，**只写 teacher-tool 明细、不刷花名册**；花名册 `renewalQuestionnaireStatus` 由 `RenewalQuestionnaireStatusServiceV2#buildData`（宽表重建时）从 `batchQuestionnaires`（teacher-tool 明细）推导 → **B 的状态不随调课 MQ 即时更新，需等下次宽表重建（最终一致）**。重建入口 `WideSmallClazzIndexService#autoTriggerIndex`/`batchRetryIndex`（班级/学员变更事件 + 重试 Job），非调课 MQ。
-- **数据源 ✅**：`batchQuestionnaires([B],[20001])` 返回 B 明细（`projectNumber=testbiz001`）。
-- **受限未验**：A/B 是「任务系统」测试班，**花名册 ES 无文档**（`ads_small_clazz_user` / `ads_clazz_user_index` 均查无），且 **B 未绑定问卷**（`queryQuestionnaireMatchResult(B, 计划 578532432171743232)=null`，A 有匹配）→ 无法端到端验 ES 落成 COMMIT。需一组「真绑定同问卷 + 有花名册文档」的 A/B 才能补验。
+- **字段位置**：`renewalQuestionnaireStatus` 在小班花名册宽表 `ads_small_clazz_user`（别名→`ads_small_clazz_user_index_v4`），**不在** `small_clazz_v3`。
+- **写入方**：① 问卷回收事件消费者 `DwsRenewalQuestionnaireConsumer#innerUpdateQuestionnaireStatus` **直接写**（问卷提交时）；② `RenewalQuestionnaireStatusServiceV2#buildData` 提供同口径推导（读 `batchQuestionnaires` 明细），但**未确认哪条链路会调用它重算已有文档**。
+- **调课 MQ 不写花名册**（只写 teacher-tool 明细）。
+- **实测（班 `529911462177622016`）**：有明细的用户 `1438684` → status `3`(已提交)；无明细的 `1449343` → status `2`(未提交)。给 `1449343` 插一条明细后跑小班花名册回溯 `BackAdsSmallClazzUserHandler#execute([clazz])`（返回 SUCCESS、文档 `updateTime` 已变）→ **status 仍为 2**，未重算。
+- **结论**：**先填后调时 B 的花名册「已提交」状态不会随调课自动更新**（真实顺序风险）；是否最终一致取决于是否存在会重算该字段的 sync 链路（未确认）。原「宽表重建时会推导成 COMMIT」的说法**未证实，已订正**。
+- **受限**：A/B 是「任务系统」测试班，**花名册 ES 无文档**（`ads_small_clazz_user` 查无）、B 也未绑定问卷（`queryQuestionnaireMatchResult(B, 计划 578532432171743232)=null`，A 有匹配），故无法用 A/B 直接验「先填后调」的落值。
 
 ## 待验
 
 | 项 | 卡点 |
 |---|---|
-| 先填后调：B 班花名册 `renewalQuestionnaireStatus` 落值 | 机制已定（见上，宽表重建时推导）；**缺「真绑定同问卷 + 有花名册文档」的 A/B 测试数据**，ES 落值未验 |
+| 先填后调：B 班花名册 `renewalQuestionnaireStatus` 落值 | **存在真实顺序风险**（调课 MQ 不写花名册、回溯 Job 不重算该字段，见上）；A/B 测试班无花名册文档，无法端到端验 |
 | 先调后填端到端 | 靠计划级规则 + 主链路扇出（7 档逻辑已验证，未跑完整 submit→ES/明细 链路） |
 
 ## 第二批：扩科【推荐排除】（2026-09-22，`feature-xuban-expand-exclude`）

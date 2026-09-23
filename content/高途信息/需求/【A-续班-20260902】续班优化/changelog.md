@@ -7,7 +7,7 @@ tags: [需求, 日志]
 
 ---
 
-## 2026-09-23（AI 模块配置化：部门口径修正 + 扩科真 bug）
+## 2026-09-23（AI 模块配置化：部门口径修正 + 扩科真 bug；下午：四项补验 + 花名册顺序风险订正）
 
 ### 👤 我
 - 【AI 配置化】部门口径由「课程部门」改为**老师（二讲）主岗虚拟组织架构部门**：PRD 要「本部门及下属配置了，二讲才可用」，用课程部门会让同课程下别的部门老师也可见、不隔离。展示侧取登录老师，分析侧取该班辅导老师。
@@ -18,6 +18,9 @@ tags: [需求, 日志]
 - 实测 `StaffDto.mainPostOrgPathFromRoot` 是 **`_` 分隔的 org number**（accountId `177071` → `12345_4959407036876800_6816343048455168_66707677944472576`），`matchDept` 分隔符 `/`→`_`、保持分段精确匹配（防数字 id 前缀误命中）。
 - student-data `12e41da47` / student-center `84ec1b732` 已部署 `test-gtbg-dev-3` 并验证：门控（命中/未命中）、分析侧 E2E（`handleCode=2`）、展示侧真实入口全过，见 [[verify]]「部门口径修正」。
 - 修掉扩科 cart→student-data Feign 因 cart fastjson 全局 SnakeCase 致请求体发 `user_id`、恒返回空的真 bug（`96e334b8`，**线上同样会坏**）。
+- **补验**：退费归因 E2E、退费预测 E2E 均过；调课调班真发 MQ 端到端 + 幂等过；圈选侧门控函数级过。
+- **订正结论（花名册顺序）**：`renewalQuestionnaireStatus` 在小班花名册宽表 `ads_small_clazz_user`，由**问卷回收事件消费者直接写**；实测小班花名册回溯 `BackAdsSmallClazzUserHandler` **不重算**该字段（插明细+回溯后仍为 2）→ 先填后调时 B 的状态**不会自动更新**，是**真实顺序风险**。原「宽表重建时会推导成 COMMIT」的说法未证实，作废。
+- **R-04 线上 Apollo 核实**：appId `course-setting`；PROD/TEST 均未配置 `compute.rule.name.list`（走代码默认 4 规则）与 `all.share.questionnaire.renewal`（默认 `true`）；`share.questionnaire.renewal.numbers` PROD=`[16091330849213120,15927198832724032]`、TEST=`[]`。
 
 ---
 
