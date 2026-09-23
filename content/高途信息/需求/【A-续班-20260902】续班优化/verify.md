@@ -146,7 +146,7 @@ B/C 端真实入口跑不通（见下「待验」），改在 cart JVM 内直调
 
 | 项 | 卡点 |
 |---|---|
-| B/C 端推荐端到端（配 `excludeMode=1` → 推荐里排除对方模式在读学科） | 计划 `546943017307740160` 的扩科节点（`node_config` id 772）时间窗是 **2026-09-25 04:00 ~ 09-26**，当前未开始，`ExpandSubjectConfigSubBuilder` 会直接 return；且 `renewal_expand_subject_recommend` 里**没有该节点(`580163733947547649`)的推荐行**。要跑通须改时间窗 + 造推荐行 |
+| B/C 端推荐端到端（配 `excludeMode=1` → 推荐里排除对方模式在读学科） | 时间窗**已改**（2026-09-23 直连 test `gaotu.node_config` 把节点 `580163733947547649`/id 772 的 `begin_time/end_time` 由 `2026-09-25 04:00~09-26` 改为 `2026-09-22 00:00 ~ 2026-09-30 23:59`，已读回；副作用：B 端再编辑该节点会报「节点已开始不可修改」）。**仍缺**：`renewal_expand_subject_recommend` 里该计划(`546943017307740160`) **0 行**推荐；且计划主表 `gaotu.renew_master`(name=小班课问卷,type=2) 的 `renew_master_course_relation` 也 0 行（无前置课）。要跑 B/C 端须补推荐行 + 学员/前置班上下文 |
 
 > **TEST 查库直连即可**：DMS(`mysql_query`) test 侧常登录失效；用 `gaotu_test_rw` 直连（`mysql_query.resolve_rw_dsn(库名)` 取 host/密码 + pymysql），已写进 mysql-query skill。
 
