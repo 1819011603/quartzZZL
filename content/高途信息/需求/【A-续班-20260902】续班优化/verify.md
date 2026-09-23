@@ -146,7 +146,7 @@ B/C 端真实入口跑不通（见下「待验」），改在 cart JVM 内直调
 
 | 项 | 卡点 |
 |---|---|
-| B/C 端推荐端到端（配 `excludeMode=1` → 推荐里排除对方模式在读学科） | 时间窗**已改**（2026-09-23 直连 test `gaotu.node_config` 把节点 `580163733947547649`/id 772 的 `begin_time/end_time` 由 `2026-09-25 04:00~09-26` 改为 `2026-09-22 00:00 ~ 2026-09-30 23:59`，已读回；副作用：B 端再编辑该节点会报「节点已开始不可修改」）。**仍缺**：`renewal_expand_subject_recommend` 里该计划(`546943017307740160`) **0 行**推荐；且计划主表 `gaotu.renew_master`(name=小班课问卷,type=2) 的 `renew_master_course_relation` 也 0 行（无前置课）。要跑 B/C 端须补推荐行 + 学员/前置班上下文 |
+| B/C 端推荐端到端（配 `excludeMode=1` → 推荐里排除对方模式在读学科） | 时间窗**已改**（2026-09-23 直连 test `gaotu.node_config` 把节点 `580163733947547649`/id 772 的 `begin_time/end_time` 由 `2026-09-25 04:00~09-26` 改为 `2026-09-22 00:00 ~ 2026-09-30 23:59`，已读回；副作用：B 端再编辑该节点会报「节点已开始不可修改」）。推荐行**已插 2 行**（id 68 `grade=13/subject=12/type=2/566006711792488448`、id 69 `grade=13/subject=4/type=2/560886393904048128`）；前置课关系**已补 1 行**（`renew_master_course_relation` number=578670000000000001 → plan `546943017307740160` ← pre_course `578667318880518144`）。**B 端实测仍返回 `[]`**，根因（已验证）：计划 `546943017307740160` `renew_master.type=2` = **小班课计划** → cart `RenewalService:248` 走小班路径；而学员 `7542297028` 的班（course `578667318880518144` / clazz `578667321965428736`）是**大班课**（`course.clazz_room_type=1`）→ 小班路径找不到学员前置班 → 空。cart `RenewalService#getRenewalDetail` 直调实测只回 `renewal_start/end_time`、无 `gradeClazzList`。**结论：该计划与该学员授课模式天然不匹配，改时间窗/插推荐救不了** |
 
 > **TEST 查库直连即可**：DMS(`mysql_query`) test 侧常登录失效；用 `gaotu_test_rw` 直连（`mysql_query.resolve_rw_dsn(库名)` 取 host/密码 + pymysql），已写进 mysql-query skill。
 
