@@ -7,7 +7,7 @@ branches:
   - product-server:feature-xuban-match-opt
   - student-data:feature-xuban-match-opt
   - teacher-tool:feature-xuban-match-opt
-updated: 2026-09-22
+updated: 2026-09-23
 tags: [需求]
 ---
 
@@ -53,10 +53,10 @@ tags: [需求]
 | | |
 |---|---|
 | 阶段 | 开发中（第一批：问卷匹配） |
-| 进度 | T 9/10（问卷匹配 product-server + teacher-tool 已实现并验证；扩科待办）· R 3/4 · C 0/0 |
+| 进度 | T 10/11（问卷匹配 product-server + teacher-tool 已实现并验证；扩科待办）· R 3/4 · C 0/0 |
 | 部署泳道 | 第一批：`product-task`/`product-b`/`student-data`/`teacher-tool`；第二批：`product-b`/`product`/`student-data`/`cart` —— 均 `test-gtbg-dev-3` |
 | 当前卡点 | 先填后调 B 班花名册 ES 数据源已验，仅剩宽表重建触发时机待验；完整 submit→ES/明细 链路未跑端到端。【扩科推荐】**B/C 端真实入口 E2E 已验证**（计划 `579985778241837056`「任务系统-续班测试-无正式报名-0917」大班 + 学员 `20002`：开排除只剩 subject=7、关排除对照三条都在；B 端 `recommendProductList` 与 C 端 `web/renewal/cart` 均通过，见 [[verify]]）|
-| 最近更新 | 2026-09-23：**修掉扩科推荐一个线上会复现的真 bug** —— cart fastjson 全局 SnakeCase 把 Feign 请求体发成 `user_id`，student-data 绑不上、`otherModeInReadSubjects` 恒返回空；改用 `CesCamelCaseFeignConfig`（`96e334b8`），两泳道实测 `[12]`。排除逻辑 E2E 已验（开排除只剩 subject=4 / 关排除两条都在）。按错误判断加的 `FeignTrafficEnvForwardConfig` 已回退（`6deaa256`）。原先「受阻于测试泳道基础设施、非产品 bug」的结论已更正（见 [[verify]]）。**【扩科推荐】B/C 端真实入口 E2E 已验证**：计划 `579985778241837056`（大班）+ 学员 `20002`，`excludeMode=1` 只剩 subject=7、`=0` 对照三条都在（B 端 `recommendProductList` / C 端 `web/renewal/cart`）。2026-09-23 **【AI 配置化】开发完成**（student-data 分析侧+配置+feign、student-center 展示侧，均已提交并 push：`c91d5cd66` / `7b9215766`），**待部署 `test-gtbg-dev-3` 验证**（见 [[verify]]） |
+| 最近更新 | 2026-09-23：**修掉扩科推荐一个线上会复现的真 bug** —— cart fastjson 全局 SnakeCase 把 Feign 请求体发成 `user_id`，student-data 绑不上、`otherModeInReadSubjects` 恒返回空；改用 `CesCamelCaseFeignConfig`（`96e334b8`），两泳道实测 `[12]`。排除逻辑 E2E 已验（开排除只剩 subject=4 / 关排除两条都在）。按错误判断加的 `FeignTrafficEnvForwardConfig` 已回退（`6deaa256`）。原先「受阻于测试泳道基础设施、非产品 bug」的结论已更正（见 [[verify]]）。**【扩科推荐】B/C 端真实入口 E2E 已验证**：计划 `579985778241837056`（大班）+ 学员 `20002`，`excludeMode=1` 只剩 subject=7、`=0` 对照三条都在（B 端 `recommendProductList` / C 端 `web/renewal/cart`）。2026-09-23 **【AI 配置化】开发完成**（student-data 分析侧+配置+feign、student-center 展示侧，均已提交并 push：`c91d5cd66` / `7b9215766`），**待部署 `test-gtbg-dev-3` 验证**（见 [[verify]]）。同日**部门口径修正**：课程部门 → 老师（二讲）主岗部门 `mainPostOrgPathFromRoot`（`_` 分隔），student-data `12e41da47` / student-center `84ec1b732` 已 push、部署中，此前基于课程部门的验证全部作废 |
 
 ## 下一步
 
@@ -77,7 +77,7 @@ tags: [需求]
 - ✅ 【扩科推荐】【推荐排除】为**新增配置**（不与【纯续和扩科是否重复推荐】合并）；粒度 = **续班计划级**。
 - ✅ 【扩科推荐】B 端 `POST /product-b/b/renewMaster/recommendProductList` + C 端接口**按「纯续+扩科推荐范围」展示**；**「下单页选品」(`productSelect`，换班选品) 不需要排除过滤**（2026-09-23 定，反讲原「选品也按排除范围」口径作废）。
 - ✅ 【扩科推荐】「在读」口径：**复用 student-data 现有 + 补 2 条** —— 现有在读科目链路已覆盖 非成人 / 专题系列课 / 不含赠课标签 / 非纯预售（`OdsSmallRenewalSubjectSyncService:189-221`、`DwsRenewalSubjectConsumer#checkFilter`、`BackClazzUserSubjectService#isValidClazz`），相同学年学期靠 `yearTermGrade` 分组、授课模式靠数据源（小班在读科目来自小班课在班）；**但「上课形式为线上(operationMode)」与「订单未全部退款」现有链路没有，需补**（退款状态现网有 {6,10} / {6} 两套，需统一）。
-- ✅ 【AI 配置化】配置入口**先用 Apollo 后端配置**（先搞简单点，GAIA 页面后续再议）：续班 / 退费各一个 `Map<虚拟架构部门, Set<模块>>`，如 `{虚拟架构部门A:[1,2,3], 虚拟架构部门B:[1,2,3,4,5]}`；部门 key = **整条部门路径 contains**。
+- ✅ 【AI 配置化】配置入口**先用 Apollo 后端配置**（先搞简单点，GAIA 页面后续再议）：续班 / 退费各一个 `Map<虚拟架构部门, Set<模块>>`，如 `{虚拟架构部门A:[1,2,3], 虚拟架构部门B:[1,2,3,4,5]}`；部门 key = 虚拟架构部门 org number，匹配 = **老师（二讲）主岗部门路径**任一段命中（本部门及下属）；展示侧取登录老师、分析侧取辅导老师（2026-09-23 修正，原「课程部门」口径作废）。
 - ✅ 【AI 配置化】「用户反馈」「主管点评」**算 AI 模块**；无需枚举映射；关闭模块后历史数据按**隐藏**处理。
 - ✅ 【AI 配置化】「不展示」落点 = 前端仓 `ees/aianalysisinformations`（分支 `feature-refund-reason-20260825`）：沟通建议 `/component/student-center/problem/fulfillProblem/overview`、服务建议 `/component/student-center/fulfillSop/overview`、退费 tab 接口（`src/tabs/refund/*`），入参统一 `{ userId, clazzNumber, subclazzNumber }`。
 - ✅ 【AI 配置化】部门→模块配置放 **student-center 的 Apollo**（`compute.rule.name.list` 是问卷匹配的、仍需在 product 公共 namespace `gt.product-public-app` 新增）。

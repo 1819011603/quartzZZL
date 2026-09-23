@@ -213,8 +213,10 @@ curl -sk -x http://127.0.0.1:8888 \
 
 ## 第三批：AI 模块配置化（2026-09-23，开发完成·待验证）
 
+> ⚠️ 本节「部门口径 / Apollo 配置值 / 部署+验证 / 分析侧端到端」均基于**课程部门**，已被下一节「部门口径修正」推翻，**结论作废**；模块 code、未配置=关闭、配置放 student-data Apollo 仍有效。
+
 **口径（已定）**
-- 部门 = **虚拟组织架构部门 id**，取 `CourseDO.departmentIdPaths`（形如 `id1/id2/id3`）；匹配按 `/` **分段精确命中**（避免 `1000005` 误命中 `10000056`）
+- 部门口径见下一节「部门口径修正」
 - 模块 code：续班 `1 用户画像 / 2 沟通概况 / 3 沟通建议&评分 / 4 服务建议&评分 / 5 未续跟进 / 6 已续总结 / 7 用户反馈 / 8 主管点评`；退费 `tutoring / learning / satisfaction / refund_root_cause / service_suggestion / prediction`
 - **未配置 = 关闭**（用户 2026-09-23 确认；上线前必须把所有要开放的部门配全，否则全量 AI 停）
 - 配置放 **student-data 的 Apollo**（不接 GAIA）；student-center 展示侧走 feign 查 student-data，保证两侧同源同口径
@@ -249,7 +251,13 @@ curl -sk -x http://127.0.0.1:8888 \
 
 **待办**：① 退费 5 场景 / 退费预测 未做真实链路端到端；② 圈选侧（场景 1/2/3）未单独验；③ 上线前须把要开放的部门配全（否则全关）；④ 扩科选品 `productSelect` **不需要**排除过滤（2026-09-23 定）
 
-## ⚠️ AI 模块配置化：部门口径修正（2026-09-23 发现实现错误，待改）
+## ⚠️ AI 模块配置化：部门口径修正（2026-09-23 已改，已 push·部署中·**未验证**）
+
+**已改（2026-09-23）**：student-data `12e41da47`、student-center `84ec1b732`（分支 `feature-xuban-expand-exclude`，本地两仓均编译通过）。均已 push；部署 test-gtbg-dev-3：student-data pipeline `1284022`、student-center pipeline `1284028`。（agent 进程读不到钥匙串，已配 `credential.helper=store`，凭证在 `~/.git-credentials`）
+- student-data：`AiModuleSwitchService` 新增 `resolveAssistantOrgPaths(userId, clazzNumber, subclazzNumber)`（辅导班 → `assistantNumber` → accountId → 主岗路径）/ `resolveAccountOrgPaths(accountId)`；5 处分析侧调用点全部改用；`RefundPredictionService` 删掉课程部门解析；feign 入参 `clazzNumber/departmentIdPaths` → **`accountId`**
+- student-center：`AiModuleSwitchQueryService.isRenewal/RefundModuleEnabled(moduleCode)` 内部取 `LoginInfoUtils.getLoginUser().getAccountId()`；11 处调用点去掉 `clazzNumber` 参数
+- **与原 spec 的偏差**：`mainPostOrgPathFromRoot` 实测是 **`_` 分隔的 org number**（accountId `177071` gongxuemeng → `12345_4959407036876800_6816343048455168_66707677944472576`，名称 `高途课堂-北京学部123-苏州中心1234-课程顾问业务线`），所以 `matchDept` **必须改分隔符**（`/`→`_`），spec 里「不用改」不成立。org number 与 student-center `ai.gray.merge.map` 的 `grayDeptList` 同一 ID 空间（TEST 根 `12345`）
+- 待办：部署 eureka UP → **重配 Apollo key 为 org number**（现有 7 个课程部门 key 全部失效 = 当前 TEST 全关）→ 重做门控/端到端验证
 
 **PRD 原文**（https://gaotuedu.feishu.cn/wiki/AH5ewehsEiXohfkDgQEcKQjHnad）：
 > 按**虚拟架构部门**个性化配置。若部门配置（**本部门及下属部门**）某模块，**二讲可使用**，AI 进行分析；未配置则不可用、不分析。
