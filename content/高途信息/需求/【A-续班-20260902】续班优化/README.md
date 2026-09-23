@@ -52,18 +52,18 @@ tags: [需求]
 
 | | |
 |---|---|
-| 阶段 | 开发中（第一批：问卷匹配） |
-| 进度 | T 10/11（问卷匹配 product-server + teacher-tool 已实现并验证；扩科待办）· R 3/4 · C 0/0 |
+| 阶段 | 开发中（1/2/3/5 开发完成；问卷匹配、扩科、AI 配置化验证中） |
+| 进度 | T 10/11（问卷匹配、扩科、AI 配置化均已实现；调课 MQ E2E、退费归因 E2E 已验；剩花名册 ES 落值受限、AI 退费预测/圈选 E2E）· R 3/4 · C 0/0 |
 | 部署泳道 | 第一批：`product-task`/`product-b`/`student-data`/`teacher-tool`；第二批：`product-b`/`product`/`student-data`/`cart` —— 均 `test-gtbg-dev-3` |
-| 当前卡点 | 先填后调 B 班花名册 ES 数据源已验，仅剩宽表重建触发时机待验；完整 submit→ES/明细 链路未跑端到端。【扩科推荐】**B/C 端真实入口 E2E 已验证**（计划 `579985778241837056`「任务系统-续班测试-无正式报名-0917」大班 + 学员 `20002`：开排除只剩 subject=7、关排除对照三条都在；B 端 `recommendProductList` 与 C 端 `web/renewal/cart` 均通过，见 [[verify]]）|
-| 最近更新 | 2026-09-23：**修掉扩科推荐一个线上会复现的真 bug** —— cart fastjson 全局 SnakeCase 把 Feign 请求体发成 `user_id`，student-data 绑不上、`otherModeInReadSubjects` 恒返回空；改用 `CesCamelCaseFeignConfig`（`96e334b8`），两泳道实测 `[12]`。排除逻辑 E2E 已验（开排除只剩 subject=4 / 关排除两条都在）。按错误判断加的 `FeignTrafficEnvForwardConfig` 已回退（`6deaa256`）。原先「受阻于测试泳道基础设施、非产品 bug」的结论已更正（见 [[verify]]）。**【扩科推荐】B/C 端真实入口 E2E 已验证**：计划 `579985778241837056`（大班）+ 学员 `20002`，`excludeMode=1` 只剩 subject=7、`=0` 对照三条都在（B 端 `recommendProductList` / C 端 `web/renewal/cart`）。2026-09-23 **【AI 配置化】开发完成**（student-data 分析侧+配置+feign、student-center 展示侧，均已提交并 push：`c91d5cd66` / `7b9215766`），**待部署 `test-gtbg-dev-3` 验证**（见 [[verify]]）。同日**部门口径修正**：课程部门 → 老师（二讲）主岗部门 `mainPostOrgPathFromRoot`（`_` 分隔），student-data `12e41da47` / student-center `84ec1b732` 已 push、部署中，此前基于课程部门的验证全部作废 |
+| 当前卡点 | 花名册 ES 落值受限未验（缺真绑定同问卷且有花名册文档的 A/B；机制已定）；完整 submit→ES/明细 链路未跑端到端；AI 圈选 MQ 消息日志不可观测。【扩科推荐】**B/C 端真实入口 E2E 已验证**（计划 `579985778241837056` 大班 + 学员 `20002`：开排除只剩 subject=7、关排除对照三条都在，见 [[verify]]）|
+| 最近更新 | 2026-09-23：**修掉扩科推荐一个线上会复现的真 bug** —— cart fastjson 全局 SnakeCase 把 Feign 请求体发成 `user_id`，student-data 绑不上、`otherModeInReadSubjects` 恒返回空；改用 `CesCamelCaseFeignConfig`（`96e334b8`），两泳道实测 `[12]`。排除逻辑 E2E 已验（开排除只剩 subject=4 / 关排除两条都在）。按错误判断加的 `FeignTrafficEnvForwardConfig` 已回退（`6deaa256`）。原先「受阻于测试泳道基础设施、非产品 bug」的结论已更正（见 [[verify]]）。**【扩科推荐】B/C 端真实入口 E2E 已验证**：计划 `579985778241837056`（大班）+ 学员 `20002`，`excludeMode=1` 只剩 subject=7、`=0` 对照三条都在（B 端 `recommendProductList` / C 端 `web/renewal/cart`）。2026-09-23 **【AI 配置化】开发完成**（student-data 分析侧+配置+feign、student-center 展示侧，已 push：`c91d5cd66` / `7b9215766`）。同日**部门口径修正**：课程部门 → 老师（二讲）主岗部门 `mainPostOrgPathFromRoot`（`_` 分隔），student-data `12e41da47` / student-center `84ec1b732` 已 push；**2026-09-23 复核**：两服务已部署 `test-gtbg-dev-3` 且 eureka UP，Apollo 已换 org number `6816343048455168`，**门控（命中/未命中）、分析侧 E2E（`handleCode=2`）、展示侧真实入口均验证通过**（见 [[verify]]「部门口径修正」）；**本轮补验（2026-09-23）**：① 退费归因 E2E 通过（造 `refund_intent_info` 改上下文 → `refreshReasoning` → 新 pod 过门控调 AI、结果落库）；② **调课调班真发 MQ 端到端通过**（`gaotu_after_sale_event_test`+`TRANSFER_TOUCH_EVENT` → B 复制明细 + 重投幂等）；③ 花名册 ES 顺序机制已定（宽表重建时从 teacher-tool 明细推导、非调课 MQ），**ES 落值受限未验**；④ 圈选侧门控函数级已验（模块 1/2/3 命中）|
 
 ## 下一步
 
-1. 【问卷匹配】调课调班端到端验证：需发 `gaotu_after_sale_event_test` + `TRANSFER_TOUCH_EVENT`（阿里云控制台无发消息接口，走真实调课或 DB 模拟）。
-2. 【问卷匹配】花名册 ES 顺序风险验证：先填后调时 B 班 `renewalQuestionnaireStatus` 是否随宽表重建更新（teacher-tool 明细保存 MQ 只触发 AI，不刷花名册）。
-3. 【扩科推荐】开发已完成、B/C 端真实入口 E2E 已验证（见 [[verify]]）。剩余收尾：① 选品 `RenewalService#productSelect` 的排除过滤未单独验；② 上线配置 —— 全局降级开关 `renewal.expand.exclude.switch`（cart Apollo，默认 true）；③ 测试数据留档见 [[verify]]「B/C 端真实入口端到端」。
-4. 【AI 配置化】开发：student-data 分析侧 + student-center 展示侧 部门→模块开关。
+1. 【问卷匹配】调课调班端到端：**已验**（真发 `gaotu_after_sale_event_test`+`TRANSFER_TOUCH_EVENT` → B 复制明细 + 幂等，见 [[verify]]）。
+2. 【问卷匹配】花名册 ES 顺序风险：**机制已定**（调课 MQ 只写 teacher-tool 明细、不刷花名册；状态由宽表重建 `RenewalQuestionnaireStatusServiceV2#buildData` 从明细推导，最终一致）。**ES 落值受限未验**：缺「真绑定同问卷 + 有花名册文档」的 A/B。
+3. 【扩科推荐】剩余：① 上线配置 —— 全局降级开关 `renewal.expand.exclude.switch`（cart Apollo，默认 true）；② 测试数据留档见 [[verify]]「B/C 端真实入口端到端」。（选品 `productSelect` 已定**不需要**排除过滤，2026-09-23）
+4. 【AI 配置化】剩余验证：退费预测（prediction，private 方法）未单独验；圈选侧门控函数级已验、MQ 圈选消息不可观测；**上线前须把要开放的部门配全**（未配置=全关）。
 5. 【数据落表】找数仓侧确认落表方式（本批不做）。
 
 ## 已定（2026-09-21 产品 / 数据确认）
@@ -90,9 +90,7 @@ tags: [需求]
 - [ ] 【数据落表】落表方式（MQ / binlog / 直连 Doris）—— 数仓侧（本批不做，仅登记）
 - [ ] 【数据落表】"续班 / 退费所有字段"清单，含 GAIA 动态字段如何落表 —— 需 PRD 提供清楚（本批不做）
 - [ ] 【主讲适配】小班花名册列表页权限账号字段来自 DB 表 `es_query_config`(type=5)，线上配置未验证 —— 线上确认
-- [ ] 【问卷匹配】重试 Job 本期是否同批改造（加终态未匹配标记）—— 即 product-server `QuestionnaireRecordService#dealNotExistedComputeUser`（每轮重跑 3 天内 `computed_user_id=0` 记录，100/批、16 线程），不同批会被反复重跑 —— 评审
 - [ ] 【问卷匹配】规则改动影响大班 + 小班全部匹配，回归范围待确认 —— 测试
-- [ ] 线上 Apollo 现状核实：`compute.rule.name.list` 是否未配置、共享开关 `all.share.questionnaire.renewal` 实际值 —— 本团队（线上）
 - [ ] **产品侧问题汇总见飞书《待产品确认清单》（已全部回填 ✅）** https://gaotuedu.feishu.cn/docx/L2yrdOPEAoIOMux1JLXcGtR4nde
 
 ## 涉及的代码
@@ -109,8 +107,8 @@ tags: [需求]
 | 3 扩科推荐 | product-server | 配置 `ExpandSubjectConfigDTO` / `NodeExtConfigVO`；B 端 `ProcessController#edit/list`、`expandSubject/*` |
 | 3 扩科推荐 | student-data | 扩科科目 subtract：大班 `RenewalInfoServiceImpl#groupGradeCurrentRenewalSubjectMap`、小班 `SmallRenewalSubjectService#getRenewalSubjectInfo` —— **仅写花名册「大小班扩课科目」字段，与推荐无关** |
 | 3 扩科推荐 | cart | **推荐 `ExpandSubjectRecommendService#recommend`（小班 :32 / 大班 :69，排除过滤加这里）**、选品 `RenewalService#productSelect` |
-| 5 AI 配置化 | student-data | 续班 `AiAppSceneEnum`(6) + 归因侧 per-dept 先例；退费 `RefundReasoningEnum`(5) + `RefundPredictionService`(1) |
-| 5 AI 配置化 | student-center | 展示 `RenewalClazzUserController` / `RenewalReasonController` / `RefundController`；`RenewalAiCommSceneConfigService`（无 `@ApolloJsonValue`） |
+| 5 AI 配置化 | student-data | `AiDeptModuleSwitchConfig`（Apollo Map）+ `AiModuleSwitchService`（部门路径解析/匹配）+ `RenewalAiModuleEnum`(8) / `RefundAiModuleEnum`(6)；透出 `AiModuleSwitchController` |
+| 5 AI 配置化 | student-center | `AiModuleSwitchQueryService`（登录老师 accountId → feign，fail-closed）+ `AiModuleSwitchFeignClient`；已接 `RenewalClazzUserController` / `UserFeedbackController` / `RefundController` |
 | 4 数据落表（不做） | student-data | 两条既有模式：(a) MQ `job/sync/Sync*Handler`；(b) 直连 Doris Stream Load `DorisStreamLoadService` + `facade/job/dashboard/*DashBoardHandler` |
 
 ## 上线影响面

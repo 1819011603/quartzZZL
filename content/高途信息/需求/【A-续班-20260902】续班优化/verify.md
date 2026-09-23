@@ -60,11 +60,28 @@ tags: [需求, 验证]
 
 **补充（2026-09-22）**：student-data 的 `QuestionnaireAclService#batchQuestionnaires([B],[20001])` 已能查到 B 明细（`uniqueBizId 72615972506173953`）——即宽表重建时 `renewalQuestionnaireStatus` 会推导成 COMMIT。**查法坑**：① 路由要用 pathInfo `/student-data/**` → `https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service`（不是 `/bgwApi/student-data/...`）；② 报 `700 请重新登录`/`code:3` 时先**刷新 baijia-proxy Cookie**（`POST http://127.0.0.1:8765/api/v1/bridge/refresh`）即可。
 
+### 调课调班 MQ 端到端 + 幂等（2026-09-23，✅ 已验证）
+
+真发 MQ（不再只反射调 consumer）：student-data `FuwuOnsMqProducer#sendNormalMessage` 发 `gaotu_after_sale_event_test` + tag `TRANSFER_TOUCH_EVENT`，body = `{userId:20001, originalOrderInfo:{clazzNumber:A=578530888321613824}, targetOrderInfo:{clazzNumber:B=578667321965428736}}`。
+
+| 例 | 动作 | 期望 | 实测 |
+|---|---|---|---|
+| 1 | 先删 B 已有明细(id 21856) → 发 A→B 报文 | teacher-tool 消费并复制 A 明细到 B | ✅ B 新增 id `21858`（`uniqueBizId 72615972506173954`、同 `questionnaireGroupId 999900001`）|
+| 2 | 重投同一报文 | 幂等 skip | ✅ user 20001 明细总数仍 2 |
+
+**坑**：`sendNormalMessage(topic, String body)` 会把 String body 再 JSON 序列化（发成 `"{...}"`），consumer fastjson 报 `syntax error, expect {, actual string, pos 0`；**要传对象**走 `sendNormalMessage(String, List, Object)` 重载。
+
+### 花名册 ES 顺序风险（2026-09-23，结论已定·**ES 落值受限未验**）
+
+- **代码结论**：调课 MQ 只被 teacher-tool `TransferCourseQuestionnaireConsumer` 消费，**只写 teacher-tool 明细、不刷花名册**；花名册 `renewalQuestionnaireStatus` 由 `RenewalQuestionnaireStatusServiceV2#buildData`（宽表重建时）从 `batchQuestionnaires`（teacher-tool 明细）推导 → **B 的状态不随调课 MQ 即时更新，需等下次宽表重建（最终一致）**。重建入口 `WideSmallClazzIndexService#autoTriggerIndex`/`batchRetryIndex`（班级/学员变更事件 + 重试 Job），非调课 MQ。
+- **数据源 ✅**：`batchQuestionnaires([B],[20001])` 返回 B 明细（`projectNumber=testbiz001`）。
+- **受限未验**：A/B 是「任务系统」测试班，**花名册 ES 无文档**（`ads_small_clazz_user` / `ads_clazz_user_index` 均查无），且 **B 未绑定问卷**（`queryQuestionnaireMatchResult(B, 计划 578532432171743232)=null`，A 有匹配）→ 无法端到端验 ES 落成 COMMIT。需一组「真绑定同问卷 + 有花名册文档」的 A/B 才能补验。
+
 ## 待验
 
 | 项 | 卡点 |
 |---|---|
-| 先填后调：B 班花名册 `renewalQuestionnaireStatus` | 数据源已验（student-data ACL 能查到 B 明细）；**仅剩宽表重建的触发时机**待验——teacher-tool 明细保存 MQ 只触发 AI，不刷花名册 |
+| 先填后调：B 班花名册 `renewalQuestionnaireStatus` 落值 | 机制已定（见上，宽表重建时推导）；**缺「真绑定同问卷 + 有花名册文档」的 A/B 测试数据**，ES 落值未验 |
 | 先调后填端到端 | 靠计划级规则 + 主链路扇出（7 档逻辑已验证，未跑完整 submit→ES/明细 链路） |
 
 ## 第二批：扩科【推荐排除】（2026-09-22，`feature-xuban-expand-exclude`）
@@ -84,9 +101,9 @@ tags: [需求, 验证]
 | product-server 配置读回 | DB 给扩科节点(id 772 / 计划 `546943017307740160`) 的 ext_config 写 `excludeMode:1` → `ProcessService#listProcess` 返回 `extConfig.excludeMode=1` | ✅ |
 | product-server 字段级合并 | `ProcessService#convertNodeConfig` 传**不带** `excludeMode` 的 extConfig → 返回仍带 `excludeMode:1`（未被清空） | ✅ |
 
-### 已修复：cart→student-data Feign 恒返回空（2026-09-23）
+### cart→student-data Feign 请求体命名风格（2026-09-23，已修复）
 
-**此前结论「受阻于测试泳道基础设施，非产品 bug」是错的**，真因是请求体命名风格，**线上同样会复现**。
+**真因**：请求体命名风格不一致（非测试泳道基础设施问题），**线上同样会复现**。
 
 | 证据（arthas 实测） | 值 |
 |---|---|
@@ -111,12 +128,11 @@ tags: [需求, 验证]
 | 同上，当前小班(mode=2)（该学员无大班在读） | test | ✅ `[]`（证明入参真的生效，非恒空） |
 | cart 解码 product-server 的扩科配置（计划 `546943017307740160`） | test | ✅ `excludeMode=1`、`expandSubject=true` |
 
-**坑**：用 arthas `vmtool` 直接调该 Feign 会抛 `HystrixRuntimeException`（子上下文在 arthas 线程里初始化失败，
+**注意**：用 arthas `vmtool` 直接调该 Feign 会抛 `HystrixRuntimeException`（子上下文在 arthas 线程里初始化失败，
 报 `ConfigurationPropertiesBindingPostProcessorRegistrar.class not found`）——这是**调用手段的副作用**，
 走正常 Spring 路径（acl 桥 / 业务链路）正常。验这个 Feign 用 acl 桥，别用 arthas。
 
-**`FeignTrafficEnvForwardConfig` 已回退**（commit `6deaa256`）：它是按错误判断加的，Ribbon 本就选对了实例；
-连同 Apollo 开关 `feign.traffic.env.forward.enabled` 一并去掉。
+**`FeignTrafficEnvForwardConfig` 与 Apollo 开关 `feign.traffic.env.forward.enabled` 均已移除**（commit `6deaa256`）：Ribbon 本就选对实例，无需该转发。
 
 ### 排除逻辑端到端（2026-09-23，已验证）
 
@@ -211,80 +227,67 @@ curl -sk -x http://127.0.0.1:8888 \
 
 **查法**：student-data 桥走 pathInfo 前缀 `/student-data/**` → `https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service`；报 700 先 `POST http://127.0.0.1:8765/api/v1/bridge/refresh` 刷 Cookie。
 
-## 第三批：AI 模块配置化（2026-09-23，开发完成·待验证）
+## 第三批：AI 模块配置化（2026-09-23）— 有效结论
 
-> ⚠️ 本节「部门口径 / Apollo 配置值 / 部署+验证 / 分析侧端到端」均基于**课程部门**，已被下一节「部门口径修正」推翻，**结论作废**；模块 code、未配置=关闭、配置放 student-data Apollo 仍有效。
+> 部门口径 / Apollo 配置值 / 部署与验证细节见下一节「部门口径修正」（本节原基于「课程部门」的结论已作废）。
 
-**口径（已定）**
-- 部门口径见下一节「部门口径修正」
-- 模块 code：续班 `1 用户画像 / 2 沟通概况 / 3 沟通建议&评分 / 4 服务建议&评分 / 5 未续跟进 / 6 已续总结 / 7 用户反馈 / 8 主管点评`；退费 `tutoring / learning / satisfaction / refund_root_cause / service_suggestion / prediction`
-- **未配置 = 关闭**（用户 2026-09-23 确认；上线前必须把所有要开放的部门配全，否则全量 AI 停）
-- 配置放 **student-data 的 Apollo**（不接 GAIA）；student-center 展示侧走 feign 查 student-data，保证两侧同源同口径
+- **模块 code**：续班 `1 用户画像 / 2 沟通概况 / 3 沟通建议&评分 / 4 服务建议&评分 / 5 未续跟进 / 6 已续总结 / 7 用户反馈 / 8 主管点评`；退费 `tutoring / learning / satisfaction / refund_root_cause / service_suggestion / prediction`
+- **未配置 = 关闭**（上线前须配全，否则全量 AI 停）
+- **配置放 student-data 的 Apollo**（不接 GAIA）；student-center 展示侧走 feign 查 student-data，两侧同源同口径
+- **Apollo key**（默认 `{}`）：`renewal.ai.dept.module.switch` / `refund.ai.dept.module.switch`
+- **代码落点**：student-data `AiDeptModuleSwitchConfig` / `AiModuleSwitchService` / `RenewalAiModuleEnum` / `RefundAiModuleEnum`；分析侧接线 `RenewalReasoningService`(5/6)、`RefundReasoningService`(退费5)、圈选 `RenewalAiComm{RealTime,History}SelectHandleService`(1/2/3/4)、`RefundPredictionService`(prediction)；透出 `AiModuleSwitchController` → `POST /feign/ai/module/switch/query`。student-center `AiModuleSwitchFeignClient`（本地契约）+ `AiModuleSwitchQueryService`（fail-closed）
+- **展示侧已接接口**：`ai/clazzUser/userPortrait`(1)、`commSummary`(2)、`/problem/fulfillProblem/overview`(3)、`/fulfillSop/overview`(4)、`/user/feedback/query`(7)、`ai/clazzUser/evaluateQuery`(8)、`roster/refund/reasonType`+`roster/refund/analysis`(refund_root_cause)、`/course`(learning)、`/stage`(tutoring)、`/intent/record`(prediction)
+- **提交**：`c91d5cd66` / `7b9215766`（首轮）、`cf47510d5` / `cab6106ac`（第二轮补退费展示侧）
 
-**Apollo key（student-data，默认 `{}`）**
-- `renewal.ai.dept.module.switch` = `{"部门id":[1,2,3]}`
-- `refund.ai.dept.module.switch` = `{"部门id":["tutoring"]}`
+## AI 模块配置化：部门口径修正（2026-09-23 已改·已部署·**已验证**）
 
-**代码落点**
-- student-data：`AiDeptModuleSwitchConfig` / `AiModuleSwitchService` / `RenewalAiModuleEnum` / `RefundAiModuleEnum`；分析侧接线 `RenewalReasoningService`(5/6)、`RefundReasoningService`(退费5)、`RenewalAiCommRealTimeSelectHandleService`+`...HistorySelectHandleService`(圈选 21/22/23/24→模块 1/2/3/4)；透出 `AiModuleSwitchController` → `POST /feign/ai/module/switch/query`（入参 `bizType/clazzNumber/departmentIdPaths/moduleCodes`，返回 `Map<moduleCode,Boolean>`）
-- student-center：`AiModuleSwitchFeignClient`（本地契约，避开 student-data-client 定版 0.0.52.3）+ `AiModuleSwitchQueryService`（fail-closed）；已接展示接口：`ai/clazzUser/userPortrait`(1)、`commSummary`(2)、`/problem/fulfillProblem/overview`(3)、`/fulfillSop/overview`(4)、`/user/feedback/query`(7)、`ai/clazzUser/evaluateQuery`(8)、`roster/refund/reasonType`(refund_root_cause)、`/course`(learning)、`/stage`(tutoring)
+**口径（PRD https://gaotuedu.feishu.cn/wiki/AH5ewehsEiXohfkDgQEcKQjHnad）**：按**虚拟架构部门**配置，本部门及下属某模块配置了，二讲才可用 / AI 才分析；未配置即关闭。部门来源 = **老师（二讲）**主岗部门，**不是课程部门**（课程部门会让同课程下所有老师都可见，不隔离）。
 
-**提交**：student-data `c91d5cd66`、student-center `7b9215766`（分支 `feature-xuban-expand-exclude`，均已 push）
-
-**部署 + 验证（2026-09-23，✅ 已验证）**
-- 已部署 `test-gtbg-dev-3`：student-data pipeline 1283275（新 pod `10.218.250.22`）、student-center pipeline 1283277（新 pod `10.218.238.104`），均 `eureka UP`
-- Apollo（student-data/TEST）**续班 + 退费开关均已发布，沿用同一批部门、全模块开**：`renewal.ai.dept.module.switch`（`10000526,10007722,10000056,10008281,10008321,10000059,10001684` 各 `[1..8]`，release `20260923152230-release`）+ `refund.ai.dept.module.switch`（同 7 部门各 `[tutoring,learning,satisfaction,refund_root_cause,service_suggestion,prediction]`，release `20260923152356-release`）。验证：续班 `10000526→{1:true,2:true,5:true,7:true,8:true}`、退费 `10000526→{tutoring:true,prediction:true,learning:true}` ✅。**上线前需按线上真实部门重配**（线上未必是这批部门）
-- 实测（student-data acl 桥 `AiModuleSwitchService#queryModuleSwitch`）：
-  - 未配置时 → `{1:false,2:false,7:false}` ✅（未配置=关闭）
-  - `departmentIdPaths=["10000001/10000056/10001234"]` → `{1:true,2:true,7:false}` ✅（命中部门 + 模块过滤）
-  - `departmentIdPaths=["10000001/100000560/10001234"]` → `{1:false}` ✅（**前缀不误命中** `100000560`≠`10000056`）
-- student-center → student-data feign 链路通（`AiModuleSwitchQueryService#isRenewalModuleEnabled` 返回 false，无异常）
-
-**第二轮（2026-09-23）**：补接退费展示侧 `roster/refund/analysis`(refund_root_cause)、`/intent/record`(prediction) + 退费预测 `RefundPredictionService#publishSubClazzEvent`(prediction)；提交 `cf47510d5` / `cab6106ac`，已部署（pipeline 1283416/1283417，新 pod `10.218.238.58` / `10.218.249.234`，均 eureka UP）。自验：续班 `{1:true,2:true}`（回归 OK）、退费 `{prediction:false,tutoring:false}`（未配置=关闭）✅
-
-**分析侧端到端（2026-09-23，✅ 已验证）**
-- 测试数据：班级 `500775385189890048`（课程 `500775364606343168`，`course_center.course.department_path=10008321/...` 命中白名单）+ 学员 `7404351741`（新造：`ees_data.ai_renewal_cdp_user_comm_base`/`_scene` 各 8 行、`gaotu.user_questionnaire_record` 1 行，源学员 `6761113627` 未动）
-- 正例：`RenewalReasonTaskService#handleSingleUser(500775385189890048, 7404351741, true)` → `handleCode=2`（SUCCESS），AI 基于新造沟通+问卷产出完整「未续跟进」归因并落库 ✅
-- 门控验证：同班 `queryModuleSwitch(1, 500775385189890048, null, [...])` → 配了 `10008321` 时 `{1:true,2:true,5:true,6:true}`；临时把 `10008321` 去掉后 → `{1:false,5:false}`（已恢复配置）✅
-- 现成数据（备选）：班级 `500775385189890048` 原样本学员 `6761113627`（8 沟通 + 1 问卷 + type1/2/5/6 产物）
-- 缺口：模块 3/4/7/8 无现成产物；`ees_data.ai_renewal_analyze_scheduled` 0 行
-
-**待办**：① 退费 5 场景 / 退费预测 未做真实链路端到端；② 圈选侧（场景 1/2/3）未单独验；③ 上线前须把要开放的部门配全（否则全关）；④ 扩科选品 `productSelect` **不需要**排除过滤（2026-09-23 定）
-
-## ⚠️ AI 模块配置化：部门口径修正（2026-09-23 已改，已 push·部署中·**未验证**）
-
-**已改（2026-09-23）**：student-data `12e41da47`、student-center `84ec1b732`（分支 `feature-xuban-expand-exclude`，本地两仓均编译通过）。均已 push；部署 test-gtbg-dev-3：student-data pipeline `1284022`、student-center pipeline `1284028`。（agent 进程读不到钥匙串，已配 `credential.helper=store`，凭证在 `~/.git-credentials`）
-- student-data：`AiModuleSwitchService` 新增 `resolveAssistantOrgPaths(userId, clazzNumber, subclazzNumber)`（辅导班 → `assistantNumber` → accountId → 主岗路径）/ `resolveAccountOrgPaths(accountId)`；5 处分析侧调用点全部改用；`RefundPredictionService` 删掉课程部门解析；feign 入参 `clazzNumber/departmentIdPaths` → **`accountId`**
-- student-center：`AiModuleSwitchQueryService.isRenewal/RefundModuleEnabled(moduleCode)` 内部取 `LoginInfoUtils.getLoginUser().getAccountId()`；11 处调用点去掉 `clazzNumber` 参数
-- **与原 spec 的偏差**：`mainPostOrgPathFromRoot` 实测是 **`_` 分隔的 org number**（accountId `177071` gongxuemeng → `12345_4959407036876800_6816343048455168_66707677944472576`，名称 `高途课堂-北京学部123-苏州中心1234-课程顾问业务线`），所以 `matchDept` **必须改分隔符**（`/`→`_`），spec 里「不用改」不成立。org number 与 student-center `ai.gray.merge.map` 的 `grayDeptList` 同一 ID 空间（TEST 根 `12345`）
-- 待办：部署 eureka UP → **重配 Apollo key 为 org number**（现有 7 个课程部门 key 全部失效 = 当前 TEST 全关）→ 重做门控/端到端验证
-
-**PRD 原文**（https://gaotuedu.feishu.cn/wiki/AH5ewehsEiXohfkDgQEcKQjHnad）：
-> 按**虚拟架构部门**个性化配置。若部门配置（**本部门及下属部门**）某模块，**二讲可使用**，AI 进行分析；未配置则不可用、不分析。
-
-**当前实现（错）**：用「班级所属**课程**部门」`CourseDO.departmentIdPaths`。
-**后果**：一个部门配了，该课程下**所有老师**（含别的部门）都能看到 → 不是按老师部门隔离。
-
-**正确口径**
-| 维度 | 应为 |
+| 维度 | 实现 |
 |---|---|
-| 部门来源 | **老师**的虚拟组织架构部门路径（不是课程部门）|
-| 展示侧(student-center) | **登录老师**（二讲）：登录人 accountId → org path |
-| 分析侧(student-data) | **该班辅导老师（二讲）**：`clazzNumber → 辅导老师 accountId → org path` |
-| 匹配 | 老师部门路径**包含**配置部门 id（= 本部门及下属生效）——`AiModuleSwitchService#matchDept` 的分段包含逻辑**不用改**，只换传入的部门路径来源 |
-| 配置值 | key 换成**虚拟架构部门 id**（现有那 7 个是课程部门白名单，也错）|
+| 部门来源 | 老师虚拟组织架构主岗路径 `StaffDto.mainPostOrgPathFromRoot` |
+| 展示侧(student-center) | 登录老师 `LoginInfoUtils.getLoginUser().getAccountId()` → org path |
+| 分析侧(student-data) | 该班辅导老师：`clazzNumber → 辅导班 assistantNumber → accountId → org path` |
+| 匹配 | 路径按 `_` 分段**精确**命中配置部门 id（本部门及下属生效；数字 id 前缀不误命中） |
+| 配置值 | key = 虚拟架构部门 org number；未配置 = 关闭 |
 
-**取数链路（已探明）**
+**已改（2026-09-23，已 push）**：student-data `12e41da47`、student-center `84ec1b732`（分支 `feature-xuban-expand-exclude`）
+- student-data：`AiModuleSwitchService` 新增 `resolveAssistantOrgPaths(userId, clazzNumber, subclazzNumber)` / `resolveAccountOrgPaths(accountId)`；5 处分析侧调用点全改；`matchDept` 分隔符 `/`→`_`；feign 入参 `departmentIdPaths` → **`accountId`**
+- student-center：`AiModuleSwitchQueryService.isRenewal/RefundModuleEnabled(moduleCode)` 内部取登录老师 accountId；11 处调用点去掉 `clazzNumber`
+
+**部署（2026-09-23 复核）**：test-gtbg-dev-3 —— student-data pipeline `1284022` → 新 pod `10.218.250.176`、student-center pipeline `1284028` → 新 pod `10.218.236.63`，**均 eureka UP**。
+
+**Apollo（student-data/TEST，已发布）**：`renewal.ai.dept.module.switch` / `refund.ai.dept.module.switch` 均已换成 org number `6816343048455168`（全模块开）；旧 7 个课程部门 key 已失效。
+
+**已验证（2026-09-23，student-data acl 桥走网关 + student-center 真实入口）**
+
+| 项 | 调用 | 实测 |
+|---|---|---|
+| 老师 org path | `resolveAccountOrgPaths(177071)` | ✅ `["12345_4959407036876800_6816343048455168_66707677944472576"]` |
+| 续班门控（命中） | `queryModuleSwitch(1, 177071, [1,2,5,6,7,8])` | ✅ 全 true |
+| 退费门控（命中） | `queryModuleSwitch(2, 177071, [tutoring,prediction])` | ✅ 全 true |
+| 未命中老师 | `queryModuleSwitch(1, 1, [1,2])` | ✅ 全 false（未配置=关闭） |
+| 分析侧（班级维度） | `resolveAssistantOrgPaths(7404351741, 500775385189890048, null)` | ✅ 解析到同一 org 路径 |
+| 分析侧（辅导班维度，退费预测用） | `resolveAssistantOrgPaths(null, null, 31298462823089024)` | ✅ 同一 org 路径 |
+| **分析侧 E2E** | `RenewalReasonTaskService#handleSingleUser(500775385189890048, 7404351741, true)` | ✅ `handleCode=2`（SUCCESS），AI 产出完整未续归因并落库 |
+| student-center→student-data feign | `AiModuleSwitchFeignClient#queryModuleSwitch({bizType:1,accountId:177071,moduleCodes:[7]})` | ✅ `{7:true}` |
+| 展示侧真实入口 | `POST /ai/clazzUser/userPortrait`、`/ai/clazzUser/commSummary`（proxy 登录态；class `500775385189890048` / user `7404351741`） | ✅ 返回非空（门控放行，非 `data:null`） |
+| **退费归因 E2E** | 造 `ees_data.refund_intent_info` 1 行（user `7463487951`，`refund_reason` 有值）改上下文 → `RefundReasonTaskService#refreshReasoning(500775385189890048, 31298462823089024, [7463487951])` | ✅ 新 pod `student-data-f578c6459-gpz7h` 走完时间窗/内容变更守卫，**无「退费归因AI模块未开启」**，调用 AI（`RefundReasoningService:234`）并落库 `subclazz_scene_ai_summary.refundReason`（ai_token `0c640c3f...`） |
+| **退费预测 E2E** | `RefundPredictionService#publishSubClazzEvent(31298462823089024, {clazzNumber:500775385189890048, userIdList:[7463487951]})`（桥可调 private） | ✅ 新 pod 无「退费预测模块未开启」，走到 `RefundPredictionService:373` 打印「辅导班老师通知完成:31298462823089024」 |
+
+**测试数据**：班级 `500775385189890048`（辅导老师 = gongxuemeng accountId `177071`，主岗部门路径命中配置）+ 学员 `7404351741`（续班沟通 8 条 + 问卷 1 条，见上一节）；退费 E2E 用同班学员 `7463487951` + 新造 `ees_data.refund_intent_info` 1 行（改上下文用，可回滚）。
+
+**取数链路（参考）**
 - 老师 org path：`OrganizationSyncAclService.listMainPostStaffByAccountIds("EES", accountIds)` → `StaffDto.getMainPostOrgPathFromRoot()`（先例 `AccountStaffDataQueryServiceV2.java:44-61`）
 - 班级辅导老师：`SubclazzSyncAclService` / `TeacherSyncAclService`（clazz → assistantNumber → accountId）
-- student-center 登录人：`LoginInfoUtils` + `OrganizationAclService.getAccountInOrg`（先例 `AiGraySwitchServiceImpl`）
+- student-center 登录人：`LoginInfoUtils`（同文件 `RenewalClazzUserController:104` 已在用）
 
-**要改的文件**
-- student-data：`domain/service/ai/AiModuleSwitchService.java`（换 `resolveDepartmentIdPaths`）；分析侧 5 处调用点 `RenewalReasoningService#reasoningEvent`、`RefundReasoningService#refundReasoningEvent`、`RenewalAiCommRealTimeSelectHandleService#buildBizSelectCondition`、`RenewalAiCommHistorySelectHandleService#buildBizSelectCondition`、`RefundPredictionService#publishSubClazzEvent`
-- student-center：`AiModuleSwitchQueryService` + `AiModuleSwitchFeignClient` + `AiModuleSwitchRequest`（改传登录老师部门路径）；展示侧各 Controller 入参
-- Apollo：`renewal/refund.ai.dept.module.switch` 的 key 换成虚拟架构部门 id
+**待办**：① **上线前须把要开放的部门配全**（未配置=全关），key 用线上真实虚拟架构部门 id；② 圈选侧 MQ 圈选消息未能在日志后端观测（门控函数级已验）。
 
-**注意**：改完后，之前基于「课程部门」做的所有验证结论（门控/端到端）**全部作废，需重做**。
+**圈选侧（场景 21/22/23 → 模块 1/2/3，`RenewalAiComm{RealTime,History}SelectHandleService#buildBizSelectCondition` 的 `filter(isSceneModuleEnabled)`）**
+- 门控函数级已验：`queryModuleSwitch(1, 177071, [1,2,3])` → 全 true（配置部门命中 → 3 个场景全通过）
+- `RenewalAiJudgeNeedHandleService#needHandle(clazz 500775385189890048, course 500775364606343168)` → `true`；`RenewalAiCommSceneHandleHelper#handleAiCommRealTimeSelectConditions(base)` 调用成功（无异常）
+- **未做端到端断言**：桥调用 traceId 在日志后端查不到 student-data 自身日志（`AiCommOnsMqProducer#sendOrderedMessage` 亦查不到），故实际发出的圈选条件条数/内容未能观测
 
 ## 反射桥地址
 
