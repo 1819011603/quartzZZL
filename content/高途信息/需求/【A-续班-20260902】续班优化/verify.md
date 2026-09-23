@@ -120,7 +120,7 @@ tags: [需求, 验证]
 
 ### 排除逻辑端到端（2026-09-23，已验证）
 
-B/C 端真实入口跑不通（见下「待验」），改在 cart JVM 内直调大班重载
+B/C 端真实入口跑不通（当时缺合格测试数据，见下「B/C 端真实入口端到端」），先改在 cart JVM 内直调大班重载
 `ExpandSubjectRecommendService#recommend(userId, config, courseDTOMap, purchasedProducts)`，
 **真实走 Feign 到 student-data**，只跳过商品详情组装。学员 `7542297028`（小班在读 subject=12），
 推荐列表配两条：`grade=13/subject=12`(商品 111111) 与 `grade=13/subject=4`(商品 222222)。
@@ -142,11 +142,70 @@ B/C 端真实入口跑不通（见下「待验」），改在 cart JVM 内直调
 
 **排查要点**：cart 调 student-data 的 Feign 名必须用 eureka 名 `STUDENT-DATA`（不是 `student-data`）。
 
-### 待验（受阻于测试数据）
+### B/C 端真实入口端到端（2026-09-23，✅ 已验证）
 
-| 项 | 卡点 |
+**测试数据（合格组合，`test-gtbg-dev-3`）**
+
+| 项 | 值 |
 |---|---|
-| B/C 端推荐端到端（配 `excludeMode=1` → 推荐里排除对方模式在读学科） | 时间窗**已改**（2026-09-23 直连 test `gaotu.node_config` 把节点 `580163733947547649`/id 772 的 `begin_time/end_time` 由 `2026-09-25 04:00~09-26` 改为 `2026-09-22 00:00 ~ 2026-09-30 23:59`，已读回；副作用：B 端再编辑该节点会报「节点已开始不可修改」）。推荐行**已插 2 行**（id 68 `grade=13/subject=12/type=2/566006711792488448`、id 69 `grade=13/subject=4/type=2/560886393904048128`）；前置课关系**已补 1 行**（`renew_master_course_relation` number=578670000000000001 → plan `546943017307740160` ← pre_course `578667318880518144`）。**B 端实测仍返回 `[]`**，根因（已验证）：计划 `546943017307740160` `renew_master.type=2` = **小班课计划** → cart `RenewalService:248` 走小班路径；而学员 `7542297028` 的班（course `578667318880518144` / clazz `578667321965428736`）是**大班课**（`course.clazz_room_type=1`）→ 小班路径找不到学员前置班 → 空。cart `RenewalService#getRenewalDetail` 直调实测只回 `renewal_start/end_time`、无 `gradeClazzList`。**结论：该计划与该学员授课模式天然不匹配，改时间窗/插推荐救不了** |
+| 续班计划 | `579985778241837056`「任务系统-续班测试-无正式报名-0917」（`renew_master.type=1` **大班**，有效期 2026-09-09~2027-09-30）|
+| 前置课 | `579985105158701056` → 后置课 `579985185825652736` / 后置班 `579985190466650112`（四年级语文，**grade=14**，`product_type=2`）|
+| 学员 | `20002`（另 20003~20011、7416248574 同样可跑）|
+| 扩科节点 | `node_config` id 760 / number `580101357072160769`；2026-09-23 直连 test 改 `begin_time/end_time` = `2026-09-22 00:00 ~ 09-30 23:59`、`ext_config={"allowDuplicate":false,"expandSubject":true,"forceBuy":false,"excludeMode":1}` |
+| 推荐行 | id 70 `grade=14/subject=1/type=2/560886393904048128`（应被排除）、id 71 `grade=14/subject=7/type=2/566006711792488448`（应保留）|
+| 学员小班在读 | `listOtherModeInReadSubjects(20002, currentRoomType=1)` = `[1,2,4]` → 大班路径排除 subject∈{1,2,4} |
+
+**B 端** `POST /b/renewMaster/recommendProductList`（`RenewalProductServiceImpl#recommendProductList`，经 product-b acl 桥）
+
+| excludeMode | 返回商品 | 结论 |
+|---|---|---|
+| 1（开排除）| `566006711792488448`(subject=7) + `579985190466650112`(纯续后置班) | subject=1 被排除 ✅ |
+| 0（对照）| `560886393904048128`(subject=1) + `566006711792488448` + `579985190466650112` | 三条都在 ✅ |
+
+**C 端** `GET /web/renewal/cart`（同 7 参 `RenewalService#getRenewalDetail`，fromBCart=false）
+
+| excludeMode | 返回 `(productSkuNumber, recommendType)` | 结论 |
+|---|---|---|
+| 1 | `(579985190466650112,1)`(纯续) + `(566006711792488448,2)`(扩科 subject=7) | subject=1 被排除 ✅ |
+| 0 | `(579985190466650112,1)` + `(560886393904048128,2)`(subject=1) + `(566006711792488448,2)` | 三条都在 ✅ |
+
+**跑通 B/C 端的完整数据条件（复用要点）**：① 计划 `type=1` 大班 + 有效；② `renew_master_course_relation` 有前置课；③ 学员在该前置课**有有效订单**（`order_info.order_status in (1,2,3)`）——这是最容易漏的一条，`coreHandle:1264` 无订单直接返回空；④ 前置课在课程中心配了后置课（`course_extension` / cart `getAfterCourseMap`）；⑤ 扩科节点 `ext_config.expandSubject=true` 且时间窗覆盖当前；⑥ 推荐行 `grade` = 后置课年级。
+**选组合的 SQL**：`renew_master(type<>2,有效) join renew_master_course_relation join order_info(order_status in (1,2,3))`，再对候选逐个调 cart `getRenewalDetail` 看 `grade_clazz_list` 非空（本次 60 个候选里只有计划 `579985778241837056` 命中）。
+
+**已废弃的错组合（留档）**：计划 `546943017307740160` 是 `type=2` **小班课计划**，学员 `7542297028` 是**大班**学员且**无任何订单** → 天然跑不通（改时间窗/插推荐都救不了）。
+
+#### 复现命令（可直接粘终端；经代理需先起 8765+8888，见 baijia-proxy skill）
+
+```bash
+# B 端（product-b acl 桥，走网关）
+curl -sk -x http://127.0.0.1:8888 \
+  'https://test-fuwu.baijia.com/bgwApi/product-b/b/test/acl/compare/service' \
+  -H 'content-type: application/json' -H 'traffic-env: test-gtbg-dev-3' \
+  --data-raw '{"serviceNameAndMethodName":"com.gaotu.product.service.renewal.impl.RenewalProductServiceImpl#recommendProductList","params":[{"renewMasterNumber":"579985778241837056","userId":"20002"}]}'
+
+# C 端逻辑（cart 7 参 getRenewalDetail，fromBCart=false；等价 web/renewal/cart，绕开登录）
+curl -sk 'http://<cart-pod-ip>:28688/test/acl/compare/service' \
+  -H 'content-type: application/json' -H 'traffic-env: test-gtbg-dev-3' -H 'host: CART.GAOTU100.COM' \
+  --data-raw '{"serviceNameAndMethodName":"com.gaotu.renewal.RenewalService#getRenewalDetail","params":["20002","579985778241837056",false,false,null,null,false]}'
+
+# 对方模式在读（student-data 桥，走 pathInfo 前缀 /student-data/**）
+curl -sk -x http://127.0.0.1:8888 \
+  'https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service' \
+  -H 'content-type: application/json' -H 'traffic-env: test-gtbg-dev-3' \
+  --data-raw '{"serviceNameAndMethodName":"com.gaotu.student.data.domain.service.RenewalInReadSubjectService#listOtherModeInReadSubjects","params":[20002,1]}'
+# 期望：B/C 端 excludeMode=1 只剩 subject=7；改 node 760 ext_config.excludeMode=0 后 subject=1 也出现
+```
+
+#### 已改动测试数据清单（2026-09-23，可回滚）
+
+| 表.行 | 字段 | 原值 | 现值 | 目的 |
+|---|---|---|---|---|
+| `gaotu.node_config` id 760 | begin/end | `2026-09-18 09:17:15`（起=止，已过期）| `2026-09-22 00:00 ~ 2026-09-30 23:59` | 让扩科节点生效 |
+| `gaotu.node_config` id 760 | ext_config | `{"allowDuplicate":false,"expandSubject":false,"forceBuy":false}` | `{"allowDuplicate":false,"expandSubject":true,"forceBuy":false,"excludeMode":1}` | 开扩科+排除 |
+| `gaotu.renewal_expand_subject_recommend` | 新增 id 70/71 | — | `grade=14/subject=1/type=2/560886393904048128`、`grade=14/subject=7/type=2/566006711792488448` | 推荐行 |
+| （留档·错组合）`gaotu.node_config` id 772 | begin/end | `2026-09-25 04:00 ~ 09-26` | `2026-09-22 ~ 09-30` | 计划 `546943017307740160`（小班，跑不通）|
+| （留档·错组合）`gaotu.renewal_expand_subject_recommend` | 新增 id 68/69 | — | plan `546943017307740160` | 同上 |
+| （留档·错组合）`gaotu.renew_master_course_relation` | 新增 id 69817 | — | plan `546943017307740160` ← pre_course `578667318880518144` | 同上 |
 
 > **TEST 查库直连即可**：DMS(`mysql_query`) test 侧常登录失效；用 `gaotu_test_rw` 直连（`mysql_query.resolve_rw_dsn(库名)` 取 host/密码 + pymysql），已写进 mysql-query skill。
 
