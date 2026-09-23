@@ -231,14 +231,16 @@ curl -sk -x http://127.0.0.1:8888 \
 
 **部署 + 验证（2026-09-23，✅ 已验证）**
 - 已部署 `test-gtbg-dev-3`：student-data pipeline 1283275（新 pod `10.218.250.22`）、student-center pipeline 1283277（新 pod `10.218.238.104`），均 `eureka UP`
-- Apollo（student-data/TEST）已发布 `renewal.ai.dept.module.switch = {"10000056":[1,2]}`（验证用，release `20260923144542-release`）
+- Apollo（student-data/TEST）**续班 + 退费开关均已发布，沿用同一批部门、全模块开**：`renewal.ai.dept.module.switch`（`10000526,10007722,10000056,10008281,10008321,10000059,10001684` 各 `[1..8]`，release `20260923152230-release`）+ `refund.ai.dept.module.switch`（同 7 部门各 `[tutoring,learning,satisfaction,refund_root_cause,service_suggestion,prediction]`，release `20260923152356-release`）。验证：续班 `10000526→{1:true,2:true,5:true,7:true,8:true}`、退费 `10000526→{tutoring:true,prediction:true,learning:true}` ✅。**上线前需按线上真实部门重配**（线上未必是这批部门）
 - 实测（student-data acl 桥 `AiModuleSwitchService#queryModuleSwitch`）：
   - 未配置时 → `{1:false,2:false,7:false}` ✅（未配置=关闭）
   - `departmentIdPaths=["10000001/10000056/10001234"]` → `{1:true,2:true,7:false}` ✅（命中部门 + 模块过滤）
   - `departmentIdPaths=["10000001/100000560/10001234"]` → `{1:false}` ✅（**前缀不误命中** `100000560`≠`10000056`）
 - student-center → student-data feign 链路通（`AiModuleSwitchQueryService#isRenewalModuleEnabled` 返回 false，无异常）
 
-**待办**：① 退费展示侧剩余模块（analysis / reason / intent 等）未接；② 退费预测 `RefundPredictionService`（prediction）未接；③ 分析侧（续班5/6、退费5、圈选）未做端到端实测；④ 上线前须把要开放的部门配全（否则全关）
+**第二轮（2026-09-23）**：补接退费展示侧 `roster/refund/analysis`(refund_root_cause)、`/intent/record`(prediction) + 退费预测 `RefundPredictionService#publishSubClazzEvent`(prediction)；提交 `cf47510d5` / `cab6106ac`，已部署（pipeline 1283416/1283417，新 pod `10.218.238.58` / `10.218.249.234`，均 eureka UP）。自验：续班 `{1:true,2:true}`（回归 OK）、退费 `{prediction:false,tutoring:false}`（未配置=关闭）✅
+
+**待办**：① 分析侧（续班5/6、退费5、圈选、退费预测）未做真实链路端到端实测；② 退费「手填退费原因」无对应 AI 模块（手工），未加开关；③ 上线前须把要开放的部门配全（否则全关）；④ 扩科选品：`RenewalService#productSelect:2573` / `SmallRenewalService#productSelect:598` **都不调 `ExpandSubjectRecommendService`**（选品是「换班选品」链路，非扩科推荐），因此**没有排除过滤**；反讲要求「下单页选品也按排除范围展示」与代码现状不符 → **待确认是否要补**
 
 ## 反射桥地址
 
