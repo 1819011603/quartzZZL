@@ -249,6 +249,35 @@ curl -sk -x http://127.0.0.1:8888 \
 
 **待办**：① 退费 5 场景 / 退费预测 未做真实链路端到端；② 圈选侧（场景 1/2/3）未单独验；③ 上线前须把要开放的部门配全（否则全关）；④ 扩科选品 `productSelect` **不需要**排除过滤（2026-09-23 定）
 
+## ⚠️ AI 模块配置化：部门口径修正（2026-09-23 发现实现错误，待改）
+
+**PRD 原文**（https://gaotuedu.feishu.cn/wiki/AH5ewehsEiXohfkDgQEcKQjHnad）：
+> 按**虚拟架构部门**个性化配置。若部门配置（**本部门及下属部门**）某模块，**二讲可使用**，AI 进行分析；未配置则不可用、不分析。
+
+**当前实现（错）**：用「班级所属**课程**部门」`CourseDO.departmentIdPaths`。
+**后果**：一个部门配了，该课程下**所有老师**（含别的部门）都能看到 → 不是按老师部门隔离。
+
+**正确口径**
+| 维度 | 应为 |
+|---|---|
+| 部门来源 | **老师**的虚拟组织架构部门路径（不是课程部门）|
+| 展示侧(student-center) | **登录老师**（二讲）：登录人 accountId → org path |
+| 分析侧(student-data) | **该班辅导老师（二讲）**：`clazzNumber → 辅导老师 accountId → org path` |
+| 匹配 | 老师部门路径**包含**配置部门 id（= 本部门及下属生效）——`AiModuleSwitchService#matchDept` 的分段包含逻辑**不用改**，只换传入的部门路径来源 |
+| 配置值 | key 换成**虚拟架构部门 id**（现有那 7 个是课程部门白名单，也错）|
+
+**取数链路（已探明）**
+- 老师 org path：`OrganizationSyncAclService.listMainPostStaffByAccountIds("EES", accountIds)` → `StaffDto.getMainPostOrgPathFromRoot()`（先例 `AccountStaffDataQueryServiceV2.java:44-61`）
+- 班级辅导老师：`SubclazzSyncAclService` / `TeacherSyncAclService`（clazz → assistantNumber → accountId）
+- student-center 登录人：`LoginInfoUtils` + `OrganizationAclService.getAccountInOrg`（先例 `AiGraySwitchServiceImpl`）
+
+**要改的文件**
+- student-data：`domain/service/ai/AiModuleSwitchService.java`（换 `resolveDepartmentIdPaths`）；分析侧 5 处调用点 `RenewalReasoningService#reasoningEvent`、`RefundReasoningService#refundReasoningEvent`、`RenewalAiCommRealTimeSelectHandleService#buildBizSelectCondition`、`RenewalAiCommHistorySelectHandleService#buildBizSelectCondition`、`RefundPredictionService#publishSubClazzEvent`
+- student-center：`AiModuleSwitchQueryService` + `AiModuleSwitchFeignClient` + `AiModuleSwitchRequest`（改传登录老师部门路径）；展示侧各 Controller 入参
+- Apollo：`renewal/refund.ai.dept.module.switch` 的 key 换成虚拟架构部门 id
+
+**注意**：改完后，之前基于「课程部门」做的所有验证结论（门控/端到端）**全部作废，需重做**。
+
 ## 反射桥地址
 
 | 服务 | 地址 |
