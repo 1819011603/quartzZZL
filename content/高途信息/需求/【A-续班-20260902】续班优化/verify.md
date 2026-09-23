@@ -211,6 +211,35 @@ curl -sk -x http://127.0.0.1:8888 \
 
 **查法**：student-data 桥走 pathInfo 前缀 `/student-data/**` → `https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service`；报 700 先 `POST http://127.0.0.1:8765/api/v1/bridge/refresh` 刷 Cookie。
 
+## 第三批：AI 模块配置化（2026-09-23，开发完成·待验证）
+
+**口径（已定）**
+- 部门 = **虚拟组织架构部门 id**，取 `CourseDO.departmentIdPaths`（形如 `id1/id2/id3`）；匹配按 `/` **分段精确命中**（避免 `1000005` 误命中 `10000056`）
+- 模块 code：续班 `1 用户画像 / 2 沟通概况 / 3 沟通建议&评分 / 4 服务建议&评分 / 5 未续跟进 / 6 已续总结 / 7 用户反馈 / 8 主管点评`；退费 `tutoring / learning / satisfaction / refund_root_cause / service_suggestion / prediction`
+- **未配置 = 关闭**（用户 2026-09-23 确认；上线前必须把所有要开放的部门配全，否则全量 AI 停）
+- 配置放 **student-data 的 Apollo**（不接 GAIA）；student-center 展示侧走 feign 查 student-data，保证两侧同源同口径
+
+**Apollo key（student-data，默认 `{}`）**
+- `renewal.ai.dept.module.switch` = `{"部门id":[1,2,3]}`
+- `refund.ai.dept.module.switch` = `{"部门id":["tutoring"]}`
+
+**代码落点**
+- student-data：`AiDeptModuleSwitchConfig` / `AiModuleSwitchService` / `RenewalAiModuleEnum` / `RefundAiModuleEnum`；分析侧接线 `RenewalReasoningService`(5/6)、`RefundReasoningService`(退费5)、`RenewalAiCommRealTimeSelectHandleService`+`...HistorySelectHandleService`(圈选 21/22/23/24→模块 1/2/3/4)；透出 `AiModuleSwitchController` → `POST /feign/ai/module/switch/query`（入参 `bizType/clazzNumber/departmentIdPaths/moduleCodes`，返回 `Map<moduleCode,Boolean>`）
+- student-center：`AiModuleSwitchFeignClient`（本地契约，避开 student-data-client 定版 0.0.52.3）+ `AiModuleSwitchQueryService`（fail-closed）；已接展示接口：`ai/clazzUser/userPortrait`(1)、`commSummary`(2)、`/problem/fulfillProblem/overview`(3)、`/fulfillSop/overview`(4)、`/user/feedback/query`(7)、`ai/clazzUser/evaluateQuery`(8)、`roster/refund/reasonType`(refund_root_cause)、`/course`(learning)、`/stage`(tutoring)
+
+**提交**：student-data `c91d5cd66`、student-center `7b9215766`（分支 `feature-xuban-expand-exclude`，均已 push）
+
+**部署 + 验证（2026-09-23，✅ 已验证）**
+- 已部署 `test-gtbg-dev-3`：student-data pipeline 1283275（新 pod `10.218.250.22`）、student-center pipeline 1283277（新 pod `10.218.238.104`），均 `eureka UP`
+- Apollo（student-data/TEST）已发布 `renewal.ai.dept.module.switch = {"10000056":[1,2]}`（验证用，release `20260923144542-release`）
+- 实测（student-data acl 桥 `AiModuleSwitchService#queryModuleSwitch`）：
+  - 未配置时 → `{1:false,2:false,7:false}` ✅（未配置=关闭）
+  - `departmentIdPaths=["10000001/10000056/10001234"]` → `{1:true,2:true,7:false}` ✅（命中部门 + 模块过滤）
+  - `departmentIdPaths=["10000001/100000560/10001234"]` → `{1:false}` ✅（**前缀不误命中** `100000560`≠`10000056`）
+- student-center → student-data feign 链路通（`AiModuleSwitchQueryService#isRenewalModuleEnabled` 返回 false，无异常）
+
+**待办**：① 退费展示侧剩余模块（analysis / reason / intent 等）未接；② 退费预测 `RefundPredictionService`（prediction）未接；③ 分析侧（续班5/6、退费5、圈选）未做端到端实测；④ 上线前须把要开放的部门配全（否则全关）
+
 ## 反射桥地址
 
 | 服务 | 地址 |
