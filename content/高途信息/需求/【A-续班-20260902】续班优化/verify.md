@@ -240,7 +240,14 @@ curl -sk -x http://127.0.0.1:8888 \
 
 **第二轮（2026-09-23）**：补接退费展示侧 `roster/refund/analysis`(refund_root_cause)、`/intent/record`(prediction) + 退费预测 `RefundPredictionService#publishSubClazzEvent`(prediction)；提交 `cf47510d5` / `cab6106ac`，已部署（pipeline 1283416/1283417，新 pod `10.218.238.58` / `10.218.249.234`，均 eureka UP）。自验：续班 `{1:true,2:true}`（回归 OK）、退费 `{prediction:false,tutoring:false}`（未配置=关闭）✅
 
-**待办**：① 分析侧（续班5/6、退费5、圈选、退费预测）未做真实链路端到端实测；② 退费「手填退费原因」无对应 AI 模块（手工），未加开关；③ 上线前须把要开放的部门配全（否则全关）；④ 扩科选品：`RenewalService#productSelect:2573` / `SmallRenewalService#productSelect:598` **都不调 `ExpandSubjectRecommendService`**（选品是「换班选品」链路，非扩科推荐），因此**没有排除过滤**；反讲要求「下单页选品也按排除范围展示」与代码现状不符 → **待确认是否要补**
+**分析侧端到端（2026-09-23，✅ 已验证）**
+- 测试数据：班级 `500775385189890048`（课程 `500775364606343168`，`course_center.course.department_path=10008321/...` 命中白名单）+ 学员 `7404351741`（新造：`ees_data.ai_renewal_cdp_user_comm_base`/`_scene` 各 8 行、`gaotu.user_questionnaire_record` 1 行，源学员 `6761113627` 未动）
+- 正例：`RenewalReasonTaskService#handleSingleUser(500775385189890048, 7404351741, true)` → `handleCode=2`（SUCCESS），AI 基于新造沟通+问卷产出完整「未续跟进」归因并落库 ✅
+- 门控验证：同班 `queryModuleSwitch(1, 500775385189890048, null, [...])` → 配了 `10008321` 时 `{1:true,2:true,5:true,6:true}`；临时把 `10008321` 去掉后 → `{1:false,5:false}`（已恢复配置）✅
+- 现成数据（备选）：班级 `500775385189890048` 原样本学员 `6761113627`（8 沟通 + 1 问卷 + type1/2/5/6 产物）
+- 缺口：模块 3/4/7/8 无现成产物；`ees_data.ai_renewal_analyze_scheduled` 0 行
+
+**待办**：① 退费 5 场景 / 退费预测 未做真实链路端到端；② 圈选侧（场景 1/2/3）未单独验；③ 上线前须把要开放的部门配全（否则全关）；④ 扩科选品 `productSelect` **不需要**排除过滤（2026-09-23 定）
 
 ## 反射桥地址
 

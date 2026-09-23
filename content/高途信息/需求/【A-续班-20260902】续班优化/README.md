@@ -75,7 +75,7 @@ tags: [需求]
 - ✅ 【问卷匹配】「同一手机号多次提交只展示最新」**EES 已有**（teacher-tool `QuestionnaireConsumer#handleRenewalQuestion` 按 userId+clazzNumber+type+questionnairePhone 查旧记录，finishTime 更晚才覆盖）。
 - ✅ 【问卷匹配】问卷明细「班级名称 / 班级ID」字段**已有**；teacher-tool **不加**「续班计划」列。
 - ✅ 【扩科推荐】【推荐排除】为**新增配置**（不与【纯续和扩科是否重复推荐】合并）；粒度 = **续班计划级**。
-- ✅ 【扩科推荐】下单页选品 + B 端 `POST /product-b/b/renewMaster/recommendProductList` + C 端接口**均按「纯续+扩科推荐范围」展示**。
+- ✅ 【扩科推荐】B 端 `POST /product-b/b/renewMaster/recommendProductList` + C 端接口**按「纯续+扩科推荐范围」展示**；**「下单页选品」(`productSelect`，换班选品) 不需要排除过滤**（2026-09-23 定，反讲原「选品也按排除范围」口径作废）。
 - ✅ 【扩科推荐】「在读」口径：**复用 student-data 现有 + 补 2 条** —— 现有在读科目链路已覆盖 非成人 / 专题系列课 / 不含赠课标签 / 非纯预售（`OdsSmallRenewalSubjectSyncService:189-221`、`DwsRenewalSubjectConsumer#checkFilter`、`BackClazzUserSubjectService#isValidClazz`），相同学年学期靠 `yearTermGrade` 分组、授课模式靠数据源（小班在读科目来自小班课在班）；**但「上课形式为线上(operationMode)」与「订单未全部退款」现有链路没有，需补**（退款状态现网有 {6,10} / {6} 两套，需统一）。
 - ✅ 【AI 配置化】配置入口**先用 Apollo 后端配置**（先搞简单点，GAIA 页面后续再议）：续班 / 退费各一个 `Map<虚拟架构部门, Set<模块>>`，如 `{虚拟架构部门A:[1,2,3], 虚拟架构部门B:[1,2,3,4,5]}`；部门 key = **整条部门路径 contains**。
 - ✅ 【AI 配置化】「用户反馈」「主管点评」**算 AI 模块**；无需枚举映射；关闭模块后历史数据按**隐藏**处理。
