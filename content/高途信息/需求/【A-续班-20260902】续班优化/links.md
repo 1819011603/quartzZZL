@@ -23,6 +23,7 @@ tags: [需求, 链接]
 | PRD | 小班课字段+指标（主讲数据+下单优化-主讲角色统计指标6-9行） | https://gaotuedu.feishu.cn/wiki/YdvUwruDDiSKNzkwKsWcnnAqnCg | 2026-09-17 |
 | PRD | 【PRD】扩科推荐（扩科推荐优化-现状逻辑参考） | https://gaotuedu.feishu.cn/wiki/ZForwjdptifaaqkP2aFckFYWnWh | 2026-09-17 |
 | 分析文档 | 续班问卷跨班错配问题：现状、成因与产品解法（TAPD #1131170363001466791，根因=product-server `dealNotExistedComputeUserId` 混候选取第一个） | https://gaotuedu.feishu.cn/wiki/DzAfwt4H5i5ILtkX6cHcx4Nznnd | 2026-09-18 |
+| 发布计划 | 青舟「问卷匹配优化」id 23716：teacher-tool → product-b → product-task → student-data（上线顺序已排，2026-09-24） | https://qingzhou.baijia.com/#/publishArrangement/subPublishArrangement/publishPlan/detail?storyId=&pageNum=1&id=23716&action=edit | 2026-09-24 |
 
 ## 开发与测试
 

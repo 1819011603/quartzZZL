@@ -25,12 +25,12 @@ tags: [需求, 任务]
 | T-04 | 代码定位：数据落表 | 已完成 | — | 结论见 README 子需求4；需数仓侧确认落表方式才能继续 |
 | T-05 | 代码定位：AI模块配置化 | 已完成 | — | 结论见 README 子需求5 |
 | T-06 | 【问卷匹配】product-server 改动（ComputeParams 扩字段/解析前移、3 条 plan 级规则、Apollo 7 档顺序、去兜底） | 已完成 | — | 已部署 `test-gtbg-dev-3`，7 档逻辑反射实测 6 例全过（见 [[verify]]）；无绑定号收敛本批不做 |
-| T-07 | 【问卷匹配】重试 Job `dealNotExistedComputeUser` 加「重试次数」标记 | 已完成 | — | `questionnaire_record.retry_count`（TEST DDL 已加）+ `no.compute.user.max.retry.count:3`；未归属记录累加、达阈值不再重试。2026-09-24 E2E：连跑 4 次 0→1→2→3 后不再选中（见 [[verify]]「T-07」）；⚠️ 发现 master 既有条件 `manual_user_id != 0` 使普通未归属记录从不重试，待决策 |
+| T-07 | 【问卷匹配】重试 Job `dealNotExistedComputeUser` 加「重试次数」标记 | 已完成 | — | `questionnaire_record.retry_count`（TEST DDL 已加）+ `no.compute.user.max.retry.count:3`；未归属记录累加、达阈值不再重试。2026-09-24 E2E：连跑 4 次 0→1→2→3 后不再选中（见 [[verify]]「T-07」）；2026-09-24 修正重试条件 `manual_user_id != 0` → `= 0`（`f549f4070`），dev-3 E2E 通过 |
 | T-08 | 【问卷匹配】teacher-tool 明细改动 | 已完成 | — | 不加续班计划列；改派不做。改为**新增调课调班消费者**（见 T-09） |
 | T-09 | 【问卷匹配】调课调班同步（明细 + 花名册状态） | 已完成 | — | v2 单一入口 + 3 轮对抗复审（不可靠重试判断、teacher-tool 重复复制、原班无问卷短路+null 兼容），均已 E2E 验证，见 [[verify]]「先填后调缺陷修复」+「第三轮」 |
 | T-10 | 【扩科推荐】新增【推荐排除】：product-server 配置 + student-data 计算侧过滤 + cart 推荐适配 | 已完成 | — | 分支 `feature-xuban-expand-exclude`。B/C 端真实入口 E2E 已验证；修掉 cart fastjson SnakeCase 致 Feign 恒空的真 bug（`96e334b8`）。详见 [[verify]]「第二批」 |
 
-| T-11 | 【AI 配置化】部门→模块开关（Apollo，不接 GAIA）：student-data 配置+匹配服务+分析侧（续班5/6、退费5、续班1/2/3圈选实时+历史）+ feign 透出；student-center 展示侧 | 进行中 | 分析侧（续班/退费归因/退费预测）、展示侧、**圈选侧（2026-09-24 pod 内断言圈选条件）**均已 E2E；补单测 11 条（`3777608bc`）。剩：**上线前须配全部门**（TEST `renewal` key 已被改为 `97349606689168923`） | 分支 `feature-xuban-expand-exclude`（student-data + student-center，均已 push：`c91d5cd66`/`7b9215766`，口径修正 `12e41da47`/`84ec1b732`）。**口径**：部门 = 老师（二讲）虚拟组织架构主岗路径，按 `_` 分段精确命中；模块 code 续班 `1-8`、退费 `tutoring/learning/satisfaction/refund_root_cause/service_suggestion/prediction`；**未配置=关闭**。配置 key `renewal.ai.dept.module.switch` / `refund.ai.dept.module.switch`；feign `POST /feign/ai/module/switch/query` |
+| T-11 | 【AI 配置化】部门→模块开关（Apollo，不接 GAIA）：student-data 配置+匹配服务+分析侧（续班5/6、退费5、续班1/2/3圈选实时+历史）+ feign 透出；student-center 展示侧 | 进行中 | 分析侧（续班/退费归因/退费预测）、展示侧、**圈选侧（2026-09-24 pod 内断言圈选条件）**均已 E2E；补单测 11 条（`3777608bc`）。2026-09-24 改灰度语义（空配置=全放开、fail-open，`24be1d776`/`a3a4d7cb5`），dev-1 复验中 | 分支 `feature-xuban-expand-exclude`（student-data + student-center，均已 push：`c91d5cd66`/`7b9215766`，口径修正 `12e41da47`/`84ec1b732`）。**口径**：部门 = 老师（二讲）虚拟组织架构主岗路径，按 `_` 分段精确命中；模块 code 续班 `1-8`、退费 `tutoring/learning/satisfaction/refund_root_cause/service_suggestion/prediction`；**未配置=关闭**。配置 key `renewal.ai.dept.module.switch` / `refund.ai.dept.module.switch`；feign `POST /feign/ai/module/switch/query` |
 
 ## R- 反讲整改项
 
@@ -57,5 +57,5 @@ tags: [需求, 任务]
 
 > 每个未闭环任务「怎样才算完成」的可检查判据；完成一项删一行，全部闭环后本节为空。
 
-- T-09 先调后填 A 侧、小班调课同步：造数受限，机制与分支已验（见 [[verify]]）；上线顺序 teacher-tool 先于 student-data。
+- T-09 先调后填 A 侧：造数受限，机制已验；小班调课已端到端通过。上线顺序 teacher-tool 先于 student-data。
 - T-10 「在读」补 2 条（线上 operationMode / 订单未全部退款）代码未见实现 —— 用户：后面确认。

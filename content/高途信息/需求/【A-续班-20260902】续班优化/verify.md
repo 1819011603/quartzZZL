@@ -164,7 +164,16 @@ tags: [需求, 验证]
 
 product-task pod `product-task-gaotu100-com-5c49c6f665-fgmjd`（10.218.237.230，本分支）arthas 直调 `QuestionnaireRecordService#dealNotExistedComputeUser()`（test xjob 无该任务；product-b 泳道已被他人覆盖）。把 `questionnaire_record` id `345` 临时改成满足重试条件（`manual_user_id=1`、`create_time=NOW()-1h`、`retry_count=0`），连跑 4 次 → `retry_count` 0→1→2→3，第 4 次不再被选中（仍 3）；无重复行产生。**已回滚**为原值（`manual_user_id=0`、`create_time=2026-09-15 17:00:20`、`retry_count=0`）。
 
-⚠️ **master 既有问题（非本需求引入，待决策）**：重试 SQL 条件是 `computed_user_id=0 AND manual_user_id != 0`（master 原方法 `listByComputeUserNotManualUser...` 也是 `andManualUserIdNotEqualTo(0L)`），而 `manual_user_id` 默认 0 → **普通未归属记录从来不会被重试**，Job 实际只重试"已手动绑定却 computed=0"的记录。方法名暗示本意是 `= 0`。改成 `= 0` 会让全部未归属记录进入重试（负载与行为都变），需拍板。
+**重试条件修正（2026-09-24 用户定修，✅ E2E 已验证）**：`listUnmatchedForRetry` `manual_user_id != 0` → `= 0`（product-server `f549f4070`；原条件使普通未归属记录从不重试）。部署 dev-3：product-task `product-task-gaotu100-com-846667b6b7-4h7ck`、product-b `product-b-6995d9d67f-sgnhw`（10.218.249.160），均 eureka UP。经 **product-b acl 桥**（servlet 线程）调 `QuestionnaireRecordService#dealNotExistedComputeUser`（product-task 内 arthas 线程调下游 Feign 必 Hystrix 失败；test xjob 无 product 执行器）：
+
+| 例 | 造数 | 实测 |
+|---|---|---|
+| R-a 可匹配 | record 350（990102，原归 20019）置 computed=0、create=now-1h | ✅ 重试后 computed=**20019**（自动归属，不再累加次数） |
+| R-b 不可匹配 | record 352（990104） | ✅ retry_count 1→2→3，第 4 次不再选中 |
+| R-c 已手动绑定 | record 345 置 manual_user_id=1 | ✅ 不被选中，retry_count 保持 0（已还原） |
+| 10 分钟窗口 | record 356 创建不足 10 分钟 | ✅ 不被选中 |
+
+- 附带观察（既有行为）：并发子任务异常被 catch 后仍会给整批累加 retry_count（`QuestionnaireRecordService:595`），下游抖动会消耗重试次数。
 
 ## 用例覆盖审计（2026-09-24，对照 PRD 原文 wiki `Ijz3w9ZgAi8ncakFs3jcKZI9nxi`）
 
@@ -257,14 +266,16 @@ README 已定共识写「上课形式为线上 / 订单未全部退款**现有�
 
 PROD `es_query_config` type=5：`smallClazzRoster` / `microContinuationService` 的 account 字段含 `assistantAccountId` + **`mainTeacherAccountIds`**，postTag 含 `mainTeacherMainPostTag` → 主讲 OR 权限线上已配。
 
-### 先调后填 A 侧 / 小班调课（2026-09-24，机制已验，整链未造数）
+### 先调后填 A 侧（机制已验）/ 小班调课（✅ 端到端）
 
-- **先调后填 A 侧**（PRD 最终效果第 4 条）：不经调课同步，走提交时 fan-out——`DwsRenewalQuestionnaireConsumer` 用 `listStudentByUidByCourseNos(userId, shareCourses, getAllStatus())` 取学员**所有状态**班级，明细 `sendTeacherToolQuestionMsg` 与花名册 `updateQuestionnaireStatus` 都对该列表逐班写、无状态过滤。**实测**：20019 在课程 `467797268366426112` 下的已退出班 `467798149581307904`（status=2）会被该接口返回 → 已离开的 A 班同样会写入。整链未造：无法造「离开 A、在读 B」真实状态（大班调课受收款账户限制、同课程不可重复购买、造数引擎无退款工具）。B 侧已由 S3 端到端验证。
-- **小班调课**：`writeCommitStatus` 小班分支与线上既有问卷回收链路（`DwsRenewalQuestionnaireConsumer:320-326`）**完全相同的调用与 tag**；实测 `SmallClazzFilterHelper#checkNeedDealClazz`：小班 `529911462177622016`→true、大班 B→false；单测覆盖小班分支。尝试用该小班端到端：其续班计划已不存在 → 正确走「新班未绑定问卷，skip」（与 V2 口径一致，亦为未绑定用例）。当前测试环境无「已发布计划 + 已绑问卷」的小班，完整写花名册未造数。
+- **先调后填 A 侧**（PRD 最终效果第 4 条）：**查询侧按班级取**——student-center `RenewalService#pageQueryQuestionnaire` → teacher-tool `queryRecordsMultiByClazz`，SQL 为 `project_number = 问卷 AND clazz_number IN (所查班级) AND user_id IN (该班花名册)`，不跨班；A 能看到靠**写入侧 fan-out 给 A 落一条 clazz=A 的明细**。不经调课同步，走提交时 fan-out——`DwsRenewalQuestionnaireConsumer` 用 `listStudentByUidByCourseNos(userId, shareCourses, getAllStatus())` 取学员**所有状态**班级，明细 `sendTeacherToolQuestionMsg` 与花名册 `updateQuestionnaireStatus` 都对该列表逐班写、无状态过滤。**实测**：20019 在课程 `467797268366426112` 下的已退出班 `467798149581307904`（status=2）会被该接口返回 → 已离开的 A 班同样会写入。整链未造：无法造「离开 A、在读 B」真实状态（大班调课受收款账户限制、同课程不可重复购买、造数引擎无退款工具）。B 侧已由 S3 端到端验证。
+- **小班调课（2026-09-24 17:12，✅ 端到端已验证）**：小班 `529222801226287104`（计划 `529067710552891392` 进行中、绑定问卷 bizId `17085061328535727`）。学员 1449414 的该班明细 20560 临时挪到假原班 `999000222`、小班花名册置 1，arthas 发调课 `999000222 → 529222801226287104`：日志 `writeCommitStatus | isSmallClazz: true`；明细复制出 21884（clazz=新班，同 group）；ES `ads_small_clazz_user` `529222801226287104-1449414` 状态 **1→3**、`submitTime=1774419606000`。已还原（删 21884、20560 挪回、花名册本就为 3）。另：小班 `529911462177622016` 计划已不存在 → 正确走「新班未绑定问卷，skip」。小班花名册脚本 `/tmp/es_set_small.py <docId> <status>`。
 
 ## 待验
 
-无（上两项为造数受限，机制与分支已按上文验证）。
+| 项 | 卡点 |
+|---|---|
+| 先调后填 A 侧整链 | 造不出「离开 A、在读 B」：`/operation/arrange/quitClazz` 可让学员退出 A（20017 已退出 A，**测试数据留档**），但 `/operation/arrange/enterClazz` 进 B 报 520（需订单/分配数据）；学员无在读班时计划级规则不命中（record 990108 computed=0，符合预期）。机制已验（见上） |
 
 ## 第二批：扩科【推荐排除】（2026-09-22，`feature-xuban-expand-exclude`）
 
@@ -414,7 +425,7 @@ curl -sk -x http://127.0.0.1:8888 \
 > 部门口径 / Apollo 配置值 / 部署与验证细节见下一节「部门口径修正」（本节原基于「课程部门」的结论已作废）。
 
 - **模块 code**：续班 `1 用户画像 / 2 沟通概况 / 3 沟通建议&评分 / 4 服务建议&评分 / 5 未续跟进 / 6 已续总结 / 7 用户反馈 / 8 主管点评`；退费 `tutoring / learning / satisfaction / refund_root_cause / service_suggestion / prediction`
-- **未配置 = 关闭**（上线前须配全，否则全量 AI 停）
+- **灰度语义**：整个配置为空 = 灰度未开始、全量放开（与上线前一致）；配置了任意部门后，只放开命中部门的已配置模块，其余关闭（2026-09-24 订正，原「未配置 = 关闭」作废：那样发版即全量停 AI）
 - **配置放 student-data 的 Apollo**（不接 GAIA）；student-center 展示侧走 feign 查 student-data，两侧同源同口径
 - **Apollo key**（默认 `{}`）：`renewal.ai.dept.module.switch` / `refund.ai.dept.module.switch`
 - **代码落点**：student-data `AiDeptModuleSwitchConfig` / `AiModuleSwitchService` / `RenewalAiModuleEnum` / `RefundAiModuleEnum`；分析侧接线 `RenewalReasoningService`(5/6)、`RefundReasoningService`(退费5)、圈选 `RenewalAiComm{RealTime,History}SelectHandleService`(1/2/3/4)、`RefundPredictionService`(prediction)；透出 `AiModuleSwitchController` → `POST /feign/ai/module/switch/query`。student-center `AiModuleSwitchFeignClient`（本地契约）+ `AiModuleSwitchQueryService`（fail-closed）
@@ -431,7 +442,7 @@ curl -sk -x http://127.0.0.1:8888 \
 | 展示侧(student-center) | 登录老师 `LoginInfoUtils.getLoginUser().getAccountId()` → org path |
 | 分析侧(student-data) | 该班辅导老师：`clazzNumber → 辅导班 assistantNumber → accountId → org path` |
 | 匹配 | 路径按 `_` 分段**精确**命中配置部门 id（本部门及下属生效；数字 id 前缀不误命中） |
-| 配置值 | key = 虚拟架构部门 org number；未配置 = 关闭 |
+| 配置值 | key = 虚拟架构部门 org number；整体为空 = 全量放开，配置后未命中部门 = 关闭 |
 
 **已改（2026-09-23，已 push）**：student-data `12e41da47`、student-center `84ec1b732`（分支 `feature-xuban-expand-exclude`）
 - student-data：`AiModuleSwitchService` 新增 `resolveAssistantOrgPaths(userId, clazzNumber, subclazzNumber)` / `resolveAccountOrgPaths(accountId)`；5 处分析侧调用点全改；`matchDept` 分隔符 `/`→`_`；feign 入参 `departmentIdPaths` → **`accountId`**
@@ -448,7 +459,7 @@ curl -sk -x http://127.0.0.1:8888 \
 | 老师 org path | `resolveAccountOrgPaths(177071)` | ✅ `["12345_4959407036876800_6816343048455168_66707677944472576"]` |
 | 续班门控（命中） | `queryModuleSwitch(1, 177071, [1,2,5,6,7,8])` | ✅ 全 true |
 | 退费门控（命中） | `queryModuleSwitch(2, 177071, [tutoring,prediction])` | ✅ 全 true |
-| 未命中老师 | `queryModuleSwitch(1, 1, [1,2])` | ✅ 全 false（未配置=关闭） |
+| 未命中老师 | `queryModuleSwitch(1, 1, [1,2])` | ✅ 全 false（已配置、未命中部门=关闭） |
 | 分析侧（班级维度） | `resolveAssistantOrgPaths(7404351741, 500775385189890048, null)` | ✅ 解析到同一 org 路径 |
 | 分析侧（辅导班维度，退费预测用） | `resolveAssistantOrgPaths(null, null, 31298462823089024)` | ✅ 同一 org 路径 |
 | **分析侧 E2E** | `RenewalReasonTaskService#handleSingleUser(500775385189890048, 7404351741, true)` | ✅ `handleCode=2`（SUCCESS），AI 产出完整未续归因并落库 |
@@ -464,7 +475,7 @@ curl -sk -x http://127.0.0.1:8888 \
 - 班级辅导老师：`SubclazzSyncAclService` / `TeacherSyncAclService`（clazz → assistantNumber → accountId）
 - student-center 登录人：`LoginInfoUtils`（同文件 `RenewalClazzUserController:104` 已在用）
 
-**待办**：**上线前须把要开放的部门配全**（未配置=全关），key 用线上真实虚拟架构部门 id。（圈选侧已于 2026-09-24 在 pod 内直接断言圈选条件验证通过，见下文。）
+**待办**：灰度时配要放开的部门（key 用线上真实虚拟架构部门 id）；不配 = 全量放开。（圈选侧已于 2026-09-24 在 pod 内直接断言圈选条件验证通过，见下文。）
 
 **圈选侧（场景 21/22/23 → 模块 1/2/3，`RenewalAiComm{RealTime,History}SelectHandleService#buildBizSelectCondition` 的 `filter(isSceneModuleEnabled)`）**
 - 门控函数级已验：`queryModuleSwitch(1, 177071, [1,2,3])` → 全 true（配置部门命中 → 3 个场景全通过）
