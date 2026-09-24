@@ -123,9 +123,25 @@ tags: [需求, 验证]
 
 **结论**：先填后调场景闭环，单一入口 + 同步复制 + 即时重算的新架构端到端验证通过。
 
-**造数坑（测试工具本身，非产品代码问题）**：手动模拟真实调课事件时，走 `test-fuwu.baijia.com` 网关反射调 `FuwuOnsMqProducer#sendNormalMessage(String, List, Object)`（3 参），ACL 反射桥对这个重载的参数类型匹配不稳定，偶发把 body 序列化成 Java `Map.toString()`（`{userId=20022, ...}`，不是合法 JSON），consumer 解析不出来。改用显式 4 参重载 `sendNormalMessage(String, List, Object, long)`（多传一个毫秒级投递时间戳，如 `now`）稳定复现合法 JSON body。
+### 第二轮 code review 修复 + 端到端验证（2026-09-24，✅ 已验证）
 
-**造数坑**：
+对 v2 改动做对抗复审，发现并修复两处：
+
+1. **teacher-tool 重复复制**（真问题）：`syncTransferQuestionnaire` 判重用的新班明细快照只在循环开始前查一次；原班若存在两条同 `questionnaireId` 的记录（历史重复提交未清理），后一条看不到前一条刚插入新班的记录，会把两条都复制过去，产生重复行，违背方法自己声明的幂等语义。改成随循环增长的 Set 跟踪。commit `5d158d55f`，新增单测锁定该场景（5 条→本条）。
+2. **student-data 日志格式**（style）：两行新日志用了 `ClassName#methodName` 而非仓库规定的 `ClassName | methodName | message` 管道格式，跟本次其它新文件写法也不一致。commit `f1c352a8e`。
+
+**部署**：均 `test-gtbg-dev-3`——teacher-tool 新 pod `teacher-tool-844cbd8f46-sfqvh`（`10.218.248.99`）eureka UP；student-data 新 pod `student-data-5d96d7dc78-mk8nf`（`10.218.248.197`）eureka UP。
+
+**验证（新造学员 20023，A 班插入两条相同 `questionnaireId` 的明细模拟历史重复提交）**：真发调班事件后回读：
+
+| 层 | 证据 |
+|---|---|
+| teacher-tool 明细 | A 班 2 条（id `21866`/`21867`，同 `questionnaireId`）→ B 班**只复制了 1 条**（id `21868`，`create_time` 比发消息晚 1 秒，确认是本次同步产生，未产生重复行） |
+| ES 回读 | B 花名册（`36325046495478144-20023`）`renewalQuestionnaireStatus=3`，`updateTime=1790232544588` |
+
+**结论**：重复问卷记录场景下不再产生重复复制，修复生效。
+
+**造数坑（测试工具本身，非产品代码问题）**：手动模拟真实调课事件时，走 `test-fuwu.baijia.com` 网关反射调 `FuwuOnsMqProducer#sendNormalMessage(String, List, Object)`（3 参），ACL 反射桥对这个重载的参数类型匹配不稳定，偶发把 body 序列化成 Java `Map.toString()`（`{userId=20022, ...}`，不是合法 JSON），consumer 解析不出来。改用显式 4 参重载 `sendNormalMessage(String, List, Object, long)`（多传一个毫秒级投递时间戳，如 `now`）稳定复现合法 JSON body。其余造数坑：
 - mock_pay 的大班课订单做大班→大班真实调课，售后恒报「原订单资金所在账户和调转商品目标收款账户不一致」（结构性，见 data-agent `candidate_lessons`），故以「只下单进 B + 真发调课事件」等价替代。
 - 同一课程下不能重复购买（`code=440 您已购买过相同课程`），同一学员无法同时在 A/B。
 - ⚠️ **泳道 product-b 已被其他分支覆盖**（2026-09-24 10:02 新 pod `10.218.237.126`，**无 `NamePlanRuleService`**，计划级用例 A 复跑返回空）；product-task 仍是 `feature-xuban-match-opt`（pod `10.218.237.230`，已确认含该类）。**此后问卷匹配只能通过 product-task 真实消费来验，别再用 product-b 桥验 `ComputeUserService`**。product-task 内 arthas 调 `compute` 会因下游 Feign（Hystrix）失败，不可用。
