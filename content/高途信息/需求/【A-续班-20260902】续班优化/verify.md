@@ -141,16 +141,80 @@ tags: [需求, 验证]
 
 **结论**：重复问卷记录场景下不再产生重复复制，修复生效。
 
-**造数坑（测试工具本身，非产品代码问题）**：手动模拟真实调课事件时，走 `test-fuwu.baijia.com` 网关反射调 `FuwuOnsMqProducer#sendNormalMessage(String, List, Object)`（3 参），ACL 反射桥对这个重载的参数类型匹配不稳定，偶发把 body 序列化成 Java `Map.toString()`（`{userId=20022, ...}`，不是合法 JSON），consumer 解析不出来。改用显式 4 参重载 `sendNormalMessage(String, List, Object, long)`（多传一个毫秒级投递时间戳，如 `now`）稳定复现合法 JSON body。其余造数坑：
+### 第三轮：原班无问卷短路 + 兼容旧版 teacher-tool（2026-09-24，✅ 已验证）
+
+**改动**：teacher-tool 同步接口改为 `RO<Boolean>`（data = 原班是否存在续班问卷明细；新班已有、无需复制时仍返回 true），`teacher-tool-api` 升 `1.0.29-SNAPSHOT`（已发 Nexus）；student-data 收到**明确 `false`** 才跳过查班级/计划/重算。**`data=null`（旧版 teacher-tool 的 `RO<Void>`）按「有问卷」处理**——否则发布顺序错开或 teacher-tool 回滚时，所有调课都会短路、先填后调缺陷复现（本轮复审发现并修正）。commit：teacher-tool `8f5b2787`、student-data `a20d71543`。单测：student-data 11 条（新增 `QuestionnaireAclServiceImplTest` 覆盖 true/false/null/失败/异常）、teacher-tool 5 条，全过。
+
+**部署**：均 `test-gtbg-dev-3`——teacher-tool pipeline `1285156` → pod `teacher-tool-c9bfddbd5-r75nj`（`10.218.236.50`）eureka UP；student-data pipeline `1285157` → pod `student-data-76849cd8fb-x65g5`（`10.218.237.107`）eureka UP。**2026-09-24 晚复核**：发现这批 pod 的 createTime 早于代码最终定稿时间，判断是滚动发布窗口内验证的（代码内容一致，只是不放心就重新触发了一轮部署，pod 换成 teacher-tool `teacher-tool-54d97b9b84-k5pmj`（`10.218.249.32`）/ student-data `student-data-6665694bcd-j5cbq`（`10.218.248.242`），均 eureka UP），并在新 pod 上补做一轮独立验证（见下）。
+
+| 例 | 操作 | 证据 |
+|---|---|---|
+| N1 短路 | 学员 `20018`（任何班都无明细）真发 A→B | pod 日志 15:23:46.869 `old clazz has no questionnaire, skip roster recompute`，之后无查班级/写花名册日志；`user_questionnaire_record` 20018 仍 0 条 |
+| N2 回归 | 给 20018 插 B 班明细（id `21869`，group `999900018`）→ 真发 B→A | teacher-tool 复制出 id `21870`（clazz=A，create 15:24:40）；student-data 15:24:41 `writeCommitStatus`；ES A 花名册 `36325046492463488-20018` `renewalQuestionnaireStatus` **1→3**、`updateTime=1790234682719` |
+| N3 短路（新 pod 复核） | 新学员 `20024`（无任何明细）真发 A→B | 15:28:03.742 `old clazz has no questionnaire, skip roster recompute`；ES `36325046495478144-20024` `renewalQuestionnaireStatus` 保持 `1`，`updateTime` 未变 |
+| N4 正常链路（新 pod 复核） | 新学员 `20025`（A 班插明细 `999900025`）真发 A→B | 15:28:04.777 `writeCommitStatus`；ES `36325046539911552-20025` `renewalQuestionnaireStatus` **1→3**，`renewalQuestionnaireSubmitTime=1790236800000` |
+
+**造数坑（测试工具本身，非产品代码问题）**：手动模拟调课事件走 `test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service` 反射调 `FuwuOnsMqProducer#sendNormalMessage`。**List/Object 参数的重载（3 参、4 参 `(String, List, Object, long)`）桥都会匹配错成 `(String, String, String, long)`**：tag 变成字面量 `[TRANSFER_TOUCH_EVENT]`（consumer tag 过滤收不到，**轨迹为空、无任何消费日志**），body 变成 `Map.toString()`。**稳定写法 = 直接传字符串**：`["gaotu_after_sale_event_test", "TRANSFER_TOUCH_EVENT", "<JSON 字符串>", <nowMs>]`。发完用 `ConsoleMessageDetail` 看 `TAGS`/`bodyStr` 可立刻判断。另：该 pod 日志在轻舟 TLS/SLS 延迟较大，直接 pod-terminal `grep app/log/app.log` 更快。其余造数坑：
 - mock_pay 的大班课订单做大班→大班真实调课，售后恒报「原订单资金所在账户和调转商品目标收款账户不一致」（结构性，见 data-agent `candidate_lessons`），故以「只下单进 B + 真发调课事件」等价替代。
 - 同一课程下不能重复购买（`code=440 您已购买过相同课程`），同一学员无法同时在 A/B。
 - ⚠️ **泳道 product-b 已被其他分支覆盖**（2026-09-24 10:02 新 pod `10.218.237.126`，**无 `NamePlanRuleService`**，计划级用例 A 复跑返回空）；product-task 仍是 `feature-xuban-match-opt`（pod `10.218.237.230`，已确认含该类）。**此后问卷匹配只能通过 product-task 真实消费来验，别再用 product-b 桥验 `ComputeUserService`**。product-task 内 arthas 调 `compute` 会因下游 Feign（Hystrix）失败，不可用。
+
+### T-07 重试次数标记 E2E（2026-09-24，✅ 已验证）
+
+product-task pod `product-task-gaotu100-com-5c49c6f665-fgmjd`（10.218.237.230，本分支）arthas 直调 `QuestionnaireRecordService#dealNotExistedComputeUser()`（test xjob 无该任务；product-b 泳道已被他人覆盖）。把 `questionnaire_record` id `345` 临时改成满足重试条件（`manual_user_id=1`、`create_time=NOW()-1h`、`retry_count=0`），连跑 4 次 → `retry_count` 0→1→2→3，第 4 次不再被选中（仍 3）；无重复行产生。**已回滚**为原值（`manual_user_id=0`、`create_time=2026-09-15 17:00:20`、`retry_count=0`）。
+
+⚠️ **master 既有问题（非本需求引入，待决策）**：重试 SQL 条件是 `computed_user_id=0 AND manual_user_id != 0`（master 原方法 `listByComputeUserNotManualUser...` 也是 `andManualUserIdNotEqualTo(0L)`），而 `manual_user_id` 默认 0 → **普通未归属记录从来不会被重试**，Job 实际只重试"已手动绑定却 computed=0"的记录。方法名暗示本意是 `= 0`。改成 `= 0` 会让全部未归属记录进入重试（负载与行为都变），需拍板。
+
+## 用例覆盖审计（2026-09-24，对照 PRD 原文 wiki `Ijz3w9ZgAi8ncakFs3jcKZI9nxi`）
+
+**7 档顺序**：PRD = userId →（1）同班手机号 →（2）同计划手机号 →（3）同班姓名 →（4）同计划姓名 →（5）同班亲属号 →（6）同计划亲属号；代码默认 `compute.rule.name.list` 与之**逐项一致**（PROD 未配 Apollo，走默认）。
+
+| PRD 规则 / 最终效果 | 现有用例 | 能否真正证明 | 状态 |
+|---|---|---|---|
+| 各档单独命中（计划级姓名 / 班内姓名 / 不命中） | A–F（反射 product-b） | 只证明**单条规则**能命中，**不证明优先级顺序** | 部分 |
+| **优先级**：高档命中时不落到低档（如同班姓名 vs 同计划手机号冲突） | 无 | — | ❌ 缺 |
+| **多命中取学员 ID 小的**（姓名/亲属档） | 无（F 是两次提交各唯一命中） | — | ❌ 缺；A 班 20017/20018 同名 `123` 可直接造 |
+| 手机号档 / 亲属号档 | 无（测试手机号脱敏，只验了姓名） | — | ❌ 缺 |
+| 问卷+计划完全匹配（跨计划同名不命中） | B（不传计划）近似 | 未造"另一计划同名学员" | 部分 |
+| 先填后调：A B 明细+花名册都展示 | S2 / 20022 / 20023 / N2 | ✅ | ✅ |
+| 调课到 B 未填：A B 都无数据 | N1 | ✅ | ✅ |
+| **先调后填：A B 都展示**（PRD 最终效果第 4 条） | S3 只验了 B | **A 侧未验** | ❌ 缺 |
+| **前提：AB 不是同一问卷不共享数据** | 无 | — | ❌ 缺，且**代码不满足**（见下） |
+| 小班调课写 `ads_small_clazz_user` | 无（全在大班验） | — | ❌ 缺 |
+
+**调课同步违反 PRD 前提（待决策）**：teacher-tool `syncTransferQuestionnaire` 把 A 班全部续班明细无条件复制到 B，**不校验 B 的续班计划绑定的是否同一问卷**。花名册侧安全（`RenewalQuestionnaireStatusServiceV2#filterUserQuestionnaire` 只认 `projectNumber == 绑定问卷 bizId`，不会误判已提交），但 **B 的问卷明细会出现不属于 B 问卷的记录**。修法候选：student-data 先算出 B 绑定问卷 bizId 传给 teacher-tool，只复制 `projectNumber` 相同的明细（接口加可选字段，null 保持现行为）。
+
+### AI 配置化圈选侧 E2E（2026-09-24，✅ 已验证）
+
+泳道临时切 `feature-xuban-expand-exclude`（pod `student-data-677fb55b75-wdqkv` 10.218.238.5，只剩此 pod 后走网关桥），直调 `RenewalAiCommRealTimeSelectHandleService#buildBizSelectCondition(userId, start, end, {}, orgPaths)`（含场景→模块过滤的那个重载），直接断言返回的圈选条件：
+
+| orgPaths | 返回 |
+|---|---|
+| `12345_97349606689168923`（配置部门本身） | 21/22/23 三个场景 |
+| `12345_97349606689168923_888_999`（下属） | 三个场景 |
+| `12345_9734960668916892`（id 前缀）/ `..._973496066891689231`（超串） | `[]`（不误命中） |
+| 老师真实路径 `12345_4959407036876800_6816343048455168_66707677944472576`（未配置） | `[]` |
+
+- **外层门控另有既有闸**：测试班 `500775385189890048` 被 `CommonRuleFilter` 以 `not_need_handle_clazz_name_in_blacklist` 拒掉（班名黑名单），故整链路 `needHandle=false`、MQ 圈选消息本就不会发——这是此前"MQ 不可观测"的真因，与本需求门控无关。
+- ⚠️ **Apollo 现值已被改动**：student-data TEST `renewal.ai.dept.module.switch` 现为 `{"97349606689168923":[1..8]}`（不再是 `6816343048455168`），`refund.ai.dept.module.switch` 仍为 `6816343048455168`。用 177071 测续班展示侧会得到"全关"，属配置而非代码问题。
+- 补单测 `AiModuleSwitchServiceTest` 11 条（部分模块开关 / 下属继承 / id 前缀与超串不误命中 / 多部门并集 / 退费字符串 code），commit `3777608bc`（expand-exclude）。
+
+### 扩科「在读」口径缺口（待决策）
+
+README 已定共识写「上课形式为线上 / 订单未全部退款**现有链路没有，需补**」，但 `RenewalInReadSubjectService` Javadoc 写「均已在写表链路内过滤」；实查 `OdsSmallRenewalSubjectSyncService` / `DwsRenewalSubjectConsumer` / `BackClazzUserSubjectService` 均无 operationMode / 退款状态过滤，expand-exclude 分支也未改写表链路 → **这两条大概率未实现**（全退款可能经退班删行间接覆盖，未证实）。另：小班当前课 → 取大班在读的推荐链路、全局开关 `renewal.expand.exclude.switch=false` 回退均无 E2E。
+
+### 主讲适配线上配置（2026-09-24，✅ 已核实）
+
+PROD `es_query_config` type=5：`smallClazzRoster` / `microContinuationService` 的 account 字段含 `assistantAccountId` + **`mainTeacherAccountIds`**，postTag 含 `mainTeacherMainPostTag` → 主讲 OR 权限线上已配。
 
 ## 待验
 
 | 项 | 卡点 |
 |---|---|
-| 无 | 先填后调 B 班花名册状态已修复并验证通过（见上「先填后调缺陷修复」） |
+| 问卷匹配：优先级冲突 / 多命中取小 ID / 手机号·亲属档 / 跨计划同名 | 需真发 CDS 到 product-task 造数；product-b 反射桥泳道被他人覆盖 |
+| 先调后填 A 侧展示 | 真实调课 mock_pay 受收款账户限制，需另找造数路径 |
+| 小班调课同步 | 需小班 A/B + 同问卷造数 |
+| 扩科小班路径 / 全局开关回退 | — |
 
 ## 第二批：扩科【推荐排除】（2026-09-22，`feature-xuban-expand-exclude`）
 
@@ -325,7 +389,7 @@ curl -sk -x http://127.0.0.1:8888 \
 
 **部署（2026-09-23 复核）**：test-gtbg-dev-3 —— student-data pipeline `1284022` → 新 pod `10.218.250.176`、student-center pipeline `1284028` → 新 pod `10.218.236.63`，**均 eureka UP**。
 
-**Apollo（student-data/TEST，已发布）**：`renewal.ai.dept.module.switch` / `refund.ai.dept.module.switch` 均已换成 org number `6816343048455168`（全模块开）；旧 7 个课程部门 key 已失效。
+**Apollo（student-data/TEST，已发布）**：2026-09-23 两个 key 均换成 org number `6816343048455168`（全模块开）；**2026-09-24 复查 `renewal.ai.dept.module.switch` 已被改为 `97349606689168923`**（refund 仍是 `6816343048455168`），见下文「AI 配置化圈选侧 E2E」。
 
 **已验证（2026-09-23，student-data acl 桥走网关 + student-center 真实入口）**
 
@@ -350,7 +414,7 @@ curl -sk -x http://127.0.0.1:8888 \
 - 班级辅导老师：`SubclazzSyncAclService` / `TeacherSyncAclService`（clazz → assistantNumber → accountId）
 - student-center 登录人：`LoginInfoUtils`（同文件 `RenewalClazzUserController:104` 已在用）
 
-**待办**：① **上线前须把要开放的部门配全**（未配置=全关），key 用线上真实虚拟架构部门 id；② 圈选侧 MQ 圈选消息未能在日志后端观测（门控函数级已验）。
+**待办**：**上线前须把要开放的部门配全**（未配置=全关），key 用线上真实虚拟架构部门 id。（圈选侧已于 2026-09-24 在 pod 内直接断言圈选条件验证通过，见下文。）
 
 **圈选侧（场景 21/22/23 → 模块 1/2/3，`RenewalAiComm{RealTime,History}SelectHandleService#buildBizSelectCondition` 的 `filter(isSceneModuleEnabled)`）**
 - 门控函数级已验：`queryModuleSwitch(1, 177071, [1,2,3])` → 全 true（配置部门命中 → 3 个场景全通过）
