@@ -100,22 +100,30 @@ tags: [需求, 验证]
 
 **结论**：先调后填正常（计划级规则 + 共享课 fan-out 覆盖）；**先填后调时 B 班花名册「已提交」不会更新**，属真实缺陷（明细已同步、花名册未同步），需决定是否让调课消费链路补写 `renewalQuestionnaireStatus`（大班 `ads_large_subclazz_user_index` / 小班 `ads_small_clazz_user`）。
 
-### 先填后调缺陷修复 + 端到端验证（2026-09-24，✅ 已验证）
+### 先填后调缺陷修复 + 端到端验证（2026-09-24，✅ 已验证，v2 架构）
 
-**方案**：新增 `RenewalQuestionnaireTransferConsumer`（student-data-facade），与 teacher-tool 复制明细的消费者一样订阅同一事件 `gaotu_after_sale_event_test` + tag `TRANSFER_TOUCH_EVENT`（独立 consumer group，互不干扰）；收到事件后调用新的 `RenewalQuestionnaireTransferSyncService#syncAfterTransfer`，复用 `RenewalQuestionnaireStatusServiceV2` 同一套口径（`DataHelperV2.basicQuery` 按新班 courseNumber/clazzNumber/userId 重算），算出「已提交」才回写大班/小班花名册；未算出已提交时，若原班确有问卷明细（大概率是 teacher-tool 明细还没复制过来）则返回 false 触发 MQ 限次重试（`renewal.questionnaire.transfer.wait.copy.times`，默认 3 次），原班本就没填写则直接放行不写。单测 5 条覆盖：算出已提交写大班 / 写小班、算不出但原班有记录要求重试、算不出且原班无记录直接放行、新班查不到直接放行。
+**v1（已废弃）**：student-data 新增独立 consumer，与 teacher-tool 复制明细的 consumer 各自订阅同一事件、互不通信，靠限次重试等对方复制完。commit `3039e7756`（含一次 code review 加固 `6a3d7ab74`：去掉靠 `questionnaireAclService.batchQuestionnaires` 判断"原班有没有问卷"来决定要不要重试的逻辑——底层 `SysInvokeUtil` 会把 RPC 异常吞掉按空结果处理，这个判断会把「下游抖动」和「学员确实没填」混为一谈，一旦命中就永久错过）。
 
-**代码**：`student-data` 分支 `feature-xuban-match-opt`，commit `3039e7756`。
+**v2（当前，用户 code review 后要求收敛为单一入口）**：two-consumer 改成 orchestration —— student-data 消费者同步调 teacher-tool 新增的 Feign 接口复制明细，复制成功后立即重算状态、算出「已提交」就回写；teacher-tool 那个独立 consumer 已退役（连同它专用的 `TransferCourseMessageDTO` 一并删除）。不再需要"等/重试对方复制完"这套逻辑：复制这步只要没抛异常就代表数据已落地，下游任一步失败直接向上抛异常，交给 MQ 通用的 `ReconsumeLater`。
 
-**部署**：`test-gtbg-dev-3`，pipeline `1284864` → 新 pod `student-data-8665fd5c85-dpzkd`（`10.218.238.1`），**eureka UP**。
+**改动（两个仓库）**：
+- `teacher-tool-api`：新增 `TransferQuestionnaireSyncRequest` + `QuestionnaireClient#syncTransferQuestionnaire`，版本 `1.0.28-SNAPSHOT`（已发 Nexus snapshots）。
+- `teacher-tool`（commit `b82665d9`）：复制逻辑原样从 `TransferCourseQuestionnaireConsumer` 搬到 `QuestionnaireServiceImpl#syncTransferQuestionnaire`（幂等，按 questionnaireId 去重），新增 Feign 端点 `POST /feign/questionnaire/user/transfer/sync`；退役旧 consumer；新增单测 4 条（JUnit5——仓库既有的 JUnit4 `@RunWith(MockitoJUnitRunner)` 风格实测在当前 surefire 配置下跑不到 0 个用例，无 junit-vintage-engine，与本次改动无关的既有环境问题，为了测试真的会跑改用 JUnit5）。
+- `student-data`（commit `ecfcb6e4f`）：`QuestionnaireAclService` 新增 `syncTransferQuestionnaire`——**直接调 Feign、不经过 `SysInvokeUtil`**（那个工具会吞异常，这里恰恰需要异常真实传播），失败抛 `RpcException(RpcErrorCode.TEACHER_TOOL_INTERFACE_ERROR)`；`RenewalQuestionnaireTransferSyncService#syncAfterTransfer` 简化成直线：同步复制 → 查询/计算 → 命中已提交就写；`student-data-client` 的 `teacher-tool-api` 依赖同步升到 `1.0.28-SNAPSHOT`。单测 5 条（新增"复制失败直接抛异常、不应该继续算/写"）。
 
-**验证（复用 S2 的 20019/A/B，无需重新造数）**：部署后重发一次 `TRANSFER_TOUCH_EVENT`（A→B，同 S2 报文）：
+**部署**：均 `test-gtbg-dev-3`——teacher-tool pipeline `1284973` → 新 pod `teacher-tool-58cf8584d4-g4npc`（`10.218.238.42`）eureka UP；student-data pipeline `1284995` → 新 pod `student-data-86967d5587-w4ds6`（`10.218.238.245`）eureka UP。
+
+**验证（新造学员 20022，走完整新链路，未复用 v1 的验证数据）**：A 班插入明细（`unique_biz_id=999900022`，`finish_time` 2026-09-24 14:19:43） → 真发 `TRANSFER_TOUCH_EVENT` A→B（14:22:04）：
 
 | 层 | 证据 |
 |---|---|
-| 消费日志 | `RenewalQuestionnaireTransferConsumer#consume` 收到消息 → `RenewalQuestionnaireTransferSyncService#writeCommitStatus`（userId=20019, clazzNumber=B, isSmallClazz=false, submitTime=1790219520000） |
-| ES 回读 | B 花名册 `renewalQuestionnaireStatus` **由 `1` 变为 `3`**、`renewalQuestionnaireSubmitTime=1790219520000`（= 20019 在 A 班明细的 `finish_time` "2026-09-24 11:12:00"，取值口径对）、`updateTime` 已刷新为本次写入时间 |
+| 消费日志 | `RenewalQuestionnaireTransferConsumer#consume`（14:22:05.013）收到消息 → `RenewalQuestionnaireTransferSyncService#writeCommitStatus`（14:22:06.150，userId=20022, clazzNumber=B, submitTime=1790230800000） |
+| teacher-tool 明细落库 | `user_questionnaire_record` 新增 id `21865`，`clazz_number`=B，`questionnaire_group_id=999900022`（与 A 班原明细对应）、`create_time`=**14:22:06**——比发消息晚 2 秒，证明是本次同步调用产生的，不是遗留数据 |
+| ES 回读 | B 花名册（`36325046495478144-20022`）`renewalQuestionnaireStatus` **由 `1` 变为 `3`**，`updateTime` 刷新为 `1790230926215` |
 
-**结论**：先填后调场景闭环，B 班花名册状态随调课事件正确同步为「已提交」。
+**结论**：先填后调场景闭环，单一入口 + 同步复制 + 即时重算的新架构端到端验证通过。
+
+**造数坑（测试工具本身，非产品代码问题）**：手动模拟真实调课事件时，走 `test-fuwu.baijia.com` 网关反射调 `FuwuOnsMqProducer#sendNormalMessage(String, List, Object)`（3 参），ACL 反射桥对这个重载的参数类型匹配不稳定，偶发把 body 序列化成 Java `Map.toString()`（`{userId=20022, ...}`，不是合法 JSON），consumer 解析不出来。改用显式 4 参重载 `sendNormalMessage(String, List, Object, long)`（多传一个毫秒级投递时间戳，如 `now`）稳定复现合法 JSON body。
 
 **造数坑**：
 - mock_pay 的大班课订单做大班→大班真实调课，售后恒报「原订单资金所在账户和调转商品目标收款账户不一致」（结构性，见 data-agent `candidate_lessons`），故以「只下单进 B + 真发调课事件」等价替代。
