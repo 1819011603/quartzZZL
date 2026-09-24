@@ -7,7 +7,7 @@ branches:
   - product-server:feature-xuban-match-opt
   - student-data:feature-xuban-match-opt
   - teacher-tool:feature-xuban-match-opt
-updated: 2026-09-23
+updated: 2026-09-24
 tags: [需求]
 ---
 
@@ -55,13 +55,13 @@ tags: [需求]
 | 阶段 | 开发中（1/2/3/5 开发完成；问卷匹配、扩科、AI 配置化验证中） |
 | 进度 | T 10/11（问卷匹配、扩科、AI 配置化均已实现；调课 MQ E2E、续班&退费归因/预测 E2E、R-04 线上 Apollo 核实已过；剩花名册顺序风险待产品/测试确认、AI 圈选 E2E）· R 4/4 · C 0/0 |
 | 部署泳道 | 第一批：`product-task`/`product-b`/`student-data`/`teacher-tool`；第二批：`product-b`/`product`/`student-data`/`cart` —— 均 `test-gtbg-dev-3` |
-| 当前卡点 | **花名册顺序风险（真实）**：先填后调时 B 的 `renewalQuestionnaireStatus` 不会自动更新（调课 MQ 不写、回溯 Job 不重算）；完整 submit→ES/明细 链路未跑端到端；AI 圈选 MQ 消息日志不可观测。【扩科推荐】**B/C 端真实入口 E2E 已验证**（计划 `579985778241837056` 大班 + 学员 `20002`：开排除只剩 subject=7、关排除对照三条都在，见 [[verify]]）|
+| 当前卡点 | **花名册顺序缺陷（2026-09-24 已端到端复现）**：先填后调时 B 班明细已复制、但 B 花名册 `renewalQuestionnaireStatus` 不更新（实测停在 1），待定修复方案；先调后填 E2E 已通过（真发 CDS MQ → product-task 计划级匹配 → B 花名册 3）；⚠️ 泳道 product-b 已被其他分支覆盖（无计划级规则），问卷匹配只能经 product-task 验；AI 圈选 MQ 消息日志不可观测。【扩科推荐】**B/C 端真实入口 E2E 已验证**（计划 `579985778241837056` 大班 + 学员 `20002`：开排除只剩 subject=7、关排除对照三条都在，见 [[verify]]）|
 | 最近更新 | 2026-09-23：**修掉扩科推荐一个线上会复现的真 bug** —— cart fastjson 全局 SnakeCase 把 Feign 请求体发成 `user_id`，student-data 绑不上、`otherModeInReadSubjects` 恒返回空；改用 `CesCamelCaseFeignConfig`（`96e334b8`），两泳道实测 `[12]`。排除逻辑 E2E 已验（开排除只剩 subject=4 / 关排除两条都在）。按错误判断加的 `FeignTrafficEnvForwardConfig` 已回退（`6deaa256`）。原先「受阻于测试泳道基础设施、非产品 bug」的结论已更正（见 [[verify]]）。**【扩科推荐】B/C 端真实入口 E2E 已验证**：计划 `579985778241837056`（大班）+ 学员 `20002`，`excludeMode=1` 只剩 subject=7、`=0` 对照三条都在（B 端 `recommendProductList` / C 端 `web/renewal/cart`）。2026-09-23 **【AI 配置化】开发完成**（student-data 分析侧+配置+feign、student-center 展示侧，已 push：`c91d5cd66` / `7b9215766`）。同日**部门口径修正**：课程部门 → 老师（二讲）主岗部门 `mainPostOrgPathFromRoot`（`_` 分隔），student-data `12e41da47` / student-center `84ec1b732` 已 push；**2026-09-23 复核**：两服务已部署 `test-gtbg-dev-3` 且 eureka UP，Apollo 已换 org number `6816343048455168`，**门控（命中/未命中）、分析侧 E2E（`handleCode=2`）、展示侧真实入口均验证通过**（见 [[verify]]「部门口径修正」）；**本轮补验（2026-09-23）**：① 退费归因 E2E 通过（造 `refund_intent_info` 改上下文 → `refreshReasoning` → 新 pod 过门控调 AI、结果落库）；② **调课调班真发 MQ 端到端通过**（`gaotu_after_sale_event_test`+`TRANSFER_TOUCH_EVENT` → B 复制明细 + 重投幂等）；③ 花名册 ES 顺序：**发现真实顺序风险** —— 调课 MQ 不写花名册、回溯 Job 也不重算 `ads_small_clazz_user.renewalQuestionnaireStatus`（实测插明细+回溯后仍 2），先填后调 B 的状态不会自动更新；④ 圈选侧门控函数级已验；⑤ **R-04 线上 Apollo 核实**：`compute.rule.name.list`/`all.share.questionnaire.renewal` PROD/TEST 均未配置（走代码默认）|
 
 ## 下一步
 
 1. 【问卷匹配】调课调班端到端：**已验**（真发 `gaotu_after_sale_event_test`+`TRANSFER_TOUCH_EVENT` → B 复制明细 + 幂等，见 [[verify]]）。
-2. 【问卷匹配】花名册 ES 顺序风险：**存在真实顺序风险** —— 调课 MQ 只写 teacher-tool 明细、不写花名册（`ads_small_clazz_user.renewalQuestionnaireStatus` 由问卷回收事件消费者直接写）；实测小班花名册回溯 `BackAdsSmallClazzUserHandler` 也**不重算**该字段（有明细用户 status=3、无明细=2；插明细+回溯后仍 2）→ 先填后调时 B 的状态不会自动更新为「已提交」。是否最终一致取决于是否存在重算该字段的 sync 链路（未确认）。详见 [[verify]]。
+2. 【问卷匹配】花名册顺序缺陷：**2026-09-24 已用新造大班 A/B 端到端复现**（B 明细复制成功、B 花名册 status 仍 1）。待定：是否本期修、由谁在调课消费链路补写 `renewalQuestionnaireStatus`（大班 `ads_large_subclazz_user_index` / 小班 `ads_small_clazz_user`）—— 需与产品/测试确认。先调后填已验通过。详见 [[verify]]「真实链路 E2E」。
 3. 【扩科推荐】剩余：① 上线配置 —— 全局降级开关 `renewal.expand.exclude.switch`（cart Apollo，默认 true）；② 测试数据留档见 [[verify]]「B/C 端真实入口端到端」。（选品 `productSelect` 已定**不需要**排除过滤，2026-09-23）
 4. 【AI 配置化】剩余验证：退费预测（prediction，private 方法）未单独验；圈选侧门控函数级已验、MQ 圈选消息不可观测；**上线前须把要开放的部门配全**（未配置=全关）。
 5. 【数据落表】找数仓侧确认落表方式（本批不做）。

@@ -12,7 +12,7 @@ tags: [需求, 验证]
 | 项 | 当前值 |
 |---|---|
 | 泳道 | `test-gtbg-dev-3`（逻辑环境 `dev`，`traffic-env: test-gtbg-dev-3`） |
-| 已部署服务 | `product-task`(10.218.237.230) / `product-b`(10.218.251.254) / `student-data`(10.218.248.8) / `teacher-tool`(10.218.251.152)，均 eureka UP |
+| 已部署服务 | `product-task`(10.218.237.230，2026-09-24 仍为本分支) / `student-data` / `teacher-tool`；⚠️ `product-b` 2026-09-24 已被其他分支覆盖（见「真实链路 E2E」） |
 | 分支 | 全部 `feature-xuban-match-opt`（product-server / student-data / teacher-tool） |
 | DB | `gaotu_polar_test_03`（cluster 142） |
 
@@ -78,14 +78,38 @@ tags: [需求, 验证]
 - **调课 MQ 不写花名册**（只写 teacher-tool 明细）。
 - **实测（班 `529911462177622016`）**：有明细的用户 `1438684` → status `3`(已提交)；无明细的 `1449343` → status `2`(未提交)。给 `1449343` 插一条明细后跑小班花名册回溯 `BackAdsSmallClazzUserHandler#execute([clazz])`（返回 SUCCESS、文档 `updateTime` 已变）→ **status 仍为 2**，未重算。
 - **结论**：**先填后调时 B 的花名册「已提交」状态不会随调课自动更新**（真实顺序风险）；是否最终一致取决于是否存在会重算该字段的 sync 链路（未确认）。原「宽表重建时会推导成 COMMIT」的说法**未证实，已订正**。
-- **受限**：A/B 是「任务系统」测试班，**花名册 ES 无文档**（`ads_small_clazz_user` 查无）、B 也未绑定问卷（`queryQuestionnaireMatchResult(B, 计划 578532432171743232)=null`，A 有匹配），故无法用 A/B 直接验「先填后调」的落值。
+- 旧 A/B（「任务系统」测试班）花名册 ES 无文档，已改用下一节新造的干净大班完成端到端。
+
+### 提交→匹配→花名册/明细 真实链路 E2E（2026-09-24，✅ 已验证）
+
+**造数（data-agent `create_renewal_regression_clazz` + 本地引擎 `batch_create_order`/`mock_pay`，泳道 `test-gtbg-dev-3`）**：前置课 `578530883890331648` 下新建两个大班，花名册在 eesServe `ads_large_subclazz_user_index`（有真实文档）。
+
+| 对象 | 值 |
+|---|---|
+| A 班 | `581200735616724992`（弓雪萌辅导班 `36325046492463488`）；学员 `20017`、`20018`（姓名 `123`） |
+| B 班 | `581200735551846400`（弓雪萌 `36325046495478144` / 唐稳01 `36325046539911552`）；学员 `20019`（`123`）、`20020`（`1234`） |
+| A 班问卷绑定 | `sendUrl` 生成 bindNumber `581201197220882432`（accountId 177071） |
+
+**提交方式**：真发 CDS topic `test_future_landingpage_form_submit`（实例 `MQ_INST_1941505946323830_BcTleGRs` = uqun_test），由泳道 **product-task** 真实消费。发送走 student-data 桥 `AiCommOnsMqProducer#sendOrderedMessage(String, List, Object, Object)`（**传对象、数字字段转字符串**；String 重载会被桥选错成 Object 重载，发成二次序列化的字符串，consumer 解析失败）。报文模板取 `gaotu.questionnaire_record.origin_data`，需补 `formatDataList`。
+
+| 例 | 场景 | 实测 |
+|---|---|---|
+| S1 | 在 A 班正常提交（20017，originUserId） | ✅ record `347` computed=20017 → A 花名册 status `3` → 明细 `21860`（A）（注：S1 走的是 product-b 桥 `dealCDSMsg`，匹配走同班 originUser，与新旧代码无关） |
+| S3 **先调后填** | 20020 只在 B 班，用 **A 班链接**提交（姓名 `1234`、无 userId） | ✅ record `990021` **计划级姓名规则**命中 computed=20020、clazz=A → 共享课 fan-out **B 花名册 status `3`** + B 明细 `21861` |
+| S2 **先填后调** | 20019 只在 B 班；补 A 班明细 `999900019` 代表调前已填 → 真发 `TRANSFER_TOUCH_EVENT` A→B | 明细 ✅ 复制到 B（`21863`、同 group `999900019`）；**花名册 ❌ B 的 20019 status 60s 后仍 `1`、updateTime 不变** → **顺序风险端到端复现** |
+
+**结论**：先调后填正常（计划级规则 + 共享课 fan-out 覆盖）；**先填后调时 B 班花名册「已提交」不会更新**，属真实缺陷（明细已同步、花名册未同步），需决定是否让调课消费链路补写 `renewalQuestionnaireStatus`（大班 `ads_large_subclazz_user_index` / 小班 `ads_small_clazz_user`）。
+
+**造数坑**：
+- mock_pay 的大班课订单做大班→大班真实调课，售后恒报「原订单资金所在账户和调转商品目标收款账户不一致」（结构性，见 data-agent `candidate_lessons`），故以「只下单进 B + 真发调课事件」等价替代。
+- 同一课程下不能重复购买（`code=440 您已购买过相同课程`），同一学员无法同时在 A/B。
+- ⚠️ **泳道 product-b 已被其他分支覆盖**（2026-09-24 10:02 新 pod `10.218.237.126`，**无 `NamePlanRuleService`**，计划级用例 A 复跑返回空）；product-task 仍是 `feature-xuban-match-opt`（pod `10.218.237.230`，已确认含该类）。**此后问卷匹配只能通过 product-task 真实消费来验，别再用 product-b 桥验 `ComputeUserService`**。product-task 内 arthas 调 `compute` 会因下游 Feign（Hystrix）失败，不可用。
 
 ## 待验
 
 | 项 | 卡点 |
 |---|---|
-| 先填后调：B 班花名册 `renewalQuestionnaireStatus` 落值 | **存在真实顺序风险**（调课 MQ 不写花名册、回溯 Job 不重算该字段，见上）；A/B 测试班无花名册文档，无法端到端验 |
-| 先调后填端到端 | 靠计划级规则 + 主链路扇出（7 档逻辑已验证，未跑完整 submit→ES/明细 链路） |
+| 先填后调 B 班花名册状态 | **已端到端复现缺陷**（见上），待定修复方案 / 是否本期修 |
 
 ## 第二批：扩科【推荐排除】（2026-09-22，`feature-xuban-expand-exclude`）
 
