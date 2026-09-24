@@ -258,6 +258,18 @@ product-task pod `product-task-gaotu100-com-5c49c6f665-fgmjd`（10.218.237.230�
 
 **坑**：arthas 线程里直调 cart 推荐会因 Ribbon 子上下文懒加载失败抛 `HystrixRuntimeException`，排除逻辑按设计 fail-open 成「无排除」——是 arthas 调用环境问题，改走 acl 桥（真实 servlet 线程）即正常。
 
+### AI 开关灰度语义修正（2026-09-24，dev-1）
+
+用户订正：未配置应=全量放开（灰度未开始），否则发版即停全部 AI。student-data `24be1d776`（空配置→true；已配置时无部门/未命中→false）、student-center `a3a4d7cb5`（开关查询异常/缺值/无登录→fail-open）。单测 student-data 12 条、student-center 3 条通过。
+
+| 例 | 配置 | 调用 | 实测 |
+|---|---|---|---|
+| 灰度未开始 | `renewal.ai.dept.module.switch={}` | `queryModuleSwitch(1, 1/177071, [1,3,8])` | ✅ 全 true（含无部门老师 1） |
+| 灰度中 | 恢复 `{"97349606689168923":[1..8]}` | 同上 | ✅ 未命中部门全 false |
+
+- student-data 新 pod `student-data-764ff58fbd-z77q5`(10.218.238.232) eureka UP；Apollo 已恢复并读回。
+- ⚠️ student-center 新 pod `student-center-789db6448c-frnlj` **一直 Pending 无 IP（集群调度/资源问题）**，泳道仍是旧 pod，fail-open 仅单测验证、未在环境验证。
+
 ### 扩科「在读」口径缺口（已登记，用户：后面确认）
 
 README 已定共识写「上课形式为线上 / 订单未全部退款**现有链路没有，需补**」，但 `RenewalInReadSubjectService` Javadoc 写「均已在写表链路内过滤」；实查 `OdsSmallRenewalSubjectSyncService` / `DwsRenewalSubjectConsumer` / `BackClazzUserSubjectService` 均无 operationMode / 退款状态过滤，expand-exclude 分支也未改写表链路 → **这两条大概率未实现**（全退款可能经退班删行间接覆盖，未证实）。另：小班当前课 → 取大班在读的推荐链路、全局开关 `renewal.expand.exclude.switch=false` 回退均无 E2E。
