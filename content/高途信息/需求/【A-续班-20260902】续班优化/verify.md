@@ -195,7 +195,10 @@ product-task pod `product-task-gaotu100-com-5c49c6f665-fgmjd`（10.218.237.230�
 | P4 | A | 不存在姓名 / 12200902759（计划外用户 6286426263） | 0 | ✅ 0（990104） | 跨计划手机号不命中 |
 | P5 | C 班 `578530888321613824`（同计划，无人叫 `123`） | `123` / 不存在号 | 20018 | ✅ 20018（990105） | (4) 同计划姓名 **多命中（20018、20019）取学员 ID 小的** |
 
-- 未验：(5)(6) 亲属手机号档 —— 测试学员无亲属手机号数据（走 `idQueryAclService.queryUserInfoByRelatedId`），需另造。
+| R1 | B | 不存在姓名 / 12699990018（亲属号，同时挂 20018、20019） | 20019 | ✅ 20019（990106） | (5) 同班亲属号 优先于 (6) 同计划亲属号（后者会取更小的 20018） |
+| R2 | C 班（两人都不在） | 同上 | 20018 | ✅ 20018（990107） | (6) 同计划亲属号 **多命中取学员 ID 小的** |
+
+- 亲属号造数：账号互通 `SS-ID-SERVICE` `POST /id-service/mapping/mappingUserIdWithPhone` `{"userId":"20018","phone":"12699990018","searchPriority":false,"sourceDesc":"product"}`（`sourceDesc` 必填，否则 400），经 `invoke_feign` 调；读回 `IdQueryAclService#queryUserInfoByRelatedId`。该号不是任何学员的注册手机号（`listUserBaseByMobiles` 为空），保证 (1)(2) 不会先命中。**7 档全部验证完毕。**
 - 代码核对：各档实现与 PRD 一致——同班姓名 `NameRuleService` 按 userId 排序取首个；亲属 `RelationIdService` `.min()`；计划档经候选集再按计划过滤。
 
 **调课同步按 PRD「非同一问卷不共享」修正（2026-09-24 用户定，已提交·部署 dev-3 中）**：原实现 teacher-tool 把 A 班全部续班明细无条件复制到 B（花名册侧安全，但 B 明细页会出现不属于 B 问卷的记录）。现改为：
@@ -254,13 +257,14 @@ README 已定共识写「上课形式为线上 / 订单未全部退款**现有�
 
 PROD `es_query_config` type=5：`smallClazzRoster` / `microContinuationService` 的 account 字段含 `assistantAccountId` + **`mainTeacherAccountIds`**，postTag 含 `mainTeacherMainPostTag` → 主讲 OR 权限线上已配。
 
+### 先调后填 A 侧 / 小班调课（2026-09-24，机制已验，整链未造数）
+
+- **先调后填 A 侧**（PRD 最终效果第 4 条）：不经调课同步，走提交时 fan-out——`DwsRenewalQuestionnaireConsumer` 用 `listStudentByUidByCourseNos(userId, shareCourses, getAllStatus())` 取学员**所有状态**班级，明细 `sendTeacherToolQuestionMsg` 与花名册 `updateQuestionnaireStatus` 都对该列表逐班写、无状态过滤。**实测**：20019 在课程 `467797268366426112` 下的已退出班 `467798149581307904`（status=2）会被该接口返回 → 已离开的 A 班同样会写入。整链未造：无法造「离开 A、在读 B」真实状态（大班调课受收款账户限制、同课程不可重复购买、造数引擎无退款工具）。B 侧已由 S3 端到端验证。
+- **小班调课**：`writeCommitStatus` 小班分支与线上既有问卷回收链路（`DwsRenewalQuestionnaireConsumer:320-326`）**完全相同的调用与 tag**；实测 `SmallClazzFilterHelper#checkNeedDealClazz`：小班 `529911462177622016`→true、大班 B→false；单测覆盖小班分支。尝试用该小班端到端：其续班计划已不存在 → 正确走「新班未绑定问卷，skip」（与 V2 口径一致，亦为未绑定用例）。当前测试环境无「已发布计划 + 已绑问卷」的小班，完整写花名册未造数。
+
 ## 待验
 
-| 项 | 卡点 |
-|---|---|
-| 问卷匹配 (5)(6) 亲属手机号档 | 测试学员无亲属手机号数据，需造 |
-| 先调后填 A 侧展示（PRD 最终效果第 4 条） | 只验了 B 侧；真实调课 mock_pay 受收款账户限制 |
-| 小班调课同步（写 `ads_small_clazz_user`） | 需小班 A/B + 同问卷造数；单测已覆盖分支 |
+无（上两项为造数受限，机制与分支已按上文验证）。
 
 ## 第二批：扩科【推荐排除】（2026-09-22，`feature-xuban-expand-exclude`）
 
