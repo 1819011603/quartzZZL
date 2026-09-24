@@ -11,7 +11,8 @@ tags: [需求, 验证]
 
 | 项 | 当前值 |
 |---|---|
-| 泳道 | `test-gtbg-dev-3`（逻辑环境 `dev`，`traffic-env: test-gtbg-dev-3`） |
+| **泳道分配（2026-09-24 用户定）** | **`feature-xuban-match-opt` → `test-gtbg-dev-3`**（问卷匹配 / 调课同步：product-task、student-data、teacher-tool）；**`feature-xuban-expand-exclude` → `test-gtbg-dev-1`**（扩科推荐排除 + AI 配置化：product-b / product、student-data、cart、student-center）。两分支 student-data 不再共用泳道，**别往对方泳道部署**。逻辑环境均 `dev`，请求头 `traffic-env: <泳道>` |
+| 泳道 | `test-gtbg-dev-3`（本节以下数据均指问卷匹配分支） |
 | 已部署服务 | `product-task`(10.218.237.230，2026-09-24 仍为本分支) / `student-data` / `teacher-tool`；⚠️ `product-b` 2026-09-24 已被其他分支覆盖（见「真实链路 E2E」） |
 | 分支 | 全部 `feature-xuban-match-opt`（product-server / student-data / teacher-tool） |
 | DB | `gaotu_polar_test_03`（cluster 142） |
@@ -182,7 +183,36 @@ product-task pod `product-task-gaotu100-com-5c49c6f665-fgmjd`（10.218.237.230�
 | **前提：AB 不是同一问卷不共享数据** | 无 | — | ❌ 缺，且**代码不满足**（见下） |
 | 小班调课写 `ads_small_clazz_user` | 无（全在大班验） | — | ❌ 缺 |
 
-**调课同步违反 PRD 前提（待决策）**：teacher-tool `syncTransferQuestionnaire` 把 A 班全部续班明细无条件复制到 B，**不校验 B 的续班计划绑定的是否同一问卷**。花名册侧安全（`RenewalQuestionnaireStatusServiceV2#filterUserQuestionnaire` 只认 `projectNumber == 绑定问卷 bizId`，不会误判已提交），但 **B 的问卷明细会出现不属于 B 问卷的记录**。修法候选：student-data 先算出 B 绑定问卷 bizId 传给 teacher-tool，只复制 `projectNumber` 相同的明细（接口加可选字段，null 保持现行为）。
+### 7 档优先级 / 多命中 / 跨计划 真实链路 E2E（2026-09-24，✅ 已验证，dev-3 product-task 真实消费）
+
+造数：学员手机号 = `126000000xx`（20017–20020，经 `UserSyncAclService#listUserBaseByMobiles` 反查确认）；`student_name`：**20018=`123`(A)、20019=`123`(B)、20020=`1234`(B)，20017 为空**（旧文档写 20017/20018 同名 `123` 不对）。新建 B 班问卷链接 `questionnaire_bind_data` number `581201197220882499`（复制 A 行，clazz=B）。发送脚本 `/tmp/cds_send.py`（模板取 `questionnaire_record` id 348，经 student-data 桥 `AiCommOnsMqProducer#sendOrderedMessage(String,String,String,String)` 四个字符串参数发 `test_future_landingpage_form_submit`）。
+
+| 例 | 链接 | 姓名 / 手机号 | 期望 | 实测 computed_user_id | 证明 |
+|---|---|---|---|---|---|
+| P1 | A | `123` / 12600000017 | 20017 | ✅ 20017（record 990101） | (1) 同班手机号 优先于 (3) 同班姓名（后者会得 20018） |
+| P2 | A | `123` / 12600000019 | 20019 | ✅ 20019（990102） | (2) 同计划手机号 优先于 (3) 同班姓名 |
+| P3 | B | `123` / 不存在号 | 20019 | ✅ 20019（990103） | (3) 同班姓名 优先于 (4) 同计划姓名（计划内还有更小的 20018） |
+| P4 | A | 不存在姓名 / 12200902759（计划外用户 6286426263） | 0 | ✅ 0（990104） | 跨计划手机号不命中 |
+| P5 | C 班 `578530888321613824`（同计划，无人叫 `123`） | `123` / 不存在号 | 20018 | ✅ 20018（990105） | (4) 同计划姓名 **多命中（20018、20019）取学员 ID 小的** |
+
+- 未验：(5)(6) 亲属手机号档 —— 测试学员无亲属手机号数据（走 `idQueryAclService.queryUserInfoByRelatedId`），需另造。
+- 代码核对：各档实现与 PRD 一致——同班姓名 `NameRuleService` 按 userId 排序取首个；亲属 `RelationIdService` `.min()`；计划档经候选集再按计划过滤。
+
+**调课同步按 PRD「非同一问卷不共享」修正（2026-09-24 用户定，已提交·部署 dev-3 中）**：原实现 teacher-tool 把 A 班全部续班明细无条件复制到 B（花名册侧安全，但 B 明细页会出现不属于 B 问卷的记录）。现改为：
+- student-data `RenewalQuestionnaireTransferSyncService`：先查 B 班所在已发布续班计划（`preCourseList` 含 B 课程，口径同 `RenewalQuestionnaireStatusServiceV2`）→ 问卷匹配拿 `bizId` → B 未绑定则直接返回（不复制不重算）；这两步用新增的**抛异常**方法 `RenewalMasterAclService#queryRenewalMasterInfoElseException(List)`、`QuestionnaireAclService#queryQuestionnaireMatchResultElseException`（原方法经 `SysInvokeUtil` 吞异常成 null，会把下游抖动误判为未绑定）。
+- teacher-tool：`TransferQuestionnaireSyncRequest` 新增可选 `projectNumber`，非空时只复制 `projectNumber` 相同的明细；为空保持旧行为（兼容任意发布顺序）。api 仍 `1.0.29-SNAPSHOT`（已重发）。
+- commit：student-data `660ad3247`、teacher-tool `1260d455`；单测 student-data 14 条 / teacher-tool 7 条全过。
+- 代价：原「原班无问卷就跳过全部查询」的短路变为「先查 B 绑定再复制」，每个调课事件多 2 次 product-b 调用（调课事件低频，可接受）。
+- **对抗复审后再修（`0ec17d469` / `c169f274`）**：① 复制成功后重算走 V2（内部 `SysInvokeUtil` 吞异常），算不出「已提交」只可能是下游失败 → 改为抛异常重试，不再 ack 丢消息；② 同课程多个已发布计划时与 V2 一致取**最后一个**（原 findFirst 会与 V2 选到不同问卷）；③ 空白 bizId 视为未绑定；④ teacher-tool `projectNumber` 改 `@NotBlank` 必填，去掉「为空就全量复制」后门（该接口未上过线，无旧调用方需兼容）。单测 student-data 18 条 / teacher-tool 7 条。
+- **E2E（2026-09-24，dev-3 新 pod `student-data-59f5db8c58-7rszh` / `teacher-tool-558c47bc44-mnqqh`，✅ 已验证）**：
+  | 例 | 造数 | 实测 |
+  |---|---|---|
+  | T2 非同一问卷不共享 | 20018 在 B 的明细 21869 `project_number` 改成 `99999999999999999`，发 B→A | ✅ 日志 `old clazz has no same questionnaire, skip`；A 未新增 999 明细 |
+  | T1 同一问卷 → 重算 | 删 20019 B 班明细 21863、B 花名册置 1，发 A→B | ✅ `writeCommitStatus`；ES B 花名册 `renewalQuestionnaireStatus` 1→3、`submitTime=1790238068000`（B 已有 16:21 共享课 fan-out 的同问卷明细，故按 questionnaireId 跳过复制；真实复制路径见上「第三轮」N2） |
+  | 未绑定返回形态 | arthas 直调 `queryQuestionnaireMatchResultElseException` | ✅ 未绑定班 → `null`（不抛异常），已绑定班 → bizId `17323095168254394`；复审担心的「未绑定也抛异常→进死信」不成立 |
+- **造数坑（新）**：acl 桥调 `FuwuOnsMqProducer#sendNormalMessage` 四个字符串参数**也不稳定**（16:30 一次被选成 Object 重载，body 二次序列化，consumer 报 `expect {, actual string`，重试 5 次后进死信，属造数失败非产品问题）。**稳定做法：pod 内 arthas `instances[0].sendNormalMessage("topic","TAG","<json>")`**，脚本 `/tmp/send_t.sh <userId> <old> <new>`；ES 花名册重置脚本 `/tmp/es_set_status.py <docId> <status>`。
+- **本轮测试数据改动（TEST，保留）**：新增 B 班问卷链接 `questionnaire_bind_data` number `581201197220882499`；明细 21869 `project_number`→`999…`（T2 用）；删除明细 21863、21870；`questionnaire_record` 新增 id 349–353（P1–P5）；ES 花名册 `36325046492463488-20018`=1、`36325046495478144-20019`=3。
+- **已知限制（记录，不处理）**：先调课、B 的续班计划/问卷绑定后才配置 → 调课当时判未绑定直接跳过，之后无补偿；同一消息并发重投的"先查后插"去重非原子（依赖消费端串行，未见唯一索引）；复制出的明细与原班明细后续修改不双向同步。
 
 ### AI 配置化圈选侧 E2E（2026-09-24，✅ 已验证）
 
@@ -199,7 +229,24 @@ product-task pod `product-task-gaotu100-com-5c49c6f665-fgmjd`（10.218.237.230�
 - ⚠️ **Apollo 现值已被改动**：student-data TEST `renewal.ai.dept.module.switch` 现为 `{"97349606689168923":[1..8]}`（不再是 `6816343048455168`），`refund.ai.dept.module.switch` 仍为 `6816343048455168`。用 177071 测续班展示侧会得到"全关"，属配置而非代码问题。
 - 补单测 `AiModuleSwitchServiceTest` 11 条（部分模块开关 / 下属继承 / id 前缀与超串不误命中 / 多部门并集 / 退费字符串 code），commit `3777608bc`（expand-exclude）。
 
-### 扩科「在读」口径缺口（待决策）
+### expand-exclude 迁 `test-gtbg-dev-1` + 扩科补验（2026-09-24，✅ 已验证）
+
+**dev-1 部署（eureka UP、本分支镜像）**：cart `cart-gaotu100-com-86dcd745b7-rl9f2`(10.218.238.129) / student-data `student-data-549fd8d47c-mzpzs`(10.218.248.159) / product-b `product-b-d5b79766-cprsr`(10.218.237.202) / product `product-gaotu100-com-75946fc5b5-*`(10.218.249.72、10.218.238.117) / student-center `student-center-56dd6d4bbd-d4hsm`(10.218.249.73)。**此后扩科 / AI 配置化一律 `traffic-env: test-gtbg-dev-1`。**
+
+| 例 | 调用 | 实测 |
+|---|---|---|
+| B 端开排除复跑 | product-b `RenewalProductServiceImpl#recommendProductList(579985778241837056, 20002)` | ✅ 只剩 subject=7 + 纯续 |
+| C 端开排除复跑 | cart `RenewalService#getRenewalDetail("20002","579985778241837056",...)` | ✅ subject=1 不出现 |
+| 在读透出 | `RenewalInReadSubjectService#listOtherModeInReadSubjects(20002, 1)` | ✅ `[1,2,4]` |
+| **小班路径 开排除** | cart `ExpandSubjectRecommendService#recommend` 小班重载，学员 `5001708464`（大班在读 subject=5）excludeMode=1 | ✅ 只剩 subject=4 |
+| 小班路径 关排除 | 同上 excludeMode=0 | ✅ subject=5、4 都在 |
+| **全局开关回退** | cart TEST Apollo `renewal.expand.exclude.switch=false` 后复跑小班 excludeMode=1 | ✅ 退化为无排除，两条都在；已改回 `true`（原本未配、代码默认 true，等价） |
+| **AI 部分模块开关（门控）** | student-data Apollo 临时 `{"6816343048455168":[1,2]}` → `queryModuleSwitch(1, 177071, ["1","2","5"])` | ✅ `{1:true, 2:true, 5:false}`；已恢复 `{"97349606689168923":[1..8]}` 并读回 |
+| **AI 部分模块开关（展示侧真实入口）** | 同上配置，proxy 登录态即 177071（gongxuemeng）；`POST /bgwApi/component/student-center/ai/clazzUser/userPortrait`（模块 1）与 `/bgwApi/component/student-center/problem/fulfillProblem/overview`（模块 3），入参 `{userId:7404351741, clazzNumber:500775385189890048}` | ✅ 模块 1 放行（返回对象，拦截形态是 `data:null`）；模块 3 被拦 `data:{}`；**对照**：临时改 `[1,2,3]` 后模块 3 返回 `score:100…` 完整数据 → 拦截生效。已恢复原值并读回 |
+
+**坑**：arthas 线程里直调 cart 推荐会因 Ribbon 子上下文懒加载失败抛 `HystrixRuntimeException`，排除逻辑按设计 fail-open 成「无排除」——是 arthas 调用环境问题，改走 acl 桥（真实 servlet 线程）即正常。
+
+### 扩科「在读」口径缺口（已登记，用户：后面确认）
 
 README 已定共识写「上课形式为线上 / 订单未全部退款**现有链路没有，需补**」，但 `RenewalInReadSubjectService` Javadoc 写「均已在写表链路内过滤」；实查 `OdsSmallRenewalSubjectSyncService` / `DwsRenewalSubjectConsumer` / `BackClazzUserSubjectService` 均无 operationMode / 退款状态过滤，expand-exclude 分支也未改写表链路 → **这两条大概率未实现**（全退款可能经退班删行间接覆盖，未证实）。另：小班当前课 → 取大班在读的推荐链路、全局开关 `renewal.expand.exclude.switch=false` 回退均无 E2E。
 
@@ -211,10 +258,9 @@ PROD `es_query_config` type=5：`smallClazzRoster` / `microContinuationService` 
 
 | 项 | 卡点 |
 |---|---|
-| 问卷匹配：优先级冲突 / 多命中取小 ID / 手机号·亲属档 / 跨计划同名 | 需真发 CDS 到 product-task 造数；product-b 反射桥泳道被他人覆盖 |
-| 先调后填 A 侧展示 | 真实调课 mock_pay 受收款账户限制，需另找造数路径 |
-| 小班调课同步 | 需小班 A/B + 同问卷造数 |
-| 扩科小班路径 / 全局开关回退 | — |
+| 问卷匹配 (5)(6) 亲属手机号档 | 测试学员无亲属手机号数据，需造 |
+| 先调后填 A 侧展示（PRD 最终效果第 4 条） | 只验了 B 侧；真实调课 mock_pay 受收款账户限制 |
+| 小班调课同步（写 `ads_small_clazz_user`） | 需小班 A/B + 同问卷造数；单测已覆盖分支 |
 
 ## 第二批：扩科【推荐排除】（2026-09-22，`feature-xuban-expand-exclude`）
 
