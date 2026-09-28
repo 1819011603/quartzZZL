@@ -1,0 +1,329 @@
+{
+  "version": 1,
+  "updated": "2026-09-28",
+  "note": "机读索引：页面/tab → 接口。字段 frontPath=前端 request 路径，backendPath=后端 Controller 路径，service=青舟 appId。",
+  "repos": {
+    "epic": "http://git.baijia.com/gaotu-fe/gaotu-btech-fe/epic",
+    "cronus": "http://git.baijia.com/gaotu-fe/gaotu-btech-fe/cronus",
+    "boss-counselor": "http://git.baijia.com/gaotu-fe/boss-counselor"
+  },
+  "pages": [
+    {
+      "route": "/crm/cronus/clazzRosterOL",
+      "name": "班级花名册",
+      "repo": "cronus",
+      "pageFile": "cronus/clazzRosterOL/_page.md",
+      "pageApis": [
+        {
+          "trigger": "进页面",
+          "method": "POST",
+          "frontPath": "/bgwApi/component/student-center/roster/renewal/config",
+          "frontFile": "cronus/src/pages/roster/index.js",
+          "service": "student-center",
+          "backendPath": "/roster/renewal/config",
+          "name": "续班配置",
+          "id": 3807592
+        },
+        {
+          "trigger": "进页面",
+          "method": "POST",
+          "frontPath": "/component/student-center/roster/gray",
+          "frontFile": "cronus/src/pages/roster/grayscale/index.js",
+          "service": "student-center",
+          "backendPath": "/roster/gray",
+          "name": "判断灰度逻辑",
+          "id": 668688
+        }
+      ],
+      "tabs": [
+        {
+          "tabKey": "continuationService",
+          "name": "续班服务",
+          "file": "cronus/clazzRosterOL/continuationService.md",
+          "apis": [
+            {
+              "trigger": "进页面/筛选",
+              "method": "POST",
+              "frontPath": "/bgwApi/component/student-center/roster/renewal/page",
+              "frontFile": "cronus/src/services/continuationService.js",
+              "service": "student-center",
+              "backendPath": "/roster/renewal/page",
+              "name": "分页查询续班服务列表",
+              "id": 1995841
+            },
+            {
+              "trigger": "总数超上限",
+              "method": "POST",
+              "frontPath": "/bgwApi/component/student-center/roster/renewal/count",
+              "frontFile": "cronus/src/services/continuationService.js",
+              "service": "student-center",
+              "backendPath": "/roster/renewal/count",
+              "name": "获取总数（超上限时用）",
+              "id": 1995832
+            },
+            {
+              "trigger": "默认视图",
+              "method": "POST",
+              "frontPath": "/bgwApi/component/student-center/roster/renewal/default/page",
+              "frontFile": "cronus/src/services/continuationService.js",
+              "service": "student-center",
+              "backendPath": "/roster/renewal/default/page",
+              "name": "分页查询续班服务列表",
+              "id": 1995828
+            },
+            {
+              "trigger": "默认视图",
+              "method": "POST",
+              "frontPath": "/bgwApi/component/student-center/roster/renewal/default/count",
+              "frontFile": "cronus/src/services/continuationService.js",
+              "service": "student-center",
+              "backendPath": "/roster/renewal/default/count",
+              "name": "获取总数（超上限时用）",
+              "id": 1995835
+            },
+            {
+              "trigger": "进页面",
+              "method": "POST",
+              "frontPath": "/bgwApi/component/student-center/roster/renewal/defaultValue",
+              "frontFile": "cronus/src/services/continuationService.js",
+              "service": "student-center",
+              "backendPath": "/roster/renewal/defaultValue",
+              "name": "获取GlobalSearch默认值接口",
+              "id": 1995833
+            },
+            {
+              "trigger": "进页面",
+              "method": "POST",
+              "frontPath": "/bgwApi/component/student-center/roster/renewal/getRenewalInfo",
+              "frontFile": "cronus/src/services/continuationService.js",
+              "service": "student-center",
+              "backendPath": "/roster/renewal/getRenewalInfo",
+              "name": "续班信息",
+              "id": 1995839
+            },
+            {
+              "trigger": "进页面",
+              "method": "POST",
+              "frontPath": "/bgwApi/component/student-center/roster/renewal/subclazz/statistic",
+              "frontFile": "cronus/src/services/continuationService.js",
+              "service": "student-center",
+              "backendPath": "/roster/renewal/subclazz/statistic",
+              "name": "续班指标统计",
+              "id": 1995842
+            },
+            {
+              "trigger": "默认视图",
+              "method": "POST",
+              "frontPath": "/bgwApi/component/student-center/roster/renewal/default/subclazz/statistic",
+              "frontFile": "cronus/src/services/continuationService.js",
+              "service": "student-center",
+              "backendPath": "/roster/renewal/default/subclazz/statistic",
+              "name": "续班指标统计",
+              "id": 1995840
+            },
+            {
+              "trigger": "编辑保存",
+              "method": "POST",
+              "frontPath": "/bgwApi/component/student-center/roster/renewal/edit",
+              "frontFile": "cronus/src/services/continuationService.js",
+              "service": "student-center",
+              "backendPath": "/roster/renewal/edit",
+              "name": "编辑学生信息",
+              "id": 1995834
+            },
+            {
+              "trigger": "hover",
+              "method": "POST",
+              "frontPath": "/component/student-center/studentClazz/intimacyHover",
+              "frontFile": "cronus/src/services/continuationService.js",
+              "service": "student-center",
+              "backendPath": "/studentClazz/intimacyHover",
+              "name": "获取学员亲密度",
+              "id": 30665
+            },
+            {
+              "trigger": "hover",
+              "method": "POST",
+              "frontPath": "/bgwApi/component/student-center/roster/renewal/reach/record",
+              "frontFile": "cronus/src/services/continuationService.js",
+              "service": "student-center",
+              "backendPath": "/roster/renewal/reach/record",
+              "name": "续班沟通记录",
+              "id": 1995831
+            },
+            {
+              "trigger": "hover",
+              "method": "POST",
+              "frontPath": "/bgwApi/component/student-center/roster/renewal/intimacy/course",
+              "frontFile": "cronus/src/services/continuationService.js",
+              "service": "student-center",
+              "backendPath": "/roster/renewal/intimacy/course",
+              "name": "课程完成度",
+              "id": 1995836
+            },
+            {
+              "trigger": "hover",
+              "method": "POST",
+              "frontPath": "/bgwApi/component/student-center/roster/renewal/intimacy/service",
+              "frontFile": "cronus/src/services/continuationService.js",
+              "service": "student-center",
+              "backendPath": "/roster/renewal/intimacy/service",
+              "name": "服务亲密度",
+              "id": 1995830
+            },
+            {
+              "trigger": "最近看课",
+              "method": "POST",
+              "frontPath": "/component/student-center/studentClazz/recentLessonSituation",
+              "frontFile": "cronus/src/services/clazzRosterOL.js",
+              "service": "student-center",
+              "backendPath": "/studentClazz/recentLessonSituation",
+              "name": "获取学员最近看课进度条",
+              "id": 30675
+            },
+            {
+              "trigger": "推荐班级",
+              "method": "POST",
+              "frontPath": "/bgwApi/product-b/b/renewMaster/recommendClazzList",
+              "frontFile": "cronus/src/services/continuationService.js",
+              "service": "product-b",
+              "backendPath": "/b/renewMaster/recommendClazzList",
+              "name": "查询推荐班级列表",
+              "id": 2734275
+            },
+            {
+              "trigger": "判断续班班",
+              "method": "POST",
+              "frontPath": "/bgwApi/component/student-center/roster/renewal/judgeIsRenewalSubClazzNumber",
+              "frontFile": "cronus/src/services/continuationService.js",
+              "service": "student-center",
+              "backendPath": "/roster/renewal/judgeIsRenewalSubClazzNumber",
+              "name": "判断是否是续班辅导班",
+              "id": 2153606
+            },
+            {
+              "trigger": "续班意向预测",
+              "method": "POST",
+              "frontPath": "/bgwApi/component/student-center/ai/clazzUser/levelReasonAndHistory",
+              "frontFile": "cronus/src/services/continuationService.js",
+              "service": "student-center",
+              "backendPath": "/ai/clazzUser/levelReasonAndHistory",
+              "name": "分层原因和变化记录",
+              "id": 2977228
+            },
+            {
+              "trigger": "hover 归因",
+              "method": "POST",
+              "frontPath": "/bgwApi/component/student-center/ai/renewal/reason/detail",
+              "frontFile": "cronus/src/services/continuationService.js",
+              "service": "student-center",
+              "backendPath": "/ai/renewal/reason/detail",
+              "name": "续班归因详情",
+              "id": 5292053
+            },
+            {
+              "trigger": "原因弹窗",
+              "method": "POST",
+              "frontPath": "/bgwApi/component/student-center/ai/renewal/reason/options",
+              "frontFile": "cronus/src/services/continuationService.js",
+              "service": "student-center",
+              "backendPath": "/ai/renewal/reason/options",
+              "name": "续班原因分类字典",
+              "id": 5292052
+            },
+            {
+              "trigger": "保存原因",
+              "method": "POST",
+              "frontPath": "/bgwApi/component/student-center/ai/renewal/reason/manual/save",
+              "frontFile": "cronus/src/services/continuationService.js",
+              "service": "student-center",
+              "backendPath": "/ai/renewal/reason/manual/save",
+              "name": "保存老师填写的续班原因",
+              "id": 5292051
+            },
+            {
+              "trigger": "发问卷",
+              "method": "POST",
+              "frontPath": "/bgwApi/component/student-center/roster/renewal/sendQuestion/getQuestionInfo",
+              "frontFile": "cronus/src/services/continuationService.js",
+              "service": "student-center",
+              "backendPath": "/roster/renewal/sendQuestion/getQuestionInfo",
+              "name": "问卷信息获取",
+              "id": 3381630
+            },
+            {
+              "trigger": "校验问卷",
+              "method": "POST",
+              "frontPath": "/component/student-center/roster/renewal/sendQuestion/validate",
+              "frontFile": "cronus/src/pages/roster/ContinuationService/components/QuestionnaireLink/service.js",
+              "service": "student-center",
+              "backendPath": "/roster/renewal/sendQuestion/validate",
+              "name": "发问卷前置校验",
+              "id": 1995843
+            },
+            {
+              "trigger": "续班报名校验",
+              "method": "POST",
+              "frontPath": "/component/student-center/roster/renewal/renewalOrder/validate",
+              "frontFile": "cronus/src/pages/roster/ContinuationService/components/PureContinuation/service.js",
+              "service": "student-center",
+              "backendPath": "/roster/renewal/renewalOrder/validate",
+              "name": "续班报名前置校验",
+              "id": 2093628
+            },
+            {
+              "trigger": "预报名校验",
+              "method": "POST",
+              "frontPath": "/component/student-center/roster/renewal/renewalPreRegistration/validate",
+              "frontFile": "cronus/src/pages/roster/ContinuationService/components/PreRegistrationLink/service.js",
+              "service": "student-center",
+              "backendPath": "/roster/renewal/renewalPreRegistration/validate",
+              "name": "续班预报名前置校验",
+              "id": 2652063
+            },
+            {
+              "trigger": "报告链接",
+              "method": "POST",
+              "frontPath": "/reachPortal/reportConfig/getReportUrl",
+              "frontFile": "cronus/src/pages/roster/ContinuationService/components/*/service.js",
+              "service": "reach-service",
+              "backendPath": "/reachPortal/reportConfig/getReportUrl",
+              "name": "获取预览或发送链接",
+              "id": 734494
+            },
+            {
+              "trigger": "推荐主体",
+              "method": "POST",
+              "frontPath": "/reachPortal/reportConfig/getRecommendAppInfo",
+              "frontFile": "cronus/src/pages/roster/ContinuationService/components/PureContinuation/service.js",
+              "service": "reach-service",
+              "backendPath": "/reachPortal/reportConfig/getRecommendAppInfo",
+              "name": "获取主体",
+              "id": 2093624
+            },
+            {
+              "trigger": "预报名链接",
+              "method": "POST",
+              "frontPath": "/reachPortal/reportConfig/getPreRegistrationLink",
+              "frontFile": "cronus/src/pages/roster/ContinuationService/components/PreRegistrationLink/service.js",
+              "service": "reach-service",
+              "backendPath": "/reachPortal/reportConfig/getPreRegistrationLink",
+              "name": "预报名链接",
+              "id": 2652061
+            },
+            {
+              "trigger": "灰度开关",
+              "method": "GET",
+              "frontPath": "/product-b/b/renewMaster/configFlag",
+              "frontFile": "cronus/src/pages/roster/ContinuationService/components/CreateOrder/gray.js",
+              "service": "product-b",
+              "backendPath": "/b/renewMaster/configFlag",
+              "name": "获取配置开关",
+              "id": 2734336
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
