@@ -13,6 +13,14 @@
 
 > 页面级接口（config / gray / schema）见 [_page.md](./_page.md)。
 
+## 数据来源（ES / 表）
+
+| 接口 | 数据来源 | ES 集群 / 客户端 | 后端代码 |
+|---|---|---|---|
+| `/roster/refund/page`（主列表）、`/count`、`/default/page`、`/default/count`、`/subclazz/statistic` | ES 索引 **`ads_large_subclazz_user_index`** | `es-cn-smw4b9m200004w3hn.elasticsearch.aliyuncs.com:9200`（bean `studentSubclazzClient`） | `RefundService.page()/count()/subclazzStatistic()` |
+
+> 与续班服务 tab **同一索引**（`ads_large_subclazz_user_index`），只是筛选/指标口径不同；**无独立 MySQL 表**。
+
 ## 接口清单
 
 ### 1. 列表数据（进页面 + 筛选 / 翻页 / 排序）

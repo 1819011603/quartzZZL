@@ -13,6 +13,14 @@
 
 > 页面级接口（config / gray / schema）见 [_page.md](./_page.md)。
 
+## 数据来源（ES / 表）
+
+| 接口 | 数据来源 | ES 集群 / 客户端 | 后端代码 |
+|---|---|---|---|
+| `/roster/stageFeedback/page`（主列表）、`/count` | ES 索引 **`ads_large_clazz_user_index`**（拆分后按年份 `ads_large_clazz_user_<year>`，查询别名 `ads_large_clazz_user`） | `es-cn-4xl3gu6ls0007l185.elasticsearch.aliyuncs.com:9200`（bean `studentServeClient`，Apollo `${student.serve.es.cluster.host}`） | `StageFeedBackService.page()`，索引由 `EsGrayService.getLargeEsIndices(...)` 按年份/班级决定 |
+
+> 走**大班课花名册**同一 ES 索引（与 default tab 同源）；**无独立 MySQL 表**。
+
 ## 接口清单
 
 ### 1. 列表数据（进页面 + 筛选 / 翻页 / 排序）

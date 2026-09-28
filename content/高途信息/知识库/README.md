@@ -17,6 +17,20 @@
 - 一个页面一个目录；页面级信息放 `_page.md`；**每个 tab 单独一个文件**。
 - 命名用前端路由/文件名（如 `clazzRosterOL`），tab 文件用 `tabKey`（如 `continuationService`）。
 
+## 已收录页面
+
+| 页面路由 | 名称 | 仓库 | tab |
+|---|---|---|---|
+| `/crm/cronus/clazzRosterOL` | 班级花名册 | cronus | default / stageFeedback / refundPrevention / continuationService |
+| `/crm/cronus/lessonList` | 课节管理 | cronus | default / lessonprepare / lessonAfter / emLessonAfter / prepareRelationLesson |
+| `/crm/cronus/lessonStudentList` | 课节学员 | cronus | default / prepareUser / lessonAfterUser / emLessonAfterUser / prepareRelationLessonUser |
+| `/crm/cronus/microLessonStudentList` | 小班课节学员 | cronus | — |
+| `/crm/cronus/microClazzManage` | 小班课管理 | cronus | — |
+| `/crm/cronus/microClazzRoster` | 小班课花名册 | cronus | default / continuationService |
+| `/crm/cronus/onebyOneRoster` | 一对一花名册 | cronus | — |
+| `/crm/cronus/examManagement` | 考试管理 | cronus | — |
+| `/crm/microFairy/tutoringClassManage` | 辅导班管理 | boss-counselor | — |
+
 ## tab 文件模板
 
 ```md
