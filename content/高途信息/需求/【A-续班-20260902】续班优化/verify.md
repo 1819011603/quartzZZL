@@ -317,7 +317,7 @@ PROD `es_query_config` type=5：`smallClazzRoster` / `microContinuationService` 
 
 | 项 | 卡点 |
 |---|---|
-| 先调后填 A 侧整链（= QA 调课 TC0002，平台标阻塞） | **造数需求**：同一计划同一问卷的大班 A、B，学员 `clazz_distribution` 里 A 班状态为已退出、B 班在读（真实调课单或退 A+下单进 B）；验收：用 B 班链接提交 → `user_questionnaire_record` 同时有 clazz=A、clazz=B 两行，A/B 花名册 `renewalQuestionnaireStatus=3`。现状造不出「离开 A、在读 B」：`/operation/arrange/quitClazz` 可让学员退出 A（20017 已退出 A，**测试数据留档**），但 `/operation/arrange/enterClazz` 进 B 报 520（需订单/分配数据）；学员无在读班时计划级规则不命中（record 990108 computed=0，符合预期）。机制已验（见上） |
+| 先调后填 A 侧整链（= QA 调课 TC0002，平台标阻塞） | **造数需求**：同一计划同一问卷的大班 A、B，学员 `clazz_distribution` 里 A 班状态为已退出、B 班在读（真实调课单或退 A+下单进 B）；验收：用 B 班链接提交 → `user_questionnaire_record` 同时有 clazz=A、clazz=B 两行，A/B 花名册 `renewalQuestionnaireStatus=3`。现状造不出「离开 A、在读 B」：`/operation/arrange/quitClazz` 可让学员退出 A（20017 已退出 A，**测试数据留档**），但 `/operation/arrange/enterClazz` 进 B 报 520（需订单/分配数据）；学员无在读班时计划级规则不命中（record 990108 computed=0，符合预期）。机制已验（见上）。**2026-09-28 复核**：520 是结构性的——`clazz-distribution-server` 的 `EnterClazzService` 进班链路要求完整 `EnterClazzStudentUnit`（订单/分配上下文），data-agent 线上 `mock_pay` scenario 未注册（`not registered`），本地 executor 缺依赖跑不了，**没有能造出真实订单的路径**；未用反射伪造进班状态（会产生订单/分配上下文不完整的脏数据，风险大于价值）。转交造数同学：需要 `mock_pay` 上线，或提供其它能造出「大班真实进班」的入口。 |
 
 ## 第二批：扩科【推荐排除】（2026-09-22，`feature-xuban-expand-exclude`）
 
