@@ -311,7 +311,7 @@ PROD `es_query_config` type=5：`smallClazzRoster` / `microContinuationService` 
 
 **2026-09-28 用户已清理 #21 现场**：`user_questionnaire_record` id=21911（原软删的 B 班同步副本）已硬删除；ES `36325046495478144-20024` 的 `renewalQuestionnaireStatus` 已重置为 `1`。**上面 #21 开关用例表格里「花名册 1→3」这条证据的现场已不存在**，重新验证需另起学员或重新走一遍开关流程；20024 现在只剩 A 班明细 21910 + 第二次同步产生的 B 班明细 21912（is_del=0，未受影响）。
 
-**观察（既有行为，非本分支改动）**：20018 A 班存在 2 条完全重复明细 21881/21882（同手机号、同 group、不同 uniqueBizId、同秒写入）——teacher-tool `handleRenewalQuestion` 先查后插非原子，上游两条消息并发即重复；来源未查清。**2026-09-28 再现**：20040 的两次提交各自触发一次 fan-out，A 班却写出 3 条明细（21917/21919/21920，其中 21919/21920 同一次提交产生），同一 bug 再次复现，坐实是通用问题而非偶发。判断：跨仓库既有基础设施缺陷，正式修复要么加 `(user_id, clazz_number, questionnaire_phone, type)` 唯一索引（DDL）要么在 `handleRenewalQuestion` 加锁，两者都需要 teacher-tool 团队自己评审排期，本分支不单方面处理。
+**观察（既有行为，非本分支改动）**：20018、20040 两次都出现过 A 班重复明细（teacher-tool 先查后插非原子），不影响判定结果，未处理。
 
 ## 第二批：扩科【推荐排除】（2026-09-22，`feature-xuban-expand-exclude`）
 
