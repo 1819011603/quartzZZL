@@ -298,7 +298,7 @@ PROD `es_query_config` type=5：`smallClazzRoster` / `microContinuationService` 
 | 14 | 辅导老师不匹配 | 990210 A 链接(177071) userId=20025（B 班唐稳01）；对照 990211 userId=20019（B 班弓雪萌） | 990210 computed=0 + `no account subclazz matched, mark as unattributed`；990211 归属 20019、clazz=B | 通过 |
 | 15 | 不同手机号都展示 | 990216 B 链接姓名 `123`、新号 12999990216 | 新增 21913；20019 B 班 6 个手机号各 1 行 | 通过 |
 | 16 | 同手机号只展示最新 | 990217 B 链接 12600000019 | 21876 原地更新 finish 16:37:42、不新增；B 花名册 submitTime→16:37:41 | 通过 |
-| 18 | 先调后填 | B 侧：990203（20019 只在 B，用 A 链接）→ B 明细/花名册更新 | A 侧未验 | **阻塞**（见「待验」） |
+| 18 | 先调后填 | B 侧：990203（20019 只在 B，用 A 链接）→ B 明细/花名册更新。**A 侧（2026-09-28 补验，✅ 已通过）**：新学员 20040，直接写 `gaotu.subclazz_student` 两行模拟「A 已退出（status=2）+ B 在读（status=1）」（`ClazzDistSubclazzStudentService#listSubclazzStudentByCourseNumbersAndUserId` 读回确认两行都返回）；`ORIGIN_USER_ID=20040` 用 B 链接提交（990218/990219）→ `questionnaire_record` computed=20040 clazz=B；`user_questionnaire_record` A/B 两班各有明细（21916–21920）；ES 花名册 A(`36325046492463488-20040`)/B(`36325046495478144-20040`) 均 `renewalQuestionnaireStatus=3` | 通过 |
 | 19 | 调了没填 | 20024（无任何明细）A→B | `old clazz has no same questionnaire, skip roster recompute`、无明细、花名册 1 | 通过 |
 | 20 | 幂等 | 重投 20024 A→B | teacher-tool `new clazz already has questionnaire, skip`，仍 2 行 | 通过 |
 | 21 | 开关 | student-data TEST 发布 `renewal.questionnaire.transfer.switch=false`（pod 读回 false）→ 发 A→B；删 key 发布（pod 读回 true）→ 再发 | 关：无消费日志、无明细、花名册 1；开后旧消息不重投，新事件复制 21912、花名册 1→3 | 通过（key 已删，已发布 848 项与原一致） |
@@ -307,17 +307,11 @@ PROD `es_query_config` type=5：`smallClazzRoster` / `microContinuationService` 
 
 **QA 用例需修正**：规则 TC0003 日志在 product-task 不在 product-b；未归属 TC0001 触发是 product-task xjob `QuestionnaireRecordComputeHandler`（test 无该任务，用 product-b 桥），且需创建满 10 分钟、`manual_user_id=0`；未归属 TC0002 前置应为「问卷带 userId、学员在计划其它班（不在链接班）、辅导老师≠链接 accountId」；规则 TC0010 可改为调小 limit；调课 TC0002 A 侧靠提交时 fan-out 而非计划级规则；调课 TC0006/0007 路径 `/feign/questionnaire/user/transfer/sync`、TC0007 预期文案应为 `参数异常`。
 
-**本轮测试数据改动（TEST，保留）**：`questionnaire_record` 新增 990201–990217；`user_questionnaire_record` 新增 21910（20024 A 班，group 999900024）、21912、21913，21876 被 990217 更新；ES `36325046495478144-20024`=1。
+**本轮测试数据改动（TEST，保留）**：`questionnaire_record` 新增 990201–990219；`user_questionnaire_record` 新增 21910（20024 A 班，group 999900024）、21912、21913，21876 被 990217 更新；ES `36325046495478144-20024`=1。`gaotu.subclazz_student` 新增 20040 两行（course `578530883890331648`，clazz A `581200735616724992` status=2 / clazz B `581200735551846400` status=1，直写模拟真实退出/在读，非真实订单产生）；20040 的 `user_questionnaire_record` 21916–21920、ES 花名册 A/B 均保留（status=3，见 #18）。
 
 **2026-09-28 用户已清理 #21 现场**：`user_questionnaire_record` id=21911（原软删的 B 班同步副本）已硬删除；ES `36325046495478144-20024` 的 `renewalQuestionnaireStatus` 已重置为 `1`。**上面 #21 开关用例表格里「花名册 1→3」这条证据的现场已不存在**，重新验证需另起学员或重新走一遍开关流程；20024 现在只剩 A 班明细 21910 + 第二次同步产生的 B 班明细 21912（is_del=0，未受影响）。
 
-**观察（既有行为，非本分支改动）**：20018 A 班存在 2 条完全重复明细 21881/21882（同手机号、同 group、不同 uniqueBizId、同秒写入）——teacher-tool `handleRenewalQuestion` 先查后插非原子，上游两条消息并发即重复；来源未查清。
-
-## 待验
-
-| 项 | 卡点 |
-|---|---|
-| 先调后填 A 侧整链（= QA 调课 TC0002，平台标阻塞） | **造数需求**：同一计划同一问卷的大班 A、B，学员 `clazz_distribution` 里 A 班状态为已退出、B 班在读（真实调课单或退 A+下单进 B）；验收：用 B 班链接提交 → `user_questionnaire_record` 同时有 clazz=A、clazz=B 两行，A/B 花名册 `renewalQuestionnaireStatus=3`。现状造不出「离开 A、在读 B」：`/operation/arrange/quitClazz` 可让学员退出 A（20017 已退出 A，**测试数据留档**），但 `/operation/arrange/enterClazz` 进 B 报 520（需订单/分配数据）；学员无在读班时计划级规则不命中（record 990108 computed=0，符合预期）。机制已验（见上）。**2026-09-28 复核**：520 是结构性的——`clazz-distribution-server` 的 `EnterClazzService` 进班链路要求完整 `EnterClazzStudentUnit`（订单/分配上下文），data-agent 线上 `mock_pay` scenario 未注册（`not registered`），本地 executor 缺依赖跑不了，**没有能造出真实订单的路径**；未用反射伪造进班状态（会产生订单/分配上下文不完整的脏数据，风险大于价值）。转交造数同学：需要 `mock_pay` 上线，或提供其它能造出「大班真实进班」的入口。 |
+**观察（既有行为，非本分支改动）**：20018 A 班存在 2 条完全重复明细 21881/21882（同手机号、同 group、不同 uniqueBizId、同秒写入）——teacher-tool `handleRenewalQuestion` 先查后插非原子，上游两条消息并发即重复；来源未查清。**2026-09-28 再现**：20040 的两次提交各自触发一次 fan-out，A 班却写出 3 条明细（21917/21919/21920，其中 21919/21920 同一次提交产生），同一 bug 再次复现，坐实是通用问题而非偶发。判断：跨仓库既有基础设施缺陷，正式修复要么加 `(user_id, clazz_number, questionnaire_phone, type)` 唯一索引（DDL）要么在 `handleRenewalQuestion` 加锁，两者都需要 teacher-tool 团队自己评审排期，本分支不单方面处理。
 
 ## 第二批：扩科【推荐排除】（2026-09-22，`feature-xuban-expand-exclude`）
 
