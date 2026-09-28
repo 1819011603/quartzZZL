@@ -283,11 +283,41 @@ PROD `es_query_config` type=5：`smallClazzRoster` / `microContinuationService` 
 - **先调后填 A 侧**（PRD 最终效果第 4 条）：**查询侧按班级取**——student-center `RenewalService#pageQueryQuestionnaire` → teacher-tool `queryRecordsMultiByClazz`，SQL 为 `project_number = 问卷 AND clazz_number IN (所查班级) AND user_id IN (该班花名册)`，不跨班；A 能看到靠**写入侧 fan-out 给 A 落一条 clazz=A 的明细**。不经调课同步，走提交时 fan-out——`DwsRenewalQuestionnaireConsumer` 用 `listStudentByUidByCourseNos(userId, shareCourses, getAllStatus())` 取学员**所有状态**班级，明细 `sendTeacherToolQuestionMsg` 与花名册 `updateQuestionnaireStatus` 都对该列表逐班写、无状态过滤。**实测**：20019 在课程 `467797268366426112` 下的已退出班 `467798149581307904`（status=2）会被该接口返回 → 已离开的 A 班同样会写入。整链未造：无法造「离开 A、在读 B」真实状态（大班调课受收款账户限制、同课程不可重复购买、造数引擎无退款工具）。B 侧已由 S3 端到端验证。
 - **小班调课（2026-09-24 17:12，✅ 端到端已验证）**：小班 `529222801226287104`（计划 `529067710552891392` 进行中、绑定问卷 bizId `17085061328535727`）。学员 1449414 的该班明细 20560 临时挪到假原班 `999000222`、小班花名册置 1，arthas 发调课 `999000222 → 529222801226287104`：日志 `writeCommitStatus | isSmallClazz: true`；明细复制出 21884（clazz=新班，同 group）；ES `ads_small_clazz_user` `529222801226287104-1449414` 状态 **1→3**、`submitTime=1774419606000`。已还原（删 21884、20560 挪回、花名册本就为 3）。另：小班 `529911462177622016` 计划已不存在 → 正确走「新班未绑定问卷，skip」。小班花名册脚本 `/tmp/es_set_small.py <docId> <status>`。
 
+### QA 用例 49607 全量回归（2026-09-28，dev-3，✅ 22/23 通过、1 阻塞）
+
+用例 https://qa.baijia.com/banshan/#/caseManager/171/49607/70678/3（tangwen01，23 条）。环境：分支未合 master → 只能测试环境；四服务重发 dev-3 并按 `imageName` 核对：student-data `70c32f0f` / teacher-tool `c169f274` / product-task、product-b `f549f407`，均 eureka UP。本轮 CDS recordId 990201–990217，发送 `/tmp/cds_send2.py`（`ORIGIN_USER_ID=<uid>` 带 userId）；调课 `/tmp/send_t.sh`（pod 已改 `student-data-7f5f6ccd77-g6fhr`）。
+
+| # | QA 用例 | 入参 | 实测 | 结论 |
+|---|---|---|---|---|
+| 1/17 | 全局 TC0001 / 调课 TC0001 | 提交 990201（A 链接，userId=20017）+ 20024 A 班插明细 21910 后发 A→B | 20017 computed=20017、A 花名册 3；B 复制 21911（新 uniqueBizId、同 group）、B 花名册 1→3、submitTime=A 明细 finish | 通过（提交人与调课人分开，大班真实调课受收款账户限制） |
+| 2 | 全局 TC0002 | 20018 B→A（B 明细 21869 属 project `999…`） | teacher-tool `no old record to share, projectNumber is 1732…`，A 无新增 | 通过 |
+| 3 | 规则1 userId | 990201 A 链接 userId=20017、姓名 `1234`(20020)、手机号 12600000019(20019) | computed=20017 | 通过 |
+| 4–11 | 规则2–7 / 优先级 / 计划隔离 | 990202–990209（同 P1–P5/R1/R2） | 20017/20019/20019/20018/20019/20018/20017/0 | 通过 |
+| 12 | 同名上限 | arthas 临时 `NamePlanRuleService.studentNameQueryLimit=0`（需 `options strict false`）→ 990214；还原 20 → 990215 | 0 → 20018 | 通过（等价代跑：测试库所有同名学员 ID 最小的都在本计划内，造不出第 21 位；已还原并读回 20、strict=true） |
+| 13 | 未归属重试 | product-b acl 桥 `QuestionnaireRecordService#dealNotExistedComputeUser` ×4 | 365/366 retry 1→2→3→3；370(990214) 首轮自动归属 20018 | 通过（「达阈值后人工绑定」未验） |
+| 14 | 辅导老师不匹配 | 990210 A 链接(177071) userId=20025（B 班唐稳01）；对照 990211 userId=20019（B 班弓雪萌） | 990210 computed=0 + `no account subclazz matched, mark as unattributed`；990211 归属 20019、clazz=B | 通过 |
+| 15 | 不同手机号都展示 | 990216 B 链接姓名 `123`、新号 12999990216 | 新增 21913；20019 B 班 6 个手机号各 1 行 | 通过 |
+| 16 | 同手机号只展示最新 | 990217 B 链接 12600000019 | 21876 原地更新 finish 16:37:42、不新增；B 花名册 submitTime→16:37:41 | 通过 |
+| 18 | 先调后填 | B 侧：990203（20019 只在 B，用 A 链接）→ B 明细/花名册更新 | A 侧未验 | **阻塞**（见「待验」） |
+| 19 | 调了没填 | 20024（无任何明细）A→B | `old clazz has no same questionnaire, skip roster recompute`、无明细、花名册 1 | 通过 |
+| 20 | 幂等 | 重投 20024 A→B | teacher-tool `new clazz already has questionnaire, skip`，仍 2 行 | 通过 |
+| 21 | 开关 | student-data TEST 发布 `renewal.questionnaire.transfer.switch=false`（pod 读回 false）→ 发 A→B；删 key 发布（pod 读回 true）→ 再发 | 关：无消费日志、无明细、花名册 1；开后旧消息不重投，新事件复制 21912、花名册 1→3 | 通过（key 已删，已发布 848 项与原一致） |
+| 22 | 同班 | feign 直连 old=new | `code=0,data=false,msg=无需同步` | 通过 |
+| 23 | 必填校验 | 四种缺参 | 均 `code=400 参数异常` | 通过（**预期文案与实现不符**：`@Valid` 先拒，Controller 的「参数错误：…必填项」走不到） |
+
+**QA 用例需修正**：规则 TC0003 日志在 product-task 不在 product-b；未归属 TC0001 触发是 product-task xjob `QuestionnaireRecordComputeHandler`（test 无该任务，用 product-b 桥），且需创建满 10 分钟、`manual_user_id=0`；未归属 TC0002 前置应为「问卷带 userId、学员在计划其它班（不在链接班）、辅导老师≠链接 accountId」；规则 TC0010 可改为调小 limit；调课 TC0002 A 侧靠提交时 fan-out 而非计划级规则；调课 TC0006/0007 路径 `/feign/questionnaire/user/transfer/sync`、TC0007 预期文案应为 `参数异常`。
+
+**本轮测试数据改动（TEST，保留）**：`questionnaire_record` 新增 990201–990217；`user_questionnaire_record` 新增 21910（20024 A 班，group 999900024）、21912、21913，21876 被 990217 更新；ES `36325046495478144-20024`=1。
+
+**2026-09-28 用户已清理 #21 现场**：`user_questionnaire_record` id=21911（原软删的 B 班同步副本）已硬删除；ES `36325046495478144-20024` 的 `renewalQuestionnaireStatus` 已重置为 `1`。**上面 #21 开关用例表格里「花名册 1→3」这条证据的现场已不存在**，重新验证需另起学员或重新走一遍开关流程；20024 现在只剩 A 班明细 21910 + 第二次同步产生的 B 班明细 21912（is_del=0，未受影响）。
+
+**观察（既有行为，非本分支改动）**：20018 A 班存在 2 条完全重复明细 21881/21882（同手机号、同 group、不同 uniqueBizId、同秒写入）——teacher-tool `handleRenewalQuestion` 先查后插非原子，上游两条消息并发即重复；来源未查清。
+
 ## 待验
 
 | 项 | 卡点 |
 |---|---|
-| 先调后填 A 侧整链 | 造不出「离开 A、在读 B」：`/operation/arrange/quitClazz` 可让学员退出 A（20017 已退出 A，**测试数据留档**），但 `/operation/arrange/enterClazz` 进 B 报 520（需订单/分配数据）；学员无在读班时计划级规则不命中（record 990108 computed=0，符合预期）。机制已验（见上） |
+| 先调后填 A 侧整链（= QA 调课 TC0002，平台标阻塞） | **造数需求**：同一计划同一问卷的大班 A、B，学员 `clazz_distribution` 里 A 班状态为已退出、B 班在读（真实调课单或退 A+下单进 B）；验收：用 B 班链接提交 → `user_questionnaire_record` 同时有 clazz=A、clazz=B 两行，A/B 花名册 `renewalQuestionnaireStatus=3`。现状造不出「离开 A、在读 B」：`/operation/arrange/quitClazz` 可让学员退出 A（20017 已退出 A，**测试数据留档**），但 `/operation/arrange/enterClazz` 进 B 报 520（需订单/分配数据）；学员无在读班时计划级规则不命中（record 990108 computed=0，符合预期）。机制已验（见上） |
 
 ## 第二批：扩科【推荐排除】（2026-09-22，`feature-xuban-expand-exclude`）
 
