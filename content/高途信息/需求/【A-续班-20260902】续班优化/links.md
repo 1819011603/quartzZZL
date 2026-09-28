@@ -66,4 +66,4 @@ tags: [需求, 链接]
 - **TAPD 工时任务** → 真相源 TAPD 服务端，用 `tapd-task` 现查
 - **反讲 TODO** → 真相源飞书反讲文档 `8.1.3 Todo List`
 - **待办表** → 真相源飞书多维表格
-- **case** → 真相源 case 平台，用 `banshan-case` 现查
+- **case** → 真相源 case 平台，用 `banshan-case` 现查。问卷匹配 QA 用例（tangwen01，23 条）：https://qa.baijia.com/banshan/#/caseManager/171/49607/70678/3（caseId `49607` / recordId `70678`）
