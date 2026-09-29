@@ -45,7 +45,7 @@ tags: [需求]
 
 | | |
 |---|---|
-| 阶段 | 联调中（同步 job → 快照表 → 查询接口 → 触达全链路已在 test-eco-2 用 mock 数据跑通） |
+| 阶段 | 联调完成（同步 job → 快照表 → student-data Feign → student-center 真实用户接口 → 触达全链路已在 test-eco-2 用 mock 数据端到端跑通，仅剩上线配置） |
 | 进度 | T 4/5 · R 0/0 · C 0/0 |
 | 部署泳道 | 2026-09-29 重新发了 test-eco-2（student-data + student-data-dws），eureka UP，跑的是本次 schema 改造后的代码 |
 | 当前卡点 | 无阻塞；剩 T-05 上线配置 |
@@ -60,6 +60,8 @@ tags: [需求]
   - U2（无变化/跨级下降）、U3（分层回升）两个场景**没能验到**：截止时间过滤用的是这两个学员在 ES 花名册里的**真实**续班/结课状态，这两个学员是 2026-09-07 造的旧 fixture，三周后真实状态已经过了 7 天截止线，被 `PredictLevelDeadlineChecker` 正确判定超期跳过（业务逻辑符合预期，不是缺陷）。要验这两个分支需要换成当前仍在读的新学员/辅导班，未来联调可重新挑。
 - 查询接口 `/feign/predict/levelReason`（scene=1，U1）返回 3 个变化点、原因卡 6 条因子，idx=2/5（不可干预）正确无 `suggestAction`。
 - `RenewalLevelDownNotifyHandler`（dataDt=20260907）：扫描=1、成功=1（U1 的 B→C 下降），飞书发到 `predict.level.down.notify.receiver.override` 配置的 `zhangzeling@gaotu.cn`；**收件人已在「ees助手-test」实收到消息**（"学员newlife学员ID6511186386，续班意向由B下降为C。为避免学员不续班，建议老师尽快与学员沟通，解决学员续班问题。"，截图确认），不止是 handleCode=200；重复触发同一天验证 Redis 幂等键生效（扫描=1、重复跳过=1）。
+- **student-center 真实用户接口 `/ai/clazzUser/predictLevelReason` 也已端到端验证**（2026-09-29 追加）：部署 test-eco-2 后，经真实网关 `test-fuwu.baijia.com/bgwApi/student-center`（`traffic-env: test-eco-2`）+ 真实 CAS 登录态调用，scene=1/2 均返回 `code:0`，数据与 student-data 内部 Feign 一致。之前误判为"需要真实浏览器登录"，其实域名用错了（应该信 `invoke_http`/`qingzhou-route` 第一次解析出的 `fuwuBase`，而不是套用文档里另一个项目的示例域名）。
+- 额外补测：scene=2 查询、hover 按 `recordDt` 查历史快照、无数据学员返回空结构 `{"changeHistoryList":[]}`、同步 job 幂等重跑（不产生重复行）、xjob 参数三种格式（空/单 scene/scene+区间）——全部通过。
 - xjob 已在 test 建好两个任务（`SyncPredictLevelReasonHandler` id=9710、`RenewalLevelDownNotifyHandler` id=9711），当前是「已停止」，等提测前再评估要不要常驻启动。
 
 ## 下一步
