@@ -30,7 +30,7 @@ tags: [需求, 任务]
 | T-09 | 【问卷匹配】调课调班同步（明细 + 花名册状态） | 已完成 | — | v2 单一入口 + 3 轮对抗复审（不可靠重试判断、teacher-tool 重复复制、原班无问卷短路+null 兼容），均已 E2E 验证，见 [[verify]]「先填后调缺陷修复」+「第三轮」 |
 | T-10 | 【扩科推荐】新增【推荐排除】：product-server 配置 + student-data 计算侧过滤 + cart 推荐适配 | 已完成 | — | 分支 `feature-xuban-expand-exclude`。B/C 端真实入口 E2E 已验证；修掉 cart fastjson SnakeCase 致 Feign 恒空的真 bug（`96e334b8`）。详见 [[verify]]「第二批」 |
 
-| T-11 | 【AI 配置化】部门→模块开关（Apollo，不接 GAIA）：student-data 配置+匹配服务+分析侧（续班5/6、退费5、续班1/2/3圈选实时+历史）+ feign 透出；student-center 展示侧 | 进行中 | 分析侧（续班/退费归因/退费预测）、展示侧、**圈选侧（2026-09-24 pod 内断言圈选条件）**均已 E2E；补单测 11 条（`3777608bc`）。2026-09-24 改灰度语义（空配置=全放开、fail-open，`24be1d776`/`a3a4d7cb5`），dev-1 复验中 | 分支 `feature-xuban-expand-exclude`（student-data + student-center，均已 push：`c91d5cd66`/`7b9215766`，口径修正 `12e41da47`/`84ec1b732`）。**口径**：部门 = 老师（二讲）虚拟组织架构主岗路径，按 `_` 分段精确命中；模块 code 续班 `1-8`、退费 `tutoring/learning/satisfaction/refund_root_cause/service_suggestion/prediction`；**未配置=关闭**。配置 key `renewal.ai.dept.module.switch` / `refund.ai.dept.module.switch`；feign `POST /feign/ai/module/switch/query` |
+| T-11 | 【AI 配置化】部门→模块开关（Apollo，不接 GAIA）：student-data 配置+匹配服务+分析侧（续班5/6、退费5、续班1/2/3圈选实时+历史）+ feign 透出；student-center 展示侧 | 已完成 | — | 分支 `feature-xuban-expand-exclude`（student-data + student-center，均已 push：`c91d5cd66`/`7b9215766`，口径修正 `12e41da47`/`84ec1b732`）。**口径**：部门 = 老师（二讲）虚拟组织架构主岗路径，按 `_` 分段精确命中；模块 code 续班 `1-8`、退费 `tutoring/learning/satisfaction/refund_root_cause/service_suggestion/prediction`；**灰度语义（`24be1d776`/`a3a4d7cb5`）：未配置=全量放开，配置后只放开命中部门；展示侧不可判定（无登录态/查询异常/结果缺该模块）一律 fail-open**。配置 key `renewal.ai.dept.module.switch` / `refund.ai.dept.module.switch`；feign `POST /feign/ai/module/switch/query`。2026-09-29 dev-1 补验通过：① arthas 无 web 上下文直调 → `true`（fail-open）；② 真实 HTTP 入口（登录态 177071）配不匹配部门（两个不同值）→ `data:{}`（拦截生效，未被 fail-open 误放行）；③ 配 177071 真实部门 `6816343048455168` → 返回完整数据（正对照）；验证完 Apollo 已改回原值 `{"97349606689168923":[1..8]}` 并读回确认 |
 
 ## R- 反讲整改项
 
@@ -57,5 +57,4 @@ tags: [需求, 任务]
 
 > 每个未闭环任务「怎样才算完成」的可检查判据；完成一项删一行，全部闭环后本节为空。
 
-- T-09 先调后填 A 侧：造数受限，机制已验；小班调课已端到端通过。上线顺序 teacher-tool 先于 student-data。
 - T-10 「在读」补 2 条（线上 operationMode / 订单未全部退款）代码未见实现 —— 用户：后面确认。

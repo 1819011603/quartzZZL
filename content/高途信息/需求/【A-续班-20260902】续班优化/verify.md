@@ -268,7 +268,19 @@ product-task pod `product-task-gaotu100-com-5c49c6f665-fgmjd`（10.218.237.230�
 | 灰度中 | 恢复 `{"97349606689168923":[1..8]}` | 同上 | ✅ 未命中部门全 false |
 
 - student-data 新 pod `student-data-764ff58fbd-z77q5`(10.218.238.232) eureka UP；Apollo 已恢复并读回。
-- ⚠️ student-center 新 pod `student-center-789db6448c-frnlj` **一直 Pending 无 IP（集群调度/资源问题）**，泳道仍是旧 pod，fail-open 仅单测验证、未在环境验证。
+- ⚠️ student-center 新 pod `student-center-789db6448c-frnlj` **一直 Pending 无 IP（集群调度/资源问题）**，泳道仍是旧 pod，fail-open 仅单测验证、未在环境验证。**2026-09-29 已补验，见下节，结论已更新**。
+
+### student-center 展示侧 fail-open 环境补验（2026-09-29，dev-1，✅ 已验证）
+
+前次 pod 调度问题已解决：`student-center-865c9c4547-wld47`（commit `a3a4d7cb`）、`student-data-867b58c649-l7znj`（commit `24be1d77`）均 eureka UP，就是当时验证卡住的那两个 commit，直接在其上补验，不用重发。
+
+| 分支 | 验证方式 | 实测 |
+|---|---|---|
+| 无登录态 → fail-open | arthas 直调 `AiModuleSwitchQueryService#isRenewalModuleEnabled(1)`（无 web 请求上下文，`LoginInfoUtils` 天然取不到登录态） | ✅ `true` |
+| 部门显式不匹配 → 仍拦截 | 真实 HTTP `POST /bgwApi/component/student-center/problem/fulfillProblem/overview`（proxy 登录态 177071），Apollo `renewal.ai.dept.module.switch` 临时改成两个不同的不匹配部门号（`999999999999999999`、`97349606689168923` 本身也不匹配 177071） | ✅ 两次都 `data:{}`（拦截形态），确认 fail-open 没有把显式 false 也放行 |
+| 部门匹配（正对照） | 同接口，Apollo 临时改成 177071 真实部门 `6816343048455168` | ✅ 返回完整数据（`score:100` 等），与拦截态对比清晰 |
+
+验证过程：Apollo 每次改值都读回确认 pod 内存值同步（arthas 查 `AiDeptModuleSwitchConfig#renewalDeptModuleSwitch`）后再发请求；验完已改回原值 `{"97349606689168923":[1,2,3,4,5,6,7,8]}` 并读回确认。**T-11 至此三条分支（无登录/不匹配拦截/匹配放行）全部环境验证通过，状态置为已完成。**
 
 ### 扩科「在读」口径缺口（已登记，用户：后面确认）
 

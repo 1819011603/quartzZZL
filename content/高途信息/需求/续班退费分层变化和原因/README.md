@@ -46,11 +46,11 @@ tags: [需求]
 
 | | |
 |---|---|
-| 阶段 | 联调完成（同步 job → 快照表 → student-data Feign → student-center 真实用户接口 → 触达全链路已在 test-eco-2 用 mock 数据端到端跑通，仅剩上线配置） |
+| 阶段 | 联调完成（同步 job → 快照表 → student-data Feign → student-center → **真实 EES 页面渲染出趋势图和原因卡**，全链路在 test-eco-2 端到端跑通，仅剩上线配置） |
 | 进度 | T 4/5 · R 0/0 · C 0/0 |
-| 部署泳道 | 2026-09-29 重新发了 test-eco-2（student-data + student-data-dws），eureka UP，跑的是本次 schema 改造后的代码 |
-| 当前卡点 | 无阻塞；剩 T-05 上线配置 |
-| 最近更新 | 2026-09-29：算法真表已确认（见上「已定共识」），`AiPredictLevelReasonDetail`/DDL/同步服务已按新结构改完并合入 release、单测 23 个全过；test-eco-2 全链路验证通过（见下「验证结果」） |
+| 部署泳道 | 2026-09-29 重新发了 test-eco-2（student-data + student-data-dws + student-center），eureka UP |
+| 当前卡点 | 无阻塞；剩 T-05 上线配置（需合并发布到 release 池，真实用户默认流量才能看到） |
+| 最近更新 | 2026-09-29：算法真表已确认（见上「已定共识」）；`AiPredictLevelReasonDetail`/DDL/同步服务已按新结构改完并合入 release、单测 23 个全过；test-eco-2 全链路验证通过，含真实浏览器页面截图确认（见下「验证结果」）；前端仓库/分支/接口已查明并记入知识库 |
 
 ## 验证结果（2026-09-29）
 
@@ -61,10 +61,12 @@ tags: [需求]
   - U2（无变化/跨级下降）、U3（分层回升）两个场景**没能验到**：截止时间过滤用的是这两个学员在 ES 花名册里的**真实**续班/结课状态，这两个学员是 2026-09-07 造的旧 fixture，三周后真实状态已经过了 7 天截止线，被 `PredictLevelDeadlineChecker` 正确判定超期跳过（业务逻辑符合预期，不是缺陷）。要验这两个分支需要换成当前仍在读的新学员/辅导班，未来联调可重新挑。
 - 查询接口 `/feign/predict/levelReason`（scene=1，U1）返回 3 个变化点、原因卡 6 条因子，idx=2/5（不可干预）正确无 `suggestAction`。
 - `RenewalLevelDownNotifyHandler`（dataDt=20260907）：扫描=1、成功=1（U1 的 B→C 下降），飞书发到 `predict.level.down.notify.receiver.override` 配置的 `zhangzeling@gaotu.cn`；**收件人已在「ees助手-test」实收到消息**（"学员newlife学员ID6511186386，续班意向由B下降为C。为避免学员不续班，建议老师尽快与学员沟通，解决学员续班问题。"，截图确认），不止是 handleCode=200；重复触发同一天验证 Redis 幂等键生效（扫描=1、重复跳过=1）。
-- **student-center 接口用手工指定泳道头能通，但真实前端流量走不通**（2026-09-29，chrome-devtools 抓真实浏览器网络请求发现）：手工 curl 加 `traffic-env: test-eco-2` 走 `test-fuwu.baijia.com/bgwApi/student-center/...` 能拿到 `code:0`；但真实登录用户（代课李文玉老师，无自定义泳道头）在 EES 页面里点开 AI 分析 tab，前端组件 `IntentPrediction` 发出的真实请求 `POST /bgwApi/component/student-center/ai/clazzUser/predictLevelReason` 返回 **404**（同页面其它兄弟接口如 `ai/clazzUser/userPortrait`/`ai/renewal/reason/detail` 全部 200，只有这条 404）。根因：真实用户流量走 release/base 池，我这条分支的后端代码只发布在 test-eco-2 一个 pod 上，没有走 traffic-env 泳道头就不会命中；**这个功能对真实用户来说现在还看不到**，要等分支合并发布才会好，不是代码 bug。
-- **前端代码已经写完并部署到测试环境**（2026-09-29 确认）：组件仓库 `gaotu-fe/gaotu-btech-fe/gaia-widget-submodule/aianalysisinformations`（GAIA 微组件 `AiAnalysisInformations`，即 EES 学员详情页"AI 分析" tab），分支 `feature-refund-reason-20260825`，核心代码在 `src/components/IntentPrediction/`（趋势图 `LevelTrendChart` + 原因卡 `FactorCard`）。该分支 `package.json` 版本 `0.0.54-alpha.1` 与测试环境当前实际加载的组件版本完全一致，说明**前端已经是最新代码，`USE_MOCK` 开关已经关掉在等真实后端**。前后端字段契约核对完全对齐（`factorName`/`featureCode`/`category`/`importance` 是前端故意不用/选填的字段，不是缺失）。
-- 额外补测：scene=2 查询、hover 按 `recordDt` 查历史快照、无数据学员返回空结构 `{"changeHistoryList":[]}`、同步 job 幂等重跑（不产生重复行）、xjob 参数三种格式（空/单 scene/scene+区间）——全部通过。
+- **真实前端页面端到端验证通过**（2026-09-29，chrome-devtools 抓真实浏览器网络请求）：真实登录用户（代课李文玉老师，无自定义泳道头）在 EES 页面里点开 AI 分析 tab，前端组件 `IntentPrediction` 发出的请求 `POST /bgwApi/component/student-center/ai/clazzUser/predictLevelReason` 一开始返回 **404**（同页面其它兄弟接口全部 200，只有这条 404）。用 `qingzhou-observe.trace_tree` 查完整调用链证实：网关→teacher-tool 代课鉴权→student-center 每一跳 `trafficMarker` 都是 `"default"`，即请求走的是 release/base 池，没有走到只发了这条分支代码的 test-eco-2 pod。之后用户在真实浏览器请求里显式加上 `traffic-env: test-eco-2` 头重放，**页面正确渲染出趋势图（中→高两个点）和 6 条因子原因卡**，证实前后端链路本身完全没问题，只是真实用户默认流量拿不到这个头、需要等分支合并发布到 release 池。
+- **前端代码已经写完并部署到测试环境**（2026-09-29 确认）：组件仓库 `gaotu-fe/gaotu-btech-fe/gaia-widget-submodule/aianalysisinformations`（GAIA 微组件 `AiAnalysisInformations`，即 EES 学员详情页"AI 分析" tab），分支 `feature-refund-reason-20260825`，核心代码在 `src/components/IntentPrediction/`（趋势图 `LevelTrendChart` + 原因卡 `FactorCard`）。该分支 `package.json` 版本 `0.0.54-alpha.1` 与测试环境当前实际加载的组件版本完全一致，说明**前端已经是最新代码，`USE_MOCK` 开关已经关掉在等真实后端**。前后端字段契约核对完全对齐（`factorName`/`featureCode`/`category`/`importance` 是前端故意不用/选填的字段，不是缺失）。**GAIA 前端组件没有泳道概念**（CDN 上只有 `gaia-widget/test/...` 一份共享构建，没有 `test-eco-N` 路径），跟后端按泳道隔离完全是两套机制。
+- **mock 因子内容已按日期/场景做区分**（2026-09-29）：最初为了快速验证链路，5 条快照（U1 续班 3 天 + 退费 2 天）用的是同一份因子文案，hover 切换日期时内容完全一样；已重新造数让每天内容不同（如出勤率/作业完成率数值随分层恶化逐日下降），重跑同步 job 刷新快照表后，hover 查询不同 `recordDt` 确认返回不同因子内容。
+- 额外补测：scene=2 查询、hover 按 `recordDt` 查历史快照（含内容随日期变化）、无数据学员返回空结构 `{"changeHistoryList":[]}`、同步 job 幂等重跑（不产生重复行）、xjob 参数三种格式（空/单 scene/scene+区间）——全部通过。
 - xjob 已在 test 建好两个任务（`SyncPredictLevelReasonHandler` id=9710、`RenewalLevelDownNotifyHandler` id=9711），当前是「已停止」，等提测前再评估要不要常驻启动。
+- 页面接口知识库已补全：`知识库/aianalysisinformations/`（`_page.md` 页面级分层逻辑、`renewal.md`/`refund.md` 全量接口清单、`intentPrediction.md` 本次新模块详情），供以后查工单直接用。
 
 ## 下一步
 
@@ -84,6 +86,7 @@ tags: [需求]
 |---|---|---|
 | /Users/gaotu/IdeaProjects/JavaProject/student-data | feature-predict-level-reason | 同步 job：`student-data-dws/.../dws/job/sync/SyncPredictLevelReasonHandler`；触达 job：`student-data-facade/.../job/predict/RenewalLevelDownNotifyHandler`；领域：`student-data-service/.../domain/predict/`（`PredictLevelReasonSyncService`、`PredictLevelReasonQueryService`、`RenewalLevelDownNotifyService`、`PredictLevelDeadlineChecker`、`PredictLevelReasonGrayService`）；Feign：`PredictLevelReasonController`（`/feign/predict/levelReason`）；建表：`doc/xuban/predict_level_reason.sql` |
 | /Users/gaotu/IdeaProjects/JavaProject/student-center | feature-predict-level-reason | `student-center-web/.../ai/RenewalClazzUserController`（`/ai/clazzUser/predictLevelReason`）、`student-center-adapter/.../acl/PredictLevelReasonAclService` |
+| `gaotu-fe/gaotu-btech-fe/gaia-widget-submodule/aianalysisinformations`（本机未克隆，走 GitLab API 查） | feature-refund-reason-20260825 | `src/components/IntentPrediction/`（`LevelTrendChart`、`FactorCard`、`service.ts`、`types.ts`）；GAIA 组件名 `AiAnalysisInformations`，projectId 14312；页面接口全量清单见知识库 `aianalysisinformations/` |
 
 ## 上线影响面
 
