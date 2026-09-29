@@ -282,9 +282,14 @@ product-task pod `product-task-gaotu100-com-5c49c6f665-fgmjd`（10.218.237.230�
 
 验证过程：Apollo 每次改值都读回确认 pod 内存值同步（arthas 查 `AiDeptModuleSwitchConfig#renewalDeptModuleSwitch`）后再发请求；验完已改回原值 `{"97349606689168923":[1,2,3,4,5,6,7,8]}` 并读回确认。**T-11 至此三条分支（无登录/不匹配拦截/匹配放行）全部环境验证通过，状态置为已完成。**
 
-### 扩科「在读」口径缺口（已登记，用户：后面确认）
+### 扩科「在读」口径缺口（2026-09-29 复核，结论更新）
 
-README 已定共识写「上课形式为线上 / 订单未全部退款**现有链路没有，需补**」，但 `RenewalInReadSubjectService` Javadoc 写「均已在写表链路内过滤」；实查 `OdsSmallRenewalSubjectSyncService` / `DwsRenewalSubjectConsumer` / `BackClazzUserSubjectService` 均无 operationMode / 退款状态过滤，expand-exclude 分支也未改写表链路 → **这两条大概率未实现**（全退款可能经退班删行间接覆盖，未证实）。另：小班当前课 → 取大班在读的推荐链路、全局开关 `renewal.expand.exclude.switch=false` 回退均无 E2E。
+README 原写「上课形式为线上 / 订单未全部退款**现有链路没有，需补**」，产品反馈这两条是既有功能、之前做过。重新查代码 + 查库，结论分开：
+
+- **「订单未全部退款」✅ 确认已实现**：不是 student-data 自己过滤的，是 `clazz-distribution-server` 的 `OrderEventRefundSuccessConsumer#consumeOrder`（`clazz-distribution-server-jobs/.../consumers/rocketmq/order/OrderEventRefundSuccessConsumer.java:59-62`）——`RefundOrderStatus.NORMAL_REFUND`（正常退款/退课）会调 `enterClazzService.quitClazzAndDelRight`，退课后触发 `SUBCLAZZ_QUIT` 事件，student-data 收到后把这条记录从「在读」表里删掉。「退款不退课」类型不退课，仍保留在读，这个也符合预期。所以"在读"本身已经排除了会退课的那种退款，是靠上游机制间接满足的。
+- **「上课形式为线上」❌ 代码确实没有过滤**，但**实测数据上不构成风险**：`dws_fuwu_clazz_user_subject`/`dws_small_clazz_user_subject` 两张表字段里没有 `operation_mode` 列（查不到就没法按它过滤）；写入前置校验（`DwsRenewalSubjectConsumer#checkFilter`、`OdsSmallRenewalSubjectSyncService` 的进班处理）只查成人课/课程类型/赠课标签/预售/学季枚举；上游消息路由 `SubclazzStudentMsgProducer#isOmoClazz`（clazz-distribution-server）只区分 OMO 和非 OMO，`OperationModeEnum.OFFLINE(2)` 在整个仓库里除枚举定义外未被引用过。**查了 PROD 全部 3739 个续班计划绑定过的前置课程（`course_center.course.operation_mode`），100% 是线上(1)，零线下、零 OMO**——现状没有风险，是因为业务上从没人往续班计划里绑过线下课程，不是代码挡住了。course-center 确实支持创建线下课程（`arrange1v1offline` 体系是真实在用的），如果哪天有人把线下课程绑进续班计划，这条学员会被误判为"在读"，扩科排除会悄悄失效、不报错。**记录待跟踪，暂不改代码**（`RenewalInReadSubjectService` 的 Javadoc「均已在写表链路内过滤」这句仍是不准确的，尚未订正）。
+
+另：小班当前课 → 取大班在读的推荐链路、全局开关 `renewal.expand.exclude.switch=false` 回退均无 E2E。
 
 ### 主讲适配线上配置（2026-09-24，✅ 已核实）
 
