@@ -6,6 +6,7 @@ owner: zhangzeling
 branches:
   - student-data:feature-predict-level-reason
   - student-center:feature-predict-level-reason
+  - aianalysisinformations:feature-refund-reason-20260825
 updated: 2026-09-29
 tags: [需求]
 ---
@@ -60,7 +61,8 @@ tags: [需求]
   - U2（无变化/跨级下降）、U3（分层回升）两个场景**没能验到**：截止时间过滤用的是这两个学员在 ES 花名册里的**真实**续班/结课状态，这两个学员是 2026-09-07 造的旧 fixture，三周后真实状态已经过了 7 天截止线，被 `PredictLevelDeadlineChecker` 正确判定超期跳过（业务逻辑符合预期，不是缺陷）。要验这两个分支需要换成当前仍在读的新学员/辅导班，未来联调可重新挑。
 - 查询接口 `/feign/predict/levelReason`（scene=1，U1）返回 3 个变化点、原因卡 6 条因子，idx=2/5（不可干预）正确无 `suggestAction`。
 - `RenewalLevelDownNotifyHandler`（dataDt=20260907）：扫描=1、成功=1（U1 的 B→C 下降），飞书发到 `predict.level.down.notify.receiver.override` 配置的 `zhangzeling@gaotu.cn`；**收件人已在「ees助手-test」实收到消息**（"学员newlife学员ID6511186386，续班意向由B下降为C。为避免学员不续班，建议老师尽快与学员沟通，解决学员续班问题。"，截图确认），不止是 handleCode=200；重复触发同一天验证 Redis 幂等键生效（扫描=1、重复跳过=1）。
-- **student-center 真实用户接口 `/ai/clazzUser/predictLevelReason` 也已端到端验证**（2026-09-29 追加）：部署 test-eco-2 后，经真实网关 `test-fuwu.baijia.com/bgwApi/student-center`（`traffic-env: test-eco-2`）+ 真实 CAS 登录态调用，scene=1/2 均返回 `code:0`，数据与 student-data 内部 Feign 一致。之前误判为"需要真实浏览器登录"，其实域名用错了（应该信 `invoke_http`/`qingzhou-route` 第一次解析出的 `fuwuBase`，而不是套用文档里另一个项目的示例域名）。
+- **student-center 接口用手工指定泳道头能通，但真实前端流量走不通**（2026-09-29，chrome-devtools 抓真实浏览器网络请求发现）：手工 curl 加 `traffic-env: test-eco-2` 走 `test-fuwu.baijia.com/bgwApi/student-center/...` 能拿到 `code:0`；但真实登录用户（代课李文玉老师，无自定义泳道头）在 EES 页面里点开 AI 分析 tab，前端组件 `IntentPrediction` 发出的真实请求 `POST /bgwApi/component/student-center/ai/clazzUser/predictLevelReason` 返回 **404**（同页面其它兄弟接口如 `ai/clazzUser/userPortrait`/`ai/renewal/reason/detail` 全部 200，只有这条 404）。根因：真实用户流量走 release/base 池，我这条分支的后端代码只发布在 test-eco-2 一个 pod 上，没有走 traffic-env 泳道头就不会命中；**这个功能对真实用户来说现在还看不到**，要等分支合并发布才会好，不是代码 bug。
+- **前端代码已经写完并部署到测试环境**（2026-09-29 确认）：组件仓库 `gaotu-fe/gaotu-btech-fe/gaia-widget-submodule/aianalysisinformations`（GAIA 微组件 `AiAnalysisInformations`，即 EES 学员详情页"AI 分析" tab），分支 `feature-refund-reason-20260825`，核心代码在 `src/components/IntentPrediction/`（趋势图 `LevelTrendChart` + 原因卡 `FactorCard`）。该分支 `package.json` 版本 `0.0.54-alpha.1` 与测试环境当前实际加载的组件版本完全一致，说明**前端已经是最新代码，`USE_MOCK` 开关已经关掉在等真实后端**。前后端字段契约核对完全对齐（`factorName`/`featureCode`/`category`/`importance` 是前端故意不用/选填的字段，不是缺失）。
 - 额外补测：scene=2 查询、hover 按 `recordDt` 查历史快照、无数据学员返回空结构 `{"changeHistoryList":[]}`、同步 job 幂等重跑（不产生重复行）、xjob 参数三种格式（空/单 scene/scene+区间）——全部通过。
 - xjob 已在 test 建好两个任务（`SyncPredictLevelReasonHandler` id=9710、`RenewalLevelDownNotifyHandler` id=9711），当前是「已停止」，等提测前再评估要不要常驻启动。
 

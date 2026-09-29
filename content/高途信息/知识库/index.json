@@ -1,13 +1,40 @@
 {
   "version": 1,
-  "updated": "2026-09-28",
+  "updated": "2026-09-29",
   "note": "机读索引：页面/tab → 接口。字段 frontPath=前端 request 路径，backendPath=后端 Controller 路径，service=青舟 appId。",
   "repos": {
     "epic": "http://git.baijia.com/gaotu-fe/gaotu-btech-fe/epic",
     "cronus": "http://git.baijia.com/gaotu-fe/gaotu-btech-fe/cronus",
-    "boss-counselor": "http://git.baijia.com/gaotu-fe/boss-counselor"
+    "boss-counselor": "http://git.baijia.com/gaotu-fe/boss-counselor",
+    "aianalysisinformations": "http://git.baijia.com/gaotu-fe/gaotu-btech-fe/gaia-widget-submodule/aianalysisinformations"
   },
   "pages": [
+    {
+      "route": "gaia-widget:AiAnalysisInformations",
+      "name": "学员详情页 AI 分析 tab（GAIA 微组件，非独立路由）",
+      "repo": "aianalysisinformations",
+      "pageFile": "aianalysisinformations/IntentPrediction/_page.md",
+      "note": "无泳道概念，test/prod 各一份共享构建；当前 currentVersion 对应源码分支查 gaia-center/widget/detail",
+      "tabs": [
+        {
+          "tabKey": "IntentPrediction",
+          "name": "意向预测（分层变化趋势图 + 分层原因）",
+          "file": "aianalysisinformations/IntentPrediction/_page.md",
+          "apis": [
+            {
+              "trigger": "进 tab / hover 历史节点",
+              "method": "POST",
+              "frontPath": "/bgwApi/component/student-center/ai/clazzUser/predictLevelReason",
+              "frontFile": "aianalysisinformations/src/components/IntentPrediction/service.ts",
+              "service": "student-center",
+              "backendPath": "/ai/clazzUser/predictLevelReason",
+              "name": "分层变化趋势图与分层原因",
+              "note": "2026-09-29 实测真实用户走此路径 404，后端功能分支仅发布在 test-eco-2 泳道"
+            }
+          ]
+        }
+      ]
+    },
     {
       "route": "/crm/cronus/clazzRosterOL",
       "name": "班级花名册",
