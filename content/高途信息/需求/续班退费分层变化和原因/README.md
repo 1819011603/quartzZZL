@@ -45,21 +45,32 @@ tags: [需求]
 
 | | |
 |---|---|
-| 阶段 | 联调中（代码已写完，用 mock 数据联调，没跑通） |
-| 进度 | T 1/5 · R 0/0 · C 0/0 |
-| 部署泳道 | 2026-09-07 发过 test-eco-2，之后没再部署；pod 现在是什么状态未确认 |
-| 当前卡点 | 用户说算法真表已 ready，但表名 / 库未知：测试库 ees_data 没有新表，飞书需求节点下 4 篇文档里也没写（T-03） |
-| 最近更新 | 2026-09-28：两仓库已合入最新 origin/release 并 push（无冲突，编译通过，23 个单测通过）；测试库快照表为空 |
+| 阶段 | 联调中（同步 job → 快照表 → 查询接口 → 触达全链路已在 test-eco-2 用 mock 数据跑通） |
+| 进度 | T 4/5 · R 0/0 · C 0/0 |
+| 部署泳道 | 2026-09-29 重新发了 test-eco-2（student-data + student-data-dws），eureka UP，跑的是本次 schema 改造后的代码 |
+| 当前卡点 | 无阻塞；剩 T-05 上线配置 |
+| 最近更新 | 2026-09-29：算法真表已确认（见上「已定共识」），`AiPredictLevelReasonDetail`/DDL/同步服务已按新结构改完并合入 release、单测 23 个全过；test-eco-2 全链路验证通过（见下「验证结果」） |
+
+## 验证结果（2026-09-29）
+
+- Apollo 7 个 `predict.level.*` key 已在 TEST/default 发布并读回确认。
+- Mock 数据：清空旧的 60 行残缺数据（`layer/factors/type` 全空），按新 schema 重造 10 行，覆盖 verify.md 的 4 组场景。
+- `SyncPredictLevelReasonHandler`（scene=1,dt=20260905~07 与 scene=2,dt=20260906~07）触发成功，`handleCode=200`；快照表写入 5 条：
+  - U1（6511186386）续班 A→B→C 3 个变化点，退费 中→高 2 个变化点，两个 scene 各自独立快照，**scene 隔离验证通过**。
+  - U2（无变化/跨级下降）、U3（分层回升）两个场景**没能验到**：截止时间过滤用的是这两个学员在 ES 花名册里的**真实**续班/结课状态，这两个学员是 2026-09-07 造的旧 fixture，三周后真实状态已经过了 7 天截止线，被 `PredictLevelDeadlineChecker` 正确判定超期跳过（业务逻辑符合预期，不是缺陷）。要验这两个分支需要换成当前仍在读的新学员/辅导班，未来联调可重新挑。
+- 查询接口 `/feign/predict/levelReason`（scene=1，U1）返回 3 个变化点、原因卡 6 条因子，idx=2/5（不可干预）正确无 `suggestAction`。
+- `RenewalLevelDownNotifyHandler`（dataDt=20260907）：扫描=1、成功=1（U1 的 B→C 下降），飞书发到 `predict.level.down.notify.receiver.override` 配置的 `zhangzeling@gaotu.cn`；**收件人已在「ees助手-test」实收到消息**（"学员newlife学员ID6511186386，续班意向由B下降为C。为避免学员不续班，建议老师尽快与学员沟通，解决学员续班问题。"，截图确认），不止是 handleCode=200；重复触发同一天验证 Redis 幂等键生效（扫描=1、重复跳过=1）。
+- xjob 已在 test 建好两个任务（`SyncPredictLevelReasonHandler` id=9710、`RenewalLevelDownNotifyHandler` id=9711），当前是「已停止」，等提测前再评估要不要常驻启动。
 
 ## 下一步
 
-1. 拿到算法真表的表名和库，对比字段后改 `AiPredictLevelReasonDetail`。
-2. 部署到 test-eco-2，预置 Apollo（见 [`verify.md`](verify.md)），xjob 手动触发 `SyncPredictLevelReasonHandler`，参数 `1,20260905,20260907`，核对快照表写入 7 条。
+1. T-05：线上 DDL 工单（`predict_level_reason_snapshot`）、Apollo PROD 配置、xjob PROD 建任务、代课接口权限登记 31、student-data-api 定版发 RELEASE。
+2. 如果还要验 U2/U3 那两个分支（无变化不落库、分层回升不触达），换一批当前仍处于「未续班未结课」状态的学员/辅导班重新造 mock。
 
 ## 待确认
 
-- [ ] 算法真表表名和字段 —— 等梓淳 / yuyong
-- [ ] 分层和概率的真实来源，和因子数据是否同一个 dt —— 等上游算法
+- [x] 算法真表表名和字段 —— 已确认：`u_strategy.dwd_user_test_service_renew_lift_reason_df_df`，经天工同步到 MySQL `ees_data.ai_predict_level_reason_detail`（2026-09-29）
+- [ ] 分层和概率的真实来源，和因子数据是否同一个 dt —— 等上游算法（算法真表当前不下发概率，快照表 `predict_score`/`model_version` 落空）
 - [ ] 算法能否改成增量计算（全量 50 万学员要 2.31 天，T+1 / T+2 都做不到）—— 等产品和算法
 - [ ] 退费原因卡本期是否只出趋势图 —— 等产品
 
