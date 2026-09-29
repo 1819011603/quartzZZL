@@ -6,7 +6,7 @@ owner: zhangzeling
 branches:
   - student-data:feature-predict-level-reason
   - student-center:feature-predict-level-reason
-updated: 2026-09-28
+updated: 2026-09-29
 tags: [需求]
 ---
 
@@ -33,7 +33,8 @@ tags: [需求]
 
 ## 已定共识
 
-- 算法表是长表，一行一个因子，每个学员 × 辅导班 × 天最多 6 行。EES 按 `idx` 升序原样透传，不排序、不裁剪、不去重（2026-09-04）。
+- ~~算法表是长表，一行一个因子~~ → **改口径（2026-09-29）**：算法真表 `u_strategy.dwd_user_test_service_renew_lift_reason_df_df`（Hive，分区 `dt`/`type`）经天工同步到 MySQL 后，一行即一个「学员 × 辅导班 × 天」，分层在 `layer`（A/B/C/D），因子明细是 `factors` JSON 数组（元素含 idx/factor/direction/actionable/reason/action/logs，≤6 条）。EES 按 `idx` 升序原样透传，不排序、不裁剪、不去重，这条不变。
+- 算法真表不下发预测概率与模型版本，快照表这两列落空（2026-09-29）。
 - 快照表只存变化点：和上一条比分层，相同就跳过；唯一键 `(scene,user_id,subclazz_number,record_dt)` 保证幂等（2026-09-04）。
 - 截止时间：续班 / 退费 / 结课满 7 天停止更新，按 `record_dt` 判断，不按执行日（2026-09-04）。
 - 触达走 EES 自己的飞书应用「ees 助手」，不走消息盒子、企微和通知中心（2026-09-04，PRD 变更）。
