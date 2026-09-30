@@ -282,11 +282,13 @@ product-task pod `product-task-gaotu100-com-5c49c6f665-fgmjd`（10.218.237.230�
 
 验证过程：Apollo 每次改值都读回确认 pod 内存值同步（arthas 查 `AiDeptModuleSwitchConfig#renewalDeptModuleSwitch`）后再发请求；验完已改回原值 `{"97349606689168923":[1,2,3,4,5,6,7,8]}` 并读回确认。**T-11 至此三条分支（无登录/不匹配拦截/匹配放行）全部环境验证通过，状态置为已完成。**
 
-### 扩科「在读」上课形式过滤已补（2026-09-30，dev-1 部署中）
+### 扩科「在读」上课形式过滤已补（2026-09-30，✅ dev-1 已验证）
 
 **改动**：`RenewalInReadSubjectService`（student-data，`feature-xuban-expand-exclude` `dce3b3a45`）读在读科目表后，按班级上课形式补充过滤——`ClazzSyncAclService#listByNumbersFromCache`（60s 缓存）批量查 `ClazzDO.operationMode`，不在 Apollo 允许列表内的班级整行剔除；**Apollo `renewal.inread.operation.modes`（student-data application）为 list，空/未配 = 不过滤（历史现状）**；查不到上课形式（班级缺失/下游异常）的记录**保守保留**（宁可少排除，不误放大学员在读范围）。单测 `RenewalInReadSubjectServiceTest` 8 条（空配置/大班取小班/小班取大班/查失败保留/非法参数/无在读）全过。
 
 **Apollo**：TEST 已配 `[1]`（仅线上算在读）并**发布生效**（releaseKey `20260930190324-188a49b33afd2313`，读回确认）。回退 = 清空该 key。**PROD 上线后同 key 配 `[1]`**（旧代码不读该 key，先配也无影响）。降级链完整：key 清空 → 不过滤；cart 侧另有 `renewal.expand.exclude.switch` 全局回退。
+
+**dev-1 E2E（2026-09-30，✅）**：新 pod `student-data-69665b9c5-fzd5h`（10.218.237.240，commit `dce3b3a4`）eureka UP；网关桥调 `listOtherModeInReadSubjects(20002, 1)` → `[1,2,4]`（与改前一致，该学员在读班全为线上）；pod 日志 `filterByOperationMode | allowedModes: [1], total: 8, kept: 8`——配置已加载、过滤路径真实执行、线上课零误伤。「剔除线下行」分支 TEST 无线下在读数据可造，由单测覆盖（`should_dropRowsWhoseOperationModeNotInConfig`，大小班两路径）。
 
 ### 扩科「在读」口径缺口（2026-09-29 复核，结论更新）
 

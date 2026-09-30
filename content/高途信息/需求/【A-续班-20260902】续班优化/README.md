@@ -63,7 +63,7 @@ tags: [需求]
 > 2026-09-24 已对照 PRD 原文做用例覆盖审计，缺口与三处待决策见 [[verify]]「用例覆盖审计」。
 
 1. **【已完成·问卷匹配】调课同步按 PRD「AB 非同一问卷不共享」**（2026-09-24 用户定）：student-data 传 B 绑定问卷 bizId，teacher-tool 只复制同 `projectNumber` 明细；对抗复审再修 4 处；dev-3 E2E T1/T2 通过（student-data `660ad3247`+`0ec17d469`，teacher-tool `1260d455`+`c169f274`）。
-2. **【2026-09-30 已补过滤】扩科「在读」「上课形式为线上」**：`RenewalInReadSubjectService` 读表后按班级上课形式补充过滤（`ClazzSyncAclService` 带缓存查 `operationMode`），Apollo `renewal.inread.operation.modes`（student-data）配 list 控制、**空 = 不过滤**（历史现状），查不到上课形式的记录保守保留；单测 8 条全过，student-data `dce3b3a45`（expand-exclude）。「订单未全部退款」已由上游退款退课机制间接满足（2026-09-29 查清）。**TEST 已配 `[1]` 并发布生效**；PROD 上线后同 key 配 `[1]`（旧代码不受影响）。
+2. **【2026-09-30 已补并验证】扩科「在读」「上课形式为线上」**：`RenewalInReadSubjectService` 读表后按班级上课形式补充过滤（`ClazzSyncAclService` 带缓存查 `operationMode`），Apollo `renewal.inread.operation.modes`（student-data）配 list 控制、**空 = 不过滤**（历史现状），查不到上课形式的记录保守保留；单测 8 条全过，student-data `dce3b3a45`（expand-exclude）。「订单未全部退款」已由上游退款退课机制间接满足（2026-09-29 查清）。**TEST 已配 `[1]` 并发布生效，dev-1 E2E 通过**（返回不变、日志确认 `allowedModes: [1]` 过滤路径执行）；PROD 上线后同 key 配 `[1]`（旧代码不受影响）。
 3. **【已完成·问卷匹配重试】修正重试条件**（2026-09-24 用户定修）：`manual_user_id != 0` → `= 0`，product-server `f549f4070`；dev-3 E2E：可匹配记录自动归属、不可匹配封顶 3 次、手动绑定不被重试（见 [[verify]]「T-07」）。
 4. 【问卷匹配】**7 档全部真发 CDS 验证通过**（P1–P5 + 亲属号 R1/R2）；小班调课端到端通过；先调后填 A 侧造数受限、机制已验（见 [[verify]]）。
 5. 【扩科推荐】小班路径、全局开关回退 **已在 dev-1 验证通过**；上线配开关 `renewal.expand.exclude.switch`（代码默认 true）。**2026-09-30：PROD 草稿已建（cart.gaotu100.com application，值 true），发布被权限挡**（zhangzeling 无 cart PROD 发布权，负责人 lijianxiang）——待 lijianxiang 后台发布或授权后再发；不发布不影响功能（默认即 true，key 仅作降级开关）。
