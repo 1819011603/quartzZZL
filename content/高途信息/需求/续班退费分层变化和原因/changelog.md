@@ -16,7 +16,7 @@ tags: [需求, 日志]
 - **展示侧兼容**：student-center `FieldsConvertDataQueryServiceImpl` / `RefundFiledConvertDataQueryServiceImpl` 改为**优先读分层列、缺失回退分数换算**。
 - **老链路要停的两个 job（2026-10-08 查 PROD）**：真正在跑的是 `SyncRenewalLiftSnapshotHandler`(10413, 530, `0 0 12 * * ?`) 和 `refundPredictionCheckHandler`(10073, 314, `0 0 6,9 * * ?`)；`SyncRenewalLiftResultHandler`/`SyncRenewalLiftReasonHandler`/`SyncRefundResultHandler` 早已停止。**注意别把 `SyncRefundResultHandler`（手动回溯入口）当日常 job。**
 - 落点：student-data `d35b935e`、student-center `f389d1865`（单测 `b820460fd`）已发 **test-eco-2**，三服务 eureka UP。
-- 验证：mock 明细 `layer=D` → 桥调 `syncOneDay(1,"20260909")` → 花名册 `renewalIntentionPredictLevelResult` 由 **3→4**、`updateTime` 推进；退费 `aiRefundIntentScoreResult` 实测写 `4`。转换单测 4 个全过。test 的 xjob 9710/9711 已不存在，联调用桥直调代替；新 job PROD 待建。
+- 验证：mock 明细 `layer=D` → 桥调 `syncOneDay(1,"20260909")` → 花名册 `renewalIntentionPredictLevelResult` 由 **3→4**、`updateTime` 推进；退费 `aiRefundIntentScoreResult` 实测写 `4`。转换单测 4 个全过。**xjob**：test 重建 `SyncPredictLevelReasonHandler`=9733 / `RenewalLevelDownNotifyHandler`=9734，指定泳道 pod 触发均 handleCode 200（9733 跑 `1,20260905,20260907` 后 ES 写回 3；9734 Redis 幂等重复跳过）；**PROD 已建 12753（group 530）/ 12754（group 314），均「已停止」待上线启用**。⚠️ 触发默认 `FIRST` 会打到 base pod（handler not found），泳道必须 `execute_address=<pod>`。
 
 ---
 
