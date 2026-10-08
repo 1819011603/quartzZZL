@@ -7,13 +7,13 @@ branches:
   - product-server:feature-xuban-match-opt
   - student-data:feature-xuban-match-opt
   - teacher-tool:feature-xuban-match-opt
-updated: 2026-09-30
+updated: 2026-10-08
 tags: [需求]
 ---
 
 # 【A-续班-20260902】续班优化
 
-> **本目录导航**：[[links|🔗 链接中心]] · [[tasks|✅ 当前任务板]] · [[verify|🧪 验证手册]] · [[changelog|📜 决策摘要]] · [问卷匹配-DDD建模方案.md](问卷匹配-DDD建模方案.md) · [问卷匹配-改动前链路.md](问卷匹配-改动前链路.md)
+> **本目录导航**：[[links|🔗 链接中心]] · [[tasks|✅ 当前任务板]] · [[verify|🧪 验证手册]] · [[changelog|📜 决策摘要]] · [问卷匹配-DDD建模方案.md](问卷匹配-DDD建模方案.md) · [问卷匹配-改动前链路.md](问卷匹配-改动前链路.md) · [问卷匹配-case回归-20261008.md](问卷匹配-case回归-20261008.md)
 > 技术方案（现状 / 方案对比 / 详细设计 / 接口 / 风险）在飞书反讲里，见 [[links]]；本文件只留当前结论和指针。
 > 飞书：需求总入口 https://gaotuedu.feishu.cn/wiki/Qox8wFcmHiXBgnkxFBtcd82gnsh → **技术反讲（子需求 1/2/3/5）https://gaotuedu.feishu.cn/wiki/EC45wOefUi0buMkO7O0cipp9nEc** → **待产品确认清单（21 条，可直接转发产品）https://gaotuedu.feishu.cn/docx/L2yrdOPEAoIOMux1JLXcGtR4nde**
 > 续接这个需求：读完本文件即可。

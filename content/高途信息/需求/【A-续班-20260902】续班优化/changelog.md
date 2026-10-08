@@ -7,6 +7,13 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-10-08（问卷匹配三仓 diff 复核 + 桥方法单测/端到端抽测）
+
+### 🤖 Claude
+- 【问卷匹配】按 `feature-xuban-match-opt` 三仓 vs `origin/master` 逐项核对需求，并用 product-b 桥复测（详见 [[verify]]「全量 diff 复核 + 桥方法单测」）：7 档顺序（**计划级手机号先于班内姓名**）、多命中取最小 ID、跨班兜底 `get(0)`、计划级姓名精确匹配、调课同步同班短路/必填校验均通过。
+- **分支携带项（用户 2026-10-08 确认保留）**：student-data 分支含 `70c32f0f1 fix(presale-coupon): 膨胀券未配置预报名活动降为 warn`（`PresaleCouponServiceImpl`），与问卷匹配无关、仅在该分支；**明确保留，不作为问题**。其余 3 仓 30 个文件均属问卷匹配 / 调课同步。
+- 小瑕疵：`ComputeParams.renewalNumber` 赋值后无规则读取（死字段）；`student-data-client` 依赖 `teacher-tool-api` 升 `1.0.29-SNAPSHOT`（上线前须定版发 RELEASE）。
+
 ## 2026-09-23（AI 模块配置化：部门口径修正 + 扩科真 bug；下午：四项补验 + 花名册顺序风险订正）
 
 ### 👤 我

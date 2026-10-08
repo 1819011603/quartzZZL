@@ -374,6 +374,57 @@ PROD `es_query_config` type=5：`smallClazzRoster` / `microContinuationService` 
 
 **本轮测试数据（TEST，保留）**：`questionnaire_record` 385–388（record_id 990311/990312/990321/990322）及其下游明细。
 
+### 造数项目 + 真实 MQ 链路复测（2026-10-08，dev-3 product-task `1e277cba`，✅ 已验证）
+
+**造数**：qa-data-agent-service 拉到 `origin/release`（`e45d5db`），用其已造环境：计划 `582291836641611776`、问卷 projectNumber `17085061328535721`；A `582291608895033344` / B `582291645278523392` / E `582291663569883136`（同绑 Q1，老师 90247）；S3 `7489636594`（测试学员三，只在 B）、S4 `7489636595`（只在 B）。执行：`python -m core.executor run-workflow submit_renewal_questionnaire`（依赖装在临时 venv）。
+
+**泳道坑（重要）**：造数工具 `cds_form_save_data` 走 CDS（grayTest），产出的 MQ **不带泳道标，被 base 泳道（release 老代码）消费**；把 HTTP 头改成 `traffic-env: test-gtbg-dev-3` 也不传递到 MQ。dev-3 pod 内 `grep -c QuestionnaireRecordConsumer#consume` = 0 证实。→ 要测分支代码，取 CDS 产出的真实报文（`questionnaire_record.origin_data` + `format_data`→`formatDataList`），经 student-data dev-3 桥 `AiCommOnsMqProducer#sendOrderedMessage(String,String,String,String)` **四个字符串参数**重发到 `test_future_landingpage_form_submit`（gapm 透传泳道标，dev-3 隔离日志「当前env与消息env相同，消费消息」）。Object 重载那次 dev-3 收到但每秒重投、无业务日志、不落库（报文形态不对），别用。
+
+| 例 | 入参（A 班链接） | 消费方 | 实测 | 结论 |
+|---|---|---|---|---|
+| D1 | S3 手机号，无 userId（真实 CDS 提交 24036） | base 老代码 | computed=S3、clazz=**B** | 老逻辑：班内不命中→跨班兜底落 S3 真实班 |
+| D2 | S4 手机号，无 userId（真实 CDS 提交 24037） | base 老代码 | computed=S4、clazz=B | 同上 |
+| M1 | 24037 报文重发（990332） | **dev-3** | computed=S4、clazz=**A**；明细只在 B（21944，同手机号原地更新）；ES `36396389295456896-7489636595` status=3 | 新逻辑：同计划手机号命中，记录挂链接班，扇出到真实班，A 无脏数据 |
+| M2 | userId=S3、姓名手机号无主（990341） | dev-3 | computed=S3、clazz=B；明细 1 行 S3@B | 跨班兜底 `get(0)` 落本人班 |
+| M3a | 姓名 `'测试学员三 '`（尾空格）（990342） | dev-3 | computed=0；广播 4 行 user_id=0 | 精确匹配，不 trim |
+| M3b | 姓名 `'测试学员三'`（990343） | dev-3 | computed=S3、clazz=A；明细 S3@B | 同计划姓名命中 |
+| M4 | 姓名手机号无主（990344） | dev-3 | computed=0；广播 4 行（A/B/E + 第 4 班 `582291712689377280`） | 未归属按问卷广播（既有逻辑） |
+
+dev-3 pod `QuestionnaireRecordConsumer#consume` 计数 = 5（M1–M4 共 5 条）。
+
+**注意**：TEST 库出现 record_id 990401（computed 20025）/990402（20018），16:26 创建，**不是本会话造的**，来源未知，未处理。
+
+### 全量 diff 复核 + 桥方法单测 + 端到端抽测（2026-10-08，dev-3，✅）
+
+**范围**：`feature-xuban-match-opt` 三仓 vs `origin/master`（product-server 11 文件 / student-data 12 / teacher-tool 10）。dev-3 现存 product-b `product-b-6647d8887-5lzlq`（commit `1e277cba`）、service/domain 同源。
+
+**桥方法单测**（`com.gaotu.product.service.renewal.questionnaire.ComputeUserService#compute`，product-b 桥，`traffic-env: test-gtbg-dev-3`；plan = `[578530883890331648]`）：
+
+| 例 | 入参要点 | 期望 | 实测 |
+|---|---|---|---|
+| P1 | 假班 + plan + 姓名`123` | 计划级姓名 → 20018 | ✅ |
+| P2 | 假班 + 姓名`123`（无 plan） | 不命中 | ✅ `[]` |
+| P3 | 链接班 + plan + 姓名`123` | 20018 | ✅ |
+| P4 | 假班 + plan + 手机号`12600000018` | 计划级手机号 → 20018 | ✅ |
+| P5 | B班 + plan + 姓名`123` | 班内姓名 → 20019 | ✅ |
+| P6 | B班 + 手机号`12600000018` + 姓名`123` | **计划手机号(20018) 先于班内姓名(20019)** | ✅ 20018 |
+| P7 | B班 + originUserId `20019` | originUser 最高优先 | ✅ 20019 |
+| P8 | 假班 + plan + 姓名`无此人己` | 不命中 | ✅ `[]` |
+| P10 | 假班 + plan + 姓名`123` | 多命中取 ID 最小 | ✅ 20018 |
+
+**端到端抽测**（product-b 桥 `QuestionnaireRecordService#dealCDSMsg(FormSubmitMqDTO)`，A 链接 bindNumber `578693906093350912`）：
+
+| 例 | 入参 | 实测（DB `questionnaire_record`） |
+|---|---|---|
+| E1 跨班兜底 get(0) | userId=20025（只在 B）、姓名/手机号无主 | record 990401 computed=**20025**、clazz=**B**(581200735551846400) ✅ |
+| E2 计划级姓名跨班 | userId 空、姓名`123` | record 990402 computed=**20018**、clazz=**链接班**(578530888321613824) ✅ |
+
+**其它桥方法**：teacher-tool `QuestionnaireFeignController#syncTransferQuestionnaire` 同班 old=new → `data:false 无需同步` ✅、缺 projectNumber → `参数异常` ✅；student-data `QuestionnaireAclService#queryQuestionnaireMatchResultElseException(B, 578532432171743232)` → `{number:578690742470393856, bizId:17323095168254394}` ✅。
+
+**本轮新增测试数据（TEST，保留）**：`questionnaire_record` record_id 990401/990402（number `583779222907160576` / `583779224836540416`）及其下游明细/花名册。
+
+**coverage 说明**：本次未在 banshan 平台重跑 QA 用例 49607（MCP 未挂载）；23 条上次 2026-09-28 结论仍有效，本次仅对 2026-10-08 改动项（兜底 get(0)、姓名精确匹配、7 档顺序/多命中）做桥复测。
+
 ## 第二批：扩科【推荐排除】（2026-09-22，`feature-xuban-expand-exclude`）
 
 **PROD Apollo（2026-09-30，草稿已建·未生效）**：cart.gaotu100.com / PROD / application 新增 `renewal.expand.exclude.switch=true`（dry_run diff 仅此一条）。发布 403——zhangzeling 有修改权（草稿写入成功）但**无发布权**，负责人 lijianxiang；待其后台发布或授权。不发布不影响功能：代码默认 true，key 仅作降级开关。读回确认走 `apollo_get_key(cart.gaotu100.com, PROD, renewal.expand.exclude.switch)`。
