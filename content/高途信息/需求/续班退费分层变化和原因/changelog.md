@@ -7,6 +7,19 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-10-08 · ES 写回落地 + 上线方案
+
+### 🤖 Claude
+- **新链路写回花名册 ES（续班+退费）**：`PredictLevelReasonSyncService` 落库变化点后发 MQ——续班发 `renewal_lift_result_topic`（tag `renewal_lift_result`），消息**多带一个 `levelOnly=true` 标志位、不带分数**；退费发退费 topic（tag `ai_refund_intent_update`）只带 `aiRefundIntentScoreResult`。写回字段：续班 `renewalIntentionPredictLevelResult`、退费 `aiRefundIntentScoreResult`，**只写分层列**。
+- **兼容/回退开关**：新增 `predict.level.reason.es.write.enable`（默认 true）gate 写回——置 false 时同步照常落库但不发 MQ，可秒级停写、无需发版回退老链路。老链路代码/消费端**一行未删**，老链路靠 `renewal.lift.result.consumer.open.switch` / `dws.refund.intent.switch` + 老 job 启停恢复。
+- **消费端兼容（不改老逻辑）**：`RenewalLiftResultConsumer` 见 `levelOnly` 标志位时只写分层列、跳过分数非空校验；老消息不带该标志，行为不变。退费消费端 `DwsRefundIntentConsumer` 本就认 `aiRefundIntentScoreResult`，未改。
+- **展示侧兼容**：student-center `FieldsConvertDataQueryServiceImpl` / `RefundFiledConvertDataQueryServiceImpl` 改为**优先读分层列、缺失回退分数换算**。
+- **老链路要停的两个 job（2026-10-08 查 PROD）**：真正在跑的是 `SyncRenewalLiftSnapshotHandler`(10413, 530, `0 0 12 * * ?`) 和 `refundPredictionCheckHandler`(10073, 314, `0 0 6,9 * * ?`)；`SyncRenewalLiftResultHandler`/`SyncRenewalLiftReasonHandler`/`SyncRefundResultHandler` 早已停止。**注意别把 `SyncRefundResultHandler`（手动回溯入口）当日常 job。**
+- 落点：student-data `d35b935e`、student-center `f389d1865`（单测 `b820460fd`）已发 **test-eco-2**，三服务 eureka UP。
+- 验证：mock 明细 `layer=D` → 桥调 `syncOneDay(1,"20260909")` → 花名册 `renewalIntentionPredictLevelResult` 由 **3→4**、`updateTime` 推进；退费 `aiRefundIntentScoreResult` 实测写 `4`。转换单测 4 个全过。test 的 xjob 9710/9711 已不存在，联调用桥直调代替；新 job PROD 待建。
+
+---
+
 ## 2026-10-08
 
 ### 🤖 Claude
