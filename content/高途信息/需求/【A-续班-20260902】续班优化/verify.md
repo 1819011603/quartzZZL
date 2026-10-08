@@ -338,6 +338,25 @@ PROD `es_query_config` type=5：`smallClazzRoster` / `microContinuationService` 
 
 **观察（既有行为，非本分支改动）**：20018、20040 两次都出现过 A 班重复明细（teacher-tool 先查后插非原子），不影响判定结果，未处理。
 
+### 恢复跨班兜底 `get(0)` 后复测（2026-10-08，dev-3，✅ 已验证）
+
+**改动**：product-server `92f1a5234` 把 `dealNotExistedComputeUserId` 老师对不上时的处理恢复为 master 原样（`subclazzDTOS.get(0)`），撤销 `2a3486754` 的「判未归属」。理由：计划级 3 规则前置后，走到兜底的基本只剩「userId 在同计划其它班」，候选即本人，`get(0)` 落本人班。
+
+**部署**：product-task `product-task-gaotu100-com-5bffc79698-v2wzx`(10.218.248.136) / product-b `product-b-5d584cd7f4-jb2v8`(10.218.248.157)，均 eureka UP、commit `92f1a523`。
+
+**入口**：product-b acl 桥 `QuestionnaireRecordService#dealCDSMsg(FormSubmitMqDTO)`（servlet 线程，Feign 可用；与 product-task 同一份 domain 代码），报文取 `questionnaire_record` id 366（990210）的 `origin_data` + `format_data`→`formatDataList`，改 id/userId/姓名/手机号。payload 生成脚本已删（临时文件）。
+
+| 例 | 入参 | 改前（09-28 #14） | 实测 | 证据 |
+|---|---|---|---|---|
+| N1 | A 班链接（177071），`userId=20025`（只在 B 班，老师唐稳01），姓名/手机号无主 | record 366 computed=0（判未归属） | ✅ record 382 computed=**20025**、clazz=**B** `581200735551846400` | 明细 21930（user 20025 / B 班）；ES `36325046539911552-20025` status=3（该文档此前可能已为 3，不作为本例增量证据） |
+| N3 | 同链接，无 userId，姓名/手机号无主 | — | ✅ record 383 computed=0、clazz=A | 广播 3 行 user_id=0（21931 A / 21932 C `578530888321613824` / 21933 B），同 group |
+
+日志：TLS/SLS 按 traceId（`product-b.265.17914441157010002`）+ 关键字两次均未命中 `no account subclazz use default`，按 DB 效果判定。
+
+**QA 用例需同步改**：49647 F-TC0003、49607「未归属 TC0002」预期改为「老师对不上时落候选（userId 本人）所在班，日志 `no account subclazz use default`」。
+
+**本轮测试数据（TEST，保留）**：`questionnaire_record` 382/383（record_id 990301/990303）；`user_questionnaire_record` 21930–21933。
+
 ## 第二批：扩科【推荐排除】（2026-09-22，`feature-xuban-expand-exclude`）
 
 **PROD Apollo（2026-09-30，草稿已建·未生效）**：cart.gaotu100.com / PROD / application 新增 `renewal.expand.exclude.switch=true`（dry_run diff 仅此一条）。发布 403——zhangzeling 有修改权（草稿写入成功）但**无发布权**，负责人 lijianxiang；待其后台发布或授权。不发布不影响功能：代码默认 true，key 仅作降级开关。读回确认走 `apollo_get_key(cart.gaotu100.com, PROD, renewal.expand.exclude.switch)`。

@@ -24,7 +24,7 @@ tags: [需求, 任务]
 | T-03 | 代码定位：扩科推荐优化 | 已完成 | — | 结论见 README 子需求3 |
 | T-04 | 代码定位：数据落表 | 已完成 | — | 结论见 README 子需求4；需数仓侧确认落表方式才能继续 |
 | T-05 | 代码定位：AI模块配置化 | 已完成 | — | 结论见 README 子需求5 |
-| T-06 | 【问卷匹配】product-server 改动（ComputeParams 扩字段/解析前移、3 条 plan 级规则、Apollo 7 档顺序、去兜底） | 已完成 | — | 已部署 `test-gtbg-dev-3`，7 档逻辑反射实测 6 例全过（见 [[verify]]）；无绑定号收敛本批不做 |
+| T-06 | 【问卷匹配】product-server 改动（ComputeParams 扩字段/解析前移、3 条 plan 级规则、Apollo 7 档顺序） | 已完成 | — | 已部署 `test-gtbg-dev-3`，7 档逻辑反射实测 6 例全过（见 [[verify]]）；无绑定号收敛本批不做。**2026-10-08 用户定：跨班兜底恢复 master 原样 `get(0)`**（`92f1a5234`，dev-3 复测 N1 userId 跨班 → 归属本人 B 班），原「去兜底」作废 |
 | T-07 | 【问卷匹配】重试 Job `dealNotExistedComputeUser` 加「重试次数」标记 | 已完成 | — | `questionnaire_record.retry_count`（TEST DDL 已加）+ `no.compute.user.max.retry.count:3`；未归属记录累加、达阈值不再重试。2026-09-24 E2E：连跑 4 次 0→1→2→3 后不再选中（见 [[verify]]「T-07」）；2026-09-24 修正重试条件 `manual_user_id != 0` → `= 0`（`f549f4070`），dev-3 E2E 通过 |
 | T-08 | 【问卷匹配】teacher-tool 明细改动 | 已完成 | — | 不加续班计划列；改派不做。改为**新增调课调班消费者**（见 T-09） |
 | T-09 | 【问卷匹配】调课调班同步（明细 + 花名册状态） | 已完成 | — | v2 单一入口 + 3 轮对抗复审（不可靠重试判断、teacher-tool 重复复制、原班无问卷短路+null 兼容），均已 E2E 验证，见 [[verify]]「先填后调缺陷修复」+「第三轮」 |
