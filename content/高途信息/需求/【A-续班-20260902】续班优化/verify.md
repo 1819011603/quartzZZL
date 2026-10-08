@@ -357,6 +357,23 @@ PROD `es_query_config` type=5：`smallClazzRoster` / `microContinuationService` 
 
 **本轮测试数据（TEST，保留）**：`questionnaire_record` 382/383（record_id 990301/990303）；`user_questionnaire_record` 21930–21933。
 
+### 同计划姓名不 trim、精确匹配（2026-10-08，dev-3，✅ 已验证）
+
+**用户定**：姓名不 trim，按原值精确匹配（与同班姓名规则一致）。
+
+**根因**：只去掉 `NamePlanRuleService` 的 `trim()`（`56957130a`）不够——用户中心 `UserAclService#listByStudentName("123 ")` 本身忽略首尾空格，返回 100 个 `student_name='123'` 的学员（最小 20018、20019…）。故 `1e277cba4` 对返回结果再按原值 `studentName.equals(baseInfo.studentName)` 精确过滤。
+
+**部署**：product-b `product-b-6647d8887-5lzlq`(10.218.249.69) / product-task `product-task-gaotu100-com-6cc999b6f5-t5d2t`(10.218.248.186)，均 eureka UP、commit `1e277cba`。入口同上（product-b 桥 `dealCDSMsg`，C 班链接 bindNumber `578693906093350912`，C 班无人叫 `123`，20018 在 A、20019 在 B）。
+
+| 例 | 姓名 | 只去 trim（`56957130`） | 精确比对（`1e277cba`） |
+|---|---|---|---|
+| T1 尾空格 | `'123 '` | ❌ record 385 computed=20018（同计划姓名档命中，用户中心忽略空格） | ✅ record 387 computed=**0**（计划级不命中） |
+| T2 对照 | `'123'` | record 386 computed=20018 | ✅ record 388 computed=20018（同计划姓名多命中取最小） |
+
+**既有行为（未改）**：T1 不命中后走跨班兜底，兜底收集候选时**仍 trim**（master 原样），选到 20019 的 B 班 → 在 B 班重跑规则（原值 `'123 '`）仍不命中 → 记录 computed=0、clazz=B。
+
+**本轮测试数据（TEST，保留）**：`questionnaire_record` 385–388（record_id 990311/990312/990321/990322）及其下游明细。
+
 ## 第二批：扩科【推荐排除】（2026-09-22，`feature-xuban-expand-exclude`）
 
 **PROD Apollo（2026-09-30，草稿已建·未生效）**：cart.gaotu100.com / PROD / application 新增 `renewal.expand.exclude.switch=true`（dry_run diff 仅此一条）。发布 403——zhangzeling 有修改权（草稿写入成功）但**无发布权**，负责人 lijianxiang；待其后台发布或授权。不发布不影响功能：代码默认 true，key 仅作降级开关。读回确认走 `apollo_get_key(cart.gaotu100.com, PROD, renewal.expand.exclude.switch)`。
