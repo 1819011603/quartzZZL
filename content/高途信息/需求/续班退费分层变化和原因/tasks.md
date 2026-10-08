@@ -14,6 +14,7 @@ tags: [需求, 任务]
 | T-03 | 按算法真表对齐 Entity 和字段 | 已完成 | — | 算法真表 `u_strategy.dwd_user_test_service_renew_lift_reason_df_df` 已确认；`AiPredictLevelReasonDetail`/DDL/同步服务已改完，student-data `b5b4601e9`（2026-09-29） |
 | T-04 | 用 mock 数据验证 12:00 触达 job | 已完成 | — | 2026-09-29 验证：飞书消息实收（截图确认），Redis 幂等生效 |
 | T-05 | 上线配置：线上 DDL 工单、Apollo、两个 xjob、代课权限登记、api 定版 RELEASE | 待办 | — | 提测前做 |
+| T-06 | 快照表字段精简（删 `predict_score`/`model_version`/`status`）+ 班级索引 + 按班级回溯桥方法 | 进行中 | — | 代码已改、编译+单测通过；待 push / 发 test-eco-2 / test 库 `DROP COLUMN`+`ADD INDEX`。见 [[changelog]] 2026-10-08 |
 
 ## 完成判据
 

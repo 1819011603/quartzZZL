@@ -31,6 +31,13 @@ tags: [需求, 验证]
 3. 查询走 student-data 自己的 Feign `/feign/predict/levelReason`（student-center 的 `/ai/clazzUser/predictLevelReason` 是它的上层封装，本次未验证），body 为 `{"scene":1,"userId":"6511186386","clazzNumber":"513468253373333504","subclazzNumber":"32112520197832960"}`（大数字传字符串）；查 hover 历史时加 `recordDt`（毫秒时间戳，直接用趋势图返回的值）。2026-09-29 实测返回 3 个变化点、原因卡 6 条因子，idx=2/5 无 `suggestAction`，符合预期。
 4. xjob `RenewalLevelDownNotifyHandler`（test jobId=9711），参数 `20260907`：2026-09-29 实测扫描=1、成功=1（仅 U1，因 U2 已被截止过滤，snapshot 里本来就没有它），override 邮箱实收飞书消息（截图确认）；重复触发验证 Redis 幂等生效（重复跳过=1）。
 5. 验证前先确认新 pod 的 eurekaStatus=UP。
+6. **按班级回溯补数**（job 漏跑 / 失败时用；2026-10-08 新增）：桥调 `PredictLevelReasonSyncService#backfillByClazz(clazzNumber, scene, dataDt)` —— 按班级把该场景某天的算法明细重跑一遍变化点落库，复用 job 同一套 `processBatch` 逻辑（分组 / 校验 / 截止过滤 / 变化点判定 / 唯一键幂等），可安全重复调用。走 acl 桥 `invoke_service`：
+   - `service_method` = `com.gaotu.student.data.domain.predict.PredictLevelReasonSyncService#backfillByClazz`
+   - `params` = `[clazzNumber(字符串), scene(1续班/2退费), dataDt("yyyyMMdd")]`，例 `["513468253373333504", 1, "20260922"]`（大数字传字符串）
+   - 返回统计串（扫描行数 / 聚合组数 / 落库 / 超期跳过 / 丢弃…）；无该班级明细或参数非法返回 null
+   - 依赖索引 `ai_predict_level_reason_detail.idx_clazz_type_dt(clazz_number,type,dt)`（2026-10-08 新增）
+   - 例：`invoke_service project=student-data service_method=com.gaotu.student.data.domain.predict.PredictLevelReasonSyncService#backfillByClazz params=["513468253373333504",1,"20260922"] traffic_env=test-eco-2`
+   - ⚠️ 补数写的是快照表 `predict_level_reason_snapshot`；若只是要看明细，直接查 `ai_predict_level_reason_detail WHERE clazz_number=...`
 
 ## 能验到哪一层
 
