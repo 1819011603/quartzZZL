@@ -38,8 +38,8 @@ tags: [需求, 链接]
 
 | 类型 | 标题 | 链接 | 记录日期 |
 |---|---|---|---|
-| 上线checklist | | | |
-| 发布计划 | | | |
+| 上线checklist | 【A-续班-20260902】续班优化 · 上线方案（问卷匹配优化）（需求总入口子节点） | https://gaotuedu.feishu.cn/wiki/JBsywJOuiijDT9k3MD7cFyl8n9b | 2026-10-08 |
+| 发布计划 | 青舟「问卷匹配优化」id 23716（teacher-tool → product-b → product-task → student-data） | https://qingzhou.baijia.com/#/publishArrangement/subPublishArrangement/publishPlan/detail?storyId=&pageNum=1&id=23716&action=edit | 2026-09-24 |
 | 工单 | | | |
 
 ## 跨会话检索锚点
