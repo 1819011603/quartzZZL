@@ -31,6 +31,10 @@
 | `/crm/cronus/examManagement` | 考试管理 | cronus | — |
 | `/crm/microFairy/tutoringClassManage` | 辅导班管理 | boss-counselor | — |
 | `/ark/app-promotions/continuation-classes` | 续班计划管理（OES，含问卷绑定） | gaotu-fe-promotions | list / renewalProcess |
+| `/ark/app-promotions/continuation-classes/pre-register-activity` | 预报名活动 | gaotu-fe-promotions | — |
+| `/ark/app-yunfan/newJudgeConfig` | 判单配置 | gaotu_yunfan_fe | judgeOrderConfig / protectionPeriodConfig |
+| `/ark/app-yunfan/orderRecall` | 订单可续回溯 | gaotu_yunfan_fe | — |
+| `/ark/app-activity/organization` | 组织架构 | boss-activity | — |
 | 学员详情页 AI 分析 tab（GAIA 微组件，非独立路由） | AI 分析 / 意向预测 | aianalysisinformations | — |
 
 ## tab 文件模板

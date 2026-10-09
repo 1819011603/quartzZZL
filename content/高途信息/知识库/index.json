@@ -7,7 +7,9 @@
   "cronus": "http://git.baijia.com/gaotu-fe/gaotu-btech-fe/cronus",
   "boss-counselor": "http://git.baijia.com/gaotu-fe/boss-counselor",
   "aianalysisinformations": "http://git.baijia.com/gaotu-fe/gaotu-btech-fe/gaia-widget-submodule/aianalysisinformations",
-  "promotions": "http://git.baijia.com/gaotu-fe/gaotu-btech-fe/gaotu-fe-promotions"
+  "promotions": "http://git.baijia.com/gaotu-fe/gaotu-btech-fe/gaotu-fe-promotions",
+  "gaotu_yunfan_fe": "http://git.baijia.com/gaotu-ctech/gaotu_yunfan_fe",
+  "boss-activity": "http://git.baijia.com/gaotu-fe/boss-activity"
  },
  "pages": [
   {
@@ -2454,6 +2456,374 @@
        "note": "表 gaotu.questionnaire_record",
        "id": 2734160,
        "frontMethod": "ProTable fetch=listApi"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "route": "/ark/app-promotions/continuation-classes/pre-register-activity",
+   "name": "预报名活动（OES 续班管理）",
+   "repo": "promotions",
+   "pageFile": "promotions/pre-register-activity/_page.md",
+   "note": "前端 gaotu-fe-promotions src/pages/PreRegisterAvtivity；后端 promotion-management → Feign promotion，表 promotion.pre_order_activity*",
+   "tabs": [
+    {
+     "tabKey": "default",
+     "name": "预报名活动列表 + 新建/编辑/查看抽屉",
+     "file": "promotions/pre-register-activity/_page.md",
+     "apis": [
+      {
+       "trigger": "进页面/查询/翻页",
+       "method": "POST",
+       "frontPath": "/promotionManagement/preOrderActivity/list",
+       "frontFile": "src/pages/PreRegisterAvtivity/index.jsx:48",
+       "service": "promotionmanagement.gaotu100.com",
+       "backendPath": "/promotionManagement/preOrderActivity/list",
+       "name": "预报名活动列表",
+       "id": "2650267",
+       "note": ""
+      },
+      {
+       "trigger": "查看/编辑",
+       "method": "POST",
+       "frontPath": "/promotionManagement/preOrderActivity/detail",
+       "frontFile": "src/pages/PreRegisterAvtivity/CreateOrEditActivity/index.jsx:177",
+       "service": "promotionmanagement.gaotu100.com",
+       "backendPath": "/promotionManagement/preOrderActivity/detail",
+       "name": "预报名活动详情",
+       "id": "2650261",
+       "note": ""
+      },
+      {
+       "trigger": "抽屉保存",
+       "method": "POST",
+       "frontPath": "/promotionManagement/preOrderActivity/edit",
+       "frontFile": "src/pages/PreRegisterAvtivity/CreateOrEditActivity/index.jsx:110",
+       "service": "promotionmanagement.gaotu100.com",
+       "backendPath": "/promotionManagement/preOrderActivity/edit",
+       "name": "新建/编辑预报名活动",
+       "id": "2650262",
+       "note": ""
+      },
+      {
+       "trigger": "保存并发布",
+       "method": "POST",
+       "frontPath": "/promotionManagement/preOrderActivity/editAndPublish",
+       "frontFile": "src/pages/PreRegisterAvtivity/CreateOrEditActivity/index.jsx:148",
+       "service": "promotionmanagement.gaotu100.com",
+       "backendPath": "/promotionManagement/preOrderActivity/editAndPublish",
+       "name": "保存并发布",
+       "id": "2650263",
+       "note": ""
+      },
+      {
+       "trigger": "发布",
+       "method": "POST",
+       "frontPath": "/promotionManagement/preOrderActivity/publish",
+       "frontFile": "src/pages/PreRegisterAvtivity/index.jsx:67",
+       "service": "promotionmanagement.gaotu100.com",
+       "backendPath": "/promotionManagement/preOrderActivity/publish",
+       "name": "发布",
+       "id": "2650265",
+       "note": ""
+      },
+      {
+       "trigger": "作废",
+       "method": "POST",
+       "frontPath": "/promotionManagement/preOrderActivity/abolish",
+       "frontFile": "src/pages/PreRegisterAvtivity/index.jsx:95",
+       "service": "promotionmanagement.gaotu100.com",
+       "backendPath": "/promotionManagement/preOrderActivity/abolish",
+       "name": "作废",
+       "id": "2650266",
+       "note": ""
+      },
+      {
+       "trigger": "删除",
+       "method": "POST",
+       "frontPath": "/promotionManagement/preOrderActivity/delete",
+       "frontFile": "src/pages/PreRegisterAvtivity/index.jsx:81",
+       "service": "promotionmanagement.gaotu100.com",
+       "backendPath": "/promotionManagement/preOrderActivity/delete",
+       "name": "删除",
+       "id": "2650264",
+       "note": ""
+      },
+      {
+       "trigger": "暂停/重启",
+       "method": "POST",
+       "frontPath": "/promotionManagement/preOrderActivity/modifyStatus",
+       "frontFile": "src/pages/PreRegisterAvtivity/index.jsx:120",
+       "service": "promotionmanagement.gaotu100.com",
+       "backendPath": "/promotionManagement/preOrderActivity/modifyStatus",
+       "name": "修改活动状态",
+       "id": "3363885",
+       "note": ""
+      },
+      {
+       "trigger": "添加膨胀券选券",
+       "method": "POST",
+       "frontPath": "/component/student-center/renewal/pre/coupon/list",
+       "frontFile": "src/pages/PreRegisterAvtivity/CreateOrEditActivity/components/ExpansionCoupon/SelectDrawer.jsx:40",
+       "service": "student-center",
+       "backendPath": "/renewal/pre/coupon/list",
+       "name": "预报名可选膨胀券",
+       "id": "5644416",
+       "note": ""
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "route": "/ark/app-yunfan/newJudgeConfig",
+   "name": "判单配置（判单/分边开关、正价课/体验课续班配置）",
+   "repo": "gaotu_yunfan_fe",
+   "pageFile": "yunfan/newJudgeConfig/_page.md",
+   "note": "后端 performance-attribution（AttributionSettingController），表 gaotu_stat.*",
+   "tabs": [
+    {
+     "tabKey": "judgeOrderConfig",
+     "name": "判单/分边开关",
+     "file": "yunfan/newJudgeConfig/judgeOrderConfig.md",
+     "apis": [
+      {
+       "trigger": "进tab/查询/翻页",
+       "method": "POST",
+       "frontPath": "/performance/management/setting/list",
+       "frontFile": "src/pages/JudgeOrderConfig/index.js:46",
+       "service": "performance-attribution",
+       "backendPath": "/performance/management/setting/list",
+       "name": "判单开关列表",
+       "id": "36973",
+       "note": "表 gaotu_stat.performance_attribution_setting"
+      },
+      {
+       "trigger": "编辑/批量配置",
+       "method": "POST",
+       "frontPath": "/performance/management/setting/modify",
+       "frontFile": "src/pages/JudgeOrderConfig/EditModal.js:137",
+       "service": "performance-attribution",
+       "backendPath": "/performance/management/setting/modify",
+       "name": "修改判单开关",
+       "id": "36975",
+       "note": ""
+      },
+      {
+       "trigger": "批量失败反馈",
+       "method": "GET",
+       "frontPath": "/performance/management/setting/enum",
+       "frontFile": "src/pages/JudgeOrderConfig/components/FeedbackTableModal.js:37",
+       "service": "performance-attribution",
+       "backendPath": "/performance/management/setting/enum",
+       "name": "失败原因枚举",
+       "id": "36976",
+       "note": ""
+      }
+     ]
+    },
+    {
+     "tabKey": "protectionPeriodConfig",
+     "name": "正价课续班配置 / 体验课续班配置（保护期&可续）",
+     "file": "yunfan/newJudgeConfig/protectionPeriodConfig.md",
+     "apis": [
+      {
+       "trigger": "切tab/查询/翻页",
+       "method": "POST",
+       "frontPath": "/performance/management/get/protection/period/config",
+       "frontFile": "src/pages/NewJudgeConfig/UniversalPage.js:201",
+       "service": "performance-attribution",
+       "backendPath": "/performance/management/get/protection/period/config",
+       "name": "续班保护期配置列表",
+       "id": "36977",
+       "note": "表 gaotu_stat.clazz_renewal_config / wide_clazz_protect_window_config"
+      },
+      {
+       "trigger": "导出",
+       "method": "POST",
+       "frontPath": "/performance/management/export/protection/period/config",
+       "frontFile": "src/pages/NewJudgeConfig/UniversalPage.js:96",
+       "service": "performance-attribution",
+       "backendPath": "/performance/management/export/protection/period/config",
+       "name": "导出保护期配置",
+       "id": "36978",
+       "note": ""
+      },
+      {
+       "trigger": "正价课模板配置",
+       "method": "POST",
+       "frontPath": "/performance/management/upload/regular/config",
+       "frontFile": "src/pages/NewJudgeConfig/components/EditModal.js:150",
+       "service": "performance-attribution",
+       "backendPath": "/performance/management/upload/regular/config",
+       "name": "正价课模板导入",
+       "id": "36980",
+       "note": ""
+      },
+      {
+       "trigger": "正价课编辑/批量",
+       "method": "POST",
+       "frontPath": "/performance/management/modify/regular/protection/config",
+       "frontFile": "src/pages/NewJudgeConfig/components/EditModal.js:214",
+       "service": "performance-attribution",
+       "backendPath": "/performance/management/modify/regular/protection/config",
+       "name": "修改正价课保护期",
+       "id": "36979",
+       "note": ""
+      },
+      {
+       "trigger": "体验课编辑/批量",
+       "method": "POST",
+       "frontPath": "/performance/management/modify/experience/config",
+       "frontFile": "src/pages/NewJudgeConfig/components/EditModal.js:242",
+       "service": "performance-attribution",
+       "backendPath": "/performance/management/modify/experience/config",
+       "name": "修改体验课配置",
+       "id": "36974",
+       "note": ""
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "route": "/ark/app-yunfan/orderRecall",
+   "name": "订单可续回溯",
+   "repo": "gaotu_yunfan_fe",
+   "pageFile": "yunfan/orderRecall/_page.md",
+   "note": "后端 performance-attribution（CanRenewalController），表 gaotu_stat.order_can_renewal_back",
+   "tabs": [
+    {
+     "tabKey": "default",
+     "name": "订单可续回溯",
+     "file": "yunfan/orderRecall/_page.md",
+     "apis": [
+      {
+       "trigger": "进页面/查询/翻页",
+       "method": "POST",
+       "frontPath": "/performance/management/get/order/canRenewal",
+       "frontFile": "src/pages/OrderRecall/index.js:41",
+       "service": "performance-attribution",
+       "backendPath": "/performance/management/get/order/canRenewal",
+       "name": "订单可续回溯记录",
+       "id": "36985",
+       "note": ""
+      },
+      {
+       "trigger": "可续回溯上传",
+       "method": "POST",
+       "frontPath": "/performance/management/file/upload",
+       "frontFile": "src/pages/OrderRecall/components/EditModal.js:141",
+       "service": "performance-attribution",
+       "backendPath": "/performance/management/file/upload",
+       "name": "文件上传",
+       "id": "36986",
+       "note": ""
+      },
+      {
+       "trigger": "可续回溯提交",
+       "method": "POST",
+       "frontPath": "/performance/management/upload/back/canRenewal/byOrder",
+       "frontFile": "src/pages/OrderRecall/components/EditModal.js:69",
+       "service": "performance-attribution",
+       "backendPath": "/performance/management/upload/back/canRenewal/byOrder",
+       "name": "按订单回溯可续",
+       "id": "36984",
+       "note": ""
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "route": "/ark/app-activity/organization",
+   "name": "组织架构",
+   "repo": "boss-activity",
+   "pageFile": "boss-activity/organization/_page.md",
+   "note": "后端 staff.gaotu100.com，本地无仓库，表未收录",
+   "tabs": [
+    {
+     "tabKey": "default",
+     "name": "组织树 + 成员 + 顶部按钮",
+     "file": "boss-activity/organization/_page.md",
+     "apis": [
+      {
+       "trigger": "进页面/展开节点",
+       "method": "POST",
+       "frontPath": "/staff/organization/showTree.do",
+       "frontFile": "src/page/organization/OrganizationTree/index.js:110",
+       "service": "staff.gaotu100.com",
+       "backendPath": "/organization/showTree",
+       "name": "组织树",
+       "id": "37411",
+       "note": ""
+      },
+      {
+       "trigger": "进页面",
+       "method": "POST",
+       "frontPath": "/staff/organization/type.do",
+       "frontFile": "src/page/organization/index.js:131",
+       "service": "staff.gaotu100.com",
+       "backendPath": "/organization/type",
+       "name": "组织类型字典",
+       "id": "37386",
+       "note": ""
+      },
+      {
+       "trigger": "进页面",
+       "method": "GET",
+       "frontPath": "/staff/admin/getAdminType.do",
+       "frontFile": "src/page/organization/index.js:139",
+       "service": "staff.gaotu100.com",
+       "backendPath": "/admin/getAdminType",
+       "name": "管理员类型",
+       "id": "37361",
+       "note": ""
+      },
+      {
+       "trigger": "进页面",
+       "method": "GET",
+       "frontPath": "/staff/bcpTask/exist",
+       "frontFile": "src/page/organization/TopFunc/components/AbnormalTodo/index.js:14",
+       "service": "staff.gaotu100.com",
+       "backendPath": "/bcpTask/exist",
+       "name": "是否有异动待办",
+       "id": "942573",
+       "note": ""
+      },
+      {
+       "trigger": "进页面",
+       "method": "GET",
+       "frontPath": "/staff/bcpTask/enums",
+       "frontFile": "src/page/organization/TopFunc/components/AbnormalTodo/index.js:19",
+       "service": "staff.gaotu100.com",
+       "backendPath": "/bcpTask/enums",
+       "name": "异动待办枚举",
+       "id": "942568",
+       "note": ""
+      },
+      {
+       "trigger": "点树节点",
+       "method": "POST",
+       "frontPath": "/staff/list/organization/member.do",
+       "frontFile": "src/page/organization/index.js:160",
+       "service": "staff.gaotu100.com",
+       "backendPath": "/list/organization/member",
+       "name": "节点成员列表",
+       "id": "",
+       "note": ""
+      },
+      {
+       "trigger": "点树节点",
+       "method": "POST",
+       "frontPath": "/staff/organization/searchDetailByOrgNumber.do",
+       "frontFile": "src/page/organization/TeamInformation/index.js:80",
+       "service": "staff.gaotu100.com",
+       "backendPath": "/organization/searchDetailByOrgNumber",
+       "name": "节点详情",
+       "id": "",
+       "note": ""
       }
      ]
     }
