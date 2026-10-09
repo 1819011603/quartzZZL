@@ -17,8 +17,11 @@ tags: [需求, 测试, 造数]
 
 | 用例 | 现状 | 建议 |
 |---|---|---|
-| TC0004(A) 无变化不展示 | 靠单测 `should_skip_when_levelUnchanged` | 造一名「未超期 + 连续两天同分层」学员，跑 `SyncPredictLevelReasonHandler` 验证第二天空变化点不落库 |
-| TC0002(G) 六种下降组合 | 靠扫描谓词 `predict_level > pre_predict_level` | 造 6 名学员覆盖 A→B/C/D、B→C/D、C→D，跑 `RenewalLevelDownNotifyHandler` 核对 6 条内容与收件人 |
+| TC0004(A) 无变化不展示 | **已完成（2026-10-09）**：mock 学员 900000008（辅导班 唐稳01YYTS321002）20261010=B/20261011=B，同步 `skippedUnchanged=1`，快照无 20261011 行 | ✅ |
+| TC0002(G) 六种下降组合 | **已完成（2026-10-09）**：归因四(A→B)、900000005(A→C)、归因七(A→D)、归因九(B→C)、900000006(B→D)、900000007(C→D)，`notifyLevelDown(20261011)` 返回 `total=6, success=6` | ✅ |
+
+> 数据挂在真实续班班级「续班归因-正经前置班-0820」（班级 574882679202260992 / 辅导班 唐稳01YYTS321002，老师 唐稳01）下，真实在读学员为 归因二/四/六/七/九（7478102067/72/77/79/80）。
+> 造数脚本见同目录 [`seed_mock_20261010.py`](seed_mock_20261010.py)；数据集明细见 [`case-record.md`](case-record.md) 的「测试数据」。
 
 ---
 

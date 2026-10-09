@@ -45,17 +45,46 @@
 
 ## 关键表
 
-promotion-management 本身不落库，`PreOrderActivityController` 经 Feign `PreOrderActivityRemoteService`（`PROMOTION-B.GAOTU100.COM`，`/domain/promotion/b/preOrderActivity`）调 **promotion** 服务（`PreOrderActivityFeignService` → `PreOrderActivityService`）。
+> 2026-10-09 逐接口追到 mapper XML SQL 核对。
 
-| 表 | 含义 |
-|---|---|
-| `promotion.pre_order_activity` | 预报名活动主表 |
-| `promotion.pre_order_activity_product` | 活动关联商品 |
-| `promotion.promotion_range_relation` | 活动范围关系 |
-| `promotion.promotion_user_relation` / `promotion_user_rule` / `promotion_user_condition_file` | 用户范围（人群、规则、上传的条件文件） |
-| `promotion.renewal_white_user` | 白名单 |
+链路：promotion-management `PreOrderActivityController` → `PreOrderActivityDomainServiceImpl` → Feign `PreOrderActivityRemoteService`（`PROMOTION-B.GAOTU100.COM`，`/domain/promotion/b/preOrderActivity`）→ **promotion** 仓库 `promotion-controller/.../feign/preorder/PreOrderActivityFeignService.java` → `promotion-app/.../service/preorder/PreOrderActivityService.java`（下称 `S`）。
+**promotion-management 自己不碰库**，只额外读 cas（创建人名）、product、course-center。
 
-各接口具体写哪张表未逐个核对，只确认 service 注入了这些 repository。
+### 接口 → 表
+
+| 接口 | promotion 方法 | 读表 | 写表（操作） | 事务 / MQ / 缓存 / 其它 |
+|---|---|---|---|---|
+| list | `S#page:152` | `pre_order_activity`（`is_del=0`，按 name/number/status/type 筛） | 无 | — |
+| detail | `S#detail:489` | `pre_order_activity`、`pre_order_activity_product`；条件型另读 `promotion_range_relation`、`promotion_user_condition_enums`、`promotion_user_condition_ext`；文件型读 `promotion_user_condition_file`；`renewal_white_user`；Feign product-b 读 `gaotu.renewal_pre_order_activity_coupon_scope` | 无 | 另调 coupon Feign 补券信息 |
+| edit · 新建（number 空） | `S#create:610` → `createActivityWithProducts:1056` | 校验读 `pre_order_activity_product`、`pre_order_activity`（券是否被占用 :1476） | **事务内**：`pre_order_activity` INSERT；`pre_order_activity_product` INSERT（每个商品一行）；条件型 `promotion_range_relation` 批量 INSERT；文件型 `promotion_user_condition_file` INSERT + `promotion_user_relation` INSERT；Feign product-b upsert `gaotu.renewal_pre_order_activity_coupon_scope`。**事务外**：`renewal_white_user` 物理 DELETE 再 INSERT | 另调 `clazzAclService` 校验班满；无 MQ |
+| edit · 编辑（number 非空） | `S#edit:562` | 同上 | 仅可改结束时间的状态（`onlyEditEndTime:1903`）：`pre_order_activity` UPDATE 起止时间。其余状态（`updateActivityWithProducts:1089`，事务）：`pre_order_activity` UPDATE；传了商品则 `pre_order_activity_product` 置 `is_del=1` 再 INSERT；传了用户条件则 `promotion_range_relation` / `promotion_user_condition_file` / `promotion_user_relation` 置 `isdel=1` 再重插；传了券则 upsert coupon_scope。两分支事务外都 DELETE+INSERT `renewal_white_user` | 改结束时间分支：发 MQ `modify_status`（时间落在当天才发），**不清缓存**；其余分支清 Redis `promotion:preOrderActivity:visible:{number}` |
+| editAndPublish · 新建 | `S#createAndPublish:679` → `executeCreateAndPublish:891` | 同新建 | 新建的全部写入 + `pre_order_activity` UPDATE `activity_status`（`executePublishStatusUpdate:855`）。事务外：`renewal_white_user` DELETE+INSERT；条件型 `promotion_user_rule` INSERT（ruleId 来自 Feign `RULE.GAOTU100.COM` `postRule`） | 非条件/文件型发 MQ；**不清缓存** |
+| editAndPublish · 编辑 | `S#editAndPublish:716` → `executeEditAndPublish:909` | 同编辑 | 编辑的全部写入（无"仅改结束时间"分支）+ UPDATE `activity_status`；事务外同上 | 非条件/文件型发 MQ；清 Redis（:758） |
+| publish | `S#publish:647` | `pre_order_activity` | **事务内** `pre_order_activity` UPDATE `activity_status`（条件/文件型 → PUBLISHING，否则按时间算）。事务外：条件型 `promotion_user_rule` INSERT（postRule） | 非条件/文件型发 MQ；文件型交给 xjob；**不清缓存** |
+| abolish | `S#abolish:766` | `pre_order_activity`、`promotion_user_rule`（`isdel=0`） | `pre_order_activity` UPDATE `activity_status=ABOLISHED` | 无事务；有规则时 Feign `disableRule`（不改 `promotion_user_rule`）；清 Redis |
+| delete | `S#delete:786` | `pre_order_activity` | `pre_order_activity` UPDATE `is_del=1`（仅待发布状态可删） | 无事务；**不级联**商品/范围/白名单；清 Redis |
+| modifyStatus | `S#modifyStatus:806` | `pre_order_activity` | `pre_order_activity` UPDATE `activity_status`（operateType=1 暂停 → STOPED；重启按时间重算，未变则跳过） | 无事务；清 Redis；无 MQ |
+
+### 表
+
+| 表 | 库 | 含义 |
+|---|---|---|
+| `pre_order_activity` | promotion | 活动主表：number、name、type（1 定金班 / 2 膨胀券）、begin/end_time、activity_status、user_condition_type、creator_id、is_del |
+| `pre_order_activity_product` | promotion | 活动商品：pre_order_activity_number、product_number、product_type、is_del（不存券） |
+| `promotion_range_relation` | promotion | 用户条件范围（操作符行 + 值行）：promotion_activity_number、promotion_user_condition_number、operator_type/value、isdel |
+| `promotion_user_condition_enums` | promotion | 用户条件字典，只读 |
+| `promotion_user_condition_ext` | promotion | 条件操作符/枚举扩展，只读 |
+| `promotion_user_rule` | promotion | 活动 → 规则引擎 userRuleId |
+| `promotion_user_condition_file` | promotion | 文件型用户条件 |
+| `promotion_user_relation` | promotion | 活动 ↔ 用户关联标记（文件型 relation_type=0） |
+| `renewal_white_user` | promotion | 白名单手机号，`biz_number`=活动 number |
+| `renewal_pre_order_activity_coupon_scope` | **gaotu**（product-server `PreOrderActivityCouponScopeBizMapper.xml`） | 膨胀券可用范围：活动 number、coupon_sku_number、年级/学科、is_del；upsert / 逻辑删 |
+
+注意：
+- 库名取自 mapper XML 里的 `promotion.` / `gaotu.` 前缀，没核对数据源 yml。
+- 白名单和 `promotion_user_rule` 的写入在事务外，和活动主表不是原子的；coupon_scope 走 Feign，也不是分布式事务。
+- MQ topic 是 `@Value` 默认值 `promotion_preorder_activity_delay_test`、tag `modify_status`，延迟到起止时间投递；线上 topic 名没确认。
+- 可能的坑：publish、createAndPublish、编辑"仅改结束时间"三处不清 Redis 可见缓存；delete 不级联子表；`getByNumber` 不过滤 `is_del`。
 
 ## 排查提示
 

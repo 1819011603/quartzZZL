@@ -13,7 +13,7 @@ tags: [需求]
 
 # 续班退费分层变化和原因
 
-> **本目录导航**：[`links.md`](links.md) 链接中心 · [`tasks.md`](tasks.md) 当前任务板 · [`verify.md`](verify.md) 验证手册 · [`changelog.md`](changelog.md) 决策摘要 · [`case-record.md`](case-record.md) 冒烟(P0)用例执行记录 · [`data-requirements.md`](data-requirements.md) 阻塞/造数需求
+> **本目录导航**：[`links.md`](links.md) 链接中心 · [`tasks.md`](tasks.md) 当前任务板 · [`verify.md`](verify.md) 验证手册 · [`changelog.md`](changelog.md) 决策摘要 · [`case-record.md`](case-record.md) 冒烟(P0)用例执行记录 · [`data-requirements.md`](data-requirements.md) 阻塞/造数需求 · [`seed_mock_20261010.py`](seed_mock_20261010.py) 冒烟 mock 造数脚本
 > 技术方案在飞书（见 links），本地不留副本。续接这个需求：读完本文件即可。
 
 ## 一句话

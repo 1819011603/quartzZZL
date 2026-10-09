@@ -9,7 +9,8 @@
   "aianalysisinformations": "http://git.baijia.com/gaotu-fe/gaotu-btech-fe/gaia-widget-submodule/aianalysisinformations",
   "promotions": "http://git.baijia.com/gaotu-fe/gaotu-btech-fe/gaotu-fe-promotions",
   "gaotu_yunfan_fe": "http://git.baijia.com/gaotu-ctech/gaotu_yunfan_fe",
-  "boss-activity": "http://git.baijia.com/gaotu-fe/boss-activity"
+  "boss-activity": "http://git.baijia.com/gaotu-fe/boss-activity",
+  "staff(后端)": "http://git.baijia.com/gaotu/staff"
  },
  "pages": [
   {
@@ -2466,7 +2467,7 @@
    "name": "预报名活动（OES 续班管理）",
    "repo": "promotions",
    "pageFile": "promotions/pre-register-activity/_page.md",
-   "note": "前端 gaotu-fe-promotions src/pages/PreRegisterAvtivity；后端 promotion-management → Feign promotion，表 promotion.pre_order_activity*",
+   "note": "前端 gaotu-fe-promotions src/pages/PreRegisterAvtivity；后端 promotion-management → Feign promotion，表 promotion.pre_order_activity*；膨胀券范围在 gaotu.renewal_pre_order_activity_coupon_scope",
    "tabs": [
     {
      "tabKey": "default",
@@ -2741,7 +2742,7 @@
    "name": "组织架构",
    "repo": "boss-activity",
    "pageFile": "boss-activity/organization/_page.md",
-   "note": "后端 staff.gaotu100.com，本地无仓库，表未收录",
+   "note": "后端 staff.gaotu100.com = 仓库 gaotu/staff，库 i_org（orginazation / staff / staff_organization_relation 等）",
    "tabs": [
     {
      "tabKey": "default",
@@ -2811,7 +2812,7 @@
        "service": "staff.gaotu100.com",
        "backendPath": "/list/organization/member",
        "name": "节点成员列表",
-       "id": "",
+       "id": "37538",
        "note": ""
       },
       {
@@ -2822,7 +2823,7 @@
        "service": "staff.gaotu100.com",
        "backendPath": "/organization/searchDetailByOrgNumber",
        "name": "节点详情",
-       "id": "",
+       "id": "37408",
        "note": ""
       }
      ]
