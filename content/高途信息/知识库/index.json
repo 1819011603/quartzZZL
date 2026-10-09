@@ -1,2331 +1,2454 @@
 {
-  "version": 1,
-  "updated": "2026-09-29",
-  "note": "机读索引：页面/tab → 接口。字段 frontPath=前端 request 路径，backendPath=后端 Controller 路径，service=青舟 appId。",
-  "repos": {
-    "epic": "http://git.baijia.com/gaotu-fe/gaotu-btech-fe/epic",
-    "cronus": "http://git.baijia.com/gaotu-fe/gaotu-btech-fe/cronus",
-    "boss-counselor": "http://git.baijia.com/gaotu-fe/boss-counselor",
-    "aianalysisinformations": "http://git.baijia.com/gaotu-fe/gaotu-btech-fe/gaia-widget-submodule/aianalysisinformations"
-  },
-  "pages": [
+ "version": 1,
+ "updated": "2026-10-09",
+ "note": "机读索引：页面/tab → 接口。字段 frontPath=前端 request 路径，backendPath=后端 Controller 路径，service=青舟 appId。",
+ "repos": {
+  "epic": "http://git.baijia.com/gaotu-fe/gaotu-btech-fe/epic",
+  "cronus": "http://git.baijia.com/gaotu-fe/gaotu-btech-fe/cronus",
+  "boss-counselor": "http://git.baijia.com/gaotu-fe/boss-counselor",
+  "aianalysisinformations": "http://git.baijia.com/gaotu-fe/gaotu-btech-fe/gaia-widget-submodule/aianalysisinformations",
+  "promotions": "OES ark 子应用 app-promotions（前端仓库未拉到本地）"
+ },
+ "pages": [
+  {
+   "route": "gaia-widget:AiAnalysisInformations",
+   "name": "学员详情页 AI 分析 tab（GAIA 微组件，非独立路由）",
+   "repo": "aianalysisinformations",
+   "pageFile": "aianalysisinformations/IntentPrediction/_page.md",
+   "note": "无泳道概念，test/prod 各一份共享构建；当前 currentVersion 对应源码分支查 gaia-center/widget/detail",
+   "tabs": [
     {
-      "route": "gaia-widget:AiAnalysisInformations",
-      "name": "学员详情页 AI 分析 tab（GAIA 微组件，非独立路由）",
-      "repo": "aianalysisinformations",
-      "pageFile": "aianalysisinformations/IntentPrediction/_page.md",
-      "note": "无泳道概念，test/prod 各一份共享构建；当前 currentVersion 对应源码分支查 gaia-center/widget/detail",
-      "tabs": [
-        {
-          "tabKey": "IntentPrediction",
-          "name": "意向预测（分层变化趋势图 + 分层原因）",
-          "file": "aianalysisinformations/IntentPrediction/_page.md",
-          "apis": [
-            {
-              "trigger": "进 tab / hover 历史节点",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/ai/clazzUser/predictLevelReason",
-              "frontFile": "aianalysisinformations/src/components/IntentPrediction/service.ts",
-              "service": "student-center",
-              "backendPath": "/ai/clazzUser/predictLevelReason",
-              "name": "分层变化趋势图与分层原因",
-              "note": "2026-09-29 实测真实用户走此路径 404，后端功能分支仅发布在 test-eco-2 泳道"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "route": "/crm/cronus/clazzRosterOL",
-      "name": "班级花名册",
-      "repo": "cronus",
-      "pageFile": "cronus/clazzRosterOL/_page.md",
-      "pageApis": [
-        {
-          "trigger": "进页面",
-          "method": "POST",
-          "frontPath": "/bgwApi/component/student-center/roster/renewal/config",
-          "frontFile": "cronus/src/pages/roster/index.js",
-          "service": "student-center",
-          "backendPath": "/roster/renewal/config",
-          "name": "续班配置",
-          "id": 3807592
-        },
-        {
-          "trigger": "进页面",
-          "method": "POST",
-          "frontPath": "/component/student-center/roster/gray",
-          "frontFile": "cronus/src/pages/roster/grayscale/index.js",
-          "service": "student-center",
-          "backendPath": "/roster/gray",
-          "name": "判断灰度逻辑",
-          "id": 668688
-        }
-      ],
-      "tabs": [
-        {
-          "tabKey": "continuationService",
-          "name": "续班服务",
-          "file": "cronus/clazzRosterOL/continuationService.md",
-          "apis": [
-            {
-              "trigger": "进页面/筛选",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/renewal/page",
-              "frontFile": "cronus/src/services/continuationService.js",
-              "service": "student-center",
-              "backendPath": "/roster/renewal/page",
-              "name": "分页查询续班服务列表",
-              "id": 1995841
-            },
-            {
-              "trigger": "总数超上限",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/renewal/count",
-              "frontFile": "cronus/src/services/continuationService.js",
-              "service": "student-center",
-              "backendPath": "/roster/renewal/count",
-              "name": "获取总数（超上限时用）",
-              "id": 1995832
-            },
-            {
-              "trigger": "默认视图",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/renewal/default/page",
-              "frontFile": "cronus/src/services/continuationService.js",
-              "service": "student-center",
-              "backendPath": "/roster/renewal/default/page",
-              "name": "分页查询续班服务列表",
-              "id": 1995828
-            },
-            {
-              "trigger": "默认视图",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/renewal/default/count",
-              "frontFile": "cronus/src/services/continuationService.js",
-              "service": "student-center",
-              "backendPath": "/roster/renewal/default/count",
-              "name": "获取总数（超上限时用）",
-              "id": 1995835
-            },
-            {
-              "trigger": "进页面",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/renewal/defaultValue",
-              "frontFile": "cronus/src/services/continuationService.js",
-              "service": "student-center",
-              "backendPath": "/roster/renewal/defaultValue",
-              "name": "获取GlobalSearch默认值接口",
-              "id": 1995833
-            },
-            {
-              "trigger": "进页面",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/renewal/getRenewalInfo",
-              "frontFile": "cronus/src/services/continuationService.js",
-              "service": "student-center",
-              "backendPath": "/roster/renewal/getRenewalInfo",
-              "name": "续班信息",
-              "id": 1995839
-            },
-            {
-              "trigger": "进页面",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/renewal/subclazz/statistic",
-              "frontFile": "cronus/src/services/continuationService.js",
-              "service": "student-center",
-              "backendPath": "/roster/renewal/subclazz/statistic",
-              "name": "续班指标统计",
-              "id": 1995842
-            },
-            {
-              "trigger": "默认视图",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/renewal/default/subclazz/statistic",
-              "frontFile": "cronus/src/services/continuationService.js",
-              "service": "student-center",
-              "backendPath": "/roster/renewal/default/subclazz/statistic",
-              "name": "续班指标统计",
-              "id": 1995840
-            },
-            {
-              "trigger": "编辑保存",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/renewal/edit",
-              "frontFile": "cronus/src/services/continuationService.js",
-              "service": "student-center",
-              "backendPath": "/roster/renewal/edit",
-              "name": "编辑学生信息",
-              "id": 1995834
-            },
-            {
-              "trigger": "hover",
-              "method": "POST",
-              "frontPath": "/component/student-center/studentClazz/intimacyHover",
-              "frontFile": "cronus/src/services/continuationService.js",
-              "service": "student-center",
-              "backendPath": "/studentClazz/intimacyHover",
-              "name": "获取学员亲密度",
-              "id": 30665
-            },
-            {
-              "trigger": "hover",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/renewal/reach/record",
-              "frontFile": "cronus/src/services/continuationService.js",
-              "service": "student-center",
-              "backendPath": "/roster/renewal/reach/record",
-              "name": "续班沟通记录",
-              "id": 1995831
-            },
-            {
-              "trigger": "hover",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/renewal/intimacy/course",
-              "frontFile": "cronus/src/services/continuationService.js",
-              "service": "student-center",
-              "backendPath": "/roster/renewal/intimacy/course",
-              "name": "课程完成度",
-              "id": 1995836
-            },
-            {
-              "trigger": "hover",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/renewal/intimacy/service",
-              "frontFile": "cronus/src/services/continuationService.js",
-              "service": "student-center",
-              "backendPath": "/roster/renewal/intimacy/service",
-              "name": "服务亲密度",
-              "id": 1995830
-            },
-            {
-              "trigger": "最近看课",
-              "method": "POST",
-              "frontPath": "/component/student-center/studentClazz/recentLessonSituation",
-              "frontFile": "cronus/src/services/clazzRosterOL.js",
-              "service": "student-center",
-              "backendPath": "/studentClazz/recentLessonSituation",
-              "name": "获取学员最近看课进度条",
-              "id": 30675
-            },
-            {
-              "trigger": "推荐班级",
-              "method": "POST",
-              "frontPath": "/bgwApi/product-b/b/renewMaster/recommendClazzList",
-              "frontFile": "cronus/src/services/continuationService.js",
-              "service": "product-b",
-              "backendPath": "/b/renewMaster/recommendClazzList",
-              "name": "查询推荐班级列表",
-              "id": 2734275
-            },
-            {
-              "trigger": "判断续班班",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/renewal/judgeIsRenewalSubClazzNumber",
-              "frontFile": "cronus/src/services/continuationService.js",
-              "service": "student-center",
-              "backendPath": "/roster/renewal/judgeIsRenewalSubClazzNumber",
-              "name": "判断是否是续班辅导班",
-              "id": 2153606
-            },
-            {
-              "trigger": "续班意向预测",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/ai/clazzUser/levelReasonAndHistory",
-              "frontFile": "cronus/src/services/continuationService.js",
-              "service": "student-center",
-              "backendPath": "/ai/clazzUser/levelReasonAndHistory",
-              "name": "分层原因和变化记录",
-              "id": 2977228
-            },
-            {
-              "trigger": "hover 归因",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/ai/renewal/reason/detail",
-              "frontFile": "cronus/src/services/continuationService.js",
-              "service": "student-center",
-              "backendPath": "/ai/renewal/reason/detail",
-              "name": "续班归因详情",
-              "id": 5292053
-            },
-            {
-              "trigger": "原因弹窗",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/ai/renewal/reason/options",
-              "frontFile": "cronus/src/services/continuationService.js",
-              "service": "student-center",
-              "backendPath": "/ai/renewal/reason/options",
-              "name": "续班原因分类字典",
-              "id": 5292052
-            },
-            {
-              "trigger": "保存原因",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/ai/renewal/reason/manual/save",
-              "frontFile": "cronus/src/services/continuationService.js",
-              "service": "student-center",
-              "backendPath": "/ai/renewal/reason/manual/save",
-              "name": "保存老师填写的续班原因",
-              "id": 5292051
-            },
-            {
-              "trigger": "发问卷",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/renewal/sendQuestion/getQuestionInfo",
-              "frontFile": "cronus/src/services/continuationService.js",
-              "service": "student-center",
-              "backendPath": "/roster/renewal/sendQuestion/getQuestionInfo",
-              "name": "问卷信息获取",
-              "id": 3381630
-            },
-            {
-              "trigger": "校验问卷",
-              "method": "POST",
-              "frontPath": "/component/student-center/roster/renewal/sendQuestion/validate",
-              "frontFile": "cronus/src/pages/roster/ContinuationService/components/QuestionnaireLink/service.js",
-              "service": "student-center",
-              "backendPath": "/roster/renewal/sendQuestion/validate",
-              "name": "发问卷前置校验",
-              "id": 1995843
-            },
-            {
-              "trigger": "续班报名校验",
-              "method": "POST",
-              "frontPath": "/component/student-center/roster/renewal/renewalOrder/validate",
-              "frontFile": "cronus/src/pages/roster/ContinuationService/components/PureContinuation/service.js",
-              "service": "student-center",
-              "backendPath": "/roster/renewal/renewalOrder/validate",
-              "name": "续班报名前置校验",
-              "id": 2093628
-            },
-            {
-              "trigger": "预报名校验",
-              "method": "POST",
-              "frontPath": "/component/student-center/roster/renewal/renewalPreRegistration/validate",
-              "frontFile": "cronus/src/pages/roster/ContinuationService/components/PreRegistrationLink/service.js",
-              "service": "student-center",
-              "backendPath": "/roster/renewal/renewalPreRegistration/validate",
-              "name": "续班预报名前置校验",
-              "id": 2652063
-            },
-            {
-              "trigger": "报告链接",
-              "method": "POST",
-              "frontPath": "/reachPortal/reportConfig/getReportUrl",
-              "frontFile": "cronus/src/pages/roster/ContinuationService/components/*/service.js",
-              "service": "reach-service",
-              "backendPath": "/reachPortal/reportConfig/getReportUrl",
-              "name": "获取预览或发送链接",
-              "id": 734494
-            },
-            {
-              "trigger": "推荐主体",
-              "method": "POST",
-              "frontPath": "/reachPortal/reportConfig/getRecommendAppInfo",
-              "frontFile": "cronus/src/pages/roster/ContinuationService/components/PureContinuation/service.js",
-              "service": "reach-service",
-              "backendPath": "/reachPortal/reportConfig/getRecommendAppInfo",
-              "name": "获取主体",
-              "id": 2093624
-            },
-            {
-              "trigger": "预报名链接",
-              "method": "POST",
-              "frontPath": "/reachPortal/reportConfig/getPreRegistrationLink",
-              "frontFile": "cronus/src/pages/roster/ContinuationService/components/PreRegistrationLink/service.js",
-              "service": "reach-service",
-              "backendPath": "/reachPortal/reportConfig/getPreRegistrationLink",
-              "name": "预报名链接",
-              "id": 2652061
-            },
-            {
-              "trigger": "灰度开关",
-              "method": "GET",
-              "frontPath": "/product-b/b/renewMaster/configFlag",
-              "frontFile": "cronus/src/pages/roster/ContinuationService/components/CreateOrder/gray.js",
-              "service": "product-b",
-              "backendPath": "/b/renewMaster/configFlag",
-              "name": "获取配置开关",
-              "id": 2734336
-            }
-          ],
-          "dataSource": {
-            "esIndex": "ads_large_subclazz_user_index",
-            "esCluster": "es-cn-smw4b9m200004w3hn.elasticsearch.aliyuncs.com",
-            "esClient": "studentSubclazzClient",
-            "backendCode": "RenewalService / RefundService"
-          }
-        },
-        {
-          "tabKey": "stageFeedback",
-          "name": "阶段反馈",
-          "file": "cronus/clazzRosterOL/stageFeedback.md",
-          "apis": [
-            {
-              "trigger": "进页面/筛选",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/stageFeedback/page",
-              "frontFile": "src/services/stageFeedback.js:19",
-              "service": "student-center",
-              "backendPath": "/roster/stageFeedback/page",
-              "name": "[POST]/stageFeedback/page",
-              "id": 668681
-            },
-            {
-              "trigger": "总数超上限",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/stageFeedback/count",
-              "frontFile": "src/services/stageFeedback.js:27",
-              "service": "student-center",
-              "backendPath": "/roster/stageFeedback/count",
-              "name": "[POST]/stageFeedback/count",
-              "id": 668679
-            },
-            {
-              "trigger": "行内编辑保存",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/stageFeedback/edit",
-              "frontFile": "src/services/stageFeedback.js:35",
-              "service": "student-center",
-              "backendPath": "/roster/stageFeedback/edit",
-              "name": "[POST]/stageFeedback/edit",
-              "id": 668685
-            },
-            {
-              "trigger": "进页面",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/stageFeedback/defaultValue",
-              "frontFile": "src/services/stageFeedback.js:3",
-              "service": "student-center",
-              "backendPath": "/roster/stageFeedback/defaultValue",
-              "name": "获取阶段反馈场景默认值",
-              "id": 668680
-            },
-            {
-              "trigger": "顶部指标",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/stageFeedback/subclazz/statistic",
-              "frontFile": "src/services/stageFeedback.js:43",
-              "service": "student-center",
-              "backendPath": "/roster/stageFeedback/subclazz/statistic",
-              "name": "[POST]/stageFeedback/subclazz/statistic",
-              "id": 735861
-            },
-            {
-              "trigger": "打开课节选择器",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/clazzLesson/count",
-              "frontFile": "src/services/stageFeedback.js:11",
-              "service": "student-center",
-              "backendPath": "/roster/clazzLesson/count",
-              "name": "[POST]/clazzLesson/count",
-              "id": 668683
-            },
-            {
-              "trigger": "打开课节选择器",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/clazzLesson/list",
-              "frontFile": "src/services/stageFeedback.js:66",
-              "service": "student-center",
-              "backendPath": "/roster/clazzLesson/list",
-              "name": "[POST]/clazzLesson/list",
-              "id": 943814
-            },
-            {
-              "trigger": "今日动态",
-              "method": "POST",
-              "frontPath": "/fairy/student-center/studentBehavior/list",
-              "frontFile": "src/services/clazzRosterOL.js:14",
-              "service": "student-center",
-              "backendPath": "/studentBehavior/list",
-              "name": "查看学员今日动态",
-              "id": 30610
-            },
-            {
-              "trigger": "今日动态已读",
-              "method": "POST",
-              "frontPath": "/fairy/student-center/studentBehavior/change/behaviorStatus",
-              "frontFile": "src/services/clazzRosterOL.js:22",
-              "service": "student-center",
-              "backendPath": "/studentBehavior/change/behaviorStatus",
-              "name": "更改学员具体行为已读状态",
-              "id": 30609
-            },
-            {
-              "trigger": "听课情况",
-              "method": "POST",
-              "frontPath": "/component/student-center/studentClazz/recentLessonSituation",
-              "frontFile": "src/services/clazzRosterOL.js:51",
-              "service": "student-center",
-              "backendPath": "/studentClazz/recentLessonSituation",
-              "name": "获取学员最近看课进度条",
-              "id": 30675
-            },
-            {
-              "trigger": "课中答题",
-              "method": "POST",
-              "frontPath": "/component/student-center/studentClazz/getUserLiveQuestionDetail",
-              "frontFile": "src/services/clazzRosterOL.js:286",
-              "service": "student-center",
-              "backendPath": "/studentClazz/getUserLiveQuestionDetail",
-              "name": "获取学员在该课节下的直播答题数据",
-              "id": 129974
-            },
-            {
-              "trigger": "课后答题",
-              "method": "POST",
-              "frontPath": "/component/student-center/studentClazz/getUserExerciseDetail",
-              "frontFile": "src/services/clazzRosterOL.js:294",
-              "service": "student-center",
-              "backendPath": "/studentClazz/getUserExerciseDetail",
-              "name": "获取学员在该课节下的课后练习数据",
-              "id": 129975
-            }
-          ],
-          "dataSource": {
-            "esIndex": "ads_large_clazz_user_index",
-            "esIndexNote": "年份拆分 ads_large_clazz_user_<year>，别名 ads_large_clazz_user",
-            "esCluster": "es-cn-4xl3gu6ls0007l185.elasticsearch.aliyuncs.com",
-            "esClient": "studentServeClient",
-            "backendCode": "StudentListServiceImpl / StageFeedBackService"
-          }
-        },
-        {
-          "tabKey": "refundPrevention",
-          "name": "退费管控",
-          "file": "cronus/clazzRosterOL/refundPrevention.md",
-          "apis": [
-            {
-              "trigger": "进页面/筛选",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/refund/page",
-              "frontFile": "src/services/refundPrevention.js:5",
-              "service": "student-center",
-              "backendPath": "/roster/refund/page",
-              "name": "分页查询退费服务列表",
-              "id": 2552688
-            },
-            {
-              "trigger": "总数超上限",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/refund/count",
-              "frontFile": "src/services/refundPrevention.js:41",
-              "service": "student-center",
-              "backendPath": "/roster/refund/count",
-              "name": "获取总数，当超过index配置最大count时使用",
-              "id": 2552696
-            },
-            {
-              "trigger": "默认视图",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/refund/default/page",
-              "frontFile": "src/services/refundPrevention.js:21",
-              "service": "student-center",
-              "backendPath": "/roster/refund/default/page",
-              "name": "分页查询退费服务列表",
-              "id": 2552679
-            },
-            {
-              "trigger": "默认视图",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/refund/default/count",
-              "frontFile": "src/services/refundPrevention.js:49",
-              "service": "student-center",
-              "backendPath": "/roster/refund/default/count",
-              "name": "获取总数，当超过index配置最大count时使用",
-              "id": 2552687
-            },
-            {
-              "trigger": "进页面",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/refund/defaultValue",
-              "frontFile": "src/services/refundPrevention.js:57",
-              "service": "student-center",
-              "backendPath": "/roster/refund/defaultValue",
-              "name": "获取GlobalSearch默认值接口",
-              "id": 2552678
-            },
-            {
-              "trigger": "行内编辑保存",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/refund/edit",
-              "frontFile": "src/services/refundPrevention.js:13",
-              "service": "student-center",
-              "backendPath": "/roster/refund/edit",
-              "name": "编辑学生信息",
-              "id": 2552693
-            },
-            {
-              "trigger": "进页面/切班",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/refund/subclazz/statistic",
-              "frontFile": "src/services/refundPrevention.js:73",
-              "service": "student-center",
-              "backendPath": "/roster/refund/subclazz/statistic",
-              "name": "退费指标统计",
-              "id": 2552681
-            },
-            {
-              "trigger": "默认视图",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/refund/default/subclazz/statistic",
-              "frontFile": "src/services/refundPrevention.js:81",
-              "service": "student-center",
-              "backendPath": "/roster/refund/default/subclazz/statistic",
-              "name": "退费指标统计",
-              "id": 2552683
-            },
-            {
-              "trigger": "根因分类筛选",
-              "method": "GET",
-              "frontPath": "/component/student-center/base/enum/refund/refundReasonTree",
-              "frontFile": "src/pages/roster/RefundPrevention/custom/fields.js:406",
-              "service": "student-center",
-              "backendPath": "/base/enum/refund/refundReasonTree",
-              "name": "退费根因枚举",
-              "id": 2552685
-            },
-            {
-              "trigger": "听课情况筛选",
-              "method": "POST",
-              "frontPath": "/component/student-center/studentClazz/listBeginClazzLessons",
-              "frontFile": "src/services/clazzRosterOL.js:310",
-              "service": "student-center",
-              "backendPath": "/studentClazz/listBeginClazzLessons",
-              "name": "获取该班级已开课课节",
-              "id": 129972
-            },
-            {
-              "trigger": "最近看课时间",
-              "method": "POST",
-              "frontPath": "/component/student-center/studentClazz/recentLessonSituation",
-              "frontFile": "src/services/clazzRosterOL.js:51",
-              "service": "student-center",
-              "backendPath": "/studentClazz/recentLessonSituation",
-              "name": "获取学员最近看课进度条",
-              "id": 30675
-            }
-          ],
-          "dataSource": {
-            "esIndex": "ads_large_subclazz_user_index",
-            "esCluster": "es-cn-smw4b9m200004w3hn.elasticsearch.aliyuncs.com",
-            "esClient": "studentSubclazzClient",
-            "backendCode": "RenewalService / RefundService"
-          }
-        },
-        {
-          "tabKey": "default",
-          "name": "花名册",
-          "file": "cronus/clazzRosterOL/default.md",
-          "apis": [
-            {
-              "trigger": "列表/筛选/翻页/排序",
-              "method": "POST",
-              "frontPath": "/component/student-center/studentClazz/largeClazzList",
-              "frontFile": "src/services/clazzRosterOL.js:30",
-              "service": "student-center",
-              "backendPath": "/studentClazz/largeClazzList",
-              "name": "[POST]/largeClazzList",
-              "id": 30663
-            },
-            {
-              "trigger": "总数超上限",
-              "method": "POST",
-              "frontPath": "/component/student-center/studentClazz/largeClazzList/count",
-              "frontFile": "src/services/clazzRosterOL.js:4",
-              "service": "student-center",
-              "backendPath": "/studentClazz/largeClazzList/count",
-              "name": "[POST]/largeClazzList/count",
-              "id": 30664
-            },
-            {
-              "trigger": "行内编辑保存",
-              "method": "POST",
-              "frontPath": "/component/student-center/studentClazz/edit",
-              "frontFile": "src/services/clazzRosterOL.js:41",
-              "service": "student-center",
-              "backendPath": "/studentClazz/edit",
-              "name": "[POST]/edit",
-              "id": 30662
-            },
-            {
-              "trigger": "进页面",
-              "method": "GET",
-              "frontPath": "/component/student-center/study/data/gray",
-              "frontFile": "src/services/studentProfile.js:41",
-              "service": "student-center",
-              "backendPath": "/study/data/gray",
-              "name": "学员详情灰度",
-              "id": 47244
-            },
-            {
-              "trigger": "进页面",
-              "method": "POST",
-              "frontPath": "/component/student-center/roster/gray",
-              "frontFile": "src/pages/roster/grayscale/index.js:13",
-              "service": "student-center",
-              "backendPath": "/roster/gray",
-              "name": "判断灰度逻辑",
-              "id": 668688
-            },
-            {
-              "trigger": "进页面",
-              "method": "GET",
-              "frontPath": "/teacher-tool/report/roster/power",
-              "frontFile": "src/services/clazzRosterOL.js:189",
-              "service": "teacher-tool",
-              "backendPath": "/report/roster/power",
-              "name": "花名册发送报告按钮权限",
-              "id": 43800
-            },
-            {
-              "trigger": "进页面",
-              "method": "GET",
-              "frontPath": "/student-center/roster/button/gray",
-              "frontFile": "src/services/clazzRosterOL.js:350",
-              "service": "student-center",
-              "backendPath": "/roster/button/gray",
-              "name": "默认花名册按钮灰度",
-              "id": 1244681
-            },
-            {
-              "trigger": "进页面",
-              "method": "GET",
-              "frontPath": "/component/student-center/roster/yearSelectConfig",
-              "frontFile": "src/services/clazzRosterOL.js:208",
-              "service": "student-center",
-              "backendPath": "/roster/yearSelectConfig",
-              "name": "获取年份选择配置",
-              "id": 3884942
-            },
-            {
-              "trigger": "进页面",
-              "method": "GET",
-              "frontPath": "/component/student-center/filter/defaultValueByScene",
-              "frontFile": "src/services/clazzRosterOL.js:212",
-              "service": "student-center",
-              "backendPath": "/filter/defaultValueByScene",
-              "name": "筛选项默认值",
-              "id": 38825
-            },
-            {
-              "trigger": "改自定义列",
-              "method": "POST",
-              "frontPath": "/gaiaCenter/scene/personal/config/edit",
-              "frontFile": "src/services/metadata.js:22",
-              "service": "gaia-center",
-              "backendPath": "/scene/personal/config/edit",
-              "name": "[POST]/scene/personal/config/edit",
-              "id": 39622
-            },
-            {
-              "trigger": "视图 Tab",
-              "method": "POST",
-              "frontPath": "/component/student-center/studentClazz/largeClazzList/views/count",
-              "frontFile": "src/services/clazzRosterOL.js:279",
-              "service": "student-center",
-              "backendPath": "/studentClazz/largeClazzList/views/count",
-              "name": "[POST]/largeClazzList/views/count",
-              "id": 220890
-            },
-            {
-              "trigger": "合同预览",
-              "method": "POST",
-              "frontPath": "/api/contract/b/previewContractTemplate",
-              "frontFile": "src/services/clazzRosterOL.js:157",
-              "service": "contract-server",
-              "backendPath": "/api/contract/b/previewContractTemplate",
-              "name": "新学员列表预览合同模板",
-              "id": 1281230
-            },
-            {
-              "trigger": "复制合同链接",
-              "method": "POST",
-              "frontPath": "/api/contract/b/copyContractUrl",
-              "frontFile": "src/services/clazzRosterOL.js:165",
-              "service": "contract-server",
-              "backendPath": "/api/contract/b/copyContractUrl",
-              "name": "新学员列表复制链接",
-              "id": 1281206
-            },
-            {
-              "trigger": "复制权益链接",
-              "method": "GET",
-              "frontPath": "/component/student-center/studentClazz/getEquityUrl",
-              "frontFile": "src/services/clazzRosterOL.js:173",
-              "service": "student-center",
-              "backendPath": "/studentClazz/getEquityUrl",
-              "name": "获取权益领取链接",
-              "id": 30678
-            },
-            {
-              "trigger": "编辑考试分数",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/studentClazz/getSubject",
-              "frontFile": "src/services/clazzRosterOL.js:272",
-              "service": "student-center",
-              "backendPath": "/studentClazz/getSubject",
-              "name": "[POST]/getSubject",
-              "id": 49398
-            },
-            {
-              "trigger": "今日动态",
-              "method": "POST",
-              "frontPath": "/fairy/student-center/studentBehavior/list",
-              "frontFile": "src/services/clazzRosterOL.js:14",
-              "service": "student-center",
-              "backendPath": "/studentBehavior/list",
-              "name": "查看学员今日动态",
-              "id": 30610
-            },
-            {
-              "trigger": "今日动态已读",
-              "method": "POST",
-              "frontPath": "/fairy/student-center/studentBehavior/change/behaviorStatus",
-              "frontFile": "src/services/clazzRosterOL.js:22",
-              "service": "student-center",
-              "backendPath": "/studentBehavior/change/behaviorStatus",
-              "name": "更改学员具体行为已读状态",
-              "id": 30609
-            },
-            {
-              "trigger": "亲密度",
-              "method": "POST",
-              "frontPath": "/component/student-center/studentClazz/intimacyHover",
-              "frontFile": "src/services/clazzRosterOL.js:67",
-              "service": "student-center",
-              "backendPath": "/studentClazz/intimacyHover",
-              "name": "获取学员亲密度",
-              "id": 30665
-            },
-            {
-              "trigger": "亲密度弹窗",
-              "method": "POST",
-              "frontPath": "/component/student-center/studentDynamic/intimacy",
-              "frontFile": "src/services/clazzRosterOL.js:59",
-              "service": "student-center",
-              "backendPath": "/studentDynamic/intimacy",
-              "name": "学员动态最近亲密度展示",
-              "id": 30614
-            },
-            {
-              "trigger": "最近看课时间",
-              "method": "POST",
-              "frontPath": "/component/student-center/studentClazz/recentLessonSituation",
-              "frontFile": "src/services/clazzRosterOL.js:51",
-              "service": "student-center",
-              "backendPath": "/studentClazz/recentLessonSituation",
-              "name": "获取学员最近看课进度条",
-              "id": 30675
-            },
-            {
-              "trigger": "课中答题",
-              "method": "POST",
-              "frontPath": "/component/student-center/studentClazz/getUserLiveQuestionDetail",
-              "frontFile": "src/services/clazzRosterOL.js:286",
-              "service": "student-center",
-              "backendPath": "/studentClazz/getUserLiveQuestionDetail",
-              "name": "获取学员在该课节下的直播答题数据",
-              "id": 129974
-            },
-            {
-              "trigger": "课后答题",
-              "method": "POST",
-              "frontPath": "/component/student-center/studentClazz/getUserExerciseDetail",
-              "frontFile": "src/services/clazzRosterOL.js:294",
-              "service": "student-center",
-              "backendPath": "/studentClazz/getUserExerciseDetail",
-              "name": "获取学员在该课节下的课后练习数据",
-              "id": 129975
-            },
-            {
-              "trigger": "线上考试",
-              "method": "POST",
-              "frontPath": "/component/student-center/studentClazz/getUserExamDetail",
-              "frontFile": "src/services/clazzRosterOL.js:302",
-              "service": "student-center",
-              "backendPath": "/studentClazz/getUserExamDetail",
-              "name": "获取学员在该课节下的考试数据",
-              "id": 129976
-            },
-            {
-              "trigger": "最近考试分数",
-              "method": "POST",
-              "frontPath": "/component/student-center/studentClazz/recentExamHover",
-              "frontFile": "src/services/clazzRosterOL.js:181",
-              "service": "student-center",
-              "backendPath": "/studentClazz/recentExamHover",
-              "name": "获取考试成绩",
-              "id": 30666
-            },
-            {
-              "trigger": "学员标签弹窗",
-              "method": "POST",
-              "frontPath": "/fairy/student-center/subclazz/learnSituation/getAllStudentTags",
-              "frontFile": "src/services/actions.js:36",
-              "service": "student-center",
-              "backendPath": "/subclazz/learnSituation/getAllStudentTags",
-              "name": "获取所有学员标签",
-              "id": 30692
-            },
-            {
-              "trigger": "保存学员标签",
-              "method": "POST",
-              "frontPath": "/component/student-center/batchOperate/tag/save",
-              "frontFile": "src/services/actions.js:44",
-              "service": "student-center",
-              "backendPath": "/batchOperate/tag/save",
-              "name": "批量操作-学员标签保存",
-              "id": 30688
-            },
-            {
-              "trigger": "智能英语",
-              "method": "POST",
-              "frontPath": "/component/student-center/aiEnglish/detail",
-              "frontFile": "src/services/clazzRosterOL.js:357",
-              "service": "student-center",
-              "backendPath": "/aiEnglish/detail",
-              "name": "[POST]/detail",
-              "id": 2232086
-            },
-            {
-              "trigger": "AI 试炼场单元格",
-              "method": "POST",
-              "frontPath": "/component/student-center/studentClazz/aiPracticeHover",
-              "frontFile": "src/services/clazzRosterOL.js:318",
-              "service": "student-center",
-              "backendPath": "/studentClazz/aiPracticeHover",
-              "name": "获取 AI 试炼场 Hover 数据",
-              "id": 4882739
-            },
-            {
-              "trigger": "AI 试炼场筛选",
-              "method": "POST",
-              "frontPath": "/component/student-center/studentClazz/latestAiPracticeLessons",
-              "frontFile": "src/services/clazzRosterOL.js:326",
-              "service": "student-center",
-              "backendPath": "/studentClazz/latestAiPracticeLessons",
-              "name": "获取 AI 试炼场最近课节列表",
-              "id": 4882738
-            },
-            {
-              "trigger": "直播发言明细",
-              "method": "POST",
-              "frontPath": "/component/student-center/liveSpeak/clazz/speakContent/list",
-              "frontFile": "src/services/clazzRosterOL.js:364",
-              "service": "student-center",
-              "backendPath": "/liveSpeak/clazz/speakContent/list",
-              "name": "班级维度-发言明细",
-              "id": 2232087
-            },
-            {
-              "trigger": "听课情况筛选",
-              "method": "POST",
-              "frontPath": "/component/student-center/studentClazz/listBeginClazzLessons",
-              "frontFile": "src/services/clazzRosterOL.js:310",
-              "service": "student-center",
-              "backendPath": "/studentClazz/listBeginClazzLessons",
-              "name": "获取该班级已开课课节",
-              "id": 129972
-            },
-            {
-              "trigger": "线上考试筛选",
-              "method": "POST",
-              "frontPath": "/component/student-center/studentClazz/listAllExam",
-              "frontFile": "src/services/clazzRosterOL.js:334",
-              "service": "student-center",
-              "backendPath": "/studentClazz/listAllExam",
-              "name": "获取班级下所有考试",
-              "id": 129973
-            }
-          ],
-          "dataSource": {
-            "esIndex": "ads_large_clazz_user_index",
-            "esIndexNote": "年份拆分 ads_large_clazz_user_<year>，别名 ads_large_clazz_user",
-            "esCluster": "es-cn-4xl3gu6ls0007l185.elasticsearch.aliyuncs.com",
-            "esClient": "studentServeClient",
-            "backendCode": "StudentListServiceImpl / StageFeedBackService"
-          }
-        }
-      ]
-    },
-    {
-      "route": "/crm/cronus/lessonList",
-      "name": "课节管理",
-      "repo": "cronus",
-      "pageFile": "cronus/lessonList/_page.md",
-      "pageApis": [
-        {
-          "trigger": "进页面",
-          "method": "POST",
-          "frontPath": "/component/student-center/lesson/prepare/gray",
-          "frontFile": "src/pages/lesson/grayscale/index.js:11",
-          "service": "student-center",
-          "backendPath": "/lesson/prepare/gray",
-          "name": "[POST]/gray",
-          "id": 980560
-        },
-        {
-          "trigger": "进页面",
-          "method": "POST",
-          "frontPath": "/component/student-center/lesson/after/gray",
-          "frontFile": "src/pages/lesson/grayscale/index.js:25",
-          "service": "student-center",
-          "backendPath": "/lesson/after/gray",
-          "name": "灰度",
-          "id": 1159240
-        },
-        {
-          "trigger": "进页面",
-          "method": "POST",
-          "frontPath": "/component/student-center/lesson/prepare/relation/gray",
-          "frontFile": "src/pages/lesson/grayscale/index.js:38",
-          "service": "student-center",
-          "backendPath": "/lesson/prepare/relation/gray",
-          "name": "关联课节 tab 灰度",
-          "id": 4882732
-        },
-        {
-          "trigger": "tab 角标（60s 轮询）",
-          "method": "POST",
-          "frontPath": "/bgwApi/component/student-center/lesson/prepare/scene/count",
-          "frontFile": "src/pages/lesson/components/BusinessScene/index.js:100",
-          "service": "student-center",
-          "backendPath": "/lesson/prepare/scene/count",
-          "name": "[POST]/scene/count",
-          "id": 980553
-        }
-      ],
-      "tabs": [
-        {
-          "tabKey": "default",
-          "name": "默认",
-          "file": "cronus/lessonList/default.md",
-          "apis": [
-            {
-              "trigger": "列表/筛选/翻页（大班课）",
-              "method": "POST",
-              "frontPath": "/component/student-center/clazz/lesson/formal/list",
-              "frontFile": "src/pages/lesson/DefaultLessonList/components/FormalLesson/services.js:4",
-              "service": "student-center",
-              "backendPath": "/clazz/lesson/formal/list",
-              "name": "正式课节列表",
-              "id": 30645
-            },
-            {
-              "trigger": "列表/筛选/翻页（小灶课）",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/clazz/lesson/parentsMeeting/list",
-              "frontFile": "src/pages/lesson/DefaultLessonList/components/FormalLesson/services.js:11",
-              "service": "student-center",
-              "backendPath": "/clazz/lesson/parentsMeeting/list",
-              "name": "小灶课课节列表",
-              "id": 30646
-            },
-            {
-              "trigger": "总数",
-              "method": "POST",
-              "frontPath": "/component/student-center/clazz/lesson/formal/list/count",
-              "frontFile": "src/pages/lesson/DefaultLessonList/components/FormalLesson/services.js:33",
-              "service": "student-center",
-              "backendPath": "/clazz/lesson/formal/list/count",
-              "name": "[POST]/formal/list/count",
-              "id": 1033509
-            },
-            {
-              "trigger": "总数（小灶课）",
-              "method": "POST",
-              "frontPath": "/component/student-center/clazz/lesson/parentsMeeting/list/count",
-              "frontFile": "src/pages/lesson/DefaultLessonList/components/FormalLesson/services.js:40",
-              "service": "student-center",
-              "backendPath": "/clazz/lesson/parentsMeeting/list/count",
-              "name": "[POST]/parentsMeeting/list/count",
-              "id": 1033507
-            },
-            {
-              "trigger": "操作列-进教室",
-              "method": "POST",
-              "frontPath": "/component/student-center/clazz/lesson/getNewLiveUrl",
-              "frontFile": "src/pages/lesson/DefaultLessonList/components/FormalLesson/services.js:18",
-              "service": "student-center",
-              "backendPath": "/clazz/lesson/getNewLiveUrl",
-              "name": "(新系统)获取进入教室链接",
-              "id": 49401
-            },
-            {
-              "trigger": "操作列-听课链接",
-              "method": "POST",
-              "frontPath": "/component/student-center/clazz/lesson/getCourseUrl",
-              "frontFile": "src/pages/lesson/DefaultLessonList/components/FormalLesson/services.js:25",
-              "service": "student-center",
-              "backendPath": "/clazz/lesson/getCourseUrl",
-              "name": "获取课节复制链接",
-              "id": 30650
-            },
-            {
-              "trigger": "自动触达任务抽屉",
-              "method": "POST",
-              "frontPath": "/component/student-center/clazz/lesson/reach/task/list",
-              "frontFile": "src/pages/lesson/DefaultLessonList/components/FormalLesson/components/AutoTaskDrawer/services.js:4",
-              "service": "student-center",
-              "backendPath": "/clazz/lesson/reach/task/list",
-              "name": "正式课节列表",
-              "id": 30653
-            }
-          ]
-        },
-        {
-          "tabKey": "lessonprepare",
-          "name": "课前准备",
-          "file": "cronus/lessonList/lessonprepare.md",
-          "apis": [
-            {
-              "trigger": "列表/筛选/翻页/排序",
-              "method": "POST",
-              "frontPath": "/component/student-center/lesson/prepare/page",
-              "frontFile": "src/services/lessonPrepare.js:3",
-              "service": "student-center",
-              "backendPath": "/lesson/prepare/page",
-              "name": "[POST]/page",
-              "id": 980558
-            },
-            {
-              "trigger": "总数超上限",
-              "method": "POST",
-              "frontPath": "/component/student-center/lesson/prepare/count",
-              "frontFile": "src/services/lessonPrepare.js:10",
-              "service": "student-center",
-              "backendPath": "/lesson/prepare/count",
-              "name": "[POST]/count",
-              "id": 980547
-            },
-            {
-              "trigger": "点击列跳转学员列表",
-              "method": "POST",
-              "frontPath": "/component/student-center/lesson/prepare/jump",
-              "frontFile": "src/services/lessonPrepare.js:17",
-              "service": "student-center",
-              "backendPath": "/lesson/prepare/jump",
-              "name": "[POST]/jump",
-              "id": 980564
-            },
-            {
-              "trigger": "听课链接",
-              "method": "POST",
-              "frontPath": "/component/student-center/clazz/lesson/getCourseUrl",
-              "frontFile": "src/services/lessonPrepare.js:25",
-              "service": "student-center",
-              "backendPath": "/clazz/lesson/getCourseUrl",
-              "name": "获取课节复制链接",
-              "id": 30650
-            },
-            {
-              "trigger": "发短信前置校验",
-              "method": "POST",
-              "frontPath": "/component/student-center/lesson/prepare/operate/validation",
-              "frontFile": "src/services/lessonPrepare.js:40",
-              "service": "student-center",
-              "backendPath": "/lesson/prepare/operate/validation",
-              "name": "[POST]/operate/validation",
-              "id": 1159247
-            }
-          ]
-        },
-        {
-          "tabKey": "lessonAfter",
-          "name": "课后督学",
-          "file": "cronus/lessonList/lessonAfter.md",
-          "apis": [
-            {
-              "trigger": "列表/筛选/翻页/排序",
-              "method": "POST",
-              "frontPath": "/component/student-center/lesson/after/page",
-              "frontFile": "src/services/lessonAfter.js:3",
-              "service": "student-center",
-              "backendPath": "/lesson/after/page",
-              "name": "[POST]/page",
-              "id": 1159242
-            },
-            {
-              "trigger": "总数超上限",
-              "method": "POST",
-              "frontPath": "/component/student-center/lesson/after/count",
-              "frontFile": "src/services/lessonAfter.js:10",
-              "service": "student-center",
-              "backendPath": "/lesson/after/count",
-              "name": "[POST]/count",
-              "id": 1159241
-            },
-            {
-              "trigger": "发短信前置校验",
-              "method": "POST",
-              "frontPath": "/component/student-center/lesson/after/operate/validation",
-              "frontFile": "src/services/lessonAfter.js:18",
-              "service": "student-center",
-              "backendPath": "/lesson/after/operate/validation",
-              "name": "[POST]/operate/validation",
-              "id": 1159249
-            },
-            {
-              "trigger": "发课节指南前置校验",
-              "method": "POST",
-              "frontPath": "/component/student-center/clazz/lesson/getPlaybackGuideStatus",
-              "frontFile": "src/services/lessonList.js:21",
-              "service": "student-center",
-              "backendPath": "/clazz/lesson/getPlaybackGuideStatus",
-              "name": "获取回放指南状态",
-              "id": 30652
-            },
-            {
-              "trigger": "点击列跳转学员列表",
-              "method": "POST",
-              "frontPath": "/component/student-center/lesson/prepare/jump",
-              "frontFile": "src/services/lessonPrepare.js:17",
-              "service": "student-center",
-              "backendPath": "/lesson/prepare/jump",
-              "name": "[POST]/jump",
-              "id": 980564
-            }
-          ]
-        },
-        {
-          "tabKey": "emLessonAfter",
-          "name": "课后督学（EM）",
-          "file": "cronus/lessonList/emLessonAfter.md",
-          "apis": [
-            {
-              "trigger": "列表/筛选/翻页/排序",
-              "method": "POST",
-              "frontPath": "/component/student-center/lesson/after/page",
-              "frontFile": "src/services/lessonAfter.js:3",
-              "service": "student-center",
-              "backendPath": "/lesson/after/page",
-              "name": "[POST]/page",
-              "id": 1159242
-            },
-            {
-              "trigger": "总数超上限",
-              "method": "POST",
-              "frontPath": "/component/student-center/lesson/after/count",
-              "frontFile": "src/services/lessonAfter.js:10",
-              "service": "student-center",
-              "backendPath": "/lesson/after/count",
-              "name": "[POST]/count",
-              "id": 1159241
-            }
-          ]
-        },
-        {
-          "tabKey": "prepareRelationLesson",
-          "name": "关联课节",
-          "file": "cronus/lessonList/prepareRelationLesson.md",
-          "apis": [
-            {
-              "trigger": "列表/筛选/翻页/排序",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/lesson/prepare/relation/page",
-              "frontFile": "src/services/lessonPrepare.js:62",
-              "service": "student-center",
-              "backendPath": "/lesson/prepare/relation/page",
-              "name": "[POST]/relation/page",
-              "id": 4882731
-            },
-            {
-              "trigger": "总数超上限",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/lesson/prepare/relation/count",
-              "frontFile": "src/services/lessonPrepare.js:69",
-              "service": "student-center",
-              "backendPath": "/lesson/prepare/relation/count",
-              "name": "[POST]/relation/count",
-              "id": 4882730
-            },
-            {
-              "trigger": "听课链接",
-              "method": "POST",
-              "frontPath": "/component/student-center/clazz/lesson/getCourseUrl",
-              "frontFile": "src/services/lessonPrepare.js:25",
-              "service": "student-center",
-              "backendPath": "/clazz/lesson/getCourseUrl",
-              "name": "获取课节复制链接",
-              "id": 30650
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "route": "/crm/cronus/lessonStudentList",
-      "name": "课节学员",
-      "repo": "cronus",
-      "pageFile": "cronus/lessonStudentList/_page.md",
-      "pageApis": [
-        {
-          "trigger": "进页面/切换课节",
-          "method": "POST",
-          "frontPath": "/bgwApi/component/student-center/lesson/excerpt",
-          "frontFile": "src/services/studentLessonPrepare.js:26",
-          "service": "student-center",
-          "backendPath": "/lesson/excerpt",
-          "name": "[POST]/excerpt",
-          "id": 980556
-        },
-        {
-          "trigger": "进页面",
-          "method": "POST",
-          "frontPath": "/component/student-center/lesson/prepare/gray",
-          "frontFile": "src/pages/lessonStudent/grayscale/index.js:12",
-          "service": "student-center",
-          "backendPath": "/lesson/prepare/gray",
-          "name": "[POST]/gray",
-          "id": 980560
-        },
-        {
-          "trigger": "进页面",
-          "method": "POST",
-          "frontPath": "/component/student-center/lesson/after/gray",
-          "frontFile": "src/pages/lessonStudent/grayscale/index.js:26",
-          "service": "student-center",
-          "backendPath": "/lesson/after/gray",
-          "name": "灰度",
-          "id": 1159240
-        },
-        {
-          "trigger": "进页面",
-          "method": "POST",
-          "frontPath": "/component/student-center/lesson/prepare/relation/gray",
-          "frontFile": "src/pages/lessonStudent/grayscale/index.js:39",
-          "service": "student-center",
-          "backendPath": "/lesson/prepare/relation/gray",
-          "name": "关联课节 tab 灰度",
-          "id": 4882732
-        },
-        {
-          "trigger": "tab 角标（60s 轮询）",
-          "method": "POST",
-          "frontPath": "/bgwApi/component/student-center/lesson/prepare/user/scene/count",
-          "frontFile": "src/services/studentLessonPrepare.js:64",
-          "service": "student-center",
-          "backendPath": "/lesson/prepare/user/scene/count",
-          "name": "[POST]/user/scene/count",
-          "id": 980557
-        },
-        {
-          "trigger": "切换课节下拉搜索",
-          "method": "POST",
-          "frontPath": "/component/student-center/filter/lesson/list",
-          "frontFile": "src/services/lesson.js:16",
-          "service": "student-center",
-          "backendPath": "/filter/lesson/list",
-          "name": "[POST]/lesson/list",
-          "id": 1453277
-        },
-        {
-          "trigger": "行内编辑保存（各 tab 共用）",
-          "method": "POST",
-          "frontPath": "/bgwApi/component/student-center/lesson/prepare/user/edit",
-          "frontFile": "src/services/studentLessonPrepare.js:56",
-          "service": "student-center",
-          "backendPath": "/lesson/prepare/user/edit",
-          "name": "[POST]/user/edit",
-          "id": 980545
-        },
-        {
-          "trigger": "hover 触达记录（跨 tab 自定义列）",
-          "method": "POST",
-          "frontPath": "/component/student-center/lesson/after/reach/record",
-          "frontFile": "src/services/lessonAfterUser.js:34",
-          "service": "student-center",
-          "backendPath": "/lesson/after/reach/record",
-          "name": "[POST]/reach/record",
-          "id": 1159254
-        },
-        {
-          "trigger": "hover 听课进度条（跨 tab 自定义列）",
-          "method": "POST",
-          "frontPath": "/component/student-center/studentClazz/recentLessonSituation",
-          "frontFile": "src/services/clazzRosterOL.js:51",
-          "service": "student-center",
-          "backendPath": "/studentClazz/recentLessonSituation",
-          "name": "获取学员最近看课进度条",
-          "id": 30675
-        }
-      ],
-      "tabs": [
-        {
-          "tabKey": "default",
-          "name": "默认",
-          "file": "cronus/lessonStudentList/default.md",
-          "apis": [
-            {
-              "trigger": "列表/筛选/翻页（大班课）",
-              "method": "POST",
-              "frontPath": "/component/student-center/lesson/user/list",
-              "frontFile": "src/pages/lessonStudent/Default/services.js:4",
-              "service": "student-center",
-              "backendPath": "/lesson/user/list",
-              "name": "[POST]/user/list",
-              "id": 30714
-            },
-            {
-              "trigger": "列表/筛选/翻页（小灶课）",
-              "method": "POST",
-              "frontPath": "/component/student-center/lesson/parentsMeeting/user/list",
-              "frontFile": "src/pages/lessonStudent/Default/services.js:11",
-              "service": "student-center",
-              "backendPath": "/lesson/parentsMeeting/user/list",
-              "name": "[POST]/parentsMeeting/user/list",
-              "id": 30715
-            },
-            {
-              "trigger": "总数（大班课）",
-              "method": "POST",
-              "frontPath": "/component/student-center/lesson/user/list/count",
-              "frontFile": "src/pages/lessonStudent/Default/services.js:31",
-              "service": "student-center",
-              "backendPath": "/lesson/user/list/count",
-              "name": "[POST]/user/list/count",
-              "id": 1033506
-            },
-            {
-              "trigger": "总数（小灶课）",
-              "method": "POST",
-              "frontPath": "/component/student-center/lesson/parentsMeeting/user/list/count",
-              "frontFile": "src/pages/lessonStudent/Default/services.js:37",
-              "service": "student-center",
-              "backendPath": "/lesson/parentsMeeting/user/list/count",
-              "name": "[POST]/parentsMeeting/user/list/count",
-              "id": 1033508
-            },
-            {
-              "trigger": "推荐连麦",
-              "method": "POST",
-              "frontPath": "/component/student-center/liveRecommend/create",
-              "frontFile": "src/pages/lessonStudent/Default/services.js:25",
-              "service": "student-center",
-              "backendPath": "/liveRecommend/create",
-              "name": "[POST]/create",
-              "id": 444969
-            },
-            {
-              "trigger": "进页面",
-              "method": "GET",
-              "frontPath": "/component/student-center/study/data/gray",
-              "frontFile": "src/services/studentProfile.js:41",
-              "service": "student-center",
-              "backendPath": "/study/data/gray",
-              "name": "学员详情灰度",
-              "id": 47244
-            },
-            {
-              "trigger": "取消请假",
-              "method": "POST",
-              "frontPath": "/component/student-center/clazz/lesson/cancel/leave",
-              "frontFile": "src/pages/lessonStudent/Default/components/AskForLeave/services.js:4",
-              "service": "student-center",
-              "backendPath": "/clazz/lesson/cancel/leave",
-              "name": "取消请假",
-              "id": 30644
-            },
-            {
-              "trigger": "直播答题抽屉",
-              "method": "POST",
-              "frontPath": "/fairy/subclazz/learnSituation/personal/v2/getLiveQuizDetail",
-              "frontFile": "src/pages/lessonStudent/Default/components/LivingAnswer/services.js:3",
-              "service": "fairy.gaotu100.com",
-              "backendPath": "/subclazz/learnSituation/personal/v2/getLiveQuizDetail",
-              "name": "学习数据-直播答题情况",
-              "id": 35064
-            },
-            {
-              "trigger": "直播答题抽屉",
-              "method": "POST",
-              "frontPath": "/fairy/subclazz/learnSituation/personal/getPersonalClazzLessonSituationDetail",
-              "frontFile": "src/pages/lessonStudent/Default/components/LivingAnswer/services.js:10",
-              "service": "fairy.gaotu100.com",
-              "backendPath": "/subclazz/learnSituation/personal/getPersonalClazzLessonSituationDetail",
-              "name": "学习数据-课节学习数据详情",
-              "id": 35060
-            },
-            {
-              "trigger": "课后练习 tab",
-              "method": "POST",
-              "frontPath": "/fairy/subclazz/learnSituation/personal/getSubjectAndExerciseDetailUrl",
-              "frontFile": "src/pages/lessonStudent/components/AnswerPracticeDrawer/services.js:3",
-              "service": "fairy.gaotu100.com",
-              "backendPath": "/subclazz/learnSituation/personal/getSubjectAndExerciseDetailUrl",
-              "name": "学习数据-学部信息和课后练习明细组件url",
-              "id": 35062
-            },
-            {
-              "trigger": "直播发言 tab",
-              "method": "POST",
-              "frontPath": "/component/student-center/liveSpeak/lesson/speakContent/list",
-              "frontFile": "src/pages/lessonStudent/components/LiveCommentTable/services.ts:28",
-              "service": "student-data",
-              "backendPath": "/liveSpeak/lesson/speakContent/list",
-              "name": "[POST]/lesson/speakContent/list",
-              "id": 30527
-            },
-            {
-              "trigger": "查看报告",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/report/getViewDuration",
-              "frontFile": "src/services/clazzRosterOL.js:224",
-              "service": "student-center",
-              "backendPath": "/report/getViewDuration",
-              "name": "获取报告查看时长",
-              "id": 30603
-            }
-          ]
-        },
-        {
-          "tabKey": "prepareUser",
-          "name": "课前准备",
-          "file": "cronus/lessonStudentList/prepareUser.md",
-          "apis": [
-            {
-              "trigger": "列表/筛选/翻页/排序",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/lesson/prepare/user/page",
-              "frontFile": "src/services/studentLessonPrepare.js:11",
-              "service": "student-center",
-              "backendPath": "/lesson/prepare/user/page",
-              "name": "[POST]/user/page",
-              "id": 980559
-            },
-            {
-              "trigger": "总数超上限",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/lesson/prepare/user/count",
-              "frontFile": "src/services/studentLessonPrepare.js:19",
-              "service": "student-center",
-              "backendPath": "/lesson/prepare/user/count",
-              "name": "[POST]/user/count",
-              "id": 980563
-            },
-            {
-              "trigger": "进页面（催到课灰度/WS）",
-              "method": "GET",
-              "frontPath": "/component/student-center/lesson/prepare/attendance-remind/switch",
-              "frontFile": "src/services/studentLessonPrepare.js:72",
-              "service": "student-center",
-              "backendPath": "/lesson/prepare/attendance-remind/switch",
-              "name": "[GET]/attendance-remind/switch",
-              "id": 2623715
-            },
-            {
-              "trigger": "推荐连麦",
-              "method": "POST",
-              "frontPath": "/component/student-center/liveRecommend/create",
-              "frontFile": "src/services/lesson.js:10",
-              "service": "student-center",
-              "backendPath": "/liveRecommend/create",
-              "name": "[POST]/create",
-              "id": 444969
-            },
-            {
-              "trigger": "课节数据卡片",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/lesson/prepare/statistic",
-              "frontFile": "src/services/studentLessonPrepare.js:3",
-              "service": "student-center",
-              "backendPath": "/lesson/prepare/statistic",
-              "name": "[POST]/statistic",
-              "id": 980555
-            },
-            {
-              "trigger": "触达/短信前置校验",
-              "method": "POST",
-              "frontPath": "/component/student-center/lesson/prepare/operate/validation",
-              "frontFile": "src/services/lessonPrepare.js:40",
-              "service": "student-center",
-              "backendPath": "/lesson/prepare/operate/validation",
-              "name": "[POST]/operate/validation",
-              "id": 1159247
-            },
-            {
-              "trigger": "hover 催到课记录",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/lesson/prepare/attendRemind/record",
-              "frontFile": "src/services/studentLessonPrepare.js:34",
-              "service": "student-center",
-              "backendPath": "/lesson/prepare/attendRemind/record",
-              "name": "[POST]/attendRemind/record",
-              "id": 980544
-            },
-            {
-              "trigger": "hover 催预习记录",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/lesson/prepare/previewRemind/record",
-              "frontFile": "src/services/studentLessonPrepare.js:41",
-              "service": "student-center",
-              "backendPath": "/lesson/prepare/previewRemind/record",
-              "name": "[POST]/previewRemind/record",
-              "id": 980561
-            }
-          ]
-        },
-        {
-          "tabKey": "lessonAfterUser",
-          "name": "课后督学",
-          "file": "cronus/lessonStudentList/lessonAfterUser.md",
-          "apis": [
-            {
-              "trigger": "列表/筛选/翻页/排序",
-              "method": "POST",
-              "frontPath": "/component/student-center/lesson/after/user/page",
-              "frontFile": "src/services/lessonAfterUser.js:4",
-              "service": "student-center",
-              "backendPath": "/lesson/after/user/page",
-              "name": "[POST]/user/page",
-              "id": 1159245
-            },
-            {
-              "trigger": "总数超上限",
-              "method": "POST",
-              "frontPath": "/component/student-center/lesson/after/user/count",
-              "frontFile": "src/services/lessonAfterUser.js:11",
-              "service": "student-center",
-              "backendPath": "/lesson/after/user/count",
-              "name": "[POST]/user/count",
-              "id": 1159243
-            },
-            {
-              "trigger": "课节数据卡片",
-              "method": "POST",
-              "frontPath": "/component/student-center/lesson/after/statistic",
-              "frontFile": "src/services/lessonAfterUser.js:19",
-              "service": "student-center",
-              "backendPath": "/lesson/after/statistic",
-              "name": "[POST]/statistic",
-              "id": 1159250
-            },
-            {
-              "trigger": "去批改",
-              "method": "POST",
-              "frontPath": "/component/student-center/lesson/after/correctionUrl",
-              "frontFile": "src/services/lessonAfterUser.js:27",
-              "service": "student-center",
-              "backendPath": "/lesson/after/correctionUrl",
-              "name": "[POST]/correctionUrl",
-              "id": 1159244
-            },
-            {
-              "trigger": "触达/短信前置校验",
-              "method": "POST",
-              "frontPath": "/component/student-center/lesson/after/operate/validation",
-              "frontFile": "src/services/lessonAfter.js:18",
-              "service": "student-center",
-              "backendPath": "/lesson/after/operate/validation",
-              "name": "[POST]/operate/validation",
-              "id": 1159249
-            },
-            {
-              "trigger": "发课节指南前置校验",
-              "method": "POST",
-              "frontPath": "/component/student-center/clazz/lesson/getPlaybackGuideStatus",
-              "frontFile": "src/services/lessonList.js:21",
-              "service": "student-center",
-              "backendPath": "/clazz/lesson/getPlaybackGuideStatus",
-              "name": "获取回放指南状态",
-              "id": 30652
-            }
-          ]
-        },
-        {
-          "tabKey": "emLessonAfterUser",
-          "name": "课后督学（EM）",
-          "file": "cronus/lessonStudentList/emLessonAfterUser.md",
-          "apis": [
-            {
-              "trigger": "列表/筛选/翻页/排序",
-              "method": "POST",
-              "frontPath": "/intranet-rpc/tutu/content/analysis/lesson/after/user/page",
-              "frontFile": "src/services/emLessonAfterUser.js:4",
-              "service": "content-analysis",
-              "backendPath": "/tutu/content/analysis/lesson/after/user/page",
-              "name": "分页查询课后督学学员详情",
-              "id": 5248783
-            },
-            {
-              "trigger": "进页面/切换课节/刷新",
-              "method": "POST",
-              "frontPath": "/intranet-rpc/tutu/content/analysis/lesson/after/config",
-              "frontFile": "src/services/emLessonAfterUser.js:11",
-              "service": "content-analysis",
-              "backendPath": "/tutu/content/analysis/lesson/after/config",
-              "name": "查询课后督学通用配置",
-              "id": 5248784
-            },
-            {
-              "trigger": "课节数据卡片",
-              "method": "POST",
-              "frontPath": "/component/student-center/lesson/after/statistic",
-              "frontFile": "src/services/emLessonAfterUser.js:17",
-              "service": "student-center",
-              "backendPath": "/lesson/after/statistic",
-              "name": "[POST]/statistic",
-              "id": 1159250
-            }
-          ]
-        },
-        {
-          "tabKey": "prepareRelationLessonUser",
-          "name": "关联课节",
-          "file": "cronus/lessonStudentList/prepareRelationLessonUser.md",
-          "apis": [
-            {
-              "trigger": "列表/筛选/翻页/排序",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/lesson/prepare/relation/user/page",
-              "frontFile": "src/services/studentLessonPrepare.js:76",
-              "service": "student-center",
-              "backendPath": "/lesson/prepare/relation/user/page",
-              "name": "[POST]/relation/user/page",
-              "id": 4882733
-            },
-            {
-              "trigger": "总数超上限",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/lesson/prepare/relation/user/count",
-              "frontFile": "src/services/studentLessonPrepare.js:83",
-              "service": "student-center",
-              "backendPath": "/lesson/prepare/relation/user/count",
-              "name": "[POST]/relation/user/count",
-              "id": 4882737
-            },
-            {
-              "trigger": "进页面（催到课灰度/WS）",
-              "method": "GET",
-              "frontPath": "/component/student-center/lesson/prepare/attendance-remind/switch",
-              "frontFile": "src/services/studentLessonPrepare.js:72",
-              "service": "student-center",
-              "backendPath": "/lesson/prepare/attendance-remind/switch",
-              "name": "[GET]/attendance-remind/switch",
-              "id": 2623715
-            },
-            {
-              "trigger": "推荐连麦",
-              "method": "POST",
-              "frontPath": "/component/student-center/liveRecommend/create",
-              "frontFile": "src/services/lesson.js:10",
-              "service": "student-center",
-              "backendPath": "/liveRecommend/create",
-              "name": "[POST]/create",
-              "id": 444969
-            },
-            {
-              "trigger": "触达/短信前置校验",
-              "method": "POST",
-              "frontPath": "/component/student-center/lesson/prepare/operate/validation",
-              "frontFile": "src/services/lessonPrepare.js:40",
-              "service": "student-center",
-              "backendPath": "/lesson/prepare/operate/validation",
-              "name": "[POST]/operate/validation",
-              "id": 1159247
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "route": "/crm/cronus/microLessonStudentList",
-      "name": "小班课节学员",
-      "repo": "cronus",
-      "pageFile": "cronus/microLessonStudentList/_page.md",
-      "pageApis": [
-        {
-          "trigger": "进页面",
-          "method": "POST",
-          "frontPath": "/component/student-center/smallClazz/gray",
-          "frontFile": "src/pages/microLessonStudent/grayscale/index.js:11",
-          "service": "student-center",
-          "backendPath": "/smallClazz/gray",
-          "name": "判断灰度规则",
-          "id": 2044935
-        },
-        {
-          "trigger": "列表/筛选/翻页/排序",
-          "method": "POST",
-          "frontPath": "/bgwApi/component/student-center/small-clazz/lesson/user/list",
-          "frontFile": "src/pages/microLessonStudent/Default/services.ts:43",
-          "service": "student-center",
-          "backendPath": "/small-clazz/lesson/user/list",
-          "name": "小班课课节学员列表",
-          "id": 2044933
-        },
-        {
-          "trigger": "总数超上限",
-          "method": "POST",
-          "frontPath": "/bgwApi/component/student-center/small-clazz/lesson/user/list/count",
-          "frontFile": "src/pages/microLessonStudent/Default/services.ts:50",
-          "service": "student-center",
-          "backendPath": "/small-clazz/lesson/user/list/count",
-          "name": "小班课课节学员统计",
-          "id": 2044936
-        },
-        {
-          "trigger": "行内编辑保存",
-          "method": "POST",
-          "frontPath": "/component/student-center/studentClazz/edit",
-          "frontFile": "src/services/clazzRosterOL.js:41",
-          "service": "student-center",
-          "backendPath": "/studentClazz/edit",
-          "name": "[POST]/edit",
-          "id": 30662
-        },
-        {
-          "trigger": "hover 听课进度条",
-          "method": "POST",
-          "frontPath": "/bgwApi/component/student-center/smallClazz/lessonSituation",
-          "frontFile": "src/pages/microLessonStudent/Default/services.ts:227",
-          "service": "student-center",
-          "backendPath": "/smallClazz/lessonSituation",
-          "name": "获取学员看课进度条",
-          "id": 2366331
-        }
-      ],
-      "tabs": []
-    },
-    {
-      "route": "/crm/cronus/microClazzManage",
-      "name": "小班课管理",
-      "repo": "cronus",
-      "pageFile": "cronus/microClazzManage/_page.md",
-      "pageApis": [
-        {
-          "trigger": "进页面/筛选/翻页",
-          "method": "POST",
-          "frontPath": "/bgwApi/student-center/teachProductSmallClazz/list",
-          "frontFile": "src/pages/microClazzManage/index.tsx:106",
-          "service": "student-center",
-          "backendPath": "/teachProductSmallClazz/list",
-          "name": "[POST]/list",
-          "id": 2044921
-        },
-        {
-          "trigger": "主讲下拉搜索",
-          "method": "POST",
-          "frontPath": "/bgwApi/student-center/teachProductSmallClazz/mainTeacherOptions",
-          "frontFile": "src/pages/microClazzManage/services/index.ts:4",
-          "service": "student-center",
-          "backendPath": "/teachProductSmallClazz/mainTeacherOptions",
-          "name": "[POST]/mainTeacherOptions",
-          "id": 2044927
-        },
-        {
-          "trigger": "班主任下拉搜索",
-          "method": "POST",
-          "frontPath": "/bgwApi/student-center/teachProductSmallClazz/assistantTeacherOptions",
-          "frontFile": "src/pages/microClazzManage/services/index.ts:10",
-          "service": "student-center",
-          "backendPath": "/teachProductSmallClazz/assistantTeacherOptions",
-          "name": "[POST]/assistantTeacherOptions",
-          "id": 2044938
-        }
-      ],
-      "tabs": []
-    },
-    {
-      "route": "/crm/cronus/microClazzRoster",
-      "name": "小班课花名册",
-      "repo": "cronus",
-      "pageFile": "cronus/microClazzRoster/_page.md",
-      "pageApis": [],
-      "tabs": [
-        {
-          "tabKey": "default",
-          "name": "花名册",
-          "file": "cronus/microClazzRoster/default.md",
-          "apis": [
-            {
-              "trigger": "进页面/筛选/翻页/排序",
-              "method": "POST",
-              "frontPath": "/component/student-center/smallClazz/clazzStudentList",
-              "frontFile": "src/pages/microClazzRoster/DefaultRoster/services/microClazzRoster.js:5",
-              "service": "student-center",
-              "backendPath": "/smallClazz/clazzStudentList",
-              "name": "小班花名册列表查询",
-              "id": 2044941
-            },
-            {
-              "trigger": "行内编辑保存",
-              "method": "POST",
-              "frontPath": "/component/student-center/studentClazz/edit",
-              "frontFile": "src/pages/microClazzRoster/DefaultRoster/services/microClazzRoster.js:13",
-              "service": "student-center",
-              "backendPath": "/studentClazz/edit",
-              "name": "[POST]/edit",
-              "id": 30662
-            },
-            {
-              "trigger": "批量改颜色/分层",
-              "method": "POST",
-              "frontPath": "/component/student-center/studentClazz/batchEdit",
-              "frontFile": "src/pages/microClazzRoster/DefaultRoster/services/microClazzRoster.js:54",
-              "service": "student-center",
-              "backendPath": "/studentClazz/batchEdit",
-              "name": "[POST]/batchEdit",
-              "id": 2863102
-            },
-            {
-              "trigger": "主讲/班主任下拉搜索",
-              "method": "POST",
-              "frontPath": "/bgwApi/student-center/smallClazz/filter/clazz/teacher/list",
-              "frontFile": "src/pages/microClazzRoster/DefaultRoster/services/microClazzRoster.js:21",
-              "service": "student-center",
-              "backendPath": "/smallClazz/filter/clazz/teacher/list",
-              "name": "[POST]/clazz/teacher/list",
-              "id": 2044923
-            },
-            {
-              "trigger": "班级筛选下拉",
-              "method": "POST",
-              "frontPath": "/component/student-center/smallClazz/filter/clazz/list",
-              "frontFile": "src/pages/microClazzRoster/DefaultRoster/components/EnhancedGlobalSearch/index.jsx:254",
-              "service": "student-center",
-              "backendPath": "/smallClazz/filter/clazz/list",
-              "name": "[POST]/clazz/list",
-              "id": 2044937
-            },
-            {
-              "trigger": "hover 最近听课",
-              "method": "POST",
-              "frontPath": "/component/student-center/smallClazz/lessonSituation",
-              "frontFile": "src/pages/microClazzRoster/DefaultRoster/services/microClazzRoster.js:37",
-              "service": "student-center",
-              "backendPath": "/smallClazz/lessonSituation",
-              "name": "获取学员看课进度条",
-              "id": 2366331
-            },
-            {
-              "trigger": "进页面",
-              "method": "POST",
-              "frontPath": "coeus 低代码 schema",
-              "frontFile": "src/pages/microClazzRoster/DefaultRoster/hooks/useTableSchema.js:14",
-              "service": "coeus/render",
-              "backendPath": "—",
-              "name": "—",
-              "id": 0
-            }
-          ]
-        },
-        {
-          "tabKey": "continuationService",
-          "name": "续班服务",
-          "file": "cronus/microClazzRoster/continuationService.md",
-          "apis": [
-            {
-              "trigger": "进页面/筛选/翻页",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/small/renewal/page",
-              "frontFile": "src/pages/microClazzRoster/ContinuationService/service.js:31",
-              "service": "student-center",
-              "backendPath": "/roster/small/renewal/page",
-              "name": "分页查询续班服务列表",
-              "id": 3151317
-            },
-            {
-              "trigger": "总数超上限",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/small/renewal/count",
-              "frontFile": "src/pages/microClazzRoster/ContinuationService/service.js:39",
-              "service": "student-center",
-              "backendPath": "/roster/small/renewal/count",
-              "name": "获取总数，当超过index配置最大count时使用",
-              "id": 3151318
-            },
-            {
-              "trigger": "默认视图列表",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/small/renewal/default/page",
-              "frontFile": "src/pages/microClazzRoster/ContinuationService/service.js:13",
-              "service": "student-center",
-              "backendPath": "/roster/small/renewal/default/page",
-              "name": "分页查询续班服务列表",
-              "id": 3151315
-            },
-            {
-              "trigger": "默认视图总数",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/small/renewal/default/count",
-              "frontFile": "src/pages/microClazzRoster/ContinuationService/service.js:47",
-              "service": "student-center",
-              "backendPath": "/roster/small/renewal/default/count",
-              "name": "获取总数，当超过index配置最大count时使用",
-              "id": 3151316
-            },
-            {
-              "trigger": "进页面",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/small/renewal/defaultValue",
-              "frontFile": "src/pages/microClazzRoster/ContinuationService/service.js:22",
-              "service": "student-center",
-              "backendPath": "/roster/small/renewal/defaultValue",
-              "name": "获取GlobalSearch默认值接口",
-              "id": 3151314
-            },
-            {
-              "trigger": "班级变更/进页面",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/small/renewal/getRenewalInfo",
-              "frontFile": "src/pages/microClazzRoster/ContinuationService/service.js:5",
-              "service": "student-center",
-              "backendPath": "/roster/small/renewal/getRenewalInfo",
-              "name": "续班信息",
-              "id": 3151313
-            },
-            {
-              "trigger": "进页面",
-              "method": "POST",
-              "frontPath": "/component/student-center/smallClazz/filter/renewalPlan/list",
-              "frontFile": "src/pages/microClazzRoster/ContinuationService/service.js:55",
-              "service": "student-center",
-              "backendPath": "/smallClazz/filter/renewalPlan/list",
-              "name": "[POST]/renewalPlan/list",
-              "id": 3876404
-            },
-            {
-              "trigger": "续班计划变更",
-              "method": "POST",
-              "frontPath": "/component/student-center/smallClazz/filter/clazz/list",
-              "frontFile": "src/pages/microClazzRoster/ContinuationService/service.js:79",
-              "service": "student-center",
-              "backendPath": "/smallClazz/filter/clazz/list",
-              "name": "[POST]/clazz/list",
-              "id": 2044937
-            },
-            {
-              "trigger": "搜索后刷新指标",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/small/renewal/statistic",
-              "frontFile": "src/pages/microClazzRoster/ContinuationService/service.js:87",
-              "service": "student-center",
-              "backendPath": "/roster/small/renewal/statistic",
-              "name": "续班统计数据",
-              "id": 3876403
-            },
-            {
-              "trigger": "默认指标",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/small/renewal/default/statistic",
-              "frontFile": "src/pages/microClazzRoster/ContinuationService/service.js:117",
-              "service": "student-center",
-              "backendPath": "/roster/small/renewal/default/statistic",
-              "name": "续班统计数据",
-              "id": 3876402
-            },
-            {
-              "trigger": "点「问卷明细」",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/renewal/sendQuestion/getQuestionInfo",
-              "frontFile": "src/pages/microClazzRoster/ContinuationService/service.js:147",
-              "service": "student-center",
-              "backendPath": "/roster/renewal/sendQuestion/getQuestionInfo",
-              "name": "问卷信息获取",
-              "id": 3381630
-            },
-            {
-              "trigger": "问卷明细搜学员",
-              "method": "POST",
-              "frontPath": "/bgwApi/component/student-center/roster/small/renewal/questionnaire/search/user",
-              "frontFile": "src/services/bindingStudents.ts:61",
-              "service": "student-center",
-              "backendPath": "/roster/small/renewal/questionnaire/search/user",
-              "name": "搜索用户",
-              "id": 3876405
-            },
-            {
-              "trigger": "行内编辑保存",
-              "method": "POST",
-              "frontPath": "/component/student-center/studentClazz/edit",
-              "frontFile": "src/pages/microClazzRoster/DefaultRoster/services/microClazzRoster.js:13",
-              "service": "student-center",
-              "backendPath": "/studentClazz/edit",
-              "name": "[POST]/edit",
-              "id": 30662
-            },
-            {
-              "trigger": "批量改颜色/分层",
-              "method": "POST",
-              "frontPath": "/component/student-center/studentClazz/batchEdit",
-              "frontFile": "src/pages/microClazzRoster/DefaultRoster/services/microClazzRoster.js:54",
-              "service": "student-center",
-              "backendPath": "/studentClazz/batchEdit",
-              "name": "[POST]/batchEdit",
-              "id": 2863102
-            },
-            {
-              "trigger": "下单（非灰度）",
-              "method": "POST",
-              "frontPath": "/bgwApi/product-b/b/renewMaster/recommendClazzList",
-              "frontFile": "src/services/continuationService.js:108",
-              "service": "product-b",
-              "backendPath": "/b/renewMaster/recommendClazzList",
-              "name": "查询推荐班级列表",
-              "id": 2734275
-            },
-            {
-              "trigger": "下单灰度判断",
-              "method": "POST",
-              "frontPath": "/product-b/b/renewMaster/configFlag",
-              "frontFile": "src/pages/microClazzRoster/ContinuationService/components/CreateOrder/gray.js:7",
-              "service": "product-b",
-              "backendPath": "/b/renewMaster/configFlag",
-              "name": "获取配置开关",
-              "id": 2734336
-            },
-            {
-              "trigger": "进页面",
-              "method": "POST",
-              "frontPath": "coeus 低代码 schema",
-              "frontFile": "src/models/microContinuationService.js:18",
-              "service": "coeus/render",
-              "backendPath": "—",
-              "name": "—",
-              "id": 0
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "route": "/crm/cronus/onebyOneRoster",
-      "name": "一对一花名册",
-      "repo": "cronus",
-      "pageFile": "cronus/onebyOneRoster/_page.md",
-      "pageApis": [
-        {
-          "trigger": "进页面/筛选/翻页/排序",
-          "method": "POST",
-          "frontPath": "/component/student-center/gps/my-student/roster/list",
-          "frontFile": "src/pages/onebyOneRoster/services/onebyOneRoster.ts:16",
-          "service": "student-center",
-          "backendPath": "/my-student/roster/list",
-          "name": "一对一花名册",
-          "id": 4556725
-        },
-        {
-          "trigger": "姓名行内编辑保存",
-          "method": "POST",
-          "frontPath": "/component/student-center/studentClazz/edit",
-          "frontFile": "src/pages/onebyOneRoster/services/onebyOneRoster.ts:41",
-          "service": "student-center",
-          "backendPath": "/studentClazz/edit",
-          "name": "[POST]/edit",
-          "id": 30662
-        },
-        {
-          "trigger": "进页面",
-          "method": "POST",
-          "frontPath": "coeus 低代码 schema",
-          "frontFile": "src/pages/onebyOneRoster/hooks/useTableSchema.js:13",
-          "service": "coeus/render",
-          "backendPath": "—",
-          "name": "—",
-          "id": 0
-        }
-      ],
-      "tabs": []
-    },
-    {
-      "route": "/crm/cronus/examManagement",
-      "name": "考试管理",
-      "repo": "cronus",
-      "pageFile": "cronus/examManagement/_page.md",
-      "pageApis": [
-        {
-          "trigger": "进页面/搜索",
-          "method": "POST",
-          "frontPath": "/component/student-center/examManage/list",
-          "frontFile": "src/pages/examManagement/index.js:377",
-          "service": "student-center",
-          "backendPath": "/examManage/list",
-          "name": "考试列表",
-          "id": 506574
-        },
-        {
-          "trigger": "进页面/展开筛选",
-          "method": "POST",
-          "frontPath": "/component/student-center/base/student/dictionary",
-          "frontFile": "src/services/examManagement.js:4",
-          "service": "student-center",
-          "backendPath": "/base/student/dictionary",
-          "name": "获取字典枚举值及对应名称",
-          "id": 43944
-        },
-        {
-          "trigger": "选带班老师",
-          "method": "POST",
-          "frontPath": "/component/student-center/studentClazz/pageAssistantTeacher",
-          "frontFile": "src/services/examManagement.js:14",
-          "service": "student-center",
-          "backendPath": "/studentClazz/pageAssistantTeacher",
-          "name": "[POST]/pageAssistantTeacher",
-          "id": 30677
-        },
-        {
-          "trigger": "打开统计 Tab",
-          "method": "POST",
-          "frontPath": "/component/student-center/examManage/overview",
-          "frontFile": "src/services/examManagement.js:24",
-          "service": "student-center",
-          "backendPath": "/examManage/overview",
-          "name": "基础信息-考试概览",
-          "id": 506572
-        },
-        {
-          "trigger": "打开统计 Tab",
-          "method": "POST",
-          "frontPath": "/component/student-center/examManage/scoreSpan",
-          "frontFile": "src/services/examManagement.js:34",
-          "service": "student-center",
-          "backendPath": "/examManage/scoreSpan",
-          "name": "基础信息-分数分布",
-          "id": 506573
-        },
-        {
-          "trigger": "打开作答 Tab",
-          "method": "POST",
-          "frontPath": "/component/student-center/examManage/studentList",
-          "frontFile": "src/services/examManagement.js:44",
-          "service": "student-center",
-          "backendPath": "/examManage/studentList",
-          "name": "学员作答-列表",
-          "id": 506576
-        },
-        {
-          "trigger": "点报告",
-          "method": "POST",
-          "frontPath": "/component/student-center/exam/show/url",
-          "frontFile": "src/services/examManagement.js:55",
-          "service": "student-center",
-          "backendPath": "/exam/show/url",
-          "name": "获取报告链接",
-          "id": 47246
-        },
-        {
-          "trigger": "打开作答 Tab",
-          "method": "GET",
-          "frontPath": "/component/student-center/base/enum/offlineExam/reportStatusTree",
-          "frontFile": "src/services/examManagement.js:99",
-          "service": "student-center",
-          "backendPath": "/base/enum/offlineExam/reportStatusTree",
-          "name": "试卷状态枚举",
-          "id": 1415898
-        },
-        {
-          "trigger": "查看手机号",
-          "method": "POST",
-          "frontPath": "/student-center/userSecret/getBaseInfo",
-          "frontFile": "src/pages/examManagement/components/AnsweredStudents/config.js:84",
-          "service": "student-center",
-          "backendPath": "/userSecret/getBaseInfo",
-          "name": "查询学员机密信息",
-          "id": 30733
-        },
-        {
-          "trigger": "下载报告长图",
-          "method": "GET",
-          "frontPath": "/fairy/longtu/gen",
-          "frontFile": "src/services/examManagement.js:89",
-          "service": "fairy.gaotu100.com",
-          "backendPath": "/longtu/gen",
-          "name": "[GET]/gen",
-          "id": 35410
-        },
-        {
-          "trigger": "打开题目分析 Tab",
-          "method": "POST",
-          "frontPath": "/component/student-center/examManage/questionList",
-          "frontFile": "src/services/examManagement.js:65",
-          "service": "student-center",
-          "backendPath": "/examManage/questionList",
-          "name": "题目分析-列表",
-          "id": 506571
-        },
-        {
-          "trigger": "打开题目详情",
-          "method": "POST",
-          "frontPath": "/component/student-center/examManage/question/studentList",
-          "frontFile": "src/services/examManagement.js:73",
-          "service": "student-center",
-          "backendPath": "/examManage/question/studentList",
-          "name": "题目分析详情",
-          "id": 506577
-        },
-        {
-          "trigger": "打开题目详情",
-          "method": "GET",
-          "frontPath": "/component/student-center/examManage/question/info",
-          "frontFile": "src/services/examManagement.js:81",
-          "service": "student-center",
-          "backendPath": "/examManage/question/info",
-          "name": "题目分析详情",
-          "id": 506570
-        }
-      ],
-      "tabs": []
-    },
-    {
-      "route": "/crm/microFairy/tutoringClassManage",
-      "name": "辅导班管理",
-      "repo": "boss-counselor",
-      "pageFile": "boss-counselor/tutoringClassManage/_page.md",
-      "pageApis": [
-        {
-          "trigger": "进页面/查询/翻页/排序",
-          "method": "POST",
-          "frontPath": "/bgwApi/distribution-management/subclazz/management/listSubclazzAggInfo",
-          "frontFile": "src/pages/TutoringClassManage/index.jsx:77",
-          "service": "clazz-distribution-management.gaotu100.com",
-          "backendPath": "/subclazz/management/listSubclazzAggInfo",
-          "name": "辅导班管理-辅导班列表",
-          "id": 31665
-        },
-        {
-          "trigger": "进页面",
-          "method": "POST",
-          "frontPath": "/component/student-center/toolBox/config/gray",
-          "frontFile": "src/pages/TutoringClassManage/index.jsx:537",
-          "service": "student-center",
-          "backendPath": "/toolBox/config/gray",
-          "name": "[GET]/config/gray",
-          "id": 64558
-        },
-        {
-          "trigger": "进页面",
-          "method": "GET",
-          "frontPath": "/bgwApi/component/student-center/studentClazz/subordinates/gray",
-          "frontFile": "src/pages/TutoringClassManage/index.jsx:548",
-          "service": "student-center",
-          "backendPath": "/studentClazz/subordinates/gray",
-          "name": "灰度接口",
-          "id": 3683444
-        },
-        {
-          "trigger": "辅导老师下拉搜索（useTreeSelect=false 分支）",
-          "method": "POST",
-          "frontPath": "/bgwApi/component/student-center/studentClazz/pageAssistantTeacher",
-          "frontFile": "src/pages/TutoringClassManage/components/SearchForm/index.jsx:115",
-          "service": "student-center",
-          "backendPath": "/studentClazz/pageAssistantTeacher",
-          "name": "[POST]/pageAssistantTeacher",
-          "id": 30677
-        },
-        {
-          "trigger": "打开抽屉工具详情",
-          "method": "POST",
-          "frontPath": "/fairy/subclazz/detail",
-          "frontFile": "src/pages/TutoringClassManage/components/DrawerToolDetail/index.jsx:29",
-          "service": "fairy.gaotu100.com",
-          "backendPath": "/subclazz/detail",
-          "name": "辅导班详情",
-          "id": 35398
-        }
-      ],
-      "tabs": []
+     "tabKey": "IntentPrediction",
+     "name": "意向预测（分层变化趋势图 + 分层原因）",
+     "file": "aianalysisinformations/IntentPrediction/_page.md",
+     "apis": [
+      {
+       "trigger": "进 tab / hover 历史节点",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/ai/clazzUser/predictLevelReason",
+       "frontFile": "aianalysisinformations/src/components/IntentPrediction/service.ts",
+       "service": "student-center",
+       "backendPath": "/ai/clazzUser/predictLevelReason",
+       "name": "分层变化趋势图与分层原因",
+       "note": "2026-09-29 实测真实用户走此路径 404，后端功能分支仅发布在 test-eco-2 泳道"
+      }
+     ]
     }
-  ]
+   ]
+  },
+  {
+   "route": "/crm/cronus/clazzRosterOL",
+   "name": "班级花名册",
+   "repo": "cronus",
+   "pageFile": "cronus/clazzRosterOL/_page.md",
+   "pageApis": [
+    {
+     "trigger": "进页面",
+     "method": "POST",
+     "frontPath": "/bgwApi/component/student-center/roster/renewal/config",
+     "frontFile": "cronus/src/pages/roster/index.js",
+     "service": "student-center",
+     "backendPath": "/roster/renewal/config",
+     "name": "续班配置",
+     "id": 3807592
+    },
+    {
+     "trigger": "进页面",
+     "method": "POST",
+     "frontPath": "/component/student-center/roster/gray",
+     "frontFile": "cronus/src/pages/roster/grayscale/index.js",
+     "service": "student-center",
+     "backendPath": "/roster/gray",
+     "name": "判断灰度逻辑",
+     "id": 668688
+    }
+   ],
+   "tabs": [
+    {
+     "tabKey": "continuationService",
+     "name": "续班服务",
+     "file": "cronus/clazzRosterOL/continuationService.md",
+     "apis": [
+      {
+       "trigger": "进页面/筛选",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/renewal/page",
+       "frontFile": "cronus/src/services/continuationService.js",
+       "service": "student-center",
+       "backendPath": "/roster/renewal/page",
+       "name": "分页查询续班服务列表",
+       "id": 1995841
+      },
+      {
+       "trigger": "总数超上限",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/renewal/count",
+       "frontFile": "cronus/src/services/continuationService.js",
+       "service": "student-center",
+       "backendPath": "/roster/renewal/count",
+       "name": "获取总数（超上限时用）",
+       "id": 1995832
+      },
+      {
+       "trigger": "默认视图",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/renewal/default/page",
+       "frontFile": "cronus/src/services/continuationService.js",
+       "service": "student-center",
+       "backendPath": "/roster/renewal/default/page",
+       "name": "分页查询续班服务列表",
+       "id": 1995828
+      },
+      {
+       "trigger": "默认视图",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/renewal/default/count",
+       "frontFile": "cronus/src/services/continuationService.js",
+       "service": "student-center",
+       "backendPath": "/roster/renewal/default/count",
+       "name": "获取总数（超上限时用）",
+       "id": 1995835
+      },
+      {
+       "trigger": "进页面",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/renewal/defaultValue",
+       "frontFile": "cronus/src/services/continuationService.js",
+       "service": "student-center",
+       "backendPath": "/roster/renewal/defaultValue",
+       "name": "获取GlobalSearch默认值接口",
+       "id": 1995833
+      },
+      {
+       "trigger": "进页面",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/renewal/getRenewalInfo",
+       "frontFile": "cronus/src/services/continuationService.js",
+       "service": "student-center",
+       "backendPath": "/roster/renewal/getRenewalInfo",
+       "name": "续班信息",
+       "id": 1995839
+      },
+      {
+       "trigger": "进页面",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/renewal/subclazz/statistic",
+       "frontFile": "cronus/src/services/continuationService.js",
+       "service": "student-center",
+       "backendPath": "/roster/renewal/subclazz/statistic",
+       "name": "续班指标统计",
+       "id": 1995842
+      },
+      {
+       "trigger": "默认视图",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/renewal/default/subclazz/statistic",
+       "frontFile": "cronus/src/services/continuationService.js",
+       "service": "student-center",
+       "backendPath": "/roster/renewal/default/subclazz/statistic",
+       "name": "续班指标统计",
+       "id": 1995840
+      },
+      {
+       "trigger": "编辑保存",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/renewal/edit",
+       "frontFile": "cronus/src/services/continuationService.js",
+       "service": "student-center",
+       "backendPath": "/roster/renewal/edit",
+       "name": "编辑学生信息",
+       "id": 1995834
+      },
+      {
+       "trigger": "hover",
+       "method": "POST",
+       "frontPath": "/component/student-center/studentClazz/intimacyHover",
+       "frontFile": "cronus/src/services/continuationService.js",
+       "service": "student-center",
+       "backendPath": "/studentClazz/intimacyHover",
+       "name": "获取学员亲密度",
+       "id": 30665
+      },
+      {
+       "trigger": "hover",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/renewal/reach/record",
+       "frontFile": "cronus/src/services/continuationService.js",
+       "service": "student-center",
+       "backendPath": "/roster/renewal/reach/record",
+       "name": "续班沟通记录",
+       "id": 1995831
+      },
+      {
+       "trigger": "hover",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/renewal/intimacy/course",
+       "frontFile": "cronus/src/services/continuationService.js",
+       "service": "student-center",
+       "backendPath": "/roster/renewal/intimacy/course",
+       "name": "课程完成度",
+       "id": 1995836
+      },
+      {
+       "trigger": "hover",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/renewal/intimacy/service",
+       "frontFile": "cronus/src/services/continuationService.js",
+       "service": "student-center",
+       "backendPath": "/roster/renewal/intimacy/service",
+       "name": "服务亲密度",
+       "id": 1995830
+      },
+      {
+       "trigger": "最近看课",
+       "method": "POST",
+       "frontPath": "/component/student-center/studentClazz/recentLessonSituation",
+       "frontFile": "cronus/src/services/clazzRosterOL.js",
+       "service": "student-center",
+       "backendPath": "/studentClazz/recentLessonSituation",
+       "name": "获取学员最近看课进度条",
+       "id": 30675
+      },
+      {
+       "trigger": "推荐班级",
+       "method": "POST",
+       "frontPath": "/bgwApi/product-b/b/renewMaster/recommendClazzList",
+       "frontFile": "cronus/src/services/continuationService.js",
+       "service": "product-b",
+       "backendPath": "/b/renewMaster/recommendClazzList",
+       "name": "查询推荐班级列表",
+       "id": 2734275
+      },
+      {
+       "trigger": "判断续班班",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/renewal/judgeIsRenewalSubClazzNumber",
+       "frontFile": "cronus/src/services/continuationService.js",
+       "service": "student-center",
+       "backendPath": "/roster/renewal/judgeIsRenewalSubClazzNumber",
+       "name": "判断是否是续班辅导班",
+       "id": 2153606
+      },
+      {
+       "trigger": "续班意向预测",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/ai/clazzUser/levelReasonAndHistory",
+       "frontFile": "cronus/src/services/continuationService.js",
+       "service": "student-center",
+       "backendPath": "/ai/clazzUser/levelReasonAndHistory",
+       "name": "分层原因和变化记录",
+       "id": 2977228
+      },
+      {
+       "trigger": "hover 归因",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/ai/renewal/reason/detail",
+       "frontFile": "cronus/src/services/continuationService.js",
+       "service": "student-center",
+       "backendPath": "/ai/renewal/reason/detail",
+       "name": "续班归因详情",
+       "id": 5292053
+      },
+      {
+       "trigger": "原因弹窗",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/ai/renewal/reason/options",
+       "frontFile": "cronus/src/services/continuationService.js",
+       "service": "student-center",
+       "backendPath": "/ai/renewal/reason/options",
+       "name": "续班原因分类字典",
+       "id": 5292052
+      },
+      {
+       "trigger": "保存原因",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/ai/renewal/reason/manual/save",
+       "frontFile": "cronus/src/services/continuationService.js",
+       "service": "student-center",
+       "backendPath": "/ai/renewal/reason/manual/save",
+       "name": "保存老师填写的续班原因",
+       "id": 5292051
+      },
+      {
+       "trigger": "发问卷",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/renewal/sendQuestion/getQuestionInfo",
+       "frontFile": "cronus/src/services/continuationService.js",
+       "service": "student-center",
+       "backendPath": "/roster/renewal/sendQuestion/getQuestionInfo",
+       "name": "问卷信息获取",
+       "id": 3381630
+      },
+      {
+       "trigger": "校验问卷",
+       "method": "POST",
+       "frontPath": "/component/student-center/roster/renewal/sendQuestion/validate",
+       "frontFile": "cronus/src/pages/roster/ContinuationService/components/QuestionnaireLink/service.js",
+       "service": "student-center",
+       "backendPath": "/roster/renewal/sendQuestion/validate",
+       "name": "发问卷前置校验",
+       "id": 1995843
+      },
+      {
+       "trigger": "续班报名校验",
+       "method": "POST",
+       "frontPath": "/component/student-center/roster/renewal/renewalOrder/validate",
+       "frontFile": "cronus/src/pages/roster/ContinuationService/components/PureContinuation/service.js",
+       "service": "student-center",
+       "backendPath": "/roster/renewal/renewalOrder/validate",
+       "name": "续班报名前置校验",
+       "id": 2093628
+      },
+      {
+       "trigger": "预报名校验",
+       "method": "POST",
+       "frontPath": "/component/student-center/roster/renewal/renewalPreRegistration/validate",
+       "frontFile": "cronus/src/pages/roster/ContinuationService/components/PreRegistrationLink/service.js",
+       "service": "student-center",
+       "backendPath": "/roster/renewal/renewalPreRegistration/validate",
+       "name": "续班预报名前置校验",
+       "id": 2652063
+      },
+      {
+       "trigger": "报告链接",
+       "method": "POST",
+       "frontPath": "/reachPortal/reportConfig/getReportUrl",
+       "frontFile": "cronus/src/pages/roster/ContinuationService/components/*/service.js",
+       "service": "reach-service",
+       "backendPath": "/reachPortal/reportConfig/getReportUrl",
+       "name": "获取预览或发送链接",
+       "id": 734494
+      },
+      {
+       "trigger": "推荐主体",
+       "method": "POST",
+       "frontPath": "/reachPortal/reportConfig/getRecommendAppInfo",
+       "frontFile": "cronus/src/pages/roster/ContinuationService/components/PureContinuation/service.js",
+       "service": "reach-service",
+       "backendPath": "/reachPortal/reportConfig/getRecommendAppInfo",
+       "name": "获取主体",
+       "id": 2093624
+      },
+      {
+       "trigger": "预报名链接",
+       "method": "POST",
+       "frontPath": "/reachPortal/reportConfig/getPreRegistrationLink",
+       "frontFile": "cronus/src/pages/roster/ContinuationService/components/PreRegistrationLink/service.js",
+       "service": "reach-service",
+       "backendPath": "/reachPortal/reportConfig/getPreRegistrationLink",
+       "name": "预报名链接",
+       "id": 2652061
+      },
+      {
+       "trigger": "灰度开关",
+       "method": "GET",
+       "frontPath": "/product-b/b/renewMaster/configFlag",
+       "frontFile": "cronus/src/pages/roster/ContinuationService/components/CreateOrder/gray.js",
+       "service": "product-b",
+       "backendPath": "/b/renewMaster/configFlag",
+       "name": "获取配置开关",
+       "id": 2734336
+      }
+     ],
+     "dataSource": {
+      "esIndex": "ads_large_subclazz_user_index",
+      "esCluster": "es-cn-smw4b9m200004w3hn.elasticsearch.aliyuncs.com",
+      "esClient": "studentSubclazzClient",
+      "backendCode": "RenewalService / RefundService"
+     }
+    },
+    {
+     "tabKey": "stageFeedback",
+     "name": "阶段反馈",
+     "file": "cronus/clazzRosterOL/stageFeedback.md",
+     "apis": [
+      {
+       "trigger": "进页面/筛选",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/stageFeedback/page",
+       "frontFile": "src/services/stageFeedback.js:19",
+       "service": "student-center",
+       "backendPath": "/roster/stageFeedback/page",
+       "name": "[POST]/stageFeedback/page",
+       "id": 668681
+      },
+      {
+       "trigger": "总数超上限",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/stageFeedback/count",
+       "frontFile": "src/services/stageFeedback.js:27",
+       "service": "student-center",
+       "backendPath": "/roster/stageFeedback/count",
+       "name": "[POST]/stageFeedback/count",
+       "id": 668679
+      },
+      {
+       "trigger": "行内编辑保存",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/stageFeedback/edit",
+       "frontFile": "src/services/stageFeedback.js:35",
+       "service": "student-center",
+       "backendPath": "/roster/stageFeedback/edit",
+       "name": "[POST]/stageFeedback/edit",
+       "id": 668685
+      },
+      {
+       "trigger": "进页面",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/stageFeedback/defaultValue",
+       "frontFile": "src/services/stageFeedback.js:3",
+       "service": "student-center",
+       "backendPath": "/roster/stageFeedback/defaultValue",
+       "name": "获取阶段反馈场景默认值",
+       "id": 668680
+      },
+      {
+       "trigger": "顶部指标",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/stageFeedback/subclazz/statistic",
+       "frontFile": "src/services/stageFeedback.js:43",
+       "service": "student-center",
+       "backendPath": "/roster/stageFeedback/subclazz/statistic",
+       "name": "[POST]/stageFeedback/subclazz/statistic",
+       "id": 735861
+      },
+      {
+       "trigger": "打开课节选择器",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/clazzLesson/count",
+       "frontFile": "src/services/stageFeedback.js:11",
+       "service": "student-center",
+       "backendPath": "/roster/clazzLesson/count",
+       "name": "[POST]/clazzLesson/count",
+       "id": 668683
+      },
+      {
+       "trigger": "打开课节选择器",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/clazzLesson/list",
+       "frontFile": "src/services/stageFeedback.js:66",
+       "service": "student-center",
+       "backendPath": "/roster/clazzLesson/list",
+       "name": "[POST]/clazzLesson/list",
+       "id": 943814
+      },
+      {
+       "trigger": "今日动态",
+       "method": "POST",
+       "frontPath": "/fairy/student-center/studentBehavior/list",
+       "frontFile": "src/services/clazzRosterOL.js:14",
+       "service": "student-center",
+       "backendPath": "/studentBehavior/list",
+       "name": "查看学员今日动态",
+       "id": 30610
+      },
+      {
+       "trigger": "今日动态已读",
+       "method": "POST",
+       "frontPath": "/fairy/student-center/studentBehavior/change/behaviorStatus",
+       "frontFile": "src/services/clazzRosterOL.js:22",
+       "service": "student-center",
+       "backendPath": "/studentBehavior/change/behaviorStatus",
+       "name": "更改学员具体行为已读状态",
+       "id": 30609
+      },
+      {
+       "trigger": "听课情况",
+       "method": "POST",
+       "frontPath": "/component/student-center/studentClazz/recentLessonSituation",
+       "frontFile": "src/services/clazzRosterOL.js:51",
+       "service": "student-center",
+       "backendPath": "/studentClazz/recentLessonSituation",
+       "name": "获取学员最近看课进度条",
+       "id": 30675
+      },
+      {
+       "trigger": "课中答题",
+       "method": "POST",
+       "frontPath": "/component/student-center/studentClazz/getUserLiveQuestionDetail",
+       "frontFile": "src/services/clazzRosterOL.js:286",
+       "service": "student-center",
+       "backendPath": "/studentClazz/getUserLiveQuestionDetail",
+       "name": "获取学员在该课节下的直播答题数据",
+       "id": 129974
+      },
+      {
+       "trigger": "课后答题",
+       "method": "POST",
+       "frontPath": "/component/student-center/studentClazz/getUserExerciseDetail",
+       "frontFile": "src/services/clazzRosterOL.js:294",
+       "service": "student-center",
+       "backendPath": "/studentClazz/getUserExerciseDetail",
+       "name": "获取学员在该课节下的课后练习数据",
+       "id": 129975
+      }
+     ],
+     "dataSource": {
+      "esIndex": "ads_large_clazz_user_index",
+      "esIndexNote": "年份拆分 ads_large_clazz_user_<year>，别名 ads_large_clazz_user",
+      "esCluster": "es-cn-4xl3gu6ls0007l185.elasticsearch.aliyuncs.com",
+      "esClient": "studentServeClient",
+      "backendCode": "StudentListServiceImpl / StageFeedBackService"
+     }
+    },
+    {
+     "tabKey": "refundPrevention",
+     "name": "退费管控",
+     "file": "cronus/clazzRosterOL/refundPrevention.md",
+     "apis": [
+      {
+       "trigger": "进页面/筛选",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/refund/page",
+       "frontFile": "src/services/refundPrevention.js:5",
+       "service": "student-center",
+       "backendPath": "/roster/refund/page",
+       "name": "分页查询退费服务列表",
+       "id": 2552688
+      },
+      {
+       "trigger": "总数超上限",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/refund/count",
+       "frontFile": "src/services/refundPrevention.js:41",
+       "service": "student-center",
+       "backendPath": "/roster/refund/count",
+       "name": "获取总数，当超过index配置最大count时使用",
+       "id": 2552696
+      },
+      {
+       "trigger": "默认视图",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/refund/default/page",
+       "frontFile": "src/services/refundPrevention.js:21",
+       "service": "student-center",
+       "backendPath": "/roster/refund/default/page",
+       "name": "分页查询退费服务列表",
+       "id": 2552679
+      },
+      {
+       "trigger": "默认视图",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/refund/default/count",
+       "frontFile": "src/services/refundPrevention.js:49",
+       "service": "student-center",
+       "backendPath": "/roster/refund/default/count",
+       "name": "获取总数，当超过index配置最大count时使用",
+       "id": 2552687
+      },
+      {
+       "trigger": "进页面",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/refund/defaultValue",
+       "frontFile": "src/services/refundPrevention.js:57",
+       "service": "student-center",
+       "backendPath": "/roster/refund/defaultValue",
+       "name": "获取GlobalSearch默认值接口",
+       "id": 2552678
+      },
+      {
+       "trigger": "行内编辑保存",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/refund/edit",
+       "frontFile": "src/services/refundPrevention.js:13",
+       "service": "student-center",
+       "backendPath": "/roster/refund/edit",
+       "name": "编辑学生信息",
+       "id": 2552693
+      },
+      {
+       "trigger": "进页面/切班",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/refund/subclazz/statistic",
+       "frontFile": "src/services/refundPrevention.js:73",
+       "service": "student-center",
+       "backendPath": "/roster/refund/subclazz/statistic",
+       "name": "退费指标统计",
+       "id": 2552681
+      },
+      {
+       "trigger": "默认视图",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/refund/default/subclazz/statistic",
+       "frontFile": "src/services/refundPrevention.js:81",
+       "service": "student-center",
+       "backendPath": "/roster/refund/default/subclazz/statistic",
+       "name": "退费指标统计",
+       "id": 2552683
+      },
+      {
+       "trigger": "根因分类筛选",
+       "method": "GET",
+       "frontPath": "/component/student-center/base/enum/refund/refundReasonTree",
+       "frontFile": "src/pages/roster/RefundPrevention/custom/fields.js:406",
+       "service": "student-center",
+       "backendPath": "/base/enum/refund/refundReasonTree",
+       "name": "退费根因枚举",
+       "id": 2552685
+      },
+      {
+       "trigger": "听课情况筛选",
+       "method": "POST",
+       "frontPath": "/component/student-center/studentClazz/listBeginClazzLessons",
+       "frontFile": "src/services/clazzRosterOL.js:310",
+       "service": "student-center",
+       "backendPath": "/studentClazz/listBeginClazzLessons",
+       "name": "获取该班级已开课课节",
+       "id": 129972
+      },
+      {
+       "trigger": "最近看课时间",
+       "method": "POST",
+       "frontPath": "/component/student-center/studentClazz/recentLessonSituation",
+       "frontFile": "src/services/clazzRosterOL.js:51",
+       "service": "student-center",
+       "backendPath": "/studentClazz/recentLessonSituation",
+       "name": "获取学员最近看课进度条",
+       "id": 30675
+      }
+     ],
+     "dataSource": {
+      "esIndex": "ads_large_subclazz_user_index",
+      "esCluster": "es-cn-smw4b9m200004w3hn.elasticsearch.aliyuncs.com",
+      "esClient": "studentSubclazzClient",
+      "backendCode": "RenewalService / RefundService"
+     }
+    },
+    {
+     "tabKey": "default",
+     "name": "花名册",
+     "file": "cronus/clazzRosterOL/default.md",
+     "apis": [
+      {
+       "trigger": "列表/筛选/翻页/排序",
+       "method": "POST",
+       "frontPath": "/component/student-center/studentClazz/largeClazzList",
+       "frontFile": "src/services/clazzRosterOL.js:30",
+       "service": "student-center",
+       "backendPath": "/studentClazz/largeClazzList",
+       "name": "[POST]/largeClazzList",
+       "id": 30663
+      },
+      {
+       "trigger": "总数超上限",
+       "method": "POST",
+       "frontPath": "/component/student-center/studentClazz/largeClazzList/count",
+       "frontFile": "src/services/clazzRosterOL.js:4",
+       "service": "student-center",
+       "backendPath": "/studentClazz/largeClazzList/count",
+       "name": "[POST]/largeClazzList/count",
+       "id": 30664
+      },
+      {
+       "trigger": "行内编辑保存",
+       "method": "POST",
+       "frontPath": "/component/student-center/studentClazz/edit",
+       "frontFile": "src/services/clazzRosterOL.js:41",
+       "service": "student-center",
+       "backendPath": "/studentClazz/edit",
+       "name": "[POST]/edit",
+       "id": 30662
+      },
+      {
+       "trigger": "进页面",
+       "method": "GET",
+       "frontPath": "/component/student-center/study/data/gray",
+       "frontFile": "src/services/studentProfile.js:41",
+       "service": "student-center",
+       "backendPath": "/study/data/gray",
+       "name": "学员详情灰度",
+       "id": 47244
+      },
+      {
+       "trigger": "进页面",
+       "method": "POST",
+       "frontPath": "/component/student-center/roster/gray",
+       "frontFile": "src/pages/roster/grayscale/index.js:13",
+       "service": "student-center",
+       "backendPath": "/roster/gray",
+       "name": "判断灰度逻辑",
+       "id": 668688
+      },
+      {
+       "trigger": "进页面",
+       "method": "GET",
+       "frontPath": "/teacher-tool/report/roster/power",
+       "frontFile": "src/services/clazzRosterOL.js:189",
+       "service": "teacher-tool",
+       "backendPath": "/report/roster/power",
+       "name": "花名册发送报告按钮权限",
+       "id": 43800
+      },
+      {
+       "trigger": "进页面",
+       "method": "GET",
+       "frontPath": "/student-center/roster/button/gray",
+       "frontFile": "src/services/clazzRosterOL.js:350",
+       "service": "student-center",
+       "backendPath": "/roster/button/gray",
+       "name": "默认花名册按钮灰度",
+       "id": 1244681
+      },
+      {
+       "trigger": "进页面",
+       "method": "GET",
+       "frontPath": "/component/student-center/roster/yearSelectConfig",
+       "frontFile": "src/services/clazzRosterOL.js:208",
+       "service": "student-center",
+       "backendPath": "/roster/yearSelectConfig",
+       "name": "获取年份选择配置",
+       "id": 3884942
+      },
+      {
+       "trigger": "进页面",
+       "method": "GET",
+       "frontPath": "/component/student-center/filter/defaultValueByScene",
+       "frontFile": "src/services/clazzRosterOL.js:212",
+       "service": "student-center",
+       "backendPath": "/filter/defaultValueByScene",
+       "name": "筛选项默认值",
+       "id": 38825
+      },
+      {
+       "trigger": "改自定义列",
+       "method": "POST",
+       "frontPath": "/gaiaCenter/scene/personal/config/edit",
+       "frontFile": "src/services/metadata.js:22",
+       "service": "gaia-center",
+       "backendPath": "/scene/personal/config/edit",
+       "name": "[POST]/scene/personal/config/edit",
+       "id": 39622
+      },
+      {
+       "trigger": "视图 Tab",
+       "method": "POST",
+       "frontPath": "/component/student-center/studentClazz/largeClazzList/views/count",
+       "frontFile": "src/services/clazzRosterOL.js:279",
+       "service": "student-center",
+       "backendPath": "/studentClazz/largeClazzList/views/count",
+       "name": "[POST]/largeClazzList/views/count",
+       "id": 220890
+      },
+      {
+       "trigger": "合同预览",
+       "method": "POST",
+       "frontPath": "/api/contract/b/previewContractTemplate",
+       "frontFile": "src/services/clazzRosterOL.js:157",
+       "service": "contract-server",
+       "backendPath": "/api/contract/b/previewContractTemplate",
+       "name": "新学员列表预览合同模板",
+       "id": 1281230
+      },
+      {
+       "trigger": "复制合同链接",
+       "method": "POST",
+       "frontPath": "/api/contract/b/copyContractUrl",
+       "frontFile": "src/services/clazzRosterOL.js:165",
+       "service": "contract-server",
+       "backendPath": "/api/contract/b/copyContractUrl",
+       "name": "新学员列表复制链接",
+       "id": 1281206
+      },
+      {
+       "trigger": "复制权益链接",
+       "method": "GET",
+       "frontPath": "/component/student-center/studentClazz/getEquityUrl",
+       "frontFile": "src/services/clazzRosterOL.js:173",
+       "service": "student-center",
+       "backendPath": "/studentClazz/getEquityUrl",
+       "name": "获取权益领取链接",
+       "id": 30678
+      },
+      {
+       "trigger": "编辑考试分数",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/studentClazz/getSubject",
+       "frontFile": "src/services/clazzRosterOL.js:272",
+       "service": "student-center",
+       "backendPath": "/studentClazz/getSubject",
+       "name": "[POST]/getSubject",
+       "id": 49398
+      },
+      {
+       "trigger": "今日动态",
+       "method": "POST",
+       "frontPath": "/fairy/student-center/studentBehavior/list",
+       "frontFile": "src/services/clazzRosterOL.js:14",
+       "service": "student-center",
+       "backendPath": "/studentBehavior/list",
+       "name": "查看学员今日动态",
+       "id": 30610
+      },
+      {
+       "trigger": "今日动态已读",
+       "method": "POST",
+       "frontPath": "/fairy/student-center/studentBehavior/change/behaviorStatus",
+       "frontFile": "src/services/clazzRosterOL.js:22",
+       "service": "student-center",
+       "backendPath": "/studentBehavior/change/behaviorStatus",
+       "name": "更改学员具体行为已读状态",
+       "id": 30609
+      },
+      {
+       "trigger": "亲密度",
+       "method": "POST",
+       "frontPath": "/component/student-center/studentClazz/intimacyHover",
+       "frontFile": "src/services/clazzRosterOL.js:67",
+       "service": "student-center",
+       "backendPath": "/studentClazz/intimacyHover",
+       "name": "获取学员亲密度",
+       "id": 30665
+      },
+      {
+       "trigger": "亲密度弹窗",
+       "method": "POST",
+       "frontPath": "/component/student-center/studentDynamic/intimacy",
+       "frontFile": "src/services/clazzRosterOL.js:59",
+       "service": "student-center",
+       "backendPath": "/studentDynamic/intimacy",
+       "name": "学员动态最近亲密度展示",
+       "id": 30614
+      },
+      {
+       "trigger": "最近看课时间",
+       "method": "POST",
+       "frontPath": "/component/student-center/studentClazz/recentLessonSituation",
+       "frontFile": "src/services/clazzRosterOL.js:51",
+       "service": "student-center",
+       "backendPath": "/studentClazz/recentLessonSituation",
+       "name": "获取学员最近看课进度条",
+       "id": 30675
+      },
+      {
+       "trigger": "课中答题",
+       "method": "POST",
+       "frontPath": "/component/student-center/studentClazz/getUserLiveQuestionDetail",
+       "frontFile": "src/services/clazzRosterOL.js:286",
+       "service": "student-center",
+       "backendPath": "/studentClazz/getUserLiveQuestionDetail",
+       "name": "获取学员在该课节下的直播答题数据",
+       "id": 129974
+      },
+      {
+       "trigger": "课后答题",
+       "method": "POST",
+       "frontPath": "/component/student-center/studentClazz/getUserExerciseDetail",
+       "frontFile": "src/services/clazzRosterOL.js:294",
+       "service": "student-center",
+       "backendPath": "/studentClazz/getUserExerciseDetail",
+       "name": "获取学员在该课节下的课后练习数据",
+       "id": 129975
+      },
+      {
+       "trigger": "线上考试",
+       "method": "POST",
+       "frontPath": "/component/student-center/studentClazz/getUserExamDetail",
+       "frontFile": "src/services/clazzRosterOL.js:302",
+       "service": "student-center",
+       "backendPath": "/studentClazz/getUserExamDetail",
+       "name": "获取学员在该课节下的考试数据",
+       "id": 129976
+      },
+      {
+       "trigger": "最近考试分数",
+       "method": "POST",
+       "frontPath": "/component/student-center/studentClazz/recentExamHover",
+       "frontFile": "src/services/clazzRosterOL.js:181",
+       "service": "student-center",
+       "backendPath": "/studentClazz/recentExamHover",
+       "name": "获取考试成绩",
+       "id": 30666
+      },
+      {
+       "trigger": "学员标签弹窗",
+       "method": "POST",
+       "frontPath": "/fairy/student-center/subclazz/learnSituation/getAllStudentTags",
+       "frontFile": "src/services/actions.js:36",
+       "service": "student-center",
+       "backendPath": "/subclazz/learnSituation/getAllStudentTags",
+       "name": "获取所有学员标签",
+       "id": 30692
+      },
+      {
+       "trigger": "保存学员标签",
+       "method": "POST",
+       "frontPath": "/component/student-center/batchOperate/tag/save",
+       "frontFile": "src/services/actions.js:44",
+       "service": "student-center",
+       "backendPath": "/batchOperate/tag/save",
+       "name": "批量操作-学员标签保存",
+       "id": 30688
+      },
+      {
+       "trigger": "智能英语",
+       "method": "POST",
+       "frontPath": "/component/student-center/aiEnglish/detail",
+       "frontFile": "src/services/clazzRosterOL.js:357",
+       "service": "student-center",
+       "backendPath": "/aiEnglish/detail",
+       "name": "[POST]/detail",
+       "id": 2232086
+      },
+      {
+       "trigger": "AI 试炼场单元格",
+       "method": "POST",
+       "frontPath": "/component/student-center/studentClazz/aiPracticeHover",
+       "frontFile": "src/services/clazzRosterOL.js:318",
+       "service": "student-center",
+       "backendPath": "/studentClazz/aiPracticeHover",
+       "name": "获取 AI 试炼场 Hover 数据",
+       "id": 4882739
+      },
+      {
+       "trigger": "AI 试炼场筛选",
+       "method": "POST",
+       "frontPath": "/component/student-center/studentClazz/latestAiPracticeLessons",
+       "frontFile": "src/services/clazzRosterOL.js:326",
+       "service": "student-center",
+       "backendPath": "/studentClazz/latestAiPracticeLessons",
+       "name": "获取 AI 试炼场最近课节列表",
+       "id": 4882738
+      },
+      {
+       "trigger": "直播发言明细",
+       "method": "POST",
+       "frontPath": "/component/student-center/liveSpeak/clazz/speakContent/list",
+       "frontFile": "src/services/clazzRosterOL.js:364",
+       "service": "student-center",
+       "backendPath": "/liveSpeak/clazz/speakContent/list",
+       "name": "班级维度-发言明细",
+       "id": 2232087
+      },
+      {
+       "trigger": "听课情况筛选",
+       "method": "POST",
+       "frontPath": "/component/student-center/studentClazz/listBeginClazzLessons",
+       "frontFile": "src/services/clazzRosterOL.js:310",
+       "service": "student-center",
+       "backendPath": "/studentClazz/listBeginClazzLessons",
+       "name": "获取该班级已开课课节",
+       "id": 129972
+      },
+      {
+       "trigger": "线上考试筛选",
+       "method": "POST",
+       "frontPath": "/component/student-center/studentClazz/listAllExam",
+       "frontFile": "src/services/clazzRosterOL.js:334",
+       "service": "student-center",
+       "backendPath": "/studentClazz/listAllExam",
+       "name": "获取班级下所有考试",
+       "id": 129973
+      }
+     ],
+     "dataSource": {
+      "esIndex": "ads_large_clazz_user_index",
+      "esIndexNote": "年份拆分 ads_large_clazz_user_<year>，别名 ads_large_clazz_user",
+      "esCluster": "es-cn-4xl3gu6ls0007l185.elasticsearch.aliyuncs.com",
+      "esClient": "studentServeClient",
+      "backendCode": "StudentListServiceImpl / StageFeedBackService"
+     }
+    }
+   ]
+  },
+  {
+   "route": "/crm/cronus/lessonList",
+   "name": "课节管理",
+   "repo": "cronus",
+   "pageFile": "cronus/lessonList/_page.md",
+   "pageApis": [
+    {
+     "trigger": "进页面",
+     "method": "POST",
+     "frontPath": "/component/student-center/lesson/prepare/gray",
+     "frontFile": "src/pages/lesson/grayscale/index.js:11",
+     "service": "student-center",
+     "backendPath": "/lesson/prepare/gray",
+     "name": "[POST]/gray",
+     "id": 980560
+    },
+    {
+     "trigger": "进页面",
+     "method": "POST",
+     "frontPath": "/component/student-center/lesson/after/gray",
+     "frontFile": "src/pages/lesson/grayscale/index.js:25",
+     "service": "student-center",
+     "backendPath": "/lesson/after/gray",
+     "name": "灰度",
+     "id": 1159240
+    },
+    {
+     "trigger": "进页面",
+     "method": "POST",
+     "frontPath": "/component/student-center/lesson/prepare/relation/gray",
+     "frontFile": "src/pages/lesson/grayscale/index.js:38",
+     "service": "student-center",
+     "backendPath": "/lesson/prepare/relation/gray",
+     "name": "关联课节 tab 灰度",
+     "id": 4882732
+    },
+    {
+     "trigger": "tab 角标（60s 轮询）",
+     "method": "POST",
+     "frontPath": "/bgwApi/component/student-center/lesson/prepare/scene/count",
+     "frontFile": "src/pages/lesson/components/BusinessScene/index.js:100",
+     "service": "student-center",
+     "backendPath": "/lesson/prepare/scene/count",
+     "name": "[POST]/scene/count",
+     "id": 980553
+    }
+   ],
+   "tabs": [
+    {
+     "tabKey": "default",
+     "name": "默认",
+     "file": "cronus/lessonList/default.md",
+     "apis": [
+      {
+       "trigger": "列表/筛选/翻页（大班课）",
+       "method": "POST",
+       "frontPath": "/component/student-center/clazz/lesson/formal/list",
+       "frontFile": "src/pages/lesson/DefaultLessonList/components/FormalLesson/services.js:4",
+       "service": "student-center",
+       "backendPath": "/clazz/lesson/formal/list",
+       "name": "正式课节列表",
+       "id": 30645
+      },
+      {
+       "trigger": "列表/筛选/翻页（小灶课）",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/clazz/lesson/parentsMeeting/list",
+       "frontFile": "src/pages/lesson/DefaultLessonList/components/FormalLesson/services.js:11",
+       "service": "student-center",
+       "backendPath": "/clazz/lesson/parentsMeeting/list",
+       "name": "小灶课课节列表",
+       "id": 30646
+      },
+      {
+       "trigger": "总数",
+       "method": "POST",
+       "frontPath": "/component/student-center/clazz/lesson/formal/list/count",
+       "frontFile": "src/pages/lesson/DefaultLessonList/components/FormalLesson/services.js:33",
+       "service": "student-center",
+       "backendPath": "/clazz/lesson/formal/list/count",
+       "name": "[POST]/formal/list/count",
+       "id": 1033509
+      },
+      {
+       "trigger": "总数（小灶课）",
+       "method": "POST",
+       "frontPath": "/component/student-center/clazz/lesson/parentsMeeting/list/count",
+       "frontFile": "src/pages/lesson/DefaultLessonList/components/FormalLesson/services.js:40",
+       "service": "student-center",
+       "backendPath": "/clazz/lesson/parentsMeeting/list/count",
+       "name": "[POST]/parentsMeeting/list/count",
+       "id": 1033507
+      },
+      {
+       "trigger": "操作列-进教室",
+       "method": "POST",
+       "frontPath": "/component/student-center/clazz/lesson/getNewLiveUrl",
+       "frontFile": "src/pages/lesson/DefaultLessonList/components/FormalLesson/services.js:18",
+       "service": "student-center",
+       "backendPath": "/clazz/lesson/getNewLiveUrl",
+       "name": "(新系统)获取进入教室链接",
+       "id": 49401
+      },
+      {
+       "trigger": "操作列-听课链接",
+       "method": "POST",
+       "frontPath": "/component/student-center/clazz/lesson/getCourseUrl",
+       "frontFile": "src/pages/lesson/DefaultLessonList/components/FormalLesson/services.js:25",
+       "service": "student-center",
+       "backendPath": "/clazz/lesson/getCourseUrl",
+       "name": "获取课节复制链接",
+       "id": 30650
+      },
+      {
+       "trigger": "自动触达任务抽屉",
+       "method": "POST",
+       "frontPath": "/component/student-center/clazz/lesson/reach/task/list",
+       "frontFile": "src/pages/lesson/DefaultLessonList/components/FormalLesson/components/AutoTaskDrawer/services.js:4",
+       "service": "student-center",
+       "backendPath": "/clazz/lesson/reach/task/list",
+       "name": "正式课节列表",
+       "id": 30653
+      }
+     ]
+    },
+    {
+     "tabKey": "lessonprepare",
+     "name": "课前准备",
+     "file": "cronus/lessonList/lessonprepare.md",
+     "apis": [
+      {
+       "trigger": "列表/筛选/翻页/排序",
+       "method": "POST",
+       "frontPath": "/component/student-center/lesson/prepare/page",
+       "frontFile": "src/services/lessonPrepare.js:3",
+       "service": "student-center",
+       "backendPath": "/lesson/prepare/page",
+       "name": "[POST]/page",
+       "id": 980558
+      },
+      {
+       "trigger": "总数超上限",
+       "method": "POST",
+       "frontPath": "/component/student-center/lesson/prepare/count",
+       "frontFile": "src/services/lessonPrepare.js:10",
+       "service": "student-center",
+       "backendPath": "/lesson/prepare/count",
+       "name": "[POST]/count",
+       "id": 980547
+      },
+      {
+       "trigger": "点击列跳转学员列表",
+       "method": "POST",
+       "frontPath": "/component/student-center/lesson/prepare/jump",
+       "frontFile": "src/services/lessonPrepare.js:17",
+       "service": "student-center",
+       "backendPath": "/lesson/prepare/jump",
+       "name": "[POST]/jump",
+       "id": 980564
+      },
+      {
+       "trigger": "听课链接",
+       "method": "POST",
+       "frontPath": "/component/student-center/clazz/lesson/getCourseUrl",
+       "frontFile": "src/services/lessonPrepare.js:25",
+       "service": "student-center",
+       "backendPath": "/clazz/lesson/getCourseUrl",
+       "name": "获取课节复制链接",
+       "id": 30650
+      },
+      {
+       "trigger": "发短信前置校验",
+       "method": "POST",
+       "frontPath": "/component/student-center/lesson/prepare/operate/validation",
+       "frontFile": "src/services/lessonPrepare.js:40",
+       "service": "student-center",
+       "backendPath": "/lesson/prepare/operate/validation",
+       "name": "[POST]/operate/validation",
+       "id": 1159247
+      }
+     ]
+    },
+    {
+     "tabKey": "lessonAfter",
+     "name": "课后督学",
+     "file": "cronus/lessonList/lessonAfter.md",
+     "apis": [
+      {
+       "trigger": "列表/筛选/翻页/排序",
+       "method": "POST",
+       "frontPath": "/component/student-center/lesson/after/page",
+       "frontFile": "src/services/lessonAfter.js:3",
+       "service": "student-center",
+       "backendPath": "/lesson/after/page",
+       "name": "[POST]/page",
+       "id": 1159242
+      },
+      {
+       "trigger": "总数超上限",
+       "method": "POST",
+       "frontPath": "/component/student-center/lesson/after/count",
+       "frontFile": "src/services/lessonAfter.js:10",
+       "service": "student-center",
+       "backendPath": "/lesson/after/count",
+       "name": "[POST]/count",
+       "id": 1159241
+      },
+      {
+       "trigger": "发短信前置校验",
+       "method": "POST",
+       "frontPath": "/component/student-center/lesson/after/operate/validation",
+       "frontFile": "src/services/lessonAfter.js:18",
+       "service": "student-center",
+       "backendPath": "/lesson/after/operate/validation",
+       "name": "[POST]/operate/validation",
+       "id": 1159249
+      },
+      {
+       "trigger": "发课节指南前置校验",
+       "method": "POST",
+       "frontPath": "/component/student-center/clazz/lesson/getPlaybackGuideStatus",
+       "frontFile": "src/services/lessonList.js:21",
+       "service": "student-center",
+       "backendPath": "/clazz/lesson/getPlaybackGuideStatus",
+       "name": "获取回放指南状态",
+       "id": 30652
+      },
+      {
+       "trigger": "点击列跳转学员列表",
+       "method": "POST",
+       "frontPath": "/component/student-center/lesson/prepare/jump",
+       "frontFile": "src/services/lessonPrepare.js:17",
+       "service": "student-center",
+       "backendPath": "/lesson/prepare/jump",
+       "name": "[POST]/jump",
+       "id": 980564
+      }
+     ]
+    },
+    {
+     "tabKey": "emLessonAfter",
+     "name": "课后督学（EM）",
+     "file": "cronus/lessonList/emLessonAfter.md",
+     "apis": [
+      {
+       "trigger": "列表/筛选/翻页/排序",
+       "method": "POST",
+       "frontPath": "/component/student-center/lesson/after/page",
+       "frontFile": "src/services/lessonAfter.js:3",
+       "service": "student-center",
+       "backendPath": "/lesson/after/page",
+       "name": "[POST]/page",
+       "id": 1159242
+      },
+      {
+       "trigger": "总数超上限",
+       "method": "POST",
+       "frontPath": "/component/student-center/lesson/after/count",
+       "frontFile": "src/services/lessonAfter.js:10",
+       "service": "student-center",
+       "backendPath": "/lesson/after/count",
+       "name": "[POST]/count",
+       "id": 1159241
+      }
+     ]
+    },
+    {
+     "tabKey": "prepareRelationLesson",
+     "name": "关联课节",
+     "file": "cronus/lessonList/prepareRelationLesson.md",
+     "apis": [
+      {
+       "trigger": "列表/筛选/翻页/排序",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/lesson/prepare/relation/page",
+       "frontFile": "src/services/lessonPrepare.js:62",
+       "service": "student-center",
+       "backendPath": "/lesson/prepare/relation/page",
+       "name": "[POST]/relation/page",
+       "id": 4882731
+      },
+      {
+       "trigger": "总数超上限",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/lesson/prepare/relation/count",
+       "frontFile": "src/services/lessonPrepare.js:69",
+       "service": "student-center",
+       "backendPath": "/lesson/prepare/relation/count",
+       "name": "[POST]/relation/count",
+       "id": 4882730
+      },
+      {
+       "trigger": "听课链接",
+       "method": "POST",
+       "frontPath": "/component/student-center/clazz/lesson/getCourseUrl",
+       "frontFile": "src/services/lessonPrepare.js:25",
+       "service": "student-center",
+       "backendPath": "/clazz/lesson/getCourseUrl",
+       "name": "获取课节复制链接",
+       "id": 30650
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "route": "/crm/cronus/lessonStudentList",
+   "name": "课节学员",
+   "repo": "cronus",
+   "pageFile": "cronus/lessonStudentList/_page.md",
+   "pageApis": [
+    {
+     "trigger": "进页面/切换课节",
+     "method": "POST",
+     "frontPath": "/bgwApi/component/student-center/lesson/excerpt",
+     "frontFile": "src/services/studentLessonPrepare.js:26",
+     "service": "student-center",
+     "backendPath": "/lesson/excerpt",
+     "name": "[POST]/excerpt",
+     "id": 980556
+    },
+    {
+     "trigger": "进页面",
+     "method": "POST",
+     "frontPath": "/component/student-center/lesson/prepare/gray",
+     "frontFile": "src/pages/lessonStudent/grayscale/index.js:12",
+     "service": "student-center",
+     "backendPath": "/lesson/prepare/gray",
+     "name": "[POST]/gray",
+     "id": 980560
+    },
+    {
+     "trigger": "进页面",
+     "method": "POST",
+     "frontPath": "/component/student-center/lesson/after/gray",
+     "frontFile": "src/pages/lessonStudent/grayscale/index.js:26",
+     "service": "student-center",
+     "backendPath": "/lesson/after/gray",
+     "name": "灰度",
+     "id": 1159240
+    },
+    {
+     "trigger": "进页面",
+     "method": "POST",
+     "frontPath": "/component/student-center/lesson/prepare/relation/gray",
+     "frontFile": "src/pages/lessonStudent/grayscale/index.js:39",
+     "service": "student-center",
+     "backendPath": "/lesson/prepare/relation/gray",
+     "name": "关联课节 tab 灰度",
+     "id": 4882732
+    },
+    {
+     "trigger": "tab 角标（60s 轮询）",
+     "method": "POST",
+     "frontPath": "/bgwApi/component/student-center/lesson/prepare/user/scene/count",
+     "frontFile": "src/services/studentLessonPrepare.js:64",
+     "service": "student-center",
+     "backendPath": "/lesson/prepare/user/scene/count",
+     "name": "[POST]/user/scene/count",
+     "id": 980557
+    },
+    {
+     "trigger": "切换课节下拉搜索",
+     "method": "POST",
+     "frontPath": "/component/student-center/filter/lesson/list",
+     "frontFile": "src/services/lesson.js:16",
+     "service": "student-center",
+     "backendPath": "/filter/lesson/list",
+     "name": "[POST]/lesson/list",
+     "id": 1453277
+    },
+    {
+     "trigger": "行内编辑保存（各 tab 共用）",
+     "method": "POST",
+     "frontPath": "/bgwApi/component/student-center/lesson/prepare/user/edit",
+     "frontFile": "src/services/studentLessonPrepare.js:56",
+     "service": "student-center",
+     "backendPath": "/lesson/prepare/user/edit",
+     "name": "[POST]/user/edit",
+     "id": 980545
+    },
+    {
+     "trigger": "hover 触达记录（跨 tab 自定义列）",
+     "method": "POST",
+     "frontPath": "/component/student-center/lesson/after/reach/record",
+     "frontFile": "src/services/lessonAfterUser.js:34",
+     "service": "student-center",
+     "backendPath": "/lesson/after/reach/record",
+     "name": "[POST]/reach/record",
+     "id": 1159254
+    },
+    {
+     "trigger": "hover 听课进度条（跨 tab 自定义列）",
+     "method": "POST",
+     "frontPath": "/component/student-center/studentClazz/recentLessonSituation",
+     "frontFile": "src/services/clazzRosterOL.js:51",
+     "service": "student-center",
+     "backendPath": "/studentClazz/recentLessonSituation",
+     "name": "获取学员最近看课进度条",
+     "id": 30675
+    }
+   ],
+   "tabs": [
+    {
+     "tabKey": "default",
+     "name": "默认",
+     "file": "cronus/lessonStudentList/default.md",
+     "apis": [
+      {
+       "trigger": "列表/筛选/翻页（大班课）",
+       "method": "POST",
+       "frontPath": "/component/student-center/lesson/user/list",
+       "frontFile": "src/pages/lessonStudent/Default/services.js:4",
+       "service": "student-center",
+       "backendPath": "/lesson/user/list",
+       "name": "[POST]/user/list",
+       "id": 30714
+      },
+      {
+       "trigger": "列表/筛选/翻页（小灶课）",
+       "method": "POST",
+       "frontPath": "/component/student-center/lesson/parentsMeeting/user/list",
+       "frontFile": "src/pages/lessonStudent/Default/services.js:11",
+       "service": "student-center",
+       "backendPath": "/lesson/parentsMeeting/user/list",
+       "name": "[POST]/parentsMeeting/user/list",
+       "id": 30715
+      },
+      {
+       "trigger": "总数（大班课）",
+       "method": "POST",
+       "frontPath": "/component/student-center/lesson/user/list/count",
+       "frontFile": "src/pages/lessonStudent/Default/services.js:31",
+       "service": "student-center",
+       "backendPath": "/lesson/user/list/count",
+       "name": "[POST]/user/list/count",
+       "id": 1033506
+      },
+      {
+       "trigger": "总数（小灶课）",
+       "method": "POST",
+       "frontPath": "/component/student-center/lesson/parentsMeeting/user/list/count",
+       "frontFile": "src/pages/lessonStudent/Default/services.js:37",
+       "service": "student-center",
+       "backendPath": "/lesson/parentsMeeting/user/list/count",
+       "name": "[POST]/parentsMeeting/user/list/count",
+       "id": 1033508
+      },
+      {
+       "trigger": "推荐连麦",
+       "method": "POST",
+       "frontPath": "/component/student-center/liveRecommend/create",
+       "frontFile": "src/pages/lessonStudent/Default/services.js:25",
+       "service": "student-center",
+       "backendPath": "/liveRecommend/create",
+       "name": "[POST]/create",
+       "id": 444969
+      },
+      {
+       "trigger": "进页面",
+       "method": "GET",
+       "frontPath": "/component/student-center/study/data/gray",
+       "frontFile": "src/services/studentProfile.js:41",
+       "service": "student-center",
+       "backendPath": "/study/data/gray",
+       "name": "学员详情灰度",
+       "id": 47244
+      },
+      {
+       "trigger": "取消请假",
+       "method": "POST",
+       "frontPath": "/component/student-center/clazz/lesson/cancel/leave",
+       "frontFile": "src/pages/lessonStudent/Default/components/AskForLeave/services.js:4",
+       "service": "student-center",
+       "backendPath": "/clazz/lesson/cancel/leave",
+       "name": "取消请假",
+       "id": 30644
+      },
+      {
+       "trigger": "直播答题抽屉",
+       "method": "POST",
+       "frontPath": "/fairy/subclazz/learnSituation/personal/v2/getLiveQuizDetail",
+       "frontFile": "src/pages/lessonStudent/Default/components/LivingAnswer/services.js:3",
+       "service": "fairy.gaotu100.com",
+       "backendPath": "/subclazz/learnSituation/personal/v2/getLiveQuizDetail",
+       "name": "学习数据-直播答题情况",
+       "id": 35064
+      },
+      {
+       "trigger": "直播答题抽屉",
+       "method": "POST",
+       "frontPath": "/fairy/subclazz/learnSituation/personal/getPersonalClazzLessonSituationDetail",
+       "frontFile": "src/pages/lessonStudent/Default/components/LivingAnswer/services.js:10",
+       "service": "fairy.gaotu100.com",
+       "backendPath": "/subclazz/learnSituation/personal/getPersonalClazzLessonSituationDetail",
+       "name": "学习数据-课节学习数据详情",
+       "id": 35060
+      },
+      {
+       "trigger": "课后练习 tab",
+       "method": "POST",
+       "frontPath": "/fairy/subclazz/learnSituation/personal/getSubjectAndExerciseDetailUrl",
+       "frontFile": "src/pages/lessonStudent/components/AnswerPracticeDrawer/services.js:3",
+       "service": "fairy.gaotu100.com",
+       "backendPath": "/subclazz/learnSituation/personal/getSubjectAndExerciseDetailUrl",
+       "name": "学习数据-学部信息和课后练习明细组件url",
+       "id": 35062
+      },
+      {
+       "trigger": "直播发言 tab",
+       "method": "POST",
+       "frontPath": "/component/student-center/liveSpeak/lesson/speakContent/list",
+       "frontFile": "src/pages/lessonStudent/components/LiveCommentTable/services.ts:28",
+       "service": "student-data",
+       "backendPath": "/liveSpeak/lesson/speakContent/list",
+       "name": "[POST]/lesson/speakContent/list",
+       "id": 30527
+      },
+      {
+       "trigger": "查看报告",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/report/getViewDuration",
+       "frontFile": "src/services/clazzRosterOL.js:224",
+       "service": "student-center",
+       "backendPath": "/report/getViewDuration",
+       "name": "获取报告查看时长",
+       "id": 30603
+      }
+     ]
+    },
+    {
+     "tabKey": "prepareUser",
+     "name": "课前准备",
+     "file": "cronus/lessonStudentList/prepareUser.md",
+     "apis": [
+      {
+       "trigger": "列表/筛选/翻页/排序",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/lesson/prepare/user/page",
+       "frontFile": "src/services/studentLessonPrepare.js:11",
+       "service": "student-center",
+       "backendPath": "/lesson/prepare/user/page",
+       "name": "[POST]/user/page",
+       "id": 980559
+      },
+      {
+       "trigger": "总数超上限",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/lesson/prepare/user/count",
+       "frontFile": "src/services/studentLessonPrepare.js:19",
+       "service": "student-center",
+       "backendPath": "/lesson/prepare/user/count",
+       "name": "[POST]/user/count",
+       "id": 980563
+      },
+      {
+       "trigger": "进页面（催到课灰度/WS）",
+       "method": "GET",
+       "frontPath": "/component/student-center/lesson/prepare/attendance-remind/switch",
+       "frontFile": "src/services/studentLessonPrepare.js:72",
+       "service": "student-center",
+       "backendPath": "/lesson/prepare/attendance-remind/switch",
+       "name": "[GET]/attendance-remind/switch",
+       "id": 2623715
+      },
+      {
+       "trigger": "推荐连麦",
+       "method": "POST",
+       "frontPath": "/component/student-center/liveRecommend/create",
+       "frontFile": "src/services/lesson.js:10",
+       "service": "student-center",
+       "backendPath": "/liveRecommend/create",
+       "name": "[POST]/create",
+       "id": 444969
+      },
+      {
+       "trigger": "课节数据卡片",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/lesson/prepare/statistic",
+       "frontFile": "src/services/studentLessonPrepare.js:3",
+       "service": "student-center",
+       "backendPath": "/lesson/prepare/statistic",
+       "name": "[POST]/statistic",
+       "id": 980555
+      },
+      {
+       "trigger": "触达/短信前置校验",
+       "method": "POST",
+       "frontPath": "/component/student-center/lesson/prepare/operate/validation",
+       "frontFile": "src/services/lessonPrepare.js:40",
+       "service": "student-center",
+       "backendPath": "/lesson/prepare/operate/validation",
+       "name": "[POST]/operate/validation",
+       "id": 1159247
+      },
+      {
+       "trigger": "hover 催到课记录",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/lesson/prepare/attendRemind/record",
+       "frontFile": "src/services/studentLessonPrepare.js:34",
+       "service": "student-center",
+       "backendPath": "/lesson/prepare/attendRemind/record",
+       "name": "[POST]/attendRemind/record",
+       "id": 980544
+      },
+      {
+       "trigger": "hover 催预习记录",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/lesson/prepare/previewRemind/record",
+       "frontFile": "src/services/studentLessonPrepare.js:41",
+       "service": "student-center",
+       "backendPath": "/lesson/prepare/previewRemind/record",
+       "name": "[POST]/previewRemind/record",
+       "id": 980561
+      }
+     ]
+    },
+    {
+     "tabKey": "lessonAfterUser",
+     "name": "课后督学",
+     "file": "cronus/lessonStudentList/lessonAfterUser.md",
+     "apis": [
+      {
+       "trigger": "列表/筛选/翻页/排序",
+       "method": "POST",
+       "frontPath": "/component/student-center/lesson/after/user/page",
+       "frontFile": "src/services/lessonAfterUser.js:4",
+       "service": "student-center",
+       "backendPath": "/lesson/after/user/page",
+       "name": "[POST]/user/page",
+       "id": 1159245
+      },
+      {
+       "trigger": "总数超上限",
+       "method": "POST",
+       "frontPath": "/component/student-center/lesson/after/user/count",
+       "frontFile": "src/services/lessonAfterUser.js:11",
+       "service": "student-center",
+       "backendPath": "/lesson/after/user/count",
+       "name": "[POST]/user/count",
+       "id": 1159243
+      },
+      {
+       "trigger": "课节数据卡片",
+       "method": "POST",
+       "frontPath": "/component/student-center/lesson/after/statistic",
+       "frontFile": "src/services/lessonAfterUser.js:19",
+       "service": "student-center",
+       "backendPath": "/lesson/after/statistic",
+       "name": "[POST]/statistic",
+       "id": 1159250
+      },
+      {
+       "trigger": "去批改",
+       "method": "POST",
+       "frontPath": "/component/student-center/lesson/after/correctionUrl",
+       "frontFile": "src/services/lessonAfterUser.js:27",
+       "service": "student-center",
+       "backendPath": "/lesson/after/correctionUrl",
+       "name": "[POST]/correctionUrl",
+       "id": 1159244
+      },
+      {
+       "trigger": "触达/短信前置校验",
+       "method": "POST",
+       "frontPath": "/component/student-center/lesson/after/operate/validation",
+       "frontFile": "src/services/lessonAfter.js:18",
+       "service": "student-center",
+       "backendPath": "/lesson/after/operate/validation",
+       "name": "[POST]/operate/validation",
+       "id": 1159249
+      },
+      {
+       "trigger": "发课节指南前置校验",
+       "method": "POST",
+       "frontPath": "/component/student-center/clazz/lesson/getPlaybackGuideStatus",
+       "frontFile": "src/services/lessonList.js:21",
+       "service": "student-center",
+       "backendPath": "/clazz/lesson/getPlaybackGuideStatus",
+       "name": "获取回放指南状态",
+       "id": 30652
+      }
+     ]
+    },
+    {
+     "tabKey": "emLessonAfterUser",
+     "name": "课后督学（EM）",
+     "file": "cronus/lessonStudentList/emLessonAfterUser.md",
+     "apis": [
+      {
+       "trigger": "列表/筛选/翻页/排序",
+       "method": "POST",
+       "frontPath": "/intranet-rpc/tutu/content/analysis/lesson/after/user/page",
+       "frontFile": "src/services/emLessonAfterUser.js:4",
+       "service": "content-analysis",
+       "backendPath": "/tutu/content/analysis/lesson/after/user/page",
+       "name": "分页查询课后督学学员详情",
+       "id": 5248783
+      },
+      {
+       "trigger": "进页面/切换课节/刷新",
+       "method": "POST",
+       "frontPath": "/intranet-rpc/tutu/content/analysis/lesson/after/config",
+       "frontFile": "src/services/emLessonAfterUser.js:11",
+       "service": "content-analysis",
+       "backendPath": "/tutu/content/analysis/lesson/after/config",
+       "name": "查询课后督学通用配置",
+       "id": 5248784
+      },
+      {
+       "trigger": "课节数据卡片",
+       "method": "POST",
+       "frontPath": "/component/student-center/lesson/after/statistic",
+       "frontFile": "src/services/emLessonAfterUser.js:17",
+       "service": "student-center",
+       "backendPath": "/lesson/after/statistic",
+       "name": "[POST]/statistic",
+       "id": 1159250
+      }
+     ]
+    },
+    {
+     "tabKey": "prepareRelationLessonUser",
+     "name": "关联课节",
+     "file": "cronus/lessonStudentList/prepareRelationLessonUser.md",
+     "apis": [
+      {
+       "trigger": "列表/筛选/翻页/排序",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/lesson/prepare/relation/user/page",
+       "frontFile": "src/services/studentLessonPrepare.js:76",
+       "service": "student-center",
+       "backendPath": "/lesson/prepare/relation/user/page",
+       "name": "[POST]/relation/user/page",
+       "id": 4882733
+      },
+      {
+       "trigger": "总数超上限",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/lesson/prepare/relation/user/count",
+       "frontFile": "src/services/studentLessonPrepare.js:83",
+       "service": "student-center",
+       "backendPath": "/lesson/prepare/relation/user/count",
+       "name": "[POST]/relation/user/count",
+       "id": 4882737
+      },
+      {
+       "trigger": "进页面（催到课灰度/WS）",
+       "method": "GET",
+       "frontPath": "/component/student-center/lesson/prepare/attendance-remind/switch",
+       "frontFile": "src/services/studentLessonPrepare.js:72",
+       "service": "student-center",
+       "backendPath": "/lesson/prepare/attendance-remind/switch",
+       "name": "[GET]/attendance-remind/switch",
+       "id": 2623715
+      },
+      {
+       "trigger": "推荐连麦",
+       "method": "POST",
+       "frontPath": "/component/student-center/liveRecommend/create",
+       "frontFile": "src/services/lesson.js:10",
+       "service": "student-center",
+       "backendPath": "/liveRecommend/create",
+       "name": "[POST]/create",
+       "id": 444969
+      },
+      {
+       "trigger": "触达/短信前置校验",
+       "method": "POST",
+       "frontPath": "/component/student-center/lesson/prepare/operate/validation",
+       "frontFile": "src/services/lessonPrepare.js:40",
+       "service": "student-center",
+       "backendPath": "/lesson/prepare/operate/validation",
+       "name": "[POST]/operate/validation",
+       "id": 1159247
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "route": "/crm/cronus/microLessonStudentList",
+   "name": "小班课节学员",
+   "repo": "cronus",
+   "pageFile": "cronus/microLessonStudentList/_page.md",
+   "pageApis": [
+    {
+     "trigger": "进页面",
+     "method": "POST",
+     "frontPath": "/component/student-center/smallClazz/gray",
+     "frontFile": "src/pages/microLessonStudent/grayscale/index.js:11",
+     "service": "student-center",
+     "backendPath": "/smallClazz/gray",
+     "name": "判断灰度规则",
+     "id": 2044935
+    },
+    {
+     "trigger": "列表/筛选/翻页/排序",
+     "method": "POST",
+     "frontPath": "/bgwApi/component/student-center/small-clazz/lesson/user/list",
+     "frontFile": "src/pages/microLessonStudent/Default/services.ts:43",
+     "service": "student-center",
+     "backendPath": "/small-clazz/lesson/user/list",
+     "name": "小班课课节学员列表",
+     "id": 2044933
+    },
+    {
+     "trigger": "总数超上限",
+     "method": "POST",
+     "frontPath": "/bgwApi/component/student-center/small-clazz/lesson/user/list/count",
+     "frontFile": "src/pages/microLessonStudent/Default/services.ts:50",
+     "service": "student-center",
+     "backendPath": "/small-clazz/lesson/user/list/count",
+     "name": "小班课课节学员统计",
+     "id": 2044936
+    },
+    {
+     "trigger": "行内编辑保存",
+     "method": "POST",
+     "frontPath": "/component/student-center/studentClazz/edit",
+     "frontFile": "src/services/clazzRosterOL.js:41",
+     "service": "student-center",
+     "backendPath": "/studentClazz/edit",
+     "name": "[POST]/edit",
+     "id": 30662
+    },
+    {
+     "trigger": "hover 听课进度条",
+     "method": "POST",
+     "frontPath": "/bgwApi/component/student-center/smallClazz/lessonSituation",
+     "frontFile": "src/pages/microLessonStudent/Default/services.ts:227",
+     "service": "student-center",
+     "backendPath": "/smallClazz/lessonSituation",
+     "name": "获取学员看课进度条",
+     "id": 2366331
+    }
+   ],
+   "tabs": []
+  },
+  {
+   "route": "/crm/cronus/microClazzManage",
+   "name": "小班课管理",
+   "repo": "cronus",
+   "pageFile": "cronus/microClazzManage/_page.md",
+   "pageApis": [
+    {
+     "trigger": "进页面/筛选/翻页",
+     "method": "POST",
+     "frontPath": "/bgwApi/student-center/teachProductSmallClazz/list",
+     "frontFile": "src/pages/microClazzManage/index.tsx:106",
+     "service": "student-center",
+     "backendPath": "/teachProductSmallClazz/list",
+     "name": "[POST]/list",
+     "id": 2044921
+    },
+    {
+     "trigger": "主讲下拉搜索",
+     "method": "POST",
+     "frontPath": "/bgwApi/student-center/teachProductSmallClazz/mainTeacherOptions",
+     "frontFile": "src/pages/microClazzManage/services/index.ts:4",
+     "service": "student-center",
+     "backendPath": "/teachProductSmallClazz/mainTeacherOptions",
+     "name": "[POST]/mainTeacherOptions",
+     "id": 2044927
+    },
+    {
+     "trigger": "班主任下拉搜索",
+     "method": "POST",
+     "frontPath": "/bgwApi/student-center/teachProductSmallClazz/assistantTeacherOptions",
+     "frontFile": "src/pages/microClazzManage/services/index.ts:10",
+     "service": "student-center",
+     "backendPath": "/teachProductSmallClazz/assistantTeacherOptions",
+     "name": "[POST]/assistantTeacherOptions",
+     "id": 2044938
+    }
+   ],
+   "tabs": []
+  },
+  {
+   "route": "/crm/cronus/microClazzRoster",
+   "name": "小班课花名册",
+   "repo": "cronus",
+   "pageFile": "cronus/microClazzRoster/_page.md",
+   "pageApis": [],
+   "tabs": [
+    {
+     "tabKey": "default",
+     "name": "花名册",
+     "file": "cronus/microClazzRoster/default.md",
+     "apis": [
+      {
+       "trigger": "进页面/筛选/翻页/排序",
+       "method": "POST",
+       "frontPath": "/component/student-center/smallClazz/clazzStudentList",
+       "frontFile": "src/pages/microClazzRoster/DefaultRoster/services/microClazzRoster.js:5",
+       "service": "student-center",
+       "backendPath": "/smallClazz/clazzStudentList",
+       "name": "小班花名册列表查询",
+       "id": 2044941
+      },
+      {
+       "trigger": "行内编辑保存",
+       "method": "POST",
+       "frontPath": "/component/student-center/studentClazz/edit",
+       "frontFile": "src/pages/microClazzRoster/DefaultRoster/services/microClazzRoster.js:13",
+       "service": "student-center",
+       "backendPath": "/studentClazz/edit",
+       "name": "[POST]/edit",
+       "id": 30662
+      },
+      {
+       "trigger": "批量改颜色/分层",
+       "method": "POST",
+       "frontPath": "/component/student-center/studentClazz/batchEdit",
+       "frontFile": "src/pages/microClazzRoster/DefaultRoster/services/microClazzRoster.js:54",
+       "service": "student-center",
+       "backendPath": "/studentClazz/batchEdit",
+       "name": "[POST]/batchEdit",
+       "id": 2863102
+      },
+      {
+       "trigger": "主讲/班主任下拉搜索",
+       "method": "POST",
+       "frontPath": "/bgwApi/student-center/smallClazz/filter/clazz/teacher/list",
+       "frontFile": "src/pages/microClazzRoster/DefaultRoster/services/microClazzRoster.js:21",
+       "service": "student-center",
+       "backendPath": "/smallClazz/filter/clazz/teacher/list",
+       "name": "[POST]/clazz/teacher/list",
+       "id": 2044923
+      },
+      {
+       "trigger": "班级筛选下拉",
+       "method": "POST",
+       "frontPath": "/component/student-center/smallClazz/filter/clazz/list",
+       "frontFile": "src/pages/microClazzRoster/DefaultRoster/components/EnhancedGlobalSearch/index.jsx:254",
+       "service": "student-center",
+       "backendPath": "/smallClazz/filter/clazz/list",
+       "name": "[POST]/clazz/list",
+       "id": 2044937
+      },
+      {
+       "trigger": "hover 最近听课",
+       "method": "POST",
+       "frontPath": "/component/student-center/smallClazz/lessonSituation",
+       "frontFile": "src/pages/microClazzRoster/DefaultRoster/services/microClazzRoster.js:37",
+       "service": "student-center",
+       "backendPath": "/smallClazz/lessonSituation",
+       "name": "获取学员看课进度条",
+       "id": 2366331
+      },
+      {
+       "trigger": "进页面",
+       "method": "POST",
+       "frontPath": "coeus 低代码 schema",
+       "frontFile": "src/pages/microClazzRoster/DefaultRoster/hooks/useTableSchema.js:14",
+       "service": "coeus/render",
+       "backendPath": "—",
+       "name": "—",
+       "id": 0
+      }
+     ]
+    },
+    {
+     "tabKey": "continuationService",
+     "name": "续班服务",
+     "file": "cronus/microClazzRoster/continuationService.md",
+     "apis": [
+      {
+       "trigger": "进页面/筛选/翻页",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/small/renewal/page",
+       "frontFile": "src/pages/microClazzRoster/ContinuationService/service.js:31",
+       "service": "student-center",
+       "backendPath": "/roster/small/renewal/page",
+       "name": "分页查询续班服务列表",
+       "id": 3151317
+      },
+      {
+       "trigger": "总数超上限",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/small/renewal/count",
+       "frontFile": "src/pages/microClazzRoster/ContinuationService/service.js:39",
+       "service": "student-center",
+       "backendPath": "/roster/small/renewal/count",
+       "name": "获取总数，当超过index配置最大count时使用",
+       "id": 3151318
+      },
+      {
+       "trigger": "默认视图列表",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/small/renewal/default/page",
+       "frontFile": "src/pages/microClazzRoster/ContinuationService/service.js:13",
+       "service": "student-center",
+       "backendPath": "/roster/small/renewal/default/page",
+       "name": "分页查询续班服务列表",
+       "id": 3151315
+      },
+      {
+       "trigger": "默认视图总数",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/small/renewal/default/count",
+       "frontFile": "src/pages/microClazzRoster/ContinuationService/service.js:47",
+       "service": "student-center",
+       "backendPath": "/roster/small/renewal/default/count",
+       "name": "获取总数，当超过index配置最大count时使用",
+       "id": 3151316
+      },
+      {
+       "trigger": "进页面",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/small/renewal/defaultValue",
+       "frontFile": "src/pages/microClazzRoster/ContinuationService/service.js:22",
+       "service": "student-center",
+       "backendPath": "/roster/small/renewal/defaultValue",
+       "name": "获取GlobalSearch默认值接口",
+       "id": 3151314
+      },
+      {
+       "trigger": "班级变更/进页面",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/small/renewal/getRenewalInfo",
+       "frontFile": "src/pages/microClazzRoster/ContinuationService/service.js:5",
+       "service": "student-center",
+       "backendPath": "/roster/small/renewal/getRenewalInfo",
+       "name": "续班信息",
+       "id": 3151313
+      },
+      {
+       "trigger": "进页面",
+       "method": "POST",
+       "frontPath": "/component/student-center/smallClazz/filter/renewalPlan/list",
+       "frontFile": "src/pages/microClazzRoster/ContinuationService/service.js:55",
+       "service": "student-center",
+       "backendPath": "/smallClazz/filter/renewalPlan/list",
+       "name": "[POST]/renewalPlan/list",
+       "id": 3876404
+      },
+      {
+       "trigger": "续班计划变更",
+       "method": "POST",
+       "frontPath": "/component/student-center/smallClazz/filter/clazz/list",
+       "frontFile": "src/pages/microClazzRoster/ContinuationService/service.js:79",
+       "service": "student-center",
+       "backendPath": "/smallClazz/filter/clazz/list",
+       "name": "[POST]/clazz/list",
+       "id": 2044937
+      },
+      {
+       "trigger": "搜索后刷新指标",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/small/renewal/statistic",
+       "frontFile": "src/pages/microClazzRoster/ContinuationService/service.js:87",
+       "service": "student-center",
+       "backendPath": "/roster/small/renewal/statistic",
+       "name": "续班统计数据",
+       "id": 3876403
+      },
+      {
+       "trigger": "默认指标",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/small/renewal/default/statistic",
+       "frontFile": "src/pages/microClazzRoster/ContinuationService/service.js:117",
+       "service": "student-center",
+       "backendPath": "/roster/small/renewal/default/statistic",
+       "name": "续班统计数据",
+       "id": 3876402
+      },
+      {
+       "trigger": "点「问卷明细」",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/renewal/sendQuestion/getQuestionInfo",
+       "frontFile": "src/pages/microClazzRoster/ContinuationService/service.js:147",
+       "service": "student-center",
+       "backendPath": "/roster/renewal/sendQuestion/getQuestionInfo",
+       "name": "问卷信息获取",
+       "id": 3381630
+      },
+      {
+       "trigger": "问卷明细搜学员",
+       "method": "POST",
+       "frontPath": "/bgwApi/component/student-center/roster/small/renewal/questionnaire/search/user",
+       "frontFile": "src/services/bindingStudents.ts:61",
+       "service": "student-center",
+       "backendPath": "/roster/small/renewal/questionnaire/search/user",
+       "name": "搜索用户",
+       "id": 3876405
+      },
+      {
+       "trigger": "行内编辑保存",
+       "method": "POST",
+       "frontPath": "/component/student-center/studentClazz/edit",
+       "frontFile": "src/pages/microClazzRoster/DefaultRoster/services/microClazzRoster.js:13",
+       "service": "student-center",
+       "backendPath": "/studentClazz/edit",
+       "name": "[POST]/edit",
+       "id": 30662
+      },
+      {
+       "trigger": "批量改颜色/分层",
+       "method": "POST",
+       "frontPath": "/component/student-center/studentClazz/batchEdit",
+       "frontFile": "src/pages/microClazzRoster/DefaultRoster/services/microClazzRoster.js:54",
+       "service": "student-center",
+       "backendPath": "/studentClazz/batchEdit",
+       "name": "[POST]/batchEdit",
+       "id": 2863102
+      },
+      {
+       "trigger": "下单（非灰度）",
+       "method": "POST",
+       "frontPath": "/bgwApi/product-b/b/renewMaster/recommendClazzList",
+       "frontFile": "src/services/continuationService.js:108",
+       "service": "product-b",
+       "backendPath": "/b/renewMaster/recommendClazzList",
+       "name": "查询推荐班级列表",
+       "id": 2734275
+      },
+      {
+       "trigger": "下单灰度判断",
+       "method": "POST",
+       "frontPath": "/product-b/b/renewMaster/configFlag",
+       "frontFile": "src/pages/microClazzRoster/ContinuationService/components/CreateOrder/gray.js:7",
+       "service": "product-b",
+       "backendPath": "/b/renewMaster/configFlag",
+       "name": "获取配置开关",
+       "id": 2734336
+      },
+      {
+       "trigger": "进页面",
+       "method": "POST",
+       "frontPath": "coeus 低代码 schema",
+       "frontFile": "src/models/microContinuationService.js:18",
+       "service": "coeus/render",
+       "backendPath": "—",
+       "name": "—",
+       "id": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "route": "/crm/cronus/onebyOneRoster",
+   "name": "一对一花名册",
+   "repo": "cronus",
+   "pageFile": "cronus/onebyOneRoster/_page.md",
+   "pageApis": [
+    {
+     "trigger": "进页面/筛选/翻页/排序",
+     "method": "POST",
+     "frontPath": "/component/student-center/gps/my-student/roster/list",
+     "frontFile": "src/pages/onebyOneRoster/services/onebyOneRoster.ts:16",
+     "service": "student-center",
+     "backendPath": "/my-student/roster/list",
+     "name": "一对一花名册",
+     "id": 4556725
+    },
+    {
+     "trigger": "姓名行内编辑保存",
+     "method": "POST",
+     "frontPath": "/component/student-center/studentClazz/edit",
+     "frontFile": "src/pages/onebyOneRoster/services/onebyOneRoster.ts:41",
+     "service": "student-center",
+     "backendPath": "/studentClazz/edit",
+     "name": "[POST]/edit",
+     "id": 30662
+    },
+    {
+     "trigger": "进页面",
+     "method": "POST",
+     "frontPath": "coeus 低代码 schema",
+     "frontFile": "src/pages/onebyOneRoster/hooks/useTableSchema.js:13",
+     "service": "coeus/render",
+     "backendPath": "—",
+     "name": "—",
+     "id": 0
+    }
+   ],
+   "tabs": []
+  },
+  {
+   "route": "/crm/cronus/examManagement",
+   "name": "考试管理",
+   "repo": "cronus",
+   "pageFile": "cronus/examManagement/_page.md",
+   "pageApis": [
+    {
+     "trigger": "进页面/搜索",
+     "method": "POST",
+     "frontPath": "/component/student-center/examManage/list",
+     "frontFile": "src/pages/examManagement/index.js:377",
+     "service": "student-center",
+     "backendPath": "/examManage/list",
+     "name": "考试列表",
+     "id": 506574
+    },
+    {
+     "trigger": "进页面/展开筛选",
+     "method": "POST",
+     "frontPath": "/component/student-center/base/student/dictionary",
+     "frontFile": "src/services/examManagement.js:4",
+     "service": "student-center",
+     "backendPath": "/base/student/dictionary",
+     "name": "获取字典枚举值及对应名称",
+     "id": 43944
+    },
+    {
+     "trigger": "选带班老师",
+     "method": "POST",
+     "frontPath": "/component/student-center/studentClazz/pageAssistantTeacher",
+     "frontFile": "src/services/examManagement.js:14",
+     "service": "student-center",
+     "backendPath": "/studentClazz/pageAssistantTeacher",
+     "name": "[POST]/pageAssistantTeacher",
+     "id": 30677
+    },
+    {
+     "trigger": "打开统计 Tab",
+     "method": "POST",
+     "frontPath": "/component/student-center/examManage/overview",
+     "frontFile": "src/services/examManagement.js:24",
+     "service": "student-center",
+     "backendPath": "/examManage/overview",
+     "name": "基础信息-考试概览",
+     "id": 506572
+    },
+    {
+     "trigger": "打开统计 Tab",
+     "method": "POST",
+     "frontPath": "/component/student-center/examManage/scoreSpan",
+     "frontFile": "src/services/examManagement.js:34",
+     "service": "student-center",
+     "backendPath": "/examManage/scoreSpan",
+     "name": "基础信息-分数分布",
+     "id": 506573
+    },
+    {
+     "trigger": "打开作答 Tab",
+     "method": "POST",
+     "frontPath": "/component/student-center/examManage/studentList",
+     "frontFile": "src/services/examManagement.js:44",
+     "service": "student-center",
+     "backendPath": "/examManage/studentList",
+     "name": "学员作答-列表",
+     "id": 506576
+    },
+    {
+     "trigger": "点报告",
+     "method": "POST",
+     "frontPath": "/component/student-center/exam/show/url",
+     "frontFile": "src/services/examManagement.js:55",
+     "service": "student-center",
+     "backendPath": "/exam/show/url",
+     "name": "获取报告链接",
+     "id": 47246
+    },
+    {
+     "trigger": "打开作答 Tab",
+     "method": "GET",
+     "frontPath": "/component/student-center/base/enum/offlineExam/reportStatusTree",
+     "frontFile": "src/services/examManagement.js:99",
+     "service": "student-center",
+     "backendPath": "/base/enum/offlineExam/reportStatusTree",
+     "name": "试卷状态枚举",
+     "id": 1415898
+    },
+    {
+     "trigger": "查看手机号",
+     "method": "POST",
+     "frontPath": "/student-center/userSecret/getBaseInfo",
+     "frontFile": "src/pages/examManagement/components/AnsweredStudents/config.js:84",
+     "service": "student-center",
+     "backendPath": "/userSecret/getBaseInfo",
+     "name": "查询学员机密信息",
+     "id": 30733
+    },
+    {
+     "trigger": "下载报告长图",
+     "method": "GET",
+     "frontPath": "/fairy/longtu/gen",
+     "frontFile": "src/services/examManagement.js:89",
+     "service": "fairy.gaotu100.com",
+     "backendPath": "/longtu/gen",
+     "name": "[GET]/gen",
+     "id": 35410
+    },
+    {
+     "trigger": "打开题目分析 Tab",
+     "method": "POST",
+     "frontPath": "/component/student-center/examManage/questionList",
+     "frontFile": "src/services/examManagement.js:65",
+     "service": "student-center",
+     "backendPath": "/examManage/questionList",
+     "name": "题目分析-列表",
+     "id": 506571
+    },
+    {
+     "trigger": "打开题目详情",
+     "method": "POST",
+     "frontPath": "/component/student-center/examManage/question/studentList",
+     "frontFile": "src/services/examManagement.js:73",
+     "service": "student-center",
+     "backendPath": "/examManage/question/studentList",
+     "name": "题目分析详情",
+     "id": 506577
+    },
+    {
+     "trigger": "打开题目详情",
+     "method": "GET",
+     "frontPath": "/component/student-center/examManage/question/info",
+     "frontFile": "src/services/examManagement.js:81",
+     "service": "student-center",
+     "backendPath": "/examManage/question/info",
+     "name": "题目分析详情",
+     "id": 506570
+    }
+   ],
+   "tabs": []
+  },
+  {
+   "route": "/crm/microFairy/tutoringClassManage",
+   "name": "辅导班管理",
+   "repo": "boss-counselor",
+   "pageFile": "boss-counselor/tutoringClassManage/_page.md",
+   "pageApis": [
+    {
+     "trigger": "进页面/查询/翻页/排序",
+     "method": "POST",
+     "frontPath": "/bgwApi/distribution-management/subclazz/management/listSubclazzAggInfo",
+     "frontFile": "src/pages/TutoringClassManage/index.jsx:77",
+     "service": "clazz-distribution-management.gaotu100.com",
+     "backendPath": "/subclazz/management/listSubclazzAggInfo",
+     "name": "辅导班管理-辅导班列表",
+     "id": 31665
+    },
+    {
+     "trigger": "进页面",
+     "method": "POST",
+     "frontPath": "/component/student-center/toolBox/config/gray",
+     "frontFile": "src/pages/TutoringClassManage/index.jsx:537",
+     "service": "student-center",
+     "backendPath": "/toolBox/config/gray",
+     "name": "[GET]/config/gray",
+     "id": 64558
+    },
+    {
+     "trigger": "进页面",
+     "method": "GET",
+     "frontPath": "/bgwApi/component/student-center/studentClazz/subordinates/gray",
+     "frontFile": "src/pages/TutoringClassManage/index.jsx:548",
+     "service": "student-center",
+     "backendPath": "/studentClazz/subordinates/gray",
+     "name": "灰度接口",
+     "id": 3683444
+    },
+    {
+     "trigger": "辅导老师下拉搜索（useTreeSelect=false 分支）",
+     "method": "POST",
+     "frontPath": "/bgwApi/component/student-center/studentClazz/pageAssistantTeacher",
+     "frontFile": "src/pages/TutoringClassManage/components/SearchForm/index.jsx:115",
+     "service": "student-center",
+     "backendPath": "/studentClazz/pageAssistantTeacher",
+     "name": "[POST]/pageAssistantTeacher",
+     "id": 30677
+    },
+    {
+     "trigger": "打开抽屉工具详情",
+     "method": "POST",
+     "frontPath": "/fairy/subclazz/detail",
+     "frontFile": "src/pages/TutoringClassManage/components/DrawerToolDetail/index.jsx:29",
+     "service": "fairy.gaotu100.com",
+     "backendPath": "/subclazz/detail",
+     "name": "辅导班详情",
+     "id": 35398
+    }
+   ],
+   "tabs": []
+  },
+  {
+   "route": "/ark/app-promotions/continuation-classes",
+   "name": "续班计划管理（OES 续班管理）",
+   "repo": "promotions",
+   "pageFile": "promotions/continuation-classes/_page.md",
+   "note": "test-mi.gaotu100.com；后端 product-b = 仓库 product-server；问卷绑定在详情页续班流程 tab",
+   "tabs": [
+    {
+     "tabKey": "list",
+     "name": "续班计划列表 / 详情 / 续班关系",
+     "file": "promotions/continuation-classes/_page.md",
+     "apis": [
+      {
+       "trigger": "进页面/查询",
+       "method": "POST",
+       "frontPath": "/product-b/b/renewMaster/list",
+       "frontFile": "",
+       "service": "product-b",
+       "backendPath": "/b/renewMaster/list",
+       "name": "续班计划列表",
+       "note": "",
+       "id": 2734125
+      },
+      {
+       "trigger": "详情页进页面",
+       "method": "POST",
+       "frontPath": "/product-b/b/renewMaster/detail",
+       "frontFile": "",
+       "service": "product-b",
+       "backendPath": "/b/renewMaster/detail",
+       "name": "续班计划详情",
+       "note": "",
+       "id": 2734217
+      },
+      {
+       "trigger": "续班关系",
+       "method": "POST",
+       "frontPath": "/product-b/b/renewMaster/productRelationList",
+       "frontFile": "",
+       "service": "product-b",
+       "backendPath": "/b/renewMaster/productRelationList",
+       "name": "续班关系列表",
+       "note": "",
+       "id": 2734126
+      },
+      {
+       "trigger": "续班关系",
+       "method": "POST",
+       "frontPath": "/product-b/b/renewMaster/listCoursesByPreCourseNumber",
+       "frontFile": "",
+       "service": "product-b",
+       "backendPath": "/b/renewMaster/listCoursesByPreCourseNumber",
+       "name": "按前置课程查后置课程",
+       "note": "",
+       "id": 2734280
+      }
+     ]
+    },
+    {
+     "tabKey": "renewalProcess",
+     "name": "续班流程（续班问卷/预报名/正式报名）",
+     "file": "promotions/continuation-classes/renewalProcess.md",
+     "apis": [
+      {
+       "trigger": "进 tab",
+       "method": "POST",
+       "frontPath": "/product-b/b/renewal/process/list",
+       "frontFile": "",
+       "service": "product-b",
+       "backendPath": "/b/renewal/process/list",
+       "name": "续班流程列表",
+       "note": "",
+       "id": 2734226
+      },
+      {
+       "trigger": "管理问卷弹窗",
+       "method": "POST",
+       "frontPath": "/product-b/b/renewal/process/questionnaire/list",
+       "frontFile": "",
+       "service": "product-b",
+       "backendPath": "/b/renewal/process/questionnaire/list",
+       "name": "节点下问卷列表",
+       "note": "bizId=问卷ID/作品ID；表 gaotu.questionnaire",
+       "id": 2734210
+      },
+      {
+       "trigger": "绑定问卷",
+       "method": "POST",
+       "frontPath": "/product-b/b/renewal/process/questionnaire/bind",
+       "frontFile": "",
+       "service": "product-b",
+       "backendPath": "/b/renewal/process/questionnaire/bind",
+       "name": "绑定问卷",
+       "note": "问卷→前置课程写 gaotu.renew_master_course_relation.questionnaire_number",
+       "id": 2734156
+      },
+      {
+       "trigger": "解绑问卷",
+       "method": "POST",
+       "frontPath": "/product-b/b/renewal/process/questionnaire/unbind",
+       "frontFile": "",
+       "service": "product-b",
+       "backendPath": "/b/renewal/process/questionnaire/unbind",
+       "name": "解绑问卷",
+       "note": "",
+       "id": 2734178
+      },
+      {
+       "trigger": "问卷回收",
+       "method": "POST",
+       "frontPath": "/product-b/b/renewal/process/questionnaire/record/page",
+       "frontFile": "",
+       "service": "product-b",
+       "backendPath": "/b/renewal/process/questionnaire/record/page",
+       "name": "问卷填写记录",
+       "note": "表 gaotu.questionnaire_record",
+       "id": 2734160
+      }
+     ]
+    }
+   ]
+  }
+ ]
 }

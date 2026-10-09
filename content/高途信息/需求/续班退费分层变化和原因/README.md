@@ -7,13 +7,13 @@ branches:
   - student-data:feature-predict-level-reason
   - student-center:feature-predict-level-reason
   - aianalysisinformations:feature-refund-reason-20260825
-updated: 2026-09-29
+updated: 2026-10-09
 tags: [需求]
 ---
 
 # 续班退费分层变化和原因
 
-> **本目录导航**：[`links.md`](links.md) 链接中心 · [`tasks.md`](tasks.md) 当前任务板 · [`verify.md`](verify.md) 验证手册 · [`changelog.md`](changelog.md) 决策摘要
+> **本目录导航**：[`links.md`](links.md) 链接中心 · [`tasks.md`](tasks.md) 当前任务板 · [`verify.md`](verify.md) 验证手册 · [`changelog.md`](changelog.md) 决策摘要 · [`case-record.md`](case-record.md) 冒烟(P0)用例执行记录 · [`data-requirements.md`](data-requirements.md) 阻塞/造数需求
 > 技术方案在飞书（见 links），本地不留副本。续接这个需求：读完本文件即可。
 
 ## 一句话
@@ -50,7 +50,7 @@ tags: [需求]
 | 进度 | T 4/5 · R 0/0 · C 0/0 |
 | 部署泳道 | 2026-09-29 重新发了 test-eco-2（student-data + student-data-dws + student-center），eureka UP |
 | 当前卡点 | 无阻塞；剩 T-05 上线配置（需合并发布到 release 池，真实用户默认流量才能看到） |
-| 最近更新 | 2026-10-08：快照表字段精简 + 索引 + 按班级回溯方法——删 `predict_score`/`model_version`/`status` 三列与出参 `probabilityDesc`、删「发 MQ 刷 ES」死代码；`ai_predict_level_reason_detail` 加 `idx_clazz_type_dt`、快照表加 `idx_clazz_scene_dt`；新增桥可调 `PredictLevelReasonSyncService#backfillByClazz`（见 [[changelog]]、[[tasks]] T-06）。<br>2026-09-29：算法真表已确认（见上「已定共识」）；`AiPredictLevelReasonDetail`/DDL/同步服务已按新结构改完并合入 release、单测 23 个全过；test-eco-2 全链路验证通过，含真实浏览器页面截图确认（见下「验证结果」）；前端仓库/分支/接口已查明并记入知识库 |
+| 最近更新 | 2026-10-09：冒烟(P0)用例集（banshan record 69601，23 条）执行完毕 → 通过 21 / 阻塞 2，平台已回写；飞书《续班退费分层变化和原因 · 冒烟(P0)用例执行记录》已挂到需求 wiki 节点下；本地 [[case-record]]、[[data-requirements]]。阻塞 2 条是前端/CRM 页面（旧预测原因下线），非数据问题。<br>2026-10-08：快照表字段精简 + 索引 + 按班级回溯方法——删 `predict_score`/`model_version`/`status` 三列与出参 `probabilityDesc`、删「发 MQ 刷 ES」死代码；`ai_predict_level_reason_detail` 加 `idx_clazz_type_dt`、快照表加 `idx_clazz_scene_dt`；新增桥可调 `PredictLevelReasonSyncService#backfillByClazz`（见 [[changelog]]、[[tasks]] T-06）。<br>2026-09-29：算法真表已确认（见上「已定共识」）；`AiPredictLevelReasonDetail`/DDL/同步服务已按新结构改完并合入 release、单测 23 个全过；test-eco-2 全链路验证通过，含真实浏览器页面截图确认（见下「验证结果」）；前端仓库/分支/接口已查明并记入知识库 |
 
 ## 验证结果（2026-09-29）
 

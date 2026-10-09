@@ -30,6 +30,7 @@
 | `/crm/cronus/onebyOneRoster` | 一对一花名册 | cronus | — |
 | `/crm/cronus/examManagement` | 考试管理 | cronus | — |
 | `/crm/microFairy/tutoringClassManage` | 辅导班管理 | boss-counselor | — |
+| `/ark/app-promotions/continuation-classes` | 续班计划管理（OES，含问卷绑定） | promotions | list / renewalProcess |
 | 学员详情页 AI 分析 tab（GAIA 微组件，非独立路由） | AI 分析 / 意向预测 | aianalysisinformations | — |
 
 ## tab 文件模板

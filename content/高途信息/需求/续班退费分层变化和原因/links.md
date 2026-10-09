@@ -21,6 +21,8 @@ tags: [需求, 链接]
 | 类型 | 标题 | 链接 | 记录日期 |
 |---|---|---|---|
 | TAPD | 续班&退费意向预测原因和跟进建议（storyId `1122531521001391216`） | | 2026-10-08 |
+| 冒烟用例执行记录 | 续班退费分层变化和原因 · 冒烟(P0)用例执行记录（挂在需求 wiki 节点下） | https://gaotuedu.feishu.cn/wiki/XCKgwcUThib6uGkSrfXc444GnCe | 2026-10-09 |
+| 用例平台 | banshan 冒烟执行任务（caseId 49251 / recordId 69601，通过 21 / 阻塞 2） | https://qa.baijia.com/banshan/#/caseManager/171/49251/69601/3 | 2026-10-09 |
 
 ## 上线
 
