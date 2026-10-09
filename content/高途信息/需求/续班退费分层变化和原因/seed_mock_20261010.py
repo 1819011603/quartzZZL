@@ -48,8 +48,20 @@ COMBOS = {
 # ---- 退费 ----
 REFUND_MAIN = 7478102067
 REFUND_SEQ = [("20261007", "低"), ("20261008", "中"), ("20261009", "中高"), ("20261010", "高")]
+# 退费组合（20261010 -> 20261011），数值越大退费风险越高
+REFUND_COMBOS = {
+    7478102072: ("低", "中"),     # 归因四 低->中
+    7478102079: ("中", "中高"),   # 归因七 中->中高
+    7478102080: ("中高", "高"),   # 归因九 中高->高
+    900000005: ("低", "中高"),   # 跨级
+    900000006: ("低", "高"),     # 跨级
+    900000007: ("中", "高"),
+    900000008: ("低", "中"),
+    900000009: ("中", "中"),     # 无变化（应跳过）
+    900000010: ("高", "中"),     # 回落
+}
 
-ALL_USERS = list({MAIN, REFUND_MAIN} | set(COMBOS.keys()))
+ALL_USERS = list({MAIN, REFUND_MAIN} | set(COMBOS.keys()) | set(REFUND_COMBOS.keys()))
 
 
 def factors6(day, layer):
@@ -143,6 +155,11 @@ def main():
                 cur.execute("INSERT INTO ai_predict_level_reason_detail(user_number,clazz_number,subclazz_number,layer,factors,type,dt) VALUES(%s,%s,%s,%s,%s,%s,%s)",
                             (REFUND_MAIN, CLAZZ, SUBCLAZZ, layer, factors_refund(layer), TYPE_REFUND, dt))
                 r += 1
+            for uid, (a, b) in REFUND_COMBOS.items():
+                for dt, layer in ((D1, a), (D2, b)):
+                    cur.execute("INSERT INTO ai_predict_level_reason_detail(user_number,clazz_number,subclazz_number,layer,factors,type,dt) VALUES(%s,%s,%s,%s,%s,%s,%s)",
+                                (uid, CLAZZ, SUBCLAZZ, layer, factors_refund(layer), TYPE_REFUND, dt))
+                    r += 1
             print("inserted refund detail rows:", r)
 
         c2 = conn.cursor()
