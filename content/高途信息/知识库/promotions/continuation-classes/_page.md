@@ -1,6 +1,6 @@
 # 续班计划管理（continuation-classes）— 页面级
 
-> 2026-10-09 用 chrome-devtools 带登录态在 test 环境点击抓包整理；后端代码对照 product-server。前端仓库在 GitLab 未定位到（Chrome 与代理均未登录 GitLab），「前端代码位置」暂缺；接口均为浏览器实际抓包。
+> 2026-10-09 用 chrome-devtools 带登录态在 test 环境点击抓包整理，前端代码对照 gaotu-fe-promotions master，后端对照 product-server。
 
 ## 路由链路
 
@@ -10,6 +10,8 @@
 | 详情页 URL | `https://test-mi.gaotu100.com/ark/app-promotions/continuation-classes/detail?n=<续班计划number>` |
 | 菜单 | OES（ark 基座）→ 续班管理 → 续班计划管理 |
 | 基座 | ark → 子应用 app-promotions（静态资源 `gtoss.gsxcdn.com/.../projects/promotions/`） |
+| 前端仓库 | gaotu-fe-promotions `http://git.baijia.com/gaotu-fe/gaotu-btech-fe/gaotu-fe-promotions`（master，本地 `~/IdeaProjects/WebProject/gaotu-fe-promotions`；青舟 serviceCode `baijia.gt.ecommerce.fe.gaotu-fe-promotions`） |
+| 页面目录 | `src/pages/continuationClasses/`（list / detail：Relations、RenewableStudent、Process、PlanTarget） |
 | 后端服务 | 网关前缀 `/product-b` → 青舟 appId `product-b`（代码仓库 **product-server**，模块 `product-server-b`） |
 | 主库 | `gaotu` 库（test 集群见各 tab 文件） |
 
@@ -24,14 +26,14 @@
 
 ## 页面级接口
 
-| 触发 | 前端调用路径 | 后端服务 | 后端 path | 接口名 | 说明 |
-|---|---|---|---|---|---|
-| 列表页 进页面/查询/翻页 | `POST /product-b/b/renewMaster/list` | product-b | `/b/renewMaster/list` | 续班计划列表 | — |
-| 列表页 进页面 | `GET /course-center/b/common/department/tree` | course-center | `/b/common/department/tree` | 部门树 | 所属部门筛选 |
-| 列表页 进页面 | `GET /course-center/b/common/dictionary/all` | course-center | `/b/common/dictionary/all` | 字典 | 学年/学期/年级/学科 |
-| 详情页 进页面 | `POST /product-b/b/renewMaster/detail` | product-b | `/b/renewMaster/detail` | 续班计划详情 | 入参 `{"number": 计划number}`；回年级/学科/学期/部门/管理员 |
-| 详情页 续班关系 | `POST /product-b/b/renewMaster/productRelationList` | product-b | `/b/renewMaster/productRelationList` | 续班关系列表 | 前置产品 ↔ 后置产品 |
-| 详情页 续班关系 | `POST /product-b/b/renewMaster/listCoursesByPreCourseNumber` | product-b | `/b/renewMaster/listCoursesByPreCourseNumber` | 按前置课程查后置课程 | 入参 `{"preCourseNumber": ...}` |
+| 触发 | 前端调用路径 | 前端方法 | 前端代码位置 | 后端服务 | 后端 path | 接口名 | 说明 |
+|---|---|---|---|---|---|---|---|
+| 列表页 进页面/查询/翻页 | `POST /product-b/b/renewMaster/list` | `ProTable fetch` | `src/pages/continuationClasses/list/index.js:361` | product-b | `/b/renewMaster/list` | 续班计划列表 | — |
+| 列表页 进页面 | `GET /course-center/b/common/department/tree` | — | —（共享组件） | course-center | `/b/common/department/tree` | 部门树 | 所属部门筛选 |
+| 列表页 进页面 | `GET /course-center/b/common/dictionary/all` | — | —（共享组件） | course-center | `/b/common/dictionary/all` | 字典 | 学年/学期/年级/学科 |
+| 详情页 进页面 | `POST /product-b/b/renewMaster/detail` | `getContinuationClassesPlanDetail` | `src/hooks/useBasicInfo.js:24（src/services/continuationClasses.js:31）` | product-b | `/b/renewMaster/detail` | 续班计划详情 | 入参 `{"number": 计划number}`；回年级/学科/学期/部门/管理员 |
+| 详情页 续班关系 | `POST /product-b/b/renewMaster/productRelationList` | `getProductRelationList` | `src/pages/continuationClasses/detail/Relations/provider.js:61（src/services/continuationClasses.js:107）` | product-b | `/b/renewMaster/productRelationList` | 续班关系列表 | 前置产品 ↔ 后置产品 |
+| 详情页 续班关系 | `POST /product-b/b/renewMaster/listCoursesByPreCourseNumber` | `getCourseAllSceneTypeList` | `src/pages/continuationClasses/detail/Relations/index.js:79（src/services/continuationClasses.js:163）` | product-b | `/b/renewMaster/listCoursesByPreCourseNumber` | 按前置课程查后置课程 | 入参 `{"preCourseNumber": ...}` |
 
 ## 关键表
 

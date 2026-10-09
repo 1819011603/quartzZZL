@@ -30,7 +30,7 @@
 | `/crm/cronus/onebyOneRoster` | 一对一花名册 | cronus | — |
 | `/crm/cronus/examManagement` | 考试管理 | cronus | — |
 | `/crm/microFairy/tutoringClassManage` | 辅导班管理 | boss-counselor | — |
-| `/ark/app-promotions/continuation-classes` | 续班计划管理（OES，含问卷绑定） | promotions | list / renewalProcess |
+| `/ark/app-promotions/continuation-classes` | 续班计划管理（OES，含问卷绑定） | gaotu-fe-promotions | list / renewalProcess |
 | 学员详情页 AI 分析 tab（GAIA 微组件，非独立路由） | AI 分析 / 意向预测 | aianalysisinformations | — |
 
 ## tab 文件模板
@@ -83,6 +83,7 @@
 
 - 数据来源：**前端仓库静态代码**（找 `request()` / `@/services/*`）+ **青舟 apidoc**（补后端服务/path/接口名）。
 - 前端仓库：`/Users/gaotu/IdeaProjects/WebProject/<repo>`（cronus / epic / boss-counselor…）。
+- 前端仓库不知道地址：青舟 `getAllServiceCode` 模糊搜（前端服务多叫 `gaotu-fe-<名>`，`qingzhou_find_service_code` 只做精确匹配会漏），再 `qingzhou_get_service_info` 取 `gitlabUrl` / `gitCloneCmd`（GitLab 未登录也能 clone）。
 - 青舟 apidoc CLI：`python3 ~/.claude/skills/qingzhou-apidoc-url/apidoc.py search -i <关键词>`。
 
 ## 注意

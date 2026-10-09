@@ -1,12 +1,13 @@
 # 续班计划详情 / 续班流程（renewalProcess）
 
-> 2026-10-09 test 环境抓包 + product-server 代码 + test 库实查整理。
+> 2026-10-09 用 chrome-devtools 带登录态在 test 环境点击抓包整理，前端代码对照 gaotu-fe-promotions master，后端对照 product-server。
 
 ## 定位
 
 | 项 | 值 |
 |---|---|
 | tab URL | 详情页 `continuation-classes/detail?n=<计划number>` → 「续班流程」tab |
+| 前端组件 | `src/pages/continuationClasses/detail/Process/`；问卷管理弹窗 `business/questionnaire/components/QuestionnaireManage/`，绑定 `BindQuestionnaire/`，回收 `Recycle/` |
 | 后端主服务 | product-b（仓库 product-server，`ProcessController` `@RequestMapping("/b/renewal/process")`） |
 | 业务代码 | `product-server-domain/.../service/renewal/questionnaire/QuestionnaireService.java` |
 
@@ -15,15 +16,19 @@
 
 ## 接口清单
 
-| 触发 | 前端调用路径 | 后端 path | 接口名 | 说明 |
-|---|---|---|---|---|
-| 进 tab | `GET /product-b/b/renewal/process/superAdministrator` | 同左去 `/product-b` | 是否超管 | — |
-| 进 tab | `POST /product-b/b/renewal/process/list` | `/b/renewal/process/list` | 流程列表 | 入参 `{"renewalNumber"}`；回 `processConfig` + `nodeConfigs` |
-| 添加流程 / 管理流程 | `POST .../process/edit` | `/b/renewal/process/edit` | 编辑流程 | 写操作 |
-| 准备问卷 → +管理问卷（弹窗） | `POST .../process/questionnaire/list` | `/b/renewal/process/questionnaire/list` | 节点下问卷列表 | 入参 `{pager, nodeNumber, processNumber, renewalNumber}`；回 `bizId`(=问卷ID/作品ID)、`number`、`departments/grades/subjects` |
-| 管理问卷 → +绑定问卷 | `POST .../questionnaire/validate` → `.../questionnaire/bind` | 同名 | 校验 / 绑定 | 写操作；同一 bizId 只能绑一个计划 |
-| 解绑 | `POST .../questionnaire/unbind` | 同名 | 解绑 | 已有填写记录不可解绑 |
-| 问卷回收 | `POST .../questionnaire/record/page`、`.../record/detail` | 同名 | 填写记录 | — |
+| 触发 | 前端调用路径 | 前端方法 | 前端代码位置 | 后端 path | 接口名 | 说明 |
+|---|---|---|---|---|---|---|
+| 进 tab | `GET /product-b/b/renewal/process/superAdministrator` | `getIsSuperAdmin` | `src/pages/continuationClasses/detail/Process/index.js:38（src/services/continuationClasses.js:50）` | 同左去 `/product-b` | 是否超管 | — |
+| 进 tab | `POST /product-b/b/renewal/process/list` | `getContinuationClassesProcess` | `src/pages/continuationClasses/detail/Process/index.js:54（src/services/continuationClasses.js:42）` | `/b/renewal/process/list` | 流程列表 | 入参 `{"renewalNumber"}`；回 `processConfig` + `nodeConfigs` |
+| 添加流程 / 管理流程 | `POST /product-b/b/renewal/process/edit` | `editContinuationClassesProcess` | `src/pages/continuationClasses/detail/Process/components/EditProcessItem/index.js:311` | `/b/renewal/process/edit` | 编辑流程 | 写操作 |
+| 准备问卷 → +管理问卷（弹窗） | `POST /product-b/b/renewal/process/questionnaire/list` | ProTable `fetch={listApi}` | `.../questionnaire/components/QuestionnaireManage/index.js:127`（路径在同目录 `config.js:47`） | `/b/renewal/process/questionnaire/list` | 节点下问卷列表 | 入参 `{pager, nodeNumber, processNumber, renewalNumber}`；回 `bizId`(=问卷ID/作品ID)、`number`、`departments/grades/subjects` |
+| +绑定问卷 → 确定（先校验） | `POST /product-b/b/renewal/process/questionnaire/validate` | `validateContinuationClassesQuestionnaire` | `.../questionnaire/components/BindQuestionnaire/index.js:123` | `/b/renewal/process/questionnaire/validate` | 问卷合法性校验 | — |
+| +绑定问卷 → 确定（校验通过） | `POST /product-b/b/renewal/process/questionnaire/bind` | `bindContinuationClassesQuestionnaire` | `.../questionnaire/components/BindQuestionnaire/index.js:171` | `/b/renewal/process/questionnaire/bind` | 绑定问卷 | 写操作；同一 bizId 只能绑一个计划 |
+| 管理问卷 → 删除 | `POST /product-b/b/renewal/process/questionnaire/unbind` | `deleteContinuationClassesQuestionnaire` | `.../questionnaire/components/QuestionnaireManage/index.js:48` | `/b/renewal/process/questionnaire/unbind` | 解绑问卷 | 已有填写记录不可解绑 |
+| 问卷回收 列表 | `POST /product-b/b/renewal/process/questionnaire/record/page` | ProTable `fetch={listApi}` | `.../questionnaire/components/Recycle/index.js:58`（`config.js:3`） | `/b/renewal/process/questionnaire/record/page` | 问卷填写记录 | — |
+| 问卷回收 → 详情 | `POST /product-b/b/renewal/process/questionnaire/record/detail` | `getQuestionnaireRecordDetail` | `.../questionnaire/components/Recycle/Detail/index.js:20` | `/b/renewal/process/questionnaire/record/detail` | 问卷回收详情 | — |
+
+> `.../questionnaire/` = `src/pages/continuationClasses/detail/Process/business/questionnaire/`；service 函数都在 `src/services/continuationClasses.js`（`productPrefix=/product-b`）。
 
 > `questionnaire/list` 是 POST 接口，浏览器直接打开（GET）只会返回错误 JSON，不是页面。
 

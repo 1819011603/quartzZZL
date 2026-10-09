@@ -7,7 +7,7 @@
   "cronus": "http://git.baijia.com/gaotu-fe/gaotu-btech-fe/cronus",
   "boss-counselor": "http://git.baijia.com/gaotu-fe/boss-counselor",
   "aianalysisinformations": "http://git.baijia.com/gaotu-fe/gaotu-btech-fe/gaia-widget-submodule/aianalysisinformations",
-  "promotions": "OES ark 子应用 app-promotions（前端仓库未拉到本地）"
+  "promotions": "http://git.baijia.com/gaotu-fe/gaotu-btech-fe/gaotu-fe-promotions"
  },
  "pages": [
   {
@@ -2333,7 +2333,7 @@
    "name": "续班计划管理（OES 续班管理）",
    "repo": "promotions",
    "pageFile": "promotions/continuation-classes/_page.md",
-   "note": "test-mi.gaotu100.com；后端 product-b = 仓库 product-server；问卷绑定在详情页续班流程 tab",
+   "note": "test-mi.gaotu100.com；前端仓库 gaotu-fe-promotions（src/pages/continuationClasses）；后端 product-b = 仓库 product-server；问卷绑定在详情页续班流程 tab",
    "tabs": [
     {
      "tabKey": "list",
@@ -2344,45 +2344,49 @@
        "trigger": "进页面/查询",
        "method": "POST",
        "frontPath": "/product-b/b/renewMaster/list",
-       "frontFile": "",
+       "frontFile": "src/pages/continuationClasses/list/index.js:361",
        "service": "product-b",
        "backendPath": "/b/renewMaster/list",
        "name": "续班计划列表",
        "note": "",
-       "id": 2734125
+       "id": 2734125,
+       "frontMethod": "ProTable fetch"
       },
       {
        "trigger": "详情页进页面",
        "method": "POST",
        "frontPath": "/product-b/b/renewMaster/detail",
-       "frontFile": "",
+       "frontFile": "src/hooks/useBasicInfo.js:24（src/services/continuationClasses.js:31）",
        "service": "product-b",
        "backendPath": "/b/renewMaster/detail",
        "name": "续班计划详情",
        "note": "",
-       "id": 2734217
+       "id": 2734217,
+       "frontMethod": "getContinuationClassesPlanDetail"
       },
       {
        "trigger": "续班关系",
        "method": "POST",
        "frontPath": "/product-b/b/renewMaster/productRelationList",
-       "frontFile": "",
+       "frontFile": "src/pages/continuationClasses/detail/Relations/provider.js:61（src/services/continuationClasses.js:107）",
        "service": "product-b",
        "backendPath": "/b/renewMaster/productRelationList",
        "name": "续班关系列表",
        "note": "",
-       "id": 2734126
+       "id": 2734126,
+       "frontMethod": "getProductRelationList"
       },
       {
        "trigger": "续班关系",
        "method": "POST",
        "frontPath": "/product-b/b/renewMaster/listCoursesByPreCourseNumber",
-       "frontFile": "",
+       "frontFile": "src/pages/continuationClasses/detail/Relations/index.js:79（src/services/continuationClasses.js:163）",
        "service": "product-b",
        "backendPath": "/b/renewMaster/listCoursesByPreCourseNumber",
        "name": "按前置课程查后置课程",
        "note": "",
-       "id": 2734280
+       "id": 2734280,
+       "frontMethod": "getCourseAllSceneTypeList"
       }
      ]
     },
@@ -2395,56 +2399,61 @@
        "trigger": "进 tab",
        "method": "POST",
        "frontPath": "/product-b/b/renewal/process/list",
-       "frontFile": "",
+       "frontFile": "src/pages/continuationClasses/detail/Process/index.js:54（src/services/continuationClasses.js:42）",
        "service": "product-b",
        "backendPath": "/b/renewal/process/list",
        "name": "续班流程列表",
        "note": "",
-       "id": 2734226
+       "id": 2734226,
+       "frontMethod": "getContinuationClassesProcess"
       },
       {
        "trigger": "管理问卷弹窗",
        "method": "POST",
        "frontPath": "/product-b/b/renewal/process/questionnaire/list",
-       "frontFile": "",
+       "frontFile": "src/pages/continuationClasses/detail/Process/business/questionnaire/components/QuestionnaireManage/index.js:127（config.js:47）",
        "service": "product-b",
        "backendPath": "/b/renewal/process/questionnaire/list",
        "name": "节点下问卷列表",
        "note": "bizId=问卷ID/作品ID；表 gaotu.questionnaire",
-       "id": 2734210
+       "id": 2734210,
+       "frontMethod": "ProTable fetch=listApi"
       },
       {
        "trigger": "绑定问卷",
        "method": "POST",
        "frontPath": "/product-b/b/renewal/process/questionnaire/bind",
-       "frontFile": "",
+       "frontFile": "src/pages/continuationClasses/detail/Process/business/questionnaire/components/BindQuestionnaire/index.js:171（src/services/continuationClasses.js:68）",
        "service": "product-b",
        "backendPath": "/b/renewal/process/questionnaire/bind",
        "name": "绑定问卷",
        "note": "问卷→前置课程写 gaotu.renew_master_course_relation.questionnaire_number",
-       "id": 2734156
+       "id": 2734156,
+       "frontMethod": "bindContinuationClassesQuestionnaire"
       },
       {
        "trigger": "解绑问卷",
        "method": "POST",
        "frontPath": "/product-b/b/renewal/process/questionnaire/unbind",
-       "frontFile": "",
+       "frontFile": "src/pages/continuationClasses/detail/Process/business/questionnaire/components/QuestionnaireManage/index.js:48（src/services/continuationClasses.js:65）",
        "service": "product-b",
        "backendPath": "/b/renewal/process/questionnaire/unbind",
        "name": "解绑问卷",
        "note": "",
-       "id": 2734178
+       "id": 2734178,
+       "frontMethod": "deleteContinuationClassesQuestionnaire"
       },
       {
        "trigger": "问卷回收",
        "method": "POST",
        "frontPath": "/product-b/b/renewal/process/questionnaire/record/page",
-       "frontFile": "",
+       "frontFile": "src/pages/continuationClasses/detail/Process/business/questionnaire/components/Recycle/index.js:58（config.js:3）",
        "service": "product-b",
        "backendPath": "/b/renewal/process/questionnaire/record/page",
        "name": "问卷填写记录",
        "note": "表 gaotu.questionnaire_record",
-       "id": 2734160
+       "id": 2734160,
+       "frontMethod": "ProTable fetch=listApi"
       }
      ]
     }
