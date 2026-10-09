@@ -21,7 +21,7 @@ source: https://qa.baijia.com/banshan/#/caseManager/171/49251/69601/3
 | 辅导班 | **唐稳01YYTS321002**（subclazz_number 35930168009949440，bizNumber 32YYTS25D6LS110021002） |
 | 带班老师 | **唐稳01**（assistantNumber 7405394941575616） |
 | 班级课时 | 2027-09-15 10:00~10:05（未结束，故 record_dt 20261010 不超期） |
-| 续班期 | 已打通：**源头续班计划** `renew_master`(500775609543200768「madman-中国黄金」) 的 `begin_time/end_time` 改为 **2026-09-01 ~ 2026-12-31**（经 `RenewalService#renewMasterTimeChange` 后门，返回计划号）；**ES `subclazz_search`** 该班 4 条辅导班文档的 `renewalPlanStart/End` 同步改为同窗口（直接 `_bulk` update）。页面班级选择器 `renewalPeriodStatus=1` 已命中该班（`=0` 返回空）。源头已改，后续再同步不会被刷回。 |
+| 续班期 | 已打通：**源头续班计划** `renew_master`(500775609543200768「madman-中国黄金」) 的 `begin_time/end_time` 改为 **2026-09-01 ~ 2026-12-31**（经 `RenewalService#renewMasterTimeChange` 后门，返回计划号）；**ES `subclazz_search`** 该班 4 条辅导班文档的 `renewalPlanStart/End` 同步改为同窗口（直接 `_bulk` update）。页面班级选择器 `renewalPeriodStatus=1` 已命中该班（`=0` 返回空）。源头已改，后续再同步不会被刷回；并触发测试 ES 回刷任务 `esBacktrackHandler`（xjob job 5043，执行器 775 地址由失效的 `10.255.189.32:9999` 修为 `10.255.176.216:7799,10.218.237.181:7799`——该服务 xxl 执行器实际在 **7799**，不是 9999）实测 `triggerCode=200, handleCode=200`，4 条 ES 文档 `updateTime` 刷新后仍为同窗口，源→索引链路打通。 |
 
 学员（该辅导班花名册里的真实在读学员优先；`mock 补位` 的为本次临时造、不在花名册）：
 

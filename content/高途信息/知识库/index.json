@@ -10,7 +10,9 @@
   "promotions": "http://git.baijia.com/gaotu-fe/gaotu-btech-fe/gaotu-fe-promotions",
   "gaotu_yunfan_fe": "http://git.baijia.com/gaotu-ctech/gaotu_yunfan_fe",
   "boss-activity": "http://git.baijia.com/gaotu-fe/boss-activity",
-  "staff(后端)": "http://git.baijia.com/gaotu/staff"
+  "staff(后端)": "http://git.baijia.com/gaotu/staff",
+  "gaotu-fe-goodsmanage": "http://git.baijia.com/gaotu-ctech/gaotu-fe-goodsmanage",
+  "gaotu-fe-solo": "http://git.baijia.com/gaotu-fe/gaotu-btech-fe/gaotu-fe-solo"
  },
  "pages": [
   {
@@ -2825,6 +2827,909 @@
        "name": "节点详情",
        "id": "37408",
        "note": ""
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "route": "/ark/app-goods/normalOrdermanage/list",
+   "name": "课程类订单",
+   "repo": "gaotu-fe-goodsmanage",
+   "pageFile": "goods/normalOrdermanage/_page.md",
+   "note": "三个订单页共用 src/pages/OrderManage/list/index.js；order-b OrderComponentController；课程订单查 ES 订单宽表(index.order.alias)，查不到再回 gaotu.order_info；其余 tab 查 ES 订单项宽表 + gaotu.order_item",
+   "tabs": [
+    {
+     "tabKey": "normal",
+     "name": "课程订单",
+     "file": "goods/normalOrdermanage/normal.md",
+     "apis": [
+      {
+       "trigger": "进页面/查询",
+       "method": "POST",
+       "frontPath": "/orderComponent/orderFieldSearch",
+       "frontFile": "src/components/OrderList/modules/BaseList.tsx:125",
+       "service": "order-b.gaotu100.com",
+       "backendPath": "/orderComponent/orderFieldSearch",
+       "name": "订单信息搜索",
+       "id": "947972"
+      },
+      {
+       "trigger": "进页面",
+       "method": "POST",
+       "frontPath": "/orderComponent/grayGroup/checkGrayGroup",
+       "frontFile": "src/pages/OrderManage/list/hooks/useOrderCreationGuard.js:34",
+       "service": "order-b.gaotu100.com",
+       "backendPath": "/orderComponent/grayGroup/checkGrayGroup",
+       "name": "灰度组命中判断",
+       "id": "5304562"
+      },
+      {
+       "trigger": "进页面",
+       "method": "POST",
+       "frontPath": "/ols/w/campus/list",
+       "frontFile": "src/models/useOlsCampus.js:19",
+       "service": "gaotu-ols",
+       "backendPath": "/w/campus/list",
+       "name": "校区列表",
+       "id": "36004"
+      },
+      {
+       "trigger": "修改地址-确定",
+       "method": "POST",
+       "frontPath": "/order/boss/facade/changeAddress",
+       "frontFile": "src/pages/OrderManage/detail/OrderStep/ModifyAddress/index.js:74",
+       "service": "order-b.gaotu100.com",
+       "backendPath": "/order/boss/facade/changeAddress",
+       "name": "修改地址",
+       "id": "947342"
+      },
+      {
+       "trigger": "批量修改发货状态",
+       "method": "POST",
+       "frontPath": "/intranet-rpc/order-b/additional/batchUpdatesOrderNeedDelivery",
+       "frontFile": "src/pages/OrderManage/component/ModifyDeliveryStatus.js:56",
+       "service": "order-b.gaotu100.com",
+       "backendPath": "/additional/batchUpdatesOrderNeedDelivery",
+       "name": "批量修改订单发货状态",
+       "id": "947513"
+      },
+      {
+       "trigger": "调课调班-提交",
+       "method": "POST",
+       "frontPath": "/afterSale/b/transfer/submit",
+       "frontFile": "src/pages/OrderManage/component/TransferClazz/index.jsx:95",
+       "service": "after-sales",
+       "backendPath": "/afterSale/b/transfer/submit",
+       "name": "调课调班提交",
+       "id": "1069148"
+      }
+     ]
+    },
+    {
+     "tabKey": "soloclazz",
+     "name": "一对一订单",
+     "file": "goods/normalOrdermanage/soloclazz.md",
+     "apis": [
+      {
+       "trigger": "查询(有条件)",
+       "method": "POST",
+       "frontPath": "/orderComponent/orderItemFieldSearch",
+       "frontFile": "src/components/OrderList/modules/BaseList.tsx:95",
+       "service": "order-b.gaotu100.com",
+       "backendPath": "/orderComponent/orderItemFieldSearch",
+       "name": "订单项搜索(productType=6003)",
+       "id": "947633"
+      }
+     ]
+    },
+    {
+     "tabKey": "lessonpackage",
+     "name": "课时包订单",
+     "file": "goods/normalOrdermanage/lessonpackage.md",
+     "apis": [
+      {
+       "trigger": "查询(有条件)",
+       "method": "POST",
+       "frontPath": "/orderComponent/orderItemFieldSearch",
+       "frontFile": "src/components/OrderList/modules/BaseList.tsx:95",
+       "service": "order-b.gaotu100.com",
+       "backendPath": "/orderComponent/orderItemFieldSearch",
+       "name": "订单项搜索(productType=7001)",
+       "id": "947633"
+      }
+     ]
+    },
+    {
+     "tabKey": "miniclass",
+     "name": "小班课订单",
+     "file": "goods/normalOrdermanage/miniclass.md",
+     "apis": [
+      {
+       "trigger": "查询(有条件)",
+       "method": "POST",
+       "frontPath": "/orderComponent/orderItemFieldSearch",
+       "frontFile": "src/components/OrderList/modules/BaseList.tsx:95",
+       "service": "order-b.gaotu100.com",
+       "backendPath": "/orderComponent/orderItemFieldSearch",
+       "name": "订单项搜索(productType=6004)",
+       "id": "947633"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "route": "/ark/app-goods/ordermanage/list",
+   "name": "非课程类订单",
+   "repo": "gaotu-fe-goodsmanage",
+   "pageFile": "goods/ordermanage/_page.md",
+   "note": "order-b orderItemFieldSearch，查 ES 订单项宽表(index.orderItem.alias)，查不到再回 gaotu.order_item；搜索条件全空时前端不发请求",
+   "tabs": [
+    {
+     "tabKey": "default",
+     "name": "订单列表",
+     "file": "goods/ordermanage/_page.md",
+     "apis": [
+      {
+       "trigger": "查询(有条件)",
+       "method": "POST",
+       "frontPath": "/orderComponent/orderItemFieldSearch",
+       "frontFile": "src/components/OrderList/modules/BaseList.tsx:205",
+       "service": "order-b.gaotu100.com",
+       "backendPath": "/orderComponent/orderItemFieldSearch",
+       "name": "订单项搜索",
+       "id": "947633"
+      },
+      {
+       "trigger": "进页面(商品类型下拉)",
+       "method": "POST",
+       "frontPath": "/bgwApi/product-b/b/product/productTypeTree/category/listTree",
+       "frontFile": "src/components/OrderList/components/ProductTypeSelect/index.tsx:23",
+       "service": "product-b",
+       "backendPath": "/b/product/productTypeTree/category/listTree",
+       "name": "商品类型树",
+       "id": "2734234"
+      },
+      {
+       "trigger": "进页面",
+       "method": "POST",
+       "frontPath": "/orderComponent/grayGroup/checkGrayGroup",
+       "frontFile": "src/pages/OrderManage/list/hooks/useOrderCreationGuard.js:34",
+       "service": "order-b.gaotu100.com",
+       "backendPath": "/orderComponent/grayGroup/checkGrayGroup",
+       "name": "灰度组命中判断",
+       "id": "5304562"
+      },
+      {
+       "trigger": "进页面",
+       "method": "POST",
+       "frontPath": "/ols/w/campus/list",
+       "frontFile": "src/models/useOlsCampus.js:19",
+       "service": "gaotu-ols",
+       "backendPath": "/w/campus/list",
+       "name": "校区列表",
+       "id": "36004"
+      },
+      {
+       "trigger": "修改地址-打开",
+       "method": "POST",
+       "frontPath": "/orderComponent/queryAllWaitSendItem",
+       "frontFile": "src/pages/OrderManage/detail/OrderStep/ModifyAddress/index.js:29",
+       "service": "order-b.gaotu100.com",
+       "backendPath": "/orderComponent/queryAllWaitSendItem",
+       "name": "获取待发货订单",
+       "id": "947365"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "route": "/ark/app-goods/payRecord/list",
+   "name": "付款记录",
+   "repo": "gaotu-fe-goodsmanage",
+   "pageFile": "goods/payRecord/_page.md",
+   "note": "order-b payFieldSearch，查 ES 支付宽表(index.pay.alias)，查不到再回 gaotu.pay_info；展开行按 pay_number 查 gaotu.order_info/order_item；改付款计划写 gaotu.pay_plan_item",
+   "tabs": [
+    {
+     "tabKey": "batch",
+     "name": "付款记录",
+     "file": "goods/payRecord/_page.md",
+     "apis": [
+      {
+       "trigger": "查询(有条件)",
+       "method": "POST",
+       "frontPath": "/orderComponent/payFieldSearch",
+       "frontFile": "src/components/OrderList/modules/BatchOrderList.tsx:85",
+       "service": "order-b.gaotu100.com",
+       "backendPath": "/orderComponent/payFieldSearch",
+       "name": "批次单搜索",
+       "id": "947749"
+      },
+      {
+       "trigger": "展开行",
+       "method": "POST",
+       "frontPath": "/orderComponent/subOrder/list",
+       "frontFile": "src/components/OrderList/modules/BaseList.tsx:170",
+       "service": "order-b.gaotu100.com",
+       "backendPath": "/orderComponent/subOrder/list",
+       "name": "批次单子订单列表",
+       "id": "947693"
+      },
+      {
+       "trigger": "付款二维码",
+       "method": "POST",
+       "frontPath": "/intranet-rpc/order-b/orderManagement/queryPaymentLink",
+       "frontFile": "src/pages/OrderManage/component/PayRQCode/PayContent/index.js:46",
+       "service": "order-b.gaotu100.com",
+       "backendPath": "/orderManagement/queryPaymentLink",
+       "name": "查付款链接",
+       "id": "947688"
+      },
+      {
+       "trigger": "修改付款计划",
+       "method": "POST",
+       "frontPath": "/intranet-rpc/order/orderManagement/payPlan/modify",
+       "frontFile": "src/pages/OrderManage/component/ChangePayPlan/index.jsx:60",
+       "service": "order-b.gaotu100.com",
+       "backendPath": "/orderManagement/payPlan/modify",
+       "name": "修改付款计划",
+       "id": "947463"
+      },
+      {
+       "trigger": "去认领-认领",
+       "method": "POST",
+       "frontPath": "/order/boss/facade/feeControl/claim",
+       "frontFile": "src/pages/OrderManage/component/PayRQCode/FeeClaimModal/index.jsx:164",
+       "service": "order-b.gaotu100.com",
+       "backendPath": "/order/boss/facade/feeControl/claim",
+       "name": "费控认领",
+       "id": "965575"
+      },
+      {
+       "trigger": "进页面",
+       "method": "POST",
+       "frontPath": "/orderComponent/grayGroup/checkGrayGroup",
+       "frontFile": "src/pages/OrderManage/list/hooks/useOrderCreationGuard.js:34",
+       "service": "order-b.gaotu100.com",
+       "backendPath": "/orderComponent/grayGroup/checkGrayGroup",
+       "name": "灰度组命中判断",
+       "id": "5304562"
+      },
+      {
+       "trigger": "进页面",
+       "method": "POST",
+       "frontPath": "/ols/w/campus/list",
+       "frontFile": "src/models/useOlsCampus.js:19",
+       "service": "gaotu-ols",
+       "backendPath": "/w/campus/list",
+       "name": "校区列表",
+       "id": "36004"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "route": "/ark/app-goods/goodsrefund",
+   "name": "售后管理",
+   "repo": "gaotu-fe-goodsmanage",
+   "pageFile": "goods/goodsrefund/_page.md",
+   "note": "after-sales AfterSaleManagementController；主表 after_sale.after_sale ⨝ after_sale_authority_management；补数 Feign order/course-setting/product/user/storage，不读 ES",
+   "tabs": [
+    {
+     "tabKey": "default",
+     "name": "课程售后/实物售后/其它商品售后/售后查询（共用 UniversalRefund）",
+     "file": "goods/goodsrefund/_page.md",
+     "apis": [
+      {
+       "trigger": "进页面",
+       "method": "POST",
+       "frontPath": "/afterSale/common/dictionary",
+       "frontFile": "src/models/orderEnum.js:26",
+       "service": "after-sales",
+       "backendPath": "/afterSale/common/dictionary",
+       "name": "售后字典",
+       "id": "1069174"
+      },
+      {
+       "trigger": "进tab/查询/翻页",
+       "method": "POST",
+       "frontPath": "/afterSale/b/afterSaleList",
+       "frontFile": "src/pages/GoodsRefund/components/UniversalRefund/index.js:267",
+       "service": "after-sales",
+       "backendPath": "/afterSale/b/afterSaleList",
+       "name": "B端售后列表(OES)",
+       "id": "1069147"
+      },
+      {
+       "trigger": "OLS用户查询",
+       "method": "POST",
+       "frontPath": "/afterSale/b/afterSaleList/offline",
+       "frontFile": "src/pages/GoodsRefund/components/UniversalRefund/index.js:40",
+       "service": "after-sales",
+       "backendPath": "/afterSale/b/afterSaleList/offline",
+       "name": "B端售后列表(OLS)",
+       "id": "1069211"
+      },
+      {
+       "trigger": "重新提交对公退款",
+       "method": "POST",
+       "frontPath": "/afterSale/b/resubmitPayeeInfo",
+       "frontFile": "src/pages/GoodsRefund/components/PayeeInfo/index.js:32",
+       "service": "after-sales",
+       "backendPath": "/afterSale/b/resubmitPayeeInfo",
+       "name": "重新提交收款人信息",
+       "id": "1069202"
+      },
+      {
+       "trigger": "取消课程转移",
+       "method": "POST",
+       "frontPath": "/afterSale/b/transfer/accountSeparateCancel",
+       "frontFile": "src/pages/GoodsRefund/components/UniversalRefund/index.js:138",
+       "service": "after-sales",
+       "backendPath": "/afterSale/b/transfer/accountSeparateCancel",
+       "name": "课程转移取消",
+       "id": "2761445"
+      },
+      {
+       "trigger": "进页面",
+       "method": "POST",
+       "frontPath": "/ols/w/campus/list",
+       "frontFile": "src/models/useOlsCampus.js:19",
+       "service": "gaotu-ols",
+       "backendPath": "/w/campus/list",
+       "name": "校区列表",
+       "id": "36004"
+      }
+     ]
+    },
+    {
+     "tabKey": "aftersaledetail",
+     "name": "售后详情（子路由）",
+     "file": "goods/goodsrefund/aftersaledetail.md",
+     "apis": [
+      {
+       "trigger": "进页面",
+       "method": "POST",
+       "frontPath": "/afterSale/b/detail",
+       "frontFile": "src/pages/GoodsRefund/AfterSaleDetail/index.js:52",
+       "service": "after-sales",
+       "backendPath": "/afterSale/b/detail",
+       "name": "B端售后详情",
+       "id": "1069146"
+      },
+      {
+       "trigger": "取消售后",
+       "method": "POST",
+       "frontPath": "/afterSale/b/cancel",
+       "frontFile": "src/pages/GoodsRefund/AfterSaleDetail/index.js:64",
+       "service": "after-sales",
+       "backendPath": "/afterSale/b/cancel",
+       "name": "B端取消售后",
+       "id": "1069215"
+      },
+      {
+       "trigger": "处理审核（挽单）",
+       "method": "POST",
+       "frontPath": "/afterSale/b/retrieveOrder",
+       "frontFile": "src/pages/GoodsRefund/components/saveOrder/index.js:60",
+       "service": "after-sales",
+       "backendPath": "/afterSale/b/retrieveOrder",
+       "name": "B端处理挽单",
+       "id": "1069162"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "route": "/ark/app-goods/achievementDetail",
+   "name": "业绩看板",
+   "repo": "gaotu-fe-goodsmanage",
+   "pageFile": "goods/achievementDetail/_page.md",
+   "note": "performance-attribution PerformanceKanbanCourseController；明细读 gaotu_stat.performance_order_attribution_total / performance_physical_attribution，统计读 ADB 同名表，判单过程读 performance_attribution_judge_reason",
+   "tabs": [
+    {
+     "tabKey": "set",
+     "name": "订单明细（课程）",
+     "file": "goods/achievementDetail/course.md",
+     "apis": [
+      {
+       "trigger": "进页面",
+       "method": "GET",
+       "frontPath": "/performance/management/attributionType/list",
+       "frontFile": "src/models/statisticsEnum.js:7",
+       "service": "performance-attribution",
+       "backendPath": "/performance/management/attributionType/list",
+       "name": "业绩类型/状态枚举",
+       "id": "37002"
+      },
+      {
+       "trigger": "自动查/查询/翻页",
+       "method": "POST",
+       "frontPath": "/performance/management/attribution/list",
+       "frontFile": "src/pages/Achievement/AchieveDetail.tsx:89",
+       "service": "performance-attribution",
+       "backendPath": "/performance/management/attribution/list",
+       "name": "查询业绩",
+       "id": "36994"
+      },
+      {
+       "trigger": "导出",
+       "method": "POST",
+       "frontPath": "/performance/management/attribution/export",
+       "frontFile": "src/pages/Achievement/AchieveDetail.tsx:303",
+       "service": "performance-attribution",
+       "backendPath": "/performance/management/attribution/export",
+       "name": "导出业绩",
+       "id": "37001"
+      },
+      {
+       "trigger": "判单过程抽屉",
+       "method": "POST",
+       "frontPath": "/performance/management/judge/result",
+       "frontFile": "src/pages/Achievement/OrderProcess/index.js:44",
+       "service": "performance-attribution",
+       "backendPath": "/performance/management/judge/result",
+       "name": "判单结果",
+       "id": "36998"
+      },
+      {
+       "trigger": "归属人搜索",
+       "method": "POST",
+       "frontPath": "/performance/management/verify/employee",
+       "frontFile": "src/pages/Achievement/SearchHeader/index.tsx:254",
+       "service": "performance-attribution",
+       "backendPath": "/performance/management/verify/employee",
+       "name": "校验归属人查询权限",
+       "id": "36999"
+      }
+     ]
+    },
+    {
+     "tabKey": "Physical",
+     "name": "订单明细（商品）",
+     "file": "goods/achievementDetail/physical.md",
+     "apis": [
+      {
+       "trigger": "查询/翻页",
+       "method": "POST",
+       "frontPath": "/performance/management/attribution/physical/list",
+       "frontFile": "src/pages/Achievement/Physical/index.tsx:116",
+       "service": "performance-attribution",
+       "backendPath": "/performance/management/attribution/physical/list",
+       "name": "实物业绩明细",
+       "id": "36982"
+      }
+     ]
+    },
+    {
+     "tabKey": "list",
+     "name": "业绩统计",
+     "file": "goods/achievementDetail/statistics.md",
+     "apis": [
+      {
+       "trigger": "进tab",
+       "method": "GET",
+       "frontPath": "/performance/management/statistical/department",
+       "frontFile": "src/pages/Achievement/statistics/index.tsx:67",
+       "service": "performance-attribution",
+       "backendPath": "/performance/management/statistical/department",
+       "name": "查询部门层级",
+       "id": "36990"
+      },
+      {
+       "trigger": "查询/翻页/下钻",
+       "method": "POST",
+       "frontPath": "/performance/management/statistical/list",
+       "frontFile": "src/pages/Achievement/statistics/index.tsx:124",
+       "service": "performance-attribution",
+       "backendPath": "/performance/management/statistical/list",
+       "name": "业绩统计列表",
+       "id": "36991"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "route": "/ark/app-solo/smallClazzProduct/overview",
+   "name": "小班课商品大全",
+   "repo": "gaotu-fe-solo",
+   "pageFile": "solo/smallClazzProduct/_page.md",
+   "note": "course-center TeachCommodityController#listClazz：先查 ES teach_product_search_test_v1/teach_product_search_prod 分页，再回 course_center.teach_commodity_detail/teach_commodity_info 补详情；自定义列写 course_center.user_custom_page_columns_config",
+   "tabs": [
+    {
+     "tabKey": "overview",
+     "name": "小班课商品大全",
+     "file": "solo/smallClazzProduct/_page.md",
+     "apis": [
+      {
+       "trigger": "进页面/查询/翻页",
+       "method": "POST",
+       "frontPath": "/bgwApi/course-center/b/teach/commodity/clazz/list",
+       "frontFile": "src/pages/SmallClazzProduct/list/overview/index.tsx:63",
+       "service": "course-center",
+       "backendPath": "/b/teach/commodity/clazz/list",
+       "name": "班级大全列表",
+       "id": "1611515"
+      },
+      {
+       "trigger": "进页面（规格筛选项）",
+       "method": "GET",
+       "frontPath": "/bgwApi/course-center/b/productAttr/list/specification",
+       "frontFile": "src/services/smallClazzProduct.ts:30",
+       "service": "course-center",
+       "backendPath": "/b/productAttr/list/specification",
+       "name": "商品规格列表",
+       "id": "1867605"
+      },
+      {
+       "trigger": "子应用启动",
+       "method": "GET",
+       "frontPath": "/bgwApi/course-center/b/config/getDynamicConfig",
+       "frontFile": "src/models/dynamicConfig.ts:29",
+       "service": "course-center",
+       "backendPath": "/b/config/getDynamicConfig",
+       "name": "动态配置",
+       "id": "2652064"
+      },
+      {
+       "trigger": "进页面（自定义列）",
+       "method": "POST",
+       "frontPath": "/course-center/b/columns/getAllConfig",
+       "frontFile": "src/hooks/useEditColumnsProps.js:38",
+       "service": "course-center",
+       "backendPath": "/b/columns/getAllConfig",
+       "name": "页面全量列配置",
+       "id": "31193"
+      },
+      {
+       "trigger": "进页面（自定义列）",
+       "method": "POST",
+       "frontPath": "/course-center/b/columns/getUserConfig",
+       "frontFile": "src/hooks/useEditColumnsProps.js:39",
+       "service": "course-center",
+       "backendPath": "/b/columns/getUserConfig",
+       "name": "用户列配置",
+       "id": "31197"
+      },
+      {
+       "trigger": "弹窗生成/复制链接",
+       "method": "POST",
+       "frontPath": "/product-b/b/product/sellLinkWithSource",
+       "frontFile": "src/components/SaleUrlModal/useSaleUrlModal.ts:186",
+       "service": "product-b",
+       "backendPath": "/b/product/sellLinkWithSource",
+       "name": "生成带来源销售链接",
+       "id": "2734150"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "route": "/ark/app-goods/CourseManagePro/list",
+   "name": "课程管理",
+   "repo": "gaotu-fe-goodsmanage",
+   "pageFile": "goods/CourseManagePro/_page.md",
+   "note": "course-center AdminCourseController；列表读 ES course_search（降级 course_center.course），续报关系 course_center.course_relation_map",
+   "tabs": [
+    {
+     "tabKey": "default",
+     "name": "课程管理",
+     "file": "goods/CourseManagePro/_page.md",
+     "apis": [
+      {
+       "trigger": "进页面/查询/翻页",
+       "method": "POST",
+       "frontPath": "/course-center/b/course/list",
+       "frontFile": "src/pages/CourseManage/CourseList.js:669",
+       "service": "course-center",
+       "backendPath": "/b/course/list",
+       "name": "课程管理列表",
+       "id": "31265"
+      },
+      {
+       "trigger": "行内删除",
+       "method": "POST",
+       "frontPath": "/course-center/b/course/delete",
+       "frontFile": "src/pages/CourseManage/index.js:66",
+       "service": "course-center",
+       "backendPath": "/b/course/delete",
+       "name": "删除课程",
+       "id": "31266"
+      },
+      {
+       "trigger": "发布课程/批量发布",
+       "method": "POST",
+       "frontPath": "/course-center/b/course/publish",
+       "frontFile": "src/pages/CourseManage/index.js:76",
+       "service": "course-center",
+       "backendPath": "/b/course/publish",
+       "name": "发布课程",
+       "id": "31269"
+      },
+      {
+       "trigger": "续报设置打开",
+       "method": "POST",
+       "frontPath": "/course-center/b/course/relationList",
+       "frontFile": "src/pages/CourseManage/Continueset.jsx:52",
+       "service": "course-center",
+       "backendPath": "/b/course/relationList",
+       "name": "课程关联列表",
+       "id": "31270"
+      },
+      {
+       "trigger": "续报设置确定",
+       "method": "POST",
+       "frontPath": "/course-center/b/course/modifyCourseRelation",
+       "frontFile": "src/pages/CourseManage/Continueset.jsx:98",
+       "service": "course-center",
+       "backendPath": "/b/course/modifyCourseRelation",
+       "name": "修改课程续报关系",
+       "id": "703439"
+      },
+      {
+       "trigger": "自定义列加载",
+       "method": "POST",
+       "frontPath": "/course-center/b/columns/getUserConfig",
+       "frontFile": "src/pages/CourseManage/CourseList.js:712",
+       "service": "course-center",
+       "backendPath": "/b/columns/getUserConfig",
+       "name": "用户列配置",
+       "id": "31197"
+      },
+      {
+       "trigger": "校区下拉",
+       "method": "POST",
+       "frontPath": "/course-center/b/campus/search",
+       "frontFile": "src/models/useCampusList.js:15",
+       "service": "course-center",
+       "backendPath": "/b/campus/search",
+       "name": "校区搜索",
+       "id": ""
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "route": "/ark/app-goods/clazzManagePro/list",
+   "name": "班级管理",
+   "repo": "gaotu-fe-goodsmanage",
+   "pageFile": "goods/clazzManagePro/_page.md",
+   "note": "course-center AdminClazzController/ArrangeClazzController；列表读 ES clazz_search 回查 course_center.clazz；辅导班走 clazz-distribution-management；辅导班关联写 course_center.subclazz_lesson_map",
+   "tabs": [
+    {
+     "tabKey": "clazzList",
+     "name": "班级列表",
+     "file": "goods/clazzManagePro/clazzList.md",
+     "apis": [
+      {
+       "trigger": "进tab/查询/翻页",
+       "method": "POST",
+       "frontPath": "/course-center/b/clazz/list/search",
+       "frontFile": "src/pages/ClazzManage/components/index.js:242",
+       "service": "course-center",
+       "backendPath": "/b/clazz/list/search",
+       "name": "列表搜索",
+       "id": "31473"
+      },
+      {
+       "trigger": "进页面(wrapper)",
+       "method": "POST",
+       "frontPath": "/promotionManagement/activity/getChannelCodeConfig",
+       "frontFile": "src/models/useChannelCode.js:15",
+       "service": "promotionmanagement.gaotu100.com",
+       "backendPath": "/promotionManagement/activity/getChannelCodeConfig",
+       "name": "渠道码配置",
+       "id": "62088"
+      },
+      {
+       "trigger": "批量发布/行内发布",
+       "method": "POST",
+       "frontPath": "/course-center/b/clazz/batchPublish",
+       "frontFile": "src/pages/ClazzManage/components/index.js:500",
+       "service": "course-center",
+       "backendPath": "/b/clazz/batchPublish",
+       "name": "批量发布",
+       "id": "31446"
+      },
+      {
+       "trigger": "上架/下架",
+       "method": "POST",
+       "frontPath": "/course-center/b/clazz/batch/update/upStatus",
+       "frontFile": "src/pages/ClazzManage/components/index.js:493",
+       "service": "course-center",
+       "backendPath": "/b/clazz/batch/update/upStatus",
+       "name": "批量上下架",
+       "id": "31445"
+      },
+      {
+       "trigger": "开始/停止售卖",
+       "method": "POST",
+       "frontPath": "/course-center/b/clazz/update/saleStatus",
+       "frontFile": "src/pages/ClazzManage/components/index.js:541",
+       "service": "course-center",
+       "backendPath": "/b/clazz/update/saleStatus",
+       "name": "改售卖状态",
+       "id": "31444"
+      },
+      {
+       "trigger": "行内删除",
+       "method": "POST",
+       "frontPath": "/course-center/b/clazz/delete",
+       "frontFile": "src/pages/ClazzManage/components/index.js:579",
+       "service": "course-center",
+       "backendPath": "/b/clazz/delete",
+       "name": "删除班级",
+       "id": "31471"
+      },
+      {
+       "trigger": "班级设废",
+       "method": "POST",
+       "frontPath": "/course-center/b/clazz/ineffective",
+       "frontFile": "src/pages/ClazzManage/components/index.js:1343",
+       "service": "course-center",
+       "backendPath": "/b/clazz/ineffective",
+       "name": "班级设废",
+       "id": "507242"
+      },
+      {
+       "trigger": "修改停售时间",
+       "method": "POST",
+       "frontPath": "/course-center/b/clazz/update/endSaleTime",
+       "frontFile": "src/pages/ClazzManage/components/StopSaleTimeModal/index.tsx:53",
+       "service": "course-center",
+       "backendPath": "/b/clazz/update/endSaleTime",
+       "name": "改停售时间",
+       "id": "31442"
+      },
+      {
+       "trigger": "展开行",
+       "method": "POST",
+       "frontPath": "/distribution-management/subclazz/management/listSubclazzByClazzNumber",
+       "frontFile": "src/pages/ClazzManage/Subclazz/index.js:65",
+       "service": "clazz-distribution-management.gaotu100.com",
+       "backendPath": "/subclazz/management/listSubclazzByClazzNumber",
+       "name": "按班级查辅导班",
+       "id": "31660"
+      }
+     ]
+    },
+    {
+     "tabKey": "arrangeClazzList",
+     "name": "排课班列表",
+     "file": "goods/clazzManagePro/arrangeClazzList.md",
+     "apis": [
+      {
+       "trigger": "进tab/查询/翻页",
+       "method": "POST",
+       "frontPath": "/course-center/b/arrangeClazz/list/search",
+       "frontFile": "src/pages/ArrangeClazzManage/index.jsx:326",
+       "service": "course-center",
+       "backendPath": "/b/arrangeClazz/list/search",
+       "name": "排课班列表",
+       "id": "33199"
+      },
+      {
+       "trigger": "批量发布",
+       "method": "POST",
+       "frontPath": "/course-center/b/arrangeClazz/batchPublish",
+       "frontFile": "src/pages/ArrangeClazzManage/index.jsx:239",
+       "service": "course-center",
+       "backendPath": "/b/arrangeClazz/batchPublish",
+       "name": "批量发布",
+       "id": "33195"
+      },
+      {
+       "trigger": "行内发布",
+       "method": "POST",
+       "frontPath": "/course-center/b/clazz/publish",
+       "frontFile": "src/pages/ArrangeClazzManage/Operations.jsx:13",
+       "service": "course-center",
+       "backendPath": "/b/clazz/publish",
+       "name": "发布",
+       "id": "31469"
+      },
+      {
+       "trigger": "行内删除",
+       "method": "POST",
+       "frontPath": "/course-center/b/arrangeClazz/delete",
+       "frontFile": "src/pages/ArrangeClazzManage/Operations.jsx:23",
+       "service": "course-center",
+       "backendPath": "/b/arrangeClazz/delete",
+       "name": "删除排课班",
+       "id": "33197"
+      },
+      {
+       "trigger": "批量操作提交",
+       "method": "POST",
+       "frontPath": "/course-center/b/batch/submit",
+       "frontFile": "src/components/BatchOperations/OperateModal.jsx:76",
+       "service": "course-center",
+       "backendPath": "/b/batch/submit",
+       "name": "批量操作提交",
+       "id": "31555"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "route": "/ark/app-goods/clazzEncyclopedia",
+   "name": "班级大全",
+   "repo": "gaotu-fe-goodsmanage",
+   "pageFile": "goods/clazzEncyclopedia/_page.md",
+   "note": "复用班级管理组件(isEncyclopedia)；course-center list/search/fullAuth = listQuery(request,false)，跳过本人数据权限但保留 @DataRight；读 ES clazz_search 回查 course_center.clazz；只读 + 销售链接",
+   "tabs": [
+    {
+     "tabKey": "default",
+     "name": "班级大全",
+     "file": "goods/clazzEncyclopedia/_page.md",
+     "apis": [
+      {
+       "trigger": "进页面/查询/翻页",
+       "method": "POST",
+       "frontPath": "/course-center/b/clazz/list/search/fullAuth",
+       "frontFile": "src/pages/ClazzManage/components/index.js:242",
+       "service": "course-center",
+       "backendPath": "/b/clazz/list/search/fullAuth",
+       "name": "列表搜索-班级大全",
+       "id": "31448"
+      },
+      {
+       "trigger": "进页面(wrapper)",
+       "method": "POST",
+       "frontPath": "/promotionManagement/activity/getChannelCodeConfig",
+       "frontFile": "src/models/useChannelCode.js:15",
+       "service": "promotionmanagement.gaotu100.com",
+       "backendPath": "/promotionManagement/activity/getChannelCodeConfig",
+       "name": "渠道码配置",
+       "id": "62088"
+      },
+      {
+       "trigger": "自定义列加载",
+       "method": "POST",
+       "frontPath": "/course-center/b/columns/getUserConfig",
+       "frontFile": "src/pages/ClazzManage/components/index.js:2234",
+       "service": "course-center",
+       "backendPath": "/b/columns/getUserConfig",
+       "name": "用户列配置",
+       "id": "31197"
+      },
+      {
+       "trigger": "校区下拉",
+       "method": "POST",
+       "frontPath": "/course-center/b/campus/search",
+       "frontFile": "src/models/useCampusList.js:15",
+       "service": "course-center",
+       "backendPath": "/b/campus/search",
+       "name": "校区搜索",
+       "id": ""
+      },
+      {
+       "trigger": "展开行",
+       "method": "POST",
+       "frontPath": "/distribution-management/subclazz/management/listSubclazzByClazzNumber",
+       "frontFile": "src/pages/ClazzManage/Subclazz/index.js:65",
+       "service": "clazz-distribution-management.gaotu100.com",
+       "backendPath": "/subclazz/management/listSubclazzByClazzNumber",
+       "name": "按班级查辅导班",
+       "id": "31660"
+      },
+      {
+       "trigger": "销售链接",
+       "method": "POST",
+       "frontPath": "/product-b/b/product/bff/sellLink",
+       "frontFile": "src/pages/GoodsManage/components/SaleUrlModal/index.js",
+       "service": "product-b",
+       "backendPath": "/bff/sellLink",
+       "name": "生成销售短链",
+       "id": ""
       }
      ]
     }

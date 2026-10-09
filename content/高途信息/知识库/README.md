@@ -35,6 +35,15 @@
 | `/ark/app-yunfan/newJudgeConfig` | 判单配置 | gaotu_yunfan_fe | judgeOrderConfig / protectionPeriodConfig |
 | `/ark/app-yunfan/orderRecall` | 订单可续回溯 | gaotu_yunfan_fe | — |
 | `/ark/app-activity/organization` | 组织架构 | boss-activity | — |
+| `/ark/app-goods/normalOrdermanage/list` | 课程类订单 | gaotu-fe-goodsmanage | normal / soloclazz / lessonpackage / miniclass |
+| `/ark/app-goods/ordermanage/list` | 非课程类订单 | gaotu-fe-goodsmanage | — |
+| `/ark/app-goods/payRecord/list` | 付款记录 | gaotu-fe-goodsmanage | — |
+| `/ark/app-goods/goodsrefund` | 售后管理 | gaotu-fe-goodsmanage | 列表 / aftersaledetail |
+| `/ark/app-goods/achievementDetail` | 业绩看板 | gaotu-fe-goodsmanage | course / physical / statistics |
+| `/ark/app-solo/smallClazzProduct/overview` | 小班课商品大全 | gaotu-fe-solo | — |
+| `/ark/app-goods/CourseManagePro/list` | 课程管理 | gaotu-fe-goodsmanage | — |
+| `/ark/app-goods/clazzManagePro/list` | 班级管理 | gaotu-fe-goodsmanage | clazzList / arrangeClazzList |
+| `/ark/app-goods/clazzEncyclopedia` | 班级大全 | gaotu-fe-goodsmanage | — |
 | 学员详情页 AI 分析 tab（GAIA 微组件，非独立路由） | AI 分析 / 意向预测 | aianalysisinformations | — |
 
 ## tab 文件模板
