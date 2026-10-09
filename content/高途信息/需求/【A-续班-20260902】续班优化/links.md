@@ -29,6 +29,7 @@ tags: [需求, 链接]
 
 | 类型 | 标题 | 链接 | 记录日期 |
 |---|---|---|---|
+| 提测P0用例 | 【A-续班-20260902】续班优化 · 问卷匹配优化 提测 P0 用例（含执行记录，源自 banshan 49607） | https://gaotuedu.feishu.cn/wiki/VvGjwKFO3iIJNtkUE8kcEkPdnCd | 2026-10-09 |
 | TAPD | | | |
 | case | | | |
 | MR | | | |
@@ -67,3 +68,4 @@ tags: [需求, 链接]
 - **反讲 TODO** → 真相源飞书反讲文档 `8.1.3 Todo List`
 - **待办表** → 真相源飞书多维表格
 - **case** → 真相源 case 平台，用 `banshan-case` 现查。问卷匹配 QA 用例（tangwen01，23 条）：https://qa.baijia.com/banshan/#/caseManager/171/49607/70678/3（caseId `49607` / recordId `70678`）
+- **提测 P0 用例文档**（2026-10-09 建，源自 banshan 49607，含 dev-3 实跑记录）：node `VvGjwKFO3iIJNtkUE8kcEkPdnCd` / docx `FPymd32JEowNqwx0c2Bco13knWf`，父节点 = 需求总入口 `Qox8wFcmHiXBgnkxFBtcd82gnsh`。https://gaotuedu.feishu.cn/wiki/VvGjwKFO3iIJNtkUE8kcEkPdnCd
