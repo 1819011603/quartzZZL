@@ -745,3 +745,11 @@ ES 实证（例）：`36396360685978240-7569543424`、`36396360685978240-7489636
 - 49607「未归属与重试」TC0002（node `cd2ywnrv7hys`）→ **阻塞**（预期「判未归属」与 `92f1a5234` 恢复的「落候选本人班」实现不符）。
 - 49647 `F-TC0003`（node `ff25f9e364984e07`）→ **阻塞**（同上）。
 - record 读数：70798 = 32 通过 / 1 阻塞 / 2 不执行；70678 = 23→22 通过 / 1 阻塞。
+
+### 反合 release + 重发后复验（2026-10-10，base test）
+
+**动作**：student-data 反合 `origin/release`（`ea0efd8df`，23 commit、无冲突）并 push；把 **student-data（`ea0efd8d`）与 student-data-dws（`ea0efd8d`）** 都重发到 base test（envInfoId 2），均 eureka UP（此前两服务被误发成 `release` `b6a3c0aa`，`origin/release` 不含 transfer sync 代码）。
+
+**复验通过**：① 匹配 record 计算正确（product-b/task feature 未动）；② 桥调 `syncAfterTransfer(7569545505,A,B)` 成功，B 新增明细 `22130`（同 group、新 uniqueBizId），幂等（重调不新增，`7634383219` B 仍 1 条）；③ teacher-tool `POST /feign/questionnaire/user/transfer/sync`：old==new→`data:false 无需同步`、缺 projectNumber→`code:400 参数异常`。
+
+**⚠️ 明细 fan-out 不可靠（环境问题，非产品 bug）**：真实 CDS 提交（data-agent `renewal_questionnaire.py submit`，S5）→ `questionnaire_record` 24061 computed=S5 正确；但 `user_questionnaire_record` 未新增 S5 明细。查 `student-data-dws` app 日志发现：**消费我发消息的 pod 是 `student-data-dws-85959c79cb-tcbb4`（image `feature-predict-level-reason-c4713756-20261008184250`、container_ip `10.218.239.165`）——不是 base test 刚发的 `feature-xuban-match-opt` pod**。即 **同 consumer group 被别的环境/分支实例一起抢**，消息被旧分支 pod 消费 → 明细/花名册结果不可信。→ 在 base test 上做「明细/花名册」类断言前必须先确认消费方 pod 是本分支、或用隔离甬道。

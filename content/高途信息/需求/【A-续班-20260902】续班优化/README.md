@@ -15,7 +15,7 @@ tags: [需求]
 
 > **本目录导航**：[[links|🔗 链接中心]] · [[tasks|✅ 当前任务板]] · [[verify|🧪 验证手册]] · [[changelog|📜 决策摘要]] · [问卷匹配-DDD建模方案.md](问卷匹配-DDD建模方案.md) · [问卷匹配-改动前链路.md](问卷匹配-改动前链路.md) · [问卷匹配-case回归-20261008.md](问卷匹配-case回归-20261008.md)
 > 技术方案（现状 / 方案对比 / 详细设计 / 接口 / 风险）在飞书反讲里，见 [[links]]；本文件只留当前结论和指针。
-> 飞书：需求总入口 https://gaotuedu.feishu.cn/wiki/Qox8wFcmHiXBgnkxFBtcd82gnsh → **技术反讲（子需求 1/2/3/5）https://gaotuedu.feishu.cn/wiki/EC45wOefUi0buMkO7O0cipp9nEc** → **待产品确认清单（21 条，可直接转发产品）https://gaotuedu.feishu.cn/docx/L2yrdOPEAoIOMux1JLXcGtR4nde**
+> 飞书：需求总入口 https://gaotuedu.feishu.cn/wiki/Qox8wFcmHiXBgnkxFBtcd82gnsh → **技术反讲（子需求 1/2/3/5）https://gaotuedu.feishu.cn/wiki/EC45wOefUi0buMkO7O0cipp9nEc** → **待产品确认清单（21 条，可直接转发产品）https://gaotuedu.feishu.cn/docx/L2yrdOPEAoIOMux1JLXcGtR4nde** → **上线方案（问卷匹配+调课同步）https://gaotuedu.feishu.cn/wiki/JBsywJOuiijDT9k3MD7cFyl8n9b** → **上线方案（扩科推荐+AI 模块配置化）https://gaotuedu.feishu.cn/wiki/KSDfwlojaipDqWkUcbfckjnwnyd**（对应青舟发布计划 23819，泳道 test-gtbg-dev-1）
 > 续接这个需求：读完本文件即可。
 
 ## 一句话
@@ -26,13 +26,13 @@ tags: [需求]
 
 5 个子项，PRD 均 V1.0 / 2026-09-05：
 
-| 优先级 | 子需求 | 一句话 | 子项P级 |
-|---|---|---|---|
-| 1 | 问卷匹配优化 | 匹配范围收紧 + 7 档匹配优先级 + 调课调班同步问卷数据 | 匹配逻辑 未标 / 调课同步 P1 |
-| 2 | 小班续班适配主讲 | 小班续班服务按角色(主讲/班主任)展示数据；下单优化不做 | 主讲 P0 |
-| 3 | 扩科推荐优化 | 续班计划新增【推荐排除】，避免跨授课模式重复推荐 | — |
-| 4 | 数据落表 | 续班/退费数据落表供导数分析 | — |
-| 5 | AI 模块配置化 | 续班/退费 AI 按部门配置模块开关，降本 | — |
+| 优先级 | 子需求      | 一句话                            | 子项P级              |
+| --- | -------- | ------------------------------ | ----------------- |
+| 1   | 问卷匹配优化   | 匹配范围收紧 + 7 档匹配优先级 + 调课调班同步问卷数据 | 匹配逻辑 未标 / 调课同步 P1 |
+| 2   | 小班续班适配主讲 | 小班续班服务按角色(主讲/班主任)展示数据；下单优化不做   | 主讲 P0             |
+| 3   | 扩科推荐优化   | 续班计划新增【推荐排除】，避免跨授课模式重复推荐       | —                 |
+| 4   | 数据落表     | 续班/退费数据落表供导数分析                 | —                 |
+| 5   | AI 模块配置化 | 续班/退费 AI 按部门配置模块开关，降本          | —                 |
 
 - **给谁用**：主讲、班主任(二讲)；学部运营（数据落表）。
 - **判定做完的标准**：本批 4 个子需求各自评审、反讲、开发、上线，按子需求粒度跟踪（见 [[tasks]]）。
