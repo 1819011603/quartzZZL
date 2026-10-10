@@ -104,3 +104,4 @@ tags: [需求]
 - student-center 依赖 Nexus 上的 student-data-api jar。改了 api 模块要先 `mvn8 -pl student-data-api -DskipTests clean deploy`，否则 student-center 构建时报 package does not exist。
 - 新老 job 共用同一个 topic 刷 ES，同时运行会导致 ES 字段被交替覆盖（老 job 写的是 null），所以上线当天必须停掉老 job。
 - 联调前必须配置 `predict.level.down.notify.receiver.override`，否则会真的发给带班老师。
+- **造数只能造 `ai_predict_level_reason_detail`（明细表），别直接写 `predict_level_reason_snapshot`（快照表）**：ES「续班意向预测」`renewalIntentionPredictLevelResult` 只在同步 job 落库时经 MQ 回写，绕过 job（直接写快照）会导致「原因卡接口有值、学情表 ES 没值」。要补 ES 得先补明细再跑同步（`SyncPredictLevelReasonHandler` / `backfillByClazz`）。详见 [[case-record]] 第 7 节。

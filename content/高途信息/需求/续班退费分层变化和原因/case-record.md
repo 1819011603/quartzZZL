@@ -410,3 +410,24 @@ job 返回 `扫描=N, 成功=N, 未放量跳过=, 重复跳过=, 无收件人跳
 | Apollo | `predict.level.down.notify.enable.all` | 测试 true（触达总开关） |
 | Apollo | `predict.level.down.notify.receiver.override` | `zhangzeling@gaotu.cn`；测试期必配，否则真发老师 |
 | Apollo | `predict.level.down.notify.idempotent.days` | 30（幂等键 TTL） |
+
+## 7. 常见问题：AI分析页/接口有值，但学情表「续班意向预测」没值
+
+**现象**：同一学员，原因卡接口返回了趋势图/原因卡，但学情表（CRM 学情跟进-续报）的「续班意向预测」为空。
+
+**根因**：这是两个数据源，别当成一个——
+
+| 展示位置 | 数据源 |
+|---|---|
+| AI分析页 / 原因卡接口 `/feign/predict/levelReason` | MySQL `ees_data.predict_level_reason_snapshot`（快照表） |
+| 学情表「续班意向预测」 | ES `ads_large_subclazz_user_index.renewalIntentionPredictLevelResult` |
+
+ES 这个字段**只有一个写入入口**：同步 job 落库成功（`PredictLevelReasonSyncService.saveIfLevelChanged`）后发 MQ（`sendRosterSyncMessage`）→ 消费端写 ES。**任何绕过同步 job 的方式（例如直接往 `predict_level_reason_snapshot` 塞数据）都不会发 MQ，ES 就永远没值。**
+
+**怎么确认是这个问题**：明细表 `ai_predict_level_reason_detail` 该学员 **0 行**、但快照表有行 → 说明快照不是同步 job 从明细产出的；ES 文档 id = `subclazzNumber-userId`（注意是 **subclazz**）字段缺失。
+
+**修复**：① 把明细补回 `ai_predict_level_reason_detail`（dt/layer/factors 与快照一致）；② 走同步：xjob `SyncPredictLevelReasonHandler`（参数 `scene,startDt,endDt`）或桥调 `PredictLevelReasonSyncService#backfillByClazz(clazzNumber, scene, dataDt)`；③ 落库时自动发 MQ，ES 稍后回写（异步）。
+
+> 📌 **正确造数姿势**：只造 `ai_predict_level_reason_detail`（明细表）；快照和 ES 都交给同步 job 派生，**不要直接写快照表**。直接写快照的后果就是「接口有值、ES 没值、飞书触达读快照倒是会发」。
+
+**2026-10-10 实测**：学员 7489644701 明细 0 行、快照 4+4 行 → ES 字段缺失；补明细后桥调 `backfillByClazz(574882679202260992,1,"20261013")` 与 `(...,2,"20261013")` 均「落库=1、超期跳过=0」→ ES `renewalIntentionPredictLevelResult=4`、`aiRefundIntentScoreResult=4`，恢复。

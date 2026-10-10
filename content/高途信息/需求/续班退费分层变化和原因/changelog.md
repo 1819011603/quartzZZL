@@ -7,6 +7,15 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-10-10 · 造数正确姿势 + ES「续班意向预测」无值排查
+
+### 🤖 Claude
+- **现象**：学员 7489644701 原因卡接口有值，但学情表「续班意向预测」（ES `renewalIntentionPredictLevelResult`）为空。排查：明细表 `ai_predict_level_reason_detail` 该学员 **0 行**、快照表 **4+4 行** → 快照不是同步 job 从明细产出的，`sendRosterSyncMessage` 没触发 → ES 无值。（对照 mock 学员 7478102067 走了 job，ES=3。）
+- **处置**：按快照把明细补回 `ai_predict_level_reason_detail`（8 行），桥调 `backfillByClazz(574882679202260992,1,"20261013")` / `(...,2,"20261013")`，各「落库=1、超期跳过=0」→ ES `renewalIntentionPredictLevelResult=4`、`aiRefundIntentScoreResult=4`，恢复。
+- **口径**：**造数只造明细表 `ai_predict_level_reason_detail`；快照 `predict_level_reason_snapshot` 和 ES 都交给同步 job 派生。直接写快照会导致「接口有值、ES 没值」。** 落点：[[case-record]] 第 7 节 + 飞书 P0 文档《测试操作手册》第 7 节；README「必须知道的坑」加一条。
+
+---
+
 ## 2026-10-08 · ES 写回落地 + 上线方案
 
 ### 🤖 Claude
