@@ -57,6 +57,6 @@ tags: [需求, 验证]
 | Apollo | `predict.level.reason.deadline.days` | 7 | **已发布** | 待配 |
 | Apollo | `predict.level.reason.sync.batch.size` | 1000 | **已发布** | 待配 |
 | Apollo | `predict.level.down.notify.enable.all` | 联调 true | **已发布** | 待配 |
-| Apollo | `predict.level.down.notify.receiver.override` | `zhangzeling@gaotu.cn`，**必填** | **已发布** | 不配 |
+| Apollo | `predict.level.down.notify.receiver.override` | **2026-10-10 起 TEST 置空**（不覆盖，发辅导班真实带课老师邮箱）；此前为 `zhangzeling@gaotu.cn` | **已发布（置空）** | 不配 |
 | Apollo | `predict.level.down.notify.idempotent.days` | 30 | **已发布** | 待配 |
 | jar | student-data-api | 0.9.9.24-SNAPSHOT | 已发 | 待定版 RELEASE |
