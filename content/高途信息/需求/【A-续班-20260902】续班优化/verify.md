@@ -673,3 +673,6 @@ ES 花名册 `ads_large_subclazz_user_index_v3` 文档 `36396389295456896-748964
 ① `[topic, [tag], {obj}]` 有时被匹配成 `(String,String,String)` → tag 变 `[TAG]`(方括号)、body 变 `Map.toString()`，tag 过滤收不到；
 ② `[topic, "TAG", "<json>"]` 有时被匹配成 `(String,List,Object)` → body 又被 `JSON.toJSONString` 一次，消费端 `expect {, actual string` 反序列化失败；
 **③ 稳定写法 = 4 个字符串参数 `[topic, "TRANSFER_SUCCESS_EVENT", "<json>", <nowMs>]`**（命中 `(String,String,String,long)`，body 原样发）。
+④ 最稳：直接调 `com.gaotu.arch.ons.OnsMqTemplate#send(topic, tag, "<json>")`（3 参 String 唯一签名，body 原样发；桥会 fan-out 到同名 bean，发的是同一 topic，可当并发冒烟用）。
+
+**MQ 幂等（2026-10-10）**：consumer 以 `(userId,原班,新班)` 抢 Redis SETNX（`renewal.questionnaire.transfer.idempotent.seconds`，默认 10s）去重；抢到才处理，**失败释放标记**交 MQ 重试（避免重试被当重复漏同步），Redis 异常 fail-open。实测：并发发同一事件 → 1 条 `writeCommitStatus` + 1 条 `duplicate event, skip`。
