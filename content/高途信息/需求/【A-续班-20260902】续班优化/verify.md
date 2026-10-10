@@ -640,3 +640,31 @@ curl -sk -x http://127.0.0.1:8888 \
 | teacher-tool | `https://test-fuwu.baijia.com/bgwApi/teacher-tool` |
 
 19 位 ID 一律传字符串（防精度截断）。
+
+## 调课同步「提交时间/预报名科目」修复验证（2026-10-10，test 泳道，✅）
+
+改动：student-data `af1ca55d1`（feature-xuban-match-opt）——
+① consumer `tag` 改 Apollo 可配 `renewal.questionnaire.transfer.event.tags`，默认 `TRANSFER_TOUCH_EVENT||TRANSFER_SUCCESS_EVENT`；
+② 调课时 `RenewalIntentInfoService#copyIntentToClazz` 把原班 `renewal_intent_info` 复制到新班（幂等）；
+③ `RenewalQuestionnaireTransferSyncService#writeCommitStatus` 一并回写意向派生字段。
+部署：test（envInfoId 2）pod `student-data-5b94766b4f-q6hjc`(10.255.165.86) eureka UP。
+
+真实售后调课 A→B：售后单 `36487077547475328`（10-08 已提交、卡待审批）经 `bpm_agree`（审批人 fuxing，BPM `7fd7d22f-c301-11f1-80fb-00163e7fd82d`）通过 → A 单 `431058595531457534` order_status=6、B 新单 `431213780216578558` status=2、学员进 B 辅导班 `36396389295456896`。
+
+ES 花名册 `ads_large_subclazz_user_index_v3` 文档 `36396389295456896-7489640475`：
+
+| 字段 | 修复前 | 修复后 |
+|---|---|---|
+| renewalQuestionnaireStatus | 3 | 3 ✅ |
+| renewalQuestionnaireSubmitTime | 缺失 | 1791454640000 ✅ |
+| preRegistrationIntentKey | 0 | 1 ✅ |
+| preRegistrationIntentSubjectKey | 缺失 | [1] ✅（花名册页「问卷预报名科目」用的就是它） |
+| subjectExpansionIntentKey | 缺失 | [1] ✅ |
+| referralIntentKey | 缺失 | -1 ✅ |
+| preRegistrationSubject | [] | [] ⚠️ 仍空（内部字段，见下） |
+
+消费日志：`RenewalQuestionnaireTransferSyncService | writeCommitStatus | ... submitTime: 1791454640000, fields: [subjectExpansionIntentKey, renewalQuestionnaireStatus, preRegistrationIntentKey, preRegistrationIntentSubjectKey, renewalQuestionnaireSubmitTime, referralIntentKey, preRegistrationSubject]`。
+
+遗留：`preRegistrationSubject` 仍 []——它由 `StudyingSubjectDataQueryServiceV2` 从 `dws_fuwu_clazz_user_subject` 派生，依赖 dataMap 里的 `schoolYearId`/`schoolTermId`/`courseGrades` 三个维度入参（正常花名册重建流水线有、调课同步自拼的 dataMap 没有）。该字段未在花名册页/接口暴露（页面用 `preRegistrationIntentSubject(Key)`，已同步）。待用户定是否补这 3 个入参。
+
+**造数坑**：acl 桥发售后事件用 3 个字符串参数 `[topic, "TRANSFER_TOUCH_EVENT", "<json>" ]`；用 `[topic, [tag], {obj}]` 会被匹配到 `(String,String,String)` 重载 → tag 变 `[TRANSFER_TOUCH_EVENT]`（方括号）、body 变 `Map.toString()`，消费端（tag 过滤）收不到。

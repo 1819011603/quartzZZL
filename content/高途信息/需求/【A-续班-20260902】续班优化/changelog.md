@@ -151,3 +151,12 @@ tags: [需求, 日志]
 ### 👤 我
 - 在飞书里转发5个续班优化需求wiki链接，要求初评并记录需求，同时看下应该怎么做、做下设计。
 - 澄清：这五个需求是一个需求，文档只要记录在一个文件夹下。
+
+---
+
+## 2026-10-10
+
+### 🤖 Claude
+- 【调课同步】定位两处缺失（ES 花名册「提交时间」「预报名科目」）：① 真实售后调课完成只发 `SUCCESS_EVENT`+`TRANSFER_SUCCESS_EVENT`，`TRANSFER_TOUCH_EVENT` 仅当 `after_sale_transfer_record.need_touch=1` 才发（`TransferCoreService:474`），而 student-data consumer 只订阅后者 → 同步根本没触发；② 即使触发，`writeCommitStatus` 也只写状态(+提交时间)，从不写意向派生字段；且意向按 (clazzNumber,userId) 存、新班无意向行。
+- 决策（用户定）：consumer 的 `tag` 改 Apollo 可配 `renewal.questionnaire.transfer.event.tags`，默认 `TRANSFER_TOUCH_EVENT||TRANSFER_SUCCESS_EVENT`（同步幂等）；调课时把原班 `renewal_intent_info` 行复制到新班（幂等）；`writeCommitStatus` 一并回写意向派生字段。student-data `af1ca55d1`（feature-xuban-match-opt），已部署 test（envInfoId 2）。
+- 造数坑（重要）：acl 桥发事件必须用「3 个字符串参数 + body 传 JSON 字符串」；传 `[topic, [tag], {object}]` 会被桥匹配到 `(String,String,String)` 重载，tag 变 `[TAG]`(带方括号)、body 变 `Map.toString()`，消费端 tag 不匹配收不到（2026-10-10 实测踩中）。
