@@ -661,10 +661,15 @@ ES 花名册 `ads_large_subclazz_user_index_v3` 文档 `36396389295456896-748964
 | preRegistrationIntentSubjectKey | 缺失 | [1] ✅（花名册页「问卷预报名科目」用的就是它） |
 | subjectExpansionIntentKey | 缺失 | [1] ✅ |
 | referralIntentKey | 缺失 | -1 ✅ |
-| preRegistrationSubject | [] | [] ⚠️ 仍空（内部字段，见下） |
+| preRegistrationSubject | [] | [1] ✅（复用 `ClazzDataQueryServiceV2` 补学年/学期/年级入参后算出） |
 
 消费日志：`RenewalQuestionnaireTransferSyncService | writeCommitStatus | ... submitTime: 1791454640000, fields: [subjectExpansionIntentKey, renewalQuestionnaireStatus, preRegistrationIntentKey, preRegistrationIntentSubjectKey, renewalQuestionnaireSubmitTime, referralIntentKey, preRegistrationSubject]`。
 
-遗留：`preRegistrationSubject` 仍 []——它由 `StudyingSubjectDataQueryServiceV2` 从 `dws_fuwu_clazz_user_subject` 派生，依赖 dataMap 里的 `schoolYearId`/`schoolTermId`/`courseGrades` 三个维度入参（正常花名册重建流水线有、调课同步自拼的 dataMap 没有）。该字段未在花名册页/接口暴露（页面用 `preRegistrationIntentSubject(Key)`，已同步）。待用户定是否补这 3 个入参。
+`preRegistrationSubject` 曾算空：`StudyingSubjectDataQueryServiceV2`（weight=fourth）依赖 dataMap 里的 `schoolYearId`/`schoolTermId`/`courseGrades`。已复用 `ClazzDataQueryServiceV2`（weight=third，`getFields` 含这三个）——把这 3 个字段名加进 `QUERY_FIELD_NAMES`，由它从「班级→课程」补出，再算出 `[1]`（与同班正常学员 `7489636595` 一致）。
 
-**造数坑**：acl 桥发售后事件用 3 个字符串参数 `[topic, "TRANSFER_TOUCH_EVENT", "<json>" ]`；用 `[topic, [tag], {obj}]` 会被匹配到 `(String,String,String)` 重载 → tag 变 `[TRANSFER_TOUCH_EVENT]`（方括号）、body 变 `Map.toString()`，消费端（tag 过滤）收不到。
+**并发/幂等**：consumer 默认只订 `TRANSFER_SUCCESS_EVENT`（每笔调课成功只发一次），避免 TOUCH/SUCCESS 双事件并发；`copyIntentToClazz` 对并发重复插入捕获 `DuplicateKeyException`（表有唯一键 `uq_number(clazz_number,user_id)`）按已存在跳过。
+
+**造数坑（发售后事件）**：acl 桥对这个方法的重载解析不稳——
+① `[topic, [tag], {obj}]` 有时被匹配成 `(String,String,String)` → tag 变 `[TAG]`(方括号)、body 变 `Map.toString()`，tag 过滤收不到；
+② `[topic, "TAG", "<json>"]` 有时被匹配成 `(String,List,Object)` → body 又被 `JSON.toJSONString` 一次，消费端 `expect {, actual string` 反序列化失败；
+**③ 稳定写法 = 4 个字符串参数 `[topic, "TRANSFER_SUCCESS_EVENT", "<json>", <nowMs>]`**（命中 `(String,String,String,long)`，body 原样发）。
