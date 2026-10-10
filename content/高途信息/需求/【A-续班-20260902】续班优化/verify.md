@@ -705,3 +705,43 @@ ES 花名册 `ads_large_subclazz_user_index_v3` 文档 `36396389295456896-748964
 2. **F-TC0003 预期过时**：`92f1a5234` 已恢复跨班兜底 `get(0)`，「找不到辅导老师→判未归属」不再成立（应为「老师对不上→落候选本人班；无任何候选→未归属」）。49647 F-TC0003 用例文字未改（平台仍标通过）。
 3. **数据污染**：Q1（`17085061328535721`）是公共模板，别人也在用（data-agent 记录：A 班明细 S2 有 4 条、广播 13 条），**断言条数的用例（G001/C 模块）不可靠**，应换 `new-questionnaire` 复制的专属问卷。Q1 实际表单 formNumber=`16637758182064207`（姓名 `...208`/手机号 `...209`），用旧 formNumber 造数会让明细页手机号显示「-」。
 4. **新增代码未进用例**：2026-10-10 的意向派生字段回写（`preRegistrationIntent*`/提交时间/预报名科目）、`copyIntentToClazz`、tag Apollo 可配、Redis 幂等，doc 23 条均未覆盖（verify.md 上一节已单独验证）。
+
+### 双用例集实跑（2026-10-10，base test，✅ 部分 / ⛔ 被环境变更打断）
+
+**入口**：product-b 桥 `POST /bgwApi/product-b/b/test/acl/compare/service`，方法 `QuestionnaireRecordService#dealCDSMsg(FormSubmitMqDTO)`，头 `traffic-env: test`；Q1 表单 formNumber `16637758182064207`（姓名 `...208`/手机号 `...209`）、A 链接 bindNumber `583732690300192768`、B `583732690870618112`。
+
+**已通过（record.computed + 明细 `user_questionnaire_record` + ES `eesServe/ads_large_subclazz_user_index_v3` 三处一致）**：
+
+| 用例 | record_id | 实测 computed |
+|---|---|---|
+| 49607 规则TC0001 L0 userId | 995001 | S1 `7569541631` |
+| 49607 规则TC0002 L1 同班手机号 | 995002 | S2 `7489636593` |
+| 49607 规则TC0003 L2 同计划手机号 | 995003 | S3 `7489636594`（clazz=A 链接班） |
+| 49607 规则TC0004 L3 同班姓名 | 995004 | S2 |
+| 49607 规则TC0005 L4 同计划姓名 | 995005 | S3 |
+| 49607 规则TC0006 L5 同班亲属号 | 995008 | S2 |
+| 49607 规则TC0007 L6 同计划亲属号 | 995009 | S3 |
+| 49607 规则TC0008 手机号>姓名优先级 | 995006 | S2 |
+| 49607 规则TC0009 计划隔离 | 995007 | 0 |
+| 49647 B-TC0002 uid vs mobile | 995010 | S1 |
+| 49647 B-TC0003 uid vs name | 995011 | S1 |
+| 49647 B-TC0004 uid 无效降级 | 995012 | S2 |
+| 49647 B-TC0006 手机号负向（少/多/+86/空格） | 995013–995016 | 均 0 |
+| 49647 B-TC0012 姓名负向（尾空格/错字/全角） | 995019–995021 | 均 0 |
+| 49647 B-TC0014 报名号先于亲属号 | 995022 | S5 `7569543424` |
+| 49647 A-TC0006 跨班链接仅落本人班 | 995025 | S1（clazz=B 链接班、明细 fan-out A） |
+| 49647 C-TC0001 不同手机号都展示 | 995026/995027 | S5（2 条明细） |
+| 49647 C-TC0003 同手机号取最新 | 995028 | S5（原地更新） |
+| 49647 未归属造数 | 995030 | 0（广播 3 行 user_id=0） |
+| 49607 TC0010 同名>20 截断 | 995023 | 0（`同名边界测试`） |
+
+ES 实证（例）：`36396360685978240-7569543424`、`36396360685978240-7489636593` 等 `renewalQuestionnaireStatus=3`、`renewalQuestionnaireSubmitTime=1791462000000`（=本次桥提交时间）。
+
+**订正（env 漂移）**：① 49607 TC0010 的 21 同名目标 ID 已变（现命中 `7569545689`，非文档写的 `7489640540`）——机制（多命中取最小 ID/limit 截断）成立，具体 ID 以实测为准；② 49647 A-TC0007 原用 S6 `7569543442` 做「不在读广播」，但 S6 现已在大班在读（有 A/B 明细）→ 前提不成立，需换真正不在读学员。
+
+**⛔ 环境变更打断**：实跑中途 base test **student-data 被重新部署成 `release`（`b6a3c0aa`）**——`origin/release` **不含** `RenewalQuestionnaireTransferSyncService/Consumer`（feature 未合 release），故 `syncAfterTransfer` 桥调报「未找到实现类」，**调课同步（49607 调课模块 + 49647 E/G + F 依赖）在 base test 全部跑不了**。同期 teacher-tool/product-task/product-b 仍是 feature（`9c98a14a`/`35f2a80e`），匹配类用例不受影响。→ 要在 base test 继续跑调课同步，需把 student-data 重新部署 feature-xuban-match-opt（或改走仍带 feature 的甬道）。
+
+**已标记（banshan 落库）**：
+- 49607「未归属与重试」TC0002（node `cd2ywnrv7hys`）→ **阻塞**（预期「判未归属」与 `92f1a5234` 恢复的「落候选本人班」实现不符）。
+- 49647 `F-TC0003`（node `ff25f9e364984e07`）→ **阻塞**（同上）。
+- record 读数：70798 = 32 通过 / 1 阻塞 / 2 不执行；70678 = 23→22 通过 / 1 阻塞。
