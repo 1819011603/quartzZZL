@@ -675,4 +675,33 @@ ES 花名册 `ads_large_subclazz_user_index_v3` 文档 `36396389295456896-748964
 **③ 稳定写法 = 4 个字符串参数 `[topic, "TRANSFER_SUCCESS_EVENT", "<json>", <nowMs>]`**（命中 `(String,String,String,long)`，body 原样发）。
 ④ 最稳：直接调 `com.gaotu.arch.ons.OnsMqTemplate#send(topic, tag, "<json>")`（3 参 String 唯一签名，body 原样发；桥会 fan-out 到同名 bean，发的是同一 topic，可当并发冒烟用）。
 
-**MQ 幂等（2026-10-10）**：consumer 以 `(userId,原班,新班)` 抢 Redis SETNX（`renewal.questionnaire.transfer.idempotent.seconds`，默认 10s）去重；抢到才处理，**失败释放标记**交 MQ 重试（避免重试被当重复漏同步），Redis 异常 fail-open。实测：并发发同一事件 → 1 条 `writeCommitStatus` + 1 条 `duplicate event, skip`。
+**MQ 幂等（2026-10-10）**：consumer 以 `(userId,原班,新班)` 抢 Redis SETNX（`renewal.questionnaire.transfer.idempotent.seconds`，代码默认 **5s**，`296cf844` 从 10s 下调到 5s 以 < 首次重试 ~10s）去重；抢到才处理，**失败释放标记**交 MQ 重试（避免重试被当重复漏同步），Redis 异常 fail-open。实测：并发发同一事件 → 1 条 `writeCommitStatus` + 1 条 `duplicate event, skip`。
+
+## 提测 P0 用例核查 + base `test` 泳道复验（2026-10-10，✅ 部分已验证）
+
+**背景**：用户提测前核查飞书《提测 P0 用例》doc（node `VvGjwKFO3iIJNtkUE8kcEkPdnCd`），该 doc 声明来源 = banshan **49607 / record 70678（23 条）**，被测泳道 `test-gtbg-dev-3`。要求下订单/调课调班改在 base `test` 泳道复验。
+
+### 用例基线（重点）
+
+- banshan **49607** 已被标注停用并入 **49647「[V1.0]续班问卷匹配优化」**。49607/70678 = totalCount 24 / success 23（doc 头「23/23」不准，第 24 项是停用说明节点）。
+- **49647 才是现行维护集**：用例节点 70，功能用例 record **70798 = 77 项 / 已执行 32 / 2 不执行（B-TC0007/0008 撞号）**。已通过 32：G001/G006/G008；B-TC0001–0006、0009–0014；E-TC0002、E-TC0008；F-TC0001–0007。**未执行约 36**：模块 A（9）、C（7）、D（8）全未跑，E 缺 TC0001/0003–0007/0009–0011，G 缺 G002/G003/G005/G007/G009/G010。
+- 提测编排 23716 挂在 **49607**（70678.planId=23716）；49647 三个 record（70797/70798/70799）**无 planId**。→ 需向 QA(tangwen01) 确认提测到底用哪套；建议迁 49647。
+
+### base `test` 泳道现状（已验证）
+
+| 项 | 值 |
+|---|---|
+| 部署 | student-data `296cf844`（pod student-data-597bf68f9f-nrgd4, 10.255.177.218）· teacher-tool `9c98a14a` · product-task `35f2a80e`，均 eureka UP、分支 `feature-xuban-match-opt` |
+| Apollo student-data TEST | `renewal.questionnaire.transfer.switch=true`；`renewal.questionnaire.transfer.event.tags` **未配**（默认只订 `TRANSFER_SUCCESS_EVENT`）；`renewal.questionnaire.transfer.idempotent.seconds` 未配（默认 5s） |
+| 环境数据 | 计划 `582291836641611776`（4 前置课：A/B/E→Q1 `583732612560865280`、D→Q2 `583916770547484672`）；Q1 projectNumber `17085061328535721` |
+
+**直接调同步逻辑 ✅**：桥直调 `RenewalQuestionnaireTransferSyncService#syncAfterTransfer(7489640566, A=582291608895033344, B=582291645278523392)` → B 新增明细 `id=22087`（同 group `583943296376877056`、`create_time=2026-10-10 14:34:42`）→ **同步逻辑 + 明细复制 OK**。
+
+**合成 MQ 调课事件 ❌ 未被消费**：桥 `FuwuOnsMqProducer#sendNormalMessage("gaotu_after_sale_event_test","TRANSFER_SUCCESS_EVENT","<json>")`（3 字符串重载）发 2 次（user 7489640566、7569545505，A→B）→ 均 `result:true`，但 25s+ 后 B **无新增明细**、student-data app/error 日志均无 `RenewalQuestionnaireTransferConsumer` 记录。对照组：同为 A→B 的真实售后/直调（user 7489640475 → B 明细 22082、user 7489640566 直调 → 22087）均成功。→ **与 data-agent playbook「调课自动同步在测试环境 MQ 断点」一致：E/G 模块在 base test 应走真实售后（提交+BPM 审批），合成事件注入不可靠**（旧 doc §四「sendNormalMessage 不带泳道也行」在 base test 不成立）。
+
+### 文档自身需订正项（对照 PRD + 现实现）
+
+1. **调课事件 tag 已变**：doc §四/§7 教发 `TRANSFER_TOUCH_EVENT`，现默认只订 `TRANSFER_SUCCESS_EVENT`（`af1ca55d1`/`48ff645e2`）→ 按 doc 发 TOUCH 不会被消费；且 doc 的 acl 桥发法（`[topic,[tags],{obj}]`）与 `verify.md` 的稳定写法（3 字符串 + body JSON 字符串）冲突。
+2. **F-TC0003 预期过时**：`92f1a5234` 已恢复跨班兜底 `get(0)`，「找不到辅导老师→判未归属」不再成立（应为「老师对不上→落候选本人班；无任何候选→未归属」）。49647 F-TC0003 用例文字未改（平台仍标通过）。
+3. **数据污染**：Q1（`17085061328535721`）是公共模板，别人也在用（data-agent 记录：A 班明细 S2 有 4 条、广播 13 条），**断言条数的用例（G001/C 模块）不可靠**，应换 `new-questionnaire` 复制的专属问卷。Q1 实际表单 formNumber=`16637758182064207`（姓名 `...208`/手机号 `...209`），用旧 formNumber 造数会让明细页手机号显示「-」。
+4. **新增代码未进用例**：2026-10-10 的意向派生字段回写（`preRegistrationIntent*`/提交时间/预报名科目）、`copyIntentToClazz`、tag Apollo 可配、Redis 幂等，doc 23 条均未覆盖（verify.md 上一节已单独验证）。

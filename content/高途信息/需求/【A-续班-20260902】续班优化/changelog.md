@@ -7,6 +7,17 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-10-10
+
+### 🤖 Claude
+- 【调课同步】定位两处缺失（ES 花名册「提交时间」「预报名科目」）：① 真实售后调课完成只发 `SUCCESS_EVENT`+`TRANSFER_SUCCESS_EVENT`，`TRANSFER_TOUCH_EVENT` 仅当 `after_sale_transfer_record.need_touch=1` 才发（`TransferCoreService:474`），而 student-data consumer 只订阅后者 → 同步根本没触发；② 即使触发，`writeCommitStatus` 也只写状态(+提交时间)，从不写意向派生字段；且意向按 (clazzNumber,userId) 存、新班无意向行。
+- 决策（用户定）：consumer 的 `tag` 改 Apollo 可配 `renewal.questionnaire.transfer.event.tags`，**实际代码默认只订 `TRANSFER_SUCCESS_EVENT`**（`48ff645e2`，`296cf844` 幂等 TTL 5s）；调课时把原班 `renewal_intent_info` 行复制到新班（幂等）；`writeCommitStatus` 一并回写意向派生字段。student-data `af1ca55d1`（feature-xuban-match-opt），已部署 test（envInfoId 2）。
+- 造数坑（重要）：acl 桥发事件必须用「3 个字符串参数 + body 传 JSON 字符串」；传 `[topic, [tag], {object}]` 会被桥匹配到 `(String,String,String)` 重载，tag 变 `[TAG]`(带方括号)、body 变 `Map.toString()`，消费端 tag 不匹配收不到（2026-10-10 实测踩中）。
+- 【提测核查】飞书《提测 P0 用例》doc 来源是**已停用**的 banshan 49607（23 条）；现行维护集是 **49647**（功能用例 record 70798 = 77 项，已执行 32、约 36 未执行）。提测编排 23716 仍挂 49607 → 需 QA 确认并迁 49647。
+- 【提测核查】base `test` 泳道已跑 feature 分支（student-data `296cf844`/teacher-tool `9c98a14a`/product-task `35f2a80e`）。桥直调 `syncAfterTransfer` 复制明细成功；但 `FuwuOnsMqProducer` 发**合成**调课事件（SUCCESS tag）2 次均未被消费 → 与 playbook 的「MQ 断点」一致，E/G 模块在 test 须走真实售后。doc §四「发 TRANSFER_TOUCH_EVENT / 不带泳道也行」已过时（现默认只订 `TRANSFER_SUCCESS_EVENT`）。详见 [[verify]]「提测 P0 用例核查」。
+
+---
+
 ## 2026-10-08（问卷匹配三仓 diff 复核 + 桥方法单测/端到端抽测）
 
 ### 🤖 Claude
@@ -151,12 +162,3 @@ tags: [需求, 日志]
 ### 👤 我
 - 在飞书里转发5个续班优化需求wiki链接，要求初评并记录需求，同时看下应该怎么做、做下设计。
 - 澄清：这五个需求是一个需求，文档只要记录在一个文件夹下。
-
----
-
-## 2026-10-10
-
-### 🤖 Claude
-- 【调课同步】定位两处缺失（ES 花名册「提交时间」「预报名科目」）：① 真实售后调课完成只发 `SUCCESS_EVENT`+`TRANSFER_SUCCESS_EVENT`，`TRANSFER_TOUCH_EVENT` 仅当 `after_sale_transfer_record.need_touch=1` 才发（`TransferCoreService:474`），而 student-data consumer 只订阅后者 → 同步根本没触发；② 即使触发，`writeCommitStatus` 也只写状态(+提交时间)，从不写意向派生字段；且意向按 (clazzNumber,userId) 存、新班无意向行。
-- 决策（用户定）：consumer 的 `tag` 改 Apollo 可配 `renewal.questionnaire.transfer.event.tags`，默认 `TRANSFER_TOUCH_EVENT||TRANSFER_SUCCESS_EVENT`（同步幂等）；调课时把原班 `renewal_intent_info` 行复制到新班（幂等）；`writeCommitStatus` 一并回写意向派生字段。student-data `af1ca55d1`（feature-xuban-match-opt），已部署 test（envInfoId 2）。
-- 造数坑（重要）：acl 桥发事件必须用「3 个字符串参数 + body 传 JSON 字符串」；传 `[topic, [tag], {object}]` 会被桥匹配到 `(String,String,String)` 重载，tag 变 `[TAG]`(带方括号)、body 变 `Map.toString()`，消费端 tag 不匹配收不到（2026-10-10 实测踩中）。
