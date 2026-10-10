@@ -237,3 +237,176 @@ source: https://qa.baijia.com/banshan/#/caseManager/171/49251/69601/3
 1. 前端渲染类（A0002/B0002 颜色具体值、F0002 点击交互、G007/I0001 旧模块下线）需在能指定泳道的真实前端页面上补验；GAIA 组件无泳道是当前硬约束。
 2. 模块 C/D 的"取重要性最大 3 项 / 文案模板"归属算法侧；本记录只验 EES 透传口径。
 3. 本 mock（明细 20261007~20261011 + 对应快照）用完可清；再造/清理脚本见 [`seed_mock_20261010.py`](seed_mock_20261010.py)（脚本重跑会先 DELETE 再 INSERT，幂等）。
+
+---
+
+# 测试操作手册（造数 / mock / xjob 同步 ES / 飞书触达）
+
+> 面向「拿到这份记录、要自己造数跑一遍」的测试同学，只讲怎么操作；每条用例具体验什么、结论如何见上文各模块。
+> **全程只连 test 环境、只造测试环境自造数据，禁止连线上库、禁止用线上真实学员造数。**
+
+## 0. 数据链路总览（先看懂再动手）
+
+```
+算法真表(Hive u_strategy.dwd_user_test_service_renew_lift_reason_df_df)
+        │ 天工同步
+        ▼
+MySQL ees_data.ai_predict_level_reason_detail   ← 测试时【手造/mock 这张】
+        │ xjob SyncPredictLevelReasonHandler（聚合 + 截止过滤 + 变化点判定）
+        ├─────────────► MySQL ees_data.predict_level_reason_snapshot（只存分层变化的天）
+        │                        ├─► 查询接口 / 页面（趋势图 + 原因卡）
+        │                        └─► xjob RenewalLevelDownNotifyHandler（每天 12:00）→ 飞书
+        └─► 发 MQ 刷 ES 花名册分层列（续班 renewalIntentionPredictLevelResult / 退费 aiRefundIntentScoreResult）
+
+ES 花名册 ads_large_subclazz_user_index  ← 截止过滤要读它（续班/退费状态）；续班期窗口决定页面能不能点进去
+```
+
+| 要点 | 结论 |
+|---|---|
+| 测试要手造哪张表 | 只造 `ai_predict_level_reason_detail`（= mock 算法真表）；`predict_level_reason_snapshot` 由同步 job 自动生成，**不要手写**（手写会和 job 口径不一致） |
+| 谁来写 ES | 同步 job 落库后**自动**发 MQ 刷花名册分层列，不用额外触发 |
+| 页面为什么点不进去 | 取决于 ES 花名册该班的续班期窗口 + 辅导班老师必须是真实测试二讲、且挂在续班班级下 |
+| 明细有、快照没有？ | 大概率是该学员被 `PredictLevelDeadlineChecker` 判超期（已续班/已结课满 7 天）—— 正确行为，不是缺陷 |
+
+## 1. 造数：往哪张表造、造之前要保证什么
+
+### 1.1 前置三件事（缺一不可）
+
+1. **选一个「能点进去」的续班班级**：辅导班带班老师必须是真实存在的测试二讲（本次用 **唐稳01**），且该辅导班挂在**续班班级**下；否则页面班级选择器选不到该班。
+2. **不能超期**：班级课时不能已结课满 7 天，学员不能已续班/已退费满 7 天；否则同步 job 会把该学员过滤掉（明细有、快照无）。
+3. **续班期要覆盖「今天」**：源头续班计划 `renew_master` 的 `begin_time/end_time` + ES `subclazz_search` 的 `renewalPlanStart/End` 都要覆盖当前日期，否则页面班级选择器 `renewalPeriodStatus` 命不中。改法见 3.2。
+
+### 1.2 数据库连接
+
+test 集群 **gaotu-polar-test-02**（cluster_id 149）· 库 **ees_data**，连接信息在造数脚本头部 `CONF` 里（host/user/password/database）。
+
+### 1.3 造数脚本
+
+需求目录下 `seed_mock_20261010.py`，**幂等**（每次先 DELETE 本次 mock 再 INSERT，可反复重跑）：
+
+```bash
+python3 seed_mock_20261010.py
+```
+
+脚本会打印续班/退费各 dt 的插入行数；跑完即可进入第 3 节同步。
+
+### 1.4 两张表的字段
+
+| 表 | 用途 | 字段 |
+|---|---|---|
+| `ai_predict_level_reason_detail` | 算法明细（手造） | `user_number` 学员ID / `clazz_number` 班级ID / `subclazz_number` 辅导班ID / `layer` 分层 A·B·C·D / `factors` 因子 JSON 数组 / `type` renew·refund / `dt` 分区 yyyyMMdd |
+| `predict_level_reason_snapshot` | 变化点快照（job 产出，只看不造） | `scene` 1续班·2退费 / `user_id` / `clazz_number` / `subclazz_number` / `record_dt` / `predict_level` / `pre_predict_level` / `factors` |
+
+唯一键 `(scene, user_id, subclazz_number, record_dt)` 保证 job 重跑幂等。
+
+## 2. mock 数据怎么写
+
+### 2.1 分层取值与方向
+
+| 场景 | type | layer 取值 | 数值 |
+|---|---|---|---|
+| 续班 scene=1 | `renew` | A / B / C / D | 1 / 2 / 3 / 4 |
+| 退费 scene=2 | `refund` | 低 / 中 / 中高 / 高 | 1 / 2 / 3 / 4 |
+
+> 两套枚举方向一致：**数值越大越差**（续班 A 最好、D 最差；退费 低 最低、高 最高）。触达「意向下降」= `predict_level > pre_predict_level`，即数值变大。
+
+### 2.2 factors JSON 结构
+
+`factors` 是 JSON 数组，每个元素：`idx`(0~5) / `factor` 因子名 / `direction` 方向 / `actionable` 可否干预 / `reason` 判断原因 / `action` 建议动作 / `logs` 依据。约定：
+
+- ≤ 6 条，`idx 0~2` 负向、`idx 3~5` 正向（先负后正，EES 只按 idx 升序透传，不重排）；
+- `reason` 为空 → 整条被丢弃；
+- `actionable="不可干预·只说明"` 时 `action` 留空 → 出参无 `suggestAction`。
+
+### 2.3 四类数据分别怎么造
+
+| 想验什么 | 怎么造 | 脚本里的例子 |
+|---|---|---|
+| 趋势图（每天一个变化点） | 同一 user+subclazz 连续多天插**不同** layer；相邻两天相同会被 `skippedUnchanged` 跳过 | 归因二 7478102067：20261007→10 依次 A→B→C→D |
+| 下降触达（模块G） | 只需两天：前一天 a、后一天 b，且 b 比 a 差（数值更大） | A→B / A→C / A→D / B→C / B→D / C→D 六种全造 |
+| 无变化不展示 | 两天 layer 相同 | 900000008：20261010=B / 20261011=B |
+| 超期被过滤 | 不用额外造，用真实「已续班满 7 天」的学员 | 归因六 7478102077：明细造了、快照不落即超期活证据 |
+
+下降组合的日期口径是 **20261010 → 20261011**；造完明细后**必须显式指定 dt** 跑同步（见 3.1），不能用「空=昨天」。
+
+## 3. 什么时候用 xjob 同步（落快照 + 刷 ES）
+
+这里其实是**两件事**：把明细同步成快照的业务 job（顺带刷 ES 分层列），和把花名册基础数据回刷到 ES 的运维 job。
+
+### 3.1 同步 job：`SyncPredictLevelReasonHandler`（student-data-dws）
+
+**作用**：读 `ai_predict_level_reason_detail` → 聚合 → 截止过滤 → 变化点判定 → 写 `predict_level_reason_snapshot`；**顺带发 MQ 把分层写回 ES 花名册**（续班列 `renewalIntentionPredictLevelResult` / 退费列 `aiRefundIntentScoreResult`）。
+
+**什么时候跑**：mock 明细插完后、要生成快照/趋势图时；或查询接口/页面查不到数据时。
+
+**触发参数**（逗号分隔）：
+
+| 参数 | 含义 |
+|---|---|
+| 空 | 全场景 + 昨天（日常调度用） |
+| `scene` | 指定场景 + 昨天，如 `1` |
+| `scene,dataDt` | 补单天，如 `1,20261010` |
+| `scene,startDt,endDt` | 区间回扫，如 `1,20261007,20261011` |
+
+> 📌 mock 的 `dt` 是 202610xx（未来日期），**必须显式传 dt**：续班传 `1,20261007,20261011`、退费传 `2,20261007,20261011`。「空=昨天」跑不到 mock 数据。
+
+test xjob：**id 9710**（cron `0 0 * * * ?`，当前运行中）/ **id 9733**（`0 0 13 * * ?`）。幂等：唯一键 `(scene,user_id,subclazz_number,record_dt)`，重跑安全。
+
+**只想补某个班、不想整表跑**：桥调 `PredictLevelReasonSyncService#backfillByClazz(clazzNumber, scene, dataDt)`，走 job 同一套逻辑，可安全重复调用。
+
+### 3.2 ES 花名册回刷：`esBacktrackHandler`（分班 management）
+
+**作用**：把辅导班花名册重算并写回 ES（`subclazz_search` / `ads_large_subclazz_user_index`），让班级的续班期窗口、续班状态与源头一致。
+
+**什么时候用**：改了源头续班计划窗口（`renew_master` 的 begin/end）之后；或 ES 里该班 `renewalPlanStart/End` 不覆盖今天，导致页面班级选择器 `renewalPeriodStatus` 命不中 / 截止过滤误杀时。
+
+test xjob：**id 5043**（辅导班列表回溯es数据，cron `0 * * * * ?`，当前已停止）/ id 5500（回溯辅导班呢，可带 param `subclazzNumbers`）。
+
+> ❗ 执行顺序固定：**先改源头续班计划窗口 → 再触发 esBacktrackHandler 回刷 ES → 再跑同步 job → 最后才发飞书**。源头不改只刷 ES，下次同步会被刷回。本次实测触发 id 5043 后 4 条 ES 文档 `updateTime` 刷新、窗口保持，`triggerCode/handleCode=200`。
+
+## 4. 什么时候发飞书
+
+### 4.1 自动：每天中午 12:00
+
+`RenewalLevelDownNotifyHandler`（student-data），cron `0 0 12 * * ?`。扫当天 `predict_level_reason_snapshot` 中续班 `scene=1` 且 `predict_level > pre_predict_level` 的记录，发给辅导班带班老师。
+
+### 4.2 手动触发（测试用）
+
+xjob **id 9711 / 9734**，参数传 dataDt（不传 = 当天），如 `20261011`。前提：① 该天快照里已有下降记录（先跑 3.1 的同步 job）；② 触达开关已开。
+
+### 4.3 收件人
+
+- **线上**：辅导班带班老师（assistant）的企业邮箱；
+- **测试**：Apollo `predict.level.down.notify.receiver.override = zhangzeling@gaotu.cn`（TEST 已发布）→ 所有消息改发到该邮箱。**联调前必须确认这个 key 配了，否则会真发给带班老师**；
+- 正文模板：`学员%s学员ID%s，续班意向由%s下降为%s。为避免学员不续班，建议老师尽快与学员沟通，解决学员续班问题。`
+
+### 4.4 幂等与结果判读
+
+幂等键 `predict:level:down:notify:{scene}:{user}:{subclazz}:{recordDt}`，TTL 30 天，**同一天重跑不会重复发**；想重发同一学员同一天，要先删这个 Redis key。
+
+job 返回 `扫描=N, 成功=N, 未放量跳过=, 重复跳过=, 无收件人跳过=, 失败=`。success=0 的常见原因：没跑同步 job（无快照，扫描=0）/ 触达开关没开（未放量跳过）/ 当天已发过（重复跳过）。
+
+## 5. 完整跑一遍（TL;DR 顺序）
+
+1. 确认班级/辅导班/老师：续班班级 + 真实测试二讲（唐稳01），续班期覆盖今天、未超期。
+2. （如续班期不覆盖今天）改源头 `renew_master` 窗口 → 触发 `esBacktrackHandler`（id 5043）回刷 ES。
+3. 跑 `seed_mock_20261010.py` 造明细（幂等）。
+4. xjob `SyncPredictLevelReasonHandler` 传 `1,20261007,20261011`（续班）+ `2,20261007,20261011`（退费）→ 查 `predict_level_reason_snapshot` 是否有变化点。
+5. 查接口/页面：`POST /feign/predict/levelReason`（student-data）或 `POST /ai/clazzUser/predictLevelReason`（student-center），body `{scene,userId,clazzNumber,subclazzNumber,recordDt?}`（大数字传字符串），确认趋势图 + 原因卡。
+6. xjob `RenewalLevelDownNotifyHandler` 传 `20261011` → 收件邮箱收到飞书。
+7. 清理：重跑脚本会先 DELETE 本次 mock（幂等）。
+
+## 6. 相关配置与任务清单（test）
+
+| 类型 | 名称 / key | 值 / 说明 |
+|---|---|---|
+| xjob | `SyncPredictLevelReasonHandler` | dws；id 9710（运行中）/ 9733；参数见 3.1 |
+| xjob | `RenewalLevelDownNotifyHandler` | student-data；id 9711 / 9734；cron 12:00；参数 = dataDt |
+| xjob | `esBacktrackHandler` | 分班 management；id 5043 / 5500；回刷花名册 ES |
+| Apollo | `predict.level.reason.enable.all` | 测试 true；不开查询接口一律返空 |
+| Apollo | `predict.level.reason.deadline.days` | 7（续班/退费/结课满 7 天停止更新） |
+| Apollo | `predict.level.history.limit` | 10（趋势图最多展示的变化点条数） |
+| Apollo | `predict.level.reason.sync.batch.size` | 1000 |
+| Apollo | `predict.level.down.notify.enable.all` | 测试 true（触达总开关） |
+| Apollo | `predict.level.down.notify.receiver.override` | `zhangzeling@gaotu.cn`；测试期必配，否则真发老师 |
+| Apollo | `predict.level.down.notify.idempotent.days` | 30（幂等键 TTL） |
