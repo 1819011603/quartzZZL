@@ -32,6 +32,8 @@ tags: [需求, 任务]
 
 | T-11 | 【AI 配置化】部门→模块开关（Apollo，不接 GAIA）：student-data 配置+匹配服务+分析侧（续班5/6、退费5、续班1/2/3圈选实时+历史）+ feign 透出；student-center 展示侧 | 已完成 | — | 分支 `feature-xuban-expand-exclude`（student-data + student-center，均已 push：`c91d5cd66`/`7b9215766`，口径修正 `12e41da47`/`84ec1b732`）。**口径**：部门 = 老师（二讲）虚拟组织架构主岗路径，按 `_` 分段精确命中；模块 code 续班 `1-8`、退费 `tutoring/learning/satisfaction/refund_root_cause/service_suggestion/prediction`；**灰度语义（`24be1d776`/`a3a4d7cb5`）：未配置=全量放开，配置后只放开命中部门；展示侧不可判定（无登录态/查询异常/结果缺该模块）一律 fail-open**。配置 key `renewal.ai.dept.module.switch` / `refund.ai.dept.module.switch`；feign `POST /feign/ai/module/switch/query`。2026-09-29 dev-1 补验通过：① arthas 无 web 上下文直调 → `true`（fail-open）；② 真实 HTTP 入口（登录态 177071）配不匹配部门（两个不同值）→ `data:{}`（拦截生效，未被 fail-open 误放行）；③ 配 177071 真实部门 `6816343048455168` → 返回完整数据（正对照）；验证完 Apollo 已改回原值 `{"97349606689168923":[1..8]}` 并读回确认 |
 
+| T-12 | 【AI 配置化】前端对齐：新增模块开关表接口 `POST ai/moduleSwitch`（14 key）+ 各数据接口兜底（evaluateQuery 7 / managerEvaluate 写 8 / analysis→service_suggestion 返空对象 / refund edit→manual_reason / reason/detail 5/6）+ 枚举补 code `9`/`manual_reason` | 已完成 | — | 分支 `feature-xuban-expand-exclude`（student-center `7d74dbf8f` / student-data `6ae6bc798`，均已 push、部署 `test-gtbg-dev-1` eureka UP）。与前端反讲《续班优化 202609-前端反讲》定稿一致。单测 student-center 5 条全过。**挂起**：`ai/clazzUser/predictLevelReason`（续班 9 / 退费 prediction）门控——该接口在 `feature-predict-level-reason`，待其上线、需求5 合流后补。详见 [[verify]]「AI 模块开关表接口」 |
+
 ## R- 反讲整改项
 
 | 编号 | 整改项 | 状态 | 谁提的 | 备注 |

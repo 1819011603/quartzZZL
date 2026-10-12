@@ -7,6 +7,17 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-10-12（AI 配置化·开关表接口：前端对齐 + 数据接口兜底）
+
+### 🤖 Claude
+- 与前端反讲《续班优化 202609-前端反讲》（jinruilin）定稿对齐：新增 **`POST ai/moduleSwitch`**（无入参，按登录老师判定），下发 **14 key**——续班 `1..9`（新增 `9=意向预测`，枚举补 `INTENTION_PREDICTION(9)`）、退费 `service_suggestion/prediction/manual_reason(新增)/learning/tutoring`（枚举补 `manual_reason`）；`refund_root_cause`、`satisfaction` **不下发**（前者随前端基线分支下线、后者无前端展示模块）。bizType=1/2 各调一次 `queryModuleSwitch`（`moduleCodes` 传空）后过滤。
+- 语义：**一部门未配 / 登录缺失 / 查询异常 / 缺 key 一律 `true`（fail-open）**，与前端「key 缺失或请求失败按 true」一致。注：origin 上 `a3a4d7cb5`（`AI 模块开关查询改为 fail-open`）已改同一文件+加测试，本轮**以远端为准**，只保留新增的开关表方法，避免覆盖（另补开关表单测 2 条）。
+- 数据接口兜底（防旧版前端/直调）：`evaluateQuery` 用户反馈按 **7**（关→`[]`）、`managerEvaluate` 写按 **8** 拒绝、`/roster/refund/analysis` 改按 **`service_suggestion`** 且关闭返 **`{}`**（原返 `null` 旧版前端白屏）、`/roster/refund/edit` 写按 **`manual_reason`** 拒绝、`ai/renewal/reason/detail` 按 `reasonType` 看 **5/6**。
+- **挂起**：`ai/clazzUser/predictLevelReason`（续班 `9` / 退费 `prediction`）门控——该接口在**另一分支** `feature-predict-level-reason`（独立需求「分层变化与分层原因」），用户定「两需求不同批上线，等 predict 上线、需求5 合流后补」。
+- 提交/部署/自验：student-center `7d74dbf8f`（push）、student-data `6ae6bc798`（push，`feature-xuban-expand-exclude`）；部署 `test-gtbg-dev-1` 双 pod eureka UP；真实入口 `POST /component/student-center/ai/moduleSwitch` 返回 14 key，与 student-data 原始判定一致（登录 177071：renewal 全 `false`、refund `manual_reason:false` 其余 `true`）。
+
+---
+
 ## 2026-10-10
 
 ### 🤖 Claude
