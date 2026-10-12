@@ -57,6 +57,23 @@ tags: [需求, 任务]
 - **需要谁**：数仓侧
 - **可以先做**：其他4个子需求的评审和设计可并行推进，不受此阻塞
 
+## Q- 代码规范审查待办（2026-10-12 · 按「开发防返工检查」审 5 仓 diff）
+
+> 5 个 feature 分支 diff 对照规范（前置/契约/兼容/幂等/关键值配置化）审出的项。**待确认/待点头**，未擅自动。
+
+| 编号 | 仓 | 位置 | 类别 | 事项 |
+|---|---|---|---|---|
+| Q-01 | product-server | `ComputeUserService.java:18` | 灰度 | `compute.rule.name.list` 代码默认 4 档→7 档 = 计划级匹配的灰度开关；确认 PROD Apollo 是否已发、口径 |
+| Q-02 | product-server | `QuestionnaireRecordService.java:574/603` | DDL/并发 | `retry_count` 列 PROD 是否已加；该 XXL-Job 是否串行（`retry_count+1` 无并发保护） |
+| Q-03 | student-center | `RefundController.java:200` | 口径 | `refund_root_cause` 后端门控但不在下发名单 → 前端空模块；确认口径 |
+| Q-04 | student-center | 展示侧 vs 分析侧 | 口径 | 部门口径不同（展示侧=登录老师部门 / 分析侧=班级二辅部门）；确认是否预期 |
+| Q-05 | cart | `pom.xml` `product-server-client` | 上线 | 钉 `1.5.9-SNAPSHOT`，提测前换正式包 |
+| Q-06 | student-center | `RefundController.java:100` | 兼容/影响面 | `manual_reason` 门控卡死整段通用写接口 `roster/refund/edit`（误伤改名/备注/跟进，多入口不一致）；建议收窄到 `refundReason`/`refundIntent` |
+| Q-07 | student-center | `RefundController.java:211` + `RenewalClazzUserController.java:160/172` | 兼容 | 关闭时返回 `null` → 旧前端读字段白屏；建议与同 diff 的 `analysis()` 一致返回空对象 |
+| Q-08 | cart | `cart-client/pom.xml:65-68` | 兼容 | GMQ 挪位置时丢了原有 2 个 slf4j 排除（`log4j-over-slf4j`/`slf4j-log4j12`） |
+| Q-09 | cart | `cart-client/pom.xml:38/58、42/62` | 构建 | 同一依赖声明两次（`ces-teach-product-api` 一处无版本、一处 `1.0.13-RELEASE`） |
+| Q-10 | product-server | `QuestionnaireRecordService.java:637/650` | 契约/影响面 | `planCourseNumbersCache` 只用 `questionnaireNumber` 做 key，缺 `projectNumber` → 跨 project 复用错结果，算错计划级匹配范围 |
+
 ## 完成判据
 
 > 每个未闭环任务「怎样才算完成」的可检查判据；完成一项删一行，全部闭环后本节为空。
