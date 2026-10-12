@@ -66,4 +66,5 @@ tags: [需求, 验证]
 | Apollo | `predict.level.down.notify.enable.all` | 联调 true | **已发布** | 待配 |
 | Apollo | `predict.level.down.notify.receiver.override` | **2026-10-10 起 TEST 置空**（不覆盖，发辅导班真实带课老师邮箱）；此前为 `zhangzeling@gaotu.cn` | **已发布（置空）** | 不配 |
 | Apollo | `predict.level.down.notify.idempotent.days` | 30 | **已发布** | 待配 |
+| Apollo | `predict.level.default.dt.offset.days` | 1（同步/触达共用默认数据日期口径） | **已发布**（TEST，2026-10-12） | **已发布**（PROD，2026-10-12） |
 | jar | student-data-api | 0.9.9.24-zzl-RELEASE | 已发 | **已发 RELEASE（2026-10-12 入 Nexus）** |

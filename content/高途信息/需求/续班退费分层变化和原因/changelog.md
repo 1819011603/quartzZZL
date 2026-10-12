@@ -16,6 +16,8 @@ tags: [需求, 日志]
 - **代课权限已登记**：`student-center` `31:/ai/clazzUser/predictLevelReason`（读接口）2026-10-12。
 - **api 定版已发（解决版本冲突）**：`0.9.9.24-RELEASE` 已被 Nexus 占用（09-07 发的旧内容）→ 定版发 **`student-data-api 0.9.9.24-zzl-RELEASE`**（2026-10-12 `mvn8 deploy` BUILD SUCCESS，GAV 已入 Nexus）。student-data 5 个 pom（api 自身 + service/facade/dws/gps 依赖）+ student-center-infrastructure 1 个 pom 依赖版本同步改为 `0.9.9.24-zzl-RELEASE`，已 push feature 分支。
 - **合 release + 建 MR**：① 先把 `origin/release` 合入 `feature-predict-level-reason` 消冲突（student-data `fc2c27fba`、student-center `9fb66e2a4`，均无冲突）；② 再建 MR → `release`：**student-data [!1742](https://git.baijia.com/gaotu/yunying_workbench/student-data/-/merge_requests/1742)**、**student-center [!1468](https://git.baijia.com/gaotu/yunying_workbench/student-center/-/merge_requests/1468)**（均 open，2026-10-12）。⚠️ 注意：首次合并命令因分支被 worktree 占用、`&&` 误判，曾误合到 `feature-xuban-match-opt`，已 `git reset --hard ORIG_HEAD` 回退；正确的需求分支在 `.claude/worktrees/predict`。
+- **xjob 调度调整（PROD）**：同步 12753 `0 0 13 * * ?` → **`0 0 14 * * ?`**；触达 12754 `0 0 12 * * ?` → **`0 0 15 * * ?`**（排在同步之后）。
+- **默认数据日期口径改造（代码）**：原**同步默认「昨天」、触达默认「当天」**（日期错位，触达排在同步后也扫 0 条）。抽出共享 Apollo key **`predict.level.default.dt.offset.days`（默认 1=昨天）** 供两个 job 共用；新增 `PredictDefaultDtProvider`（`student-data-service/domain/predict`），`SyncPredictLevelReasonHandler` / `RenewalLevelDownNotifyHandler` 均引用。单测 3 个通过（`mvn8 -pl student-data-service -am test`）；student-data `cab3413fd` 已 push（MR !1742 更新）。TEST/PROD Apollo 均已发布该 key=1。**已发 test-eco-2**（student-data + dws，commit `cab3413f`，均 eureka UP）；自验：桥调 `PredictDefaultDtProvider#defaultDataDt` 返回 `20261011`（昨天）✅。
 
 ---
 
