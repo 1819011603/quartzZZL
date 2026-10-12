@@ -7,6 +7,18 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-10-12 · 上线前准备（进行中）
+
+### 🤖 Claude
+- **PROD 实测复核（与 10-10 一致）**：`ees_data` 两表都不存在；Apollo `predict.level.*` 10 个 key 全未配、老链路 3 switch 未配(默认 `true`)；xjob 12753/12754 已建已停止、10413/10073 运行中（**用户明确：老 job 明天上线当天再停，现在别动**）。
+- **快照表 DDL 工单已提**：`ees_data.predict_level_reason_snapshot` PROD 建表 → 工单 **146755**（cluster 336 / `gaotu-student-dynamic-prod`），Inception warning（`id`/`create_time`/`update_time` 无注释，可继续），**待 SRE 审批发布**。明细表 `ai_predict_level_reason_detail` 及索引/唯一键由用户（天工侧）负责；**T-07 已定：按 upsert 口径带上 `uk_user_subclazz_type_dt`**。
+- **Apollo PROD 已发布**（2026-10-12，releaseKey `20261012114830-188a560667e3eebb`）：8 个 key 落实——**全量放量** `predict.level.reason.enable.all=true`、`predict.level.down.notify.enable.all=true`；参数 `history.limit=10`、`reason.deadline.days=7`、`reason.sync.batch.size=1000`、`reason.roster.index=ads_large_subclazz_user_index`、`down.notify.idempotent.days=30`、`reason.es.write.enable=true`（后 6 个＝代码默认值，落地行为不变）。`predict.level.down.notify.receiver.override` 不配（发真实带课老师）；两个 `enable.dept` 不配（`enable.all=true` 已覆盖白名单）。读回确认 8 命中、override/dept 未命中。
+- **代课权限已登记**：`student-center` `31:/ai/clazzUser/predictLevelReason`（读接口）2026-10-12。
+- **api 定版已发（解决版本冲突）**：`0.9.9.24-RELEASE` 已被 Nexus 占用（09-07 发的旧内容）→ 定版发 **`student-data-api 0.9.9.24-zzl-RELEASE`**（2026-10-12 `mvn8 deploy` BUILD SUCCESS，GAV 已入 Nexus）。student-data 5 个 pom（api 自身 + service/facade/dws/gps 依赖）+ student-center-infrastructure 1 个 pom 依赖版本同步改为 `0.9.9.24-zzl-RELEASE`，已 push feature 分支。
+- **合 release**：`origin/release` 已合入 `feature-predict-level-reason`（student-data `fc2c27fba`、student-center，均无冲突），**未发 MR**（用户明确说不需要）。⚠️ 注意：首次合并命令因分支被 worktree 占用、`&&` 误判，曾误合到 `feature-xuban-match-opt`，已 `git reset --hard ORIG_HEAD` 回退；正确的需求分支在 `.claude/worktrees/predict`。
+
+---
+
 ## 2026-10-10 · 造数正确姿势 + ES「续班意向预测」无值排查
 
 ### 🤖 Claude

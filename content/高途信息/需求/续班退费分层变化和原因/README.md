@@ -1,13 +1,13 @@
 ---
 title: 续班退费分层变化和原因
 aliases: [续班&退费的分层变化和原因, 分层变化和原因, predictLevelReason]
-status: 联调中
+status: 上线准备
 owner: zhangzeling
 branches:
   - student-data:feature-predict-level-reason
   - student-center:feature-predict-level-reason
   - aianalysisinformations:feature-refund-reason-20260825
-updated: 2026-10-09
+updated: 2026-10-12
 tags: [需求]
 ---
 
@@ -46,11 +46,11 @@ tags: [需求]
 
 | | |
 |---|---|
-| 阶段 | 联调完成（同步 job → 快照表 → student-data Feign → student-center → **真实 EES 页面渲染出趋势图和原因卡**，全链路在 test-eco-2 端到端跑通，仅剩上线配置） |
-| 进度 | T 4/5 · R 0/0 · C 0/0 |
+| 阶段 | 上线准备中（联调已在 test-eco-2 端到端跑通，正在做上线前配置） |
+| 进度 | T 5/8（T-05 进行中、T-07/T-08 待办）· R 0/0 · C 0/0 |
 | 部署泳道 | 2026-09-29 重新发了 test-eco-2（student-data + student-data-dws + student-center），eureka UP |
-| 当前卡点 | 无阻塞；剩 T-05 上线配置（需合并发布到 release 池，真实用户默认流量才能看到） |
-| 最近更新 | 2026-10-10：冒烟(P0)用例执行记录飞书文档追加《测试操作手册（造数 / mock / xjob 同步 ES / 飞书触达）》章节，本地 [[case-record]] 同步——给后续测试同学一份可直接照做的造数+跑链路说明（数据链路总览、造数前置/库表字段、mock 分层与 factors 写法、同步 job `SyncPredictLevelReasonHandler` 与 ES 回刷 `esBacktrackHandler` 的触发时机、飞书触达 12:00/手动触发/收件人/幂等、test 配置任务清单）。<br>2026-10-09：冒烟(P0)用例集（banshan record 69601，23 条）执行完毕 → 通过 21 / 阻塞 2，平台已回写；飞书《续班退费分层变化和原因 · 冒烟(P0)用例执行记录》已挂到需求 wiki 节点下；本地 [[case-record]]、[[data-requirements]]。阻塞 2 条是前端/CRM 页面（旧预测原因下线），非数据问题。<br>2026-10-08：快照表字段精简 + 索引 + 按班级回溯方法——删 `predict_score`/`model_version`/`status` 三列与出参 `probabilityDesc`、删「发 MQ 刷 ES」死代码；`ai_predict_level_reason_detail` 加 `idx_clazz_type_dt`、快照表加 `idx_clazz_scene_dt`；新增桥可调 `PredictLevelReasonSyncService#backfillByClazz`（见 [[changelog]]、[[tasks]] T-06）。<br>2026-09-29：算法真表已确认（见上「已定共识」）；`AiPredictLevelReasonDetail`/DDL/同步服务已按新结构改完并合入 release、单测 23 个全过；test-eco-2 全链路验证通过，含真实浏览器页面截图确认（见下「验证结果」）；前端仓库/分支/接口已查明并记入知识库 |
+| 当前卡点 | ① 待 SRE 发布快照表 DDL 工单 146755；② 明细表 + 唯一键 + 天工同步任务归用户（天工侧）；③ 上线当天需手动把飞书【ees助手】可用范围设「全员可用」（需管理员） |
+| 最近更新 | 2026-10-12：**上线前准备**——快照表 PROD DDL 工单 **146755** 已提（待 SRE 发布）；代课权限 **31 已登记**；**Apollo PROD 8 个 key 已发布**（全量 `enable.all=true`）；**api 定版 `0.9.9.24-zzl-RELEASE` 已发 Nexus**（6 个 pom 已改并 push）；`origin/release` 已合入 feature 分支（**未发 MR**）；老 job 10413/10073 明天上线当天再停。<br>2026-10-10：冒烟(P0)用例执行记录飞书文档追加《测试操作手册（造数 / mock / xjob 同步 ES / 飞书触达）》章节，本地 [[case-record]] 同步——给后续测试同学一份可直接照做的造数+跑链路说明（数据链路总览、造数前置/库表字段、mock 分层与 factors 写法、同步 job `SyncPredictLevelReasonHandler` 与 ES 回刷 `esBacktrackHandler` 的触发时机、飞书触达 12:00/手动触发/收件人/幂等、test 配置任务清单）。<br>2026-10-09：冒烟(P0)用例集（banshan record 69601，23 条）执行完毕 → 通过 21 / 阻塞 2，平台已回写；飞书《续班退费分层变化和原因 · 冒烟(P0)用例执行记录》已挂到需求 wiki 节点下；本地 [[case-record]]、[[data-requirements]]。阻塞 2 条是前端/CRM 页面（旧预测原因下线），非数据问题。<br>2026-10-08：快照表字段精简 + 索引 + 按班级回溯方法——删 `predict_score`/`model_version`/`status` 三列与出参 `probabilityDesc`、删「发 MQ 刷 ES」死代码；`ai_predict_level_reason_detail` 加 `idx_clazz_type_dt`、快照表加 `idx_clazz_scene_dt`；新增桥可调 `PredictLevelReasonSyncService#backfillByClazz`（见 [[changelog]]、[[tasks]] T-06）。<br>2026-09-29：算法真表已确认（见上「已定共识」）；`AiPredictLevelReasonDetail`/DDL/同步服务已按新结构改完并合入 release、单测 23 个全过；test-eco-2 全链路验证通过，含真实浏览器页面截图确认（见下「验证结果」）；前端仓库/分支/接口已查明并记入知识库 |
 
 ## 验证结果（2026-09-29）
 
@@ -70,12 +70,11 @@ tags: [需求]
 
 ## 下一步
 
-1. T-05：线上 DDL 工单（`predict_level_reason_snapshot`）、Apollo PROD 配置、xjob PROD 建任务、代课接口权限登记 31、student-data-api 定版发 RELEASE。
+1. T-08（上线当天，见 [`上线方案.md`](上线方案.md)）：SRE 发布快照表 DDL 146755 → 发 3 个服务镜像（青舟 23772）→ 停老 job 10413+10073、关老链路 2 个 Apollo switch → 启新 job 12753+12754 → 飞书【ees助手】可用范围设「全员可用」→ 逐项读回验证。
 2. 如果还要验 U2/U3 那两个分支（无变化不落库、分层回升不触达），换一批当前仍处于「未续班未结课」状态的学员/辅导班重新造 mock。
 
 ## 待确认
 
-- [x] 算法真表表名和字段 —— 已确认：`u_strategy.dwd_user_test_service_renew_lift_reason_df_df`，经天工同步到 MySQL `ees_data.ai_predict_level_reason_detail`（2026-09-29）
 - [ ] 分层和概率的真实来源，和因子数据是否同一个 dt —— 等上游算法（算法真表当前不下发概率，快照表 `predict_score`/`model_version` 落空）
 - [ ] 算法能否改成增量计算（全量 50 万学员要 2.31 天，T+1 / T+2 都做不到）—— 等产品和算法
 - [ ] 退费原因卡本期是否只出趋势图 —— 等产品
