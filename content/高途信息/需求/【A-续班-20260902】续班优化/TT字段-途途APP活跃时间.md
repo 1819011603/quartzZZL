@@ -117,9 +117,12 @@ ES 底层字段：`tutuAppLastActiveDate`（APP）、`tutuPcLastActiveDate`（PC
 ## 当前卡点 / 下一步
 
 - [x] 历史数据要不要回填 → 要，按班回溯，测试已验证（见上节）
-- [ ] PROD：ES mapping 工单、GAIA 建字段（写线上，需确认后执行）→ DB → Apollo 5 项（写入后要在后台发布并读回）
-- [ ] PROD：建回溯 GLUE 任务，按在读大班分批回溯
-- [ ] 上线后盯 1–2 天：延迟消息堆积、`user_login_time` 消费耗时、ES bulk、CDP QPS
+- [x] PROD Apollo 5 项（student-data `cdp.to.es.field.map`+`user.business.to.es.field.map`、student-center `active.date.time.config`+`large.clazz.list.field.names`+`large.clazz.array.range.fieldNames`）：已发布并读回确认（2026-10-12）
+- [x] PROD ES mapping：`ads_large_clazz_user_2019~2027,9999` 全部 10 个索引均已含 `tutuAppLastActiveDate`/`tutuPcLastActiveDate`(long)，读回确认（2026-10-12；首张工单 SRE 只落 6 个，补漏工单补上 4 个）
+- [x] PROD DB：`ees_data.es_query_config` clazzRosterOL 6 行（id 752–757），读回确认（2026-10-12；工单 id 146737）
+- [x] PROD GAIA：线上花名册页面（分类 `195293131648806912`）建 `tutuApp7DaysState`(292227084985582592)/`tutuApp15DaysState`(292227094203614208)/`tutuAppLastActiveDate`(292227096277694464)，已加进「线上花名册的字段集」(397) 并配显示设置，读回确认（2026-10-12）
+- [ ] 建回溯 GLUE 任务（`BackTutuActiveTimeByClazzHandler`），按在读大班分批回溯
+- [ ] 上线后盯 1–2 天 + 页面验证：延迟消息堆积、`user_login_time` 消费耗时、ES bulk、CDP QPS；花名册 3 字段展示/枚举筛选/日期区间筛选
 
 ## 排障备忘
 
