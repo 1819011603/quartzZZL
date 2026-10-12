@@ -31,6 +31,8 @@ tags: [需求, 链接]
 | 发布计划 | 青舟「续班&退费的分层变化和原因」id 23772：student-data → student-data-dws → student-center | https://qingzhou.baijia.com/#/publishArrangement/subPublishArrangement/publishPlan/detail?storyId=&pageNum=1&id=23772&action=edit | 2026-10-08 |
 | 上线方案 | 续班&退费的分层变化和原因 · 上线方案（飞书，挂需求 wiki 节点下） | https://gaotuedu.feishu.cn/wiki/WoPDw6oTgiKFRakUnkMcNRshnLe | 2026-10-10 |
 | 上线方案（底稿） | [`上线方案.md`](上线方案.md)（本地） | — | 2026-10-08 |
+| MR（student-data） | feature-predict-level-reason → release | https://git.baijia.com/gaotu/yunying_workbench/student-data/-/merge_requests/1742 | 2026-10-12 |
+| MR（student-center） | feature-predict-level-reason → release | https://git.baijia.com/gaotu/yunying_workbench/student-center/-/merge_requests/1468 | 2026-10-12 |
 
 ## 跨会话检索锚点
 

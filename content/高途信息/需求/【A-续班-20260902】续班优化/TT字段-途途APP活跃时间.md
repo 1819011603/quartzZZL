@@ -122,7 +122,7 @@ ES 底层字段：`tutuAppLastActiveDate`（APP）、`tutuPcLastActiveDate`（PC
 - [x] PROD DB：`ees_data.es_query_config` clazzRosterOL 6 行（id 752–757），读回确认（2026-10-12；工单 id 146737）
 - [x] PROD GAIA：线上花名册页面（分类 `195293131648806912`）建 `tutuApp7DaysState`(292227084985582592)/`tutuApp15DaysState`(292227094203614208)/`tutuAppLastActiveDate`(292227096277694464)，已加进「线上花名册的字段集」(397) 并配显示设置，读回确认（2026-10-12）
 - [x] 回溯 GLUE 任务：PROD xjob **jobId 12784**（`GLUE_GROOVY` / 执行器 student-data / FIRST / 已停止），源码=归档 `脚本/BackTutuActiveTimeByClazzHandler.java`。试跑班级 `551713045982816256`「【秋】四年级数学课程（二班 马冬）-周五班①」：学员 5199 / 写回 5195，handleCode=200，ES 读回该班 5195 篇含 `tutuAppLastActiveDate`（2026-10-12）
-- [ ] 批量回溯其余在读大班（分批 20–30 班，等上一批 200 再触发下一批；入参=班级号）
+- [x] 批量回溯其余在读大班：**2026-10-12 全量回溯 3604 个在读大班**（口径：`updateTime≥2026-10-01` 且当前行课期内；分 145 批 × 25 触发，路由改轮询、并发≤4，全部 handleCode=200）。坏 pod `10.243.42.114` 上 8 条僵尸日志（重复批）已用健康 pod 重跑补齐，数据无遗漏
 - [ ] 上线后盯 1–2 天 + 页面验证：延迟消息堆积、`user_login_time` 消费耗时、ES bulk、CDP QPS；花名册 3 字段展示/枚举筛选/日期区间筛选
 
 ## 排障备忘

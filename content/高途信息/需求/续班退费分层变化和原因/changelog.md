@@ -15,7 +15,7 @@ tags: [需求, 日志]
 - **Apollo PROD 已发布**（2026-10-12，releaseKey `20261012114830-188a560667e3eebb`）：8 个 key 落实——**全量放量** `predict.level.reason.enable.all=true`、`predict.level.down.notify.enable.all=true`；参数 `history.limit=10`、`reason.deadline.days=7`、`reason.sync.batch.size=1000`、`reason.roster.index=ads_large_subclazz_user_index`、`down.notify.idempotent.days=30`、`reason.es.write.enable=true`（后 6 个＝代码默认值，落地行为不变）。`predict.level.down.notify.receiver.override` 不配（发真实带课老师）；两个 `enable.dept` 不配（`enable.all=true` 已覆盖白名单）。读回确认 8 命中、override/dept 未命中。
 - **代课权限已登记**：`student-center` `31:/ai/clazzUser/predictLevelReason`（读接口）2026-10-12。
 - **api 定版已发（解决版本冲突）**：`0.9.9.24-RELEASE` 已被 Nexus 占用（09-07 发的旧内容）→ 定版发 **`student-data-api 0.9.9.24-zzl-RELEASE`**（2026-10-12 `mvn8 deploy` BUILD SUCCESS，GAV 已入 Nexus）。student-data 5 个 pom（api 自身 + service/facade/dws/gps 依赖）+ student-center-infrastructure 1 个 pom 依赖版本同步改为 `0.9.9.24-zzl-RELEASE`，已 push feature 分支。
-- **合 release**：`origin/release` 已合入 `feature-predict-level-reason`（student-data `fc2c27fba`、student-center，均无冲突），**未发 MR**（用户明确说不需要）。⚠️ 注意：首次合并命令因分支被 worktree 占用、`&&` 误判，曾误合到 `feature-xuban-match-opt`，已 `git reset --hard ORIG_HEAD` 回退；正确的需求分支在 `.claude/worktrees/predict`。
+- **合 release + 建 MR**：① 先把 `origin/release` 合入 `feature-predict-level-reason` 消冲突（student-data `fc2c27fba`、student-center `9fb66e2a4`，均无冲突）；② 再建 MR → `release`：**student-data [!1742](https://git.baijia.com/gaotu/yunying_workbench/student-data/-/merge_requests/1742)**、**student-center [!1468](https://git.baijia.com/gaotu/yunying_workbench/student-center/-/merge_requests/1468)**（均 open，2026-10-12）。⚠️ 注意：首次合并命令因分支被 worktree 占用、`&&` 误判，曾误合到 `feature-xuban-match-opt`，已 `git reset --hard ORIG_HEAD` 回退；正确的需求分支在 `.claude/worktrees/predict`。
 
 ---
 
