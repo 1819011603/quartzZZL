@@ -30,7 +30,7 @@ tags: [需求, 链接]
 | 类型 | 标题 | 链接 | 记录日期 |
 |---|---|---|---|
 | 提测P0用例 | 【A-续班-20260902】续班优化 · 问卷匹配优化 提测 P0 用例（含执行记录，源自 banshan 49607） | https://gaotuedu.feishu.cn/wiki/VvGjwKFO3iIJNtkUE8kcEkPdnCd | 2026-10-09 |
-| TAPD | | | |
+| TAPD | 迭代「【A-续班-20260902】续班优化」id `1122531521001014934`（workspace `22531521`；我的任务按第二批排期对齐） | https://www.tapd.cn/tapd_fe/22531521/iteration/card/1122531521001014934 | 2026-10-12 |
 | case | | | |
 | MR | | | |
 | 接口文档 | | | |
@@ -52,6 +52,7 @@ tags: [需求, 链接]
 - 扩科推荐优化 wiki token：`LYCYwqS7ziljApknUlbclPSrnzh`（document_id: `UsFSdlfxjovjOmxEqhLcuHwZnwg`）
 - 数据落表 wiki token：`ZEerwf5ZMi9B0Ok9nopcgvoenl2`（document_id: `InPJdfxzcol34ixhLfFcw1DKnsg`）
 - AI模块配置化 wiki token：`AH5ewehsEiXohfkDgQEcKQjHnad`（document_id: `Cea4d57Ueo5uoxxwiEvcLjmNn0c`）
+- TAPD 迭代（workspace `22531521`）：id `1122531521001014934`，名称「【A-续班-20260902】续班优化」
 - ⚠️ **订正 2026-09-18**：此前主讲/扩科/数据落表 3 个 wiki node token 互相错配（node_token 与 document_id 对不上），已按 `wiki +node-get` 实测改正；document_id 原本是对的。
 - PRD wiki token：问卷 `Fpyqw45MqiImJxkXjLzcNcO1n8A`、小班课字段+指标 `YdvUwruDDiSKNzkwKsWcnnAqnCg`、扩科推荐 `ZForwjdptifaaqkP2aFckFYWnWh`
 - 跨班错配分析文档 wiki token：`DzAfwt4H5i5ILtkX6cHcx4Nznnd`（document_id: `ZzZEdjMQsoFWisxVJz3cyzTfnGQ`）
