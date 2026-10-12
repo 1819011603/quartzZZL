@@ -38,6 +38,13 @@ tags: [需求, 验证]
    - 依赖索引 `ai_predict_level_reason_detail.idx_clazz_type_dt(clazz_number,type,dt)`（2026-10-08 新增）
    - 例：`invoke_service project=student-data service_method=com.gaotu.student.data.domain.predict.PredictLevelReasonSyncService#backfillByClazz params=["513468253373333504",1,"20260922"] traffic_env=test-eco-2`
    - ⚠️ 补数写的是快照表 `predict_level_reason_snapshot`；若只是要看明细，直接查 `ai_predict_level_reason_detail WHERE clazz_number=...`
+7. **批量区间回溯**（算法一次性灌入多天 / 上线初始化用；2026-10-12 补）：用 **job 区间参数**把一段天一次跑完，**不要**用 `backfillByClazz`（那是单班级 × 单场景 × 单天补漏）。
+   - 参数 `scene,startDt,endDt`，如 `1,20261001,20261012`（续班 / 退费各触发一次，`2,...`）；逐天**升序**处理，`buildRange` 上限 **400 天**。
+   - **整段补、别跳天**：变化点基准是 `getLatestBefore(…record_dt)`，跳天补会让该条被当成首个变化点（`pre_predict_level=null`）、趋势图起点错位。
+   - **目标天分区都要就绪**：`existsPartition` 逐天判，缺哪天那天跳过、整个 job 标 FAIL（已就绪的天已落库），补数后重跑即可（唯一键幂等）；不会产生半批数据。
+   - 截止过滤按 `record_dt`（非执行日）判，补历史天**不会**被误判超期。
+   - 生效判据：查 `ees_data.predict_level_reason_snapshot` 按 `record_dt` 分组计数，确认目标天都有变化点。
+   - **2026-10-12 实测**：test 无 student-data xjob 任务、dws pod 直连 acl 桥被登录校验挡（`code 3`），故用 facade 桥逐天调 `PredictLevelReasonSyncService#syncOneDay` 验证多天引擎：`1,20261007/20261010/20261013` → saved 1 / 12 / 3、`failed=0`，逐天独立落库正常（区间循环与它同源）。
 
 ## 能验到哪一层
 
