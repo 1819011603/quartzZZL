@@ -7,7 +7,11 @@ branches:
   - product-server:feature-xuban-match-opt
   - student-data:feature-xuban-match-opt
   - teacher-tool:feature-xuban-match-opt
-updated: 2026-10-10
+  - student-center:feature-xuban-expand-exclude
+  - student-data:feature-xuban-expand-exclude
+  - cart:feature-xuban-expand-exclude
+  - product-server:feature-xuban-expand-exclude
+updated: 2026-10-12
 tags: [需求]
 ---
 
