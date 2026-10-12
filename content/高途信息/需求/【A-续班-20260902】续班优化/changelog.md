@@ -7,6 +7,23 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-10-12（代码规范审查：5 仓 diff 对照「开发防返工检查」）
+
+### 🤖 Claude
+- 对 5 个 feature 分支 diff（student-data / product-server / teacher-tool / student-center / cart）按「开发防返工检查」（前置 / 契约 / 兼容 / 幂等 / 关键值配置化）审了一遍。**结论：整体规范**——开关 / 幂等 / 契约基本都做了 Apollo 化 + 兼容。**建议改**项已改并部署，**必改 / 需确认**项进 [[tasks]] Q- 待办。
+- **建议改（已改 + 已部署）**：
+  - product-server `63fd5b757`：重试批量大小 `500` 硬编码 → 外置 Apollo `no.compute.user.retry.batch.size`（默认 500）；删死字段 `ComputeParams.renewalNumber`（只 set 未 get）。部署 `test-gtbg-dev-3`（**product-task**）eureka UP。
+  - cart `f18f9f52`：删 `pom.xml` 里指向错误 artifact 的误导注释（`ces-teach-product-api` 并非 `RenewalInReadSubjectClient` 契约）。部署 `test-gtbg-dev-1` eureka UP。
+- **进 [[tasks]] Q- 待办（未擅动，待确认 / 点头）**：Q-01 计划级匹配灰度（`compute.rule.name.list` 默认 4→7 档）、Q-02 `retry_count` PROD DDL + job 并发、Q-03 `refund_root_cause` 半截门控、Q-04 展示 / 分析侧部门口径、Q-05 cart `product-server-client` SNAPSHOT、Q-06 `RefundController` 用 `manual_reason` 卡死整段通用写接口、Q-07 关闭返 `null` 白屏、Q-08 cart-client GMQ 丢 slf4j 排除、Q-09 cart 依赖重复声明、Q-10 `planCourseNumbersCache` key 缺 `projectNumber`。
+- **必改（已改 + 已部署，eureka UP）**：
+  - student-center `5ba12b10`（dev-1）：`RefundController` 退费 `edit` 门控由「整段卡片」收窄为**只拦 `refundReason`/`refundIntent`**（原会把同一通用编辑接口的改名/备注/跟进一起拒掉，且多入口行为不一致）；模块关闭返**空对象**而非 `null`（`course` + `RenewalClazzUserController` 用户画像/沟通摘要 2 处，防旧版前端白屏）。
+  - cart `3594af88`（dev-1）：`cart-client/pom.xml` **恢复 GMQ 的 slf4j 排除**（`log4j-over-slf4j`/`slf4j-log4j12`）+ **删掉重复声明的 `course-center-client`/`ces-teach-product-api`**。
+  - product-server `9a9b4350`（dev-3/product-task）：`planCourseNumbersCache` key **补 `projectNumber`**（同问卷号在不同 project 下解析的前置课程不同，原 key 会跨 project 复用错结果）。
+- **暂不改（Q-11）**：student-data `InnerBackController` 的 2 个调试接口是给**提测覆盖率门禁（发布编排 23716）**加的、标注「上线前删除」——现在删会掉覆盖率卡提测，**留到上线前删**（[[tasks]] Q-11 盯着）。
+- **评估后缓改（未动）**：product-server「两处计划内前置课程解析统一」「`NamePlanRuleService` 先 limit 20 再按范围过滤」、student-center「模块 code 集中」——涉及行为 / 框架，待确认。
+
+---
+
 ## 2026-10-12（AI 配置化·开关表接口：前端对齐 + 数据接口兜底）
 
 ### 🤖 Claude
