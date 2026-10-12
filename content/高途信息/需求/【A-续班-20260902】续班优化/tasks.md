@@ -69,10 +69,10 @@ tags: [需求, 任务]
 
 | 编号 | 仓 | 位置 | 类别 | 事项 |
 |---|---|---|---|---|
-| Q-01 | product-server | `ComputeUserService.java:18` | 灰度 | `compute.rule.name.list` 代码默认 4 档→7 档 = 计划级匹配的灰度开关；确认 PROD Apollo 是否已发、口径 |
-| Q-02 | product-server | `QuestionnaireRecordService.java:574/603` | DDL/并发 | `retry_count` 列 PROD 是否已加；该 XXL-Job 是否串行（`retry_count+1` 无并发保护） |
+| Q-01 | product-server | `ComputeUserService.java:18` | 灰度 | `compute.rule.name.list` 代码默认 4 档→7 档 = 计划级匹配的灰度开关。**已自查：PROD（course-setting/product/product-task/product-b 的 application）均未配置 → 走代码默认 7 档，计划级匹配一上线即全量生效**；要不要先灰度由产品口径定 |
+| Q-02 | product-server | `QuestionnaireRecordService.java:574/603` | DDL/并发 | **已自查**：① PROD `gaotu.questionnaire_record`（cluster 71）**无 `retry_count` 列 → 上线前必须提 DDL**；② PROD Job `QuestionnaireRecordComputeHandler`（cron `5 2/10 * * * ?`）**block=丢弃后续调度 → 不会重叠执行，并发无问题** |
 | Q-03 | student-center | `RefundController.java:200` | 口径 | `refund_root_cause` 后端门控但不在下发名单 → 前端空模块；确认口径 |
-| Q-04 | student-center | 展示侧 vs 分析侧 | 口径 | 部门口径不同（展示侧=登录老师部门 / 分析侧=班级二辅部门）；确认是否预期 |
+| Q-04 | student-center | 展示侧 vs 分析侧 | 口径 | 部门口径不同（展示侧=登录老师部门 / 分析侧=班级二辅部门）。**已查：T-11 已记录该差异（分析侧按班级二辅主岗）→ 预期** |
 | Q-05 | cart | `pom.xml` `product-server-client` | 上线 | 钉 `1.5.9-SNAPSHOT`，提测前换正式包 |
 | Q-06 | student-center | `RefundController.java:100` | 兼容/影响面 | `manual_reason` 门控卡死整段通用写接口 `roster/refund/edit`（误伤改名/备注/跟进，多入口不一致）；建议收窄到 `refundReason`/`refundIntent` |
 | Q-07 | student-center | `RefundController.java:211` + `RenewalClazzUserController.java:160/172` | 兼容 | 关闭时返回 `null` → 旧前端读字段白屏；建议与同 diff 的 `analysis()` 一致返回空对象 |

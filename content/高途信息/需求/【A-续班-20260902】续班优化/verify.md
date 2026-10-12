@@ -768,3 +768,20 @@ ES 实证（例）：`36396360685978240-7569543424`、`36396360685978240-7489636
 **复验通过**：① 匹配 record 计算正确（product-b/task feature 未动）；② 桥调 `syncAfterTransfer(7569545505,A,B)` 成功，B 新增明细 `22130`（同 group、新 uniqueBizId），幂等（重调不新增，`7634383219` B 仍 1 条）；③ teacher-tool `POST /feign/questionnaire/user/transfer/sync`：old==new→`data:false 无需同步`、缺 projectNumber→`code:400 参数异常`。
 
 **✅ 更正（2026-10-10）：链路正常，之前判错**——① 明细「没出现」其实是**原地更新**（同手机号取最新）：真实 CDS 提交后 S5 明细 `22028.update_time=17:29:55` = 提交时间；② groupId 已按泳道隔离（ONS `ConsoleTopicSubDetail`：base test `GID_teacher_tool_questionnaire_finish_test_group_test`、dev-3 `..._test-gtbg-dev-3`），**各泳道独立组、不互抢**；base test group 确在消费（`ConsoleConsumerProgress`：clientId `10.255.179.34`、accumulate=0）。③ 之前「被 test-eco-2 pod 抢」是误判。**排查方法**：轻舟 log `queryStr=<topic>` 看 `MqIsolationUtil` 日志 + ONS 控制台查 group/位点——别猜、别进容器。**总开关 `mqIsolation` 保持默认**（代码 `MqIsolationUtil.msgIsolationByConfig`：topic 在例外列表用其 `envIsolation`，不在才回落总开关）。
+
+---
+
+## 代码规范审查·必改验证（2026-10-12/13，`test-gtbg-dev-1` 泳道，✅）
+
+**验证方法**：临时把 `student-data / TEST / application / refund.ai.dept.module.switch` 配成**不命中登录部门**（`{"__qa_verify_nomatch__":["learning"]}`）→ 退费模块对该部门全关；**必须带 `traffic-env: test-gtbg-dev-1` 头**，否则 student-center→student-data 的 Feign 落 base test、拿不到 AI 代码会 fail-open，门控不触发。**验完已发布还原并读回确认**。
+
+**入口**：`POST https://test-fuwu.baijia.com/bgwApi/component/student-center/roster/refund/{edit,course}`（route `/component/student-center`）。
+
+| 项 | 调用 | 实际返回 | 判定 |
+|---|---|---|---|
+| Q-06 | `edit {bizName:"refundReason"}` | `code:8 "手填退费原因模块未开放"` | ✅ 退费原因写仍被门控拦 |
+| Q-06 | `edit {bizName:"__qa_probe_not_refund__"}` | `code:0, data:[]` | ✅ **非退费 bizName 不再被误拦**（本次修复点） |
+| Q-07 | `course` | `code:0, data:{}` | ✅ **空对象，非 null**（防旧版前端白屏） |
+
+> 同轮部署：student-center `5ba12b10`、cart `3594af88`、product-server `9a9b4350`，均 dev-1/dev-3 eureka UP。
+> Q-08/Q-09（cart pom）、Q-10（cache key）为构建/正确性级，以「编译通过 + 部署 eureka UP」为验证。
