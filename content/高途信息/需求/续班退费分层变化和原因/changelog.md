@@ -7,6 +7,14 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-10-13 · 原因卡「不可干预」也下发建议动作
+
+### 🤖 Claude
+- **口径变更 + 做成 Apollo 开关**：产品要求**所有因子都下发建议动作**。`PredictLevelReasonQueryService` 原来 `setSuggestAction(interveneable ? factor.getAction() : null)`（不可干预→null），改为由**开关 `predict.level.reason.suggest.action.all.enable`**（默认 `false`）控制——`true` 时所有因子都透传原文案。**TEST/PROD Apollo 均已发布 `=true`**。单测覆盖开/关两种（`should_controlSuggestActionOfNotInterveneable_bySwitch`），5 个全过。
+- 分支 `feature-predict-action-all`（基于 release）→ student-data **MR !1750**；已发 test-eco-2（commit `3a8859d7`，pod eureka UP）。接口验证：不可干预因子现在返回 `suggestAction`（mock 里为空串——mock 的不可干预因子本就无 action；PROD 都嘉怡那条有文案，会正常显示）。⚠️ 若算法某些不可干预因子确实没产出 action，仍会为空——需算法侧都给出文案。
+
+---
+
 ## 2026-10-12 · 上线前准备（进行中）
 
 ### 🤖 Claude

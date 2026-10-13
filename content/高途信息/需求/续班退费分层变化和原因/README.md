@@ -5,9 +5,10 @@ status: 上线准备
 owner: zhangzeling
 branches:
   - student-data:feature-predict-level-reason
+  - student-data:feature-predict-action-all
   - student-center:feature-predict-level-reason
   - aianalysisinformations:feature-refund-reason-20260825
-updated: 2026-10-12
+updated: 2026-10-13
 tags: [需求]
 ---
 
@@ -39,7 +40,7 @@ tags: [需求]
 - 快照表只存变化点：和上一条比分层，相同就跳过；唯一键 `(scene,user_id,subclazz_number,record_dt)` 保证幂等（2026-09-04）。
 - 截止时间：续班 / 退费 / 结课满 7 天停止更新，按 `record_dt` 判断，不按执行日（2026-09-04）。
 - 触达走 EES 自己的飞书应用「ees 助手」，不走消息盒子、企微和通知中心（2026-09-04，PRD 变更）。
-- 不可干预的因子不下发建议动作；某条因子 `reason` 为空时整条丢弃（2026-09-04）。
+- ~~不可干预的因子不下发建议动作~~ → **改口径（2026-10-13）**：**所有因子都下发建议动作**（含「不可干预·只说明」），`suggestAction` 始终透传算法给的 `action`；某条因子 `reason` 为空时整条丢弃（2026-09-04）。
 - 只下线续班老链路，新 job 上线当天停掉 3 个续班老 job；退费老链路这期不动（2026-09-04）。
 
 ## 现在什么情况
