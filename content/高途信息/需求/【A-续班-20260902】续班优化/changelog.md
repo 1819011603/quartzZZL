@@ -15,6 +15,8 @@ tags: [需求, 日志]
   - **MQ 工单 90538**：PROD group `GID_student-data_renewal_questionnaire_transfer_prod`，**挂实例 `gaotu`(MQ_INST_..._Bay8En7I)** 而非默认 `gaotu-fuwu-prod`——因为订阅的 topic `gaotu_after_sale_event_prod` 就在该实例（发送/消费必须同实例）；状态 pending（直属leader审批）。
 - **teacher-tool-api 定版**：`1.0.29-SNAPSHOT` → `1.0.29` RELEASE（deploy 到 Nexus releases，metadata 可见）；teacher-tool-service、student-data-client 两处依赖同步切 `1.0.29`，编译通过（TT/SD 均 EXIT=0），已 commit + push（teacher-tool `0d03f708`、student-data `f308ea83`）。
 - PROD 复核：course-setting `compute.rule.name.list`/`all.share.questionnaire.renewal` 均未配（走代码默认 7 档）；student-data `after.sale.event.topic=gaotu_after_sale_event_prod`；`renewal.questionnaire.transfer.consumer.group` 未配（待 group 审批后配，否则用测试组名默认值）。
+- **重试上限决策（2026-10-13，用户定）**：`no.compute.user.max.retry.count` **保持默认 3**——不改 Apollo、不降 xjob 频次。依据：实测 PROD `gaotu.questionnaire_record` 全表 85.65 万行、未归属（`computed=0 & manual=0`）4,595（0.54%）、**近 3 天未归属 = 0**；若加到 432（覆盖满 3 天窗口），续班高峰（历史峰值 16.5 万/天）会把匹配链路负载放大近 1 倍 → 否决。重试作用仅限「兜瞬时 RPC 抖动 + 补迟到数据」，外部不变则重跑多少次都一样。
+- **两个澄清（2026-10-13）**：① 重试选择条件 `manual_user_id != 0 → = 0`（`f549f4070`）**确是修 bug**——原条件只挑「手工绑定过但自动没算出」的记录，普通未归属（`manual=0`）从不重试，与 job 注释/意图矛盾；② 该 key 的 Apollo **appId 是 product-b / product-task**（青舟 `apolloId`，按部署注入的 `app.id`），`course-setting` 只是工程 `app.name`。
 - 待办：三仓提 MR（→release）；group/DDL 审批后配 Apollo `renewal.questionnaire.transfer.consumer.group`；发版按 teacher-tool → product-b → product-task → student-data 顺序。
 
 ---
