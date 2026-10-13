@@ -92,6 +92,12 @@ WHERE q.biz_id IN ('<问卷ID1>', '<问卷ID2>');
 - 计划会被**软删除**：`renew_master.isdel=1`，同时 `renew_master_course_relation.isdel=1`。上面那句带 `r.isdel = 0` 的 SQL 只看得到"当前有效"绑定，**已删计划会被漏掉**；要含已删计划就别过滤 `isdel` / `is_del`。
 - prod 实测（2026-10-13）：问卷 biz_id `18204187966701866` / `18231387632501629` 都绑在计划 `18265194658398784`「【EM小学_巍仲衡+侯志腾+KET】26秋一轮续班计划」，该计划 `renew_master.isdel=1`（已软删），其 relation 3 条全部 `isdel=1`。排查记录见工单 `续班与业绩/续班问卷绑定/`。
 
+**删计划 / 解绑问卷（谁做、是否级联）**：
+
+- 删续班计划 `POST /b/renewMaster/delete`（`RenewalMasterManageController`）→ `RenewalServiceImpl.delete()`：只置 `renew_master` / `renew_master_ext` / `renew_master_course_relation` 的删除标记，**不级联解绑问卷**（`questionnaire` / `questionnaire_ext` / `process_config` / `node_config` 不动）。
+- 解绑问卷 `POST /b/renewal/process/questionnaire/unbind`（`ProcessController`）→ `QuestionnaireService.unbind()`：置 `questionnaire` + `questionnaire_ext` 的 `is_del=1`，发 MQ `process_questionnaire_unbind`；该问卷在 `questionnaire_record` 有记录则报「问卷已被使用，无法解绑」。
+- 所以「计划删了、问卷还挂在该计划流程下（`is_del=0`）」是**删计划不级联**的预期行为，不是数据错乱；要清只能逐份解绑。根治须给 `delete` 加级联解绑（product-server）。
+
 ## 排查提示
 
 - 班级/学员看不到问卷 → 先查该前置课程 `renew_master_course_relation.questionnaire_number` 是否为 0，再看 `questionnaire_ext` 条件是否命中课程的年级/学科/部门
