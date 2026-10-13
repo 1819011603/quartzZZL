@@ -21,12 +21,30 @@
 
 ## 排查
 
-1. 以该老师登录态调 `POST /component/student-center/ai/gray/merge`：`renewal=false` → **确定是灰度名单问题**（与班级无关，文案"您所带班级"是误导）。
-2. 定位老师为何不在名单：查其**主岗部门**与**是否有二讲标签(216)**，对照 `ai.gray.merge.map.renewal` 的 `allSwitch` / `grayDeptList` / `onlyAssistant`（prod 2026-10-13 快照见案例）。
-3. 不在名单 = **配置问题**（要不要把该部门加进 `grayDeptList` 由产品/运营决定），不是代码 bug。
-4. 仅当 `gray/merge.renewal=true` 却仍进不去时，再查班级级 `needAnalyze`（下一节）。
+1. 以该老师登录态调灰度接口：`renewal=false` → **确定是灰度名单问题**（与班级无关，文案"您所带班级"是误导）。
+   ```
+   POST https://fuwu.baijia.com/bgwApi/component/student-center/ai/gray/merge   （无 body）
+   → {"new-enrollment":false,"renewal":false,"refund":false}
+   ```
+2. 查老师组织与角色标签（走 student-center 的 acl 桥，见 `baijia-invoke` skill；**18 位 accountId/orgNumber 一律传字符串**避免精度截断）：
+   ```
+   POST https://fuwu.baijia.com/bgwApi/component/student-center/test/acl/compare/service
+   {"serviceNameAndMethodName":"com.gaotu.yunying.student.center.acl.impl.OrganizationAclServiceImpl#listByAccountId",
+    "params":[["<accountId>"]]}
+   → data[0].orgList（部门链 orgNumber/orgName）、data[0].staffLabelGroupList（角色标签 val）
 
-公司组织/标签查询走 `OrganizationAclService`（staff 域）；登录态可直接用 `baijia-proxy` + Cookie 复现该老师。
+   {"serviceNameAndMethodName":"...OrganizationAclServiceImpl#getAccountInOrg",
+    "params":[<accountId>,["<grayDeptList 里的部门号>"], [1]]}
+   → results[].result = 该部门是否命中
+   ```
+   `grayDeptList` 取自 Apollo `ai.gray.merge.map.renewal.grayDeptList`。
+3. 判因（按优先级）：
+   - **部门不在 `grayDeptList`** → 加部门。
+   - **部门已命中、但 `onlyAssistant=true` 而老师角色标签不是 `216`**（线上实测见过 `221 学习顾问`）→ **卡在标签，加部门无效**：给老师补 `216` 二讲标签（人员侧），或把 `renewal.onlyAssistant` 改 `false`，或把该标签 val 加进 `ai.gray.merge.assistant.tag.list`。
+   - 以上都命中 → 再查班级级 `needAnalyze`（下一节）。
+   > 2026-10-13 实测：老师部门(学习规划部 97353074458795709)已在名单、`getAccountInOrg=true`，但角色标签=221 → `renewal=false`；结论是**老师缺二讲标签，student-center 配置不动**。
+
+配置快照见对应案例。登录态可直接用 `baijia-proxy` + Cookie 复现该老师。
 
 ## 附：班级级范围判定（needAnalyze）
 
