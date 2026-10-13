@@ -65,7 +65,9 @@ tags: [需求, 任务]
 >
 > ✅ 「**必改**」Q-06 / Q-07 / Q-08 / Q-09 / Q-10 已改并部署、eureka UP（student-center `5ba12b10`→dev-1、cart `3594af88`→dev-1、product-server `9a9b4350`→dev-3/product-task）。
 >
-> ⏸ **Q-11 暂不改**：2 个调试接口是给**提测覆盖率门禁**加的、标注「上线前删除」，现在删会掉覆盖率卡提测 → **留到上线前删**（本表盯）。
+> ⏸ **Q-11 已闭环**：2 个调试接口（`testRenewalQuestionnaireTransfer*`）已于 2026-10-13 删除（`a5fc17adf`，在 release）。
+>
+> ⚠️ **遗留（非本需求，来自 release 的其它特性）**：student-data-dws `UserTeacherMqTestController`（`/inner/test/userTeacher/*`）、student-data-gps `NodeDetailMqTestController` 仍是「临时代码，上线前删除」；dws 会随发布计划 23716 上线，需其归属方处理或确认是否带上线。
 
 | 编号 | 仓 | 位置 | 类别 | 事项 |
 |---|---|---|---|---|
@@ -79,7 +81,7 @@ tags: [需求, 任务]
 | Q-08 | cart | `cart-client/pom.xml:65-68` | 兼容 | GMQ 挪位置时丢了原有 2 个 slf4j 排除（`log4j-over-slf4j`/`slf4j-log4j12`） |
 | Q-09 | cart | `cart-client/pom.xml:38/58、42/62` | 构建 | 同一依赖声明两次（`ces-teach-product-api` 一处无版本、一处 `1.0.13-RELEASE`） |
 | Q-10 | product-server | `QuestionnaireRecordService.java:637/650` | 契约/影响面 | `planCourseNumbersCache` 只用 `questionnaireNumber` 做 key，缺 `projectNumber` → 跨 project 复用错结果，算错计划级匹配范围 |
-| Q-11 | student-data | `InnerBackController.java` + `LoginInfoFilter.java` | 风险/上线 | 2 个 `【临时代码，上线前删除】` 调试接口（`testRenewalQuestionnaireTransfer*`）直调真实 `syncAfterTransfer`/consumer，且被加进**免登录白名单**；**上线前必须删**（当前未鉴权可触发真实同步）|
+| Q-11 | student-data | `InnerBackController.java` + `LoginInfoFilter.java` | 风险/上线 | ✅ **已完成**（`a5fc17adf`，2026-10-13，在 release）：删除 `testRenewalQuestionnaireTransferConsumer/Sync` 两个 TEMP 接口 + `LoginInfoFilter` 放行白名单 |
 
 ## 完成判据
 
