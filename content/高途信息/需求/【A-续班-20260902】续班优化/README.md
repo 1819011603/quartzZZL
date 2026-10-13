@@ -1,7 +1,7 @@
 ---
 title: 【A-续班-20260902】续班优化
 aliases: [续班优化(秋季批), 续班问卷匹配优化, 续班退费AI模块配置化, 续班退费数据落表, 小班续班主讲数据下单优化, 续班扩科推荐优化]
-status: 开发中
+status: 上线准备
 owner: zhangzeling
 branches:
   - product-server:feature-xuban-match-opt
@@ -11,7 +11,7 @@ branches:
   - student-data:feature-xuban-expand-exclude
   - cart:feature-xuban-expand-exclude
   - product-server:feature-xuban-expand-exclude
-updated: 2026-10-12
+updated: 2026-10-13
 tags: [需求]
 ---
 
@@ -56,11 +56,29 @@ tags: [需求]
 
 | | |
 |---|---|
-| 阶段 | 开发中（1/2/3/5 开发+验证均已完成；扩科「在读」补 2 条已查清，见「下一步」） |
-| 进度 | T 12/12 · R 4/4 · C 0/0；全部验证已收口（T-12 见 [[tasks]]） |
+| 阶段 | **上线准备**（问卷匹配 + 调课同步 → 发布计划 23716，2026-10-13 起；见下「上线准备」） |
+| 进度 | T 12/12 · R 4/4 · C 0/0；全部验证已收口；上线准备进行中 |
 | 部署泳道 | **`feature-xuban-match-opt` → `test-gtbg-dev-3`**（product-task / student-data / teacher-tool）；**`feature-xuban-expand-exclude` → `test-gtbg-dev-1`**（product-b / product / student-data / cart / student-center，2026-09-24 已迁完、均 eureka UP）。2026-09-24 用户定，两分支不再共用泳道 |
-| 当前卡点 | 无技术卡点，T-11/T-12 已验证收口；**需求5「意向预测」模块门控挂起**（`ai/clazzUser/predictLevelReason` 在另一分支 `feature-predict-level-reason`，待其上线/需求5 合流后补）。上线：teacher-tool 须先于 student-data、`teacher-tool-api` 定版 RELEASE |
+| 当前卡点 | 上线准备：🔴 DDL 工单 **146826**（`gaotu.questionnaire_record` 加 `retry_count`，待审批，须先于 product-task）、🔴 MQ 工单 **90538**（PROD group `GID_student-data_renewal_questionnaire_transfer_prod`，实例 `gaotu`，待审批）均待 SRE 审批；teacher-tool-api `1.0.29` RELEASE 已发、两处 pom 已切 RELEASE 并 push；Apollo `renewal.questionnaire.transfer.consumer.group` 待 group 审批后配（未配会走测试组名默认值）。 |
 | 最近更新 | **2026-10-12（AI 配置化·开关表接口 T-12）**：按前端反讲定稿实现 `POST ai/moduleSwitch`（无入参，14 key：续班 `1..9`、退费 `service_suggestion/prediction/manual_reason/learning/tutoring`）+ 各数据接口兜底调整 + 枚举补 code `9`/`manual_reason`；student-center `7d74dbf8f` / student-data `6ae6bc798`（均 `feature-xuban-expand-exclude`）已 push、部署 `test-gtbg-dev-1` 并自验通过（详见 [[verify]]「AI 模块开关表接口」、[[changelog]]）。**2026-10-10（提测核查）：飞书《提测 P0 用例》doc 来源是已停用的 banshan 49607（23 条），现行维护集是 49647（功能用例 record 70798 = 77 项，已执行 32、约 36 未执行）；提测编排 23716 仍挂 49607，需 QA 确认迁 49647。base `test` 泳道已跑 feature 分支；桥直调 `syncAfterTransfer` 复制明细成功，但合成 MQ 调课事件未被消费 → E/G 模块在 test 须走真实售后；doc 调课发法（发 `TRANSFER_TOUCH_EVENT`）已过时（现默认只订 `TRANSFER_SUCCESS_EVENT`）。详见 [[verify]]「提测 P0 用例核查」**。2026-10-10：三仓 `feature-xuban-match-opt` 反合 `origin/release`（student-data `48c0ff2c` / teacher-tool `9c98a14a` / product-server `35f2a80e`，均无冲突已 push），并全量部署**基础 test 环境**（envInfoId 2，非 dev-3）eureka UP：student-data / -dws / -gps、teacher-tool、product / -task / -b**。2026-09-30（二）：扩科「上课形式为线上」读侧过滤已开发**——`RenewalInReadSubjectService` 按 Apollo `renewal.inread.operation.modes`（list，空=不过滤）过滤在读班级上课形式，student-data `dce3b3a45`（expand-exclude）单测 8/8 过，TEST Apollo 已配 `[1]` 发布生效，dev-1 部署中。**2026-09-30（一）：扩科推荐 PROD Apollo 降级开关 `renewal.expand.exclude.switch=true` 草稿已建（cart.gaotu100.com/PROD/application），发布被权限挡（负责人 lijianxiang），待授权/代发，未生效但无风险（代码默认 true）**。2026-09-29：T-11（AI 配置化 fail-open）dev-1 补验通过**：① arthas 无 web 上下文直调 student-center `AiModuleSwitchQueryService` → `true`（无登录态 fail-open）；② 真实 HTTP 入口（proxy 登录态 177071）临时改 Apollo 部门为两个不匹配值 → `data:{}`（显式拦截未被 fail-open 误放行）；③ 改回 177071 真实部门 `6816343048455168` → 返回完整数据（正对照）；三步验完 Apollo 已改回原值 `{"97349606689168923":[1..8]}` 并读回确认。T-11 状态置为已完成，进度 T 11/11。2026-09-28：QA 用例 49607（23 条）dev-3 全量回归 23/23 全部通过，已回写 banshan 并读回确认（passRate 100.0%，caseId 49607/70678）。原阻塞项「调课 TC0002 A 侧先调后填」已解决**：`enterClazz` 走真实订单链路会 520（data-agent `mock_pay` 未注册、本地 executor 缺依赖），改为直接写 `gaotu.subclazz_student` 两行模拟「A 已退出 + B 在读」（学员 20040），机制验证通过（A/B 花名册均 `renewalQuestionnaireStatus=3`）。**部署补漏**：`student-data-dws`（独立 Spring Boot 应用/独立 pod，承载花名册回写消费者）此前从未在本轮单独部署，已补发并确认 eureka UP。`poll_pods.py` 加分支/commit 展示已生效。 2026-09-24（收尾）：7 档含亲属号全部 E2E、调课「非同一问卷不共享」修复并 E2E、expand-exclude 迁 dev-1 并补验扩科/AI；剩余仅造数受限项（机制已验）与 3 条待拍板（在读 2 条、重试条件）。2026-09-24（全量补验）：T-07 重试次数 E2E ✅、AI 圈选侧 pod 内断言 ✅（+单测 `3777608bc`）、主讲 PROD `es_query_config` 含 `mainTeacherAccountIds` ✅；对照 PRD 审计出 3 处待决策 + 若干缺用例（见「下一步」）。2026-09-24（晚）：**第三轮优化**——teacher-tool 同步接口回报原班是否有问卷，无则 student-data 跳过整条重算链路；复审修掉一个发布兼容问题（旧版 teacher-tool 返回 data=null 会被当成「无问卷」全部短路，改为仅明确 false 才短路）。teacher-tool `8f5b2787` / student-data `a20d71543`，`teacher-tool-api` 升 `1.0.29-SNAPSHOT`；已部署 `test-gtbg-dev-3` eureka UP，短路（20018 A→B）与回归（20018 B→A 花名册 1→3）E2E 均通过（见 [[verify]]「第三轮」）。更早：**修复花名册顺序缺陷**，经一轮 code review + 用户要求收敛架构为 v2——student-data 消费者同步调 teacher-tool 新 Feign 接口复制明细、复制成功立即重算状态写花名册；teacher-tool 原独立 consumer 已退役（`student-data` `ecfcb6e4f`、`teacher-tool` `b82665d9`、`teacher-tool-api` 升至 `1.0.28-SNAPSHOT`）；20022 端到端验证通过。**第二轮对抗复审又修 2 处**：① teacher-tool 判重快照只查一次，原班同 `questionnaireId` 有两条时会复制两次（真 bug，`5d158d55f`）；② student-data 日志格式不符合管道规范（style，`f1c352a8e`）。两边重新部署 `test-gtbg-dev-3`、eureka UP，新造学员 20023（A 班故意插 2 条同 `questionnaireId`）验证 B 班只复制 1 条，花名册状态正确变已提交（详见 [[verify]]「先填后调缺陷修复」+「第二轮 code review 修复」）。2026-09-23：**修掉扩科推荐一个线上会复现的真 bug** —— cart fastjson 全局 SnakeCase 把 Feign 请求体发成 `user_id`，student-data 绑不上、`otherModeInReadSubjects` 恒返回空；改用 `CesCamelCaseFeignConfig`（`96e334b8`），两泳道实测 `[12]`。排除逻辑 E2E 已验（开排除只剩 subject=4 / 关排除两条都在）。按错误判断加的 `FeignTrafficEnvForwardConfig` 已回退（`6deaa256`）。原先「受阻于测试泳道基础设施、非产品 bug」的结论已更正（见 [[verify]]）。**【扩科推荐】B/C 端真实入口 E2E 已验证**：计划 `579985778241837056`（大班）+ 学员 `20002`，`excludeMode=1` 只剩 subject=7、`=0` 对照三条都在（B 端 `recommendProductList` / C 端 `web/renewal/cart`）。2026-09-23 **【AI 配置化】开发完成**（student-data 分析侧+配置+feign、student-center 展示侧，已 push：`c91d5cd66` / `7b9215766`）。同日**部门口径修正**：课程部门 → 老师（二讲）主岗部门 `mainPostOrgPathFromRoot`（`_` 分隔），student-data `12e41da47` / student-center `84ec1b732` 已 push；**2026-09-23 复核**：两服务已部署 `test-gtbg-dev-3` 且 eureka UP，Apollo 已换 org number `6816343048455168`，**门控（命中/未命中）、分析侧 E2E（`handleCode=2`）、展示侧真实入口均验证通过**（见 [[verify]]「部门口径修正」）；**本轮补验（2026-09-23）**：① 退费归因 E2E 通过（造 `refund_intent_info` 改上下文 → `refreshReasoning` → 新 pod 过门控调 AI、结果落库）；② **调课调班真发 MQ 端到端通过**（`gaotu_after_sale_event_test`+`TRANSFER_TOUCH_EVENT` → B 复制明细 + 重投幂等）；③ 圈选侧门控函数级已验；④ **R-04 线上 Apollo 核实**：`compute.rule.name.list`/`all.share.questionnaire.renewal` PROD/TEST 均未配置（走代码默认）|
+
+## 上线准备（2026-10-13 · 发布计划 23716「问卷匹配 + 调课同步」）
+
+范围 = 发布计划 **23716**，5 个后端服务：teacher-tool / product-b / product-task / student-data / **student-data-dws**（同 build，承载花名册回写消费者，别漏）。上线方案见 [[links]]（飞书《上线方案（问卷匹配+调课同步）》）。
+
+**PROD 现状核查（2026-10-13 读回）**
+
+| 上线项 | 现状 | 结论 |
+|---|---|---|
+| 代码 MR（三仓 → release） | 三仓 `feature-xuban-match-opt` 均领先 release、未合 | ⏳ 待提 MR |
+| teacher-tool-api 定版 | 已发 **`1.0.29` RELEASE**（Nexus releases 可见）；teacher-tool-service、student-data-client 两处 pom 已切 `1.0.29`，已 push（teacher-tool `0d03f708`、student-data `f308ea83`） | ✅ |
+| MySQL DDL `retry_count` | 工单 **146826**（sre.baijia.com，cluster 71 `gaotu-center-prod`，Inception ok）；PROD 仍 18 列无该列 | 🔴 待审批/发布 |
+| MQ consumer group | 工单 **90538**（op.baijia.com）；实例 `gaotu`(Bay8En7I) 尚无该组 | 🔴 待审批（现 pending 直属leader审批） |
+| Apollo student-data | `after.sale.event.topic=gaotu_after_sale_event_prod` ✅；`renewal.questionnaire.transfer.consumer.group` **未配** | 🔴 待 group 审批后配 |
+| Apollo course-setting | `compute.rule.name.list`/`all.share.questionnaire.renewal` 均未配 → 走代码默认 7 档 ✅ | ✅ 无需动作 |
+| ES / 代课权限 / xjob | 只写已有字段 / 仅内部 Feign / 不改配置 | ➖ 不涉及 |
+
+**发版顺序**：teacher-tool → product-b → product-task → student-data（-dws）；每个 eureka UP 再发下一个。**teacher-tool 必须先于 student-data**（两边 release 无 `/transfer/sync`，student-data 先上会 404 → 重试耗尽进死信）。product-task 必须在 DDL 之后。
 
 ## 下一步
 

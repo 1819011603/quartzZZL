@@ -7,6 +7,18 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-10-13（上线准备：问卷匹配 + 调课同步，发布计划 23716）
+
+### 🤖 Claude
+- 范围 = 发布计划 **23716**，5 个后端服务（teacher-tool / product-b / product-task / student-data / student-data-dws）。PROD 实地读回后补两个前置工单：
+  - **DDL 工单 146826**：`ALTER TABLE questionnaire_record ADD COLUMN retry_count int(11) NOT NULL DEFAULT '0' COMMENT '未匹配重试次数'`（cluster 71 `gaotu-center-prod`，来自 `jdbc.gaotu.url`；Inception ok——带 `AFTER is_del` 报 warning，去掉后 ok）。须先于 product-task 上线（xjob 10160 每 10 分钟跑，缺列报错）。
+  - **MQ 工单 90538**：PROD group `GID_student-data_renewal_questionnaire_transfer_prod`，**挂实例 `gaotu`(MQ_INST_..._Bay8En7I)** 而非默认 `gaotu-fuwu-prod`——因为订阅的 topic `gaotu_after_sale_event_prod` 就在该实例（发送/消费必须同实例）；状态 pending（直属leader审批）。
+- **teacher-tool-api 定版**：`1.0.29-SNAPSHOT` → `1.0.29` RELEASE（deploy 到 Nexus releases，metadata 可见）；teacher-tool-service、student-data-client 两处依赖同步切 `1.0.29`，编译通过（TT/SD 均 EXIT=0），已 commit + push（teacher-tool `0d03f708`、student-data `f308ea83`）。
+- PROD 复核：course-setting `compute.rule.name.list`/`all.share.questionnaire.renewal` 均未配（走代码默认 7 档）；student-data `after.sale.event.topic=gaotu_after_sale_event_prod`；`renewal.questionnaire.transfer.consumer.group` 未配（待 group 审批后配，否则用测试组名默认值）。
+- 待办：三仓提 MR（→release）；group/DDL 审批后配 Apollo `renewal.questionnaire.transfer.consumer.group`；发版按 teacher-tool → product-b → product-task → student-data 顺序。
+
+---
+
 ## 2026-10-12（代码规范审查：5 仓 diff 对照「开发防返工检查」）
 
 ### 🤖 Claude
