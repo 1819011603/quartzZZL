@@ -74,10 +74,29 @@ test 实测（2026-10-09）：计划 `583779043812329472` → 问卷 biz_id `177
 - 改绑或新增问卷会全量重算该流程下的前置课程，所以按 `update_time` 增量同步要覆盖这种批量更新。
 - 这些是 product-server 的 `gaotu` 业务库，不是 ees 库。
 
+### 反向：问卷ID(biz_id) → 续班计划（含已删除）
+
+上面的链是「问卷 → 匹配到的前置课程」。若只问**这张问卷绑在哪个计划**，看**绑定层**，不要用 `renew_master_course_relation`（那是规则匹配后的结果，未发布 / 未匹配 / 计划已删时为空）：
+
+```sql
+SELECT q.biz_id, q.number AS questionnaire_number, q.process_number,
+       p.renewal_number, m.name AS plan_name,
+       m.isdel AS plan_deleted, p.is_del AS process_deleted
+FROM gaotu.questionnaire q
+JOIN gaotu.process_config p ON p.number = q.process_number
+LEFT JOIN gaotu.renew_master m ON m.number = p.renewal_number
+WHERE q.biz_id IN ('<问卷ID1>', '<问卷ID2>');
+```
+
+- 页面「问卷ID」= `questionnaire.biz_id`；而 `renew_master_course_relation.questionnaire_number` 和 product-b 匹配接口入参用的都是 `questionnaire.number`——**两者混用会查空、误判"未绑定"**。
+- 计划会被**软删除**：`renew_master.isdel=1`，同时 `renew_master_course_relation.isdel=1`。上面那句带 `r.isdel = 0` 的 SQL 只看得到"当前有效"绑定，**已删计划会被漏掉**；要含已删计划就别过滤 `isdel` / `is_del`。
+- prod 实测（2026-10-13）：问卷 biz_id `18204187966701866` / `18231387632501629` 都绑在计划 `18265194658398784`「【EM小学_巍仲衡+侯志腾+KET】26秋一轮续班计划」，该计划 `renew_master.isdel=1`（已软删），其 relation 3 条全部 `isdel=1`。排查记录见工单 `续班与业绩/续班问卷绑定/`。
+
 ## 排查提示
 
 - 班级/学员看不到问卷 → 先查该前置课程 `renew_master_course_relation.questionnaire_number` 是否为 0，再看 `questionnaire_ext` 条件是否命中课程的年级/学科/部门
 - 问卷已提交但花名册显示未发送 → 工单 `续班与业绩/续班问卷状态/`
+- 问某张问卷绑在哪个计划、或按问卷ID查不到绑定 → 见上文「反向」小节；先分清 biz_id / number，注意计划可能已软删（`renew_master.isdel=1`），别只按 `isdel=0` 过滤
 
 ## 青舟接口详情页（product-b / release）
 
