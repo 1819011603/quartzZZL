@@ -7,6 +7,34 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-10-13 · 触达与「续班AI（分层）学部白名单」拉齐（待办）
+
+### 🤖 Claude
+- **背景**：王永诗反馈——提醒（触达）本应与分层原因配套，分层在续班AI里、只给精品班等几个学部放开；EM 二讲来问，但没开通续班AI。问「有没有加限制」。
+- **现状**：**没加限制**。PROD 展示 `predict.level.reason.enable.all=true` + 触达 `predict.level.down.notify.enable.all=true` 都是全量 → 触达发给所有带课老师。
+- **机制**：`RenewalLevelDownNotifyService.isNotifyEnabled` 在**触达非全量 + dept 非空**时会 `return predictLevelReasonGrayService.isEnabled(clazz)` —— 即复用「展示（续班AI）」白名单。所以「只给开通续班AI的学部触达」**机制上已支持**，只要触达别设全量、且展示用学部白名单。
+- **候选学部来源 key**（代码里找）：**`renewal.intention.predict.mapping.info`**（`RenewalComponent` `@ApolloJsonValue`；元素 `levelCode`=学部名_学期 或 部门id路径 → 分层阈值 stage/intentInfo）。PROD 里配了分层的学部：`H业务线_精品班学部`、`EM业务线_素养初中学部`、`EM业务线_综合素养学部`（+ 部门路径 `10000683/10013429_Q`、`10019197/10012667_Q`、`defaultLevel`）。同类 key：`renewal.intention.config.mapping.info`（学部→code）、`refund.intention.predict.mapping.info`（退费）。
+- **口径不一致**：该配置的 levelCode 是**学部名**，而展示/触达 gray（`predict.level.reason.enable.dept`）判的是**部门 id 路径** → 拉齐需 ① 配上学部对应部门 id，或 ② 改 gray 读同一份学部配置。
+- **待办**：见 T-11（需 PM 确认学部口径 + 选 ①/②）。**待确认**：王永诗说的「续班AI 学部」是否 = `renewal.intention.predict.mapping.info` 的 levelCode 清单。
+
+---
+
+## 2026-10-13 · 续班下降触达按场景配飞书机器人（【续班助手】）
+
+### 🤖 Claude
+- **需求**：马胜反馈【ees助手】是内部用的，对外触达要独立机器人；且以后**新增场景要能各自配机器人**（Apollo 配，不改代码）。
+- **实现（分支 `feature-renewal-reason-editable`）**：新增通用**飞书机器人注册表** `LarkRobotClientRegistry`（`student-data-service/notice/config`）——按场景取机器人：
+  - Apollo `lark.notice.robot.config`（JSON map）：`{"场景key":{"appId":"","appSecret":""}}`；
+  - Apollo `lark.notice.robot.default.appId/appSecret`：默认机器人（未配场景用它）；
+  - 都取不到 → 回退 `mqNoticeLarkClient`（内部【ees助手】）。
+  - **Apollo 变更热生效**（`@ApolloJsonValue`/`@Value` 自动刷新，appId/secret 变了下次取用时重建 client），不用改代码、不用重启。
+  - `RenewalLevelDownNotifyService` 改用 `getClient(SCENE_RENEWAL_DOWN)`。**只动这个触达**，`mqNoticeLarkClient`（BCP 等）未动、未配场景行为不变。
+- **配置**：新机器人【续班助手】appId `cli_aa4755e8e9b8dcce` 已写入 Apollo `lark.notice.robot.config` 的 `renewalDown` 场景（**TEST + PROD 均已发布**）。
+- **部署**：test-gtbg-dev-3（commit `da28ac03`，eureka UP）。⚠️ PROD 生效需先合 release + 发版。
+- ⚠️ 待办：新机器人要像【ees助手】一样配 **`im:message` 权限 + 可用范围「全员可用」**，否则发不出。
+
+---
+
 ## 2026-10-13 · 原因卡「不可干预」也下发建议动作
 
 ### 🤖 Claude

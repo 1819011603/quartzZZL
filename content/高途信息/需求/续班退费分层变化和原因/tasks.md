@@ -17,6 +17,7 @@ tags: [需求, 任务]
 | T-08 | 上线当天执行：发 3 个服务镜像（student-data/dws/student-center）、停老 job 10413+10073、启新 job 12753+12754、飞书【ees助手】可用范围设「全员可用」、逐项读回验证 | 待办 | 依赖 SRE 发布快照表 DDL、天工明细表就绪 | 步骤见 [`上线方案.md`](上线方案.md) 二/七/十一/十三 |
 | T-09 | 线上天工同步任务（源正式表 → `ees_data_prod`1479 / `ees_data.ai_predict_level_reason_detail`） | 已完成 | — | 目录 103709 新建 taskId **47936**/节点 **104349**，照搬 47772 只改源表名+datasource，读回一致。已发布（nezhaId **67730**）、每天 14:00；实测出数 renew+refund。 |
 | T-10 | 明细表清理 job（保留 30 天） | 已完成 | — | xjob **12793**（GLUE_GROOVY/group 530），每天 03:00 `DELETE ai_predict_level_reason_detail WHERE dt<今天-30 LIMIT 2000`，快照不动；已实测 handleCode=200、已启动。 |
+| T-11 | 触达与「续班AI（分层）学部白名单」拉齐：只给开通续班AI的学部发触达 | 待办 | 需 PM 确认学部口径 | 现状：PROD 展示/触达都**全量**（`predict.level.reason.enable.all` / `predict.level.down.notify.enable.all`=true）→ 无限制，EM 二讲等没开通续班AI也会收到。代码：`isNotifyEnabled` 在**触达非全量 + dept 非空**时复用展示白名单（`predictLevelReasonGrayService.isEnabled`）。候选来源 key = **`renewal.intention.predict.mapping.info`**（`RenewalComponent` 读；`levelCode`=学部名_学期，PROD 配了 H业务线_精品班 / EM业务线_素养初中 / EM业务线_综合素养 + 部门路径 `10000683/10013429_Q`、`10019197/10012667_Q`）。两条路：① 把展示/触达 gray 的 dept 白名单配上这些学部对应**部门 id**；② 改代码让 gray 直接读「学部」配置。 |
 | T-06 | 快照表字段精简（删 `predict_score`/`model_version`/`status`）+ 班级索引 + 按班级回溯桥方法 | 已完成 | — | 代码已改、编译+单测通过、已 push 并发 test-eco-2。见 [[changelog]] 2026-10-08 |
 | T-07 | `ai_predict_level_reason_detail` 加业务唯一键（天工去重） | 已完成 | — | PROD 表已有唯一键 **`uk_dt_user_clazz_sub_type(dt,user_number,clazz_number,subclazz_number,type)`**（`NON_UNIQUE=0`，实测）；天工 upsert 幂等已验证（多次跑行数不翻倍）。 |
 
