@@ -159,12 +159,20 @@ $M $C baijia_invoke cosplay_logout
 
 > 展示与筛选都源自同一对 ES 原始字段（`smallCanRenewal` + `smallRenewalStateStatus`），口径上必然一致。
 
-## ⚠️ 两个"不可续"别搞混（高频误报）
+## ⚠️ 续班轮次里的「不可续」≠ 续班状态；且小班漏了联动逻辑（已确认缺陷）
 
-- **续班轮次** `smallRenewalRoundFilter` 的选项来自 `getRenewalInfo.renewalRoundList`，值域 = `RenewalRoundEnum`：**`0=不可续`** / 1=一轮 / 2=二轮 / 3=三轮及以上。所以筛选栏里会出现一个字面为「**不可续**」的标签 —— 它选的是**轮次=0**（后端映射到 ES `smallRoundIdx=0`），**不是**续班状态。
-- **续班状态** `smallRenewalReportStatus` 的值是 1可续已续/2可续未续/3不可续已续/4不可续未续，**没有**单独一个"不可续"。
-- 典型误报：班级学员 `smallRoundIdx=3`（展示为"一轮"）、续班状态全为"不可续未续"。用户把「续班轮次」下拉里的**不可续**当成状态筛选 → 得到 0 条，其实正确（该班没有轮次 0 的学员）；真正的「续班状态=不可续未续」筛选是好的。
-- 判据：看筛选标签所在**选择器**——续班计划 / 续班轮次 / 续班状态，标签文案「不可续」只可能来自续班轮次。
+**字段层面**两个是分开的：
+- **续班轮次** `smallRenewalRoundFilter`（`×`选择器，来自 `getRenewalInfo.renewalRoundList`），值域 `RenewalRoundEnum`：**`0=不可续`** / 1=一轮 / 2=二轮 / 3=三轮及以上。
+- **续班状态** `smallRenewalReportStatus`（走 `quickFilter.renewalReportStatusFilter`），值 1可续已续/2可续未续/3不可续已续/4不可续未续，**没有**单独一个"不可续"。
+
+**但大班/小班行为不同（这是缺陷）**：
+- 大班 `RenewalRoundFilterService`：选「不可续」时**额外**加一段 `mustNot canRenewal ∈ {1,2,8}`（即按"续班状态=不可续"过滤），与 `terms(roundIdx,[0])` 是 `should`（OR）→ 能筛出**所有不可续学员**。
+- 小班 `SmallRenewalRoundFilterService`：**同一段被注释掉**（源码里可见 `// if (...RenewalRoundEnum.UN...) {...}`），只剩 `terms(smallRoundIdx,[0])` → 只能筛"轮次=0"的学员。
+
+**后果**：班级学员都在「一轮」(如 `smallRoundIdx=3`) 且续班状态全是「不可续未续」时，小班选「续班轮次=不可续」→ **0 条**（大班同样操作能出）。这**不是筛错入口**，是小班漏移植大班的不可续联动逻辑。
+- 实测（班 `552794618077558825`，56 人全 `smallCanRenewal=4`/`state=2`）：ES 按"小班现状(只 `smallRoundIdx=0`)"= **0**；按"大班逻辑(should[不可续状态, `smallRoundIdx=0`])"= **18**。
+- 要按状态筛也能用「续班状态」筛选（走 quickFilter，实测 code4 → 18 条），但用户预期的是轮次下拉里的「不可续」生效。
+- 修复方向：给 `SmallRenewalRoundFilterService` 补回 `RenewalRoundEnum.UN` 时 `mustNot smallCanRenewal ∈ {1,2,8}` 那段（与大班对齐）；字段名是 `smallCanRenewal`（大班是 `canRenewal`）。
 
 ## 复现 / 排查踩坑
 
