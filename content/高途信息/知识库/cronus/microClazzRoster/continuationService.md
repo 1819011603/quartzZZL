@@ -81,7 +81,38 @@
 ```
 
 - 续班轮次的值是 `RenewalRoundEnum` code（0/1/2/3），后端 `RoundIdxEnum.ROUND_IDX_MAP` 再映射到 ES `smallRoundIdx`（一轮→[1,3]）。
+- **`smallRenewalRoundFilter` 必须给**：`SmallRenewalRoundFilterService.support()` 对任何字段都返回 true（只要 identification 命中），`build()` 无条件追加 `terms(smallRoundIdx, 映射结果)`；不传轮次时映射为空 → `terms(空)` 匹配 0 条。
 - 指标 `/roster/small/renewal/statistic` 入参是另一套（`SmallRenewalStatReq`：`clazzNumbers[]` + `round[]`），不是上面的 `filter`。
+
+## 直调复现模板（本页专用；通用清单见 skill `gaotu-ticket-triage`「复现：直调页面接口」）
+
+> 同类型问题（其它页面也适用）的通用步骤：定位知识库 → 带 `B_client` 头 → 按登录人过滤就先代课 → `identification` 等固定参数 → 查 ES/DB 核对 → 别直调 service bean。
+
+**三步：**① 代课成该班老师 → ② 带 `B_client` 头直调 → ③ 用完 logout。
+
+```bash
+# ① 代课（账号名=拼音；吕建权=lujianquan、张嘉武=zhangjiawu）
+M=~/.local/mcp-servers/venv/bin/python; C=~/.local/mcp-servers/mcpcli.py
+$M $C baijia_invoke cosplay_login -k cos_account_name=<拼音>
+# accountId → 账号名：SELECT account_id, email_prefix FROM gaotu.employee WHERE account_id=<id>
+#                    （cluster=gaotu-center-prod / db=gaotu；主讲/二讲 accountId 见 ES mainTeacherAccountIds/assistantAccountId）
+
+# ② 直调（务必带 -H 'B_client: GPS'）
+curl -sk -x "${AGENT_PROXY_URL:-http://127.0.0.1:8888}" \
+  'https://fuwu.baijia.com/bgwApi/component/student-center/roster/small/renewal/page' \
+  -H 'content-type: application/json' -H 'traffic-env: prod' -H 'B_client: GPS' \
+  --data-raw '{"identification":"microContinuationService",
+    "filter":{"clazzNumber":[<班级号>],"smallRenewalNumber":[<计划号>],"smallRenewalRoundFilter":[1],
+              "clazzStudentStatus":[1,3],"smallRenewalReportStatus":[4]},"pager":{"current":1,"pageSize":50}}'
+
+# ③ 收尾
+$M $C baijia_invoke cosplay_logout
+```
+
+- **必带 `B_client: GPS`**：否则页面内部 `SmallClazzUserPermissionFilterService` 的 staff 调用失败 → `{"code":42,"msg":"调用staff失败"}`。`/roster/...` 不在 `LoginInfoFilter` 自动取 bclient 的前缀里，必须手动带。
+- **页面有权限过滤**：只出登录老师可见学员（`assistantAccountId`/`mainTeacherAccountIds` + postTag 通配 + 兼职账号）。用无关账号调 → 0 条，不是接口问题。
+- 想核数据与页面对不上时，直接查 ES `ads_small_clazz_user` 的 `smallCanRenewal`/`smallRenewalStateStatus`/`smallRoundIdx`/`clazzStudentStatus`。
+
 
 ## 关键字段口径（续班状态）
 
@@ -103,10 +134,9 @@
 ## 复现 / 排查踩坑
 
 - **ES 索引**：`ads_small_clazz_user`（物理 `ads_small_clazz_user_v1`），bean `studentServeClient`，host = Apollo `student.serve.es.cluster.host`（`es` namespace）。可 `es-apply/es_workorder.py search` 直接查。
-- **HTTP 直调必须带 `B_client` 头，否则报 `code:42 调用staff失败`**：页面接口每次都会跑 `SmallClazzUserPermissionFilterService` → `organizationAclService.listPermissionWithPartTimeBySceneAndAccountId`（staff 调用），该调用依赖 `StaffInfoHolder.getBclient()`。用 curl/invoke_http 直调时**必须加 `-H 'B_client: GPS'`**（`LoginInfoFilter` 只对 `/gps`、`/node-instance` 前缀自动从 header 取 bclient，`/roster/...` 不在其中），否则 staff 调用失败、整个接口返 42。**这不是接口本身的问题。**
-- **页面有权限过滤（只出登录老师可见的学员）**：`SmallClazzUserPermissionFilterService` 按 `es_query_config`(type=5) 的 `assistantAccountId`/`mainTeacherAccountIds` + `assistantMainPostTag`/`mainTeacherMainPostTag` 通配 + 兼职账号过滤。用无关账号调会得 0；**复现某班要先代课成该班主讲/二讲**（`mcpcli baijia_invoke cosplay_login -k cos_account_name=<拼音>`；注意拼音：吕建权=lujianquan）。
 - **别直接调 service bean 复现**：`SmallRenewalService#page/count` 依赖 `ThreadLocalHolder.getGaiaIdentification()`（由 Controller 设置），经 ACL 桥直调 service bean 时该值为空 → 所有 GAIA 筛选器 `support()` 返回 false → 条件被整体丢弃（`count` 返回全量），**会得到假的结论**。
-- **ACL 桥调 Controller 也不行**：`SmallRenewalController` 是 CGLIB 代理，桥的 `findMethod` 用 `getDeclaredMethods` 找不到 `pageRenewal`（0 参方法如 `defaultValue` 可调）。
+- **ACL 桥调 Controller 也不行**：`SmallRenewalController` 是 CGLIB 代理，桥的 `findMethod` 用 `getDeclaredMethods` 找不到 `pageRenewal`（0 参方法如 `defaultValue` 可调）。→ 复现一律走 HTTP（见上「直调复现模板」）。
+
 
 ## 青舟接口详情页
 
