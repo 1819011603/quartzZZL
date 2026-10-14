@@ -89,3 +89,37 @@ tags: [需求, 任务]
 
 > 每个未闭环任务「怎样才算完成」的可检查判据；完成一项删一行，全部闭环后本节为空。
 
+---
+
+## P- 待产品确认（第二批 · 2026-10-14，可直接转产品）
+
+> 代码已按现状实现，以下需产品拍口径；拍完再决定是否改代码。
+
+### P-01 🔴 复合/非单季学期课程 → 扩科「推荐排除」静默不生效（**要产品定**）
+
+- **现象**：续班「当前课程」（前置课程）的学期是**非单季**时，扩科推荐选【排除不同授课模式在读】**不生效**——本应排除的「对方模式在读学科」仍会被推荐出来。
+- **非单季学期码**：循环班 `R`、全年班 `Y`、暑秋 `X-Q`、寒春 `D-C`；线上大班在读表**实测还有** `CU`/`CD`/`QU`/`QD`（2026 年约 16 万行）。
+- **根因**：PRD 要求排除「与当前课程**相同学年+学期**」的对方模式在读学科。课程学期是 **OES 字母码**；大班在读表是 OES，**小班在读表是 CES 数字码（1春/2暑/3秋/4寒）**。当前课程是**大班**时要把它换算成 CES 才能匹配小班表，**但换算只支持单季 `C/X/Q/D`**（`SmallClazzOesCesSchoolTermEnums`），非单季换算不出 → 查不到在读 → 不排除（保守降级、不报错）。
+- **影响面**：仅**当前课程=大班**方向（小班→大班是 OES 直接比对，不受影响）。受影响学员的扩科推荐会多出「对方模式已在读」的学科。
+- **数据**：线上大班在读表 `dws_fuwu_clazz_user_subject` 非单季学期 **≈28%（107 万 / 381 万行）**。
+- **要产品确认**：
+  1. 续班计划会不会绑**非单季**的前置课程（循环班/全年班/暑秋/寒春）？
+  2. 若会，这类课程的「相同学期」怎么定义——**展开成对应单季**（如暑秋 X-Q → 夏 X + 秋 Q）？还是**整段匹配**？还是**就不排除**？
+  3. 若业务上基本不绑这类课程 → 维持现状（不排除），不改代码。
+
+### P-02 退费根因（`refund_root_cause`）已下线 → 后端门控 `/reasonType` 是死代码
+
+- **已核实（前端 master `0685c9b4` + feature 分支）**：refund tab 只调 `/roster/refund/{analysis, reason, course, stage, edit, evaluate, gray}`，**不调 `/roster/refund/reasonType`**，全仓无「根因/rootCause/satisfaction」→ **退费根因模块前端已下线**。
+- **要确认**：后端 `reasonType` 接口 + `RefundAiModuleEnum.REFUND_ROOT_CAUSE` 是否顺带删除（当前门控无害）。
+
+### P-03 「分层原因/变化」门控口径
+
+- 已给 `POST ai/clazzUser/levelReasonAndHistory` 挂**续班模块 9（意向预测）**门控（与 `predictLevelReason` 续班分支同口径），关闭返空对象。
+- **要确认**：口径对不对（该接口前端当前未调，只调 `predictLevelReason`）；是否属「分层变化与分层原因」独立需求、该用哪个模块。
+
+### P-04 上线前置（非产品，需 MR/发包授权）
+
+- 四仓（product-server / student-data / student-center / cart）反向合 `release` 并复测；
+- `product-server-client` `1.5.9-SNAPSHOT` → 发 `1.5.9` RELEASE；cart pom 切 RELEASE；
+- `student-data-client` `0.0.52.5-SNAPSHOT` → 定版 RELEASE（student-center 依赖）。
+

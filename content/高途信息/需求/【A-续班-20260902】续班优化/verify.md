@@ -834,3 +834,32 @@ ES 实证（例）：`36396360685978240-7569543424`、`36396360685978240-7489636
 ### 清理
 
 - cart / product-server 误提交的 `.run/bridge-remote-*.run.xml`（含 pod IP）移出仓库并 gitignore（cart `7794a329` / product-server `c1b9225ef`）；订正 `filterByOperationMode` 注释、`AiModuleSwitchClient` javadoc。
+
+### 追加修复 + 环境执行（2026-10-14 晚，`test-gtbg-dev-1`，✅）
+
+**再修 3 项**（均编译+部署+E2E）：
+- **`/roster/refund/reason` 挂 `manual_reason` 门控**（student-center `479817691`）：关闭返空对象。
+- **`ai/clazzUser/levelReasonAndHistory` 挂续班模块 9 门控**（student-center `dfe9e0495`，pod `dfe9e049`）：关闭返空对象。
+- **AI 分析侧灰度未开始时短路部门解析**（student-data `f1817c92d`）。
+
+**执行记录**（真实 HTTP / 桥，dev-1）：
+
+| # | 用例 | 入参 | 实测 | 判定 |
+|---|---|---|---|---|
+| EX-1 | 扩科排除·服务级·跨学期剔除 | `listOtherModeInReadSubjects(20002,1,2026,"X")` | `[4]`（仅 2026 夏季） | ✅ |
+| EX-2 | 同上·另一学期 | `(20002,1,2025,"C")` | `[1,2]`（仅 2025 春季） | ✅ |
+| EX-3 | 同上·无该学期 | `(20002,1,2026,"Q")` | `[]` | ✅ |
+| EX-4 | 同上·学年学期缺失降级 | `(20002,1,null,null)` | `[]`（不排除） | ✅ |
+| EX-5 | **扩科排除·cart 端到端·学期 X** | `recommend(20002,{excludeMode:1,...},{course.schoolYearId:2026,schoolTermId:"X"},[])` | 只返 subject 9（**4 被排**） | ✅ |
+| EX-6 | **扩科排除·cart 端到端·学期 Q** | 同上但 `schoolTermId:"Q"` | 4、9 都返（**不排**） | ✅ |
+| EX-7 | 扩科 B 端 | `recommendProductList(579985778241837056,20002)` | 只剩语文（同既有记录） | ✅ |
+| AI-1 | 开关表 | `POST ai/moduleSwitch` | renewal `1,2,3,4,5,7,8,9`（无6）+ refund 5 项（无 refund_root_cause/satisfaction） | ✅ |
+| AI-2 | `/roster/refund/reason` 负向（有数据行 `subclazz 31298462823089024/user 7463487951`，manual_reason 关） | 真实 HTTP | `{}`（有数据仍被拦） | ✅ |
+| AI-3 | 同上·正对照（临时给 177071 部门加 `manual_reason`） | 真实 HTTP | 返回 `refundReason:"家长反馈…", source:2` | ✅ |
+| AI-4 | `levelReasonAndHistory` 负向（模块 9 关） | 真实 HTTP | `{levelReason:"", changeHistoryList 缺省}`（gate） | ✅ |
+| AI-5 | 同上·正对照（临时给 177071 部门加模块 9） | 真实 HTTP | `{levelReason:"", changeHistoryList:[]}`（服务跑） | ✅ |
+
+- **Apollo 临时改动已全部还原并读回确认**：`renewal.ai.dept.module.switch` 回 `{"97349606689168923":[1..8]}`、`refund.ai.dept.module.switch` 回原值；`moduleSwitch` 复核 renewal `9:false`、refund `manual_reason:false`。
+- **部署**：student-data `f1817c92`(10.218.250.204) / cart `7794a329`(10.218.249.39) / student-center `dfe9e049`(10.218.250.181)，均 eureka UP。
+
+**已知未覆盖**：扩科 cart 端到端用的是桥调构造 context（真实页面 C 端链路未点）；复合学期（P-01）降级分支无线下/复合样本，仅单测覆盖。
