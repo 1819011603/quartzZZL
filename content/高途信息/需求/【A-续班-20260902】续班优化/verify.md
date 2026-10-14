@@ -297,7 +297,17 @@ product-task pod `product-task-gaotu100-com-5c49c6f665-fgmjd`（10.218.237.230�
 > ⚠️ **2026-10-12 变更**：续班「已续/未续跟进」5/6 合并为对外单 key `5` → 开关表由 **14 key 缩为 13 key**（续班 `1,2,3,4,5,7,8,9`）。**已复验**（student-center `40e5f24a7` → pod `10.218.248.27` eureka UP）：`POST /bgwApi/component/student-center/ai/moduleSwitch` 返回 renewal `{1,2,3,4,5,7,8,9}`（**无 6**）+ refund 5 项；`POST /roster/refund/edit`（bizName=`refundReason`）→ `code 8「手填退费原因模块未开放」`（写拦下沉到 `StageFeedBackService#edit` 后生效，覆盖 4 个通用 edit 入口）。
 
 - 说明：TEST 现有部门配置未覆盖 177071（renewal）且 refund 未配 `manual_reason`，故显示 `false`，属配置预期。网关新路径未收录于自动路由表，需按 pathInfo `/component/student-center` 传 `route` 调（`invoke_http` 的 `route` 参数）。
-- **`ai/clazzUser/predictLevelReason` 门控已完成**：release 已合入 `feature-predict-level-reason`，续班按 9 / 退费按 prediction，关闭返空对象。**意向预测分析侧为例外**：旧链路（`SyncRenewalLiftSnapshotHandler` 等旧 xjob）已停用；新链路是「算法真表 → Sync job 落库 + 刷 ES」的数据管道，没有按部门的 in-service AI 分析，故**不按部门门控，直接全量回溯**（上游算法已分析，回溯无 token 成本）。
+- **`ai/clazzUser/predictLevelReason` 门控已完成**：release 已合入 `feature-predict-level-reason`，续班按 9 / 退费按 prediction，关闭返空对象。**意向预测写侧（含回溯）是「算法真表 → Sync job 落库 + 刷 ES」的数据管道，不挂模块门控（写全量）、不需要专门回溯**；旧链路（`SyncRenewalLiftSnapshotHandler` 等旧 xjob）已停用。
+
+### 扩科老计划 `excludeMode` 回显兼容（2026-10-12，dev-1，✅ 已验证）
+
+**改动**：product-server `ProcessService#convertNodeConfigVO`——B 端回显 `ext_config` 时，`excludeMode` 为空兜底为 `0`（无排除）；历史计划（`ext_config` 无该 key）打开即显示【无排除】、老师无需补选。推荐侧 `excludeMode != 1`（含 null）即不排除，行为同上线前。**不刷数**（该字段在 `node_config.ext_config` 的 JSON 里，非列）。
+
+**提交/部署**：product-server `2d8ae7ccb`（`feature-xuban-expand-exclude`）；`test-gtbg-dev-1` product / product-task / product-b 三部署已发、新 pod eureka UP。
+
+| 例 | 调用 | 实测 |
+|---|---|---|
+| 老计划回显兜底 | 桥调 `ProcessService#convertNodeConfigVO({number:1, type:6, extConfig:"{\"expandSubject\":true,\"forceBuy\":false}"})`（**不含 excludeMode**） | ✅ `extConfig.excludeMode = 0`（= 无排除）|
 
 ### 扩科「在读」上课形式过滤已补（2026-09-30，✅ dev-1 已验证）
 
