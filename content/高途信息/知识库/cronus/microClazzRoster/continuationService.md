@@ -84,6 +84,41 @@
 - **`smallRenewalRoundFilter` 必须给**：`SmallRenewalRoundFilterService.support()` 对任何字段都返回 true（只要 identification 命中），`build()` 无条件追加 `terms(smallRoundIdx, 映射结果)`；不传轮次时映射为空 → `terms(空)` 匹配 0 条。
 - 指标 `/roster/small/renewal/statistic` 入参是另一套（`SmallRenewalStatReq`：`clazzNumbers[]` + `round[]`），不是上面的 `filter`。
 
+### FE 实际请求体（从 prod 日志 `RequestLogAspect` 抄下来的真实参数）
+
+```jsonc
+{
+  "filter": {
+    "clazzStudentStatus": ["1", "3"],              // 学员状态：字符串数组
+    "clazzNumber": ["552794618077558825"],         // 班级号：字符串数组（多班就是多元素）
+    "smallRenewalRoundFilter": [1],                // 续班轮次：整数数组！0=不可续 / 1=一轮 / 2=二轮 / 3=三轮及以上
+    "smallRenewalNumber": ["18252903801684672"],   // 续班计划号：字符串数组
+    "fuzzyText": ""                                // 关键词搜索
+  },
+  "identification": "microContinuationService",
+  "route": { "moduleTag": null, "sceneVersionNumber": 290652316966600704, "viewNumber": null },
+  "pager": { "current": 1, "pageSize": 300, "total": 0, "hasNext": null, "approximateTotal": false },
+  "quickFilter": {                                 // 续班状态筛选走这里；不筛则该字段为 null
+    "type": null,
+    "preRegistrationIntentFilter": null,
+    "renewalReportStatusFilter": { "value": [2, 4] },  // 续班状态：整数数组，1可续已续/2可续未续/3不可续已续/4不可续未续
+    "presaleStatusFilter": null, "smallLargePresaleSubjectFilter": null, "smallPresaleSubjectFilter": null,
+    "smallPresaleOrderTimeFilter": null, "smallRenewalOrderTimeFilter": null
+  },
+  "orderItem": null
+}
+```
+
+⚠️ 注意类型不一致（照抄）：`clazzStudentStatus`/`clazzNumber`/`smallRenewalNumber` 是**字符串**数组，`smallRenewalRoundFilter`/`renewalReportStatusFilter.value` 是**整数**数组。
+
+> **续班状态 ≠ 续班轮次**：续班状态在 `quickFilter.renewalReportStatusFilter.value`（真实日志里出现过 `[2,4]`），续班轮次在 `filter.smallRenewalRoundFilter`。两者是两处、互不包含。
+
+### 查真实入参：prod 日志 `RequestLogAspect`（student-center，app 日志）
+
+student-center 每个请求都打一条 `RequestLogAspect`，含完整 `Parameters:`（上文 JSON）+ `Headers` + `Response`。
+搜法：`serviceName=student-center / logType=app` + queryStr 用完整 token（如 `renewalReportStatusFilter`、`smallRenewalRoundFilter`、`"/roster/small/renewal/page"`）。
+
+
 ## 直调复现模板（本页专用；通用清单见 skill `gaotu-ticket-triage`「复现：直调页面接口」）
 
 > 同类型问题（其它页面也适用）的通用步骤：定位知识库 → 带 `B_client` 头 → 按登录人过滤就先代课 → `identification` 等固定参数 → 查 ES/DB 核对 → 别直调 service bean。
@@ -137,6 +172,33 @@ $M $C baijia_invoke cosplay_logout
 - **别直接调 service bean 复现**：`SmallRenewalService#page/count` 依赖 `ThreadLocalHolder.getGaiaIdentification()`（由 Controller 设置），经 ACL 桥直调 service bean 时该值为空 → 所有 GAIA 筛选器 `support()` 返回 false → 条件被整体丢弃（`count` 返回全量），**会得到假的结论**。
 - **ACL 桥调 Controller 也不行**：`SmallRenewalController` 是 CGLIB 代理，桥的 `findMethod` 用 `getDeclaredMethods` 找不到 `pageRenewal`（0 参方法如 `defaultValue` 可调）。→ 复现一律走 HTTP（见上「直调复现模板」）。
 
+
+## 各接口最小入参（代课 + `B_client: GPS` 实测）
+
+| 接口 | 最小入参（`identification` 一律 `microContinuationService`） | 实测 |
+|---|---|---|
+| `/roster/small/renewal/page`、`/count` | `filter`{`clazzNumber[]`(str)、`smallRenewalRoundFilter[]`(int)、可选 `smallRenewalNumber[]`/`clazzStudentStatus[]`/`fuzzyText`} + `quickFilter.renewalReportStatusFilter.value[]` + `pager` + `route` | 0 |
+| `/roster/small/renewal/default/page`、`/default/count` | `filter:{}` + `pager` | 0 |
+| `/roster/small/renewal/getRenewalInfo` | `{clazzNumbers:[...]}` | 0（回轮次选项） |
+| `/roster/small/renewal/defaultValue` | `{}` | 0 |
+| `/roster/small/renewal/statistic`、`/default/statistic` | `{clazzNumbers:[...], round:[...]}`（default 版可 `{}`） | 0 |
+| `/smallClazz/filter/renewalPlan/list` | `{}` | 0 |
+| `/smallClazz/filter/clazz/list` | `{smallRenewalNumber:[...]}`（另可配 `config`/`status`/`type`/`range`） | 0 |
+| `/roster/renewal/sendQuestion/getQuestionInfo` | `{clazzNumbersStr:"...", renewalPlanId:<long>}` | 0 |
+| `/roster/small/renewal/questionnaire/search/user` | `{clazzNumbers:[...], studentName:""}` | **245 代课登录暂无权限**（需给该接口配代课权限） |
+| `/studentClazz/edit` | `{clazzNumber,userId,bizName,value,...}` | 0 |
+| `/studentClazz/batchEdit` | 需 `列名`（`editType`+字段） | 400 列名不能为空（补参即可） |
+| `/studentClazz/intimacyHover` | `{clazzNumber,userId}` | 0 |
+| `/roster/renewal/reach/record` | `{clazzNumber,userId}` | 0 |
+| `/roster/renewal/intimacy/course`、`/intimacy/service` | 需更多参数（仅 clazzNumber+userId → 系统异常） | 待补 |
+| `/studentClazz/recentLessonSituation` | 需**课节编号** | 400 课节编号不能为空 |
+| `/ai/clazzUser/levelReasonAndHistory` | 需**子班级编号** `subclazzNumber` | 400 子班级编号不能为空 |
+| `/ai/renewal/reason/detail` | `{clazzNumber,userId}` | 0 |
+| `/ai/renewal/reason/options` | 需 `reasonType` | 400 原因类型不能为空 |
+| `/roster/renewal/renewalOrder/validate`、`/renewalPreRegistration/validate` | `{clazzNumber,renewalPlanId,type}` | 0（业务码 1=暂无流程，非报错） |
+| `/b/renewMaster/recommendClazzList`（product-b 域名） | 见 product-b 文档 | 未测 |
+
+> 除上面表里标「待补」的，其余都只差"该有的业务参数"，接口本身通。
 
 ## 青舟接口详情页
 
