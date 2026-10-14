@@ -59,6 +59,47 @@
 
 > 共享组件（`ReachReportFilter`→`ReachReport`/`ReachReportNew`、`PersonalLink`→`CustomSaleLink`、`ReachBusiness`、`QuestionnaireDetail` 等）另有接口，被多页面复用，待单独归档。
 
+## 固定入参（复现 / 联调）
+
+列表类接口（`/roster/small/renewal/page`、`/default/page`、`/count`、`/default/count`）入参体一致：
+
+```jsonc
+{
+  "identification": "microContinuationService",   // 必填！决定 GAIA 字段口径 + 哪些特殊筛选器生效
+  "route": { "sceneVersionNumber": <进页面 /roster/renewal/config 拿到的场景版本号> }, // 必填，取用户可见字段
+  "filter": {
+    "clazzNumber": [<clazzNumber>...],            // 必填，空则直接返回空页
+    "smallRenewalNumber": [<续班计划 number>],     // 续班计划（页面「续班计划」下拉）
+    "smallRenewalRoundFilter": [1],               // 续班轮次，值域 = RenewalRoundEnum：0 不可续 / 1 一轮 / 2 二轮 / 3 三轮及以上
+    "clazzStudentStatus": [1, 3],                 // 学员状态（组合字段）：0退班非调班/1在班非调班/2退班调班/3在班调班
+    "smallRenewalReportStatus": [4],              // 续班状态：1可续已续/2可续未续/3不可续已续/4不可续未续
+    "fuzzyText": ""
+  },
+  "pager": { "current": 1, "pageSize": 300, "total": 0 },
+  "orderItem": { "name": "joinClazzTime", "order": "desc" }
+}
+```
+
+- 续班轮次的值是 `RenewalRoundEnum` code（0/1/2/3），后端 `RoundIdxEnum.ROUND_IDX_MAP` 再映射到 ES `smallRoundIdx`（一轮→[1,3]）。
+- 指标 `/roster/small/renewal/statistic` 入参是另一套（`SmallRenewalStatReq`：`clazzNumbers[]` + `round[]`），不是上面的 `filter`。
+
+## 关键字段口径（续班状态）
+
+| 展示/筛选 | 来源 |
+|---|---|
+| 列表「续班状态」列 | GAIA 字段 `smallRenewalReportStatus`（dict `renewalReportStatus`：1可续已续/2可续未续/3不可续已续/4不可续未续），**查询时派生**，不落 ES |
+| 派生规则 | `SmallRenewalFiledConvertDataQueryServiceImpl`：ES `smallCanRenewal`(1..17) 经 `RenewalStatusEnum.canRenewal2Renewal`（∈{1,2,8}=可续，否则不可续）+ ES `smallRenewalStateStatus`(1已续/2未续/null→未续) → `RenewalReportStatusEnum` code |
+| 筛选翻译 | `SmallRenewalReportStatusFilterService`：code4(不可续未续) → `smallCanRenewal NOT IN (1,2,8)` AND `smallRenewalStateStatus ∈ (2,null)`；code1/2 → `smallCanRenewal IN (1,2,8)`，code3/4 → NOT IN |
+
+> 展示与筛选都源自同一对 ES 原始字段（`smallCanRenewal` + `smallRenewalStateStatus`），口径上必然一致。
+
+## 复现 / 排查踩坑
+
+- **ES 索引**：`ads_small_clazz_user`（物理 `ads_small_clazz_user_v1`），bean `studentServeClient`，host = Apollo `student.serve.es.cluster.host`（`es` namespace）。可 `es-apply/es_workorder.py search` 直接查。
+- **HTTP 直调会被登录态拦**：线上 `POST /component/student-center/roster/small/renewal/*` 走 fuwu 网关时，`LoginInfoFilter` 对 cosplay 会话会做代客权限校验，环境不对时报 `code:42 调用staff失败`（不是接口本身的问题）；需要正确代课账号再调。
+- **别直接调 service bean 复现**：`SmallRenewalService#page/count` 依赖 `ThreadLocalHolder.getGaiaIdentification()`（由 Controller 设置），经 ACL 桥直调 service bean 时该值为空 → 所有 GAIA 筛选器 `support()` 返回 false → 条件被整体丢弃（`count` 返回全量），**会得到假的结论**。
+- **ACL 桥调 Controller 也不行**：`SmallRenewalController` 是 CGLIB 代理，桥的 `findMethod` 用 `getDeclaredMethods` 找不到 `pageRenewal`（0 参方法如 `defaultValue` 可调）。
+
 ## 青舟接口详情页
 
 - [POST /roster/small/renewal/page](https://qingzhou.baijia.com/#/cloud/apiDoc/search/detail?interfaceId=3151317&appId=student-center&branchName=release)
