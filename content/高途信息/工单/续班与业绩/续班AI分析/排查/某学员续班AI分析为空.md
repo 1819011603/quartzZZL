@@ -68,6 +68,75 @@ FROM ees_data.dws_fuwu_call_record WHERE user_id=<学员id> ORDER BY call_time;
 ```
 分表 `<shard>` = clazz_number 的哈希分片；定位分片可先对 0..63 各分表按 clazz_number 计数找出非空分片（`ees_data`/`student_dw_data` 同一 cluster 336）。
 
+### 5. 上游圈选条件（决定性，需 `consultant_assistant` 库只读权限）
+```sql
+SELECT type,user_number,email_prefix,status,update_time
+FROM consultant_assistant.assistant_analyze_select_condition
+WHERE user_number IN (<学员id>,<同班对照学员id>) AND type IN (21,22,23,30)
+ORDER BY user_number,type;
+```
+续班类型：21=用户画像、22=沟通摘要、23=沟通建议评分、30=续班特征提取；`status` 0=生效/1=失效。
+- **对照学员有、目标学员 0 条 → 该学员的续班圈选条件从未发给上游**，上游无东西可分析（本例即此）。发送方 = student-data `AdsRenewalAiGrayRealtimeSendSelectConsumer`：**学员入班事件**（topic `student-data_ads_large_clazz_user_ordered_prod`，tag `clazz_user_tag`）触发，闸 = `renewal.ai.gray.sync.assistant.switch`(true) + 事件里**老师主岗部门**命中 `renewal.ai.gray.sync.assistant.department.list`；不命中则 `log "...assistant not in gray department, skip"` 直接不发。
+- 有圈选条件却仍无分析 → 查 `consultant_assistant.assistant_call_data`（时长 ≥ `callDurationMin`、时间窗）与 `assistant_ai_analyze_result`（是否分析成功/回传）。
+
+**补发（修复缺条件）** —— student-data 提供 4 个补发接口（定义 `AiCommExtInfoClient`，实现 `AiCommExtInfoController`）。本地留档如下（原文见飞书《续班 AI 圈选条件重新发送接口说明》 https://gaotuedu.feishu.cn/docx/RmnXdVRfaoJm3VxUBe4c1wvznEh ，若失效以本节为准）。
+
+> ⚠️ **4 个接口都不做参数校验**：漏传必填字段也返回成功，但实际什么都不发（下"必填"指按代码逻辑不传就不生效，接口不报错）。
+> ⚠️ `/feign/aiComm/app/retry`、`/feign/aiComm/app/retry/clazz` 是**重跑 AI 应用（画像/摘要分析）**，**不是**重发圈选条件。
+
+| 场景 | 接口 | 说明 |
+|---|---|---|
+| 补单个学员（推荐） | `POST /feign/aiComm/select/realtime` | 与线上 MQ 实时入口同一套逻辑，**同步**执行 |
+| 补单个学员、不知道班级 | `POST /feign/aiComm/select/history` | 自动取学员最近进的大班辅导班，**同步**执行 |
+| 按班级/辅导班批量补 | `POST /feign/aiComm/select/history/clazz` | 逐个学员走历史圈选，**异步**执行 |
+| 按历史回溯表重跑 | `POST /feign/aiComm/select/byIdRange` | 按 `ai_renewal_comm_select_history` 主键区间重发，**异步**执行 |
+
+**① `select/realtime`（推荐）** — 同步；走灰度部门/班级排除/学员排除。场景码读 Apollo `renewal.ai.select.scene.list`。
+| 字段 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `userId` | Long | 是 | 学员 ID，查其所有在班(status=1)大班辅导班 |
+| `clazzNumber` | Long | 是 | 班级号，查班级/课程→灰度部门/各项过滤/班级排除；不传则查不到班级、直接跳过 |
+| `subClazzNumber` | Long | 是 | 辅导班号，取进班时间作圈选开始时间；不传/传错不报错，但开始时间退化成当前时间、窗口不对 |
+```json
+{"userId": 7406856331, "clazzNumber": 547712569694074880, "subClazzNumber": 34291384908382592}
+```
+> 该接口**不走**按老师的灰度闸（`renewal.ai.gray.sync.assistant.switch` / `...department.list`，那只在 MQ 消费者 `AdsRenewalAiGrayRealtimeSendSelectConsumer` 里判）→ 手动补发能补上被"老师灰度"挡掉的学员。
+
+**② `select/history`（不知道班级）** — 同步；走灰度部门/学员排除，**不看**班级排除。窗口：开始固定取 Apollo `renewal.ai.sync.history.beginTime`（与进班时间无关），结束取在读大班最晚结班时间；学员 status 1/2 的大班辅导班先过班级过滤、再取进班最晚者判灰度部门；场景码读 `renewal.ai.select.scene.history.list`。
+| 字段 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `userId` | Long | 是 | 学员 ID，不用传班级 |
+```json
+{"userId": 7406856331}
+```
+
+**③ `select/history/clazz`（按班/辅导班批量）** — 异步，立刻返回；按辅导班拉全部学员逐个走历史圈选，间隔 `renewal.ai.sync.history.select.send.interval.ms`（prod 10ms）串行。**班级排除名单不生效**（只在实时接口生效）。
+| 字段 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `subClazzNumberList` | List<Long> | 二选一 | 辅导班号列表；与 `clazzNumberList` 都传时只认这个 |
+| `clazzNumberList` | List<Long> | 二选一 | 班级号列表，展开成班级下所有辅导班，覆盖面大 |
+> 两个都不传 → 接口啥也不做。
+```json
+{"subClazzNumberList": [34291384908382592]}
+```
+
+**④ `select/byIdRange`（按历史表重跑）** — 先同步查 `ees_data.ai_renewal_comm_select_history`，查到后异步逐个走历史圈选，每发完一个把该学员圈选状态更新为 1。
+| 字段 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `startId` | Long | 是 | 主键起点，含（`id >= startId`） |
+| `endId` | Long | 是 | 主键终点，含（`id <= endId`） |
+> 任一为空或 `startId > endId` → 查询为空、只打一条 info、接口仍返回成功。
+```json
+{"startId": 1000, "endId": 2000}
+```
+
+**发送后怎么确认**：① SLS 搜 `AiCommOnsMqProducer and <userId>` 确认圈选消息已发；② 批量进度搜 `selectAiCommHistoryBySubClazzNumber success|error`；③ 没发出搜 `RenewalAiJudgeNeedHandleService rejected by` 看是否被灰度部门/过滤挡住，或找同班对照学员比对。
+
+**用到的 Apollo（student-data，PROD，2026-10-13 核对）**：`renewal.ai.select.scene.list`=`21,22,23,30`、`renewal.ai.select.scene.history.list`=`21,22,23,30`、`renewal.ai.sync.history.beginTime`=`1777564800000`(2026-05-01)、`renewal.ai.sync.history.select.send.interval.ms`=`10`、`renewal.ai.sync.course.department.list`=7 个部门 ID（为空则整链路不发）、`renewal.ai.sync.clazz.exclude.list`/`renewal.ai.sync.user.exclude.list`=未配置、`renewal.ai.sync.dirtyJoinTimeBeforeDays`=未配置(默认 60)、`renewal.ai.select.dept.config`=`{}`(默认：开始时间=进班时间-30天、电话/微信电话/微信聊天都纳入、通话≥60s、微信回复≥5次)、`ai.comm.select.topic`=`ai_analyze_select_call_data_prod`。
+POST https://fuwu.baijia.com/bgwApi/student-data/feign/aiComm/select/realtime
+{"userId":<学员id>,"clazzNumber":<班级号>,"subClazzNumber":<辅导班号>}
+```
+
 ## 会被过滤掉的常见原因（逐条排除）
 
 1. **老师角色不匹配**：通话老师 account 必须 = 该学员辅导班的**带班老师**（`assistant_account_id`）或该订单的**业绩归属人**；客户角色/顾问角色不同判定分支不同。
@@ -75,7 +144,7 @@ FROM ees_data.dws_fuwu_call_record WHERE user_id=<学员id> ORDER BY call_time;
 3. **部门/课程灰度**：`renewal.ai.sync.course.department.list` 命中的部门、且 `needHandle`（系列课 `courseTypeIncludeList`、排除 `courseTagExcludeList`、班级名/学季/专项过滤）通过；同班对照学员有数据即说明班级层面通过。
 4. **圈选通话类型/时长**：部门配置 `renewal.ai.select.dept.config` 的 `callTypeList` / `callDurationMin` / `wechatChatUserReplyMin`。
 5. **排除名单**：`renewal.ai.sync.clazz.exclude.list` / `renewal.ai.sync.user.exclude.list`。
-6. **上游平台没产出**：平台没抓到该学员沟通、或 ASR/对话失败 → 无 `AnalyzeResultMsg`，base/scene 永远为空（此时 student-data 侧 extInfo 是 true，需转上游平台查该 userId 的沟通任务/圈选记录）。
+6. **上游平台没产出**：平台没抓到该学员沟通、或 ASR/对话失败 → 无 `AnalyzeResultMsg`，base/scene 永远为空（此时 student-data 侧 extInfo 是 true，需转上游平台查该 userId 的沟通任务/圈选记录）。**最常见的是"没有续班圈选条件"（见第 5 步）**——入班事件没到/被跳过，或回溯圈选没覆盖该学员。
 
 配置在 student-data Apollo（`renewal.ai.*`），key 清单见 `RenewalAiCommSceneConfigService`。
 
