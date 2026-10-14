@@ -797,3 +797,40 @@ ES 实证（例）：`36396360685978240-7569543424`、`36396360685978240-7489636
 
 > 同轮部署：student-center `5ba12b10`、cart `3594af88`、product-server `9a9b4350`，均 dev-1/dev-3 eureka UP。
 > Q-08/Q-09（cart pom）、Q-10（cache key）为构建/正确性级，以「编译通过 + 部署 eureka UP」为验证。
+
+---
+
+## 第二批收口（2026-10-14 · 扩科在读补学年学期 + AI 门控漏网，✅ 单测/编译验证，环境待验）
+
+**对照 PRD 逐条核 diff 后修 3 项**（PRD 原文：「在读小班课范围：与当前课程**相同学年+学期**、且授课模式为小班课、且上课形式为线上、且不含赠课、且订单未全部退款、且专题/系列课、且非纯预售、且非成人」）。
+
+### 1. 扩科「推荐排除」在读补「与当前课程相同学年+学期」（真缺陷）
+
+- **原问题**：`RenewalInReadSubjectService` 只按授课模式取对方模式在读，**没按学年学期过滤**（DAO `listByUserId`/`listClazzInfo` 只 `is_del=0`）→ 会把学员**其它学期**的对方模式在读学科也当「在读」，**过度排除推荐**。PROD `dws_small_clazz_user_subject` 实测确有跨 `school_term_id` 的 `is_del=0` 行。
+- **修复**：cart 透出当前（前置）课程 `schoolYearId/schoolTermId`（`CourseDTO` 原未映射 course-center `CourseVO` 的这两个字段，已补）；student-data 按学年+学期过滤。
+- **学期格式坑**：课程学期是 **OES(C/X/Q/D)**；**大班在读表即 OES、小班在读表是 CES(1/2/3/4)**（写入侧 `OdsSmallRenewalSubjectSyncService`/`SmallClazzUserManualService` 做了 `getCesValueByOes` 转换）。故**大班路径查小班表时需把课程学期 OES→CES**。
+- **降级**：学年/学期缺失、或 OES 无法映射 CES（复合学期如 `CU`）时**保守返回空（不排除）**——宁少排除、不误排。
+- **验证**：`mvn8` 编译通过；单测 student-data `RenewalInReadSubjectServiceTest` **13/13**（含跨学年/学期剔除、OES→CES 转换、缺失降级、复合学期不排除）、cart `ExpandSubjectRecommendServiceTest` **7/7** 全过。**环境 E2E 待 dev-1 补**（需造「当前课程 2026 秋 + 学员在对方模式有 2025 学期历史在读」样本，验跨学期行被剔除）。
+- 提交：student-data `f1817c92d` / cart `7794a329`。
+
+### 2. AI 门控漏网：`/roster/refund/reason` 按 `manual_reason` 门控
+
+- `/roster/refund/reason` 返回手填退费原因（`refund_intent_info.refund_reason`）= `manual_reason` 模块的展示数据，**原未门控** → 关闭模块后前端隐藏但接口仍返。已补门控，关闭返**空对象**（非 null，防旧前端白屏），与写拦（`StageFeedBackService.edit`）口径一致。提交 student-center `479817691`。
+
+### 3. AI 分析侧性能：灰度未开始时短路部门解析
+
+- 原实现每条 AI 分析事件都 `resolveAssistantOrgPaths`（含 `listMainPostStaffByAccountIds` ACL）；新增 `isRenewalGrayStarted/isRefundGrayStarted`，5 处分析侧调用点（圈选实时/历史、续班归因、退费归因、退费预测）在**部门配置为空时短路**（结果仍全放开）。提交 student-data `f1817c92d`。
+
+### 仍待确认（未擅自动）
+
+| # | 事项 | 影响 |
+|---|---|---|
+| a | `refund_root_cause` 门控 `/reasonType` 但它**不在开关表下发名单** → 灰度开始后该接口恒返 `[]` | 是否随前端基线分支下线？（Q-03） |
+| b | `ai/clazzUser/levelReasonAndHistory`（分层原因/变化）**未门控** | 属另一需求 `feature-predict-level-reason`？ |
+| c | `RefundPredictionService` 对「退费风险升高通知」按 `prediction` 门控 | 「写侧不挂门控」是否含通知？ |
+| d | 复合学期（`CU/QD/QU/CD/X-Q`）课程的对方模式在读**匹配不到 → 不排除** | 是否需展开复合学期？ |
+| e | 分析侧「已配置但解析不到老师部门 → false」与展示侧 fail-open 不一致（2026-09-24 已定，非 bug） | 双隐藏是否可接受 |
+
+### 清理
+
+- cart / product-server 误提交的 `.run/bridge-remote-*.run.xml`（含 pod IP）移出仓库并 gitignore（cart `7794a329` / product-server `c1b9225ef`）；订正 `filterByOperationMode` 注释、`AiModuleSwitchClient` javadoc。

@@ -7,6 +7,21 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-10-14（第二批收口：扩科「在读」补学年学期 + AI 门控漏网 + 清理）
+
+### 🤖 Claude（对照 PRD 逐条核 diff 后修复）
+- **扩科「推荐排除」在读口径补学年+学期（真缺陷）**：PRD 明确「在读范围 = **与当前课程相同学年+学期**、且授课模式/上课形式线上/非赠课/订单未全部退款/专题系列课/非纯预售/非成人」。原实现只按授课模式取对方模式在读、**漏了学年学期**，会把其它学期的历史在读学科当「在读」→ **过度排除推荐**。修复：
+  - cart：`CourseDTO` 补映射 `schoolYearId/schoolTermId`（course-center `CourseVO` 本就有，原 `getSimpleCourseDTO` 未映射）；`ExpandSubjectRecommendService` 取当前（前置）课程学年+学期，经 `OtherModeInReadSubjectReq` 传给 student-data。
+  - student-data：`RenewalInReadSubjectService` 按当前课程学年+学期过滤在读行；**学期格式差异**——课程学期是 OES(C/X/Q/D)，大班在读表即 OES、小班在读表是 CES(1/2/3/4)，故查小班表时把课程学期 OES→CES 转换；学年/学期缺失或无法映射（如复合学期 CU）时**保守返回空（不排除）**，避免过度排除。
+  - 单测：student-data `RenewalInReadSubjectServiceTest` 13 条（含跨学年/学期剔除、OES→CES 转换、缺失降级、复合学期不排除）、cart `ExpandSubjectRecommendServiceTest` 7 条，全过。
+- **AI 门控漏网**：`/roster/refund/reason`（手填退费原因展示数据 = `manual_reason` 模块）**未门控**，关闭模块后前端隐藏但接口仍返；已按 `manual_reason` 门控，关闭返空对象（防旧前端白屏）。student-center `479817691`。
+- **AI 分析侧性能**：灰度未开始（部门配置为空）时也每条事件调 `resolveAssistantOrgPaths`（含 ACL），新增 `isRenewalGrayStarted/isRefundGrayStarted`，5 处分析侧调用点短路，避免无谓调用。student-data `f1817c92d`。
+- **清理**：cart / product-server 误提交的 `.run/bridge-remote-*.run.xml`（含 pod IP）移出仓库并 gitignore；订正 `filterByOperationMode` 注释（行为是「宁可多排除」）、`AiModuleSwitchClient` javadoc（未配置=true 而非 false）。
+- 提交：student-data `f1817c92d` / cart `7794a329` / student-center `479817691` / product-server `c1b9225ef`（均 `feature-xuban-expand-exclude`，已 push）。
+- **仍待确认（未擅自改）**：① `refund_root_cause` 门控 `/reasonType` 但它不在下发名单 → 灰度后恒返空（Q-03，随前端基线下线？）；② `levelReasonAndHistory`（分层原因/变化）未门控，属另一需求；③ `RefundPredictionService` 对「风险升高通知」按 prediction 门控，是否算写侧；④ 复合学期（CU/QD…）课程的在读匹配降级为不排除，是否可接受。
+
+---
+
 ## 2026-10-13（上线准备：问卷匹配 + 调课同步，发布计划 23716）
 
 ### 🤖 Claude
