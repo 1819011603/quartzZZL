@@ -284,18 +284,20 @@ product-task pod `product-task-gaotu100-com-5c49c6f665-fgmjd`（10.218.237.230�
 
 ### AI 模块开关表接口（需求5，2026-10-12，dev-1，✅ 已验证）
 
-**改动**：student-center 新增 **`POST ai/moduleSwitch`**（无入参，按登录老师判定）——`AiModuleSwitchQueryService#queryModuleSwitchTable` 下发 **14 key**：续班 `1..9`（含新增 `9=意向预测`）、退费 `service_suggestion/prediction/manual_reason/learning/tutoring`（含新增 `manual_reason`）；`refund_root_cause`/`satisfaction` **不下发**；fail-open（部门未配 / 登录缺失 / 查询异常 / 缺 key → `true`）。数据接口兜底：`evaluateQuery` 用户反馈按 7、`managerEvaluate` 写按 8、`/roster/refund/analysis` 改 `service_suggestion`（关返 `{}`）、`/roster/refund/edit` 写按 `manual_reason`、`ai/renewal/reason/detail` 按 reasonType 看 5/6。student-data 枚举补 `RenewalAiModuleEnum.INTENTION_PREDICTION(9)` / `RefundAiModuleEnum.MANUAL_REASON("manual_reason")`。单测 `AiModuleSwitchQueryServiceTest` 5 条全过。
+**改动**：student-center 新增 **`POST ai/moduleSwitch`**（无入参，按登录老师判定）——`AiModuleSwitchQueryService#queryModuleSwitchTable` 下发 **13 key**：续班 `1,2,3,4,5,7,8,9`（「已续/未续跟进」合并单 key `5` = 后端模块 5‖6；`9=意向预测`）、退费 `service_suggestion/prediction/manual_reason/learning/tutoring`；`refund_root_cause`/`satisfaction` **不下发**；fail-open（部门未配 / 登录缺失 / 查询异常 / 缺 key → `true`）。数据接口兜底：`evaluateQuery` 用户反馈按 7 / 主管点评按 8、`managerEvaluate` 写按 8、`/roster/refund/analysis` 改 `service_suggestion`（关返 `{}`）、通用编辑入口 `StageFeedBackService.edit` 写 `manual_reason` 管辖列时拦、`ai/renewal/reason/detail` 按 reasonType 看 5/6、`ai/clazzUser/predictLevelReason` 续班 9 / 退费 prediction、`/user/feedback` 读写均按 7。student-data 枚举补 `RenewalAiModuleEnum.INTENTION_PREDICTION(9)` / `RefundAiModuleEnum.MANUAL_REASON("manual_reason")`。单测 `AiModuleSwitchQueryServiceTest` 5 条全过。
 
 **提交/部署（`test-gtbg-dev-1`）**：student-center `7d74dbf8f` pipeline `1294629` → pod `student-center-96f6c6d5-bm7j5`(10.218.250.42) eureka UP；student-data `6ae6bc798` pipeline `1294630` → pod `student-data-7f4c876b6f-5bvgd`(10.218.239.23) eureka UP。分支 `feature-xuban-expand-exclude`。
 
 | 例 | 调用 | 实测 |
 |---|---|---|
-| 开关表（真实入口，登录 177071） | `POST /bgwApi/component/student-center/ai/moduleSwitch` | ✅ 返回 14 key：renewal `1..9` 全 `false`；refund `service_suggestion:true / prediction:true / manual_reason:false / learning:true / tutoring:true`；**无** refund_root_cause/satisfaction |
-| student-data 原始判定对照 | `AiModuleSwitchService#queryModuleSwitch(1,177071,null)` / `(2,177071,null)` | ✅ renewal `{1..9:false}`（含新 `9`）、refund 含新 `manual_reason:false`，与上一行逐 key 一致 |
-| fail-open（无登录态，桥直调 controller） | `AiCommonController#moduleSwitch`（直连 pod `10.218.250.42`，无 web 上下文） | ✅ 14 key 全 `true` |
+| 开关表（真实入口，登录 177071，**首版 14 key**） | `POST /bgwApi/component/student-center/ai/moduleSwitch` | ✅ 返回 14 key：renewal `1..9` 全 `false`；refund `service_suggestion:true / prediction:true / manual_reason:false / learning:true / tutoring:true`；**无** refund_root_cause/satisfaction |
+| student-data 原始判定对照 | `AiModuleSwitchService#queryModuleSwitch(1,177071,null)` / `(2,177071,null)` | ✅ renewal `{1..9:false}`（含新 `9`）、refund 含新 `manual_reason:false`，逐 key 一致 |
+| fail-open（无登录态，桥直调 controller） | `AiCommonController#moduleSwitch`（直连 pod，无 web 上下文） | ✅ 全 `true` |
+
+> ⚠️ **2026-10-12 变更**：续班「已续/未续跟进」5/6 合并为对外单 key `5` → 开关表由 **14 key 缩为 13 key**（续班 `1,2,3,4,5,7,8,9`）。**已复验**（student-center `40e5f24a7` → pod `10.218.248.27` eureka UP）：`POST /bgwApi/component/student-center/ai/moduleSwitch` 返回 renewal `{1,2,3,4,5,7,8,9}`（**无 6**）+ refund 5 项；`POST /roster/refund/edit`（bizName=`refundReason`）→ `code 8「手填退费原因模块未开放」`（写拦下沉到 `StageFeedBackService#edit` 后生效，覆盖 4 个通用 edit 入口）。
 
 - 说明：TEST 现有部门配置未覆盖 177071（renewal）且 refund 未配 `manual_reason`，故显示 `false`，属配置预期。网关新路径未收录于自动路由表，需按 pathInfo `/component/student-center` 传 `route` 调（`invoke_http` 的 `route` 参数）。
-- **挂起**：`ai/clazzUser/predictLevelReason`（续班 `9` / 退费 `prediction`）门控未做——接口在 `feature-predict-level-reason`，待其上线、需求5 合流后补。
+- **`ai/clazzUser/predictLevelReason` 门控已完成**：release 已合入 `feature-predict-level-reason`，续班按 9 / 退费按 prediction，关闭返空对象。**意向预测分析侧为例外**：旧链路（`SyncRenewalLiftSnapshotHandler` 等旧 xjob）已停用；新链路是「算法真表 → Sync job 落库 + 刷 ES」的数据管道，没有按部门的 in-service AI 分析，故**不按部门门控，直接全量回溯**（上游算法已分析，回溯无 token 成本）。
 
 ### 扩科「在读」上课形式过滤已补（2026-09-30，✅ dev-1 已验证）
 

@@ -38,6 +38,19 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-10-12（二）（开关表 5/6 合并 + 写拦下沉 + 意向预测例外）
+
+### 👤 我（用户定）
+- **「已续/未续跟进」PRD 里是 1 个模块**：开关表对外把 5/6 两个 key 合并为单 key `5`（值 = 后端模块 5「未续跟进」‖ 6「已续总结」任一开启）；续班对外 key 变 `1,2,3,4,5,7,8,9`（共 **13 key**）。后端分析仍是 scene 5/6 两个场景，不合并。
+- **意向预测（续班 9 / 退费 prediction）为例外**：旧意向预测链路（`SyncRenewalLiftSnapshotHandler` 等旧 xjob）已停用；新链路是「算法真表 → Sync job 落库 + 刷 ES」的数据管道，没有按部门的 in-service AI 分析 → **不按部门门控，直接全量回溯**（上游算法已分析，回溯无 token 成本）。
+- 历史续班计划 `excludeMode` 有默认值（现状即默认），无需刷数。
+
+### 🤖 Claude
+- `manual_reason` 写拦下沉到通用编辑入口 `StageFeedBackService#edit`（bizName=refundReason/refundIntent），覆盖 `/roster/refund|stageFeedback|renewal|examAnalysis/edit` 4 个入口（原只在 `RefundController`）；`/user/feedback` 读写一致（写也按 7 拦）；`/roster/refund/course` 关闭返空对象。
+- student-center `40e5f24a7`（单测 5/5 过、已 push）；student-data **撤销**「scene 30→9 / `RenewalLiftReasonHandle` 门控」——那两处是旧死链路。
+
+---
+
 ## 2026-10-12（AI 配置化·开关表接口：前端对齐 + 数据接口兜底）
 
 ### 🤖 Claude
