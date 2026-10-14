@@ -147,7 +147,8 @@ ORDER BY user_number,type;
 | 自动实时圈选发送（学员会不会自动有分析） | student-data `renewal.ai.gray.sync.assistant.switch` + `renewal.ai.gray.sync.assistant.department.list` | 入班事件里**带班老师主岗部门**命中才发 |
 | 老师端续班AI入口可见 | student-center `ai.gray.merge.map` → `renewal.grayDeptList` | 登录老师部门命中(+二讲标签216)才显示入口 |
 
-- 两个 key 用**同一套组织架构部门号**（97xxx 那套），扩名单要**两处一起加同一个号**再各自发布，否则"入口能看到却没分析/反之"。prod 现状已漂移：student-center 比 student-data 多一个 `115518527455104020`。
+- 两个 key 用**同一套组织架构部门号**（97xxx 那套）；扩名单时**把要放开的"老师所在业务部门号"两处一起加、再各自发布**。
+- ⚠️ 两边**并非必须逐字一致**：student-center `renewal.grayDeptList` 里多出的 `115518527455104020` = **运营服务组**（虚拟架构 → 产品技术部 → 平台研发部 → 工程效能部 → 运营服务组），是**工程/职能组织、非教学业务部门**，属无关项——**不是**任何"漏发/没入口"的原因。2026-10-14 曾把它也加到 student-data 做"对齐"（release `20261014112510-188aed119a358832`），**属多余**（没有老师挂在该部门，无实际影响）；要清理可回退 student-data 该 key 到原 5 个部门。
 - ⚠️ 别与**课程部门白名单**混：`renewal.ai.sync.course.department.list`（student-data 与 student-center 各一份、值相同）=`10013518,10019477,10019479,10014349,10016655,10021063,30001264`，用的是**另一套 ID（课程主数据部门号）**，是第二道按班级/课程的闸（各学部专项 `…special.list.*`=10013429/10013431/10012667/10019475…）。"看着在范围却没分析" = 课程部门过了、老师主岗部门没过。
 
 ## 会被过滤掉的常见原因（逐条排除）
