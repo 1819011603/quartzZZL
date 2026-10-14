@@ -9,7 +9,7 @@ branches:
   - student-data:feature-renewal-reason-editable
   - student-center:feature-predict-level-reason
   - aianalysisinformations:feature-refund-reason-20260825
-updated: 2026-10-13
+updated: 2026-10-14
 tags: [需求]
 ---
 
@@ -106,3 +106,6 @@ tags: [需求]
 - 新老 job 共用同一个 topic 刷 ES，同时运行会导致 ES 字段被交替覆盖（老 job 写的是 null），所以上线当天必须停掉老 job。
 - 触达收件人默认 = 辅导班带课老师真实邮箱；`predict.level.down.notify.receiver.override` 是测试期定向开关。**2026-10-10 起 TEST 置空=不覆盖**，即测试环境也发真实带课老师（线上本就不配）。要单独自验时才临时把它配成个人邮箱。
 - **造数只能造 `ai_predict_level_reason_detail`（明细表），别直接写 `predict_level_reason_snapshot`（快照表）**：ES「续班意向预测」`renewalIntentionPredictLevelResult` 只在同步 job 落库时经 MQ 回写，绕过 job（直接写快照）会导致「原因卡接口有值、学情表 ES 没值」。要补 ES 得先补明细再跑同步（`SyncPredictLevelReasonHandler` / `backfillByClazz`）。详见 [[case-record]] 第 7 节。
+- **回溯/补数两条并发铁律（2026-10-14 实测）**：
+  - **天工**：线上两个同步任务 `_sync`(67730) 与 `_refund_sync`(67737) **配置完全相同**（同源表 → 同目标 `ai_predict_level_reason_detail`，upsert），**跑一个就覆盖 renew+refund**；**并发触发会 MySQL 死锁**（同表 upsert），要都跑必须串行。
+  - **xjob**：`SyncPredictLevelReasonHandler`(12753) 一次回溯要传多个参数时**别用默认路由连点**——默认「第一个」+单机串行会把多次触发堆到**同一台 pod 串行**（后到的久等甚至失败），**要并行得显式指定不同执行器 IP**。详见 [[verify.md]] 第 8 条 + skill `xjob-admin`。

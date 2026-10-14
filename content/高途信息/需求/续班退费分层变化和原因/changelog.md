@@ -7,6 +7,24 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-10-14 · 线上回溯 dt=20261010（续班+退费）
+
+### 🤖 Claude
+- **背景**：算法侧（余勇）重跑了 `dt=20261010` 的续班+退费分区（源表 `u_strategy.dwd_user_service_renew_refund_reason_df`，renew 263MB / refund 166MB）。此前 PROD 明细表 `ees_data.ai_predict_level_reason_detail` 里 **refund 20261010/20261011 缺失**（当时只有 renew 20261007~12、refund 20261003~09+12），快照表 scene=2 同样缺 20261010/11——即群里提到的问题。诉求：只回 **20261010 这一天、续班+退费两个场景**。
+- **天工临时执行（Hive → detail 表，periodTime=2026-10-11 → 源 dt=20261010）**：线上两个同步任务
+  - `ees_data.ai_predict_level_reason_detail_sync`（节点 104349 / taskId 47936 / nezha **67730**，依赖续班上游 67629）
+  - `ees_data.ai_predict_level_reason_detail_refund_sync`（节点 104362 / taskId 47943 / nezha **67737**，依赖退费上游 67625）
+  两者 **配置完全相同**（同源表 `dt=dt1` → 同目标表 `ees_data.ai_predict_level_reason_detail`，`saveMode=upsert`、批次 500），**只差 id 与依赖**。
+  - ⚠️ **坑1：两个任务并发触发会死锁**。10:16 同时 `run-once` 67730+67737 → 两个 Spark 作业同时 upsert 同一张表 → 67737 报 `MySQLTransactionRollbackException: Deadlock found when trying to get lock` 失败（67730 成功）。**结论：这俩配置相同，跑一个即覆盖 renew+refund；若都要跑必须串行**。单独重跑 67737 → 成功。
+  - 命令：`tiangong_cli.py run-once <nezhaId> "2026-10-11 00:00:00" --confirm`（目标源分区 `dt = periodTime - 1`）。
+  - 结果：detail 表 `dt=20261010` 落库 **renew 364942 / refund 201445** 行。
+- **xjob 回溯**：`SyncPredictLevelReasonHandler`（PROD **12753**，group 530，cron `0 0 15 * * ?`，**运行中**）触发两参数 `1,20261010`（续班）、`2,20261010`（退费）。
+  - ⚠️ **坑2：同一 job 连点多次，默认路由「第一个」+ 单机串行 → 全挤同一台 IP 串行**。两次触发都落到 `10.243.39.12`，`2,20261010` 等到 10:41 才执行且**失败**，`1,20261010` 仍在排队。**要并行必须触发时显式指定不同执行器 IP**（挑前几台各一个）。用户把退费重触发到新 IP `10.243.35.92`。
+- **结果（读回）**：明细表与快照表 `dt/record_dt=20261010` 两场景齐全——快照 **scene=1 58680 / scene=2 24808** 行。
+- 落点：本文件 + [[verify.md]]「线上回溯」章节 + skill `xjob-admin`（同 job 并发触发指定 IP 并行）。
+
+---
+
 ## 2026-10-13 · 触达与「续班AI（分层）学部白名单」拉齐（待办）
 
 ### 🤖 Claude

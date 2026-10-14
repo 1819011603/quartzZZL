@@ -45,6 +45,10 @@ tags: [需求, 验证]
    - 截止过滤按 `record_dt`（非执行日）判，补历史天**不会**被误判超期。
    - 生效判据：查 `ees_data.predict_level_reason_snapshot` 按 `record_dt` 分组计数，确认目标天都有变化点。
    - **2026-10-12 实测**：test 无 student-data xjob 任务、dws pod 直连 acl 桥被登录校验挡（`code 3`），故用 facade 桥逐天调 `PredictLevelReasonSyncService#syncOneDay` 验证多天引擎：`1,20261007/20261010/20261013` → saved 1 / 12 / 3、`failed=0`，逐天独立落库正常（区间循环与它同源）。
+8. **线上回溯某天（PROD，2026-10-14 实操 dt=20261010）**：两步——① 天工把源分区同步进明细表，② xjob 把明细重算落快照 + 写 ES。
+   - **① 天工临时执行**：`tiangong_cli.py run-once <nezhaId> "<periodTime>" --confirm`，`periodTime = 目标 dt + 1 天`（源分区 `dt = periodTime - 1`）。线上两任务：`ees_data.ai_predict_level_reason_detail_sync`（节点 104349 / nezhaId **67730**，依赖续班上游）、`..._refund_sync`（节点 104362 / nezhaId **67737**，依赖退费上游）；两者**配置完全相同**（同源表 `dt=dt1` → 同目标 `ai_predict_level_reason_detail`，upsert），**跑一个即覆盖 renew+refund**。⚠️ **别同时触发两个**：同源同目标 upsert，并发会 `MySQLTransactionRollbackException: Deadlock`（实测 67737 失败）；真要都跑就**串行**。
+   - **② xjob 回溯**：`xjob_trigger_job job_id=12753 'executor_param=1,<dt>'`（续班）、`'executor_param=2,<dt>'`（退费），`env=prod`、`confirm=true`。⚠️ **多个参数别用默认路由连点**：默认 `FIRST`+单机串行会把多次触发都堆到**同一台** pod 串行排队（实测第二个等 13 分钟才跑且失败）；**要并行须显式指定不同执行器 IP**：加 `-k execute_address=<ip>:9999`，从在线执行器列表挑**前几台各一个**。
+   - **生效判据**：明细表 `ai_predict_level_reason_detail` 按 `dt,type` 有数据；快照 `predict_level_reason_snapshot` 按 `record_dt,scene` 有变化点。本次实测 dt=20261010：明细 renew 364942 / refund 201445 → 快照 scene1 **58680** / scene2 **24808**。
 
 ## 能验到哪一层
 

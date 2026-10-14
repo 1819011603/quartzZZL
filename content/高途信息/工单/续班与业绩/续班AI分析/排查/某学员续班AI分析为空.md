@@ -133,9 +133,22 @@ ORDER BY user_number,type;
 **发送后怎么确认**：① SLS 搜 `AiCommOnsMqProducer and <userId>` 确认圈选消息已发；② 批量进度搜 `selectAiCommHistoryBySubClazzNumber success|error`；③ 没发出搜 `RenewalAiJudgeNeedHandleService rejected by` 看是否被灰度部门/过滤挡住，或找同班对照学员比对。
 
 **用到的 Apollo（student-data，PROD，2026-10-13 核对）**：`renewal.ai.select.scene.list`=`21,22,23,30`、`renewal.ai.select.scene.history.list`=`21,22,23,30`、`renewal.ai.sync.history.beginTime`=`1777564800000`(2026-05-01)、`renewal.ai.sync.history.select.send.interval.ms`=`10`、`renewal.ai.sync.course.department.list`=7 个部门 ID（为空则整链路不发）、`renewal.ai.sync.clazz.exclude.list`/`renewal.ai.sync.user.exclude.list`=未配置、`renewal.ai.sync.dirtyJoinTimeBeforeDays`=未配置(默认 60)、`renewal.ai.select.dept.config`=`{}`(默认：开始时间=进班时间-30天、电话/微信电话/微信聊天都纳入、通话≥60s、微信回复≥5次)、`ai.comm.select.topic`=`ai_analyze_select_call_data_prod`。
-POST https://fuwu.baijia.com/bgwApi/student-data/feign/aiComm/select/realtime
-{"userId":<学员id>,"clazzNumber":<班级号>,"subClazzNumber":<辅导班号>}
-```
+
+### 6. 批量找"该有分析却没有圈选条件"的学员 + 根因（老师灰度 skip 日志）
+实时圈选的**老师主岗部门灰度**是自动发送的闸：老师主岗部门不在 `renewal.ai.gray.sync.assistant.department.list`（prod 5 个部门）里、或事件 tag 为空 `-` → 该学员入班事件被 skip → 无续班圈选条件 → 无分析。**这是灰度设计，不是 bug**（课程部门白名单有 7 个，老师灰度只有 5 个，两套口径不一致）。
+
+**批量捞（SLS）**：搜 `"assistant not in gray department"`（近 10 天实测有量），日志里带 `largeClazzEnterEntity(subclazzNumber=…, assistantMainPostTag=…, userId=X, clazzNumber=Y, …)`，命中即受影响学员/班级。
+- 示例 2026-10-04~14：100 条里 **37 个学员 / 90 个班级**被 skip；tag 多为 `-` 或精品班学部下的子部门，均不含那 5 个灰度部门。
+- 捞到后对这些学员走第 5 步补发接口。
+
+**防复发（怎么扩 + Apollo 联动）**：实时圈选的**老师主岗部门**在两个 app 各配一份、同源，必须同步：
+| 控制点 | app / key | 作用 |
+|---|---|---|
+| 自动实时圈选发送（学员会不会自动有分析） | student-data `renewal.ai.gray.sync.assistant.switch` + `renewal.ai.gray.sync.assistant.department.list` | 入班事件里**带班老师主岗部门**命中才发 |
+| 老师端续班AI入口可见 | student-center `ai.gray.merge.map` → `renewal.grayDeptList` | 登录老师部门命中(+二讲标签216)才显示入口 |
+
+- 两个 key 用**同一套组织架构部门号**（97xxx 那套），扩名单要**两处一起加同一个号**再各自发布，否则"入口能看到却没分析/反之"。prod 现状已漂移：student-center 比 student-data 多一个 `115518527455104020`。
+- ⚠️ 别与**课程部门白名单**混：`renewal.ai.sync.course.department.list`（student-data 与 student-center 各一份、值相同）=`10013518,10019477,10019479,10014349,10016655,10021063,30001264`，用的是**另一套 ID（课程主数据部门号）**，是第二道按班级/课程的闸（各学部专项 `…special.list.*`=10013429/10013431/10012667/10019475…）。"看着在范围却没分析" = 课程部门过了、老师主岗部门没过。
 
 ## 会被过滤掉的常见原因（逐条排除）
 
