@@ -93,10 +93,18 @@
 
 > 展示与筛选都源自同一对 ES 原始字段（`smallCanRenewal` + `smallRenewalStateStatus`），口径上必然一致。
 
+## ⚠️ 两个"不可续"别搞混（高频误报）
+
+- **续班轮次** `smallRenewalRoundFilter` 的选项来自 `getRenewalInfo.renewalRoundList`，值域 = `RenewalRoundEnum`：**`0=不可续`** / 1=一轮 / 2=二轮 / 3=三轮及以上。所以筛选栏里会出现一个字面为「**不可续**」的标签 —— 它选的是**轮次=0**（后端映射到 ES `smallRoundIdx=0`），**不是**续班状态。
+- **续班状态** `smallRenewalReportStatus` 的值是 1可续已续/2可续未续/3不可续已续/4不可续未续，**没有**单独一个"不可续"。
+- 典型误报：班级学员 `smallRoundIdx=3`（展示为"一轮"）、续班状态全为"不可续未续"。用户把「续班轮次」下拉里的**不可续**当成状态筛选 → 得到 0 条，其实正确（该班没有轮次 0 的学员）；真正的「续班状态=不可续未续」筛选是好的。
+- 判据：看筛选标签所在**选择器**——续班计划 / 续班轮次 / 续班状态，标签文案「不可续」只可能来自续班轮次。
+
 ## 复现 / 排查踩坑
 
 - **ES 索引**：`ads_small_clazz_user`（物理 `ads_small_clazz_user_v1`），bean `studentServeClient`，host = Apollo `student.serve.es.cluster.host`（`es` namespace）。可 `es-apply/es_workorder.py search` 直接查。
-- **HTTP 直调会被登录态拦**：线上 `POST /component/student-center/roster/small/renewal/*` 走 fuwu 网关时，`LoginInfoFilter` 对 cosplay 会话会做代客权限校验，环境不对时报 `code:42 调用staff失败`（不是接口本身的问题）；需要正确代课账号再调。
+- **HTTP 直调必须带 `B_client` 头，否则报 `code:42 调用staff失败`**：页面接口每次都会跑 `SmallClazzUserPermissionFilterService` → `organizationAclService.listPermissionWithPartTimeBySceneAndAccountId`（staff 调用），该调用依赖 `StaffInfoHolder.getBclient()`。用 curl/invoke_http 直调时**必须加 `-H 'B_client: GPS'`**（`LoginInfoFilter` 只对 `/gps`、`/node-instance` 前缀自动从 header 取 bclient，`/roster/...` 不在其中），否则 staff 调用失败、整个接口返 42。**这不是接口本身的问题。**
+- **页面有权限过滤（只出登录老师可见的学员）**：`SmallClazzUserPermissionFilterService` 按 `es_query_config`(type=5) 的 `assistantAccountId`/`mainTeacherAccountIds` + `assistantMainPostTag`/`mainTeacherMainPostTag` 通配 + 兼职账号过滤。用无关账号调会得 0；**复现某班要先代课成该班主讲/二讲**（`mcpcli baijia_invoke cosplay_login -k cos_account_name=<拼音>`；注意拼音：吕建权=lujianquan）。
 - **别直接调 service bean 复现**：`SmallRenewalService#page/count` 依赖 `ThreadLocalHolder.getGaiaIdentification()`（由 Controller 设置），经 ACL 桥直调 service bean 时该值为空 → 所有 GAIA 筛选器 `support()` 返回 false → 条件被整体丢弃（`count` 返回全量），**会得到假的结论**。
 - **ACL 桥调 Controller 也不行**：`SmallRenewalController` 是 CGLIB 代理，桥的 `findMethod` 用 `getDeclaredMethods` 找不到 `pageRenewal`（0 参方法如 `defaultValue` 可调）。
 
