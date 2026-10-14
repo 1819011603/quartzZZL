@@ -20,6 +20,8 @@ tags: [需求, 任务]
 | T-11 | 触达与「续班AI（分层）学部白名单」拉齐：只给开通续班AI的学部发触达 | 待办 | 需 PM 确认学部口径 | 现状：PROD 展示/触达都**全量**（`predict.level.reason.enable.all` / `predict.level.down.notify.enable.all`=true）→ 无限制，EM 二讲等没开通续班AI也会收到。代码：`isNotifyEnabled` 在**触达非全量 + dept 非空**时复用展示白名单（`predictLevelReasonGrayService.isEnabled`）。候选来源 key = **`renewal.intention.predict.mapping.info`**（`RenewalComponent` 读；`levelCode`=学部名_学期，PROD 配了 H业务线_精品班 / EM业务线_素养初中 / EM业务线_综合素养 + 部门路径 `10000683/10013429_Q`、`10019197/10012667_Q`）。两条路：① 把展示/触达 gray 的 dept 白名单配上这些学部对应**部门 id**；② 改代码让 gray 直接读「学部」配置。 |
 | T-06 | 快照表字段精简（删 `predict_score`/`model_version`/`status`）+ 班级索引 + 按班级回溯桥方法 | 已完成 | — | 代码已改、编译+单测通过、已 push 并发 test-eco-2。见 [[changelog]] 2026-10-08 |
 | T-07 | `ai_predict_level_reason_detail` 加业务唯一键（天工去重） | 已完成 | — | PROD 表已有唯一键 **`uk_dt_user_clazz_sub_type(dt,user_number,clazz_number,subclazz_number,type)`**（`NON_UNIQUE=0`，实测）；天工 upsert 幂等已验证（多次跑行数不翻倍）。 |
+| T-12 | 回溯时「分层没变」的记录 **factors 文案/动作不刷新**（`saveIfLevelChanged` 只比 `predictLevel`，相同即跳过）——待定是否改判定：层没变但该天已有快照时，比较并只更新 `factors` 内容 | 待办 | 待沟通（产品/算法） | 触发场景=算法改文案后重跑/回溯；见 [[changelog]] 2026-10-14「回溯内容不刷新」 |
+| T-13 | 回溯/补数**顺序一致性**：`getLatestBefore` 取 `< record_dt` 最近快照，补靠前的天会改掉靠后天（如 20261012）的「上一条」基准 → 需连带重跑 | 待办 | 待沟通 | 补天顺序若乱，靠后天的 `pre_predict_level` 会与新的靠前天不一致。见 [[changelog]] 2026-10-14 |
 
 ## 完成判据
 
