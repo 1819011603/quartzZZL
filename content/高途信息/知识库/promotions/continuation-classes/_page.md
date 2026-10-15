@@ -41,10 +41,19 @@
 |---|---|
 | `gaotu.renew_master` | 续班计划（number = 页面上的「续班计划ID」） |
 | `gaotu.renew_master_course_relation` | 计划下的前置课程；`questionnaire_number` 列 = 该前置课程匹配到的问卷 |
+| `course_center.course_relation_map` | 前后置关系：`relation_number`=前置课程、`course_number`=后置课程；续班取 `relation_type=1`（`=0` 推荐课程、`calculate_renewal_type=2` 预报名） |
+| `course_center.course` | 课程名称、`department_id`（末级部门） |
+| `course_center.course_school_relation` | 课程的年级(2)/学科(3)/学年(5)/学期(4)/学部(1)，`isdel=0` |
+| `course_center.course_center_dictionary` | 名称字典：`courseGrades` / `courseSubjects` / `schoolYears` / `schoolTerms` |
+
+集群（`mysql_query` 定位，**两库不同集群不能跨库 JOIN**）：`gaotu` → cluster 71 `gaotu-center-prod`；`course_center` → cluster 317 `gaotu-course-prod`。部门名称走 course-center 部门树 API `GET /course-center/b/common/department/tree`（medusa）。
+
+> 「续班计划ID」在飞书/前端复制时**常被 JS 精度截断**（17 位大整数末两位变 `00`），查不到先按前 15 位前缀找候选。
 
 ## 排查提示
 
 - 计划看不到课程 / 续班关系不对 → `productRelationList`、`listCoursesByPreCourseNumber`；另见工单 `续班与业绩/续班关系配置/`
+- 要按计划ID批量导出续班关系（前置↔后置对照）→ 工单 `续班与业绩/续班关系导出/`（含可复用脚本）
 - 问卷相关 → [renewalProcess.md](renewalProcess.md)
 
 ## 青舟接口详情页（product-b / release）

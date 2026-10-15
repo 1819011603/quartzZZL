@@ -46,6 +46,12 @@
 | `/ark/app-goods/clazzEncyclopedia` | 班级大全 | gaotu-fe-goodsmanage | — |
 | 学员详情页 AI 分析 tab（GAIA 微组件，非独立路由） | AI 分析 / 意向预测 | aianalysisinformations | — |
 
+## 数据平台（非页面条目）
+
+| 主题 | 文件 |
+|---|---|
+| 天工2 数仓：任务类型 / 执行机制 / 代码从「资源管理」上传 / 续班·退费分层原因数据链 | [数据平台/天工数仓任务与代码.md](数据平台/天工数仓任务与代码.md) |
+
 ## tab 文件模板
 
 ```md
