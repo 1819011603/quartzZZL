@@ -174,4 +174,6 @@ START（并行） 退费沟通旅程(tutoring) / 课程体验(learning) / 满意
 - **续班**：各模块独立门控（圈选/归因/展示各自判断）→ **能**单独灰度。
 - **退费**：改前**不能**（关一个并行模块 → START 节点把整条流程判 INVALID 终止 → 连累服务建议/退费根因）；**已修（`#2105`，student-data `653bf30e`）：模块关闭改为「跳过但继续流程」→ 现在能单独对每个模块灰度**。
 - **E2E 验证（2026-10-15，dev-1，✅）**：测试辅导班 `31265963667882240`（辅导老师部门 `6816343048455168`）。① 配 `refund` 关掉 `satisfaction` → `isRefundModuleEnabled(部门,"satisfaction")=false`、`"learning"=true`（配置生效）；② 触发退费分析（`RefundReasonTaskService#refreshReasoning`）；③ 流程日志 `refresh292526594721867776`：`tutoring / learning / satisfaction / refund_root_cause / service_suggestion` **全部有记录** → **关掉 satisfaction 后 END 的「退费根因/服务建议」照跑**（改前会整条判无效、不跑）。验完已还原配置。
+- **✅ 产品已确认（2026-10-15）**：退费「按模块灰度」的修复口径（模块关闭=跳过但让流程继续）**OK，按此实现**。
+- TAPD（迭代 1122531521001014934）：开发条（扩科 3 条 + AI 2 条）**已完成**，自测 / 联调 **进行中**（2026-10-15 已置）。
 
