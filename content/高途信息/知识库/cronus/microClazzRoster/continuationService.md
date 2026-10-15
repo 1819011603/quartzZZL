@@ -163,6 +163,17 @@ $M $C baijia_invoke cosplay_logout
   - 后置课程映射来源：`clazzFeignService.getCourseExtensionByExtensionInfo(courseNumberList, FOLLOW_COURSE=3)` → course-center `CourseNotNormalQueryApiFeignClient#listBeContinuationCourseByNumberList`（**被续班/后置课程**）。
   - ⚠️ 且后置课程还必须落在 `getAllSettingCourseList`（有效**设置课程**）里，否则被 `filter(...)` 过滤成空、同样判 code=4 —— 所以「`course_relation_map` 有配置」≠「判单能取到后置课程」。
   - 已查：该班课程 `17133266593186453`（青藤8阶科学探究）在 `course_center.course_relation_map` **有**后置课程记录（`course_number=17133266593186453`→`relation_number=...`，`calculate_renewal_type=1`，`isdel=0`）；但 performance-attribution 仍判该班学员 code=4，需再核后置课程是否为有效设置课程 / 订单课程是否与班级课程一致。
+  - **实测（2026-10）**：`CourseNotNormalQueryApiFeignClient#listBeContinuationCourseByNumberList([17133266593186453])` → `{17133266593186453:[17484092381463274]}`，即该课后置课程=**`17484092381463274`（青藤思维模拟课堂…，`publish_status=40`、`isdel=0`，有效）**。→ **后置课程是存在的**；判 code=4 的原因需继续看：① 该学员**订单的课程**（`renewalOrderConfig.getCourseNumber()`）是否等于 `17133266593186453`；② `filterNotCanRenewalCourse`（按 `courseRenewalTagFeignService.listRenewalTypeByCourseNumberList` 的 `calculateRenewalType=NO` 过滤）是否把它滤掉。
+  - **根因（已实测确认）**：`listBeContinuationCourseInfoByNumberList([17133266593186453])` → `{courseNumber:17484092381463274, relationNumber:17133266593186453, calculateRenewalType:2}`。
+    - `CalculateRenewalTypeEnums`：`0=无 / 1=计算 / 2=不计算`。`filterNotCanRenewalCourse` 会把 `calculateRenewalType=2(不计算)` 的续班关系**直接过滤掉**（开关 `filterNotCanRenewalCourse` 为 true 时）→ `courseNumberToAfterCourseMap` 为空 → `renewalSignCore` 里 `courseVOList` 为空 → **判 `NOT_CAN_RENEWAL_NO_AFTER_COURSE(4)`**。
+    - 所以：该课(17133266593186453)的续班关系 **`calculate_renewal_type=2（不计算）`** → performance-attribution 判全体学员「不可续-无续班关系」→ 页面「一轮班全员不可续、可续学员数 0」。**属课程续班设置(calculate_renewal_type)配置问题，不是 student-center/student-data 的展示 bug。**
+- **按订单查可续原因（官方接口，最直接）**：`POST https://sd.baijia.com/feitu/performance/management/suda/performance/regular/canRenewalSignReason`，body `{"orderNumberStr":"<订单号>","pager":{"current":1,"pageSize":10,"pageNum":1}}`（走 sd 网关/代理，带 `traffic-env`），返回 `signResult` + `reasons[]{step,reason,detail}`。
+  - 实测订单 `426150646217966321` → `signResult=不可续-无续班关系`、`reasons[0].reason=**未配置后置续班课程**`、`assistantName=艾力西尔·阿卜力米提`（`source=PERFORMANCE-ATTRIBUTION`）。→ 与上面"calculateRenewalType=2 被过滤"完全一致。
+- **改完配置怎么生效（不会自动同步 ES）**：
+  1. 改 `course-center` 续班关系的 `calculate_renewal_type`（1=计算）；这步只改配置，**不触发** ES。
+  2. 触发 **performance-attribution 可续标记重算**：xjob **`RenewalOrderSignHandler`**（`RenewalSignTemplate#doSign`，也可 `POST /renewal/signOrder`），param `{"clazzNumbersStr":"<班号>","clazzType":<ClazzTypeEnum>}` 只重算该班；不传 `clazzNumbersStr` 会按时间全量，别误触。
+  3. 重算完发 MQ **`canRenewalChangeEvent`**（topic `gaotu_performance_renewal`，Apollo `RocketMq.service.canRenewalSign.topic/tag`）→ student-data **`OdsSmallCanRenewalSyncConsumer`**（group `GID_OdsSmallCanRenewalSyncConsumer`，顺序消费）→ 写 ES `ads_small_clazz_user.smallCanRenewal`/`smallRoundIdx`。
+  4. 重算含"可续修正/可续退款修正"，`smallRoundIdx` 随同一条消息更新；ES 更新后页面/指标（有缓存）刷新即可看到。
 
 ## 关键字段口径（续班状态）
 
