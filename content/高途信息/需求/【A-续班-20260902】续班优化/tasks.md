@@ -102,15 +102,19 @@ tags: [需求, 任务]
 - **数据现状（业务接受，先不处理）**：小班在读表 `dws_small_clazz_user_subject.school_term_id` **只存 `1/2/3/4`**（写表时复合学期换算不出 CES 会落空），所以「**当前课程=大班 且 学期是复合**」时，小班表没有同值可比 → 不排除。**逻辑正确，属小班表存不下复合学期的数据限制**（要生效得让写表链路把小班复合学期也落库）。
 - 备查（大班在读表现状）：复合学期码约占 28%（`dws_fuwu_clazz_user_subject` 107万/381万行），实测含 `CU/CD/QU/QD/R/Y/X-Q/D-C`。
 
-### P-02 退费根因（`refund_root_cause`）已下线 → 后端门控 `/reasonType` 是死代码
+### P-02 ✅ 已确认（2026-10-15，按前端发布分支 master）：退费根因前端已下线 → 后端 `/reasonType` 死代码
 
-- **已核实（前端 master `0685c9b4` + feature 分支）**：refund tab 只调 `/roster/refund/{analysis, reason, course, stage, edit, evaluate, gray}`，**不调 `/roster/refund/reasonType`**，全仓无「根因/rootCause/satisfaction」→ **退费根因模块前端已下线**。
-- **要确认**：后端 `reasonType` 接口 + `RefundAiModuleEnum.REFUND_ROOT_CAUSE` 是否顺带删除（当前门控无害）。
+- **前端发布分支**：`aianalysisinformations` 本仓**无 release 分支**（只有 `master` + 若干 feature），**master 即主干/发布**，head `0685c9b4`。
+- 前端 `src/tabs/refund/` 只调 `/roster/refund/{analysis, reason, course, stage, edit, evaluate, gray}`，**不调 `/roster/refund/reasonType`**；全仓（master + feature 分支）无「根因 / rootCause / satisfaction / 满意度」。→ **退费根因已下线**。
+- **✅ 已删（2026-10-15，student-center `497479d3`）**：`RefundController.reasonType` + `RefundService.reasonType/buildCommIdMap/transReasonType/summaryReasonType/queryDialog` + `RefundReasonTypeVO`（前端全局零调用）。
+- **保留** `RefundAiModuleEnum.REFUND_ROOT_CAUSE`：**分析侧「退费根因」模块还在**（`RefundReasoningEnum.REFUND_ROOT_CAUSE` 在退费归因 END 节点、被 `RefundReasonProcessManager` 使用），该枚举被 `allModuleCodes` 引用，非纯死代码。
 
-### P-03 「分层原因/变化」门控口径
+### P-03 ✅ 已确认（2026-10-15，按 release 代码全量核）：`levelReasonAndHistory` **不是死代码**（cronus 花名册在用）→ 保留
 
-- 已给 `POST ai/clazzUser/levelReasonAndHistory` 挂**续班模块 9（意向预测）**门控（与 `predictLevelReason` 续班分支同口径），关闭返空对象。
-- **要确认**：口径对不对（该接口前端当前未调，只调 `predictLevelReason`）；是否属「分层变化与分层原因」独立需求、该用哪个模块。
+- **aianalysisinformations（master / feature）**：不调 `ai/clazzUser/levelReasonAndHistory`；分层变化+分层原因走 `predictLevelReason`（`src/components/IntentPrediction/`，续班/退费共用按 `scene` 分流，已按 续班9 / 退费prediction 门控）。
+- **但 cronus（花名册前端，master）在用**：`continuationService.js#getContinueClassPrediction`（注释「获取续班意向预测等级结果」）调 `/ai/clazzUser/levelReasonAndHistory`，用在 `ContinuationService` / `ContinuationServiceLegacy` 的「续班预测」列组件。
+- **结论**：该接口**不是死代码，保留**；且它 = **续班意向预测** → **我挂的续班 9 门控口径正确** ✅。
+- 另：aianalysisinformations master 未调开关表接口 `ai/moduleSwitch`（13 key）；前端是靠各数据接口返回空态来隐藏模块。
 
 ### P-04 上线前置（非产品，需 MR/发包授权）
 
