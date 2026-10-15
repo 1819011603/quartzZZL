@@ -149,6 +149,21 @@ $M $C baijia_invoke cosplay_logout
 - 想核数据与页面对不上时，直接查 ES `ads_small_clazz_user` 的 `smallCanRenewal`/`smallRenewalStateStatus`/`smallRoundIdx`/`clazzStudentStatus`。
 
 
+## 可续状态 / 轮次的上游链路（业绩归属，非本服务自算）
+
+列表「续班状态」「续班轮次」底层的 `smallCanRenewal`（可续状态）、`smallRoundIdx`（轮次）**由 performance-attribution（业绩归属）服务给出**，student-data 只做同步落 ES：
+
+- **链路**：`PERFORMANCE-ATTRIBUTION` 服务 `feignPerformance/getPerformanceRegularCanRenewalSignInfos`（Feign 适配 `PerformanceAttributionAdapter`，`com.gaotu.lvyue.client.service.PerformanceAttributionRemoteService`）→ student-data `OdsSmallCanRenewalSyncService`（MQ `CanRenewalList`，tag `SMALL_CLAZZ_USER_CAN_RENEWAL`）→ ES `ads_small_clazz_user.smallCanRenewal`/`smallRoundIdx`。
+- **取数**：`PerformanceSyncAclService#getCanRenewalDto(subclazzNumber, userId)`，按 **辅导班-学员**维度；同一维度多条时优先保留「可续」（status ∈ {1,2,8}）。
+- **值域 `CanRenewalStatusEnum`**：1可续-未续 / 2可续-已续 / 8可续-后置课程退款 = 可续；3不可续-非续班/非长期班/非判单命中订单 / 4不可续-无续班关系 / 5不可续-已退款 / 6不可续-过可续时间 / … / 16不可续-老学员 / 17不可续-续班配置灰名单 = 不可续。
+- ⚠️ **坑**：`OdsSmallCanRenewalSyncService#updateDataMapWithExternalData` 里 `useExternal=true`（默认）时，若外部取不到该维度 → 写 **`smallCanRenewal=0`、`smallRoundIdx=0`**（0 不在枚举内 → 前端展示为「不可续」）。
+- **排查「某学员为什么不可续」**：拿 `(subclazzNumber, userId)` 查 performance-attribution 的 `PerformanceRegularCanRenewalSignInfoDto.canRenewalStatus`（可 `invoke_service` 调 `PerformanceSyncAclService#getCanRenewalDto` 或直连 performance-attribution）。
+- **已实测（2026-10）**：班 `552794618077558825` 学员 叶浩伟 `(subclazzNumber=34698434165737728, userId=7244103707)` → performance-attribution 返回 `canRenewalStatus=4`（不可续-无续班关系）、`roundIdx=3`（整轮）。即该班学员「不可续」是**上游业绩归属判的**，不是 student-center/student-data 的展示问题。
+- **判「不可续-无续班关系(4)」的规则**（performance-attribution `AbstractRenewalSignStrategy#renewalSignCore`）：订单课程在「课程→后置课程映射」里**取不到后置续班课程** → 直接判 code=4，原因 `RenewalSignRegularReasonEnum.NOT_CONFIG_AFTER_COURSE`（**未配后置续班课程**），后续逻辑不再走。→ 该班学员全不可续 = 这些订单课程**没配后置续班课程**。
+  - 后置课程映射来源：`clazzFeignService.getCourseExtensionByExtensionInfo(courseNumberList, FOLLOW_COURSE=3)` → course-center `CourseNotNormalQueryApiFeignClient#listBeContinuationCourseByNumberList`（**被续班/后置课程**）。
+  - ⚠️ 且后置课程还必须落在 `getAllSettingCourseList`（有效**设置课程**）里，否则被 `filter(...)` 过滤成空、同样判 code=4 —— 所以「`course_relation_map` 有配置」≠「判单能取到后置课程」。
+  - 已查：该班课程 `17133266593186453`（青藤8阶科学探究）在 `course_center.course_relation_map` **有**后置课程记录（`course_number=17133266593186453`→`relation_number=...`，`calculate_renewal_type=1`，`isdel=0`）；但 performance-attribution 仍判该班学员 code=4，需再核后置课程是否为有效设置课程 / 订单课程是否与班级课程一致。
+
 ## 关键字段口径（续班状态）
 
 | 展示/筛选 | 来源 |
