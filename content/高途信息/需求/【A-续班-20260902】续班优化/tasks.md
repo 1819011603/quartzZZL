@@ -108,6 +108,7 @@ tags: [需求, 任务]
 - 前端 `src/tabs/refund/` 只调 `/roster/refund/{analysis, reason, course, stage, edit, evaluate, gray}`，**不调 `/roster/refund/reasonType`**；全仓（master + feature 分支）无「根因 / rootCause / satisfaction / 满意度」。→ **退费根因已下线**。
 - **✅ 已删（2026-10-15，student-center `497479d3`）**：`RefundController.reasonType` + `RefundService.reasonType/buildCommIdMap/transReasonType/summaryReasonType/queryDialog` + `RefundReasonTypeVO`（前端全局零调用）。
 - **保留** `RefundAiModuleEnum.REFUND_ROOT_CAUSE`：**分析侧「退费根因」模块还在**（`RefundReasoningEnum.REFUND_ROOT_CAUSE` 在退费归因 END 节点、被 `RefundReasonProcessManager` 使用），该枚举被 `allModuleCodes` 引用，非纯死代码。
+- ⚠️ **PRD 有误（2026-10-15 用户确认）**：AI 模块配置化 PRD 把退费 AI 模块列为 **6 个**（退费分析/意向预测/手填退费原因/**AI预测退费原因**/课程体验/退费沟通旅程），但**实际没有「AI预测退费原因」这个模块**（前端页面与代码均无此块，后端也无对应接口）→ **退费实际 5 个模块**。PRD 该条需订正。
 
 ### P-03 ✅ 已确认（2026-10-15，按 release 代码全量核）：`levelReasonAndHistory` **不是死代码**（cronus 花名册在用）→ 保留
 
@@ -121,4 +122,23 @@ tags: [需求, 任务]
 - 四仓（product-server / student-data / student-center / cart）反向合 `release` 并复测；
 - `product-server-client` `1.5.9-SNAPSHOT` → 发 `1.5.9` RELEASE；cart pom 切 RELEASE；
 - `student-data-client` `0.0.52.5-SNAPSHOT` → 定版 RELEASE（student-center 依赖）。
+
+### P-05 AI 部门开关：线上怎么配 + 不兼容点（2026-10-15）
+
+**PROD 现状（读回）**：`renewal.ai.dept.module.switch` / `refund.ai.dept.module.switch` **均未配置** → 代码默认 `{}` → **全量放开**（AI 全开，与上线前一致）。✅
+
+**线上怎么配**：
+1. **不做灰度 → 保持不配**（全量放开，AI 全开，行为与上线前完全一致、零风险）。**推荐先这样。**
+2. **要做部门灰度** → 配 `{"<老师主岗虚拟组织架构 orgNumber>":[模块code...]}`。⚠️ **一旦非空，未命中的部门 AI 全关**（续班/退费展示+分析全停），所以**必须把所有"要有 AI"的部门都列全**；部门 key = **老师（二讲）主岗虚拟组织架构 org number**（`_` 分段精确命中）。
+   - 续班模块 code：`1`用户画像 `2`沟通概况 `3`沟通建议&评分 `4`服务建议&评分 `5`未续跟进 `6`已续总结 `7`用户反馈 `8`主管点评 `9`意向预测。
+   - 退费模块 code：`tutoring` / `learning` / `satisfaction` / `refund_root_cause` / `service_suggestion` / `prediction` / `manual_reason`。
+
+**不兼容 / 风险点（"看下有哪里不兼容的"）**：
+1. 🔴 **配置非空但不全 → 未配部门 AI 全关**。本次 dev-1「续班 AI 分析打不开」就是这个：TEST 只配了 `97349606689168923`，登录老师部门 `6816343048455168` 不在里面 → 该部门续班模块全关 → `predictLevelReason`（模块9）返空。**灰度上线前必须确认要覆盖的部门清单。**
+2. 🔴 **退费侧按模块灰度会打断分析流程（#2105）**：退费归因是「并行(退费旅程/课程体验/满意度) → JOIN → END(退费根因/服务建议)」编排，**模块关闭时 `handleCode=0` → 调度器在 START 节点直接把整个流程判 INVALID 结束** → 同流程里已开启的模块也不跑。**所以退费侧要么只做部门级「全开/全关」，要么先修代码（把"模块关闭"写成跳过日志、让流程继续）。**
+3. ⚠️ **模块 9（意向预测）**：之前的 TEST 配置 `{"97349606689168923":[1..8]}` **不含 9** → 用 177071 测续班展示会"全关"（[[verify]] 已记）。灰度配置要记得带上 9。
+4. ⚠️ **展示侧 / 分析侧部门口径不同**（展示取登录老师部门；分析取该班辅导老师部门）→ 可能出现「前端展示但 AI 不分析」或反之（2026-09-24 已定，非 bug，但要知道）。
+5. ⚠️ **前端**：aianalysisinformations **未调**开关表 `ai/moduleSwitch`（靠各数据接口返空态隐藏模块）；**cronus 用 `levelReasonAndHistory`**（挂的是续班 9 门控）——即模块 9 关掉时，cronus 花名册的「续班预测」列也会没数据。
+
+**TEST 现值（本次还原，兼容之前灰度 + 覆盖测试部门）**：`renewal.ai.dept.module.switch={"97349606689168923":[1..8],"6816343048455168":[1..9]}`；`refund.ai.dept.module.switch={"6816343048455168":[全模块含 manual_reason]}`。
 
