@@ -108,7 +108,7 @@ tags: [需求, 任务]
 - 前端 `src/tabs/refund/` 只调 `/roster/refund/{analysis, reason, course, stage, edit, evaluate, gray}`，**不调 `/roster/refund/reasonType`**；全仓（master + feature 分支）无「根因 / rootCause / satisfaction / 满意度」。→ **退费根因已下线**。
 - **✅ 已删（2026-10-15，student-center `497479d3`）**：`RefundController.reasonType` + `RefundService.reasonType/buildCommIdMap/transReasonType/summaryReasonType/queryDialog` + `RefundReasonTypeVO`（前端全局零调用）。
 - **保留** `RefundAiModuleEnum.REFUND_ROOT_CAUSE`：**分析侧「退费根因」模块还在**（`RefundReasoningEnum.REFUND_ROOT_CAUSE` 在退费归因 END 节点、被 `RefundReasonProcessManager` 使用），该枚举被 `allModuleCodes` 引用，非纯死代码。
-- ⚠️ **PRD 有误（2026-10-15 用户确认）**：AI 模块配置化 PRD 把退费 AI 模块列为 **6 个**（退费分析/意向预测/手填退费原因/**AI预测退费原因**/课程体验/退费沟通旅程），但**实际没有「AI预测退费原因」这个模块**（前端页面与代码均无此块，后端也无对应接口）→ **退费实际 5 个模块**。PRD 该条需订正。
+- **PRD 模块对照（2026-10-15）**：PRD 已把「AI预测退费原因」标注 **【已下线】** → 退费实际 **5** 个模块（退费分析/意向预测/手填退费原因/课程体验/退费沟通旅程）。与前端页面（aianalysisinformations `src/tabs/refund`）一致，**对得上**。
 
 ### P-03 ✅ 已确认（2026-10-15，按 release 代码全量核）：`levelReasonAndHistory` **不是死代码**（cronus 花名册在用）→ 保留
 
@@ -141,4 +141,37 @@ tags: [需求, 任务]
 5. ⚠️ **前端**：aianalysisinformations **未调**开关表 `ai/moduleSwitch`（靠各数据接口返空态隐藏模块）；**cronus 用 `levelReasonAndHistory`**（挂的是续班 9 门控）——即模块 9 关掉时，cronus 花名册的「续班预测」列也会没数据。
 
 **TEST 现值（本次还原，兼容之前灰度 + 覆盖测试部门）**：`renewal.ai.dept.module.switch={"97349606689168923":[1..8],"6816343048455168":[1..9]}`；`refund.ai.dept.module.switch={"6816343048455168":[全模块含 manual_reason]}`。
+
+### P-06 模块对照 + 退费依赖关系 + 能否按模块灰度（2026-10-15）
+
+**续班模块对照（PRD ↔ 后端 ↔ 前端）——对得上 ✅**
+| PRD(8) | 后端 `RenewalAiModuleEnum`(9) | 前端 `tabs/renewal` |
+|---|---|---|
+| 续班用户画像 | 1 用户画像 | ✅ |
+| 意向预测 | 9 意向预测（新链路） | ✅ |
+| 沟通概况 | 2 沟通概况 | ✅ |
+| 已续/未续跟进 | **5 未续跟进 + 6 已续总结**（合并为 1） | ✅ 续班归因（互斥、条件展示） |
+| 沟通建议&评分 | 3 | ✅ |
+| 服务建议&评分 | 4 | ✅ |
+| 用户反馈 | 7 | ✅ |
+| 主管点评 | 8 | ✅ |
+
+**退费模块对照（PRD 6，其中「AI预测退费原因」已下线 → 实际 5）**
+- PRD 5 = 退费分析 / 意向预测 / 手填退费原因 / 课程体验 / 退费沟通旅程 ↔ 前端 `tabs/refund` 一致 ✅。
+- 后端 `RefundAiModuleEnum`(7) 比展示**多** `satisfaction`（满意度归因）/ `refund_root_cause`（退费根因）——是**分析侧内部模块**（PRD 展示清单里没有）。
+
+**退费依赖关系（线上正在跑）**
+```
+START（并行） 退费沟通旅程(tutoring) / 课程体验(learning) / 满意度归因(satisfaction)
+      │ 三个全部完成
+      ▼
+    JOIN  →  END（串行）退费根因(refund_root_cause) / 服务建议(service_suggestion)
+```
+- **服务建议、退费根因 → 依赖「退费沟通旅程 + 课程体验 + 满意度」三个全部完成**。
+- **意向预测（新链路）、手填退费原因 → 独立，无依赖**。
+
+**能否单独对每个模块灰度**
+- **续班**：各模块独立门控（圈选/归因/展示各自判断）→ **能**单独灰度。
+- **退费**：改前**不能**（关一个并行模块 → START 节点把整条流程判 INVALID 终止 → 连累服务建议/退费根因）；**已修（`#2105`，student-data `653bf30e`）：模块关闭改为「跳过但继续流程」→ 现在能单独对每个模块灰度**。
+- **E2E 验证（2026-10-15，dev-1，✅）**：测试辅导班 `31265963667882240`（辅导老师部门 `6816343048455168`）。① 配 `refund` 关掉 `satisfaction` → `isRefundModuleEnabled(部门,"satisfaction")=false`、`"learning"=true`（配置生效）；② 触发退费分析（`RefundReasonTaskService#refreshReasoning`）；③ 流程日志 `refresh292526594721867776`：`tutoring / learning / satisfaction / refund_root_cause / service_suggestion` **全部有记录** → **关掉 satisfaction 后 END 的「退费根因/服务建议」照跑**（改前会整条判无效、不跑）。验完已还原配置。
 
