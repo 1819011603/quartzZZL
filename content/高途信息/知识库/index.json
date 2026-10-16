@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-10-09",
+ "updated": "2026-10-16",
  "note": "机读索引：页面/tab → 接口。字段 frontPath=前端 request 路径，backendPath=后端 Controller 路径，service=青舟 appId。",
  "repos": {
   "epic": "http://git.baijia.com/gaotu-fe/gaotu-btech-fe/epic",
@@ -12,7 +12,8 @@
   "boss-activity": "http://git.baijia.com/gaotu-fe/boss-activity",
   "staff(后端)": "http://git.baijia.com/gaotu/staff",
   "gaotu-fe-goodsmanage": "http://git.baijia.com/gaotu-ctech/gaotu-fe-goodsmanage",
-  "gaotu-fe-solo": "http://git.baijia.com/gaotu-fe/gaotu-btech-fe/gaotu-fe-solo"
+  "gaotu-fe-solo": "http://git.baijia.com/gaotu-fe/gaotu-btech-fe/gaotu-fe-solo",
+  "sketchpad": "http://git.baijia.com/pandora/activity/sketchpad"
  },
  "pages": [
   {
@@ -3730,6 +3731,32 @@
        "backendPath": "/bff/sellLink",
        "name": "生成销售短链",
        "id": ""
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "route": "/fe/sketchpad/projectManage",
+   "name": "问卷/CDS 平台 · 项目管理",
+   "repo": "sketchpad",
+   "pageFile": "sketchpad/projectManage/_page.md",
+   "note": "基座 um-dma-qiankun-fe（仓库 um-dma-fe）；后端 future-landingpage-manage",
+   "tabs": [
+    {
+     "tabKey": "default",
+     "name": "项目列表",
+     "file": "sketchpad/projectManage/_page.md",
+     "apis": [
+      {
+       "trigger": "进页面/列表查询",
+       "method": "POST",
+       "frontPath": "/future-landingpage-manage/project/list",
+       "frontFile": "待补(sketchpad 仓库)",
+       "service": "future-landingpage-manage",
+       "backendPath": "/project/list",
+       "name": "问卷项目列表",
+       "note": "实测 traceId 630b4e3f-1956-40ee-9b8b-8446c26fc085.0.0"
       }
      ]
     }

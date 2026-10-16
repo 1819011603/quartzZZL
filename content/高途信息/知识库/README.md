@@ -45,6 +45,7 @@
 | `/ark/app-goods/clazzManagePro/list` | 班级管理 | gaotu-fe-goodsmanage | clazzList / arrangeClazzList |
 | `/ark/app-goods/clazzEncyclopedia` | 班级大全 | gaotu-fe-goodsmanage | — |
 | 学员详情页 AI 分析 tab（GAIA 微组件，非独立路由） | AI 分析 / 意向预测 | aianalysisinformations | — |
+| `/fe/sketchpad/projectManage` | 问卷/CDS 平台 · 项目管理 | sketchpad | — |
 
 ## 数据平台（非页面条目）
 
