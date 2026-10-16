@@ -47,6 +47,17 @@
 | `/ark/app-goods/clazzEncyclopedia` | 班级大全 | gaotu-fe-goodsmanage | — |
 | 学员详情页 AI 分析 tab（GAIA 微组件，非独立路由） | AI 分析 / 意向预测 | aianalysisinformations | — |
 | `/fe/sketchpad/projectManage` | 问卷/CDS 平台 · 项目管理 | sketchpad | — |
+| `/gps/prism/groupList` | GPS 我的组 | prism | — |
+| `/gps/prism/studentList` | GPS 学员花名册 | prism | — |
+| `/gps/prism/operation/{leave,reschedule,transfer}` | GPS 请假/调课/转班 | prism | — |
+| `/gps/prism/clazzList` | GPS 我的班级 | prism | — |
+| `/gps/distribution/student-assignment` | GPS 学员分配 | gps-distribution | — |
+| `/gps/distribution/teacher-assignment` | GPS 老师分配 | gps-distribution | omo / one-to-one |
+| `/gps/ces-teach/product-line` | GPS 产品线 | ces-teach | — |
+| `/gps/ces-teach/category-master-data` | GPS 门类主数据/价值管理 | ces-teach | 客户价值(type=1) / 产品包装(type=2) |
+| `/gps/app-operation/clazzManageNew/list` | GPS 班级管理 | gps-operation | — |
+| `/gps/app-operation/arrangeResult` | GPS 排课结果 | gps-operation | — |
+| `/gps/app-finance/mainManagement` | GPS 企业主体管理 | ecommerce-fe-finance | — |
 
 ## 数据平台（非页面条目）
 
