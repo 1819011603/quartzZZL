@@ -29,6 +29,7 @@
 | `/crm/cronus/microClazzRoster` | 小班课花名册 | cronus | default / continuationService |
 | `/crm/cronus/onebyOneRoster` | 一对一花名册 | cronus | — |
 | `/crm/cronus/examManagement` | 考试管理 | cronus | — |
+| 学员档案 / 学员详情抽屉（共享组件，非独立路由） | 学员档案 | cronus | orderInfo（订单信息） |
 | `/crm/microFairy/tutoringClassManage` | 辅导班管理 | boss-counselor | — |
 | `/ark/app-promotions/continuation-classes` | 续班计划管理（OES，含问卷绑定） | gaotu-fe-promotions | list / renewalProcess |
 | `/ark/app-promotions/continuation-classes/pre-register-activity` | 预报名活动 | gaotu-fe-promotions | — |

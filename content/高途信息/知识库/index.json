@@ -3761,6 +3761,374 @@
      ]
     }
    ]
+  },
+  {
+   "route": "cronus/StudentProfile(共享学员详情抽屉,非独立路由)",
+   "name": "学员档案 / 学员详情抽屉（cronus StudentProfile，共享）",
+   "repo": "cronus",
+   "pageFile": "cronus/StudentProfile/_page.md",
+   "note": "抽屉壳在 cronus（MF ./StudentProfile），各 tab 内容=GAIA 远程物料(gaia-widget-submodule/<名>)或宿主通用模块(schema type=2)；接口已尽量落库",
+   "tabs": [
+    {
+     "tabKey": "UserInfo",
+     "name": "用户信息（FieldsModule/SubjectModule/MainTeacherPreference/ContactModule，宿主通用模块）",
+     "file": "cronus/StudentProfile/_page.md",
+     "apis": [
+      {
+       "trigger": "用户信息tab查询",
+       "method": "POST",
+       "frontPath": "/student-center/ols/w/studentArchives/userInfo/queryWithFieldName",
+       "frontFile": "cronus/src/pages/StudentProfile/services/userInfo.js",
+       "service": "student-center",
+       "backendPath": "/ols/w/studentArchives/userInfo/queryWithFieldName",
+       "name": "PC端用户信息查询"
+      },
+      {
+       "trigger": "用户信息tab编辑",
+       "method": "POST",
+       "frontPath": "/student-center/ols/w/studentArchives/userInfo/updateByFieldName",
+       "frontFile": "cronus/src/pages/StudentProfile/services/userInfo.js",
+       "service": "student-center",
+       "backendPath": "/ols/w/studentArchives/userInfo/updateByFieldName",
+       "name": "PC端用户信息更新"
+      },
+      {
+       "trigger": "AI编辑字段",
+       "method": "POST",
+       "frontPath": "/component/student-center/ols/w/studentArchives/userInfo/aiEditedFields",
+       "frontFile": "cronus/src/services/studentProfile.js",
+       "service": "student-center",
+       "backendPath": "/ols/w/studentArchives/userInfo/aiEditedFields",
+       "name": "AI编辑字段"
+      },
+      {
+       "trigger": "学习情况-学科",
+       "method": "POST",
+       "frontPath": "/component/student-center/ols/studentArchives/subjectList",
+       "frontFile": "cronus/src/pages/StudentProfile/services/subject.js",
+       "service": "student-center",
+       "backendPath": "/ols/studentArchives/subjectList",
+       "name": "用户信息-学科情况"
+      },
+      {
+       "trigger": "学习情况-保存",
+       "method": "POST",
+       "frontPath": "/component/student-center/ols/studentArchives/saveSubjectInfo",
+       "frontFile": "cronus/src/pages/StudentProfile/services/subject.js",
+       "service": "student-center",
+       "backendPath": "/ols/studentArchives/saveSubjectInfo",
+       "name": "保存/编辑学科信息"
+      }
+     ]
+    },
+    {
+     "tabKey": "OrderInfo",
+     "name": "订单（OrderInfoLabel+OrderInfoList，GAIA物料）",
+     "file": "cronus/StudentProfile/orderInfo.md",
+     "apis": [
+      {
+       "trigger": "订单概况卡",
+       "method": "POST",
+       "frontPath": "/component/student-center/temp/user/overview/dashboard",
+       "frontFile": "gaia-widget/OrderInfoLabel",
+       "service": "student-center",
+       "backendPath": "/temp/user/overview/dashboard",
+       "name": "用户统计(dashboard position=orderInfo)"
+      },
+      {
+       "trigger": "订单列表",
+       "method": "POST",
+       "frontPath": "/student-center/ols/w/studentArchives/orderInfo",
+       "frontFile": "gaia-widget/OrderInfoList/src/pages/index.tsx",
+       "service": "student-center",
+       "backendPath": "/ols/w/studentArchives/orderInfo",
+       "name": "PC端订单记录"
+      },
+      {
+       "trigger": "订单筛选下拉",
+       "method": "POST",
+       "frontPath": "/student-center/ols/w/studentArchives/orderInfo/skuTypeGroups",
+       "frontFile": "gaia-widget/OrderInfoList",
+       "service": "student-center",
+       "backendPath": "/ols/w/studentArchives/orderInfo/skuTypeGroups",
+       "name": "订单筛选-班级/商品类型下拉"
+      },
+      {
+       "trigger": "修改地址",
+       "method": "POST",
+       "frontPath": "/student-center/studentClazz/updateOrderAddress",
+       "frontFile": "gaia-widget/OrderInfoList",
+       "service": "student-center",
+       "backendPath": "/studentClazz/updateOrderAddress",
+       "name": "修改订单地址"
+      },
+      {
+       "trigger": "查待发货",
+       "method": "POST",
+       "frontPath": "/student-center/studentClazz/queryAllWaitSendItem",
+       "frontFile": "gaia-widget/OrderInfoList",
+       "service": "student-center",
+       "backendPath": "/studentClazz/queryAllWaitSendItem",
+       "name": "获取待发货订单"
+      },
+      {
+       "trigger": "复制地址链接",
+       "method": "POST",
+       "frontPath": "/student-center/studentClazz/getNeedDeliveryLink",
+       "frontFile": "gaia-widget/OrderInfoList",
+       "service": "student-center",
+       "backendPath": "/studentClazz/getNeedDeliveryLink",
+       "name": "获取地址链接"
+      },
+      {
+       "trigger": "手机号小眼睛",
+       "method": "POST",
+       "frontPath": "/component/student-center/userSecret/getBaseInfo",
+       "frontFile": "gaia-widget/OrderInfoList/src/services/desensitize.ts",
+       "service": "student-center",
+       "backendPath": "/userSecret/getBaseInfo",
+       "name": "手机号解密"
+      }
+     ]
+    },
+    {
+     "tabKey": "9b0bc414-9221-4050-ad50-591adcdb28e2",
+     "name": "考试（StudentExamRecords，GAIA物料）",
+     "file": "cronus/StudentProfile/_page.md",
+     "apis": [
+      {
+       "trigger": "考试tab",
+       "method": "POST",
+       "frontPath": "/component/student-center/exam/clazz/list",
+       "frontFile": "gaia-widget/StudentExamRecords",
+       "service": "student-center",
+       "backendPath": "/exam/clazz/list",
+       "name": "考试-班级列表"
+      },
+      {
+       "trigger": "考试tab",
+       "method": "POST",
+       "frontPath": "/component/student-center/exam/user/list",
+       "frontFile": "gaia-widget/StudentExamRecords",
+       "service": "student-center",
+       "backendPath": "/exam/user/list",
+       "name": "考试-学员列表"
+      },
+      {
+       "trigger": "考试tab",
+       "method": "POST",
+       "frontPath": "/component/student-center/exam/offline/config",
+       "frontFile": "gaia-widget/StudentExamRecords",
+       "service": "student-center",
+       "backendPath": "/exam/offline/config",
+       "name": "线下考试配置"
+      },
+      {
+       "trigger": "考试tab",
+       "method": "POST",
+       "frontPath": "/component/student-center/exam/show/url",
+       "frontFile": "gaia-widget/StudentExamRecords",
+       "service": "student-center",
+       "backendPath": "/exam/show/url",
+       "name": "考试链接"
+      },
+      {
+       "trigger": "考试tab",
+       "method": "POST",
+       "frontPath": "/component/student-center/exam/remove",
+       "frontFile": "gaia-widget/StudentExamRecords",
+       "service": "student-center",
+       "backendPath": "/exam/remove",
+       "name": "删除考试"
+      },
+      {
+       "trigger": "考试tab",
+       "method": "POST",
+       "frontPath": "/component/student-center/base/student/clazz/baseInfo",
+       "frontFile": "gaia-widget/StudentExamRecords",
+       "service": "student-center",
+       "backendPath": "/base/student/clazz/baseInfo",
+       "name": "学员班级基本信息"
+      },
+      {
+       "trigger": "考试tab",
+       "method": "POST",
+       "frontPath": "/component/student-center/base/student/clazz/subject",
+       "frontFile": "gaia-widget/StudentExamRecords",
+       "service": "student-center",
+       "backendPath": "/base/student/clazz/subject",
+       "name": "学员学科"
+      },
+      {
+       "trigger": "考试tab",
+       "method": "POST",
+       "frontPath": "/component/student-center/study/data/userClazz/baseList",
+       "frontFile": "gaia-widget/StudentExamRecords",
+       "service": "student-center",
+       "backendPath": "/study/data/userClazz/baseList",
+       "name": "学员班级列表"
+      },
+      {
+       "trigger": "考试tab",
+       "method": "POST",
+       "frontPath": "/component/student-center/filter/clazz/list",
+       "frontFile": "gaia-widget/StudentExamRecords",
+       "service": "student-center",
+       "backendPath": "/filter/clazz/list",
+       "name": "班级筛选"
+      },
+      {
+       "trigger": "考试tab",
+       "method": "POST",
+       "frontPath": "/component/student-center/filter/period/list",
+       "frontFile": "gaia-widget/StudentExamRecords",
+       "service": "student-center",
+       "backendPath": "/filter/period/list",
+       "name": "期筛选"
+      }
+     ]
+    },
+    {
+     "tabKey": "EducationalResources",
+     "name": "学习资料（EducationalResources，GAIA物料）",
+     "file": "cronus/StudentProfile/_page.md",
+     "apis": [
+      {
+       "trigger": "学习资料tab",
+       "method": "POST",
+       "frontPath": "/component/student-center/study/data/userClazz/baseList",
+       "frontFile": "gaia-widget/EducationalResources",
+       "service": "student-center",
+       "backendPath": "/study/data/userClazz/baseList",
+       "name": "学员班级列表"
+      },
+      {
+       "trigger": "学习资料tab",
+       "method": "POST",
+       "frontPath": "/component/student-center/filter/clazz/list",
+       "frontFile": "gaia-widget/EducationalResources",
+       "service": "student-center",
+       "backendPath": "/filter/clazz/list",
+       "name": "班级筛选"
+      },
+      {
+       "trigger": "学习资料tab",
+       "method": "POST",
+       "frontPath": "/component/student-center/filter/period/list",
+       "frontFile": "gaia-widget/EducationalResources",
+       "service": "student-center",
+       "backendPath": "/filter/period/list",
+       "name": "期筛选"
+      }
+     ]
+    },
+    {
+     "tabKey": "StudentCalendar",
+     "name": "学员日历（StudentCalendar，GAIA物料）",
+     "file": "cronus/StudentProfile/_page.md",
+     "apis": [
+      {
+       "trigger": "学员日历tab",
+       "method": "POST",
+       "frontPath": "/component/student-center/studentCalendar/listData",
+       "frontFile": "gaia-widget/StudentCalendar",
+       "service": "student-center",
+       "backendPath": "/studentCalendar/listData",
+       "name": "学员日历数据"
+      }
+     ]
+    },
+    {
+     "tabKey": "LangerageLession",
+     "name": "语言课程（LanguageLessonCenter，GAIA物料）",
+     "file": "cronus/StudentProfile/_page.md",
+     "apis": [
+      {
+       "trigger": "语言课程tab",
+       "method": "POST",
+       "frontPath": "/component/student-center/ols/bookCheckData",
+       "frontFile": "gaia-widget/LanguageLessonCenter",
+       "service": "student-center",
+       "backendPath": "/ols/bookCheckData",
+       "name": "约课基本信息必填校验"
+      }
+     ]
+    },
+    {
+     "tabKey": "Contract",
+     "name": "合同（Contract，GAIA物料）",
+     "file": "cronus/StudentProfile/_page.md",
+     "apis": [
+      {
+       "trigger": "合同tab",
+       "method": "POST",
+       "frontPath": "/component/student-center/studentContract/list",
+       "frontFile": "gaia-widget/Contract",
+       "service": "student-center",
+       "backendPath": "/studentContract/list",
+       "name": "合同列表"
+      },
+      {
+       "trigger": "合同tab导出",
+       "method": "POST",
+       "frontPath": "/component/student-center/studentContract/export",
+       "frontFile": "gaia-widget/Contract",
+       "service": "student-center",
+       "backendPath": "/studentContract/export",
+       "name": "合同导出"
+      }
+     ]
+    },
+    {
+     "tabKey": "ClassDataForOnebyOne",
+     "name": "班级数据（宿主通用模块，待抓包）",
+     "file": "cronus/StudentProfile/_page.md",
+     "apis": []
+    },
+    {
+     "tabKey": "CourseData",
+     "name": "课时账户（宿主通用模块 @gaotu/hour-account，待抓包）",
+     "file": "cronus/StudentProfile/_page.md",
+     "apis": []
+    },
+    {
+     "tabKey": "ChannelInfo",
+     "name": "渠道信息（宿主通用模块，待抓包）",
+     "file": "cronus/StudentProfile/_page.md",
+     "apis": []
+    },
+    {
+     "tabKey": "QuestionnaireList",
+     "name": "问卷（宿主通用模块，待抓包）",
+     "file": "cronus/StudentProfile/_page.md",
+     "apis": []
+    },
+    {
+     "tabKey": "UserDynamic",
+     "name": "动态（宿主通用模块；dashboard position=studentDynamic）",
+     "file": "cronus/StudentProfile/_page.md",
+     "apis": [
+      {
+       "trigger": "动态-沟通概况卡",
+       "method": "POST",
+       "frontPath": "/component/student-center/temp/user/overview/dashboard",
+       "frontFile": "gaiaCenter temp",
+       "service": "student-center",
+       "backendPath": "/temp/user/overview/dashboard",
+       "name": "用户统计(dashboard position=studentDynamic)"
+      },
+      {
+       "trigger": "动态列表",
+       "method": "POST",
+       "frontPath": "/component/student-center/studentDynamic/searchDynamicInfo",
+       "frontFile": "cronus/StudentDynamicController",
+       "service": "student-center",
+       "backendPath": "/studentDynamic/searchDynamicInfo",
+       "name": "查询学员动态"
+      }
+     ]
+    }
+   ]
   }
  ]
 }

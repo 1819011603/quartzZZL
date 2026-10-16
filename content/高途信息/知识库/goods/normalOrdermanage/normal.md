@@ -44,6 +44,25 @@
 
 after-sales、express-management、student-center、hermes-boss 的接口不在本次追踪范围内。
 
+## 关键字段：订单状态枚举（电商 order-b）
+
+页面「订单状态」筛选（全部 / 待付款 / 已付款 / 已取消 / 已退款 / 尾款待付）与列表「订单状态」列都取 `orderStatus`，口径 = order-b `NeoOrderStatus`（`order/order-domain/.../domain/utils/NeoOrderStatus.java`）：
+
+| code | msg | shownName |
+|---|---|---|
+| 1 | 待支付 | 待支付 |
+| 2 | 已支付 | 已支付 |
+| 3 | 已支付 | 已支付 |
+| 4 | 手动取消 | 已取消 |
+| 5 | 自动取消 | 已取消 |
+| **6** | **已退款（全额退款）** | **已退款** |
+| **7** | **部分退款** | **部分退款** |
+| 8 | 定金已支付 | 等待付尾款 |
+| 9 | 尾款已支付 | 尾款已支付 |
+| 10 | 定金已退款 | 已退款 |
+
+> **6 / 7 后端有区分**（全额退款 vs 部分退款）。学员档案「订单信息」tab 的订单状态同源，见 [cronus/StudentProfile/orderInfo.md](../../cronus/StudentProfile/orderInfo.md)。
+
 ## 排查提示
 
 - 列表数据不对 → 先拿订单号查（订单号会走 MySQL 兜底）；订单号能查到、其它条件查不到 = ES 宽表没同步
