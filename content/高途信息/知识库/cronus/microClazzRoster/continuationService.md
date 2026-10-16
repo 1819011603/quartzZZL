@@ -31,7 +31,7 @@
 | 进页面 | `getDefaultValue` | `/bgwApi/component/student-center/roster/small/renewal/defaultValue` | `src/pages/microClazzRoster/ContinuationService/service.js:22` | student-center | `/roster/small/renewal/defaultValue` | 获取GlobalSearch默认值接口 [3151314] | 全局搜索默认值（`useDefaultValue`） |
 | 班级变更/进页面 | `getContinuationRound` | `/bgwApi/component/student-center/roster/small/renewal/getRenewalInfo` | `src/pages/microClazzRoster/ContinuationService/service.js:5` | student-center | `/roster/small/renewal/getRenewalInfo` | 续班信息 [3151313] | 续班轮次选项 |
 | 进页面 | `getRenewalPlanList` | `/component/student-center/smallClazz/filter/renewalPlan/list` | `src/pages/microClazzRoster/ContinuationService/service.js:55` | student-center | `/smallClazz/filter/renewalPlan/list` | [POST]/renewalPlan/list [3876404] | 续班计划下拉（不依赖班级） |
-| 续班计划变更 | `getClazzList` | `/component/student-center/smallClazz/filter/clazz/list` | `src/pages/microClazzRoster/ContinuationService/service.js:79` | student-center | `/smallClazz/filter/clazz/list` | [POST]/clazz/list [2044937] | 班级列表；`GlobalSearch` 的 `ClazzAndPeriodNg`（内联 `api.clazz`，`components/GlobalSearch/index.js:413`）调同一 path |
+| 续班计划变更 | `getClazzList` | `/component/student-center/smallClazz/filter/clazz/list` | `src/pages/microClazzRoster/ContinuationService/service.js:79` | student-center | `/smallClazz/filter/clazz/list` | [POST]/clazz/list [2044937] | **班级列表（按续班计划查该计划下本人带的全部班级）**；`GlobalSearch` 的 `ClazzAndPeriodNg`（内联 `api.clazz`，`components/GlobalSearch/index.js:413`）调同一 path。⚠️ **返回条数受 `small.clazz.filter.max.size.*` 上限截断**（见下「班级范围 / 大量班级」）——班级多的计划会漏班级、漏学员 |
 
 ### 3. 续班数据指标 / 问卷明细
 
@@ -199,6 +199,13 @@ $M $C baijia_invoke cosplay_logout
 | 派生规则 | `SmallRenewalFiledConvertDataQueryServiceImpl`：ES `smallCanRenewal`(1..17) 经 `RenewalStatusEnum.canRenewal2Renewal`（∈{1,2,8}=可续，否则不可续）+ ES `smallRenewalStateStatus`(1已续/2未续/null→未续) → `RenewalReportStatusEnum` code |
 | 筛选翻译 | `SmallRenewalReportStatusFilterService`：code4(不可续未续) → `smallCanRenewal NOT IN (1,2,8)` AND `smallRenewalStateStatus ∈ (2,null)`；code1/2 → `smallCanRenewal IN (1,2,8)`，code3/4 → NOT IN |
 
+### 学员状态（`clazzStudentStatus`）口径
+
+- 展示给前端的「学员状态」是**后端派生**的：`SmallClazzService#setClazzStudentStatus` = ES `clazzStudentStatus` **+** ES `changeClazzStatus` × 2。
+  - ES 原值 `clazzStudentStatus`：0 退班(非调班) / 1 在班(非调班)；`changeClazzStatus`：0 正常 / 1 调整。
+  - 派生后：0 退班(非调班) / 1 在班(非调班) / **2 退班(调班)** / **3 在班(调课)**。
+- 该字段**按「班级×学员」文档存储**，同一条文档对任何角色返回同一值 → **不存在"同一条记录主讲看到在班、班主任看到退班"**；两人看到的差异只会来自各自落到的 clazzNumber 不同（见上「班级范围」）。
+
 > 展示与筛选都源自同一对 ES 原始字段（`smallCanRenewal` + `smallRenewalStateStatus`），口径上必然一致。
 
 ## ⚠️ 续班轮次里的「不可续」≠ 续班状态；且小班漏了联动逻辑（已确认缺陷）
@@ -215,6 +222,36 @@ $M $C baijia_invoke cosplay_logout
 - 实测（班 `552794618077558825`，56 人全 `smallCanRenewal=4`/`state=2`）：ES 按"小班现状(只 `smallRoundIdx=0`)"= **0**；按"大班逻辑(should[不可续状态, `smallRoundIdx=0`])"= **18**。
 - 要按状态筛也能用「续班状态」筛选（走 quickFilter，实测 code4 → 18 条），但用户预期的是轮次下拉里的「不可续」生效。
 - 修复方向：给 `SmallRenewalRoundFilterService` 补回 `RenewalRoundEnum.UN` 时 `mustNot smallCanRenewal ∈ {1,2,8}` 那段（与大班对齐）；字段名是 `smallCanRenewal`（大班是 `canRenewal`）。
+
+## 班级范围 / 大量班级（一个续班计划 ≈ 300 个班级）
+
+**业务事实**：一个续班计划（`smallRenewalNumber`）下通常有约 **300 个班级**；页面「班级」选择器支持多选/全选（`ClazzAndPeriodNg`，`multipleConfig.showSelectAll=true`、`maxTagCount=1` → UI 只显示 1 个 tag +「+N」，如「【2026/秋】青… +99」）。正常使用就是要按整个续班计划把班级都选上，所以「一次选中大量班级」是常规操作，不是异常输入。
+
+**列表一行的粒度 = 一个「班级 × 学员」记录**（ES 文档 `_id = clazzNumber-userId`），不是「一个学员」。因此**班级范围放大后，同一个学员会出现多行**：
+
+- 同一学员同一学期可能在多个班级/辅导班各有一条 ES 记录；转班/调课后，**旧辅导班**那条为「退班(调班)」、**新辅导班**那条为「在班(调课)」。
+- 于是「按整个续班计划全选」时，同一个学员会同时出现「在班」和「退班」两行 → 看起来像「同一个人的学员状态不一致」。
+- **缩小班级范围到具体某一个班级**（或按单个 clazzNumber 查）即对齐；这不是数据错误。
+- 同名班级要注意：同一 `courseNumber` 下可能存在多个**班级名相同**的 `clazzNumber`（例：`562246331247640580` 与 `562246331247640582` 都叫「【2026/秋】青藤9阶思维（苏科版）善思班」，仅辅导班不同）——选中它们会同时命中新旧两条记录。
+
+**可见范围差异（子需求2 口径）**：权限过滤 `SmallClazzUserPermissionFilterService` = OR(字段 ∈ 登录账号)，account 字段含 `assistantAccountId` + `mainTeacherAccountIds`。主讲（`mainTeacherAccountIds`，**班级级**）能看到**整个班级下所有辅导班**的学员；班主任（`assistantAccountId`，**辅导班级**）只看**自己辅导班**。同一个「班级」（同名多 clazzNumber、多辅导班）下，主讲与班主任看到的**学员集合本就不同**。
+
+**规模相关的实现点 / 已知限制（班级多了就可能出问题）**：
+
+- **班级下拉列表有上限 —— 本类问题的根因（2026-10-16 确认）**：`SmallFilterComponentServiceImpl#doListFilterComponentByClazz`（`student-center-service`）用 terms 聚合 `field("clazzNumber").size(size)`，`size` 取 `small.clazz.filter.max.size.with.renewal`（有续班期筛选时）/ `small.clazz.filter.max.size.default`（其它情况），**代码默认均为 100**。
+  - **PROD 改动前**：`small.clazz.filter.max.size.with.renewal = 250`，`small.clazz.filter.max.size.default` **未配置**（→ 走代码默认 100）。
+  - **班级数超过该上限的续班计划，下拉只加载前 N 个班级 → 其余班级的学员在续班服务/花名册里「看不到」**（页面「班级」chip 只显示「青… +N」，N = 上限-1）。
+  - **2026-10-16 马胜临时改为 500**（Apollo release 675435/675436，`with.renewal: 250→500`、新增 `default=500`）后恢复（chip「+99」→「+351」= 352 个班全出来）。**属临时规避，仍需正式优化**——老师带班继续增长会再次触顶。
+  - `small.clazz.text.filter.batch.search.max.size`（默认 100）限模糊搜索批量。
+- **选续班计划后自动全选该计划全部班级**：前端 `cronus .../ContinuationService/components/GlobalSearch/index.js` 的 `getClazzList.onSuccess` 里 `nextClazzList = newClassList`；配合 `maxTagCount:1`，UI 只显示「【2026/秋】青… +99」，用户不易察觉已选中上百个班。
+- **续班轮次推导用 `max` 当 size 展开**：`SmallRenewalService#doQueryRenewalInfo` 对所选**全部班级**的 config 求轮次并集，再 `RenewalRoundEnum.getMultiRoundEnum(renewalRoundSet.stream().max(...))` 展开；班级多/跨轮次时轮次选项会含某些班级并不存在的轮次。前端 `getContinuationRound.onSuccess` 又**无条件取第一项** `newRenewalRoundList[0].value`（通常是「一轮」，只有不可续时是「不可续」），不看 `defaultRenewalRound`。
+- **指标** `/roster/small/renewal/statistic`：`SmallRenewalService#queryStatisticStudents` 用 ES `size(10000)`（窗口 `small.renewal.clazz.maxWindow.size:10000`）；`queryQuestionnaireUserIds` **逐班**调 `questionnaireAclService.typeUsersQuestionnaires`（班越多 Feign 调用越多，指标越慢）。
+- **列表分页窗口**受 `small.renewal.clazz.maxWindow.size`（默认 10000）限制（`EsService#calPageSize`）。
+- 小班轮次「不可续」联动逻辑被注释掉（见下「续班轮次里的不可续」节），属**已确认缺陷**。
+
+**待确认的疑似小问题**：班级选择器 `maxTagCount=1` 只显示「青… +99」，用户容易误判"只选了一个班"而实际选了上百个；另有反馈怀疑「班级选太多」本身触发了展示异常，尚未定位到具体代码缺陷。
+
+> 相关工单：`工单/数据与索引/小班课花名册ES/案例/2026-10-16-同班主讲与班主任可见学员不一致.md`
 
 ## 复现 / 排查踩坑
 
