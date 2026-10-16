@@ -101,6 +101,7 @@ WHERE q.biz_id IN ('<问卷ID1>', '<问卷ID2>');
 ## 排查提示
 
 - 班级/学员看不到问卷 → 先查该前置课程 `renew_master_course_relation.questionnaire_number` 是否为 0，再看 `questionnaire_ext` 条件是否命中课程的年级/学科/部门
+- **绑定层匹配口径**（product-server `QuestionnaireService#calculateRenewCourseRelation`，product-task `QuestionnaireChangeConsumer` 在 `process_questionnaire_bind` 时触发）：把问卷的 `questionnaire_ext`（`DEPARTMENT`/`COURSE_GRADE`/`COURSE_SUBJECT`）转成规则，与**前置课程**的 `departmentIdPaths`/`grades`/`subjects` 做 `allMatch`——部门 `contains`、**年级与学科精确包含**；命中才写 `questionnaire_number`，不命中写 `0` → product-b `matchResult` 返 null → 花名册 `renewalQuestionnaireStatus=0（未绑定）`。**问卷配的年级必须等于前置课程年级**（常见坑：计划名是初一/初二、问卷也配初一/初二，但计划前置课程实际是初三课程 → 匹配不上）。`courseGrades` 字典：21 初一 / 22 初二 / 23 初三 / 31 高一。案例见工单 `续班与业绩/续班问卷绑定/案例/2026-10-16-问卷已绑定但花名册显示未绑定.md`。
 - 问卷已提交但花名册显示未发送 → 工单 `续班与业绩/续班问卷状态/`
 - 问某张问卷绑在哪个计划、或按问卷ID查不到绑定 → 见上文「反向」小节；先分清 biz_id / number，注意计划可能已软删（`renew_master.isdel=1`），别只按 `isdel=0` 过滤
 
