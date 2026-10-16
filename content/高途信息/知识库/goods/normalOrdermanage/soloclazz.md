@@ -21,6 +21,25 @@
 | 行「调课调班」 | `/afterSale/b/transfer/*` | 同 [normal.md](normal.md) | `OM/component/TransferClazz/` | after-sales | [1069148] 等 | 读 + 写 |
 | 物流列 / 小眼睛 | 同 [normal.md](normal.md) | — | `OL/components/ExpressDetailTable/index.tsx:31`、`OL/columnsConfig.tsx:103` | express-management / student-center | [46863] | 读 |
 
+### 入参
+
+- `POST /orderComponent/orderItemFieldSearch`（`OrderComponentController#orderItemFieldSearch`，DTO `com.gaotu.app.search.request.impl.OrderItemPageAbleComplexSearchRequest`，`OrderComponentController.java:146`）：
+  - `condition` (OrderItemComplexSearchCondition, **必填**) — 见下；`pager` (Pager, **必填**)；两者缺一报 `PAGER_IS_NULL`（`OrderItemPageAbleComplexSearchRequest.java:37`）
+  - `condition.productType` (Integer, 可选) — **一对一 tab 固定传 `6003`**（`OL/modules/BaseList.tsx:94-105`）
+  - `condition.orderItemNumberList` (List&lt;Long&gt;, 可选) — 订单项号（前端 `orderNumber` 字段拆分而来）
+  - `condition.user` (String, 可选)、`condition.payNumberList` (List&lt;Long&gt;, 可选)、`condition.orderStatus` (String, 可选)
+  - `condition.skuNumber` (Long, 可选)、`condition.skuName` (String, 可选)、`condition.spuNumber` (Long, 可选)、`condition.spuName` (String, 可选)、`condition.skuInfo`/`condition.spuInfo` (String, 可选)
+  - `condition.clazzBizNumber` (String, 可选)、`condition.expressNo` (String, 可选)、`condition.categoryIdPath` (String, 可选)
+  - `condition.campusSearchInfo` (CampusSearchInfo, 可选) — `{allCampusOrder:Boolean, campusNumbers:List<Long>}`
+  - `condition.campusOrder` (Boolean, 可选)
+  - `condition.createTimeRange` (OrderItemTimeRange, 可选) — `{startTime:Long, endTime:Long}`
+  - ⚠️ 多字段标 `@OnesHaveRequired`：至少命中其一（user/orderItemNumberList/payNumberList/expressNo/skuName/clazzBizNumber/spuName/campusSearchInfo/skuInfo/spuInfo），否则校验失败（`OrderItemComplexSearchCondition.java:124-137`）
+  - 前端映射同 [normal.md](normal.md) 的 `SEARCH_CONDITION_TRANSFER`（`OL/constants.tsx:374-379`）：`orderNumber`→`orderItemNumberList`、`orderTime`→`createTimeRange`
+- 修改地址 `POST /orderComponent/queryAllWaitSendItem`、`POST /order/boss/facade/changeAddress`：入参见 [normal.md](normal.md)「入参」。
+- 调课调班 `/afterSale/b/transfer/*`：入参见 [normal.md](normal.md)「入参」。
+- 物流列 / 小眼睛（express-management、student-center）：入参见 [normal.md](normal.md)「入参」。
+- 行「详情」：不发请求（跳详情页），无入参。
+
 ## 关键表
 
 | 接口 | 后端位置 | 读表 | 写表（操作） | 备注 |

@@ -15,6 +15,15 @@
 | 查询/翻页（有搜索项时） | `POST /orderComponent/orderItemFieldSearch`，body `{condition:{productType:7001,...}, pager}` | `queryOrderItemList` | `src/components/OrderList/modules/BaseList.tsx:95,243`（`src/components/OrderList/services.ts:68`） | order-b | 实物订单搜索接口 [947633] | 读 |
 | 行「详情」 | 不发请求，跳 `/ordermanage/prodetail/{orderItemNumber}` | `newItemDom` | `src/pages/OrderManage/list/index.js:803` | — | — | — |
 
+### 入参
+
+- `POST /orderComponent/orderItemFieldSearch`（`OrderComponentController#orderItemFieldSearch`，DTO `OrderItemPageAbleComplexSearchRequest`，字段全集见 [soloclazz.md](soloclazz.md)「入参」）：
+  - `condition` + `pager`（均必填）两个顶层字段
+  - `condition.productType` (Integer) — **课时包 tab 固定传 `7001`**
+  - 课时包 tab 特有筛选（`OL/constants.tsx:245-256`）：`condition.skuInfo` (String) — 规格信息（名称/ID）、`condition.spuInfo` (String) — 课时包信息（名称/ID）；另有 `user`/`orderItemNumberList`/`expressNo`/`orderStatus`
+  - 其余字段与 [soloclazz.md](soloclazz.md) 的 `OrderItemComplexSearchCondition` 完全一致
+- 行「详情」：不发请求（前端直接跳详情页），无入参
+
 ## 关键表
 
 同 [soloclazz.md](soloclazz.md)「关键表」：ES 订单项宽表（`index.orderItem.alias`）+ MySQL `gaotu.order_item` 兜底；聚合时另外读课时包扩展（`OrderItemHourPackageExtRepository`，具体表名**未细追**）。不写表。

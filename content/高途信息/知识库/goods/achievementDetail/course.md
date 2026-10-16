@@ -27,8 +27,8 @@
 
 ### 入参
 
-- `GET /course-setting/b/course/category/tree`（course-setting 仓库本地未克隆，**后端 DTO 未定位**；前端 GET 无显式参数，`src/services/physicalGoods.js:13`）：
-  - 未定位
+- `GET /course-setting/b/course/category/tree`（`CategoryController#getCategoryTree`，无入参，`CategoryController.java:95`）：
+  - 无入参（GET，方法无参数；返回全量品类树 `courseCategoryService.getCategoryTree()`）；前端 GET 无显式参数（`src/services/physicalGoods.js:13`）
 - `POST /performance/management/attribution/list`（`PerformanceKanbanCourseController#getOrderAttributionList`，DTO `OrderAttributionRequest`，`PerformanceKanbanCourseController.java:113`）：
   - `beginTime` (Long, 可选) — 开始时间(ms)
   - `endTime` (Long, 可选) — 结束时间(ms)

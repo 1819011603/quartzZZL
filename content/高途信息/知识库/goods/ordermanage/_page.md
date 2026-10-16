@@ -42,6 +42,26 @@
 | 「创建订单 / 创建门店订单」 | 不发请求，跳 `/ordermanage/createOrder?sourceUrl=...`；灰度命中先弹引导/拦截 | `CreateOrderButton` | `OM/list/CreateOrderButton/index.js:109-141` | — | — | — |
 | 「重置」 | 不发请求，只清 dva 里缓存的筛选条件 | `onReset` | `OM/list/index.js:945` | — | — | — |
 
+### 入参
+
+- `POST /orderComponent/orderItemFieldSearch`（`OrderComponentController#orderItemFieldSearch`，DTO `OrderItemPageAbleComplexSearchRequest`，`OrderComponentController.java:146`）：
+  - `condition` + `pager`（均必填）两个顶层字段（`OrderItemPageAbleComplexSearchRequest.java:37`）
+  - `condition.productType` (Integer, 可选) — **本页不固定**，由「商品类型」级联选项叶子节点传入（`OL/modules/BaseList.tsx:204-209`）
+  - 非课程类订单筛选项（`OL/constants.tsx:295-309`）：`orderItemNumberList`（订单号）、`user`、`createTimeRange`、`skuName`、`skuNumber`、`spuName`、`spuNumber`、`orderStatus`
+  - 其余字段（`user`/`payNumberList`/`expressNo`/`clazzBizNumber`/`campusSearchInfo`/`skuInfo`/`spuInfo`/`categoryIdPath` 等）与 [../normalOrdermanage/soloclazz.md](../normalOrdermanage/soloclazz.md)「入参」一致；`@OnesHaveRequired`：至少命中其一
+- `POST /bgwApi/product-b/b/product/productTypeTree/category/listTree`（`ProductTypeTreeController#getCategoryTree`，DTO `com.gaotu.product.controller.typetree.request.GetCategoryTreeRequest`，`ProductTypeTreeController.java:54`）：
+  - `filterHasThirdLevelNode` (Boolean, 可选) — true 只返回含三级节点的树；缺省走全量缓存树
+  - 前端传 `{}`（`OL/services.ts:74`）
+- `POST /ols/w/campus/list`、`POST /orderComponent/grayGroup/checkGrayGroup`、`GET /intranet-rpc/course-setting/feign/options/bff/list`：入参见 [../normalOrdermanage/_page.md](../normalOrdermanage/_page.md)「入参」
+- `POST /express-management/invoice/queryExpressInvoiceByOrderNumbers`（`ExpressInvoiceController#queryExpressInvoiceByOrderNumbers`，DTO `com.gaotu.expressmanagement.domain.vo.request.ExpressInvoiceDetailOrderNumberVO`，`ExpressInvoiceDetailOrderNumberVO.java:13`）：
+  - `orderNumbers` (List&lt;Long&gt;, 必填) — 订单号列表
+  - `type` (Integer, 必填) — 发货类型（`ExpressInvoiceTypeEnum`：0 查询所有 / 1 讲义 / 2 赠品 / 3 大礼包 / 4 问题件 / 5 学币 / 6 实物 / 7 活动 / 8 其他 / 9 商品(课程)，`ExpressInvoiceEnumInterface.java:45-58`；DTO 注释只列 0~3，已过时）
+  - 校验：`orderNumbers` 与 `type` 任一为空即 fail「订单编号与类型必传」（`ExpressInvoiceController.java:419-423`）；前端实际传 `{orderNumbers:string[], type}`（实物订单 `type:6`，其它 `0`；`OL/components/ExpressDetailTable/index.tsx:31`）
+- `POST /component/student-center/userSecret/getBaseInfo`、`.../getAddress`：入参见 [../normalOrdermanage/normal.md](../normalOrdermanage/normal.md)「入参」
+- `POST /orderComponent/queryAllWaitSendItem`、`POST /order/boss/facade/changeAddress`：入参见 [../normalOrdermanage/normal.md](../normalOrdermanage/normal.md)「入参」
+- `/afterSale/b/transfer/*`：入参见 [../normalOrdermanage/normal.md](../normalOrdermanage/normal.md)「入参」
+- 行「详情」/「创建订单 / 创建门店订单」/「重置」：不发请求，无入参
+
 ## 关键表
 
 ### 接口 → 表

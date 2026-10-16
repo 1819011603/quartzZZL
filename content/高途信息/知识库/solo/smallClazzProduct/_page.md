@@ -43,6 +43,31 @@
 > `list/service.ts` 里的发布/撤销/开停售（`/b/teach/commodity/update/status`）、删除（`/b/teach/commodity/delete`）只被 `list/manage` 用，overview 传了 `useOperations:false`，**本页没有商品写操作**。
 > 自定义列的 columns 接口不带 `/bgwApi`，抓包里也是 `/course-center/b/columns/*`，经拦截器同样拼 `ApiRoot`。
 
+### 入参
+
+> 以 course-center / product-server 源码为准（2026-10-16 定位）。`Pager`（`entity/common/Pager.java:29-37`）= `pageSize`/`current`/`total`（Integer, 可选；`BaseRequest` 默认 `current=1,pageSize=20`）。
+
+- `GET /b/config/getDynamicConfig`（`ConfigController#getDynamicConfig:54`）：query `departmentPath` (String, 可选) — 部门路径（用于解析 GPS 1v1 学部配置）。
+- `GET /b/common/dictionary/all`、`/department/tree`、`/category/tree`、`/dictionary/allConfigurable`：GET，无请求体。
+- `GET /b/productAttr/list/specification`（`AdminProductAttrController#listSpecification:53`）：**方法无参、无请求体**（`getSpecificationNames()` 无筛选入参）。
+- `POST /b/columns/getAllConfig`（`UserCustomPageColumnsController#getAllConfig:36`，DTO `PageConfigGetRequest`）：`key` (Long, 必填 `@NotNull`) — 本页固定 `18750529034377751`（`list/overview/index.tsx:31`）。
+- `POST /b/columns/getUserConfig`（`#getUserConfig:62`，DTO `UserConfigListRequest`）：`key` (Long, 必填)。
+- `POST /b/columns/addUserConfig`（`#addUserConfig:55`，DTO `UserConfigAddRequest`）：`key`(Long, 必填)、`selected`(Boolean, 必填)、`name`(String, 必填)、`value`(List\<AtomUserCustomSelectColumnsValueObject>, 必填；每项 `key`(String)、`fixed`(String))。
+- `POST /b/columns/deleteUserConfig`（`#deleteUserConfig:48`，DTO `UserConfigDeleteRequest`）：`number` (Long, 必填)。
+- `POST /b/columns/setUserConfig`（`#setUserConfig:41`，DTO `UserConfigModifyRequest`）：`number`(Long, 必填)、`name`(String, 必填)、`value`(List\<Atom...>, 必填)。
+- `POST /b/columns/changeDefaultUserConfig`（`#changeDefaultUserConfig:68`，DTO `UserConfigSelectRequest`）：`pageConfigKey`(Long, 必填)、`userConfigNumber`(Long, 必填)。前端 `useEditColumnsProps.js:49` 传 `{pageConfigKey, userConfigNumber}`，一致。
+- `POST /b/teach/commodity/clazz/list`（`TeachCommodityController#listClazz:144`，DTO `TeachCommodityListRequest extends BaseRequest`，`domain/dto/request/TeachCommodityListRequest.java`）：
+  - 继承 `BaseRequest`：`pager`(Pager)、`scrollId`(String)、`scrollSize`(Integer)，可选（前端 FeituData 传 `{pager, ...筛选}`）
+  - `fullFuzzyText`(String)、`teachCommodityName`(String)、`categoryIdPath`(String)、`mainTeacherName`(String)、`teachProductName`(String)、`teachItemName`(String)、`clazzTypeName`(String)、`departmentIdPath`(String)，均可选
+  - `teachCommodityNumber`(Long)、`teachProductNumber`(Long)、`teachItemNumber`(Long)，可选
+  - `time` (List\<Long>, 可选) — 开课时间 `[起,止]` 毫秒（`validate` 校验长度=2、起≤止）
+  - `teachCommoditySpecifications` (List\<TeachCommoditySpecificationRequest>, 可选) — 每项 `specificationName`(String)、`specificationValue`(String)
+- `POST /promotionManagement/activity/getChannelCodeConfig`：**无请求体**（见 [班级管理页入参](../../goods/clazzManagePro/_page.md#入参)）。
+- `POST /product-b/b/product/sellLinkWithSource`（product-server `ProductUtilController#sellLinkWithSource:49`，DTO `com.gaotu.clientv4.request.SellUrlWithSourceDto`）：
+  - `sellUrl` (String, 可选) — 售卖链接（须 `http:`/`https:` 开头）；`type` (Integer, 可选) — 1 长链 / 0 短链
+  - `sourceDto` (`com.gaotu.product.v1.request.source.CreateSourceRequest`)：`customerWayType`(Integer)、`name`(String)、`promoterId`(String)、`promoterName`(String)、`putPlanId`(String)、`putPlanName`(String) — 均可选（swagger 标 required，无 `@NotNull`）
+  - ⚠️ 前端 `SaleUrlModal/useSaleUrlModal.ts:180` 传 `{sellUrl, channelCode, sourceDto, type}`，**多传了 `channelCode`**，后端 `SellUrlWithSourceDto` 无此字段（会被忽略）。
+
 ## 关键表
 
 链路（列表）：`TeachCommodityController#listClazz`（`course-center-webcourse/.../controller/manager/teachcommodity/TeachCommodityController.java:142`，类 `@RequestMapping("/b/teach")` :42）→ `TeachCommodityQueryServiceImpl#listQuery`（`course-center-domain/.../service/teachcommodity/impl/TeachCommodityQueryServiceImpl.java:191`）：

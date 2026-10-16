@@ -48,9 +48,16 @@
   - `pager` (Pager, 可选) — 分页 `{pageNum,pageSize,count}`（前端 `paginationToPager` 拼）
   - ⚠️ 多个字段标 `@OnesHaveRequired`：**至少需命中其一**（user/orderNumberList/payNumberList/expressNo/courseName/clazzBizNumber/subclazzNumberList/payRecordNumber），否则校验报 `ONES_HAVE_PARAMETER_ERROR`（`OrderComplexSearchRequest.java:116-131`）
   - 前端字段映射（`OL/utils.tsx:102-202` + `OL/constants.tsx:347-353`）：`orderTime`→`createTimeRange`、`orderNumber`→`orderNumberList`（逗号/空格拆分数组），其余同名透传
-- `POST /express-management/invoice/queryExpressInvoiceByOrderNumbers`：**后端 DTO 未定位**（express-management 仓库本地不存在）；前端入参：`{orderNumbers: string[], type: number}`（实物订单传 `type:6`，其它 `0`；`OL/components/ExpressDetailTable/index.tsx:31`）
-- `GET /express-management/queryExpressInfo`：**后端 DTO 未定位**；前端入参：`{logisticCode, shipperCode, addressId}`（`OL/components/ExpressDetailTable/index.tsx:55`）
-- `GET /express-management/queryPickUpCode`：**后端 DTO 未定位**；前端入参：`{logisticCode, shipperCode, sensitive:boolean}`（`OL/components/QueryCodeButton/index.tsx:25,40`）
+- `POST /express-management/invoice/queryExpressInvoiceByOrderNumbers`（`ExpressInvoiceController#queryExpressInvoiceByOrderNumbers`，DTO `com.gaotu.expressmanagement.domain.vo.request.ExpressInvoiceDetailOrderNumberVO`，`ExpressInvoiceDetailOrderNumberVO.java:13`）：
+  - `orderNumbers` (List&lt;Long&gt;, 必填) — 订单号列表
+  - `type` (Integer, 必填) — 发货类型（`ExpressInvoiceTypeEnum`：0 查询所有 / 1 讲义 / 2 赠品 / 3 大礼包 / 4 问题件 / 5 学币 / 6 实物 / 7 活动 / 8 其他 / 9 商品(课程)，`ExpressInvoiceEnumInterface.java:45-58`；DTO 注释只列 0~3，已过时）
+  - 校验：`orderNumbers` 与 `type` 任一为空即 fail「订单编号与类型必传」（`ExpressInvoiceController.java:419-423`）；前端实际传 `{orderNumbers: string[], type}`（实物订单 `type:6`，其它 `0`；`OL/components/ExpressDetailTable/index.tsx:31`）
+- `GET /express-management/queryExpressInfo`（`ExpressInvoiceController#queryExpressInfo`，无 DTO，`@RequestParam`，`ExpressInvoiceController.java:363`）：
+  - `logisticCode` (String, 必填) — 物流单号
+  - `shipperCode` (String, 必填) — 物流公司编码
+  - `addressId` (Long, 必填) — 用户 ID（字段名是 addressId，但语义为用户 ID）
+  - 三者任一为空即 fail「物流单号，物流公司编码，用户ID均不能为空」（`:367`）；前端传 `{logisticCode, shipperCode, addressId}`（`OL/components/ExpressDetailTable/index.tsx:55`）
+- `GET /express-management/queryPickUpCode`：**仍未定位**（express-management 仓库全仓无 `queryPickUpCode` 路径，grep `pickup`/`取件` 均无命中）；前端入参：`{logisticCode, shipperCode, sensitive:boolean}`（`OL/components/QueryCodeButton/index.tsx:25,40`）
 - `POST /component/student-center/userSecret/getBaseInfo`（`UserSecretController#getUserSecretBaseInfo`，DTO `com.gaotu.yunying.student.center.domain.model.usersecret.SecretUserIdRequest`，`UserSecretController.java:38`）：
   - `userId` (Long, **必填**，为空返回"参数错误")
   - `typeList` (List&lt;Integer&gt;, **必填**) — 取用类型：1 mobile / 2 wechatNo / 3 备用手机号
@@ -105,6 +112,7 @@
   - `payNumber` (String, **必填** `@NotNull`，且需可转 Long) — 批次单号
   - 前端传 `{payNumber}`（`OM/prodetail/services.js:75-79`）
 - 「创建单个订单/联报订单」弹窗里其余接口（`/student/suggest/list`、`/student/address/list`、`/clazz/selectByKey`、`/clazz/selectSubclazzByClazzNumber`、`/activity/clazzset/getByKey`、`/activity/clazzset/getSubclazzByNumber`、`/order/coupon/list`、`/order/createOrder`）：**后端 DTO 未定位**（hermes-boss 老接口）。前端组参（`OM/list/AddOrderDialog/index.js:228-281`）：`createOrder` 传 `{clazzNumber, userVoucherNumbers[], appId, ignoreCheckAddress, valuation?, subclazzNumber[], userNumber|mobile, addressId|addresses[]}`；`getStudentList`/`getAddressList`/`getSuggest`/`getSubclazzByNumber`/`selectSubclazzByClazzNumber` 传 `{key}` 或 `{clazzNumber}`，`getByKey` 传 key，`getCouponListNew` 传 `{clazzNumber, userNumber}`
+- 行「详情」「创建订单 / 创建门店订单」：不发请求，无入参
 
 ## 订单管理 4 个 tab 的列表接口（按 productType 区分，**查单必须选对 tab**）
 

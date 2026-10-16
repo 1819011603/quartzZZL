@@ -52,9 +52,12 @@ tab 配置在 `src/pages/OrderManage/hooks/useOrderJson.js:370-388`（OES `ORDER
   - `accountId` (Long, 可选) — 员工账号 ID；页面经网关调用可不传，服务端从 `BossFacadeThreadLocalHolder` 取（`GrayGroupController.java:47`）
   - `bClient` (String, 可选) — 客户端类型；优先取请求头 `b_client`，缺省才用 body（`GrayGroupController.java:48-49`）
   - 前端实际 body 为 `{}`（`src/pages/OrderManage/list/hooks/useOrderCreationGuard.js:34`）
-- `GET /intranet-rpc/course-setting/feign/options/bff/list`：**后端 DTO 未定位**（course-setting 仓库本地不存在）；前端入参：query `{fields:'all'}`（`src/services/goodsManage.js:13`）
+- `GET /intranet-rpc/course-setting/feign/options/bff/list`（`com.gaotu.feign.OptionsService#getOptionsForNode`，`@RequestParam`，`OptionsService.java:48`）：
+  - `fields` (String, 可选，默认 `all`) — 逗号分隔的 field 集合，`all` 返回全量字典
+  - 前端传 query `fields='all'`（`src/services/goodsManage.js:13`）
 - `GET /course-center/b/common/dictionary/all`：无请求体（GET）——前端 `getCommonDictionary` 仅传 `data` 无 query（`src/services/physicalOrder.js:231`）
-- `POST /course-setting/b/base/commonDictionary`：**后端 DTO 未定位**（course-setting 仓库本地不存在）；前端未传请求体（`src/services/dictionary.js:8`）
+- `POST /course-setting/b/base/commonDictionary`（`AdminBaseController#getCommonDictionary`，方法无参数/无 `@RequestBody`，`AdminBaseController.java:63-65`）：
+  - 无入参（服务端固定取 `optionsService.getOptions("all")`；前端未传请求体，`src/services/dictionary.js:8`）
 - `GET /course-center/b/common/dictionary/all`、`/course-center/b/common/category/tree`、`/course-center/b/common/department/tree`、`/course-center/b/common/dictionary/allConfigurable`：无请求体（GET；前端均不传参，`src/services/clazzManage.js:13-56`）
 
 ## 关键表

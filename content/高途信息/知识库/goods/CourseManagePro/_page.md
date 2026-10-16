@@ -48,7 +48,7 @@
 > 后端字段以 course-center 源码为准（2026-10-16 定位）。`Pager`（`entity/common/Pager.java:29-37`）= `pageSize` / `current` / `total`（均 Integer，可选；`BaseRequest` 默认 `current=1,pageSize=20`，`:13`）。
 
 - `GET /b/common/dictionary/all`、`/department/tree`、`/category/tree`、`/dictionary/allConfigurable`、`/productLine/tree`：GET，无请求体。
-- `GET /course-setting/feign/options/bff/list`（外部 course-setting，非青舟）：GET，query `fields=all`；请求体无（后端不在本地，未定位 DTO）。
+- `GET /intranet-rpc/course-setting/feign/options/bff/list`（`com.gaotu.feign.OptionsService#getOptionsForNode`，`OptionsService.java:48`）：GET，`@RequestParam` `fields` (String, 可选，默认 `all`)；请求体无；前端传 query `fields=all`。
 - `POST /b/campus/search`（`CampusManagementController#search`，DTO `CampusSearchRequest`，`campus-app/.../campusinfo/model/CampusSearchRequest.java`）：
   - `campusName` (String, 可选) — 校区名称
   - `campusStatus` (Integer, 可选) — 校区状态

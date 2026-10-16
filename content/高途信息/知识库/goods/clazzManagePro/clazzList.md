@@ -80,7 +80,7 @@
 
 `SS:53` `manualExport`（`/b/subclazzUnion/manual/export`）前端无调用方，后端也未找到该路由。
 
-## 入参
+### 入参
 
 > 以 course-center / clazz-distribution-management / gaotu-ols / teacher-basic 源码为准（2026-10-16 定位）。`Pager`（`entity/common/Pager.java:29-37`）= `pageSize`/`current`/`total`（Integer, 可选，`BaseRequest` 默认 `current=1,pageSize=20`）；distribution 用 `com.baijia.gaotu.base.common.dto.Pager`。
 
@@ -106,8 +106,7 @@
 - `POST /b/clazz/batchChangeSaleStatus`（`ACC#batchChangeSaleStatus:250`，DTO `ClazzBatchUpdateSaleStatusRequest`）：`clazzNumberList`(List\<Long>)、`newStatus`(Integer)、`stopSaleTime`(Long) — 均可选。
 - `POST /b/clazz/batchUpdateArea`（`ACC#batchEditClazzArea:433`，DTO `BatchEditClazzAreaRequest`）：`clazzNumberList`(List\<Long>)、`areaList`(List\<String>, 地区编码) — 均可选。前端 `I:404` 传 `{clazzNumberList, areaList}`，一致。
 - `POST /teacher-basic/b/teacher/searchFromDB`（teacher-basic `AdminTeacherController#searchTeacherWithSql:60`，DTO `com.gaotu.teacher.basic.domain.teacher.vo.TeacherSearchRequest`）：
-  - `key` (String, 可选) — 关键字（查外显/真实名）；`typeList` (List\<Integer>, 可选) — 1 主讲/2 辅导/3 销售；`bizType` (Integer, 可选) — 1 K12/2 成人；`level3CategoryIds` (List\<Integer>, 可选)；`statusList` (List\<Integer>, 可选) — 1 启用/2 停用；`pager` (Pager, 可选)
-  - ⚠️ 前端 `BatchEditTeacher/index.js:175` 传 `pager:{pageNum,pageSize}`，**字段名是 `pageNum` 而非后端 `Pager.current`**，差异以实际抓包为准。
+  - `key` (String, 可选) — 关键字（查外显/真实名）；`typeList` (List\<Integer>, 可选) — 1 主讲/2 辅导/3 销售；`bizType` (Integer, 可选) — 1 K12/2 成人；`level3CategoryIds` (List\<Integer>, 可选)；`statusList` (List\<Integer>, 可选) — 1 启用/2 停用；`pager` (teacher-basic 自己的 `com.gaotu.teacher.basic.export.request.common.Pager`，可选) — 字段 `pageSize`/`pageNum`/`count`。前端 `BatchEditTeacher/index.js:175` 传 `{pageNum,pageSize}`，与后端一致（注意与 course-center 的 `Pager.current` 不同名）。
 - `POST /b/clazz/teacherCategoryVerify`（`ACC#teacherCategoryVerify:447`，DTO `TeacherCategoryVerifyRequest`）：`teacherNumber`(Long, 可选)、`clazzNumberList`(List\<Long>, 可选)。
 - `POST /b/clazz/batchEditMainTeacher`（`ACC#batchEditMainTeacher:454`，DTO `BatchEditMainTeacherRequest`）：`clazzNumberList`(List\<Long>)、`originIntersectionTeacherNumberList`(List\<Long>)、`intersectionTeacherNumberList`(List\<Long>)、`teacherEditType`(Integer；1 交集/2 并集)、`oriTeacherNumberList`(List\<Long>)、`newTeacherNumberList`(List\<Long>) — 均可选。
 - `POST /b/clazz/list/export`（`ACC#listExport:462`，DTO `ClazzListQueryRequest`）：同 `clazz/list/search`（含 `exportType`/`selectAllByCondition`/`selectedClazzNumberList`/`excludeClazzNumberList`）。
@@ -127,11 +126,15 @@
 - `POST /b/clazz/cancelShowAppApproval`（`ACC#cancelShowAppApproval:380`，DTO `CancelShowAppApprovalRequest`）：`businessKey` (String, 可选)。
 - `GET /b/clazz/recommend/list`（`ACC:317`）：query `clazzNumber` (Long)。
 - `POST /b/clazz/add/recommend`（`ACC#addRecommend:301`）与 `POST /b/clazz/delete/recommend`（`ACC#deleteRecommend:310`，DTO `RecommendRequest`）：`clazzNumber`(Long)、`recommendClazzNumberList`(List\<Long>)、`employeeId`(Integer, 后端 `ACC:303` 用登录人覆盖)。
-- 「直播推课」：`GET /b/clazz/liveRecommendList`（`LiveRecommendController#query:49`）query `clazzNumber`(String)；`POST /b/clazz/editLiveRecommend`（`#editLiveRecommend:41`，DTO `EditLiveRecommendRequest`）：`clazzNumber`(Long)、`recommendClazzNumberList`(List\<Long>)、`recommendCombineProductNumberList`(List\<Long>)、`newJobList`/`oldJobList`(List\<OuterJobModel>)；选班 `POST /b/clazz/list/search/fullAuth` 见 [班级大全](../clazzEncyclopedia/_page.md#入参)；选联报 `POST /course-setting/b/activity/list`（外部 course-setting，DTO 未定位）。
-- `DELETE /b/clazz/deleteClazzDetailDraft`（`ACC#deleteClazzDetailDraft:402`）：query `clazzNumber`(Long, 可选) 或 `draftNumber`(Long, 可选)，二者至少一个（都空报「缺乏必需参数」` :403`）；前端 `svc:179` 传 params。
+- 「直播推课」：`GET /b/clazz/liveRecommendList`（`LiveRecommendController#query:49`）query `clazzNumber`(String)；`POST /b/clazz/editLiveRecommend`（`#editLiveRecommend:41`，DTO `EditLiveRecommendRequest`）：`clazzNumber`(Long)、`recommendClazzNumberList`(List\<Long>)、`recommendCombineProductNumberList`(List\<Long>)、`newJobList`/`oldJobList`(List\<OuterJobModel>)；选班 `POST /b/clazz/list/search/fullAuth` 见 [班级大全](../clazzEncyclopedia/_page.md#入参)；选联报 `POST /course-setting/b/activity/list`（外部 course-setting `AdminActivityController#pageForActivity:196`，DTO `com.gaotu.model.request.activity.ClazzSetActivityListRequest`，`ClazzSetActivityListRequest.java:23`）：`bizType`(Integer；传 null 时后端默认 `1`)、`pager`(Pager, 必填；`validateDataPermission` 校验非空)、`activityName`/`activityNumbers`/`courseName`/`clazzName`/`clazzBizNumber`/`teacherName`(String)、`activityNumber`(Long)、`saleStatus`/`newSaleStatus`/`firstCategory`/`secondCategory`/`threeCategory`(Integer)、`status`/`grade`/`subject`/`courseCategoryIdList`/`schoolYearIdList`/`clazzTag`/`departmentIdList`(List&lt;Integer&gt;)、`schoolTermIdList`(List&lt;String&gt>)；`authorizedGradeList`/`authorizedSubjectList`/`authorizedCategoryList`/`thirdLevelSubjectIdList` 为服务端鉴权注入。
+- `DELETE /b/clazz/deleteClazzDetailDraft`（`ACC#deleteClazzDetailDraft:402`）：query `clazzNumber`(Long, 可选) 或 `draftNumber`(Long, 可选)，二者至少一个（都空报「缺乏必需参数」`:403`）；前端 `svc:179` 传 params。
 - `POST /b/clazz/ineffective`（`ACC#ineffective:241`，DTO `ClazzNumberListRequest`）：`clazzNumberList` (List\<Long>, 可选；后端包成 `ClazzIneffectiveCmd`)。
 - `POST /b/lesson/union/manage/export`（`AdminLessonManageController#unionLessonManageExport:114`，DTO `UnionLessonManageRequest extends LessonManageRequest`）：`clazzNumber`(String)、`clazzLessonNumber`(String)、`clazzLessonName`(String)、`clazzLessonType`(List\<Integer>)、`outlineNumber`(String)、`pager`(Pager)，均可选；外加 `filterNoRelation` (Boolean, 可选)。
 - `POST /b/clazzHour/userListCheck`（`AdminClazzHourController#userListCheck:54`，DTO `ClazzHourSubClazzCheckRequest extends BaseRequest`）：`subclazzNumber` (Long, 必填 `@NotNull`)。前端 `svc` 传 `{subclazzNumber: params}`，一致。
+- 「销售链接/二维码」`POST /product-b/b/product/bff/sellLink`（product-server `ProductUtilController#sellLink:34`，DTO `ClazzSellUrlDto`）：`clazzUrl` (String, 可选；须 `http:`/`https:` 开头)；`POST /course-setting/source/create`（外部 course-setting `SourceContoller#create:27`，DTO `com.gaotu.model.request.source.CreateSourceRequest`，`CreateSourceRequest.java:14`）：`customerWayType`(Integer, 必填) — 获客方式、`name`(String, 必填) — 活动创建人邮箱前缀、`promoterId`(String, 必填) — 推广人员 id、`promoterName`(String, 必填)、`putPlanId`(String, 必填) — 活动 id、`putPlanName`(String, 必填) — 活动名称。前端 `goodsManage.js:47,60`，一致。
+- 「分班中」`GET /distribution-management/subclazz/management/checkAutoSelect`（distribution `SubclazzController#checkAutoSelect:232`）：query `clazzNumber` (Long, 必填 `@NotNull`)；`POST .../autoSelectSubclazz`（`#autoSelectSubclazz:137`，DTO `AutoSelectSubclazzBO`）：`clazzNumber`(Long, 必填)、`pipelineType`(Integer, 必填；策略类型)。
+- 「一键排课」「课节内容管理」`/b/lesson/*`：前端 `I:1559` 起多个调用，后端 `AdminLessonManageController` 未逐个定位。
+- 「设置讲义」`/express-management/*`、老网关「下载学员名单（`/clazz/exportStudentList.do`）/老师下拉（`/teacher/list.do`）」、外部存储上传等：后端未定位。
 
 ### 展开行：辅导班表
 

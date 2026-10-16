@@ -52,8 +52,8 @@
 
 ### 入参
 
-- `GET /intranet-rpc/course-setting/feign/options/bff/list`（course-setting 仓库本地未克隆，**后端 DTO 未定位**；前端入参：query `fields=all`，`src/services/goodsManage.js:12-16`）：
-  - `fields` (String, 必填) — 固定 `all`，返回全量字典
+- `GET /intranet-rpc/course-setting/feign/options/bff/list`（`com.gaotu.feign.OptionsService#getOptionsForNode`，`@RequestParam`，`OptionsService.java:48`）：
+  - `fields` (String, 可选，默认 `all`) — 逗号分隔的 field 集合，`all` 返回全量字典；前端固定传 `all`（`src/services/goodsManage.js:12-16`）
 - `POST /ols/w/campus/list`（`CampusInfoController#list`，DTO `CampusListRequest`，`gaotu-ols-web/.../facade/api/CampusInfoController.java:77`）：
   - `campusName` (String, 可选) — 校区名称（Swagger 标 required 但无 `@NotNull`）
   - `campusStatus` (Integer, 可选) — 校区状态
@@ -85,12 +85,14 @@
 - `POST /product-b/b/product/productTypeTree/category/listTree`（`ProductTypeTreeController#getCategoryTree`，DTO `GetCategoryTreeRequest`，`product-server-b/.../typetree/ProductTypeTreeController.java:53`）：
   - `filterHasThirdLevelNode` (Boolean, 可选) — true 只返回含三级节点的树
   - 前端固定传 `{}`（`GR/service.js:103-107`）
-- `POST /express-management/refundInfoToBoss`（express-management 仓库本地未克隆，**后端 DTO 未定位**；前端入参：`{afterSaleNumber}`，`GR/components/ReturnOrder.js:66-68`）：
-  - `afterSaleNumber` — 售后单编号
-- `POST /express-management/refund/queryExpressInfo`（express-management 仓库本地未克隆，**后端 DTO 未定位**；前端入参：`{logisticCode, shipperCode, refundNumber}`，`GR/components/Trajectory.js:42-46`）：
-  - `logisticCode` — 物流单号
-  - `shipperCode` — 承运商编码
-  - `refundNumber` — 退货单编号
+- `POST /express-management/refundInfoToBoss`（`ExpressRefundController#refundInfoToBoss`，DTO `com.gaotu.expressmanagement.domain.ao.RefundRequestAo`，`ExpressRefundController.java:90`，`RefundRequestAo.java:14`）：
+  - `afterSaleNumber` (Long, 必填) — 售后单编号；为空即 fail「售后单编号不能为空」（`ExpressRefundController.java:94`）
+  - 前端传 `{afterSaleNumber}`（`GR/components/ReturnOrder.js:66-68`）
+- `POST /express-management/refund/queryExpressInfo`（`ExpressRefundController#queryExpressInfo`，DTO `com.gaotu.expressmanagement.domain.ao.RefundRequestAo`，`ExpressRefundController.java:68`，`RefundRequestAo.java:14`）：
+  - `logisticCode` (String, 必填) — 物流单号
+  - `shipperCode` (String, 必填) — 承运商编码
+  - `refundNumber` (Long, 必填) — 退货单编号
+  - 三者任一为空即 fail「物流单号、物流公司编号、退货单编号不能为空」（`RefundRequestAo.java:63-69`）；前端传 `{logisticCode, shipperCode, refundNumber}`（`GR/components/Trajectory.js:42-46`）
 - `POST /afterSale/b/resubmitPayeeInfo`（`AfterSaleManagementController#resubmitPayeeInfo`，DTO `PayeeInfoRequest`，`AfterSaleManagementController.java:175`）：
   - `afterSaleNumber` (Long, 必填 `@NotNull`) — 售后单编号
   - `payeeName` (String, 必填 `@NotNull`) — 收款人姓名

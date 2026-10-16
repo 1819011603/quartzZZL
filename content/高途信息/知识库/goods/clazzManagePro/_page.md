@@ -45,7 +45,7 @@ promotion-management `promotion-management-controller/.../PromotionActivityContr
 - `GET /b/common/dictionary/all`、`/department/tree`、`/category/tree`、`/dictionary/allConfigurable`：GET，无请求体。
 - `POST /promotionManagement/activity/getChannelCodeConfig`（`PromotionActivityController#getChannelCodeConfig`，`PromotionActivityController.java:175`）：**无请求体**（方法无 `@RequestBody`，内部用 `new EmptyRequest()`）；前端 `goodsManage.js:284` 传 `data:{}` 亦为空对象。
 - `GET https://internal-area-api.genshuixue.com/api/areas/getLevelList`（外部地区服务）：GET，query `levelId=1`；请求体无。
-- `GET /intranet-rpc/course-setting/feign/options/bff/list`（外部 course-setting）：GET，query `fields=all`（后端不在本地，DTO 未定位）。
+- `GET /intranet-rpc/course-setting/feign/options/bff/list`（`com.gaotu.feign.OptionsService#getOptionsForNode`，`OptionsService.java:48`）：GET，`@RequestParam` `fields` (String, 可选，默认 `all`)；前端传 query `fields=all`。
 
 ## 关键表
 

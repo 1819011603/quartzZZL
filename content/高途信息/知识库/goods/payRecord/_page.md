@@ -42,6 +42,44 @@
 | 子订单「详情」 | 不发请求；课程订单跳 `/ark/app-activity/orderManage/detail/{n}`，其它跳 `/ordermanage/prodetail/{n}` | `handleViewDetailFunc` | `OM/list/index.js:447`（`batchSubDom` :832） | — | — | — |
 | 「创建订单 / 创建门店订单」 | 不发请求，跳 `/ordermanage/createOrder?sourceUrl=...` | `CreateOrderButton` | `OM/list/CreateOrderButton/index.js:109-141` | — | — | — |
 
+### 入参
+
+- `POST /orderComponent/payFieldSearch`（`OrderComponentController#payFieldSearch`，DTO `com.gaotu.app.search.request.impl.PayComplexSearchRequest`，`OrderComponentController.java:92`）：
+  - `user` (String, 可选)、`payNumber` (String, 可选, `@MustLong`)、`payNumbers` (List&lt;Long&gt;, 可选)
+  - `spuName` (String, 可选)、`courseName` (String, 可选)、`clazzBizNumber` (String, 可选)、`skuNumber` (String, 可选)、`payRecordNumber` (String, 可选, `@MustLong`)
+  - `orderStatus` (String, 可选)、`subclazzNumberList` (List&lt;Long&gt;, 可选)、`campusSearchInfo` (CampusSearchInfo, 可选)
+  - `createTimeRange` (TimeRange, 可选) — `{startTime, endTime}`；`pager` (Pager, 可选)；`elementId` (Long, 可选, 游标分页)；`lingxiSearchString` (String, 可选)
+  - ⚠️ 多字段标 `@OnesHaveRequired`：至少命中其一（user/payNumber/payNumbers/spuName/courseName/clazzBizNumber/skuNumber/payRecordNumber/subclazzNumberList/campusSearchInfo），否则校验报 `ONES_HAVE_PARAMETER_ERROR`（`PayComplexSearchRequest.java:106-119`）
+  - 前端字段映射（`OL/constants.tsx:354-359`）：`orderTime`→`createTimeRange`、`payNumber`→`payNumbers`，其余同名透传
+- `POST /orderComponent/subOrder/list`（`OrderComponentController#subOrderList`，DTO `BaseComponentRequest<SubOrderListCommand>`，`OrderComponentController.java:186`）：
+  - `command.payNumber` (Long, **必填**，为空或 0 报 `QUERY_PARAM_IS_NULL`，`SubOrderListCommand.java:19`）
+  - 前端传 `{command:{payNumber}}`，**不带 pager**（`OL/modules/BatchOrderList.tsx:60-64`）
+- `POST /order/cancel.do`：**后端 DTO 未定位**（hermes-boss 老链路，本地 mojito 现版本无 `.do` 映射）；前端入参 `{orderNumber: payNumber}`（`OM/list/index.js:541`、`src/services/physicalOrder.js:36`）
+- `POST /intranet-rpc/order-b/orderManagement/queryPaymentLink`（`OrderManagementController#queryPaymentLink`，DTO `PaymentLinkRequest`，`OrderManagementController.java:163`）：
+  - `payNumber` (String, **必填**)（同上 [../normalOrdermanage/normal.md](../normalOrdermanage/normal.md)）；前端传 `{payNumber}`（`OM/prodetail/services.js:75-79`）
+- `GET /orderManagement/listAccountEntity`（`OrderManagementController#listAccountEntity`，无请求体，`OrderManagementController.java:169`）：
+  - 无入参（GET，前端 `getPayeeEnum()` 不传参，`OM/list/service.js:8`）
+- `POST /order/boss/facade/feeControl/query`（`BossController#queryFeeControl`，DTO `com.gaotu.app.fee.model.FeeControlQueryRequest`，`BossController.java:193`）：
+  - `transactionQueryConditions` (List&lt;PaymentDetailQueryCondition&gt;, **必填** `@NotEmpty`) — 多组流水查询条件，元素：
+    - `transactionDate` (Long, **必填**) — 交易日期（毫秒时间戳，服务端转 `yyyy-MM-dd`）
+    - `companyName` (String, **必填**) — 收款主体
+    - `bankNumber` (String, **必填**, 仅字母数字) — 收款方账号
+    - `claimAmount` (Long, **必填**, 分) — 金额
+    - `otherBankNumber` (String, 对公转账必填) — 付款方账号（可只传末 4 位）
+    - `otherBankName` (String, 对公转账必填) — 付款方名称
+    - `isCashInBusiness` (String, 默认 `"N"`) — N 对公转账 / Y 对公存现
+  - 前端组参见 `FeeClaimModal/index.jsx:87-100` + `FeeClaimModal/QueryForm/index.jsx`
+- `POST /order/boss/facade/feeControl/claim`（`BossController#claimFeeControl`，DTO `com.gaotu.app.fee.model.FeeControlClaimRequest`，`BossController.java:204`）：
+  - `payNumber` (Long, 可选)、`claimRecords` (List&lt;ClaimRecord&gt;, 可选)
+  - `ClaimRecord`：`detailDataId` (String) — 流水看板唯一 ID、`claimAmount` (Long, 默认 0) — 认领金额、`expensePeopleId` (Long) — 归属人、`companyName` (String) — 收款主体
+  - 前端传 `{claimRecords:[{detailDataId,claimAmount,expensePeopleId,companyName}], payNumber}`（`FeeClaimModal/index.jsx:155-163`）
+- `POST /intranet-rpc/order/orderManagement/payPlan/modify`（`OrderManagementController#modifyPayPlan`，DTO `com.gaotu.controller.ModifyPayPlanRequest`，`OrderManagementController.java:174`）：
+  - `payNumber` (Long, **必填** `@NotNull`)、`payPlanInfo` (PayPlanDTO, **必填** `@NotNull`)
+  - `PayPlanDTO`：`payPlanType` (Integer, 必填, 支付类型)、`expiredTimeInSeconds` (Integer, 可选)、`payPlanItems` (List&lt;PayPlanItemDTO&gt;, **必填** `@NotEmpty`，元素含 `showOrder`/`price`(分)/`payMode`)
+  - 前端传 `{payNumber, payPlanInfo:{payPlanType, payPlanItems:[{showOrder, price, payMode}]}}`（`OM/component/ChangePayPlan/index.jsx:179-190`）
+- `POST /orderComponent/queryAllWaitSendItem` → `POST /order/boss/facade/changeAddress`（子订单「修改地址」）：入参见 [../normalOrdermanage/normal.md](../normalOrdermanage/normal.md)「入参」
+- 子订单「详情」：「创建订单 / 创建门店订单」：不发请求，无入参
+
 ## 关键表
 
 ### 接口 → 表

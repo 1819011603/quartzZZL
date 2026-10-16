@@ -59,8 +59,9 @@
 - `POST /afterSale/b/transfer/getAfterSaleTransferRecordsLink`（`AfterSaleTransferController#getAfterSaleTransferRecordsLink`，DTO `AfterSaleTransferRecordChainRequest`，`AfterSaleTransferController.java:97`）：
   - `orderNumber` (Long, 可选) — 订单 number
   - 前端传 `{orderNumber: orderItemNumber}`（`GR/components/TransferRecord/index.jsx:53`）
-- `POST /express-management/refundInfoToBoss`（express-management 仓库本地未克隆，**后端 DTO 未定位**；前端入参：`{afterSaleNumber}`，`GR/components/ReturnOrder.js:66-68`）：
-  - `afterSaleNumber` — 售后单编号
+- `POST /express-management/refundInfoToBoss`（`ExpressRefundController#refundInfoToBoss`，DTO `com.gaotu.expressmanagement.domain.ao.RefundRequestAo`，`ExpressRefundController.java:90`，`RefundRequestAo.java:14`）：
+  - `afterSaleNumber` (Long, 必填) — 售后单编号；为空即 fail「售后单编号不能为空」（`ExpressRefundController.java:94`）
+  - 前端传 `{afterSaleNumber}`（`GR/components/ReturnOrder.js:66-68`）
 
 ## 关键表（`after_sale` 库）
 

@@ -65,6 +65,165 @@
 
 > `ExportInfo`（`/staff/organization/exportCheck.do`）未被引用，是死代码。两处 antd Upload 的 method 按 antd 默认记为 POST，未实测。
 
+### 入参
+
+后端 path = 前端路径去掉 `/staff` 前缀与 `.do` 后缀。下列 DTO 均在 `staff-service/staff-api/src/main/java/com/gaotu/staff/staff/dto/` 下（`request/` 子包单独标出）；字段行号即该 DTO 文件行号。基类 `ApprovalRequest`（`ApprovalRequest.java:13`）字段 `approvalAction` (Boolean, 可选)、`systemType` (Integer, 可选)、`businessKey` (Long, 可选)，凡继承它的请求都隐含这 3 个，下文不再重复。`必填`取 `@NotNull` / swagger `required=true`。
+
+#### 进页面
+
+- `POST /course-setting/b/base/commonDictionary` — **不在 staff 仓库**（属 course-setting 服务），未定位。
+- `POST /organization/type`（`OrganizationController#queryOrganizationType`，无入参，`OrganizationController.java:397`）
+- `GET /admin/getAdminType`（`AdminController#getAdminType`，无入参，`AdminController.java:32`）
+- `POST /organization/showTree`（`OrganizationController#showTree`，DTO `OrgRequest`，`OrganizationController.java:97` / `dto/OrgRequest.java:10`）：
+  - `orgNumber` (Long, 必填 @NotNull) — 节点id `:15`
+  - `ignoreLevelCodes` (List<Integer>, 可选) — 忽略的节点等级，默认 `[6000]`（校区）`:19`
+  - `levelCode` (Integer, 可选) `:21`
+  - `levelType` (int, 可选) — 点击动作类型 1同级 / 0下级 / -1更改组织级别 `:26`
+  - `parentId` (Long, 可选) — 父节点 `:30`
+  - `accountId` (Integer, 可选) — 员工id `:34`
+  - `ifChangeOrg` (Integer, 可选) — 是否展示左侧权限树 `:38`
+  - `ifSuperManager` (Integer, 可选) — 是否超管 0是 1否 `:42`
+  - `showAll` (boolean, 可选) `:44`
+  - `online` (boolean, 可选) `:46`
+  - 前端实际传 `{orgNumber, showAll}`（`OrganizationTree/index.js:110、145`）
+- `GET /bcpTask/exist`（`StaffBcpTaskController#exist`，无入参，`StaffBcpTaskController.java:111`）
+- `GET /bcpTask/enums`（`StaffBcpTaskController#enums`，无入参，`StaffBcpTaskController.java:98`）
+
+#### 树节点 / 成员
+
+- `POST /list/organization/member`（`StaffController#search`，DTO `QueryStaffWithOrgRequest`，`StaffController.java:565` / `dto/QueryStaffWithOrgRequest.java:11`）：
+  - `orgNumber` (Long, 必填) — 组织编码 `:14`
+  - `accountId` (Long, 可选) — 成员id `:17`
+  - `name` (String, 可选) `:19`
+  - `status` (Integer, 可选) `:21`
+  - `startTime` (Long, 可选) `:23`
+  - `endTime` (Long, 可选) `:25`
+  - `jobType` (Integer, 可选) — 0兼岗 / 1主岗 `:30`
+  - `pager` (Pager, 必填) — 分页，`pageSize/pageNum/count`（`staff-client/.../response/Pager.java:20,25,30`）`:33`
+  - 前端实际传 `{orgNumber, accountId, jobType, pager}`（`TeamTableSearch/index.js:88`）
+- `POST /organization/searchDetailByOrgNumber`（`OrganizationController#searchDetailByOrgNumber`，DTO `OrgRequest`，`OrganizationController.java:183`）— 字段同上面 `OrgRequest`。
+- `POST /search/member`（`StaffController#searchMemberByNameAndOrg`，DTO `StaffSearchRequest`，`StaffController.java:201` / `dto/StaffSearchRequest.java:9`）：
+  - `name` (String, 必填) — 查询条件 `:12`
+  - `orgNumber` (Long, 必填) — 父节点组织编码 `:15`
+- `POST /delete/member`（`StaffController#deleteMember`，DTO `BatchStaffAndOrganizationRelationRequest`，`StaffController.java:286` / `dto/BatchStaffAndOrganizationRelationRequest.java:11`）：
+  - `accountIds` (List<Long>, 必填) — 员工编码 `:14`
+  - `orgNumber` (Long, 必填) — 组织编码 `:17`
+  - `currentOrgNumber` (Long, swagger 标必填) `:20`
+  - 前端实际传 `{orgNumber, accountIds}`（`TeamInformation/index.js:173`，不传 currentOrgNumber）
+- `POST /account/batch/delete/member`（`StaffController#deleteMember`，入参 `List<SingleStaffAndOrganizationRelation>`，`StaffController.java:329` / `dto/SingleStaffAndOrganizationRelation.java:9`）：
+  - `accountId` (Long, 必填) — 员工编码 `:12`
+  - `orgNumber` (Long, 必填) — 组织编码 `:15`
+  - `jobType` (Integer, 必填) — 0兼岗 / 1主岗 `:18`
+  - `oldOrgNumber` (Long, 可选) `:21`
+  - 前端实际传 `[{accountId, orgNumber}]`（`TeamInformation/index.js:195`，**不传 jobType**）
+- `POST /organization/modifyOrgStatus`（`OrganizationController#modifyOrgStatus`，DTO `ModifyOrgStatusRequest`，`OrganizationController.java:116` / `dto/request/ModifyOrgStatusRequest.java:11`）：
+  - `type` (Integer, 可选) — 0展示 / 1隐藏 / 2恢复 `:16`
+  - `orgNumber` (Long, 可选) — 组织 `:21`
+- `GET /organization/export`（`OrganizationController#export`，`OrganizationController.java:407`）`@RequestParam`：`orgNumber` (Long, 必填)、`accountId` (Integer, 必填)
+  - 前端实际另传 `parentId`（`TeamDetail/index.js:193`）/`targetDate`（`ExportInfo/index.js:40`），后端未接收
+- `POST /organization/showOrgNodeTree`（`OrganizationController#showOrgNodeTree`，DTO `ShowTreeRequest`，`OrganizationController.java:125` / `dto/request/ShowTreeRequest.java:11`）：
+  - `orgNumber` (Long, 可选) — 组织ID，默认 `0L` `:15`
+  - `showAll` (boolean, 可选) `:17`
+  - 前端实际传 `{orgNumber: '0'}`（`SelectTargetNode/index.js:36`）
+- `POST /change/member`（`StaffController#batchChangeMember`，DTO `BatchChangeStaffAndOrganizationRelationRequest`，`StaffController.java:388` / `dto/BatchChangeStaffAndOrganizationRelationRequest.java:11`）：
+  - `staffAndOrganizationRelations` (List<SingleStaffAndOrganizationRelation>, 必填) — 员工组织关系 `:14`
+  - `sourceOrgNumber` (Long, 可选) `:16`
+  - `orgNumber` (Long, 必填) — 目标组织编码 `:19`
+  - `isBcpTask` (Boolean, 可选) `:21`
+  - 前端实际传 `{staffAndOrganizationRelations:[{accountId, orgNumber, jobType}], orgNumber}`（`MoveEmployees/index.js:44`）
+- `POST /searchByEmailAndName`（`StaffController#searchByVagueNameAndType`，DTO `NameAndTypeSearchRequest`，`StaffController.java:653` / `dto/NameAndTypeSearchRequest.java:9`）：
+  - `searchType` (Integer, 必填) — 1全公司 / 2节点及以下成员和负责人 / 3高途 `:12`
+  - `value` (String, 必填) — 搜索内容 `:15`
+  - `orgNumber` (Long, 可选) — searchType=2 时必填 `:18`
+- `POST /add/member`（`StaffController#addMember`，DTO `StaffAndOrganizationRelationRequest`，`StaffController.java:213` / `dto/StaffAndOrganizationRelationRequest.java:15`）：
+  - `accountIds` (List<Long>, 必填) — 员工编码 `:18`
+  - `orgNumber` (Long, 必填) — 组织编码 `:21`
+  - 前端实际传 `{accountIds, orgNumber}`（`AddMembers/index.js:32`）
+- `GET /downloadBatchAddStaffTemplate`（`StaffController#downloadBatchAddStaffTemplate`，无入参，`StaffController.java:917`）
+- `POST /batchAddStaff`（`StaffController#batchAddStaff`，入参 `MultipartHttpServletRequest`，`StaffController.java:930`）— 仅上传的文件（`request.getFileNames()`/`getFile(key)`）
+- `GET /label/listLabel`（`LabelController#listLabel`，`LabelController.java:44`）`@RequestParam`：`scene` (Integer, 必填) — 0节点标签 / 1员工标签
+- `POST /label/batchUpsertStaffLabel`（`LabelController#batchUpsertStaffLabel`，DTO `BatchUpsertStaffLabelRequest`，`LabelController.java:68` / `dto/request/BatchUpsertStaffLabelRequest.java:13`）：
+  - `type` (Integer, 可选) — 0新增 / 1删除 `:18`
+  - `orgNumber` (Long, 可选) — 部门 `:23`
+  - `accountIds` (List<Long>, 可选) — 员工 `:28`
+  - `labelIds` (List<Long>, 可选) — 标签id `:33`
+  - 前端实际传 `{orgNumber, labelIds, accountIds, type}`（`ChangePersonalLabel/index.js:59、87`）
+
+#### 顶部按钮 / 节点操作
+
+- `POST /bcpTask/search`（`StaffBcpTaskController#search`，DTO `StaffBcpTaskSearchRequest`，`StaffBcpTaskController.java:55` / `dto/request/StaffBcpTaskSearchRequest.java:18`）：
+  - `type` (Integer, 可选) — 1节点 / 2员工 `:21`
+  - `subType` (Integer, 可选) — 1部门迁移 / 2部门失效 / 3员工迁移 `:24`
+  - `status` (Integer, 可选) — 0待确认 / 1执行中 / 2已执行 / 3已失效 `:27`
+  - `time` (List<Long>, 可选) — 时间范围 `[起,止]` `:30`
+  - `text` (String, 可选) — 搜索文本 `:33`
+  - `pager` (Pager, 可选) `:36`
+  - `postTags` (List<String>, 后端回填，前端不传) `:38`
+  - `permissions` (List<Integer>, 后端回填) `:40`
+- `POST /bcpTask/sync`（`StaffBcpTaskController#sync`，DTO `StaffBcpTaskSyncRequest`，`StaffBcpTaskController.java:119` / `dto/request/StaffBcpTaskSyncRequest.java:13`）：
+  - `taskIds` (List<Long>, 可选) — 待执行任务id `:15`
+- `GET /downloadBathUploadStaffTemplate`（`StaffController#downloadBathUploadStaffTemplate`，无入参，`StaffController.java:923`）
+- `POST /batchImportStaff`（`StaffController#batchImportStaff`，入参 `MultipartHttpServletRequest`，`StaffController.java:941`）— 仅上传的 `.xlsx` 文件
+- `POST /label/batchUpsertOrgLabel`（`LabelController#batchUpsertOrgLabel`，DTO `BatchUpsertOrgLabelRequest`，`LabelController.java:57` / `dto/request/BatchUpsertOrgLabelRequest.java:13`）：
+  - `type` (Integer, 可选) — 0新增 / 1删除 `:18`
+  - `orgNumbers` (List<Long>, 可选) — 部门 `:23`
+  - `labelIds` (List<Long>, 可选) — 标签id `:28`
+  - 前端实际传 `{orgNumbers, labelIds, type}`（`ChangeNodeLabel/index.js:51、78`）
+- `POST /list/dashLine`（`StaffController#search`，DTO `BatchLeaderPageRequest`，`StaffController.java:554` / `dto/BatchLeaderPageRequest.java:10`）：
+  - `accountId` (Long, 可选) — 汇报人编码 `:13`
+  - `pager` (Pager, 必填) — 分页 `:16`
+- `POST /search/dottedLine/leader`（`StaffController#searchDottedLineLeaderByName`，DTO `NameRequest`，`StaffController.java:192` / `dto/NameRequest.java:9`）：
+  - `value` (String, 必填) — 搜索内容 `:12`
+- `POST /delete/leader`（`StaffController#deleteLeader`，DTO `StaffAndOrganizationRequest`，`StaffController.java:495` / `dto/StaffAndOrganizationRequest.java:11`）：
+  - `accountIds` (List<Long>, 必填) — 员工编码 `:14`
+  - `orgNumber` (Long, 必填) — 组织编码 `:17`
+  - `type` (Integer, 必填) — 1虚线管辖 / 2实线汇报 `:20`
+- `POST /organization/levelList`（`OrganizationController#levelList`，DTO `OrgRequest`，`OrganizationController.java:193`）— 字段同上面 `OrgRequest`；前端实际传 `{orgNumber, levelType, online}`（`index.js:326`）
+- `GET /label/listLabelByOrgNumber`（`LabelController#listLabelByOrgNumber`，`LabelController.java:50`）`@RequestParam`：`orgNumber` (Long, 必填)
+- `POST /organization/addNode`（`OrganizationController#addNode`，DTO `OrgInfoRequest`，`OrganizationController.java:153` / `dto/OrgInfoRequest.java:12`）：
+  - `orgNumber` (Long, 可选) — 待操作的节点id `:16`
+  - `levelCode` (Integer, 可选) — 添加的节点等级 `:20`
+  - `organizationType` (Integer, 可选) `:24`
+  - `organizationTypeList` (List<Integer>, 可选) — 业务线角色，多选 `:29`
+  - `targetName` (String, 可选) — 添加的节点名称 `:34`
+  - `deptLevelType` (int, 可选) — 1同级节点 / 0下级节点 `:38`
+  - `cityCode` (String, 可选) — 城市code `:43`
+  - `labelIds` (List<Long>, 可选) — 节点标签列表 `:48`
+  - 前端实际传 `{orgNumber, deptLevelType, targetName, levelCode, organizationTypeList, cityCode, labelIds}`（`ChangeTreeNode/index.js:54`，**不传 organizationType**）
+- `POST /organization/changeLevel`（`OrganizationController#changeLevel`，DTO `ChangeOrgDto`，`OrganizationController.java:304` / `dto/ChangeOrgDto.java:11`）：
+  - `orgNumber` (Long, 可选) — 操作的节点 `:15`
+  - `targetLevel` (Integer, 可选) — 更改后的组织级别 `:19`
+  - `targetName` (String, 可选) — 更改过后的名字 `:23`
+  - `parentId` (Long, 可选) — 父节点 `:27`
+  - `isPublic` (Boolean, 可选) — 是否公用个人中心请求（跳过超管/普管校验）`:31`
+  - `organizationType` (Integer, 可选) — 业务线时传 `:35`
+  - `organizationTypeList` (List<Integer>, 可选) — 业务线角色，多选 `:40`
+  - `cityCode` (String, 可选) — 中心级别时传 `:45`
+  - `labelIds` (List<Long>, 可选) — 节点标签列表 `:50`
+  - `alias` (String, 可选) — 节点别名（≤20字符）`:55`
+  - 前端实际传 `{orgNumber, targetName, targetLevel, parentId, organizationTypeList, cityCode, labelIds, alias}`（`ChangeTreeNode/index.js:91`）
+- `POST /organization/delNode`（`OrganizationController#delNode`，DTO `OrgRequest`，`OrganizationController.java:289`）— 字段同上面 `OrgRequest`；前端实际传 `{orgNumber, parentId}`（`index.js:258`）
+- `POST /organization/exchangeNode`（`OrganizationController#exchangeNode`，DTO `ExchangeNodeRequest`，`OrganizationController.java:237` / `dto/ExchangeNodeRequest.java:10`）：
+  - `sourceOrgNumber` (Long, 可选) — 源组织架构number `:14`
+  - `sourceLevelCode` (Long, 可选) — 源节点等级 `:19`
+  - `sourceParentOrgNumber` (Long, 可选) — 源节点的父节点 `:23`
+  - `targetOrgNumber` (Long, 可选) — 目标组织架构number `:28`
+  - `targetOrgLevelCode` (Long, 可选) — 目标节点等级 `:32`
+  - `targetParentOrgNumber` (Long, 可选) — 目标节点的父节点 `:36`
+  - `isBcpTask` (Boolean, 可选) `:38`
+  - 前端实际传 6 个 source/target 字段（`ChangeLeader/index.js:73`，不传 isBcpTask）
+- `POST /list/leader`（`StaffController#batchQueryLeader`，DTO `BatchQueryLeaderRequest`，`StaffController.java:542` / `dto/BatchQueryLeaderRequest.java:9`）：
+  - `orgNumber` (Long, 必填) — 组织编码 `:12`
+  - `type` (Integer, 必填) — 1虚线管辖 / 2实线汇报 `:15`
+- `POST /add/leader`（`StaffController#addLeader`，DTO `SingleStaffAndOrganizationRequest`，`StaffController.java:443` / `dto/SingleStaffAndOrganizationRequest.java:9`）：
+  - `accountId` (Long, 必填) — 员工编码 `:12`
+  - `orgNumber` (Long, 必填) — 组织编码 `:15`
+  - `type` (Integer, 必填) — 1虚线管辖 / 2实线汇报 `:18`
+  - `systemType` (Integer, 可选) `:20`
+  - 前端实际传 `{orgNumber, accountId, type}`（`ReportInfo/index.js:161`）
+
+> `showOrgNodeTree`、`searchByEmailAndName`、`listLabel`、`delete/leader` 在上表中多处复用，入参相同；`delete/member`（`StaffController.java:286`）与 `account/batch/delete/member`（`:329`）是 **同名重载**，入参类型不同，勿混。
+
 ## 关键表
 
 库：**`i_org`**（mapper XML 全部写死 `i_org.` 前缀；数据源 bean `gaotuDataSource`，`staff-web/.../config/DatasourceConfig.java`，连接串 `jdbc.baijiabao.url` 在 Apollo）。删除**全是逻辑删**（`isdel=1`）。

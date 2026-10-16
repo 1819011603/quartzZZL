@@ -42,6 +42,22 @@
 | 展开行 | `POST /distribution-management/subclazz/management/listSubclazzByClazzNumber` | `getSubClazzList` | `src/pages/ClazzManage/Subclazz/index.js:65` | clazz-distribution-management | [31660] | 读 |
 | 展开行「学员列表」 | `POST /course-center/b/clazzHour/userListCheck` | `userListCheck` | `Subclazz/index.js:135` | course-center | [31561] | 读 |
 
+### 入参
+
+> 以 course-center / product-server / clazz-distribution-management 源码为准（2026-10-16 定位）。`Pager`（`entity/common/Pager.java:29-37`）= `pageSize`/`current`/`total`（Integer, 可选）。
+
+- `GET /b/common/dictionary/all`、`/department/tree`、`/category/tree`、`/dictionary/allConfigurable`、`/productLine/tree`：GET，无请求体。
+- `POST /promotionManagement/activity/getChannelCodeConfig`：**无请求体**（见 [班级管理页入参](../clazzManagePro/_page.md#入参)）。
+- `GET /intranet-rpc/course-setting/feign/options/bff/list`（`com.gaotu.feign.OptionsService#getOptionsForNode`，`OptionsService.java:48`）：GET，`@RequestParam` `fields` (String, 可选，默认 `all`)；前端传 query `fields=all`。
+- `GET https://internal-area-api.genshuixue.com/api/areas/getLevelList`：GET，query `levelId=1`（外部地区服务）。
+- `POST /b/campus/search`（`CampusManagementController#search`，DTO `CampusSearchRequest`）：`campusName`(String)、`campusStatus`(Integer)、`pager`(Pager, 必填 `@NotNull`)。
+- `POST /b/clazz/list/search/fullAuth`（`AdminClazzController#listWithoutAuthFilter:168`，DTO `ClazzListQueryRequest`）：字段与 [班级列表 `clazz/list/search`](../clazzManagePro/clazzList.md#入参) **完全一致**（同一个 DTO，只差 `authFilter=false`）。
+- `POST /b/columns/*`：DTO 与 [课程管理页入参](../CourseManagePro/_page.md#入参) 一致（`PageConfigGetRequest` / `UserConfigListRequest` / `UserConfigAddRequest` / `UserConfigDeleteRequest` / `UserConfigModifyRequest` / `UserConfigSelectRequest`）。
+- `POST /product-b/b/product/bff/sellLink`（product-server `ProductUtilController#sellLink:34`，DTO `com.gaotu.clientv4.request.ClazzSellUrlDto`）：`clazzUrl` (String, 可选) — 原始班级链接（须以 `http:`/`https:` 开头，否则 `parameterValidator()` 失败）。前端 `goodsManage.js:48` 传 `{clazzUrl: params.url}`，一致。
+- `POST /course-setting/source/create`（`SourceContoller#create:27`，DTO `com.gaotu.model.request.source.CreateSourceRequest`，`CreateSourceRequest.java:14`）：`customerWayType`(Integer, 必填) — 获客方式、`name`(String, 必填) — 活动创建人邮箱前缀、`promoterId`(String, 必填) — 推广人员 id、`promoterName`(String, 必填)、`putPlanId`(String, 必填) — 活动 id、`putPlanName`(String, 必填) — 活动名称。
+- `POST /distribution-management/subclazz/management/listSubclazzByClazzNumber`（distribution `SubclazzController#listSubclazzByClazzNumber:492`，DTO `ClazzNumberRequest`）：`clazzNumber` (Long, 必填 `@NotNull`)。
+- `POST /b/clazzHour/userListCheck`（`AdminClazzHourController#userListCheck:54`，DTO `ClazzHourSubClazzCheckRequest`）：`subclazzNumber` (Long, 必填 `@NotNull`)。
+
 ## 关键表（`course_center` 库，test 集群 gaotu-course-test，cluster_id=153）
 
 | 接口 | 后端 | 读 | 写 | ES / 其它 |

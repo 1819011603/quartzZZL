@@ -30,7 +30,7 @@
 
 字典（学部/学年/学期/年级/学科/品类）读 `useModel('clazzManage')`，由页面 wrapper 加载，见 [_page.md](_page.md)。
 
-## 入参
+### 入参
 
 > 以 course-center / gaotu-ols 源码为准（2026-10-16 定位）。`Pager`（`entity/common/Pager.java:29-37`）= `pageSize`/`current`/`total`（Integer, 可选）。
 

@@ -16,6 +16,16 @@
 | 行「详情」 | 不发请求，跳 `/ordermanage/prodetail/{orderItemNumber}` | `newItemDom` | `src/pages/OrderManage/list/index.js:803` | — | — | — |
 | 行「修改地址」/「调课调班」 | 同 [normal.md](normal.md) | — | `src/pages/OrderManage/detail/OrderStep/ModifyAddress/index.js`、`src/pages/OrderManage/component/TransferClazz/` | order-b / after-sales | [947342] / [1069148] | 写 |
 
+### 入参
+
+- `POST /orderComponent/orderItemFieldSearch`（`OrderComponentController#orderItemFieldSearch`，DTO `OrderItemPageAbleComplexSearchRequest`，字段全集见 [soloclazz.md](soloclazz.md)「入参」）：
+  - `condition` + `pager`（均必填）两个顶层字段
+  - `condition.productType` (Integer) — **小班课 tab 固定传 `6004`**
+  - 小班课 tab 筛选（`OL/constants.tsx:284-293`）：`orderTime`→`createTimeRange`、`orderNumber`→`orderItemNumberList`、`user`、`expressNo`、`skuName`、`clazzBizNumber`
+  - 其余字段与 [soloclazz.md](soloclazz.md) 的 `OrderItemComplexSearchCondition` 完全一致
+- 行「详情」：不发请求（跳详情页），无入参
+- 行「修改地址」/「调课调班」：入参见 [normal.md](normal.md)「入参」（`queryAllWaitSendItem`/`changeAddress`、`/afterSale/b/transfer/*`）
+
 ## 关键表
 
 同 [soloclazz.md](soloclazz.md)「关键表」：ES 订单项宽表 + MySQL `gaotu.order_item` 兜底；聚合时另外读小班课扩展（`OrderItemScExtRepository`，具体表名**未细追**）。列表接口不写表；改地址写哪些表见 [normal.md](normal.md)。
