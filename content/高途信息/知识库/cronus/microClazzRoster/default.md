@@ -39,6 +39,23 @@
 
 > 共享组件（`ReportWidget` / `ReachReport` / `SendCoins` / `SettingTags` / `ModifyWechatNote` / `StudentCertificateReport` / `DownLoadCorrections` / `WrongBook` / `Attendance` 等）另有接口，被多页面复用，待单独归档。
 
+## 关键点 / 注意点（直调复现）
+
+**关键点**
+
+- 列表接口 `POST /smallClazz/clazzStudentList`，`identification=smallClazzRoster`。
+- 必带请求头 `b_client: EES`（本页在 EES 端）；缺 → `{"code":42,"msg":"调用staff失败"}`。
+- 必带 `route.sceneVersionNumber`（`useTableSchema` 拿）；`filter.clazzNumber` 必填（空则空页）。
+- 常用 `filter`：`clazzStudentStatus`（学员状态**组合字段**，`["1","3"]` = 在班 / 在班(调课)）、`smallClazzBeginTime`（**正式课上课日期**，`timeRange`，毫秒时间戳）。
+- 二讲筛选：`filter` 传 `assistantTeacher:[<accountId>]`（后端 `buildMainTeacherStudentInfoFilter` 转 `assistantAccountId`）。
+
+**注意点**
+
+- 页面按登录老师权限过滤 → 先 `cosplay_login` 成该二讲（如 shizejia=200986），否则 0 条。
+- `b_client` 取页面真实值（EES 页 = `EES`），**别一律 `GPS`**。
+- 环境：线上 `fuwu.baijia.com` + `traffic-env: prod`。
+- 花名册 tab **无**「续班状态 / 不可续」（`smallCanRenewal`）列 → 不可续要查续班服务 tab（见 [continuationService.md](./continuationService.md)）。
+
 ## 青舟接口详情页
 
 - [POST /smallClazz/clazzStudentList](https://qingzhou.baijia.com/#/cloud/apiDoc/search/detail?interfaceId=2044941&appId=student-center&branchName=release)

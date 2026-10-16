@@ -20,6 +20,20 @@
 
 > 共享组件（`EllipsisCellRender` / `feitud` 表格列配置等）另有接口，被多页面复用，待单独归档。
 
+## 关键点 / 注意点（直调复现）
+
+**关键点**
+
+- 主列表 `POST /teachProductSmallClazz/list`（后端 `SmallClazzSearchService.searchPolymerizeList(request, scene=107, 登录 accountId)`），**不走** GAIA 花名册筛选，无 `identification`。
+- 常用 `filter`：`assistantAccountIdList`（**二讲 accountId**，找某二讲带的班）、`mainTeacherNumberList`（主讲工号）、`clazzTeachingStatusList`（班级教学状态）。
+- 页面请求头 `b_client: EES`。
+
+**注意点**
+
+- 该接口**按登录人权限过滤**（`scene=107`）→ 复现前先 `cosplay_login` 成该二讲（如 shizejia=200986），否则 0 条。
+- 该接口**不触发** `SmallClazzUserPermissionFilterService` 的 staff 调用 → **不带 `b_client` 也不报 `code:42`**（实测 prod 空 body 返回 `code:0`）；与花名册/续班服务页不同，别混。
+- 环境：线上 `fuwu.baijia.com` + `traffic-env: prod`。
+
 ## 青舟接口详情页
 
 - [POST /teachProductSmallClazz/list](https://qingzhou.baijia.com/#/cloud/apiDoc/search/detail?interfaceId=2044921&appId=student-center&branchName=release)

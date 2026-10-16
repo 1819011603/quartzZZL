@@ -132,10 +132,10 @@ $M $C baijia_invoke cosplay_login -k cos_account_name=<拼音>
 # accountId → 账号名：SELECT account_id, email_prefix FROM gaotu.employee WHERE account_id=<id>
 #                    （cluster=gaotu-center-prod / db=gaotu；主讲/二讲 accountId 见 ES mainTeacherAccountIds/assistantAccountId）
 
-# ② 直调（务必带 -H 'B_client: GPS'）
+# ② 直调（务必带 -H 'b_client: EES'，本页在 EES 端）
 curl -sk -x "${AGENT_PROXY_URL:-http://127.0.0.1:8888}" \
   'https://fuwu.baijia.com/bgwApi/component/student-center/roster/small/renewal/page' \
-  -H 'content-type: application/json' -H 'traffic-env: prod' -H 'B_client: GPS' \
+  -H 'content-type: application/json' -H 'traffic-env: prod' -H 'b_client: EES' \
   --data-raw '{"identification":"microContinuationService",
     "filter":{"clazzNumber":[<班级号>],"smallRenewalNumber":[<计划号>],"smallRenewalRoundFilter":[1],
               "clazzStudentStatus":[1,3],"smallRenewalReportStatus":[4]},"pager":{"current":1,"pageSize":50}}'
@@ -144,10 +144,26 @@ curl -sk -x "${AGENT_PROXY_URL:-http://127.0.0.1:8888}" \
 $M $C baijia_invoke cosplay_logout
 ```
 
-- **必带 `B_client: GPS`**：否则页面内部 `SmallClazzUserPermissionFilterService` 的 staff 调用失败 → `{"code":42,"msg":"调用staff失败"}`。`/roster/...` 不在 `LoginInfoFilter` 自动取 bclient 的前缀里，必须手动带。
+- **必带 `b_client`（本页在 EES 端 = `EES`）**：否则页面内部 `SmallClazzUserPermissionFilterService` 的 staff 调用失败 → `{"code":42,"msg":"调用staff失败"}`。`/roster/...` 不在 `LoginInfoFilter` 自动取 bclient 的前缀里，必须手动带。⚠️ **别一律写 `GPS`**——线上真实请求头是 `b_client: EES`。
 - **页面有权限过滤**：只出登录老师可见学员（`assistantAccountId`/`mainTeacherAccountIds` + postTag 通配 + 兼职账号）。用无关账号调 → 0 条，不是接口问题。
 - 想核数据与页面对不上时，直接查 ES `ads_small_clazz_user` 的 `smallCanRenewal`/`smallRenewalStateStatus`/`smallRoundIdx`/`clazzStudentStatus`。
 
+
+## 关键点 / 注意点（直调复现）
+
+**关键点**
+
+- 列表接口 `POST /roster/small/renewal/page`（另有 `/count`、`/default/page`、`/default/count`），`identification=microContinuationService`。
+- 必带请求头 `b_client: EES`（本页在 EES 端）；缺 → `{"code":42,"msg":"调用staff失败"}`。
+- 必带 `route.sceneVersionNumber`；`filter.clazzNumber` 必填，`filter.smallRenewalRoundFilter` 必给（不传 → 映射为空 → 0 条）。
+- 常用 `filter`：`clazzStudentStatus`（学员状态，`["1","3"]` = 在班 / 在班(调课)）、`smallClazzBeginTime`（**正式课上课日期**，`timeRange`）、`smallRenewalNumber`（续班计划）；续班状态走 `quickFilter.renewalReportStatusFilter`。
+- **不可续** = `smallCanRenewal ∉ {1,2,8}`（本页「续班状态」列派生自 `smallCanRenewal` + `smallRenewalStateStatus`）；原因来自 performance-attribution（见下节）。
+
+**注意点**
+
+- 页面按登录老师权限过滤 → 先 `cosplay_login` 成该二讲（如 shizejia=200986），否则 0 条。
+- `b_client` 取页面真实值（**EES 页 = `EES`**），别一律 `GPS`；线上 host `fuwu.baijia.com` + `traffic-env: prod`。
+- 别直调 `SmallRenewalService#page` 复现（依赖 ThreadLocal 登录/GAIA 上下文，会得假结论），走 HTTP。
 
 ## 可续状态 / 轮次的上游链路（业绩归属，非本服务自算）
 
@@ -207,7 +223,7 @@ $M $C baijia_invoke cosplay_logout
 - **ACL 桥调 Controller 也不行**：`SmallRenewalController` 是 CGLIB 代理，桥的 `findMethod` 用 `getDeclaredMethods` 找不到 `pageRenewal`（0 参方法如 `defaultValue` 可调）。→ 复现一律走 HTTP（见上「直调复现模板」）。
 
 
-## 各接口最小入参（代课 + `B_client: GPS` 实测）
+## 各接口最小入参（代课 + `b_client: EES` 实测）
 
 | 接口 | 最小入参（`identification` 一律 `microContinuationService`） | 实测 |
 |---|---|---|
