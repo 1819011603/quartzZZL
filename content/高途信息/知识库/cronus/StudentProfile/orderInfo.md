@@ -2,6 +2,30 @@
 
 > 2026-10-16 排查「学员档案点开订单信息，学员部分退款却显示『已退款』」问题整理。
 
+## 问题结论：部分退款显示成「已退款」（根因在链路中段，不是前端漏映射）
+
+业务现象：学员部分退款（仍在读），学员档案·订单信息列表却显示「已退款」。
+
+链路（**第 2 步就把「部分退款」丢了**）：
+
+1. **电商 order-b 的「订单状态码」本身有区分**：`OrderStatusEnums`（`order/order-api/.../orderinfo/enums/OrderStatusEnums.java`）`6=全部退款(已退款)` / `7=部分退款(部分退款)`。
+2. 但 order-b 返回给学员档案接口的**不是状态码，是中文文案 `orderStatusName`**，且生成文案时就已合并（`order/order-app/.../search/service/convert/CommonSearchRequestConverter.java`）：
+   - **订单级** `convertOrderStatusName`：`case PAID / PART_REFUND / TAIL_PAID: return "已支付"` —— **部分退款(7) 被当成「已支付」**；`FULL_REFUND / DEPOSIT_REFUND → "已退款"`。
+   - **订单项级** `convertOrderItemStatusName`：只要有售后记录（`lastAfterSaleType != 0`）→ **一律 "已退款"**（全退/部分退不分）。
+3. student-center 拿这个文案反查自己的枚举：`OrderStatusEnum.getByDesc(name)`（`OrderDomainWrapper.convertOrderRecordDO*`），而 student-center 的 `OrderStatusEnum`（`student-center-service/.../enums/OrderStatusEnum.java`）只有 5 档：`1 待付款 / 2 已支付 / 3 已取消 / 4 已退款 / 31 尾款待支付` —— **没有「部分退款」**。
+4. 前端 GAIA 物料 `OrderInfoList`（`src/pages/utils/constant.ts`，CDN 包实测一致）同样只映射 `1/2/3/4/31`，无「部分退款」。
+
+**结论**：区分全退/部分退的能力在 **order-b 生成状态文案时就没了**（订单级→并入「已支付」；订单项级→并入「已退款」），student-center 与前端物料两层都没有「部分退款」档位。**要区分必须从链路中段改**：order-b 透传状态码 `6/7`（或新增「部分退款」文案）→ student-center `OrderStatusEnum` 加档 → 前端 `OrderInfoList` 映射加档。截图那条（订单项级）因此显示「已退款」。
+
+### 实测复现（2026-10-16，test）
+
+- 取 test `gaotu.order_info`（cluster 159）里 `order_status=7`（部分退款）的订单：`order_number=4801762098081169408`，`user_id=17634521020958`。
+- 调 `POST /bgwApi/component/student-center/ols/w/studentArchives/orderInfo` `{userId:"17634521020958"}` → 该订单返回 **`orderStatus=2`（已支付）**，不是 7、也不是「部分退款」。
+- => **复现成功**：部分退款订单在学员档案接口里被显示成「已支付」（订单级路径）。
+- 截图里显示「已退款」的那种，是**订单项级**路径（`convertOrderItemStatusName`：只要有售后 `lastAfterSaleType!=0` → 一律 `"已退款"`）。
+
+- API 的 `orderStatus` 值域实测只有 `1/2/3/4/31`（= student-center `OrderStatusEnum`），**永远拿不到 6/7**。
+
 ## 定位
 
 | 项 | 值 |
@@ -55,7 +79,7 @@
 
 ## 排查提示
 
-- 学员档案订单状态显示不对（如部分退款显示「已退款」）→ 先抓 `/ols/w/studentArchives/orderInfo` 返回的 `orderStatus` 是 6 还是 7；后端已区分，问题多在展示层映射。
+- 学员档案订单状态显示不对（如部分退款显示「已退款」/「已支付」）→ 见上方「问题结论」：接口返回的 `orderStatus` 是 1/2/3/4/31（**已被 order-b 文案 + student-center `getByDesc` 合并**），不是电商原码 6/7。
 - 订单查不到 / 少数据 → student-center orderInfo 依赖 order-b `complexSearch/queryByUser`，看 order-b 侧是否返回。
 - 订单列表的「订单概况」统计卡（累计支付金额 / 引流课订单数 / 正价课订单数…）来源未确认，疑似独立物料 / 线索域接口；需要时按店抓包补记。
 
