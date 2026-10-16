@@ -66,7 +66,7 @@
 ```jsonc
 {
   "identification": "microContinuationService",   // 必填！决定 GAIA 字段口径 + 哪些特殊筛选器生效
-  "route": { "sceneVersionNumber": <进页面 /roster/renewal/config 拿到的场景版本号> }, // 必填，取用户可见字段
+  "route": { "sceneVersionNumber": <线上由 GAIA POST /bgwApi/gaiaCenter/page/route 响应取；body {identification:"microContinuationService", domain:"<账号名>", accountId:<id>}，见 _page.md> }, // 必填，取用户可见字段
   "filter": {
     "clazzNumber": [<clazzNumber>...],            // 必填，空则直接返回空页
     "smallRenewalNumber": [<续班计划 number>],     // 续班计划（页面「续班计划」下拉）

@@ -45,7 +45,7 @@
 
 - 列表接口 `POST /smallClazz/clazzStudentList`，`identification=smallClazzRoster`。
 - 必带请求头 `b_client: EES`（本页在 EES 端）；缺 → `{"code":42,"msg":"调用staff失败"}`。
-- 必带 `route.sceneVersionNumber`（`useTableSchema` 拿）；`filter.clazzNumber` 必填（空则空页）。
+- 必带 `route.sceneVersionNumber`（**线上**由 GAIA `POST /bgwApi/gaiaCenter/page/route`，body `{"identification":"smallClazzRoster","domain":"<账号名>","accountId":<id>}` 响应取；见 [_page.md](./_page.md)）；`filter.clazzNumber` 必填（空则空页）。
 - 常用 `filter`：`clazzStudentStatus`（学员状态**组合字段**，`["1","3"]` = 在班 / 在班(调课)）、`smallClazzBeginTime`（**正式课上课日期**，`timeRange`，毫秒时间戳）。
 - 二讲筛选：`filter` 传 `assistantTeacher:[<accountId>]`（后端 `buildMainTeacherStudentInfoFilter` 转 `assistantAccountId`）。
 
