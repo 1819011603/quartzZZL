@@ -38,6 +38,34 @@ tab 名后缀「（运营）」由 `gaotu_boss_p_clazz_detail_maintainer` / `gao
 
 各 tab 内接口（导出、归属人搜索、判单过程、商品明细、业绩统计）见对应 tab 文件。
 
+### 入参
+
+- `GET /intranet-rpc/course-setting/feign/options/bff/list`（course-setting 仓库本地未克隆，**后端 DTO 未定位**；前端入参：query `fields=all`，`src/services/goodsManage.js:12-16`）：
+  - `fields` (String, 必填) — 固定 `all`
+- `GET /performance/management/attributionType/list`（`PerformanceKanbanCourseController#getAttributionType`，`PerformanceKanbanCourseController.java:289`，方法无 `@RequestBody`）：
+  - 无请求体（GET，无参数）
+- `GET /course-setting/b/course/category/tree`（course-setting 仓库本地未克隆，**后端 DTO 未定位**；前端 GET 无显式参数，`src/services/physicalGoods.js:13`）：
+  - 未定位
+- `POST /performance/management/attribution/list`（`PerformanceKanbanCourseController#getOrderAttributionList`，DTO `OrderAttributionRequest`，`PerformanceKanbanCourseController.java:113`）：
+  - `beginTime` (Long, 可选) — 开始时间(ms)
+  - `endTime` (Long, 可选) — 结束时间(ms)
+  - `userParam` (String, 可选) — 用户手机号/姓名/userId（空格分隔批量；单值 ≤20 字符，批量 ≤100）
+  - `orderNumber` (String, 可选) — 订单号（`,`/空格分隔，≤20 个，须为数字）
+  - `clazzBizNumber` (String, 可选) — 班级 bizNumber
+  - `courseBizNumber` (String, 可选) — 课程 bizNumber
+  - `typeList` (List<Integer>, 可选) — 业绩类型枚举值
+  - `emailPrefixList` (List<String>, 可选) — 业绩归属人邮箱前缀
+  - `sortField` (String, 可选) — 排序字段
+  - `sortType` (Integer, 可选) — 1 升序 / 2 降序
+  - `statusCode` (Integer, 可选) — 状态筛选
+  - `pager` (Pager, 可选) — 分页，字段 `pageSize`/`pageNum`/`count`
+  - `sorter` (List<QuerySorter>, 可选) — 排序参数，元素 `{field, order}`
+  - `timer` (List<Long>, 可选) — 查询时间区间（商品 tab 用）
+  - `spuNumber` (String, 可选) — spu number
+  - `roleSign` (Integer, 可选) — 角色标识，0 运营 / 1 非运营
+  - `categoryPaths` (List<String>, 可选) — 品类列表（`/` 拼接路径）
+  - 校验（`validateQueryParam`）：`beginTime`/`endTime`/`orderNumber` 至少一项；前端课程 tab 传 `beginTime/endTime`（`AchieveDetail.tsx:28-39`）
+
 ## 关键表（`gaotu_stat` 库）
 
 | 表 | 含义 | 涉及接口 |

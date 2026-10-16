@@ -25,6 +25,43 @@
 
 `/performance/management/user/getUserSecretBaseInfo`（`service/index.ts:88`，后端 `:305`，id 36997）前端定义了但本 tab 没调用（`AchieveDetail.tsx:151` 脱敏组件已注释）。
 
+### 入参
+
+- `GET /course-setting/b/course/category/tree`（course-setting 仓库本地未克隆，**后端 DTO 未定位**；前端 GET 无显式参数，`src/services/physicalGoods.js:13`）：
+  - 未定位
+- `POST /performance/management/attribution/list`（`PerformanceKanbanCourseController#getOrderAttributionList`，DTO `OrderAttributionRequest`，`PerformanceKanbanCourseController.java:113`）：
+  - `beginTime` (Long, 可选) — 开始时间(ms)
+  - `endTime` (Long, 可选) — 结束时间(ms)
+  - `userParam` (String, 可选) — 用户手机号/姓名/userId
+  - `orderNumber` (String, 可选) — 订单号
+  - `clazzBizNumber` (String, 可选) — 班级 bizNumber
+  - `courseBizNumber` (String, 可选) — 课程 bizNumber
+  - `typeList` (List<Integer>, 可选) — 业绩类型枚举值
+  - `emailPrefixList` (List<String>, 可选) — 业绩归属人邮箱前缀
+  - `sortField` (String, 可选) — 排序字段
+  - `sortType` (Integer, 可选) — 1 升序 / 2 降序
+  - `statusCode` (Integer, 可选) — 状态筛选
+  - `pager` (Pager, 可选) — 分页，字段 `pageSize`/`pageNum`/`count`
+  - `sorter` (List<QuerySorter>, 可选) — 元素 `{field, order}`
+  - `timer` (List<Long>, 可选) — 查询时间区间（本 tab 不用）
+  - `spuNumber` (String, 可选) — 本 tab 不用
+  - `roleSign` (Integer, 可选) — 0 运营 / 1 非运营
+  - `categoryPaths` (List<String>, 可选) — 品类路径
+  - 校验：`beginTime`/`endTime`/`orderNumber` 至少一项（`validateQueryParam`）
+  - 前端 `SearchHeader#onFinish` 传 `{...others, beginTime, endTime, categoryPaths?}`（`SearchHeader/index.tsx:63-84`），其中 `others` = userParam/orderNumber/clazzBizNumber/courseBizNumber/typeList/emailPrefixList；`roleSign` 来自 `initialParams`（`AchieveDetail.tsx:38`，始终携带）；`pager` 在查询/翻页时补（`AchieveDetail.tsx:236,250`），`sortField`/`sortType`/`statusCode` 由表头排序/筛选经 `convertSort`（返回 `{sortField, sortType}`，`src/utils/utils.js:74-84`）补入（`AchieveDetail.tsx:246-253`）
+- `POST /performance/management/attribution/export`（`PerformanceKanbanCourseController#getOrderAttributionExport`，DTO `OrderAttributionRequest` 同上，`PerformanceKanbanCourseController.java:237`）：
+  - 字段同 `attribution/list`（前端直接复用当前查询 `params`，`AchieveDetail.tsx:303`）
+- `POST /performance/management/verify/employee`（`PerformanceKanbanCourseController#verifyEmployee`，DTO `VerifyEmployeeRequest`，`PerformanceKanbanCourseController.java:396`）：
+  - `employeeName` (String, 可选) — 归属人姓名/邮箱前缀关键字
+  - 前端传 `{employeeName: words}`（`SearchHeader/index.tsx:254`）
+- `POST /performance/management/judge/result`（`PerformanceKanbanCourseController#getOrderAttributionJudgeResult`，DTO `OrderPerformanceJudgeRequest`，`PerformanceKanbanCourseController.java:333`）：
+  - `orderNumber` (Long, 可选) — 订单号
+  - 前端传 `{orderNumber}`（`OrderProcess/index.js:44`）
+- `POST /performance/management/judge/reason/transfer`（`PerformanceKanbanCourseController#getOrderAttributionJudgeReasonTransfer`，DTO `OrderPerformanceJudgeRequest` 同上，`PerformanceKanbanCourseController.java:353`）：
+  - `orderNumber` (Long, 可选) — 订单号（前端 `OrderProcess/components/ChangeClazzInfo/index.js:36`）
+- `POST /performance/management/judge/reason/detail`（`PerformanceKanbanCourseController#getOrderAttributionJudgeReasonDetail`，DTO `OrderPerformanceJudgeRequest` 同上，`PerformanceKanbanCourseController.java:373`）：
+  - `orderNumber` (Long, 可选) — 订单号（前端 `OrderProcess/components/TypeAndOwner/index.js:67`）
+
 ## 链路与表
 
 服务实现 `performance-attribution-domain/.../performancekanban/impl/PerformanceKanbanServiceImpl.java`（下称 `K`）。

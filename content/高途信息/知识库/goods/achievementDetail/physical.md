@@ -22,6 +22,39 @@
 
 进 tab 是否自动查一次未确认（代码里只看到查询/翻页触发）。
 
+### 入参
+
+- `POST /performance/management/attribution/physical/list`（`PerformanceKanbanPhysicalController#getOrderAttributionList`，DTO `OrderAttributionRequest`，`PerformanceKanbanPhysicalController.java:82`）：
+  - `beginTime` (Long, 可选) — 开始时间(ms)
+  - `endTime` (Long, 可选) — 结束时间(ms)
+  - `userParam` (String, 可选) — 用户手机号/姓名/userId（空格分隔批量；单值 ≤20 字符，批量 ≤100）
+  - `orderNumber` (String, 可选) — 订单号（须为数字）
+  - `clazzBizNumber` (String, 可选) — 班级 bizNumber
+  - `courseBizNumber` (String, 可选) — 课程 bizNumber
+  - `typeList` (List<Integer>, 可选) — 业绩类型枚举值
+  - `emailPrefixList` (List<String>, 可选) — 业绩归属人邮箱前缀
+  - `sortField` (String, 可选) — 排序字段
+  - `sortType` (Integer, 可选) — 1 升序 / 2 降序
+  - `statusCode` (Integer, 可选) — 状态筛选
+  - `pager` (Pager, 可选) — 分页，字段 `pageSize`/`pageNum`/`count`
+  - `sorter` (List<QuerySorter>, 可选) — 元素 `{field, order}`
+  - `timer` (List<Long>, 可选) — 查询时间区间（本 tab 主用；校验 `@NotEmpty`，为空报「开始时间和结束时间不能为空」）
+  - `spuNumber` (String, 可选) — spu number（须为数字）
+  - `roleSign` (Integer, 可选) — 0 运营 / 1 非运营
+  - `categoryPaths` (List<String>, 可选) — 品类路径
+  - 前端传 `{timer:[min,max], userParam, orderNumber, emailPrefixList, spuNumber, roleSign, sorter?, statusCode?, pager}`（`Physical/index.tsx:92-155`）
+- `POST /performance/management/attribution/physical/export`（`PerformanceKanbanPhysicalController#getOrderAttributionExport`，DTO `OrderAttributionRequest` 同上，`PerformanceKanbanPhysicalController.java:134`）：
+  - 字段同 `physical/list`（前端复用 `getParams()`，`Physical/index.tsx:295-296`）
+- `POST /performance/management/verify/employee`（`PerformanceKanbanCourseController#verifyEmployee`，DTO `VerifyEmployeeRequest`，`PerformanceKanbanCourseController.java:396`）：
+  - `employeeName` (String, 可选) — 归属人姓名/邮箱前缀关键字
+  - 前端传 `{employeeName: words}`（`Physical/index.tsx:361`）
+- `POST /component/student-center/userSecret/getBaseInfo`（student-center `UserSecretController#getUserSecretBaseInfo`，DTO `SecretUserIdRequest`，`student-center-web/.../web/api/UserSecretController.java:38`）：
+  - `userId` (Long, 必填) — 学员 userId（controller 判空）
+  - `typeList` (List<Integer>, 必填) — 取用类型，1 mobile（controller 判空）
+  - `entranceUrl` (String, 可选) — 当前页面全路径 url
+  - `reason` (String, 可选) — 解密原因
+  - 前端经 `InfoDesen` 传 `{userId, typeList:[1], entranceUrl: window.location.href, reason}`（`src/components/InfoDesen/index.js:44-48`）
+
 ## 链路与表
 
 `PerformanceKanbanPhysicalServiceImpl`（`performance-attribution-domain/.../performancekanban/impl/`）：

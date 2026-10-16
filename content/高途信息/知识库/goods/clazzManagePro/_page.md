@@ -38,6 +38,15 @@ tab 切换写 URL `?tabKey=`（`Container.jsx:58`）。
 
 promotion-management `promotion-management-controller/.../PromotionActivityController.java:175`（类 `promotionManagement/activity`）→ `PromotionActivityService#getChannelCodeConfig:938` → Feign `PromotionActivityRemoteService`（`/domain/promotion/b/promotionActivity/getChannelCodeConfig`）→ **promotion** 仓库 `PromotionActivityLogic#getChannelCodeConfig:2836`：**不查表**，读 Apollo `promotion.activity.channel.code.map`（`:456`）。
 
+### 入参
+
+> 以 course-center / promotion-management 源码为准（2026-10-16 定位）。
+
+- `GET /b/common/dictionary/all`、`/department/tree`、`/category/tree`、`/dictionary/allConfigurable`：GET，无请求体。
+- `POST /promotionManagement/activity/getChannelCodeConfig`（`PromotionActivityController#getChannelCodeConfig`，`PromotionActivityController.java:175`）：**无请求体**（方法无 `@RequestBody`，内部用 `new EmptyRequest()`）；前端 `goodsManage.js:284` 传 `data:{}` 亦为空对象。
+- `GET https://internal-area-api.genshuixue.com/api/areas/getLevelList`（外部地区服务）：GET，query `levelId=1`；请求体无。
+- `GET /intranet-rpc/course-setting/feign/options/bff/list`（外部 course-setting）：GET，query `fields=all`（后端不在本地，DTO 未定位）。
+
 ## 关键表
 
 见各 tab 文件。主表 `course_center.clazz`（test 集群 gaotu-course-test，cluster_id=153，2026-10-09 `information_schema` 已确认），列表读 ES `clazz_search`（班级列表）。

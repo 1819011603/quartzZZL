@@ -30,6 +30,29 @@
 
 字典（学部/学年/学期/年级/学科/品类）读 `useModel('clazzManage')`，由页面 wrapper 加载，见 [_page.md](_page.md)。
 
+## 入参
+
+> 以 course-center / gaotu-ols 源码为准（2026-10-16 定位）。`Pager`（`entity/common/Pager.java:29-37`）= `pageSize`/`current`/`total`（Integer, 可选）。
+
+- `POST /b/arrangeClazz/list/search`（`ArrangeClazzController#list:107`，DTO `ArrangeClazzListQueryRequest extends BaseRequest`，`entity/clazz/request/ArrangeClazzListQueryRequest.java`）：
+  - 继承 `BaseRequest`：`pager`(Pager)、`scrollId`(String)、`scrollSize`(Integer)，可选
+  - `fullFuzzyText` (String, 可选) — 综合搜索；`categoryIdPath` (String, 可选) — 课程品类路径
+  - `campusClazzRoomPathList` (List\<String>, 可选) — 班级校区路径；`schoolTermIdList` (List\<String>, 可选) — 学期
+  - `schoolDepartmentList` / `gradeIdList` / `subjectIdList` / `schoolYearIdList` / `publishStatusList` / `testClazzList` (List\<Integer>, 可选) — 学部/年级/学科/学年/发布状态/是否测试
+  - `teacherNumberList` (List\<Long>, 可选) — 老师编号
+- `GET /course-center/b/common/productLine/tree`：GET，无请求体。
+- `POST /ols/w/clazzroom/byAccount`（gaotu-ols `ClazzroomController#myAccount:73`）：**方法无参、无请求体**（按登录账号取教室）。
+- `POST /ols/w/campus/byAccount`（gaotu-ols `CampusInfoController#byAccount:120`，DTO `MyCampusQry`）：`campusName` (String, 可选) — 校区名（方法内 `request.getCampusName()`）。
+- `POST /b/arrangeClazz/batchPublish`（`ArrangeClazzController#batchPublish:99`，DTO `ClazzNumberListRequest`）：`clazzNumberList` (List\<Long>, 可选)。
+- `POST /b/clazz/publish`（`AdminClazzController#publish:224`，DTO `ClazzNumberRequest`）：`clazzNumber` (Long, 可选) — 单个发布。
+- `POST /b/arrangeClazz/delete`（`ArrangeClazzController#delete:85`，DTO `ArrangeClazzEditRequest extends ArrangeClazzCreateRequest`）：本接口只用 `clazzNumber` (Long, 可选；`:87` 取 `request.getClazzNumber()`)，其余继承字段未使用。
+- `POST /b/clazz/ineffective`（`ACC#ineffective:241`，DTO `ClazzNumberListRequest`）：`clazzNumberList` (List\<Long>, 可选)。
+- `GET /b/batch/queryAllFunction`（`BatchController#getAllOperateCode:51`）：query `source` (String, 可选；本页传 `pkblb`)。
+- `GET /b/batch/queryOperateConfig`（`BatchController#getWindowInfo:57`）：query `operateCode` (Integer, 必填，无 `@NotNull` 但缺参 400)。
+- `POST https://internal-storage.genshuixue.com/privateUpload/upload`（外部存储）：multipart 文件上传，非本项目后端。
+- `POST /b/batch/submit`（`BatchController#uploadJob:68`，DTO `BatchOperateUploadRequest`）：`operateCode`(Integer)、`fid`(String)、`fileName`(String)、`fileUrl`(String, fid 取 url 失败时兜底)、`desc`(String)、`optionalCode`(Integer) — 均可选。
+- `POST /b/columns/*`：DTO 与 [课程管理页入参](../CourseManagePro/_page.md#入参) 一致（`PageConfigGetRequest` / `UserConfigListRequest` / `UserConfigAddRequest` / `UserConfigDeleteRequest` / `UserConfigModifyRequest` / `UserConfigSelectRequest`）。
+
 ## 关键表（`course_center` 库）
 
 | 接口 | 后端 service | 读 | 写（操作） | ES / MQ / 其它 |

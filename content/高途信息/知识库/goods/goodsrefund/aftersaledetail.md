@@ -27,6 +27,41 @@
 | 切到「调课调班记录」tab | `POST /afterSale/b/transfer/getAfterSaleTransferRecordsLink` | `getAfterSaleTransferRecordsLink` | `GR/components/TransferRecord/index.jsx:53`（`src/services/afterSale.js:20`），body `{orderNumber}` | `AfterSaleTransferController.java:97` | 调课调班链路 [1069181] | 读 |
 | 实物「查看退货单」 | `POST /express-management/refundInfoToBoss` 等 | 同 [_page.md](_page.md) | `GR/components/ReturnOrder.js:66` | express-management（未追） | — | 读 |
 
+### 入参
+
+- `POST /afterSale/b/detail`（`AfterSaleManagementController#detail`，DTO `AfterSaleDetailRequest`，`AfterSaleManagementController.java:148`）：
+  - `orderItemNumber` (Long, 必填 `@NotNull`) — 订单项编号
+  - `afterSaleNumber` (Long, 可选) — 售后单编号（申请售后后必传）
+  - `refundNumber` (Long, 可选) — 退款申请 number（兼容历史退款数据）
+  - 前端传 `{afterSaleNumber, orderItemNumber}`（`GR/AfterSaleDetail/index.js:52`）
+- `POST /afterSale/b/refund/detail`（`AfterSaleManagementController#getRefundDetail`，DTO `AfterSaleDetailRequest` 同上，`AfterSaleManagementController.java:188`）：
+  - 字段同 `detail`，实际只用 `orderItemNumber` 与 `afterSaleNumber`
+- `POST /afterSale/b/cancel`（`AfterSaleManagementController#cancel`，DTO `AfterSaleNumberRequest`，`AfterSaleManagementController.java:161`）：
+  - `afterSaleNumber` (Long, 必填 `@NotNull`) — 售后单编号
+- `POST /afterSale/b/retrieveOrder`（`RetrieveManagementController#retrieveOrder`，DTO `RetrieveOrderRequest`，`RetrieveManagementController.java:57`）：
+  - `afterSaleNumber` (Long, 必填) — 售后单号
+  - `retrieveOrderSucess` (Boolean, 必填) — 挽单结果，不能为空
+  - `remark` (String, 条件必填) — 备注；挽单成功且未填 `retrieveReasonDesc` 时必填，长度 15-200
+  - `needChangePrice` (Boolean, 可选) — 是否改价，默认 false
+  - `targetPrice` (String, 条件必填) — 改价后金额；`needChangePrice=true` 时必填且为数字
+  - `retainEndInx` (Long, 可选) — 权益范围，> -1
+  - `reason` (String, 条件必填) — 改价原因；`needChangePrice=true` 时必填，≤500 字
+  - `retrieveReasonCode` (String, 可选) — 挽单原因编码
+  - `retrieveReasonDesc` (String, 可选) — 挽单原因描述
+  - 前端另传 `orderItemNumber`（DTO 无此字段，被忽略）（`GR/components/saveOrder/index.js:52-59`）
+- `POST /afterSale/b/searchEmployee`（`AfterSaleManagementController#searchEmployee`，DTO `SearchEmployeeRequest`，`AfterSaleManagementController.java:154`）：
+  - `key` (String, 可选) — 邮箱前缀
+- `POST /afterSale/b/changeProcessor`（`RetrieveManagementController#changeProcessor`，DTO `ChangeProcessorRequest`，`RetrieveManagementController.java:40`）：
+  - `afterSaleNumber` (Long, 必填) — 售后单号
+  - `identityCode` (Integer, 必填) — 挽单人身份编码（须为一级/二级/三级挽单人枚举）
+  - `accountId` (Long, 必填) — 目标挽单人账户 id
+  - 前端传 `{afterSaleNumber, identityCode, accountId}`（`ChangeProcessor.js:81-85`）
+- `POST /afterSale/b/transfer/getAfterSaleTransferRecordsLink`（`AfterSaleTransferController#getAfterSaleTransferRecordsLink`，DTO `AfterSaleTransferRecordChainRequest`，`AfterSaleTransferController.java:97`）：
+  - `orderNumber` (Long, 可选) — 订单 number
+  - 前端传 `{orderNumber: orderItemNumber}`（`GR/components/TransferRecord/index.jsx:53`）
+- `POST /express-management/refundInfoToBoss`（express-management 仓库本地未克隆，**后端 DTO 未定位**；前端入参：`{afterSaleNumber}`，`GR/components/ReturnOrder.js:66-68`）：
+  - `afterSaleNumber` — 售后单编号
+
 ## 关键表（`after_sale` 库）
 
 | 接口 | 服务方法 | 读表 | 写表（操作） | 其它 |

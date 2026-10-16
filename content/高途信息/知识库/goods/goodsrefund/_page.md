@@ -50,6 +50,61 @@
 
 入参示例（抓包）：`{"skuTypeList":[2,6003,7001,6004,8027],"pager":{...},"beginTime":...,"endTime":...,"campusNumberList":[]}`；默认时间是最近 30 天（`UR/index.js:192`），`timeRange` 在 `handleBefore`（`UR/index.js:145`）拆成 `beginTime/endTime`。
 
+### 入参
+
+- `GET /intranet-rpc/course-setting/feign/options/bff/list`（course-setting 仓库本地未克隆，**后端 DTO 未定位**；前端入参：query `fields=all`，`src/services/goodsManage.js:12-16`）：
+  - `fields` (String, 必填) — 固定 `all`，返回全量字典
+- `POST /ols/w/campus/list`（`CampusInfoController#list`，DTO `CampusListRequest`，`gaotu-ols-web/.../facade/api/CampusInfoController.java:77`）：
+  - `campusName` (String, 可选) — 校区名称（Swagger 标 required 但无 `@NotNull`）
+  - `campusStatus` (Integer, 可选) — 校区状态
+  - `pager` (Pager, 必填 `@NotNull`) — 分页，字段 `pageSize`/`current`/`total`（`com.gaotu.ols.util.Pager`）
+  - 前端实际传 `{campusStatus:0, pager:{current:1, pageNum:1, pageSize:10000}}`（`src/wrappers/olscampus.js:30-33`）
+- `POST /afterSale/common/dictionary`（`AfterSaleCommonController#queryAfterSaleList`，`AfterSaleCommonController.java:29-32`，方法无 `@RequestBody`）：
+  - 无请求体
+- `POST /afterSale/b/afterSaleList`（`AfterSaleManagementController#queryAfterSaleListForOES`，DTO `AfterSaleManagementListRequest`，`AfterSaleManagementController.java:78`）：
+  - `beginTime` (Long, 可选) — 开始时间(ms)；与 endTime 一起校验 ≤90 天
+  - `endTime` (Long, 可选) — 结束时间(ms)
+  - `userInfo` (String, 可选) — 用户信息，手机号或 userId
+  - `orderItemNumber` (String, 可选) — 订单编号（须为数字）
+  - `afterSaleNumber` (String, 可选) — 售后单编号（须为数字）
+  - `startScene` (Integer, 可选) — 场景，须为 `SceneEnum` 合法值
+  - `afterSaleStatus` (Integer, 可选) — 售后状态，须为 `AfterSaleStatusEnum` 合法值
+  - `productSkuNumberList` (String, 可选) — 商品编号
+  - `skuType` (Integer, 可选) — 商品类型
+  - `afterSaleType` (Integer, 可选) — 售后类型
+  - `ortherSkuType` (boolean, 可选) — 是否其他商品类型
+  - `skuTypeList` (List<Integer>, 可选) — 商品类型列表（前端主用）
+  - `campusNumberList` (List<Long>, 可选) — 校区信息
+  - `accountId` (String, 可选) — 老师账户 id（EES 挽单人视角走 EES 查询分支）
+  - `retrieveStatus` (Integer, 可选) — 挽单状态 0全部/1挽单中/2成功/3失败
+  - `ortherSkuTypeList` (List<Integer>, 可选)
+  - `pager` (AfterSaleManagementListPager, 必填 `@NotNull`) — 分页，字段 `pageSize`/`pageNum`/`count`
+  - 校验（`validateParam`）：beginTime/endTime/userInfo/productSkuNumberList/afterSaleNumber/orderItemNumber 不能同时为空
+- `POST /afterSale/b/afterSaleList/offline`（`AfterSaleManagementController#queryAfterSaleListForOLS`，DTO 同上，`AfterSaleManagementController.java:97`）：
+  - 字段同 `afterSaleList`，另在 controller 显式调 `request.validateSkuTypeRequired()`，要求 `skuType` 或 `skuTypeList` 至少一个非空
+- `POST /product-b/b/product/productTypeTree/category/listTree`（`ProductTypeTreeController#getCategoryTree`，DTO `GetCategoryTreeRequest`，`product-server-b/.../typetree/ProductTypeTreeController.java:53`）：
+  - `filterHasThirdLevelNode` (Boolean, 可选) — true 只返回含三级节点的树
+  - 前端固定传 `{}`（`GR/service.js:103-107`）
+- `POST /express-management/refundInfoToBoss`（express-management 仓库本地未克隆，**后端 DTO 未定位**；前端入参：`{afterSaleNumber}`，`GR/components/ReturnOrder.js:66-68`）：
+  - `afterSaleNumber` — 售后单编号
+- `POST /express-management/refund/queryExpressInfo`（express-management 仓库本地未克隆，**后端 DTO 未定位**；前端入参：`{logisticCode, shipperCode, refundNumber}`，`GR/components/Trajectory.js:42-46`）：
+  - `logisticCode` — 物流单号
+  - `shipperCode` — 承运商编码
+  - `refundNumber` — 退货单编号
+- `POST /afterSale/b/resubmitPayeeInfo`（`AfterSaleManagementController#resubmitPayeeInfo`，DTO `PayeeInfoRequest`，`AfterSaleManagementController.java:175`）：
+  - `afterSaleNumber` (Long, 必填 `@NotNull`) — 售后单编号
+  - `payeeName` (String, 必填 `@NotNull`) — 收款人姓名
+  - `payeeAccount` (String, 必填 `@NotNull`) — 收款人账户
+  - `depositBank` (String, 必填 `@NotNull`) — 开户行信息
+- `POST /afterSale/b/transfer/accountSeparateCancel`（`AfterSaleTransferController#accountSeparateCancel`，DTO `AccountSeparateCancelByOrderRequest`，`AfterSaleTransferController.java:106`）：
+  - `orderNumber` (Long, 必填 `@NotNull`) — 订单编号（前端传列表 `orderItemNumber`，`UR/index.js:138`）
+- `POST /component/student-center/userSecret/getBaseInfo`（student-center `UserSecretController#getUserSecretBaseInfo`，DTO `SecretUserIdRequest`，`student-center-web/.../web/api/UserSecretController.java:38`）：
+  - `userId` (Long, 必填) — 学员 userId（controller 判空）
+  - `typeList` (List<Integer>, 必填) — 取用类型，1 mobile / 2 wechatNo / 3 备用手机号（controller 判空）
+  - `entranceUrl` (String, 可选) — 当前页面全路径 url（Swagger 标必填，DTO 无 `@NotNull`）
+  - `reason` (String, 可选) — 解密原因，不填用默认
+  - 前端传 `{userId, typeList:[1], entranceUrl: window.location.href, reason}`（`src/components/InfoDesen/index.js:44-48`）
+
 ## 关键表（`after_sale` 库）
 
 > 库名取自 mapper XML 里的 `after_sale.` 前缀（`after-sales-infrastructure/src/main/java/com/gaotu/lvyue/aftersales/infrastructure/repository/mapper/*.xml`），没核对数据源配置。不读 ES。

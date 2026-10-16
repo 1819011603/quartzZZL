@@ -11,20 +11,33 @@
 1. **电商 order-b 的「订单状态码」本身有区分**：`OrderStatusEnums`（`order/order-api/.../orderinfo/enums/OrderStatusEnums.java`）`6=全部退款(已退款)` / `7=部分退款(部分退款)`。
 2. 但 order-b 返回给学员档案接口的**不是状态码，是中文文案 `orderStatusName`**，且生成文案时就已合并（`order/order-app/.../search/service/convert/CommonSearchRequestConverter.java`）：
    - **订单级** `convertOrderStatusName`：`case PAID / PART_REFUND / TAIL_PAID: return "已支付"` —— **部分退款(7) 被当成「已支付」**；`FULL_REFUND / DEPOSIT_REFUND → "已退款"`。
-   - **订单项级** `convertOrderItemStatusName`：只要有售后记录（`lastAfterSaleType != 0`）→ **一律 "已退款"**（全退/部分退不分）。
+   - **订单项级** `convertOrderItemStatusName`：只要有售后记录（`lastAfterSaleType != 0`）→ **一律 "已退款"**（全退/部分退不分；售后类型枚举：0 部分退款 / 1 退款退货 / 2 退款退课 / **7 部分退课时(部分退款)**）。
 3. student-center 拿这个文案反查自己的枚举：`OrderStatusEnum.getByDesc(name)`（`OrderDomainWrapper.convertOrderRecordDO*`），而 student-center 的 `OrderStatusEnum`（`student-center-service/.../enums/OrderStatusEnum.java`）只有 5 档：`1 待付款 / 2 已支付 / 3 已取消 / 4 已退款 / 31 尾款待支付` —— **没有「部分退款」**。
 4. 前端 GAIA 物料 `OrderInfoList`（`src/pages/utils/constant.ts`，CDN 包实测一致）同样只映射 `1/2/3/4/31`，无「部分退款」。
 
 **结论**：区分全退/部分退的能力在 **order-b 生成状态文案时就没了**（订单级→并入「已支付」；订单项级→并入「已退款」），student-center 与前端物料两层都没有「部分退款」档位。**要区分必须从链路中段改**：order-b 透传状态码 `6/7`（或新增「部分退款」文案）→ student-center `OrderStatusEnum` 加档 → 前端 `OrderInfoList` 映射加档。截图那条（订单项级）因此显示「已退款」。
 
-### 实测复现（2026-10-16，test）
+### 实测复现（2026-10-16）
 
-- 取 test `gaotu.order_info`（cluster 159）里 `order_status=7`（部分退款）的订单：`order_number=4801762098081169408`，`user_id=17634521020958`。
-- 调 `POST /bgwApi/component/student-center/ols/w/studentArchives/orderInfo` `{userId:"17634521020958"}` → 该订单返回 **`orderStatus=2`（已支付）**，不是 7、也不是「部分退款」。
-- => **复现成功**：部分退款订单在学员档案接口里被显示成「已支付」（订单级路径）。
-- 截图里显示「已退款」的那种，是**订单项级**路径（`convertOrderItemStatusName`：只要有售后 `lastAfterSaleType!=0` → 一律 `"已退款"`）。
+**线上（prod）——截图那两条单，走订单项接口 `orderItemFieldSearch` 取到原始数据：**
 
-- API 的 `orderStatus` 值域实测只有 `1/2/3/4/31`（= student-center `OrderStatusEnum`），**永远拿不到 6/7**。
+```
+POST /bgwApi/orderComponent/orderItemFieldSearch   (order-b, 网关 appId order-b.gaotu100.com)
+body: {"condition":{"orderItemNumberList":["425838771470074810","425838771470075834"]},"pager":{"pageNum":1,"pageSize":10}}
+```
+
+| 订单号(订单项) | 实付 price | 已退 totalRefundPrice | lastSuccessAfterSalesType | 学员档案显示 | 正确定性 |
+|---|---|---|---|---|---|
+| 425838771470075834 | 218900(￥2189) | **21890(￥218.9)** | 7(部分退课时) | **已退款(4)** | ❌ 应为「部分退款」 |
+| 425838771470074810 | 218900(￥2189) | 218900(￥2189) | 2 | 已退款(4) | ✅ 全额退款 |
+
+→ **铁证**：订单项**只退了￥218.9/￥2189（部分退款，afterSaleType=7），学员档案却显示「已退款」**；而原始 `baseOrderItem.orderStatus` 两条都还是 **2（已支付）**。
+订单项接口 `orderItemFieldSearch` 是 OES「订单管理」下钻用的，可按订单项号查到这两条（`orderFieldSearch` 按订单号查不到，因为它们不是 root 订单）。
+（OES 各 tab 的搜索接口与 `productType` 见 [goods/normalOrdermanage/normal.md](../../goods/normalOrdermanage/normal.md)。）
+
+**test 直连复现（订单级）**：test `gaotu.order_info` 里 `order_status=7` 的单 `4801762098081169408`（user `17634521020958`），调 `/ols/w/studentArchives/orderInfo` 返回 **`orderStatus=2`（已支付）**。
+
+**接口返回的 `orderStatus` 值域恒为 `1/2/3/4/31`（student-center `OrderStatusEnum`），线上线下都拿不到电商原码 6/7。**
 
 ## 定位
 

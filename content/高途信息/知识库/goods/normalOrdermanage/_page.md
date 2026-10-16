@@ -40,6 +40,23 @@ tab 配置在 `src/pages/OrderManage/hooks/useOrderJson.js:370-388`（OES `ORDER
 
 各 tab 的列表/按钮/弹窗接口见 tab 文件。
 
+### 入参
+
+- `POST /ols/w/campus/list`（`CampusInfoController#list`，DTO `com.gaotu.ols.app.model.campusinfo.model.CampusListRequest`，`CampusInfoController.java:77`）：
+  - `campusName` (String, 可选) — 校区名称（模糊）
+  - `campusStatus` (Integer, 可选) — 校区状态；前端固定传 `0`
+  - `pager` (Pager, **必填** `@NotNull`) — 分页参数；前端传 `{pageSize:10000}`（`src/models/useOlsCampus.js:19`）
+- `POST /ols/w/campus/all`（`CampusInfoController#all`，无请求体，`CampusInfoController.java:85`）：
+  - 无入参（无 `@RequestBody`；前端 `getAllOlsCampusList()` 不传参，`src/services/physicalOrder.js:245`）
+- `POST /orderComponent/grayGroup/checkGrayGroup`（`GrayGroupController#checkGrayGroup`，DTO `com.gaotu.order.graygroup.request.GrayGroupCheckRequest`，`GrayGroupController.java:42`）：
+  - `accountId` (Long, 可选) — 员工账号 ID；页面经网关调用可不传，服务端从 `BossFacadeThreadLocalHolder` 取（`GrayGroupController.java:47`）
+  - `bClient` (String, 可选) — 客户端类型；优先取请求头 `b_client`，缺省才用 body（`GrayGroupController.java:48-49`）
+  - 前端实际 body 为 `{}`（`src/pages/OrderManage/list/hooks/useOrderCreationGuard.js:34`）
+- `GET /intranet-rpc/course-setting/feign/options/bff/list`：**后端 DTO 未定位**（course-setting 仓库本地不存在）；前端入参：query `{fields:'all'}`（`src/services/goodsManage.js:13`）
+- `GET /course-center/b/common/dictionary/all`：无请求体（GET）——前端 `getCommonDictionary` 仅传 `data` 无 query（`src/services/physicalOrder.js:231`）
+- `POST /course-setting/b/base/commonDictionary`：**后端 DTO 未定位**（course-setting 仓库本地不存在）；前端未传请求体（`src/services/dictionary.js:8`）
+- `GET /course-center/b/common/dictionary/all`、`/course-center/b/common/category/tree`、`/course-center/b/common/department/tree`、`/course-center/b/common/dictionary/allConfigurable`：无请求体（GET；前端均不传参，`src/services/clazzManage.js:13-56`）
+
 ## 关键表
 
 order-b 的三个搜索接口都是同一个套路（`order-app/.../search/service/search/AbstractSearchService.java:81` `doSearch`）：

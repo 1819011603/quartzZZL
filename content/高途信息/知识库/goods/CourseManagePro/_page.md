@@ -43,6 +43,56 @@
 - 「查看子产品」(`index.js:212`) 只做 `window.open`，不调接口；「新增课程」「再开一课」「查看」是路由跳转。
 - `useBffSelectItem` 是 `src/models/` 下的 umi model，`useRequest` 未设 `manual`；抓包每页都出现，推断是 plugin-model 全局初始化触发（未逐行确认 umi 版本行为）。
 
+### 入参
+
+> 后端字段以 course-center 源码为准（2026-10-16 定位）。`Pager`（`entity/common/Pager.java:29-37`）= `pageSize` / `current` / `total`（均 Integer，可选；`BaseRequest` 默认 `current=1,pageSize=20`，`:13`）。
+
+- `GET /b/common/dictionary/all`、`/department/tree`、`/category/tree`、`/dictionary/allConfigurable`、`/productLine/tree`：GET，无请求体。
+- `GET /course-setting/feign/options/bff/list`（外部 course-setting，非青舟）：GET，query `fields=all`；请求体无（后端不在本地，未定位 DTO）。
+- `POST /b/campus/search`（`CampusManagementController#search`，DTO `CampusSearchRequest`，`campus-app/.../campusinfo/model/CampusSearchRequest.java`）：
+  - `campusName` (String, 可选) — 校区名称
+  - `campusStatus` (Integer, 可选) — 校区状态
+  - `pager` (Pager, 必填 `@NotNull`) — 分页参数 `{pageSize, current, total}`
+- `POST /b/course/list`（`AdminCourseController#courseList`，DTO `CourseListQueryRequest extends BaseRequest`，`course-center-entity/.../course/request/CourseListQueryRequest.java`）：
+  - `pager` (Pager, 可选) — 分页；`scrollId` (String)/`scrollSize` (Integer, 可选) — ES scroll（继承 `BaseRequest`）
+  - `courseName` / `courseNumber` / `courseBizNum` / `courseBizNumberLongStr` (String, 可选) — 课程名/编号/业务编号
+  - `courseTypes` (List\<Integer>, 可选) — 课程类型；`clazzRoomType` (List\<Integer>, 可选) — 教室类型；`arrangeModeTypeList` (List\<Integer>, 可选) — 排课方式
+  - `categoryIdPath` (String, 可选) — 品类路径；`thirdLevelCategoryIdList` (List\<Integer>, 可选) — 三级品类
+  - `departmentIdPath` (String, 可选) — 部门路径；`departmentIds` / `schoolDepartments` (List\<Integer>, 可选) — 部门（`courseCommonHandler.fillSystemParamForListSearchRequest` 回填，`:91`）
+  - `schoolTermIds` (List\<String>, 可选) — 学期；`schoolYearIds` (List\<Integer>, 可选) — 学年
+  - `courseTagIdPaths` (List\<String>, 可选) — 课程标签路径；`bizTypes` (List\<Integer>, 可选) — 业务类型
+  - `gradeIdList` / `subjectIdList` (List\<Integer>, 可选) — 年级/学科（`@DataRight` 注入，`:87`）
+  - `publishStatusList` / `textbookVersionList` (List\<Integer>, 可选) — 发布状态/教材版本
+  - `campusNumberList` (List\<Long>, 可选) — 校区；`operationMode` (List\<Integer>, 可选) — 运营模式（1线上 2线下）
+  - `productLinePath` (String, 可选) — 产品线；`fullFuzzyText` (String, 可选) — 综合模糊（含 `#*/%` 报错，`:80`）
+  - `isCampusCourse` (Boolean, 可选) — 是否校区课；`courseSceneType` (Integer, 可选) — 场景类型
+  - `containAllType` (Boolean, 可选, 默认 `false`) — false 只含 SPU 场景课程
+- `POST /b/columns/getAllConfig`（`UserCustomPageColumnsController#getAllConfig`，DTO `PageConfigGetRequest`）：
+  - `key` (Long, 必填 `@NotNull`) — 页面列配置主键（课程页 `columnsKey`）
+- `POST /b/columns/getUserConfig`（`#getUserConfig`，DTO `UserConfigListRequest`）：
+  - `key` (Long, 必填 `@NotNull`) — 页面列配置主键
+- `POST /b/columns/addUserConfig`（`#addUserConfig`，DTO `UserConfigAddRequest`）：
+  - `key` (Long, 必填) — 页面列配置主键；`selected` (Boolean, 必填) — 是否选中为当前方案；`name` (String, 必填) — 方案名
+  - `value` (List\<AtomUserCustomSelectColumnsValueObject>, 必填) — 勾选列：`key` (String)、`fixed` (String, 如 `none`)
+- `POST /b/columns/deleteUserConfig`（`#deleteUserConfig`，DTO `UserConfigDeleteRequest`）：
+  - `number` (Long, 必填) — 用户列方案编号
+- `POST /b/columns/setUserConfig`（`#setUserConfig`，DTO `UserConfigModifyRequest`）：
+  - `number` (Long, 必填) — 方案编号；`name` (String, 必填) — 方案名；`value` (List\<Atom...>, 必填) — 跟 add 同结构
+- `POST /b/columns/changeDefaultUserConfig`（`#changeDefaultUserConfig`，DTO `UserConfigSelectRequest`）：
+  - `pageConfigKey` (Long, 必填) — 页面列配置主键；`userConfigNumber` (Long, 必填) — 选为默认的方案编号
+- `POST /b/course/delete`（`AdminCourseController#courseList`(同名重载 `:118`)，DTO `CourseDelRequest`，`course-center-entity/.../CourseDelRequest.java`）：
+  - `courseNumberList` (List\<Long>, 可选 `@Validated`) — 待删课程编号（前端 `service:4` 传 `{courseNumberList}`，一致）
+- `POST /b/course/publish`（`AdminCourseController#publish`，DTO `CoursePublishRequest`）：
+  - `courseNumberList` (List\<Long>, 可选) — 待发布课程编号（单个/批量同值）
+- `POST /b/course/relationList`（`AdminCourseController#relationList`，DTO `CourseRelationRequest`）：
+  - `courseNumber` (Long, 必填 `@NotNull`) — 课程编号
+  - `relationType` (Integer, 必填 `@NotNull`) — 关联类型（0 推荐课程 / 1 续报课程）
+  - `relationCourseNumberList` (List\<Long>, 可选) — 关联课程编号（relationList 未使用）
+- `POST /b/course/modifyCourseRelation`（`AdminCourseController#modifyCourseRelation`，DTO `CourseRelationModifyRequest`）：
+  - `courseNumber` (Long, 必填 `@NotNull`) — 课程编号
+  - `relationType` (Integer, 必填 `@NotNull`) — 关联类型（0 推荐 / 1 续报）
+  - `relationCourseList` (List\<RelationCourseInfoDto>, 可选) — 每项 `courseNumber` (Long, 必填)、`calculateRenewalType` (Integer, 必填；1 计算 2 不计算；为空报「是否计算可续不能为空」`:202`)
+
 ## 关键表（`course_center` 库，test 集群 gaotu-course-test，cluster_id=153）
 
 > 2026-10-09 test 库 `information_schema` 已确认 `course_center.course` / `course_center.clazz` / `course_center.course_relation_map` 存在；数据源 `CourseCenterDataSourceConfig`（`jdbc.coursecenter`）。

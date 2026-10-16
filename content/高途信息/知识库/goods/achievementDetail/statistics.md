@@ -20,6 +20,25 @@
 | 「导出」→ 按员工 | `POST /performance/management/statistical/employee/export` | `getEmployeeStatisticalList` | `S:312`（`service/index.ts:72`） | `:193` | 按人员导出 [36993] | 读（异步发邮件） |
 | 「导出」→ 按当前组织 | `POST /performance/management/statistical/export` | `getLevelsStatisticalList` | `S:321`（`service/index.ts:80`） | `:146` | 按组织层级导出 [36992] | 读（异步发邮件） |
 
+### 入参
+
+- `GET /performance/management/statistical/department`（`PerformanceStatisticsController#getDepartmentHierarchy`，`PerformanceStatisticsController.java:69`，方法无 `@RequestBody`）：
+  - 无请求体
+- `POST /performance/management/statistical/list`（`PerformanceStatisticsController#getAttributionStatisticsList`，DTO `AttributionStatisticsRequest`，`PerformanceStatisticsController.java:94`）：
+  - `startTime` (Long, 必填) — 开始时间(ms)（controller 判空）
+  - `endTime` (Long, 必填) — 结束时间(ms)（controller 判空）
+  - `levelCode` (Integer, 必填 `@NotNull`) — 组织层级
+  - `departmentNumber` (String, 可选) — 部门 number（下钻时传）
+  - `pager` (Pager, 可选) — 分页，字段 `pageSize`/`pageNum`/`count`
+  - 前端传 `{startTime, endTime, levelCode, departmentNumber?, pager}`（`S:90-140`）
+- `POST /performance/management/statistical/employee/export`（`PerformanceStatisticsController#attributionEmployeeStatisticsExport`，DTO `EmployeeAttributionStatisticsRequest`，`PerformanceStatisticsController.java:193`）：
+  - `startTime` (Long, 可选) — 开始时间(ms)
+  - `endTime` (Long, 可选) — 结束时间(ms)
+  - 前端传 `{startTime, endTime}`（`S:304-307`，不含 levelCode/departmentNumber）
+- `POST /performance/management/statistical/export`（`PerformanceStatisticsController#attributionStatisticsExport`，DTO `AttributionStatisticsRequest` 同上，`PerformanceStatisticsController.java:146`）：
+  - 字段同 `statistical/list`（`startTime`/`endTime`/`levelCode`/`departmentNumber`/`pager`）
+  - 前端传 `{startTime, endTime, levelCode, departmentNumber}`（`S:319-321`，未传 pager）
+
 ## 链路与表
 
 `PerformanceStatisticsServiceImpl`（`performance-attribution-domain/.../performancekanban/impl/`）：
