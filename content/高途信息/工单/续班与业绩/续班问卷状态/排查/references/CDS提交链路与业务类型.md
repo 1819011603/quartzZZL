@@ -44,6 +44,20 @@ CDS = 落地页/表单平台服务 **`future-landingpage-service`**（appId `fut
 - **CDS 表 + 上面两处日志都查不到该手机号/姓名 ⇒ 这条提交没进系统**（要么没提交/填的是外部链接如问卷星 `v.wjx.cn`，要么被 `saveData` 前置校验拦下——如重复填写 `FORM_DUPLICATE_ERROR`，其**在落库前抛异常、不写表**）。
 - 反过来：日志里能搜到那条 `发送表单提交变更mq` ⇒ 提交进了 CDS，其 `businessType` 即该问卷类型；再结合"是否 8"判断它该不该进续班明细/花名册。
 
+## 重复提交判重按 leadsId（线索），不区分提交账号/手机号
+
+`form/saveData` 的「您已经提交过啦」是 CDS 前置校验，**判重维度 = leadsId（线索）**，同一 leadsId 对同一表单只放行一次；换成新 leadsId 即可再次提交（2026-10-18 实证：`18927493119` 10-16 用 leadsId `292615041948064768` 三次被拦——该 leadsId 已被 `13728694966` 提交占用；10-18 换 leadsId `292798606119804928` 后提交成功。同时账号/手机号/`bindNumber` 未变）。
+
+- leadsId 来源：cookie `_SOURCE_<source>` 的值（如 `_SOURCE_sys172637051424877568z=292615041948064768`；请求 body 里 `leadsId:null`、`source:sys...`）。**同一 `<source>` 的 `_SOURCE_` cookie 值在共享/转发场景下可能是同一个 leadsId** → 同一线索下第二个学员（换号、换账号、同名家庭）也会被判重拦下。
+- 定位方法（SLS `future-landingpage-service` app）：按被判重手机号搜 trace，看 `FormManageServiceImpl:282 获取leadsId: <id>`；再按该 leadsId（或直接对比 `gaotu.questionnaire_record.origin_data.leadsId`）确认是否已被别的账号提交占用。判重请求会命中 `RestCommonExceptionAdvice:47 ... CommonException: 您已经提交过啦`（落库前抛，不写任何表）。
+- 多学员集中反馈"填了查不到"时，**先排除"只打开未提交"**（无 `发送表单提交变更mq`/无 `businessType` 日志），再排除判重（本条）。
+
+## 明细表口径：`questionnaire_record` 是快照，导出早于提交会"查不到"
+
+业务侧导出的"问卷全量明细表"（列：序号/打开时间/提交时间/作答时间/访问ip/用户ID/老师/孩子姓名/上课手机号/题目…）**来源 = product `gaotu.questionnaire_record`，其「序号」= `record_id`**（= CDS form 提交 id，如 6181473）。查不到某学员时先问**明细表导出时间**：若导出 max(提交时间) 早于学员真实提交时间，就是快照过期，**重新导出即得**，不是丢数据。
+
+- 校验入口：`SELECT id,user_id,questionnaire_phone,questionnaire_name,project_number,finish_time FROM gaotu.user_questionnaire_record WHERE user_id IN (...) AND finish_time>='...'`（cluster 71/`gaotu-center-prod`；`user_id` 有索引、`questionnaire_phone` 无索引，按手机号查要带时间窗否则超时）。
+
 ## 与其它链路的边界
 
 - reach「**发问卷**」触达 = **scene 61**（`planName=续班-发问卷手动通知`），与 businessType 不是一个维度；查触达用 `ReachTaskDataService#listClazzUserTasks`（见主 runbook §批量核对）。
