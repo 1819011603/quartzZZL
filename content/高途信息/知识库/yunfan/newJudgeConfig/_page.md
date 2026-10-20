@@ -29,3 +29,7 @@ tab 默认 key 是 `clazz`，不匹配任何 tab，antd 回退到第一个可见
 | 进页面 | `GET /course-center/b/common/department/tree` | `getNewDepartment` | `src/models/clazzManage.js:58`（`src/services/clazzManage.js:29`） | course-center | 读 |
 | 进页面 | `GET /course-center/b/common/category/tree` | `getNewTree` | `src/models/clazzManage.js:58`（`src/services/clazzManage.js:23`） | course-center | 读 |
 | 进页面 | `GET /course-center/b/common/dictionary/allConfigurable` | `getDefaultCourseConfig` | `src/models/clazzManage.js:58`（`src/services/clazzManage.js:48`） | course-center | 读 |
+
+## 相关
+
+- 后端判单链路与开关口径：[业绩归因系统全景与判单链路](../../业绩归因/业绩归因系统全景与判单链路.md)
