@@ -121,7 +121,7 @@ tags: [需求]
 - [ ] 【问卷匹配】规则改动影响大班 + 小班全部匹配，回归范围待确认 —— 测试
 - [ ] **产品侧问题汇总见飞书《待产品确认清单》（已全部回填 ✅）** https://gaotuedu.feishu.cn/docx/L2yrdOPEAoIOMux1JLXcGtR4nde
 - [ ] **退费 AI 模块依赖/灰度口径 6 条待产品拍板**（按模块灰度 / 关闭致上下文缺失 / 部门级配置语义 / T+1 依赖 prediction / 关闭展示形态 / manual_reason 写拦口径）→ 飞书《退费 AI 模块依赖关系与灰度口径（待产品决策）》 https://gaotuedu.feishu.cn/wiki/KR3RwV16gi6zf9km55cclT79nhf （2026-10-20）
-- [ ] **退费根因后端下线（T-13，待办）**：前端已删、**PROD 后端仍在跑**（2026-10-19 日志实证 `currentTaskEnum=REFUND_ROOT_CAUSE`、`handleCode=2`），产品已定后端一并下线；待办 student-data 移除 `RefundReasonProcessManager` END 任务 + 枚举 —— 见 [[tasks]] T-13
+- [ ] **退费根因（T-13，待办）**：前端已删、**PROD 后端仍在跑**（2026-10-19 日志实证 `currentTaskEnum=REFUND_ROOT_CAUSE`、`handleCode=2`）；产品已定：**加 Apollo 开关支持配置下线、默认不下线（保持现状）**，分支 `feature-xuban-expand-exclude` —— 见 [[tasks]] T-13
 
 ## 涉及的代码
 
