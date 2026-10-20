@@ -863,3 +863,15 @@ ES 实证（例）：`36396360685978240-7569543424`、`36396360685978240-7489636
 - **部署**：student-data `f1817c92`(10.218.250.204) / cart `7794a329`(10.218.249.39) / student-center `dfe9e049`(10.218.250.181)，均 eureka UP。
 
 **已知未覆盖**：扩科 cart 端到端用的是桥调构造 context（真实页面 C 端链路未点）；复合学期（P-01）降级分支无线下/复合样本，仅单测覆盖。
+
+## 2026-10-20 · 扩科+AI P0 用例造数（CASE-001 主流程，`test-gtbg-dev-1`，✅）
+
+用 qa-data-agent-service（release `44806a5`）跑通扩科主流程造数，产物（可直接使用）：
+- 学员 mobile `13900801001` / userId `7658127801`
+- 小班在读数学：clazz `585960405711579136`、order `432168261541953856`（二讲 弓雪萌）
+- 大班前置课（五年级语文 2026C）：course `585960577856301056`、clazz `585960582537144320`、subclazz `36622538973250048`、order `432168408644583744`
+- 大班后置课（六年级语文 2026X）：course `585960751831836672`
+- 大班续班计划 `585960797778243584`（type=1，C/2026→X/2026，已绑前置+后置+已发布）
+- **待手工**：B 端给该计划配扩科节点（扩科推荐=是、推荐排除=排除不同授课模式在读、导入六年级数学/英语）
+- P0 用例文档（10 条，data-agent 可执行）：[[links]]《扩科推荐+AI 模块配置化 提测 P0 用例》 https://gaotuedu.feishu.cn/wiki/WpNuwpXLqi5JsskcmXFcwT2dnkg
+- 坑：data-agent 工作流内层 tool 的 cookie 不会被 run_cases 自动注入（`run_cases` 只对单 tool 注入），跑工作流需显式传 `cookie`；`create_small_clazz_product_with_dist` 需传 `teachDepartmentCode=100001`（默认 100003 报「所选学部已禁用」）；`batch_create_order.userId`、`bind_pre_course`/`add_renew_master_course_relation`/`release_renew_master` 的参数须传 **integer**（传字符串触发 guardrail）。
