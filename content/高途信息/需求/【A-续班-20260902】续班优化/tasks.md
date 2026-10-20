@@ -36,6 +36,8 @@ tags: [需求, 任务]
 
 | T-12 | 【AI 配置化】前端对齐：新增模块开关表接口 `POST ai/moduleSwitch`（14 key）+ 各数据接口兜底（evaluateQuery 7 / managerEvaluate 写 8 / analysis→service_suggestion 返空对象 / refund edit→manual_reason / reason/detail 5/6）+ 枚举补 code `9`/`manual_reason` | 已完成 | — | 分支 `feature-xuban-expand-exclude`（student-center `7d74dbf8f` / student-data `6ae6bc798`，均已 push、部署 `test-gtbg-dev-1` eureka UP）。与前端反讲《续班优化 202609-前端反讲》定稿一致。单测 student-center 5 条全过。**挂起**：`ai/clazzUser/predictLevelReason`（续班 9 / 退费 prediction）门控——该接口在 `feature-predict-level-reason`，待其上线、需求5 合流后补。详见 [[verify]]「AI 模块开关表接口」 |
 
+| T-13 | 【AI 配置化】退费根因（`refund_root_cause`）后端下线 | 待办 | — | **前端已删**（`aianalysisinformations` 不调 `/roster/refund/reasonType`；student-center 已删该接口 `497479d3`）；**PROD 后端仍在跑**（2026-10-19 日志：`RefundReasonProcessManager executeTask currentTaskEnum=REFUND_ROOT_CAUSE` + `RefundReasoningService 退费归因分析…reasoningEnum=REFUND_ROOT_CAUSE` + `handleCode=2`；镜像 `release-8e0938d2-20261019160601`）。产品口径已定：**后端一并下线**。待办：student-data `RefundReasonProcessManager` 完整树 + 简树的 END 节点任务移除 `REFUND_ROOT_CAUSE`；清 `RefundReasoningEnum` / `RefundAiModuleEnum` 的 `refund_root_cause`；连带评估 `RefundSuggestionServiceImpl` 读 `REFUND_REASON`（缺省即空，`buildFormatContent` 允许仅退费旅程）。分支 `feature-xuban-expand-exclude`。决策文档见 [[links]]《退费 AI 模块依赖关系与灰度口径（待产品决策）》 |
+
 ## R- 反讲整改项
 
 | 编号 | 整改项 | 状态 | 谁提的 | 备注 |

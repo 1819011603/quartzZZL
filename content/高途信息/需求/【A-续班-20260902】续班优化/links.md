@@ -13,6 +13,7 @@ tags: [需求, 链接]
 | 需求总入口（我建，个人空间） | 【A-续班-20260902】续班优化 | https://gaotuedu.feishu.cn/wiki/Qox8wFcmHiXBgnkxFBtcd82gnsh | 2026-09-18 |
 | 技术反讲 | 【A-续班-20260902】续班优化 技术反讲（子需求 1/2/5） | https://gaotuedu.feishu.cn/wiki/EC45wOefUi0buMkO7O0cipp9nEc | 2026-09-18 |
 | 待产品确认清单 | 【A-续班-20260902】续班优化 · 待产品确认清单（21 条，按 5 子需求分组，可直接转发产品） | https://gaotuedu.feishu.cn/docx/L2yrdOPEAoIOMux1JLXcGtR4nde | 2026-09-21 |
+| 待产品决策（退费） | 【A-续班-20260902】续班优化 · 退费 AI 模块依赖关系与灰度口径（待产品决策）（需求总入口子节点，6 条待拍板） | https://gaotuedu.feishu.cn/wiki/KR3RwV16gi6zf9km55cclT79nhf | 2026-10-20 |
 | 风险说明 | 扩科【推荐排除】风险说明（在读科目表，大班/小班 + 缓存时效 + 回溯 + 待拍板） | https://gaotuedu.feishu.cn/docx/H4yodcxmDoBkVgxThPGcYHQSnp9 | 2026-09-21 |
 | 原始需求wiki节点 | 续班优化：问卷匹配优化 | https://gaotuedu.feishu.cn/wiki/Ijz3w9ZgAi8ncakFs3jcKZI9nxi | 2026-09-17 |
 | 原始需求wiki节点 | 小班续班优化：主讲数据+下单优化 | https://gaotuedu.feishu.cn/wiki/D89iwm9U1iL6vWkEOgwcg8otnqc | 2026-09-17 |
@@ -63,6 +64,7 @@ tags: [需求, 链接]
 - **扩科风险说明 docx token：`H4yodcxmDoBkVgxThPGcYHQSnp9`**（2026-09-21 建，父节点 = 需求总入口 `Qox8wFcmHiXBgnkxFBtcd82gnsh`）
 - **上线方案（问卷匹配 + 调课同步）node token：`JBsywJOuiijDT9k3MD7cFyl8n9b`（obj_token `IhOQdnYlgoUBAvxEfm5cERxwn7b`），父节点 = 需求总入口。**
 - **上线方案（扩科推荐 + AI 模块配置化）node token：`KSDfwlojaipDqWkUcbfckjnwnyd`（obj_token `MsrvdOGIUodrqQxTwprc0TUInOg`），父节点 = 需求总入口 `Qox8wFcmHiXBgnkxFBtcd82gnsh`（2026-10-10 建）。对应青舟发布计划 id `23819`（扩科+AI 整批，8 个后端部署，泳道 `test-gtbg-dev-1`）。**
+- **退费 AI 模块依赖关系与灰度口径（待产品决策）node token：`KR3RwV16gi6zf9km55cclT79nhf`（obj_token `Hq3KdB5GNo57XZx3dE9cnSJtn9w`），父节点 = 需求总入口 `Qox8wFcmHiXBgnkxFBtcd82gnsh`（2026-10-20 建，6 条待产品拍板：按模块灰度 / 关闭致上下文缺失 / 部门级配置语义 / T+1 依赖 prediction / 关闭展示形态 / manual_reason 写拦口径）。**
 - **教学交付空间「教学服务」下的快捷方式**：node `K6qPwaKmqiq7emkT8F4cpfFxnwh`（shortcut → 需求总入口 `Qox8wFcmHiXBgnkxFBtcd82gnsh`），父节点 = 「教学服务」`G3FgwZMidiPLHNk34Occadv0ngc`，空间 `7501250181476663298`（教学交付）。URL https://gaotuedu.feishu.cn/wiki/K6qPwaKmqiq7emkT8F4cpfFxnwh
 - ⚠️ **2026-09-18 删除**：此前建的 5 个「现状·改动·风险」子页面（问卷匹配 `KR7qwGZdEiGXW4k360NckPnxnnf`、主讲数据+下单 `H5hwwnFbbi7GVRkz2VtcUzJpnFb`、扩科推荐 `IcwmwG8IViAohkkIHWCccrWSnxb`、数据落表 `F7XDwJwtNiwznWkWyS2cjdKUnec`、AI模块配置化 `M8fFwc6QXiu2azkWWHRc94K0n1g`）**已全部删除**，内容由本反讲替代（反讲只覆盖 1/2/5；扩科/数据落表的结论只在本地 README）。
 - ⚠️ 我建的文档落在**个人空间**（`my_library`，space `7485951460694425602`），不在原需求 wiki 空间 `7521677387233722372`——对该空间无建节点权限（131006，因该知识库未把应用 `cli_aad217a2a5b89be3` 加进去）。
