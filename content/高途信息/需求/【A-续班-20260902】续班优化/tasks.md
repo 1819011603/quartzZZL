@@ -36,7 +36,7 @@ tags: [需求, 任务]
 
 | T-12 | 【AI 配置化】前端对齐：新增模块开关表接口 `POST ai/moduleSwitch`（14 key）+ 各数据接口兜底（evaluateQuery 7 / managerEvaluate 写 8 / analysis→service_suggestion 返空对象 / refund edit→manual_reason / reason/detail 5/6）+ 枚举补 code `9`/`manual_reason` | 已完成 | — | 分支 `feature-xuban-expand-exclude`（student-center `7d74dbf8f` / student-data `6ae6bc798`，均已 push、部署 `test-gtbg-dev-1` eureka UP）。与前端反讲《续班优化 202609-前端反讲》定稿一致。单测 student-center 5 条全过。**挂起**：`ai/clazzUser/predictLevelReason`（续班 9 / 退费 prediction）门控——该接口在 `feature-predict-level-reason`，待其上线、需求5 合流后补。详见 [[verify]]「AI 模块开关表接口」 |
 
-| T-13 | 【AI 配置化】退费根因（`refund_root_cause`）加 Apollo 开关控制下线 | 进行中 | — | **代码已实现（2026-10-20，未提交/未部署）**：`RefundReasoningService` 加 `refund.reason.root-cause.enable`（默认 `true`）、命中 `REFUND_ROOT_CAUSE` 且配 `false` 时返 `handleCode=1`（跳过但视为完成），`mvn8` 编译通过。**前端已删**（`aianalysisinformations` 不调 `/roster/refund/reasonType`；student-center 已删该接口 `497479d3`）；**PROD 后端仍在跑**（2026-10-19 日志：`RefundReasonProcessManager executeTask currentTaskEnum=REFUND_ROOT_CAUSE` + `RefundReasoningService 退费归因分析…reasoningEnum=REFUND_ROOT_CAUSE` + `handleCode=2`；镜像 `release-8e0938d2-20261019160601`）。产品口径：**加 Apollo 开关支持配置下线、默认不下线（保持现状）**，不删死代码。分支 `feature-xuban-expand-exclude`。决策文档见 [[links]]《退费 AI 模块依赖关系与灰度口径（待产品决策）》 |
+| T-13 | 【AI 配置化】退费根因（`refund_root_cause`）加 Apollo 开关控制下线 | 已取消 | — | **2026-10-20 用户定：不需要**（本地代码已删除）。前端已删（student-center `497479d3`）；PROD 后端仍在跑（2026-10-19 日志 `currentTaskEnum=REFUND_ROOT_CAUSE`、`handleCode=2`）。 |
 
 ## R- 反讲整改项
 
@@ -49,9 +49,9 @@ tags: [需求, 任务]
 
 ## C- case 联调问题
 
-| 编号 | 问题 | 对应 case | 状态 | 备注 |
+| 编号 | 问题 | 状态 | 对应 case | 备注 |
 |---|---|---|---|---|
-| C-01 | **【扩科排除】cart 取「当前课程」学年学期取错（与 PRD 不符，疑似 bug）** | CASE-001 | 阻塞 | PRD：当前课程=续班花名册选择的班级（**前置课**）；实测 cart `RenewalService#getRenewalDetail` 按**后置课**学期过滤（前置=C/春、后置=X/夏 → cart 用 X）。数据对齐 PRD（在读=春）时 cart **不排除**数学；改夏才排除。详情见 [[verify]]「扩科排除当前课程口径」+ 飞书 [[links]]《扩科推荐+AI 模块配置化 提测 P0 用例》。**待开发核**是否应取前置课。 |
+| C-01 | **【扩科排除】cart 取「当前课程」学年学期取错（与 PRD 不符）——已确认改为取「前置课」** | 已完成 | CASE-001 | PRD：当前课程=续班花名册选择的班级（**前置课**）；原 cart 按**后置课**学期过滤（前置=C/春、后置=X/夏 → 用 X）。**2026-10-20 已改**（cart `4724b384`，分支 feature-xuban-expand-exclude）：`RenewalService` 新增 `resolveCurrentPreCourse`（取 `renewalPreCourseDTO.getCourseNumbers()`→`recommendContext.getCourseDTO` 的前置课学年+学期）传入 `ExpandSubjectRecommendService`；后置课仍用于年级匹配。已部署 `test-gtbg-dev-1`（eureka UP）并验证：数学在读=春 → **数学被排除** ✅、excludeMode=0 → 数学恢复 ✅。详情见 [[verify]]。 |
 
 ## 阻塞详情
 

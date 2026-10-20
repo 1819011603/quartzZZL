@@ -877,3 +877,33 @@ ES 实证（例）：`36396360685978240-7569543424`、`36396360685978240-7489636
 - 坑：data-agent 工作流内层 tool 的 cookie 不会被 run_cases 自动注入（`run_cases` 只对单 tool 注入），跑工作流需显式传 `cookie`；`create_small_clazz_product_with_dist` 需传 `teachDepartmentCode=100001`（默认 100003 报「所选学部已禁用」）；`batch_create_order.userId`、`bind_pre_course`/`add_renew_master_course_relation`/`release_renew_master` 的参数须传 **integer**（传字符串触发 guardrail）。
 - **补齐（10 条用例全量就绪）**：计划 `585960797778243584` 已配扩科节点 `585963455412989952`（`extConfig.excludeMode=1`）+ 推荐节点 `585963455448641536`（flow `585963455406698496`）；扩科商品 `renewal_expand_subject_recommend`：grade16/subject1数学→`585963384338507776`、subject4英语→`585963400792762368`（对应大班课 `585963384338507776`/`585963400792762368`）。CASE-003 跨学年行：`dws_small_clazz_user_subject` 插 `(7658127801, 585963400792762368, subj 4 英语, 2025)` → 现该学员小班在读 = 2026{数学1,语文5} + 2025{英语4}，验证「按当前课程学年过滤」。AI 组（006~010）按 Apollo 开关：`renewal/refund.ai.dept.module.switch` 空=全放开、配部门=未命中全关；`refund.reason.root-cause.enable` 默认 true（跑）、配 false 跳过。全量明细见飞书 [[links]]《扩科推荐+AI 模块配置化 提测 P0 用例》「全量补齐结果」段。
 - **实跑验证（2026-10-20）**：CASE-001 `cart RenewalService#getRenewalDetail(7658127801,585960797778243584)`（excludeMode=1）→ 扩科只出**英语**、**数学被排除** ✅；CASE-002 改 excludeMode=0 → 数学恢复 ✅；CASE-003 `listOtherModeInReadSubjects(7658127801,1,2026,"C")=[1,5]` ✅；CASE-006/007 `ai/moduleSwitch`（弓雪萌命中部门→全 true；tangwen01 未命中→全 false）✅。**关键发现：cart 的「当前课程」取后置课学年+学期（本例 X/夏），在读行学期须与之一致才被算在读并排除**（已把数学在读行 term 设为 2 对齐）。CASE-008/009 实跑（2026-10-20）：Apollo 把 `refund.ai.dept.module.switch` 配成未命中登录部门 → `/roster/refund/{reason,analysis,course}`→`{}`、`{stage,intent/record}`→`[]`（关闭返空、非 null）；配 dept `5253663827314688` 去掉 `satisfaction` → 门控 `satisfaction=false`/`learning=true`，触发 `refreshReasoning(585960582537144320,36622538973250048,[7658127801])` → `ees_data.ai_refund_analysis_process_log`（process_id `refresh292983528073741312`）5 模块均有记录 → 关单模块未终止流程、END 照跑 ✅。Apollo 已还原读回。CASE-010 需本需求根因开关代码部署后才能跑。
+
+## 2026-10-20 · 扩科排除「当前课程」口径问题（C-01，疑似 bug，阻塞 CASE-001）
+
+**PRD**（扩科推荐优化 wiki）：当前课程（**续班花名册选择的班级**）是大班课 → 排除在读小班课学科，在读范围「**与当前课程相同学年+学期**」。即口径 = 花名册选的那个班 = **前置课**。
+
+**实测**：本例 前置课=五年级语文 **2026 C(春)**、后置课=六年级语文 **2026 X(夏)**。cart `RenewalService#getRenewalDetail(7658127801,585960797778243584)` 实际按 **X(夏)** 过滤：
+- 小班在读数学 = 春(`1`) → cart **不排除**数学（与 PRD 期望相反）
+- 小班在读数学 = 夏(`2`) → cart 才排除数学
+- 直调 `listOtherModeInReadSubjects`：`(...,"C")→[5]`、`(...,"X")→[1]`
+
+→ cart 取的是**后置课**学年学期，与 PRD「花名册选的班（前置课）」不符，**疑似 bug**（`getLargeClassRenewalDetail` 里 `renewalClazzNumbers→courseDTOMap` 疑取到后置课）。**待开发核**。数据已按 PRD 改回春(`1`)。
+
+**✅ 已修复 + 部署验证（2026-10-20，C-01 完成）**：cart `RenewalService` 新增 `resolveCurrentPreCourse(renewalPreCourseDTO, recommendContext)`——取续班计划前置课课程号 `renewalPreCourseDTO.getCourseNumbers()` → `recommendContext.getCourseDTO(前置课号)` 的 `schoolYearId/schoolTermId`，传入 `ExpandSubjectRecommendService.recommend(..., CourseDTO currentCourse, ...)`（大班重载新增入参，删掉原从后置 map 取学年的 `resolveCurrentCourse(Map)`）；**后置课仍用于「后置课程年级」匹配**（未动）；小班路径本就取前置课、未改。提交 cart **`4724b384`**，`mvn8` 编译通过，部署 `test-gtbg-dev-1` eureka UP（pod `cart-gaotu100-com-6cf4cf8b4d-tfspw`）。**验证**：数学在读=春 → cart 扩科**数学被排除** ✅；excludeMode=0 → 数学恢复 ✅。
+
+## Showcase 清单（test · test-gtbg-dev-1）
+
+**学员 `13900801001` / userId `7658127801`；计划 `585960797778243584`**（前置 2026C → 目标 2026X；扩科节点 `585963455412989952`）。
+
+| 场景（用例） | 班级 clazzNumber | 班级 bizId | 学员/账号 | 预期 |
+|---|---|---|---|---|
+| 扩科排除·主（CASE-001/011） | 大班前置五年级语文 `585960582537144320` | `15YW26CCRI11001` | `7658127801` | 扩科只出英语、数学被排除 |
+| 纯续/扩科商品 | 后置语文 `585960755422160896`；数学 `585963387758962688`；英语 `585963404555053056` | `16YW26X6IM11001` / `16SX26XN1011001` / `16YY26X7IK11001` | `7658127801` | — |
+| 扩科无排除·对照（CASE-002） | 同上 | 同上 | `7658127801` | 数学+英语都在 |
+| 小班在读（被排除对象） | 小班 `585960405711579136`（数学, 2026春） | —（花名册可见） | `7658127801` | 支撑排除数学 |
+| AI 开关表·命中（CASE-006/007） | — | — | 登录 `gongxuemeng`（弓雪萌 177071） | renewal 8key/refund 5key 全 true |
+| AI 开关表·未命中 | — | — | 登录 `tangwen01` | 全 false |
+| AI 展示侧关模块（CASE-008） | clazz `585960582537144320` / subclazz `36622538973250048` / userId `7658127801` | — | 当前登录老师 | 关模块→接口返空 `{}`/`[]` |
+| AI 分析侧关单模块（CASE-009） | 同上（辅导老师 唐稳01，部门 `5253663827314688`） | — | 桥调 `refreshReasoning` | 关 satisfaction→END 照跑 |
+
+**补充验证（2026-10-20 收口）**：CASE-005 历史计划 `excludeMode` 空 → cart 视为【无排除】（删掉节点 ext_config.excludeMode → 数学+英语都在）✅；CASE-012 B端下单推荐 `POST /b/renewMaster/recommendProductList` → 纯续语文+英语(扩科) ✅；在读范围·小班表写入侧 `OdsSmallRenewalSubjectSyncService` 只过滤「正价课(专题/系列)+赠课订单(payChannel=免费)」，**未过滤 成人/纯预售/赠课标签** → 与 PRD 在读范围有出入（既有数据管道口径，非本次代码）。CASE-010 作废（代码已删）；CASE-013 属前端。
