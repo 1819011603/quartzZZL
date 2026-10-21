@@ -39,7 +39,7 @@
    ```
    `grayDeptList` 取自 Apollo `ai.gray.merge.map.renewal.grayDeptList`。
 3. 判因（按优先级）：
-   - **部门不在 `grayDeptList`** → 加部门。
+   - **部门不在 `grayDeptList`** → 加部门。⚠️ 判定**只看登录老师本人的主岗部门链**（`getAccountInOrg(accountId, grayDeptList)`）：「虚线负责的部门」「下属带班老师」都不参与判定；领导本人部门不在名单，即使有二讲标签、下属学员有分析，入口也不挂（2026-10-21 案例：huangmengyao01，TT 侧长期班二讲中心，6 部门全 false）。
    - **部门已命中、但 `onlyAssistant=true` 而老师角色标签不是 `216`**（线上实测见过 `221 学习顾问`）→ **卡在标签，加部门无效**：给老师补 `216` 二讲标签（人员侧），或把 `renewal.onlyAssistant` 改 `false`，或把该标签 val 加进 `ai.gray.merge.assistant.tag.list`。
    - 以上都命中 → 再查班级级 `needAnalyze`（下一节）。
    > 2026-10-13 实测：老师部门(学习规划部 97353074458795709)已在名单、`getAccountInOrg=true`，但角色标签=221 → `renewal=false`；结论是**老师缺二讲标签，student-center 配置不动**。
