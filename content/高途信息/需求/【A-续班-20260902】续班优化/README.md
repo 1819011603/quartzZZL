@@ -12,6 +12,9 @@ branches:
   - order:feature-xuban-expand-exclude
   - cart:feature-xuban-expand-exclude
   - product-server:feature-xuban-expand-exclude
+  - gaotu-fe-promotions:feature-xuban-202610
+  - aianalysisinformations:feature-renewal-20260922
+  - continu-clazz-order:feature-renewal-20260922
 updated: 2026-10-21
 tags: [需求]
 ---
@@ -51,11 +54,11 @@ tags: [需求]
 - **AI 模块配置化**：未配置的模块要**同时做到"前端不可用 + AI 不分析"**（2026-09-18 产品确认为隐藏）；续班对外 8 个描述 key；退费对外 7 key（含内部依赖 satisfaction）；验收覆盖 PRD 单功能与组合一/二，根因不下线。
 - **数据落表**：续班覆盖大小班课、退费仅大班课（本批不做，仅登记）。
 - **主讲适配**：仅小班；**主讲（含双角色）按班级维度、仅班主任按辅导班维度**；现状 OR 合并**已等于** PRD 口径，**很可能无需开发**（待评审确认）；快速加购组合商品纳入本批（2026-10-21 用户确认）。
-- **扩科推荐**：问题根源 = 扩科班级 / 商品不区分大小班可随意选，导致跨授课模式重复推荐；**【推荐排除】** = 扩科推荐为【是】时可编辑、默认空、单选，枚举【无排除】/【排除不同授课模式在读】；"在读"8 条件中 5 项有现成过滤器，仅"授课模式 / 上课形式线上 / 订单未全部退款"3 项需新建；当前不回溯。**历史续班计划 `excludeMode` 为空 → B 端回显兜底为 `0`（无排除）**，老计划打开即【无排除】、老师无需补选；推荐侧 `excludeMode != 1`（含 null）即不排除，行为与上线前一致 → **兼容，不刷数**（`ProcessService#convertNodeConfigVO`，2026-10-12）。
+- **扩科推荐**：问题根源 = 扩科班级 / 商品不区分大小班可随意选，导致跨授课模式重复推荐；**【推荐排除】** = 扩科推荐为【是】时可编辑、默认空、单选，枚举【无排除】/【排除不同授课模式在读】；"在读"八条件逐调用链核实；小班读侧补齐与大班不同的课程资格缺口；当前不回溯。**历史续班计划 `excludeMode` 为空 → B 端回显兜底为 `0`（无排除）**，老计划打开即【无排除】、老师无需补选；推荐侧 `excludeMode != 1`（含 null）即不排除，行为与上线前一致 → **兼容，不刷数**（`ProcessService#convertNodeConfigVO`，2026-10-12）。
 
 ## 现在什么情况
 
-> **2026-10-21 复核完成，第二批尚未准出。** 已按最新 PRD 重写扩科＋AI＋下单 20 条 P0；三仓 45 条单测通过，dev-1 双向推荐、开关契约及组合商品明细有实测证据，但八条件边界、AI 组合真实分析、混合商品支付未闭环。发布编排 23819 已关联下单需求，共 12 后端部署；旧上线方案及配置/回滚内容仍须同步。Banshan 仅参考，不以其执行统计判断业务通过。
+> **2026-10-21 增量验收进行中，尚未准出。** 飞书20条用例已细化49个子场景，逐项列入口、数据、操作、预期、实测。扩科真实保存0/1→推荐3/2项、双向推荐、赠课/纯预售对照通过；AI画像预测泄漏和无归因编辑绕过已修并部署复验，续班与退费单模块/组合一二已有真实模型和落库对照。null配置修复已部署并9项运行时复验。下单历史支付/校验不扩大为本次新增；上线方案已同步12后端、2前端和2个GAIA组件发布。剩余真实边界继续造数验证。
 
 | | |
 |---|---|
@@ -63,7 +66,7 @@ tags: [需求]
 | 进度 | T 14/15 · R 4/4 · C 1/1；本轮审计与 P0 编写完成，增量验收与确定缺陷修复进行中，不可直接放行 |
 | 部署泳道 | **`feature-xuban-match-opt` → `test-gtbg-dev-3`**（product-task / student-data / teacher-tool）；**`feature-xuban-expand-exclude` → `test-gtbg-dev-1`**（product-b / product / student-data / cart / student-center，2026-09-24 已迁完、均 eureka UP）。2026-09-24 用户定，两分支不再共用泳道 |
 | 当前卡点 | 上线准备：🔴 DDL 工单 **146826**（`gaotu.questionnaire_record` 加 `retry_count`，待审批，须先于 product-task）、🔴 MQ 工单 **90538**（PROD group `GID_student-data_renewal_questionnaire_transfer_prod`，实例 `gaotu`，待审批）均待 SRE 审批；teacher-tool-api `1.0.29` RELEASE 已发、两处 pom 已切 RELEASE 并 push；Apollo `renewal.questionnaire.transfer.consumer.group` 待 group 审批后配（未配会走测试组名默认值）。 |
-| 最近更新 | 2026-10-21：指定飞书 P0 文档已更新并回读；发布编排 23819 已补下单 story，保留服务列表。45 条单测通过，真实查询结果及缺口见 verify.md；新版 case 是手工/工具辅助验收包，不是一键自动回归。此前开发完成不等于本版需求已全部验收。 |
+| 最近更新 | 2026-10-21：P0文档20条/49子场景及上线方案已写回；student-data f5540c121最新扩科空类型兼容修复32测通过、部署1308190已EurekaUP并7项实测通过；student-center 8cffd81c5已UP复验；promotions新版1308187已实际加载并页面必填/默认/保存回显通过。 |
 
 ## 上线准备（2026-10-13 · 发布计划 23716「问卷匹配 + 调课同步」）
 
@@ -85,17 +88,11 @@ tags: [需求]
 
 ## 下一步
 
-> 2026-09-24 已对照 PRD 原文做用例覆盖审计，缺口与三处待决策见 [[verify]]「用例覆盖审计」。
-
-1. **【已完成·问卷匹配】调课同步按 PRD「AB 非同一问卷不共享」**（2026-09-24 用户定）：student-data 传 B 绑定问卷 bizId，teacher-tool 只复制同 `projectNumber` 明细；对抗复审再修 4 处；dev-3 E2E T1/T2 通过（student-data `660ad3247`+`0ec17d469`，teacher-tool `1260d455`+`c169f274`）。
-2. **【2026-09-30 已补并验证】扩科「在读」「上课形式为线上」**：`RenewalInReadSubjectService` 读表后按班级上课形式补充过滤（`ClazzSyncAclService` 带缓存查 `operationMode`），Apollo `renewal.inread.operation.modes`（student-data）配 list 控制、**空 = 不过滤**（历史现状），查不到上课形式的记录保守保留；单测 8 条全过，student-data `dce3b3a45`（expand-exclude）。「订单未全部退款」已由上游退款退课机制间接满足（2026-09-29 查清）。**TEST 已配 `[1]` 并发布生效，dev-1 E2E 通过**（返回不变、日志确认 `allowedModes: [1]` 过滤路径执行）；PROD 上线后同 key 配 `[1]`（旧代码不受影响）。
-3. **【已完成·问卷匹配重试】修正重试条件**（2026-09-24 用户定修）：`manual_user_id != 0` → `= 0`，product-server `f549f4070`；dev-3 E2E：可匹配记录自动归属、不可匹配封顶 3 次、手动绑定不被重试（见 [[verify]]「T-07」）。
-4. 【问卷匹配】**7 档全部真发 CDS 验证通过**（P1–P5 + 亲属号 R1/R2）；小班调课端到端通过；先调后填 A 侧造数受限、机制已验（见 [[verify]]）。
-5. 【扩科推荐】小班路径、全局开关回退 **已在 dev-1 验证通过**；上线配开关 `renewal.expand.exclude.switch`（代码默认 true）。**2026-09-30：PROD 草稿已建（cart.gaotu100.com application，值 true），发布被权限挡**（zhangzeling 无 cart PROD 发布权，负责人 lijianxiang）——待 lijianxiang 后台发布或授权后再发；不发布不影响功能（默认即 true，key 仅作降级开关）。
-6. 【AI 配置化】**灰度语义已修正**（2026-09-24）：配置为空 = 全量放开，配了部门才按部门灰度；student-center 开关不可判定时 fail-open。student-data `24be1d776`（dev-1 已验：空配置全放开 / 配置后按部门）、student-center `a3a4d7cb5`（单测通过；dev-1 新 pod 一直 Pending，环境未验）。上线可先发版后配置。
-7. 【泳道】已分开：match-opt → dev-3、expand-exclude → dev-1（见「部署泳道」）。
-8. 【数据落表】找数仓侧确认落表方式（本批不做）。
-9. **【AI 配置化·开关表】已完成（2026-10-12）**：新增 `POST ai/moduleSwitch`（14 key）+ 数据接口兜底 + 枚举补 code `9`/`manual_reason`，dev-1 已验（见 [[verify]]「AI 模块开关表接口」）。**挂起**：`ai/clazzUser/predictLevelReason`（续班 9 / 退费 prediction）门控——该接口在 `feature-predict-level-reason`，待其上线、需求5 合流后补。
+1. 扩科成人/体验/线下、干净全退及全局开关对照已通过；部分退已返回有效在读，补售后终态回读。
+2. promotions新版全部页面配置规则已通过；大小班B/C推荐及手工加购服务已验。原测试推荐链接seller_id=null参数前置问题单列。
+3. AI学习/NPS真实模型与落库、圈选12测、隔离HTTP故障恢复3测已补齐；门控行覆盖85.04%。组合商品删除后列表数量残留1已真实复现，正在修复及重新发布测试组件。
+4. 将可重放脚本与执行清单落qa-data-agent-service用例包；核最终部署commit、配置恢复和当前head评审结果。
+5. 上线窗口完成release合并复测、client定版、PROD配置及GAIA正式版本审批发布；问卷匹配批次23716继续按其独立DDL/MQ前置处理。
 
 ## 已定（2026-09-21 产品 / 数据确认）
 

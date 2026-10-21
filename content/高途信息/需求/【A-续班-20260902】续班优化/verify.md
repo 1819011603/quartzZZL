@@ -960,13 +960,18 @@ ES 实证（例）：`36396360685978240-7569543424`、`36396360685978240-7489636
 
 以上结论替代本文件此前“10条全量就绪/自动可执行”、旧根因下线开关及旧数字key说明。稳定证据在 qa-data-agent-service/skills/data-case-gen/storage/xuban-expand-exclude/audit-evidence.json 和指定飞书P0。
 
-## 2026-10-21 增量验证与修复（执行中）
+## 2026-10-21 增量验证与修复（进行中）
 
-用户要求自主造数、修复、部署及验证；随后纠偏下单范围：既有支付/重复校验/数量限制不应当作本次新增开发，停止扩大常规下单回归。
+本轮以最新PRD和diff为准。下单重复校验、数量限制、支付为既有能力，仅保留直接影响的兼容验证；不作为本次新增未完成的依据。
 
-- student-data扩科读侧补小班成人/标签/纯预售条件，commit91a49c01e，28条相关测试通过，pipeline1308114 dev1新pod10.218.250.106已Eureka UP；部署后7核心断言通过，B端真实保存0/1并恢复成功，赠课标签13真实反例返回空、已恢复。
-- 新造隔离学员7658129769及真实有效订单用于边界，GPS clazzRoomType兼容映射与枚举文案存在差异，不据枚举2/3臆测改代码。
-- AI模块化44开关断言通过；全关12读入口空态、2写入口拒绝；真实沟通AI开启已Dify返回并落库、关闭对照正在核实。复现并修复仅开画像仍透出关闭预测等级、无归因记录编辑门控绕过两项，student-center8cffd81c5测试部署中，widget534767b测试alpha.3待真实UI复验。
-- 下单本次原后端diff主要是组合明细支持更多子商品类型。独立675e7e5278补历史校验遗漏（非课程子SKU重复提醒、单SKU20上限），38回归通过，dev1部署1308144进行中；这是组合范围扩展暴露的历史缺陷，不标作本次新功能未完成。不继续扩大优惠/支付历史链路。
-- 下单widget742d719修复类型字典/数量显示/全部组合范围，测试alpha.3创建并通过仅当前页版本头加载；真实UI显示软件会员/出版图书、数量1、9560全量含状态0/40。默认GAIA版本仍alpha.2，未切默认、未上线。
-- 本轮普通组合支付回归已完成：支付432268438450733376及子订单432268439524475200/432268439524475712已付；仅作兼容回归证据，不算新增支付功能交付。
+- P0飞书文档已落20条/49个细分场景，含具体入口/数据/动作/预期/实际结果；仍有在测项，不能整批标通过。上线方案已原位改为12后端、2前端项目，并补两个实际GAIA组件发布步骤及配置/回滚。
+- 扩科：真实B HTTP保存0/1→list0/1→推荐3/2项；大小班B/cart集合相等、纯续保留；新学员7658129769真实订单432268881905058380入班DWS29183。赠课标签13和纯预售关系分别返回[]，恢复后[1]。资格32测通过；student-data f5540c121部署1308190已EurekaUP并7项实测通过。退款对照发现样本arrangeMode曾由4改2，已精确恢复4；不能用受影响样本直接判需求bug，干净样本继续验证。
+- AI：student-center 8cffd81c5/pipeline1308150已EurekaUP，预测B不再从画像泄漏、reasonType0关闭时editable=false均真实HTTP通过。widget534767b/0.0.55-alpha.3真实页面通过，默认仍alpha.2。
+- student-data 442bfa869/pipeline1308164已EurekaUP：null模块/授权空项修复17测通过，运行时9矩阵及混合空key请求通过，临时Apollo恢复精确原值。
+- 真实AI分析：新续班沟通1434，未续开启handle2落库summary1950，已续关闭handle0；退费tutoring开启handle2、belong255=1，关闭新belong256时保持0；后续组合一授权依赖tutoring后256处理为1。组合一root、组合二root/suggestion均handle2且落库32220/32221；组合一suggestion有明确关闭日志。重跑关闭对照须新comm_id，不能复用256当未分析。
+- 下单增量：ContinuClazzOrder742d719/0.0.19-alpha.3真页面显示软件会员8007/出版图书8010、购买数量，检索不带saleStatus/计划限制。默认组件未切换。历史修复675e7e5278/pipeline1308144 ORDER已UP，真实重复提示和21拒绝通过；页面实际order-b仍旧版，不冒充页面已发布。99元支付432268438450733376及两个子单真实完成仅作兼容证据。
+- AICR：student-data91a49c01旧head PASS0blocking不代表后续head；center新head任务476取消，不能引用旧PASS。fresh独立review发现courseTypes=null降级边界，已修并32测通过。
+- 详细临时证据：/tmp/xuban-audit-20261021/{expand-verified.md,ai-verified.md,order-verified.md,adversarial-review.md}；稳定可重放资产同步至qa-data-agent-service后从本节更新入口。
+
+
+最新补验：扩科promotions fad1dffd配置页面全部通过；干净全退、成人、体验、线下和全局开关false→3/true→2实测通过，配置恢复。AI门控77项定向测试全部通过，核心AiModuleSwitchService行覆盖108/127=85.04%、分支112/136=82.35%；RenewalInReadSubjectService行覆盖96/103=93.20%。真实learning/NPS落库32224/32223。组合商品删除后购买数量残留1已复现，当前不得把CASE116标全通过，正在最小修复。
