@@ -931,3 +931,17 @@ ES 实证（例）：`36396360685978240-7569543424`、`36396360685978240-7489636
 **调用坑（重要）**：cart 端到端必须调 **7 参重载** `getRenewalDetail(userId,renewalNumber,getContext,fromBCart,appointUserId,sellerId,includeBCart)`（`RenewalService:217`）——只有它经 product-server `listRenewalWithProcessByNumber` 加载扩科配置；**5 参重载（`RenewalService:960`）不加载扩科配置**（`renewalDataService` 只回计划壳，`expandSubjectConfig=null` → 扩科恒空）。另 product-server `listFeignMasterProcess` 只回 type=3(推荐)节点，扩科配置单独由 `buildCartAndExpandSubjectConfig` 读 CART 流程内 type=6 节点 `ext_config` + `renewal_expand_subject_recommend` 拼装。
 
 **遗留**：`计划2` `586117007542349824`、`1020扩科小班` `585953412800081920` 仍为空壳（无流程/课程），未动。
+
+### 2026-10-21 补充 · CASE-014 纯续补齐（✅）
+
+**现象**：补齐扩科排除后，cart/B 端推荐只有扩科英语、无纯续数学（B 端「下单-推荐范围」应=纯续+扩科）。
+
+**根因（两处，均 dcg 半成品计划遗留）**：
+1. **后置小班课无商品 SKU**：后置课 `18314034380997207` 只建了课+班（clazz `586097025945298944`），没建商品。cart `PostClassInfoBuildSubBuilder` 要求后置班有商品 SKU 且 `saleStatus=40`，否则跳过 → 纯续候选为空。**补齐**：`create_uniform_product` 给后置班建 GPS 统一商品（productType 6004，SPU=`18314034380997207`、SKU=`586097025945298944`，`saleStatus=40`；镜像前置课商品；后置课有 CES 子产品 `clazzTypeNumber=18314034380997207`，上游 `upstreamProductType=10001`）。
+2. **推荐节点商品类型错配**：计划「推荐节点」`586116659480129536` 的 `renewal_link.product_type=2`（班级）→ product-server `listFeignMasterProcess` 回 `productType=2` → cart `renewalConfig.productType=2 ≠ ProductType.CLAZZ(6004)` → `PostClassInfoBuildSubBuilder.supports()=false`、`buildCandidates` 落空 → **纯续恒空**。**改为 6004**（小班课）。
+
+**复跑**：cart 7 参 `getRenewalDetail` → 纯续 `586097025945298944`(6004,recommend_type=1) + 扩科 英语 `585963404555053056`(recommend_type=2)；B 端 `recommendProductList` → 纯续「dcg-小班扩科排除-数学-后置」+ 扩科「英语」✅。
+
+**沉淀（小班续班排查要点）**：cart 小班纯续要三件齐——① 后置班已建商品 SKU 且 `saleStatus=40`；② 计划推荐节点 `renewal_link.product_type==6004`（小班课，决定 `renewalConfig.productType`）；③ course-center 前置→后置续班关系存在（`calculateRenewalType=1`）。缺任一一律纯续为空。
+
+**注意（缓存）**：cart 对「计划配置 / SKU / 班级」有本地(guava)+Redis 缓存（`single.product.query.cache.time=1800` 等），改完配置需下轮才生效（本次靠随后 `buildContext` 调热缓存）。

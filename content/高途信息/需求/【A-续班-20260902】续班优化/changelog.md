@@ -14,6 +14,7 @@ tags: [需求, 日志]
 - **实跑**：读侧 `listOtherModeInReadSubjects(7658127801,2,2026,"C")=[5]` ✅；cart 7 参 `getRenewalDetail` excludeMode=1 → 扩科**只出英语**、**语文被排除** ✅，=0 → 语文恢复 ✅。与 CASE-001 对称。详见 [[verify]] / 飞书 CASE-014 段。
 - **坑（沉淀）**：cart 端到端须调 **7 参重载** `getRenewalDetail(...)`（`RenewalService:217`）才加载扩科配置；5 参重载（`:960`）不加载。product-server `listFeignMasterProcess` 只回 type=3 节点，扩科配置由 `buildCartAndExpandSubjectConfig` 单独拼。
 - 遗留：`计划2` / `1020扩科小班` 仍空壳，未动。
+- **补充 · 纯续补齐**：扩科排除好后 cart/B端只有扩科英语、无纯续数学。根因两处（dcg 半成品）：① 后置小班课 `18314034380997207` 没建商品 SKU（只建课+班）→ 后置班过不了 `saleStatus=40` 过滤 → `create_uniform_product` 补建 GPS 统一商品（6004，SKU=`586097025945298944`）；② 计划推荐节点 `renewal_link.product_type=2` → cart `renewalConfig.productType≠6004` → 纯续候选恒空，改为 **6004**。复跑 cart/B端 = 纯续数学 + 扩科英语 ✅。**排查要点**：小班纯续三件齐（后置班商品 SKU 40 / `renewal_link.product_type=6004` / course-center 续班关系）。
 
 ---
 
