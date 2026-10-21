@@ -36,7 +36,7 @@ tags: [需求, 任务]
 
 | T-12 | 【AI 配置化】前端对齐：新增模块开关表接口 `POST ai/moduleSwitch`（14 key）+ 各数据接口兜底（evaluateQuery 7 / managerEvaluate 写 8 / analysis→service_suggestion 返空对象 / refund edit→manual_reason / reason/detail 5/6）+ 枚举补 code `9`/`manual_reason` | 已完成 | — | 分支 `feature-xuban-expand-exclude`（student-center `7d74dbf8f` / student-data `6ae6bc798`，均已 push、部署 `test-gtbg-dev-1` eureka UP）。与前端反讲《续班优化 202609-前端反讲》定稿一致。单测 student-center 5 条全过。**挂起**：`ai/clazzUser/predictLevelReason`（续班 9 / 退费 prediction）门控——该接口在 `feature-predict-level-reason`，待其上线、需求5 合流后补。详见 [[verify]]「AI 模块开关表接口」 |
 
-| T-13 | 【AI 配置化】退费根因（`refund_root_cause`）加 Apollo 开关控制下线 | 已取消 | — | **2026-10-20 用户定：不需要**（本地代码已删除）。前端已删（student-center `497479d3`）；PROD 后端仍在跑（2026-10-19 日志 `currentTaskEnum=REFUND_ROOT_CAUSE`、`handleCode=2`）。 |
+| T-13 | 【AI 配置化】退费根因（`refund_root_cause`）——**定：不替换、不下线，纳入 AI 模块化配置** | 已完成 | — | **2026-10-21 用户定**：放弃「替换成意向预测 / 加 Apollo 开关下线」方案，**功能保持不变**，把 `refund_root_cause`（连同 `satisfaction`）配成可配置 AI 模块、加入开关表下发名单。**后端已改并 push（student-center `2bac261cc`，`AiModuleSwitchQueryService.REFUND_MODULE_CODES` 5→7 项；单测 `AiModuleSwitchQueryServiceTest` 5/5 过）**。前端分支 `feature-renewal-20260922` 会展示（`REFUND_CODE.ROOT_CAUSE='refund_root_cause'`）。**（原 2026-10-20「加 Apollo 开关控制下线」方案作废）** 现状：前端旧接口已删（student-center `497479d3`）、PROD 后端仍在跑（2026-10-19 日志 `currentTaskEnum=REFUND_ROOT_CAUSE`、`handleCode=2`）。 |
 
 ## R- 反讲整改项
 
@@ -78,7 +78,7 @@ tags: [需求, 任务]
 |---|---|---|---|---|
 | Q-01 | product-server | `ComputeUserService.java:18` | 灰度 | `compute.rule.name.list` 代码默认 4 档→7 档 = 计划级匹配的灰度开关。**已自查：PROD（course-setting/product/product-task/product-b 的 application）均未配置 → 走代码默认 7 档，计划级匹配一上线即全量生效**；要不要先灰度由产品口径定 |
 | Q-02 | product-server | `QuestionnaireRecordService.java:574/603` | DDL/并发 | **已自查**：① PROD `gaotu.questionnaire_record`（cluster 71）**无 `retry_count` 列 → 上线前必须提 DDL**（工单 146826 已提并 EXECUTED）；② PROD Job `QuestionnaireRecordComputeHandler`（cron `5 2/10 * * * ?`）**block=丢弃后续调度 → 不会重叠执行，并发无问题**；③ **重试上限保持默认 3**（2026-10-13 用户定：未归属近 3 天=0、加 432 会在高峰放大负载 ~1x，否决；见 [[changelog]]） |
-| Q-03 | student-center | `RefundController.java:200` | 口径 | `refund_root_cause` 后端门控但不在下发名单 → 前端空模块；确认口径 |
+| Q-03 | student-center | `RefundController.java:200` | 口径 | `refund_root_cause` 后端门控但不在下发名单 → 前端空模块；确认口径。**→ 2026-10-21 已定：不下线、纳入模块化，`refund_root_cause`（+`satisfaction`）加入开关表下发名单**（见 T-13），空模块问题消除 |
 | Q-04 | student-center | 展示侧 vs 分析侧 | 口径 | 部门口径不同（展示侧=登录老师部门 / 分析侧=班级二辅部门）。**已查：T-11 已记录该差异（分析侧按班级二辅主岗）→ 预期** |
 | Q-05 | cart | `pom.xml` `product-server-client` | 上线 | 钉 `1.5.9-SNAPSHOT`，提测前换正式包 |
 | Q-06 | student-center | `RefundController.java:100` | 兼容/影响面 | `manual_reason` 门控卡死整段通用写接口 `roster/refund/edit`（误伤改名/备注/跟进，多入口不一致）；建议收窄到 `refundReason`/`refundIntent` |
@@ -112,6 +112,7 @@ tags: [需求, 任务]
 - **✅ 已删（2026-10-15，student-center `497479d3`）**：`RefundController.reasonType` + `RefundService.reasonType/buildCommIdMap/transReasonType/summaryReasonType/queryDialog` + `RefundReasonTypeVO`（前端全局零调用）。
 - **保留** `RefundAiModuleEnum.REFUND_ROOT_CAUSE`：**分析侧「退费根因」模块还在**（`RefundReasoningEnum.REFUND_ROOT_CAUSE` 在退费归因 END 节点、被 `RefundReasonProcessManager` 使用），该枚举被 `allModuleCodes` 引用，非纯死代码。
 - **PRD 模块对照（2026-10-15）**：PRD 已把「AI预测退费原因」标注 **【已下线】** → 退费实际 **5** 个模块（退费分析/意向预测/手填退费原因/课程体验/退费沟通旅程）。与前端页面（aianalysisinformations `src/tabs/refund`）一致，**对得上**。
+- **⚠️ 2026-10-21 更新（PRD 改动 + 决策反转）**：PRD《续班&退费优化：AI分析模块配置化》已改为「AI预测退费原因【前端下线、后端没下线】」，组合二另标「待定，能否替换成意向预测」；**产品 2026-10-21 定：不替换、不下线，纳入 AI 模块化配置**（`refund_root_cause` + `satisfaction` 下发，见 T-13）。前端分支 `feature-renewal-20260922` 会展示该模块 → 上文「退费根因已下线」的表述作废（**仅指老的展示分支 `master`/`feature-refund-reason-20260825`**）。
 
 ### P-03 ✅ 已确认（2026-10-15，按 release 代码全量核）：`levelReasonAndHistory` **不是死代码**（cronus 花名册在用）→ 保留
 
@@ -161,7 +162,7 @@ tags: [需求, 任务]
 
 **退费模块对照（PRD 6，其中「AI预测退费原因」已下线 → 实际 5）**
 - PRD 5 = 退费分析 / 意向预测 / 手填退费原因 / 课程体验 / 退费沟通旅程 ↔ 前端 `tabs/refund` 一致 ✅。
-- 后端 `RefundAiModuleEnum`(7) 比展示**多** `satisfaction`（满意度归因）/ `refund_root_cause`（退费根因）——是**分析侧内部模块**（PRD 展示清单里没有）。
+- 后端 `RefundAiModuleEnum`(7) 比展示**多** `satisfaction`（满意度归因）/ `refund_root_cause`（退费根因）——是**分析侧内部模块**（PRD 展示清单里没有）。**→ 2026-10-21 改**：两者一并纳入模块化下发/展示（见 T-13）。
 
 **退费依赖关系（线上正在跑）**
 ```
