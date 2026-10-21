@@ -946,10 +946,27 @@ ES 实证（例）：`36396360685978240-7569543424`、`36396360685978240-7489636
 
 **注意（缓存）**：cart 对「计划配置 / SKU / 班级」有本地(guava)+Redis 缓存（`single.product.query.cache.time=1800` 等），改完配置需下轮才生效（本次靠随后 `buildContext` 调热缓存）。
 
-## 2026-10-21 第二批复核（进行中）
+## 2026-10-21 第二批复核结论（审计完成，验收未准出）
 
-- 真相源：Banshan 49808/71278（索引 15 项、record totalCount=16、passCount=0）；49660/70837（索引 86 项、record totalCount=113、passCount=0）。统计口径不同，不能把索引数直接当执行总数。
-- AI 用例仍要求 root_cause/satisfaction 不下发，存在重复契约节点；扩科补充用例仍写“不按学年学期过滤”和 test-eco-1，均需订正。
-- qa-data-agent-service 的 storage/xuban-expand-exclude/cases.result.json：2026-10-20 执行 CASE-001 第一步缺 cookie 失败、aborted=true；validation.json 的 10/10 executable 只代表结构校验。CASE-006 旧开关契约、CASE-010 已作废根因开关均不应继续执行。
-- 最新 AI PRD 已明确单功能及组合一/二，区别于本地旧清单；需要检验 refund.ai.module.deps 的实际配置与链路。
-- 发布计划 23819 当前 12 个后端服务：原 8 个 + order/order-task/order-ad/order-b；Apollo/config/rollback 明细当前为空。飞书上线方案仍是 8 服务及旧数字 code，不能直接据此上线。
+- 以最新 PRD 为准，Banshan 仅参考。新版飞书 P0 为 CASE-101～120，共20条（扩科7、AI7、下单6）；qa-data-agent-service 同步 cases.yaml/cases.md/analysis.md/gaps.md/audit-evidence.json。结构校验0 ERROR，不代表实际执行通过；旧 cases.result.json 是此前缺cookie中止记录，不计入新版结果。
+- 单测：student-data 33、cart 7、student-center 5，合计45通过。student-center 指定UTF-8后构建成功；未取得核心行覆盖率≥80%的证明。
+- dev-1 实测：学员7658127801，大班计划585960797778243584与小班计划586116340522184704，cart七参数入口和product-b推荐集合一致，分别排除数学/语文且保留纯续和英语。此为服务查询证据，不代替前端端到端及八条件全覆盖。历史跨年英语样本order_number=0，仅机制数据，不能当有效订单。
+- AI：student-data续班9内部alias、退费7 key；student-center真实HTTP返回续班8描述key/退费7 key。组合一/二真实分析、前端隐藏及禁止写入未完成全量验收。
+- 下单：order购物车明细返回组合584632626097291265，会员卡8007＋实物8010，数量各1，原价0/9900分；只部分验证CASE-117，未支付。组合搜索调用未成功，不计为通过。
+- 静态偏差/待确认：小班写表未见成人/纯预售/赠课标签过滤；多前置课取第一门有学年学期；B端excludeMode保存须重验；小班重复购买提示未带子商品名；20上限按种类/件数需统一。逐项复现步骤及造数条件见新版P0。
+- 发布计划23819已补关联下单story1122531521001394689，保留原服务清单，共12后端＋2前端。Apollo/config/rollback文本为空；旧上线方案8服务/数字key口径不能直接执行。
+- PROD已发布查询未命中renewal.inread.operation.modes、renewal.ai.dept.module.switch、refund.ai.dept.module.switch、refund.ai.module.deps。仅线上过滤须配[1]，AI组合灰度前补依赖图；空模块配置全放开为代码行为，不代表需求已验收。
+- fetch后student-data缺release 45提交、student-center缺66提交，上线前合并复测。本轮未修改业务源码、未部署/支付/写生产数据；仍需补八条件真实样本、组合AI和混合商品支付数据及完整验收。
+
+以上结论替代本文件此前“10条全量就绪/自动可执行”、旧根因下线开关及旧数字key说明。稳定证据在 qa-data-agent-service/skills/data-case-gen/storage/xuban-expand-exclude/audit-evidence.json 和指定飞书P0。
+
+## 2026-10-21 增量验证与修复（执行中）
+
+用户要求自主造数、修复、部署及验证；随后纠偏下单范围：既有支付/重复校验/数量限制不应当作本次新增开发，停止扩大常规下单回归。
+
+- student-data扩科读侧补小班成人/标签/纯预售条件，commit91a49c01e，28条相关测试通过，pipeline1308114 dev1新pod10.218.250.106已Eureka UP；部署后7核心断言通过，B端真实保存0/1并恢复成功，赠课标签13真实反例返回空、已恢复。
+- 新造隔离学员7658129769及真实有效订单用于边界，GPS clazzRoomType兼容映射与枚举文案存在差异，不据枚举2/3臆测改代码。
+- AI模块化44开关断言通过；全关12读入口空态、2写入口拒绝；真实沟通AI开启已Dify返回并落库、关闭对照正在核实。复现并修复仅开画像仍透出关闭预测等级、无归因记录编辑门控绕过两项，student-center8cffd81c5测试部署中，widget534767b测试alpha.3待真实UI复验。
+- 下单本次原后端diff主要是组合明细支持更多子商品类型。独立675e7e5278补历史校验遗漏（非课程子SKU重复提醒、单SKU20上限），38回归通过，dev1部署1308144进行中；这是组合范围扩展暴露的历史缺陷，不标作本次新功能未完成。不继续扩大优惠/支付历史链路。
+- 下单widget742d719修复类型字典/数量显示/全部组合范围，测试alpha.3创建并通过仅当前页版本头加载；真实UI显示软件会员/出版图书、数量1、9560全量含状态0/40。默认GAIA版本仍alpha.2，未切默认、未上线。
+- 本轮普通组合支付回归已完成：支付432268438450733376及子订单432268439524475200/432268439524475712已付；仅作兼容回归证据，不算新增支付功能交付。
