@@ -907,3 +907,27 @@ ES 实证（例）：`36396360685978240-7569543424`、`36396360685978240-7489636
 | AI 分析侧关单模块（CASE-009） | 同上（辅导老师 唐稳01，部门 `5253663827314688`） | — | 桥调 `refreshReasoning` | 关 satisfaction→END 照跑 |
 
 **补充验证（2026-10-20 收口）**：CASE-005 历史计划 `excludeMode` 空 → cart 视为【无排除】（删掉节点 ext_config.excludeMode → 数学+英语都在）✅；CASE-012 B端下单推荐 `POST /b/renewMaster/recommendProductList` → 纯续语文+英语(扩科) ✅；在读范围·小班表写入侧 `OdsSmallRenewalSubjectSyncService` 只过滤「正价课(专题/系列)+赠课订单(payChannel=免费)」，**未过滤 成人/纯预售/赠课标签** → 与 PRD 在读范围有出入（既有数据管道口径，非本次代码）。CASE-010 作废（代码已删）；CASE-013 属前端。
+
+## 2026-10-21 · CASE-014 补齐（小班计划 → 排除大班在读，`test-gtbg-dev-1`，✅）
+
+**复用/补齐**半成品小班计划 `dcg-小班扩科排除-计划`（`586116340522184704`，type=2，已发布）：
+- 前置小班课 `18314034380997173`（线上小班课-小学数学-0917-OP1，一年级/2026春，班 `586084334251927552`）；后置小班课 `18314034380997207`（一年级/2027暑，班 `586097025945298944`）——**续班后置关系本就存在**（course-center 续班关系，`calculateRenewalType=1`，产品侧 `listCoursesByPreCourseNumber` 可见，cart `getCourseExtensionByExtensionInfo` 同源）。
+- 扩科节点 `586116659463352321`(type=6)：`ext_config.excludeMode=1`。⚠️ **B 端 `renewal/process/edit` 不落 excludeMode**（只落 expandSubject/forceBuy/allowDuplicate，提交后 `allowDuplicate` 落库、`excludeMode` 被吞），须直接写 `node_config.ext_config`（CASE-001 同）。
+- 扩科商品 `renewal_expand_subject_recommend`(node 586116659463352321)：**grade 16→11**（原配 grade16 与后置年级 11 不符 → `studentPostGrades` 不含 16 → 扩科恒空），subject4 英语→`585963404555053056`、subject5 语文→`585960755422160896`。
+- 学员 `7658127801` 向前置小班课下单+支付：`orderItem 432249582456931136` / payNumber `432249582456930624`（productType 6004，0 元已支付）。
+- 学员「大班在读」= 语文(5)@2026春（`dws_fuwu_clazz_user_subject`，clazz `585960582537144320`）。
+
+**实跑（acl 桥，`traffic-env: test-gtbg-dev-1`）**：
+
+| 例 | 调用 | 实测 |
+|---|---|---|
+| 读侧·小班取大班在读 | student-data `RenewalInReadSubjectService#listOtherModeInReadSubjects(7658127801,2,2026,"C")` | `[5]` ✅（`"X"`→`[]`） |
+| C端 E2E·开排除 | cart `RenewalService#getRenewalDetail("7658127801","586116340522184704",true,false,null,null,null)`，excludeMode=1 | 扩科**只出英语**(`585963404555053056`)、**语文被排除** ✅ |
+| 对照·关排除 | 同上，excludeMode=0 | 英语 + **语文**都在 ✅ |
+| 结果年级 | — | `grade_clazz_list[0].grade=11 一年级`（纯续+扩科） |
+
+**结论**：CASE-014 端到端通过（语文排除/英语保留，关排除恢复），与 CASE-001（大班计划 → 排除小班在读）对称。
+
+**调用坑（重要）**：cart 端到端必须调 **7 参重载** `getRenewalDetail(userId,renewalNumber,getContext,fromBCart,appointUserId,sellerId,includeBCart)`（`RenewalService:217`）——只有它经 product-server `listRenewalWithProcessByNumber` 加载扩科配置；**5 参重载（`RenewalService:960`）不加载扩科配置**（`renewalDataService` 只回计划壳，`expandSubjectConfig=null` → 扩科恒空）。另 product-server `listFeignMasterProcess` 只回 type=3(推荐)节点，扩科配置单独由 `buildCartAndExpandSubjectConfig` 读 CART 流程内 type=6 节点 `ext_config` + `renewal_expand_subject_recommend` 拼装。
+
+**遗留**：`计划2` `586117007542349824`、`1020扩科小班` `585953412800081920` 仍为空壳（无流程/课程），未动。
