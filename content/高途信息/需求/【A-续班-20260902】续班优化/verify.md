@@ -945,3 +945,11 @@ ES 实证（例）：`36396360685978240-7569543424`、`36396360685978240-7489636
 **沉淀（小班续班排查要点）**：cart 小班纯续要三件齐——① 后置班已建商品 SKU 且 `saleStatus=40`；② 计划推荐节点 `renewal_link.product_type==6004`（小班课，决定 `renewalConfig.productType`）；③ course-center 前置→后置续班关系存在（`calculateRenewalType=1`）。缺任一一律纯续为空。
 
 **注意（缓存）**：cart 对「计划配置 / SKU / 班级」有本地(guava)+Redis 缓存（`single.product.query.cache.time=1800` 等），改完配置需下轮才生效（本次靠随后 `buildContext` 调热缓存）。
+
+## 2026-10-21 第二批复核（进行中）
+
+- 真相源：Banshan 49808/71278（索引 15 项、record totalCount=16、passCount=0）；49660/70837（索引 86 项、record totalCount=113、passCount=0）。统计口径不同，不能把索引数直接当执行总数。
+- AI 用例仍要求 root_cause/satisfaction 不下发，存在重复契约节点；扩科补充用例仍写“不按学年学期过滤”和 test-eco-1，均需订正。
+- qa-data-agent-service 的 storage/xuban-expand-exclude/cases.result.json：2026-10-20 执行 CASE-001 第一步缺 cookie 失败、aborted=true；validation.json 的 10/10 executable 只代表结构校验。CASE-006 旧开关契约、CASE-010 已作废根因开关均不应继续执行。
+- 最新 AI PRD 已明确单功能及组合一/二，区别于本地旧清单；需要检验 refund.ai.module.deps 的实际配置与链路。
+- 发布计划 23819 当前 12 个后端服务：原 8 个 + order/order-task/order-ad/order-b；Apollo/config/rollback 明细当前为空。飞书上线方案仍是 8 服务及旧数字 code，不能直接据此上线。
