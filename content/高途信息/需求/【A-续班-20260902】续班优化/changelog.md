@@ -7,6 +7,16 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-10-21（退费根因接口恢复：撤回 497479d3b 的删除）
+
+### 🤖 Claude
+- **冲突暴露**：飞书反馈 `/bgwApi/component/student-center/roster/refund/reasonType` **404**（金瑞琳报、张泽灵问用途）。根因 = 10-15 `497479d3b` 判「前端全局零调用」删了该展示接口 + `RefundService` 查询逻辑（约 200 行），但**前端已恢复的退费根因模块调的正是它**；`5c1465e57` 又连带删了其残留（`RefundService` 的 `Sets` import、`RefundEnumComponent#querySubRefundReasonName`）。与 T-13「不下线、纳入模块化」口径冲突 → 两边一合必空态。
+- **决定**：**恢复接口**（而非重建）。`git revert 497479d3b` → `RefundController.reasonType` + `RefundService.reasonType/buildCommIdMap/transReasonType/summaryReasonType/queryDialog` + `RefundReasonTypeVO` 全部补回；再补回 5c1465e57 的两处残留；门控注释订正为 fail-open 口径（与其余退款接口一致），模块 code `refund_root_cause`。
+- **提交**：student-center `9cd9c9f88`（`feature-xuban-expand-exclude`）已 push；`mvn8 -DskipTests compile` 通过。
+- **部署验证**：青舟流水线 `1307906` → `test-gtbg-dev-1` **SUCCESS**；读回 `POST https://test-fuwu.baijia.com/bgwApi/component/student-center/roster/refund/reasonType` → **HTTP 200 / code 0 / data []**（无该学员 AI 摘要，正常空态）→ **404 已消除**（traceId `dce5fb3c-...`）。
+
+---
+
 ## 2026-10-21（CASE-014 补齐：小班计划 → 排除大班在读）
 
 ### 🤖 Claude
