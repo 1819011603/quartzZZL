@@ -166,3 +166,8 @@ tags: [需求]
 - **AI 部门匹配有现成先例**：`RenewalAiCommRealTimeSelectHandleService#getDeptAiConfig:214-224` 就是 `departmentPath.contains(configKey)` + `@ApolloJsonValue Map`（部门取课程/班级的 `courseDO.getDepartmentIdPaths().get(0)`）。注意：①"用谁的部门"（班级部门 vs 老师部门）要定，展示侧要同口径；②`contains` 是子串匹配，数字部门 id 会前缀误命中（`1000005` 命中 `10000056`）。
 - **在读科目数据来自 student-data 自己的表**（不是查询时调外部）：小班 `dws_small_clazz_user_subject`、大班 `dws_fuwu_clazz_user_subject`，再由 `calRenewalInfo`/`calGradeRenewalInfo` 算出；表的原料是外部（进/退班 MQ `gaotu_subclazz_student_event_test` + 课程中心 + 订单）。→ 「对方模式在读学科」集合可由 student-data 直接透出给 cart。
 - **扩科推荐在 cart 算**（`ExpandSubjectRecommendService#recommend`，小班 :32 / 大班 :69，**只按年级匹配**）；`recommendProductList` 只是把 cart 结果转 B 端列表。**cart 没有"在读学科"数据**（全仓无在班/在读查询）→ 加排除过滤的**真正难点是"对方模式在读学科"从哪来**：建议由 student-data 透出（复用 `checkFilter`/`isValidClazz` 的 8 条件口径），cart 只做过滤；否则 cart 要复刻 8 条件、口径会漂移。
+
+
+## 2026-10-21 最终补录（人工执行卡与发布编排实测）
+
+详见 [[本次工作记录-20261021]]。20条case已补账号、班/辅导班、学员及关系、配置、操作和可见预期；53个执行场景保留。技能已固定人工优先规范，审计73条路由通过。发布编排实际执行一次，后端汇总57%，准出未执行、总门禁未过；历史79条告警仍未处理。DWS/GPS配置类型错误已补部署并验证UP/真实Bean/新pod无解析错误。AI及cart核心缺口已补验、临时数据配置恢复；未重算平台，不声明上线放行。
