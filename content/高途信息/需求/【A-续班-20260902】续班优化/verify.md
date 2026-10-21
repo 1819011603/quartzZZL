@@ -964,7 +964,7 @@ ES 实证（例）：`36396360685978240-7569543424`、`36396360685978240-7489636
 
 本轮以最新PRD和diff为准。下单重复校验、数量限制、支付为既有能力，仅保留直接影响的兼容验证；不作为本次新增未完成的依据。
 
-- P0飞书文档已落20条/49个细分场景，含具体入口/数据/动作/预期/实际结果；仍有在测项，不能整批标通过。上线方案已原位改为12后端、2前端项目，并补两个实际GAIA组件发布步骤及配置/回滚。
+- P0飞书文档已落20条/53个细分场景，含具体入口/数据/动作/预期/实际结果；仍有在测项，不能整批标通过。上线方案已原位改为12后端、2前端项目，并补两个实际GAIA组件发布步骤及配置/回滚。
 - 扩科：真实B HTTP保存0/1→list0/1→推荐3/2项；大小班B/cart集合相等、纯续保留；新学员7658129769真实订单432268881905058380入班DWS29183。赠课标签13和纯预售关系分别返回[]，恢复后[1]。资格32测通过；student-data f5540c121部署1308190已EurekaUP并7项实测通过。退款对照发现样本arrangeMode曾由4改2，已精确恢复4；不能用受影响样本直接判需求bug，干净样本继续验证。
 - AI：student-center 8cffd81c5/pipeline1308150已EurekaUP，预测B不再从画像泄漏、reasonType0关闭时editable=false均真实HTTP通过。widget534767b/0.0.55-alpha.3真实页面通过，默认仍alpha.2。
 - student-data 442bfa869/pipeline1308164已EurekaUP：null模块/授权空项修复17测通过，运行时9矩阵及混合空key请求通过，临时Apollo恢复精确原值。
@@ -974,4 +974,8 @@ ES 实证（例）：`36396360685978240-7569543424`、`36396360685978240-7489636
 - 详细临时证据：/tmp/xuban-audit-20261021/{expand-verified.md,ai-verified.md,order-verified.md,adversarial-review.md}；稳定可重放资产同步至qa-data-agent-service后从本节更新入口。
 
 
-最新补验：扩科promotions fad1dffd配置页面全部通过；干净全退、成人、体验、线下和全局开关false→3/true→2实测通过，配置恢复。AI门控77项定向测试全部通过，核心AiModuleSwitchService行覆盖108/127=85.04%、分支112/136=82.35%；RenewalInReadSubjectService行覆盖96/103=93.20%。真实learning/NPS落库32224/32223。组合商品删除后购买数量残留1已复现，当前不得把CASE116标全通过，正在最小修复。
+最新补验：扩科promotions fad1dffd配置页面全部通过；干净全退、成人、体验、线下和全局开关false→3/true→2实测通过，配置恢复。AI门控77项定向测试全部通过，核心AiModuleSwitchService行覆盖108/127=85.04%、分支112/136=82.35%；RenewalInReadSubjectService行覆盖96/103=93.20%。真实learning/NPS落库32224/32223。组合商品删除后购买数量残留1已复现并以83fa4e0修复；alpha.4删除/加回/19→20/20禁用及混合班课明细真实通过。
+
+2026-10-21最终补验：部分退售后36635172243112576已status1/process99，order432271791745401715 refund_type1，仍在读[1]。AI同一隔离学员完整依赖产生summary32224～32228；一次模型建议JSON格式失败且无脏写，原输入重试成功，非连续成功。最终临时Apollo精确恢复、真实15模块均false。稳定P0细项与执行证据位于qa-data-agent-service/skills/data-case-gen/storage/xuban-expand-exclude/，其中replay-expand-readonly.py已在最终环境再次执行7项全部通过；旧cases.result.json未改成虚假全绿。
+
+最终组合组件：ContinuClazzOrder83fa4e0已推送，测试0.0.19-alpha.4定向实际加载。CASE116真实19→20、20禁止再次写，删除1→0/加回1；CASE117大小班混合明细名称/类型/数量/原价正确，未提交额外订单。GAIA默认alpha.2不变，生产切版走审批。当前P0文档已覆盖53子场景，明确共用出口代码覆盖与实际页面覆盖边界；不是生产准出声明。
