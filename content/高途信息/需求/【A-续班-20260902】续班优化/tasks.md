@@ -218,5 +218,5 @@ Cronus补测走真实小班页面：唐稳01/tangwen01登录→清空续班计�
 
 | 编号 | 任务 | 状态 | 证据/要求 |
 |---|---|---|---|
-| C-03 | cart 兼容旧页面的 `sellerId=null` | 已完成 | cart `bdba9e90`，10测通过；流水线1309368部署dev-1新pod UP，7项真接口验证通过，推荐数据与修复前省略sellerId的基线一致。前端未修改。 |
+| C-03 | cart 兼容旧页面的 `sellerId=null` | 已完成 | cart `bdba9e90`，10测通过；流水线1309368部署dev-1新pod UP，7项真接口验证通过，推荐数据与修复前省略sellerId的基线一致。前端未修改；此项仅cart兜底，上游身份错配及promotion空值拼链待处理（见verify）。 |
 

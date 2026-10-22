@@ -15,7 +15,22 @@ tags: [需求, 验证]
 |---|---|---|---|
 | sellerId 字符串 null 兼容为未传 | 可选 Long 参数在 MVC 转换阶段失败 | MVC 真解析覆盖缺省、空串、null、合法数字；其他非法值与其他参数仍拒绝；部署后原请求成功 | cart `bdba9e90`，JDK8编译及10项MVC参数解析测试通过；流水线1309368部署dev-1，新pod Eureka UP，7项真接口验证通过 |
 
-**当前有效结果**：新 pod `cart-gaotu100-com-57dc9dcb6c-6kgxd`，commit `bdba9e90`，Eureka UP。复用原 trace 的测试学员登录上下文，调用同一 GET `/web/renewal/cart`：sellerId 字符串 `null` / 省略 / 空串 / 数字 `90247` 均 `status=0` 且响应 data 完全一致，也与修复前省略 sellerId 的 data 基线一致（保留纯续与扩科两类推荐）；`sellerId=abc`、Long 越界、`renewalNumber=null` 均仍为 `status=5/参数异常`。7项均命中新pod。原请求修复后 trace：`cart_gaotu100_com.292.17926514768370006`。本轮为后端接口验证，未修改或验证前端页面。AICR分支暂无评审任务，不记为评审通过。
+**当前有效结果**：新 pod `cart-gaotu100-com-57dc9dcb6c-6kgxd`，commit `bdba9e90`，Eureka UP。复用原 trace 的测试学员登录上下文，调用同一 GET `/web/renewal/cart`：sellerId 字符串 `null` / 省略 / 空串 / 数字 `90247`（仅验证数字绑定）均 `status=0` 且响应 data 完全一致，也与修复前省略 sellerId 的 data 基线一致（保留纯续与扩科两类推荐）；`sellerId=abc`、Long 越界、`renewalNumber=null` 均仍为 `status=5/参数异常`。7项均命中新pod。原请求修复后 trace：`cart_gaotu100_com.292.17926514768370006`。本轮为后端接口验证，未修改或验证前端页面。AICR分支暂无评审任务，不记为评审通过。
+
+### tangwen01 上游身份核验（2026-10-22，测试环境，仅定位）
+
+原链接生成 trace `a835b653-db83-4fc0-979e-887ad1794848.0.0`（14:25:10）已核实：
+
+| 环节 | 当前证据 |
+|---|---|
+| 登录身份 | `user_info` 为 accountId=90247、casUid=132658、employeeId=8645；同请求 `gaotu-cas-authorization.teacherNumber=7405394941575616` |
+| 旧教师号来源 | 认证服务 `/feign/employee/getTeacherNumber` 入参 accountId=90247/teacherType=2，实际返回旧教师号7405394941575616；其部署源码release-3e1d691a只按教师status=1/type=2过滤后findFirst，没有限定当前employeeId/casUid |
+| student-center | `RenewalContentCommonSupport#getCasUidByLoginInfo` 优先按登录teacherNumber取教师casUid，没有使用登录casUid；实时查询旧教师号得到casUid=120805、employeeId=2994 |
+| teacher-basic | 原trace实际收到 `casUids=[120805]`；员工查询只含 `status=1`。实时全状态员工查询2994为status2（离职），8645为status1（在职）；但旧教师7405394941575616仍status1/type2，认证候选第一条。当前员工8645的教师号为572009172424521728，也为status1/type2，排在后面 |
+| 映射对照 | base test真实 `/service/employee/queryId/byCasuid` 传 `[120805,132658]`，code0只返回 `132658→8645`；当前登录CAS映射正常 |
+| promotion | `PersonalLinkDomainService#groupUrl2` 查询空列表后取空对象employeeId=null，直接拼出seller_id=null；Cronus传回、mweb转名 |
+
+**结论**：这是“员工已离职但旧教师记录仍status1 + 认证层按账号/类型取首条、未限定当前员工 → student-center取到旧CAS → teacher-basic排除离职员工 → promotion未校验空值”的组合问题，不能记为当前登录CAS缺失员工映射。cart `bdba9e90` 仅完成消费端兼容；上游身份一致性和链接构造尚未修复。认证选值源码定位：`GHArch/arch-general-apisix-auth` deployed commit `3e1d691a`，`EmployeeAppService#loadTeacherInfo`（437行附近）；本地只读检出 `/tmp/tangwen-auth-source`。查询教师列表trace `teacher-basic_gaotu100_com.583.17926545680258941`，查询员工状态trace `teacher-basic_gaotu100_com.284.17926543443153319`。本轮未改业务代码、配置或身份数据。数字90247仅是前轮参数绑定验证输入，不是该老师employeeId；其当前employeeId为8645。
 
 ## CASE-108 第1步最新实测（2026-10-22）
 
@@ -1042,3 +1057,13 @@ Cronus补测走真实小班页面：唐稳01/tangwen01登录→清空续班计�
 ## 2026-10-22 CASE-108：退费预测等级开关修复
 
 student-center `2cc0194a9` 在 `/roster/refund/analysis` 返回前，按 `prediction` 清空两预测字段；保留既有整卡门控。7项真实领域服务/H2/HTTP集成测试通过，含开启/关闭、缺省、null、503、整卡关闭及无预测数据。流水线1309131发布test-gtbg-dev-1，新pod student-center-c85d97cbd-btdgt、commit2cc0194a、Eureka UP。随后页面同源接口返回code0，人工意向2/中及服务建议保留；样本本身无预测等级，仅证明开启路径兼容，不冒充关闭场景验收。模块接口回读续班8项与退费7项均true，现场配置与两tab保持。前端未修改，改法及后续组合验收见 [CASE-108 修复说明](CASE-108-退费预测开关修复.md)。AICR489取消，未获得本head评审通过结论；整项页面验收未闭环。
+
+
+### 2026-10-22 花名册「小班在读科目 / 续班小班科目」不展示（学员 7658127801）
+
+- 现象：大班花名册 `clazzRosterOL`（班级 `585960582537144320` `dcg-扩科排除-前置-五年级语文`）学员 `7658127801` 的「小班在读科目」「续班小班科目」两列不展示（为空）。
+- 字段来源：DQ 字段 `largeRelationSmallRenewalSubject`（`LargeRelationSmallRenewalSubjectQueryService#buildData` → `SmallRenewalSubjectService#calRenewalInfo`）。该服务只读小班在读表 `dws_small_clazz_user_subject`（学员有 4 行）并按 `largeRenewalSubjectInfoList` 中 `clazzNumber` 匹配，产出 `smallStudyingSubject`(小班在读科目) / `smallRenewalSubject`(续班小班科目) / `smallRenewalExpansionSubject`。
+- 直接原因：该字段按「**同学年+学期+同年级**」把学员的小班在读记录归到对应大班班级（`collectSmallStudyingSubjects` 做年级交集）。实测 ACL 桥 `SmallRenewalSubjectService#calRenewalInfo("7658127801", true)`：大班班级 `585960582537144320` 的 `smallStudyingSubjectList=[]`、`smallRenewalSubjectSet=[]`、`largeStudyingSubjectList=[{5}]`（仅大班本班语文）。
+- 年级对照：大班课程 `585960577856301056` `grades=[15]`（五年级，`courseCategory` 五年级）；学员小班班级年级 `grade_id` 为 `3`/`3`/`11`（课程 `18308368321085798`/`18308368321085803`/`18314034380997173`，`grades=[3]`/`[3]`/`[11]`，category 均为一年级）→ **与大班五年级无年级交集** → 小班在读科目算空；同年级小班组为空 → 无可比后置课程 → 续班小班科目也空。
+- ⚠️ 口径不一致：扩科排除实际用的 `RenewalInReadSubjectService#listOtherModeInReadSubjects` **只按同学年+学期过滤，不卡年级**，故数学仍被排除 —— 于是出现「花名册列不展示、但扩科确实排除了数学」。两处口径（展示卡年级 / 排除不卡年级）需确认哪个是期望；若期望花名册可见，测试小班应建成与大班同年级（或确认展示口径是否应放宽到只按学年+学期）。
+- 定性：**测试数据年级不一致**（大班五年级 vs 小班一年级）导致的展示为空；非 ES/回溯问题（该字段走 DQ 实时计算，不走 ES）。未改任何代码/数据。
