@@ -15,7 +15,7 @@ branches:
   - gaotu-fe-promotions:feature-xuban-202610
   - aianalysisinformations:feature-renewal-20260922
   - continu-clazz-order:feature-renewal-20260922
-updated: 2026-10-21
+updated: 2026-10-22
 tags: [需求]
 ---
 
@@ -58,12 +58,14 @@ tags: [需求]
 
 ## 现在什么情况
 
+> **2026-10-22 CASE-108 增量修复**：退费分析卡的预测等级需跟随 `prediction` 开关。后端 `student-center 2cc0194a9` 已实现并通过7项测试，已部署test-gtbg-dev-1并真实接口回归；前端两处改法已给出、尚未修改，详见 [CASE-108 修复与前端改法](CASE-108-退费预测开关修复.md)。当前供用户查看的续班/退费页面与部门开关保持开启，待用户看完后再恢复临时配置。
+
 > **2026-10-21 本轮核心验证及P0文档已完成，尚未生产准出。** 飞书20条用例已细化53个子场景，逐项列入口、数据、操作、预期、实测。扩科真实保存0/1→推荐3/2项、双向推荐、赠课/纯预售对照通过；AI画像预测泄漏和无归因编辑绕过已修并部署复验，续班与退费单模块/组合一二已有真实模型和落库对照。null配置修复已部署并9项运行时复验。下单历史支付/校验不扩大为本次新增；上线方案已同步12后端、2前端和2个GAIA组件发布。扩科边界和AI完整组合均已补齐；保留模型格式偶发失败、测试预览seller参数前置问题及未逐页面点击的共用出口覆盖边界。
 
 | | |
 |---|---|
 | 阶段 | **上线准备**（问卷匹配 + 调课同步 → 发布计划 23716，2026-10-13 起；见下「上线准备」） |
-| 进度 | T 15/15 · R 4/4 · C 1/1；本轮审计与 P0 编写完成，增量验收与确定缺陷修复进行中，不可直接放行 |
+| 进度 | T 15/15 · R 4/4 · C 1/2；本轮审计与 P0 编写完成，增量验收与确定缺陷修复进行中，不可直接放行 |
 | 部署泳道 | **`feature-xuban-match-opt` → `test-gtbg-dev-3`**（product-task / student-data / teacher-tool）；**`feature-xuban-expand-exclude` → `test-gtbg-dev-1`**（product-b / product / student-data / cart / student-center，2026-09-24 已迁完、均 eureka UP）。2026-09-24 用户定，两分支不再共用泳道 |
 | 当前卡点 | 上线准备：🔴 DDL 工单 **146826**（`gaotu.questionnaire_record` 加 `retry_count`，待审批，须先于 product-task）、🔴 MQ 工单 **90538**（PROD group `GID_student-data_renewal_questionnaire_transfer_prod`，实例 `gaotu`，待审批）均待 SRE 审批；teacher-tool-api `1.0.29` RELEASE 已发、两处 pom 已切 RELEASE 并 push；Apollo `renewal.questionnaire.transfer.consumer.group` 待 group 审批后配（未配会走测试组名默认值）。 |
 | 最近更新 | 2026-10-21：P0文档20条/53子场景及上线方案已写回；student-data f5540c121最新扩科空类型兼容修复32测通过、部署1308190已EurekaUP并7项实测通过；student-center 8cffd81c5已UP复验；promotions新版1308187已实际加载并页面必填/默认/保存回显通过。 |
