@@ -84,6 +84,9 @@
 - 入参：`route.sceneVersionNumber`（场景版本号）、`quickFilter.*`（预报名意向/续班报告状态/预售状态/预售下单时间/续班下单时间）、`filter`（普通筛选 map）、`pager{current,pageSize,total}`、`orderItem{name,order}`
 - 出参：`data.list[]` + `data.pager{total, approximateTotal}`
 
+> 列表里的**科目字段**（`studyingSubject` 在读 / `renewalSubject` 续班 / `renewalExpansionSubject` 扩科 / `gradeRenewalSubject`·`gradeRenewalExpansionSubject` 分年级 / `smallStudyingSubject`·`smallRenewalSubject`·`smallRenewalExpansionSubject` 小班关联）口径、源表与计算见 [续班科目/大班与小班续班科目字段口径](../../续班科目/大班与小班续班科目字段口径.md)。
+> ⚠️ 本页 doc 是 `ads_large_subclazz_user_index`（大班**辅导班**文档，id=subclazzNumber-userId）；「小班在读科目」这类 `small*` 字段**只在这份索引**，大班花名册 `ads_large_clazz_user_<年>` 没有。
+
 ## 排查提示
 
 - **列表为空 / 数量不对** → `/roster/renewal/page` 的 `filter`/`quickFilter`；total 触顶看 `/roster/renewal/count`。

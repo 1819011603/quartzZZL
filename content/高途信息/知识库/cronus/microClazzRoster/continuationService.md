@@ -208,6 +208,8 @@ $M $C baijia_invoke cosplay_logout
 
 > 展示与筛选都源自同一对 ES 原始字段（`smallCanRenewal` + `smallRenewalStateStatus`），口径上必然一致。
 
+> 小班**科目**字段（`smallStudyingSubject` 小班在读 / `smallRenewalSubject` 小班续班 / `smallRenewalExpansionSubject` 小班续班扩科 / `largeStudyingSubject`·`largeRenewalSubject` 小班页上的大班字段）口径、源表与计算见 [续班科目/大班与小班续班科目字段口径](../../续班科目/大班与小班续班科目字段口径.md)。
+
 ## ⚠️ 续班轮次里的「不可续」≠ 续班状态；且小班漏了联动逻辑（已确认缺陷）
 
 **字段层面**两个是分开的：

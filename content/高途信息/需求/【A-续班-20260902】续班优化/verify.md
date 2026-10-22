@@ -1079,8 +1079,9 @@ student-center `2cc0194a9` 在 `/roster/refund/analysis` 返回前，按 `predic
 
 ### 2026-10-22 花名册「小班在读科目 / 续班小班科目」不展示（学员 7658127801）
 
-- 现象：大班花名册 `clazzRosterOL`（班级 `585960582537144320` `dcg-扩科排除-前置-五年级语文`）学员 `7658127801` 的「小班在读科目」「续班小班科目」两列不展示（为空）。
-- 字段来源：DQ 字段 `largeRelationSmallRenewalSubject`（`LargeRelationSmallRenewalSubjectQueryService#buildData` → `SmallRenewalSubjectService#calRenewalInfo`）。该服务只读小班在读表 `dws_small_clazz_user_subject`（学员有 4 行）并按 `largeRenewalSubjectInfoList` 中 `clazzNumber` 匹配，产出 `smallStudyingSubject`(小班在读科目) / `smallRenewalSubject`(续班小班科目) / `smallRenewalExpansionSubject`。
+- 现象：**续班服务 tab**（`/crm/cronus/clazzRosterOL?tabKey=continuationService` → `POST /component/student-center/roster/renewal/page`）班级 `585960582537144320`（`dcg-扩科排除-前置-五年级语文`）学员 `7658127801` 的「小班在读科目」「续班小班科目」两列不展示（为空）。接口实查该行 `smallStudyingSubject=[]`、`smallStudyingSubjectCnt=0`、`smallRenewalSubject=[]`、`smallRenewalExpansionSubject=[]`（对照 `studyingSubject=[1,4,5]` 有值）。
+- 数据来源：**EES 索引 `ads_large_subclazz_user_index`（物理 `_v3`）文档 `36622538973250048-7658127801`** 的这 4 个字段（页面按 subclazzNumber-userId 取该 doc）。花名册索引 `ads_large_clazz_user_2026` 同 id 文档**不含**这 4 个字段（只 `studyingSubject=[1,4,5]`）。
+- 字段产生：DQ 字段 `largeRelationSmallRenewalSubject`（`LargeRelationSmallRenewalSubjectQueryService#buildData` → `SmallRenewalSubjectService#calRenewalInfo`，大班分支）。该服务只读小班在读表 `dws_small_clazz_user_subject`（学员有 4 行）并按 `largeRenewalSubjectInfoList` 中 `clazzNumber` 匹配，产出上述 4 字段（`smallStudyingSubject`=小班在读科目 / `smallRenewalSubject`=续班小班科目）。
 - 直接原因：该字段按「**同学年+学期+同年级**」把学员的小班在读记录归到对应大班班级（`collectSmallStudyingSubjects` 做年级交集）。实测 ACL 桥 `SmallRenewalSubjectService#calRenewalInfo("7658127801", true)`：大班班级 `585960582537144320` 的 `smallStudyingSubjectList=[]`、`smallRenewalSubjectSet=[]`、`largeStudyingSubjectList=[{5}]`（仅大班本班语文）。
 - 年级对照：大班课程 `585960577856301056` `grades=[15]`（五年级，`courseCategory` 五年级）；学员小班班级年级 `grade_id` 为 `3`/`3`/`11`（课程 `18308368321085798`/`18308368321085803`/`18314034380997173`，`grades=[3]`/`[3]`/`[11]`，category 均为一年级）→ **与大班五年级无年级交集** → 小班在读科目算空；同年级小班组为空 → 无可比后置课程 → 续班小班科目也空。
 - ⚠️ 口径不一致：扩科排除实际用的 `RenewalInReadSubjectService#listOtherModeInReadSubjects` **只按同学年+学期过滤，不卡年级**，故数学仍被排除 —— 于是出现「花名册列不展示、但扩科确实排除了数学」。两处口径（展示卡年级 / 排除不卡年级）需确认哪个是期望；若期望花名册可见，测试小班应建成与大班同年级（或确认展示口径是否应放宽到只按学年+学期）。
