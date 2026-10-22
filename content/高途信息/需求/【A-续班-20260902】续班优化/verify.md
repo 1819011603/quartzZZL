@@ -7,6 +7,12 @@ tags: [需求, 验证]
 
 > 只保留当前可执行条件、仍有效数据和最新预期。
 
+## CASE-108 第1步最新实测（2026-10-22）
+
+仅复验“本部门续班、退费全关”，结果通过；第2、3步本轮未执行。唐稳01 `tangwen01`（accountId `90247`）在普通大班花名册退费管控，选班“dcg-扩科排除-前置-五年级语文” `585960582537144320`，打开学员 `7658127801` 的 AI 分析抽屉，刷新后退费、续班均只显示“暂无数据”。浏览器真实 `POST /bgwApi/component/student-center/ai/moduleSwitch` 携带 `traffic-env: test-gtbg-dev-1`、`b_client: EES`，返回续班8项、退费7项全部 `false`。
+
+操作为 student-data / TEST / default / application 的 `renewal.ai.dept.module.switch`、`refund.ai.dept.module.switch` 各临时新增 `"5253663827314688":[]`，保留其他部门；验证后仅移除本轮新增条目并发布，两个 key 已回读与操作前 JSON 一致，无遗留草稿，恢复后15项开关仍全关。页面保留在该学员 AI 分析的续班空态。现场结果已回填[在线 CASE-108](https://gaotuedu.feishu.cn/wiki/WpNuwpXLqi5JsskcmXFcwT2dnkg#doxcnEgNsxTuM01fHdbG5Q5FEEc)。
+
 ## 环境
 
 | 项 | 当前值 |
