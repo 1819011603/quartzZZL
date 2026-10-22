@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-10-16",
+  "updated": "2026-10-22",
   "note": "机读索引：页面/tab → 接口。字段 frontPath=前端 request 路径，backendPath=后端 Controller 路径，service=青舟 appId。",
   "repos": {
     "epic": "http://git.baijia.com/gaotu-fe/gaotu-btech-fe/epic",
@@ -4631,6 +4631,47 @@
               "name": "主体变更日志"
             }
           ]
+        }
+      ]
+    },
+    {
+      "route": "https://sms.baijia.com/",
+      "name": "测试环境短信查询与固定验证码（12 开头手机号验证码 1001）",
+      "repo": "sms（平台标识，仓库未核实）",
+      "pageFile": "sms/message/_page.md",
+      "note": "12 开头测试手机号验证码固定为 1001，无需查平台；其他号码通过 ?mobile=<手机号> 查询。环境从 AppEnv 恢复，需确认选测试。API 域名 https://sms-admin-api.baijia.com；青舟 appId 未核实。",
+      "pageApis": [
+        {
+          "trigger": "进页面/查询/筛选/下一页",
+          "method": "POST",
+          "frontPath": "/admin/message/listTest",
+          "backendPath": "/admin/message/listTest",
+          "name": "测试环境短信记录查询",
+          "note": "env=TEST；游标 next；已只读验证 code=0"
+        },
+        {
+          "trigger": "点击正文",
+          "method": "POST",
+          "frontPath": "/admin/message/decryptTest",
+          "backendPath": "/admin/message/decryptTest",
+          "name": "测试环境短信原文查看",
+          "note": "ids 数组；受平台权限控制；由在线前端构建确认"
+        },
+        {
+          "trigger": "展开行",
+          "method": "POST",
+          "frontPath": "/admin/message/logTest",
+          "backendPath": "/admin/message/logTest",
+          "name": "测试环境短信发送日志",
+          "note": "入参 id；由在线前端构建确认"
+        },
+        {
+          "trigger": "展开行",
+          "method": "POST",
+          "frontPath": "/admin/message/detail",
+          "backendPath": "/admin/message/detail",
+          "name": "短信应用/模板/任务详情",
+          "note": "入参 id；路径不带 Test；由在线前端构建确认"
         }
       ]
     }

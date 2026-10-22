@@ -21,6 +21,7 @@
 
 | 页面路由 | 名称 | 仓库 | tab |
 |---|---|---|---|
+| `https://sms.baijia.com/?mobile=<手机号>` | [测试环境短信查询与固定验证码（12 开头 → 1001）](sms/message/_page.md) | 未核实（平台标识 sms） | — |
 | `/crm/cronus/clazzRosterOL` | 班级花名册 | cronus | default / stageFeedback / refundPrevention / continuationService |
 | `/crm/cronus/lessonList` | 课节管理 | cronus | default / lessonprepare / lessonAfter / emLessonAfter / prepareRelationLesson |
 | `/crm/cronus/lessonStudentList` | 课节学员 | cronus | default / prepareUser / lessonAfterUser / emLessonAfterUser / prepareRelationLessonUser |
