@@ -1006,3 +1006,18 @@ Cronus补测走真实小班页面：唐稳01/tangwen01登录→清空续班计�
 - 当前本地 feature-xuban-expand-exclude 中 NodeExtConfigVO 已声明 excludeMode，`ProcessService#mergeExistingExtConfig` 在请求未传 excludeMode 时保留旧值；2026-10-21 已有真实 HTTP 保存 0/1 的验证。2026-10-20 的“不落 excludeMode”仅为历史现象。
 - 在该分支 ProcessController 与青舟该分支接口清单中未发现仅修改 excludeMode 的专用业务 HTTP 接口。测试 ACL 桥可调用 `com.gaotu.product.dao.old.NodeConfigDao#updateByNumber(NodeConfig, Long)`，第一个参数只传 extConfig 字符串、第二个参数传目标扩科节点号；Mapper 为 updateByExampleSelective，未传的数据库列不更新。
 - 上述 DAO 更新会替换整个 ext_config 字符串，不会逐 key 合并；必须先读原 JSON，仅修改 excludeMode 并保留其余 key。不可只传 `{"excludeMode":1}`，也不能将其当作正式业务 API。流程 edit 还会处理 renewal_link 等关联，不适合当作字段级更新。此次仅核对读入口及源码，未调用写方法；扩科节点当前已为 1。
+
+
+### 2026-10-22 切换扩科排除后推荐列表不变：修改节点与查询计划不一致
+
+- 用户先修改大班扩科节点 `585963455412989952`，随后用 `POST /b/renewMaster/recommendProductList` 查询小班计划 `586116340522184704`、学员 `7658127801`（dev-1）。两者不属于同一计划，修改前者不会影响后者。
+- 本次只读实查：大班节点 update_time 为 `2026-10-22T10:27:04`、excludeMode=1；小班计划 `/b/renewal/process/list` 返回流程 `586116659463352320`、扩科节点 `586116659463352321`，excludeMode=1，节点 update_time 仍为 `2026-10-21T14:30:07`。
+- 原推荐请求 code=0，返回英语 `585963404555053056` 与纯续数学 `586097025945298944`，未返回扩科语文。当前结果与小班节点一直为 excludeMode=1 一致。
+- 修改小班计划时，应以 `586116659463352321` 为 DAO updateByNumber 第二个参数；若修改 `585963455412989952`，应查询其所属大班计划 `585960797778243584`。保留 ext_config 其他 key。此次未写业务数据，未重跑 0/1 对照。
+
+
+### 2026-10-22 CASE-102 原文与当前推荐复核
+
+- 已读取飞书 P0 文档 revision 159 的 CASE-102 章节（标题块 doxcnXX5BdGmbZDIqlhmkBGnuKg）：大班计划 `585960797778243584`、扩科节点 `585963455412989952`、学员 `7658127801`，入口为大班花名册 `clazzRosterOL`。用户此前贴的 `microClazzRoster` / 小班计划 `586116340522184704` 不属于该 case。
+- 最新只读核对：大班扩科节点 excludeMode 已为 0，update_time `2026-10-22T10:29:46`。按 CASE-102 正确大班计划调用 `recommendProductList`，code=0，精确返回纯续语文 `585960755422160896`、扩科数学 `585963387758962688`、扩科英语 `585963404555053056` 共 3 项，说明关闭排除已体现在该接口结果中。
+- CASE-102 开启排除（excludeMode=1）的文档预期为纯续语文+扩科英语共 2 项；当前现场为关闭状态，本轮没有代改节点或重跑开启状态，不将历史通过记作本轮 0/1 全量对照。做本 case 应切换大班节点并查询大班计划，无需改小班节点。

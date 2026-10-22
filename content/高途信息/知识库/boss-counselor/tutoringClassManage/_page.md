@@ -25,3 +25,13 @@
 | 打开抽屉工具详情 | `getMySubclazzDetail`（`@/services/subclazz`） | `/fairy/subclazz/detail` | `src/pages/TutoringClassManage/components/DrawerToolDetail/index.jsx:29` | fairy.gaotu100.com | `/subclazz/detail` | 辅导班详情 [35398] | 取辅导班详情用于在班人数（`currentStudentCount`） |
 
 > 共享组件接口另见公共组件文档：`AccountNameFilter`（`@/components/AccountNameFilter`，走树形下拉时调 `subordinates/listTreeChild`、`subordinates/searchTreeChild`）、`SearchSelect`、`NoticeList`、`SwitchClazzDetail`、`TheAddressBook`、`OutDetail`、`ClazzGroupInfo`、`AliIcon` 等；`DrawerToolDetail` 内 `TutoringClassManageContent` 引用的 `src/pages/Toolbox/*` 属 Toolbox 页面自有代码，见对应页面文档。
+
+## 关联工具：创建小班课时搜索参加学员
+
+2026-10-22 核对本地 boss-counselor `master` 源码，未做线上页面实测。创建抽屉 `src/pages/Toolbox/SmallClazz/options/AddOrEdit.tsx` 使用共享组件 `src/components/createClass/AddStudent.tsx`。
+
+- 打开抽屉时，`getStudentSearchList({subclazzNumber})` 调用 `POST /bgwApi/teacher-tool/manage/subclazz/studentList`，获取当前辅导班候选学员；输入搜索词是在前端筛选已有列表，不是全局搜索。
+- 搜索框文案为“请输入姓名/手机号后四位”。`handleFilter` 对 `name`、`mobile` 做包含匹配，支持姓名全称或部分姓名、手机号后四位，也支持完整手机号（符合组件手机号正则时先转为前三位 + `****` + 后四位后匹配脱敏号码）。不匹配学员 ID。
+- 支持多个关键词批量搜索：英文逗号、中文逗号、空格或竖线分隔，任意一项命中即展示；`未选列表` 和 `已选列表` 共用规则。
+- 正则分隔不会清除空关键词：连续分隔符或首尾分隔符可能产生空字符串，使所有候选项命中。
+- 还可按省份多选过滤，省份条件与搜索结果取交集。
