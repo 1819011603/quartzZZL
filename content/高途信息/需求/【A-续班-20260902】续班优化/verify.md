@@ -7,6 +7,16 @@ tags: [需求, 验证]
 
 > 只保留当前可执行条件、仍有效数据和最新预期。
 
+## C 端购物车 sellerId 参数兼容（2026-10-22）
+
+本轮仅修改后端 cart，分支 `feature-xuban-expand-exclude` → `test-gtbg-dev-1`。trace `1d5b5869-e5ad-49e7-ae46-b9a2a3cf2caf.0.3` 对应 `/cart/web/renewal/cart?renewalNumber=585960797778243584&includeBCart=false&sellerId=null&p_client=1`；登录用户 `7658127801`，调用链未进入 RenewalService。直连同泳道同路径已复现 HTTP200、`status=5/error_info=参数异常`；使用原请求的登录上下文重放仍为 status=5，而省略 sellerId 返回 status=0。Spring MVC 实际参数解析测试修复前唯一失败点为 `NumberFormatException: "null"`，其余9项通过。
+
+| 改动 | 影响依据 | 验证项与预期 | 结果 |
+|---|---|---|---|
+| sellerId 字符串 null 兼容为未传 | 可选 Long 参数在 MVC 转换阶段失败 | MVC 真解析覆盖缺省、空串、null、合法数字；其他非法值与其他参数仍拒绝；部署后原请求成功 | cart `bdba9e90`，JDK8编译及10项MVC参数解析测试通过；流水线1309368部署dev-1，新pod Eureka UP，7项真接口验证通过 |
+
+**当前有效结果**：新 pod `cart-gaotu100-com-57dc9dcb6c-6kgxd`，commit `bdba9e90`，Eureka UP。复用原 trace 的测试学员登录上下文，调用同一 GET `/web/renewal/cart`：sellerId 字符串 `null` / 省略 / 空串 / 数字 `90247` 均 `status=0` 且响应 data 完全一致，也与修复前省略 sellerId 的 data 基线一致（保留纯续与扩科两类推荐）；`sellerId=abc`、Long 越界、`renewalNumber=null` 均仍为 `status=5/参数异常`。7项均命中新pod。原请求修复后 trace：`cart_gaotu100_com.292.17926514768370006`。本轮为后端接口验证，未修改或验证前端页面。AICR分支暂无评审任务，不记为评审通过。
+
 ## CASE-108 第1步最新实测（2026-10-22）
 
 仅复验“本部门续班、退费全关”，结果通过；第2、3步本轮未执行。唐稳01 `tangwen01`（accountId `90247`）在普通大班花名册退费管控，选班“dcg-扩科排除-前置-五年级语文” `585960582537144320`，打开学员 `7658127801` 的 AI 分析抽屉，刷新后退费、续班均只显示“暂无数据”。浏览器真实 `POST /bgwApi/component/student-center/ai/moduleSwitch` 携带 `traffic-env: test-gtbg-dev-1`、`b_client: EES`，返回续班8项、退费7项全部 `false`。
