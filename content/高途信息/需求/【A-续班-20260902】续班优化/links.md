@@ -9,6 +9,7 @@ tags: [需求, 链接]
 
 | 类型 | 标题 | 链接 | 记录日期 |
 |---|---|---|---|
+| 待办表 | 续班推荐加购展示规则与膨胀券支持方案（产品确认稿） | https://gaotuedu.feishu.cn/docx/RuYOdNkIfoP7fAxPlhecESgYnrc | 2026-10-22 |
 | 需求目录（我建，个人空间） | 需求 | https://gaotuedu.feishu.cn/wiki/VcOgwHkfeijOM5knBiAcbrLlnY6 | 2026-09-18 |
 | 需求总入口（我建，个人空间） | 【A-续班-20260902】续班优化 | https://gaotuedu.feishu.cn/wiki/Qox8wFcmHiXBgnkxFBtcd82gnsh | 2026-09-18 |
 | 技术反讲 | 【A-续班-20260902】续班优化 技术反讲（子需求 1/2/5） | https://gaotuedu.feishu.cn/wiki/EC45wOefUi0buMkO7O0cipp9nEc | 2026-09-18 |

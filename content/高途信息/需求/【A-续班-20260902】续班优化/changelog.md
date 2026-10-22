@@ -9,7 +9,7 @@ tags: [需求, 日志]
 
 ## 2026-10-22 C 端购物车空老师参数
 
-用户限定只改后端、前端不修改。promotion生成的基础链接已含 `seller_id=null`，cart在参数转换阶段失败；cart局部兼容已完成。进一步核实tangwen01当前CAS132658→employee8645正常，旧教师记录仍status1，认证层按账号/类型取首条且未限定当前employee，student-center据此取到离职身份CAS120805，promotion查空后直接拼null。后续应处理身份取值一致性与promotion空值校验，不能把当前CAS映射误判为缺失。
+用户限定只改后端、前端不修改。promotion生成的基础链接已含 `seller_id=null`，cart在参数转换阶段失败；cart局部兼容已完成。进一步核实tangwen01当前CAS132658→employee8645正常，旧教师记录仍status1，认证层按账号/类型取首条且未限定当前employee，student-center据此取到离职身份CAS120805，promotion查空后直接拼null。按用户最新指示当前仅补教师启用状态筛选，撤回直接返回登录CAS的改动；旧教师仍启用，故上游身份问题未闭环，不能把当前CAS映射误判为缺失。
 
 ## 2026-10-21 当前范围与验收依据
 

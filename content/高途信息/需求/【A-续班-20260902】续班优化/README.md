@@ -58,7 +58,9 @@ tags: [需求]
 
 ## 现在什么情况
 
-> **2026-10-22 本轮仅改后端（C-03已完成）**：cart `bdba9e90` 兼容既有请求 `sellerId=null`，10项测试通过，流水线1309368部署dev-1新pod UP；原请求已返回status=0，7项接口验证通过且推荐数据与原基线一致。前端未修改。**上游另已查明：tangwen01当前CAS132658→employee8645正常，但旧教师记录仍status1，认证层按账号/类型取首条指向离职员工2994/CAS120805，student-center优先取旧CAS，promotion再拼出null；上游尚未修复，详见verify.md。**
+> **2026-10-22 加购展示定位**：原链接sellerId=null跳过加购；改传员工8645实测恢复1件小班课，但另3件无课程子项的组合商品因无法解析年级被cart转换丢弃。用户明确要求大班/小班/联报/组合商品及膨胀券进入C端加购展示，已完成定位并创建[产品确认稿](https://gaotuedu.feishu.cn/docx/RuYOdNkIfoP7fAxPlhecESgYnrc)，未实施修复，详见verify.md「C端推荐加购不展示」。
+
+> **2026-10-22 本轮仅改后端（C-03已完成）**：cart `bdba9e90` 兼容既有请求 `sellerId=null`，10项测试通过，流水线1309368部署dev-1新pod UP；原请求已返回status=0，7项接口验证通过且推荐数据与原基线一致。前端未修改。**上游另已查明：tangwen01当前CAS132658→employee8645正常，但旧教师记录仍status1，认证层按账号/类型取首条指向离职员工2994/CAS120805，student-center优先取旧CAS，promotion再拼出null；C-04按最新指示仅补教师启用状态筛选，已撤回直接返回登录CAS的改动；该筛选不能排除本例status1旧记录，上游身份问题仍未闭环，详见verify.md。**
 
 > **2026-10-22 CASE-108 增量修复**：退费分析卡的预测等级需跟随 `prediction` 开关。后端 `student-center 2cc0194a9` 已实现并通过7项测试，已部署test-gtbg-dev-1并真实接口回归；前端两处改法已给出、尚未修改，详见 [CASE-108 修复与前端改法](CASE-108-退费预测开关修复.md)。当前供用户查看的续班/退费页面与部门开关保持开启，待用户看完后再恢复临时配置。
 
@@ -67,7 +69,7 @@ tags: [需求]
 | | |
 |---|---|
 | 阶段 | **上线准备**（问卷匹配 + 调课同步 → 发布计划 23716，2026-10-13 起；见下「上线准备」） |
-| 进度 | T 15/15 · R 4/4 · C 2/3；本轮审计与 P0 编写完成，增量验收与确定缺陷修复进行中，不可直接放行 |
+| 进度 | T 15/15 · R 4/4 · C 2/4；本轮审计与 P0 编写完成，增量验收与确定缺陷修复进行中，不可直接放行 |
 | 部署泳道 | **`feature-xuban-match-opt` → `test-gtbg-dev-3`**（product-task / student-data / teacher-tool）；**`feature-xuban-expand-exclude` → `test-gtbg-dev-1`**（product-b / product / student-data / cart / student-center，2026-09-24 已迁完、均 eureka UP）。2026-09-24 用户定，两分支不再共用泳道 |
 | 当前卡点 | 上线准备：🔴 DDL 工单 **146826**（`gaotu.questionnaire_record` 加 `retry_count`，待审批，须先于 product-task）、🔴 MQ 工单 **90538**（PROD group `GID_student-data_renewal_questionnaire_transfer_prod`，实例 `gaotu`，待审批）均待 SRE 审批；teacher-tool-api `1.0.29` RELEASE 已发、两处 pom 已切 RELEASE 并 push；Apollo `renewal.questionnaire.transfer.consumer.group` 待 group 审批后配（未配会走测试组名默认值）。 |
 | 最近更新 | 2026-10-21：P0文档20条/53子场景及上线方案已写回；student-data f5540c121最新扩科空类型兼容修复32测通过、部署1308190已EurekaUP并7项实测通过；student-center 8cffd81c5已UP复验；promotions新版1308187已实际加载并页面必填/默认/保存回显通过。 |

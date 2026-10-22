@@ -7,6 +7,16 @@ tags: [需求, 验证]
 
 > 只保留当前可执行条件、仍有效数据和最新预期。
 
+## C 端推荐加购不展示（2026-10-22，只读定位）
+
+对象：test-gtbg-dev-1，学员 `7658127801`，大班续班计划 `585960797778243584`。原请求 `includeBCart=true&sellerId=null` 返回 status=0，但仅纯续语文、扩科英语两项；trace `0cefcfc7-3cb1-4908-a9bb-f4920961b621.0.3`。仅将 sellerId 改为员工ID `8645` 后，增加小班课 `586267768769386496`（高一、recommendType=3）；trace `4b3693a8-6532-4008-a88a-14cbfa1324dd.0.3`。sellerId 语义为 employeeId，不是 accountId 90247；上游错配原因见下节。
+
+`BCartFacadeImpl#listAdditionalPurchase(7658127801,8645)` 实查4项：小班课6004一项、组合商品51三项（SKU `584632626097291265`、`584458369312655361`、`584631715075588097`）；trace `cart_gaotu100_com.292.17926548626380069`。组合DTO三项均查到，且 combineClazzNumberList 全为空；子商品分别是会员卡8007+实物8010、三张会员卡8007、会员卡8007+实物8010；trace `cart_gaotu100_com.301.17926549279290078`。
+
+当前两个独立缺口：① includeBCart=true仍要求有效sellerId，否则大小班分支均跳过加购查询；字符串null兼容修复只保证参数能绑定，不恢复老师身份。② 大班 `RenewalService#convertCombineResultToDTO` 仅从组合的大班子班回查课程年级；这三项无子班，且加购无configuredGrade，最终resolveGrade=null→返回null被丢弃。实际是商品已查到、缺课程年级导致转换丢失，不能误记为SKU查不到或前端单独隐藏。
+
+用户本轮明确目标：B端加购的大班课、小班课、联报、组合商品及膨胀券应在C端推荐的加购区域展示。膨胀券8014在order已有SKU查询、限购及算价处理，cart续班推荐仍缺专用券转换和展示字段；已有预报名券页是独立链路，不代表推荐加购已支持。已在需求总入口下创建[产品确认稿](https://gaotuedu.feishu.cn/docx/RuYOdNkIfoP7fAxPlhecESgYnrc)并回读核验；独立加购区域、同科去重、券范围与数量规则待产品确认。无业务代码、配置或购物车数据变更。
+
 ## C 端购物车 sellerId 参数兼容（2026-10-22）
 
 本轮仅修改后端 cart，分支 `feature-xuban-expand-exclude` → `test-gtbg-dev-1`。trace `1d5b5869-e5ad-49e7-ae46-b9a2a3cf2caf.0.3` 对应 `/cart/web/renewal/cart?renewalNumber=585960797778243584&includeBCart=false&sellerId=null&p_client=1`；登录用户 `7658127801`，调用链未进入 RenewalService。直连同泳道同路径已复现 HTTP200、`status=5/error_info=参数异常`；使用原请求的登录上下文重放仍为 status=5，而省略 sellerId 返回 status=0。Spring MVC 实际参数解析测试修复前唯一失败点为 `NumberFormatException: "null"`，其余9项通过。
@@ -16,6 +26,14 @@ tags: [需求, 验证]
 | sellerId 字符串 null 兼容为未传 | 可选 Long 参数在 MVC 转换阶段失败 | MVC 真解析覆盖缺省、空串、null、合法数字；其他非法值与其他参数仍拒绝；部署后原请求成功 | cart `bdba9e90`，JDK8编译及10项MVC参数解析测试通过；流水线1309368部署dev-1，新pod Eureka UP，7项真接口验证通过 |
 
 **当前有效结果**：新 pod `cart-gaotu100-com-57dc9dcb6c-6kgxd`，commit `bdba9e90`，Eureka UP。复用原 trace 的测试学员登录上下文，调用同一 GET `/web/renewal/cart`：sellerId 字符串 `null` / 省略 / 空串 / 数字 `90247`（仅验证数字绑定）均 `status=0` 且响应 data 完全一致，也与修复前省略 sellerId 的 data 基线一致（保留纯续与扩科两类推荐）；`sellerId=abc`、Long 越界、`renewalNumber=null` 均仍为 `status=5/参数异常`。7项均命中新pod。原请求修复后 trace：`cart_gaotu100_com.292.17926514768370006`。本轮为后端接口验证，未修改或验证前端页面。AICR分支暂无评审任务，不记为评审通过。
+
+### C-04 student-center教师状态筛选（进行中）
+
+按用户最新指定，仅在 `getCasUidByLoginInfo` 的账号查询候选流增加 `status=1` 筛选；`TeacherInfoDO` 补教师状态字段，`TeacherServiceImpl` 从 `baseInfo.status` 映射。该状态为教师启用状态（0初始化、1启用、2停用），不是员工在离职状态。已撤回直接返回LoginInfo.casUid的改动，保留教师号优先、账号查询兜底及异常逻辑。前端不修改。
+
+验证范围：真实Feign/ACL/TeacherService链路覆盖停用记录排前、启用记录被选中，状态null/0/2/-1均不被选中、启用但CAS缺失时继续筛选、无教师记录保留业务异常。当前测试待执行；尚未提交、部署。
+
+此改动不等于tangwen01根因修复：旧教师仍status1，单加教师状态筛选无法排除其对应离职员工。原推荐和预报名appInfo基线4个链接均seller_id=null，不能写成筛选后应自动变8645；需另行处理员工身份一致性。
 
 ### tangwen01 上游身份核验（2026-10-22，测试环境，仅定位）
 
@@ -30,7 +48,7 @@ tags: [需求, 验证]
 | 映射对照 | base test真实 `/service/employee/queryId/byCasuid` 传 `[120805,132658]`，code0只返回 `132658→8645`；当前登录CAS映射正常 |
 | promotion | `PersonalLinkDomainService#groupUrl2` 查询空列表后取空对象employeeId=null，直接拼出seller_id=null；Cronus传回、mweb转名 |
 
-**结论**：这是“员工已离职但旧教师记录仍status1 + 认证层按账号/类型取首条、未限定当前员工 → student-center取到旧CAS → teacher-basic排除离职员工 → promotion未校验空值”的组合问题，不能记为当前登录CAS缺失员工映射。cart `bdba9e90` 仅完成消费端兼容；上游身份一致性和链接构造尚未修复。认证选值源码定位：`GHArch/arch-general-apisix-auth` deployed commit `3e1d691a`，`EmployeeAppService#loadTeacherInfo`（437行附近）；本地只读检出 `/tmp/tangwen-auth-source`。查询教师列表trace `teacher-basic_gaotu100_com.583.17926545680258941`，查询员工状态trace `teacher-basic_gaotu100_com.284.17926543443153319`。本轮未改业务代码、配置或身份数据。数字90247仅是前轮参数绑定验证输入，不是该老师employeeId；其当前employeeId为8645。
+**结论**：这是“员工已离职但旧教师记录仍status1 + 认证层按账号/类型取首条、未限定当前员工 → student-center取到旧CAS → teacher-basic排除离职员工 → promotion未校验空值”的组合问题，不能记为当前登录CAS缺失员工映射。cart `bdba9e90` 仅完成消费端兼容；C-04按最新指示仅补教师启用状态筛选，不改变CAS身份取值优先级；这不能消除本例旧教师status1的问题。promotion及认证服务本轮不修改。认证选值源码定位：`GHArch/arch-general-apisix-auth` deployed commit `3e1d691a`，`EmployeeAppService#loadTeacherInfo`（437行附近）；本地只读检出 `/tmp/tangwen-auth-source`。查询教师列表trace `teacher-basic_gaotu100_com.583.17926545680258941`，查询员工状态trace `teacher-basic_gaotu100_com.284.17926543443153319`。定位阶段未改业务代码、配置或身份数据。数字90247仅是前轮参数绑定验证输入，不是该老师employeeId；其当前employeeId为8645。
 
 ## CASE-108 第1步最新实测（2026-10-22）
 

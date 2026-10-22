@@ -220,3 +220,13 @@ Cronus补测走真实小班页面：唐稳01/tangwen01登录→清空续班计�
 |---|---|---|---|
 | C-03 | cart 兼容旧页面的 `sellerId=null` | 已完成 | cart `bdba9e90`，10测通过；流水线1309368部署dev-1新pod UP，7项真接口验证通过，推荐数据与修复前省略sellerId的基线一致。前端未修改；此项仅cart兜底，上游身份错配及promotion空值拼链待处理（见verify）。 |
 
+
+## 2026-10-22 链接生成身份修复
+
+| 编号 | 任务 | 状态 | 证据/要求 |
+|---|---|---|---|
+| C-04 | student-center教师状态筛选及上游身份问题 | 进行中 | 按用户最新指定仅补候选教师status=1筛选及字段映射，撤回LoginInfo.casUid优先返回改动；测试待执行，尚未提交部署。旧教师仍status1，此筛选不代表上游身份问题已闭环，详见verify.md。 |
+
+## 完成判据
+
+- C-04：当前改动限RenewalContentCommonSupport账号候选流status=1筛选、TeacherInfoDO及TeacherServiceImpl映射；真实Feign/ACL测试验证停用/初始化/缺省状态排除与正常启用选值，失败先查下游baseInfo.status及DO映射。原seller_id=null根因另需员工身份一致性修复并用tangwen01推荐/预报名appInfo验证，不能仅凭教师状态筛选标记闭环。
