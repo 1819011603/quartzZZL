@@ -24,7 +24,7 @@ tags: [需求, 日志]
 ## 2026-10-21（CASE-014 补齐：小班计划 → 排除大班在读）
 
 ### 🤖 Claude
-- **CASE-014 端到端补齐 + 实跑通过**（`test-gtbg-dev-1`）。补齐半成品小班计划 `dcg-小班扩科排除-计划`（`586116340522184704`，type=2）：① 扩科节点 `586116659463352321`(type=6) `ext_config.excludeMode=1`（⚠️ B端 `renewal/process/edit` **不落 excludeMode**，须直接写 `node_config.ext_config`）；② 扩科商品 grade 16→11（对齐后置年级，否则扩科恒空）；③ 学员 `7658127801` 向前置小班课下单（`orderItem 432249582456931136`，6004 已支付）。后置小班课 `18314034380997207` + 续班关系本已存在。
+- **CASE-014 端到端补齐 + 实跑通过**（`test-gtbg-dev-1`）。补齐半成品小班计划 `dcg-小班扩科排除-计划`（`586116340522184704`，type=2）：① 扩科节点 `586116659463352321`(type=6) `ext_config.excludeMode=1`（2026-10-20 当时 B端保存未落 excludeMode，曾直写数据库；2026-10-21 已验证 HTTP 保存 0/1，此旧现象不再代表当前版本，见 [[verify]] 2026-10-22 核对）；② 扩科商品 grade 16→11（对齐后置年级，否则扩科恒空）；③ 学员 `7658127801` 向前置小班课下单（`orderItem 432249582456931136`，6004 已支付）。后置小班课 `18314034380997207` + 续班关系本已存在。
 - **实跑**：读侧 `listOtherModeInReadSubjects(7658127801,2,2026,"C")=[5]` ✅；cart 7 参 `getRenewalDetail` excludeMode=1 → 扩科**只出英语**、**语文被排除** ✅，=0 → 语文恢复 ✅。与 CASE-001 对称。详见 [[verify]] / 飞书 CASE-014 段。
 - **坑（沉淀）**：cart 端到端须调 **7 参重载** `getRenewalDetail(...)`（`RenewalService:217`）才加载扩科配置；5 参重载（`:960`）不加载。product-server `listFeignMasterProcess` 只回 type=3 节点，扩科配置由 `buildCartAndExpandSubjectConfig` 单独拼。
 - 遗留：`计划2` / `1020扩科小班` 仍空壳，未动。

@@ -912,7 +912,7 @@ ES 实证（例）：`36396360685978240-7569543424`、`36396360685978240-7489636
 
 **复用/补齐**半成品小班计划 `dcg-小班扩科排除-计划`（`586116340522184704`，type=2，已发布）：
 - 前置小班课 `18314034380997173`（线上小班课-小学数学-0917-OP1，一年级/2026春，班 `586084334251927552`）；后置小班课 `18314034380997207`（一年级/2027暑，班 `586097025945298944`）——**续班后置关系本就存在**（course-center 续班关系，`calculateRenewalType=1`，产品侧 `listCoursesByPreCourseNumber` 可见，cart `getCourseExtensionByExtensionInfo` 同源）。
-- 扩科节点 `586116659463352321`(type=6)：`ext_config.excludeMode=1`。⚠️ **B 端 `renewal/process/edit` 不落 excludeMode**（只落 expandSubject/forceBuy/allowDuplicate，提交后 `allowDuplicate` 落库、`excludeMode` 被吞），须直接写 `node_config.ext_config`（CASE-001 同）。
+- 扩科节点 `586116659463352321`(type=6)：`ext_config.excludeMode=1`。**2026-10-20 历史现象**：当时 B 端 `renewal/process/edit` 未落 excludeMode，曾直接写 `node_config.ext_config`（CASE-001 同）；该结论不再代表当前版本，2026-10-21 已验证真实 HTTP 保存 0/1，见下文「2026-10-22 扩科节点配置与单字段修改入口核对」。
 - 扩科商品 `renewal_expand_subject_recommend`(node 586116659463352321)：**grade 16→11**（原配 grade16 与后置年级 11 不符 → `studentPostGrades` 不含 16 → 扩科恒空），subject4 英语→`585963404555053056`、subject5 语文→`585960755422160896`。
 - 学员 `7658127801` 向前置小班课下单+支付：`orderItem 432249582456931136` / payNumber `432249582456930624`（productType 6004，0 元已支付）。
 - 学员「大班在读」= 语文(5)@2026春（`dws_fuwu_clazz_user_subject`，clazz `585960582537144320`）。
@@ -996,3 +996,13 @@ ES 实证（例）：`36396360685978240-7569543424`、`36396360685978240-7489636
 最终平台结果：后端汇总81%、前端汇总97%，两项覆盖率门禁均通过。后端product92.11%、student-data81.44%、center83.43%、cart82.45%、order83.80%；前端promotions97.91%（39331）、cronus100%（7/7，39338）。全部为新报告实际值，未改阈值或业务排除。准出仍未执行，USER_CASE/ALARM等其他门禁不等于通过。按用户要求，无关历史告警不处理、不新增缺陷。
 
 Cronus补测走真实小班页面：唐稳01/tangwen01登录→清空续班计划→非续班期且不限本人→班级“测试触达”494625569468663808→学员5661436125“接口自动化测试”→下单，显示“缺少续班计划号，无法下单，请先选择续班计划”，不打开下单容器；两次均通过。完成后已恢复专用数学班、续班计划及7658127801，无订单/支付/购物车写入。
+
+
+### 2026-10-22 扩科节点配置与单字段修改入口核对
+
+- 对象：续班计划 `585960797778243584`，流程 `585963455406698496`；环境 `test-gtbg-dev-1`。通过 product-b ACL 桥只读调用 `com.gaotu.product.dao.old.NodeConfigDao#getByNumber`，两次响应 code=0。
+- 扩科节点 `585963455412989952`（type=6，id=797）实际 ext_config 为 `{"allowDuplicate":false,"excludeMode":1,"expandSubject":true,"forceBuy":false}`；购物车节点 `585963455448641536`（type=3，id=798）为 `{"excludeMode":0,"forceBuy":false}`。两份 extConfig 分属不同节点，值不一致不是配置冲突。
+- `RenewalServiceImpl#buildCartAndExpandSubjectConfig` 只从 type=6 节点取扩科 excludeMode；type=3 只取纯续 forceBuy。excludeMode=0 为无排除，1 为排除不同授课模式在读。`ProcessService#convertNodeConfigVO` 对缺失 excludeMode 的非空配置补 0，因此回显 0 也可能是默认值，但本次购物车节点实际存有 0。
+- 当前本地 feature-xuban-expand-exclude 中 NodeExtConfigVO 已声明 excludeMode，`ProcessService#mergeExistingExtConfig` 在请求未传 excludeMode 时保留旧值；2026-10-21 已有真实 HTTP 保存 0/1 的验证。2026-10-20 的“不落 excludeMode”仅为历史现象。
+- 在该分支 ProcessController 与青舟该分支接口清单中未发现仅修改 excludeMode 的专用业务 HTTP 接口。测试 ACL 桥可调用 `com.gaotu.product.dao.old.NodeConfigDao#updateByNumber(NodeConfig, Long)`，第一个参数只传 extConfig 字符串、第二个参数传目标扩科节点号；Mapper 为 updateByExampleSelective，未传的数据库列不更新。
+- 上述 DAO 更新会替换整个 ext_config 字符串，不会逐 key 合并；必须先读原 JSON，仅修改 excludeMode 并保留其余 key。不可只传 `{"excludeMode":1}`，也不能将其当作正式业务 API。流程 edit 还会处理 renewal_link 等关联，不适合当作字段级更新。此次仅核对读入口及源码，未调用写方法；扩科节点当前已为 1。
