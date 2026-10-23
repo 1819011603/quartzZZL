@@ -58,6 +58,8 @@ tags: [需求]
 
 ## 现在什么情况
 
+> **2026-10-23 C端页面验收发现缺口，T-18修复中**：券范围未渲染属于前端；切年级删除选择、组合productList只读6004导致信息丢失属于后端；前端同时漏传renewalNumber。用户已授权补后端，代码已写，正JDK8编译/测试，尚未部署。前端修复要求已写入对接文档第九节。新测试未支付订单432448477038903616已取消、order_status=3；原4条课程选择和购物车已恢复。
+
 > **2026-10-23 C 端加购后端改造与部分接口实测完成，人工验收未完成**：cart `1357f368`（含8014及独立6003）、order `5ab5476dfb` 已部署 dev-1，新Pod/Eureka UP。独立6003详情/大小班展示、券多范围、勾选隔离、新旧算价、确认页、生单取消与停售负向均有真实接口证据；JDK8编译及cart13项/order4项契约测试通过。前端文档已回填并回读，测试数据恢复。兼容旧前端与既有灰度。独立6003缺口已补齐；组合首子项和券范围两处PRD文字差异继续按用户明确口径实现，见 [待办-膨胀券C端8014适配.md](待办-膨胀券C端8014适配.md)；trace见 [[verify]]。验收用例已补至飞书P0的CASE-121～134（14条现场执行卡），支付/退款后signUp、同productId多SKU去重、独立限购边界、命中优惠、混合课程负向、页面与完整灰度矩阵仍待真实验收，不宣称全部通过。
 
 > **2026-10-22 本轮仅改后端（C-03已完成）**：cart `bdba9e90` 兼容既有请求 `sellerId=null`，10项测试通过，流水线1309368部署dev-1新pod UP；原请求已返回status=0，7项接口验证通过且推荐数据与原基线一致。前端未修改。**上游另已查明：tangwen01当前CAS132658→employee8645正常，但旧教师记录仍status1，认证层按账号/类型取首条指向离职员工2994/CAS120805，student-center优先取旧CAS，promotion再拼出null；C-04按最新指示仅补教师启用状态筛选，已撤回直接返回登录CAS的改动；该筛选不能排除本例status1旧记录，上游身份问题仍未闭环，详见verify.md。**
@@ -69,7 +71,7 @@ tags: [需求]
 | | |
 |---|---|
 | 阶段 | **上线准备**（问卷匹配 + 调课同步 → 发布计划 23716，2026-10-13 起；见下「上线准备」） |
-| 进度 | T 17/17 · R 4/4 · C 2/4；本轮审计与 P0 编写完成，增量验收与确定缺陷修复进行中，不可直接放行 |
+| 进度 | T 17/18 · R 4/4 · C 2/4；本轮审计与 P0 编写完成，增量验收与确定缺陷修复进行中，不可直接放行 |
 | 部署泳道 | **`feature-xuban-match-opt` → `test-gtbg-dev-3`**（product-task / student-data / teacher-tool）；**`feature-xuban-expand-exclude` → `test-gtbg-dev-1`**（product-b / product / student-data / cart / student-center，2026-09-24 已迁完、均 eureka UP）。2026-09-24 用户定，两分支不再共用泳道 |
 | 当前卡点 | 上线准备：🔴 DDL 工单 **146826**（`gaotu.questionnaire_record` 加 `retry_count`，待审批，须先于 product-task）、🔴 MQ 工单 **90538**（PROD group `GID_student-data_renewal_questionnaire_transfer_prod`，实例 `gaotu`，待审批）均待 SRE 审批；teacher-tool-api `1.0.29` RELEASE 已发、两处 pom 已切 RELEASE 并 push；Apollo `renewal.questionnaire.transfer.consumer.group` 待 group 审批后配（未配会走测试组名默认值）。 |
 | 最近更新 | 2026-10-21：P0文档20条/53子场景及上线方案已写回；student-data f5540c121最新扩科空类型兼容修复32测通过、部署1308190已EurekaUP并7项实测通过；student-center 8cffd81c5已UP复验；promotions新版1308187已实际加载并页面必填/默认/保存回显通过。 |

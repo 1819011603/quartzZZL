@@ -1181,3 +1181,10 @@ cart `12cba6a949b0021df8a346e9e789cc903fbcbff1`，流水线1311214，dev-1新pod
 - 待真实验收：正式C页面逐项操作；组合/券/6003有效支付及退款后的signUp；同productId多SKU去重；独立SKU限购边界；命中优惠；混合课程冲突/考试；完整旧前端/灰度矩阵。每条的准备条件、操作、预期、恢复及证据级别见对应case。
 - 前端对接文档已同步当前请求示例（长ID字符串、券无beforeCourseNumber、price用现有skuNumbers）、删除过时scopeList备选和已解决问题表述；验收入口互相链接。
 - 共享购物车90247不是旧CASE-115～120所写的仅1件；相关6条现场说明及恢复步骤已修正为执行前快照，禁止按历史假设清空其他用例数据。
+
+
+### C端正式推荐页复验（进行中，2026-10-23）
+
+- 用户截图为C端/suggestShoppingCart，本轮按121→124→125→126→127→128复验，页面与接口分别判定。
+- CASE-121：大小班真实GET均返回完整availableScope及10000分，trace243915bf-820e-4e4f-9304-7f75075b709a.0.3、44d44c71-ce9c-489a-a1c7-46e6d53d14cd.0.3；Chrome185/186实际卡片只显示学科/名称/价格，未渲染availableScope，页面验收失败。当前加载mweb master资源的CourseItem未识别券专用范围。
+- 切年级嫌疑链：实际页面handleGradeChange请求productList未带renewalNumber；随后onCacheGrade调用productSelectGrade，后端沿用按user+plan删除全部选择。待真实切换请求与DB前后对照完成后更新结论。
