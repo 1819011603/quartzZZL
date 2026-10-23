@@ -1086,3 +1086,15 @@ student-center `2cc0194a9` 在 `/roster/refund/analysis` 返回前，按 `predic
 - 年级对照：大班课程 `585960577856301056` `grades=[15]`（五年级，`courseCategory` 五年级）；学员小班班级年级 `grade_id` 为 `3`/`3`/`11`（课程 `18308368321085798`/`18308368321085803`/`18314034380997173`，`grades=[3]`/`[3]`/`[11]`，category 均为一年级）→ **与大班五年级无年级交集** → 小班在读科目算空；同年级小班组为空 → 无可比后置课程 → 续班小班科目也空。
 - ⚠️ 口径不一致：扩科排除实际用的 `RenewalInReadSubjectService#listOtherModeInReadSubjects` **只按同学年+学期过滤，不卡年级**，故数学仍被排除 —— 于是出现「花名册列不展示、但扩科确实排除了数学」。两处口径（展示卡年级 / 排除不卡年级）需确认哪个是期望；若期望花名册可见，测试小班应建成与大班同年级（或确认展示口径是否应放宽到只按学年+学期）。
 - 定性：**测试数据年级不一致**（大班五年级 vs 小班一年级）导致的展示为空；非 ES/回溯问题（该字段走 DQ 实时计算，不走 ES）。未改任何代码/数据。
+
+
+### 2026-10-23 TAPD#1122531521001483882 扩科推荐「B端管理页与C端/下单读口径不一致（node 隔离）」
+
+- 工单：`续班扩科推荐-扩科商品配置未按节点(nodeNumber)隔离，管理页面显示0条但推荐接口仍返回`（reporter 唐稳，owner 张泽灵，`线下问题/服务端`，环境 `test-gtbg-dev-1`，分支 `feature-xuban-expand-exclude`）。
+- 代码核对（product-server，本分支仅加 excludeMode；该不一致在 `origin/release` 已存在，**非本分支引入**）：
+  - 读侧（cart / `/b/renewMaster/recommendProductList` 经 C feign `listRenewalWithProcessByNumber`）`RenewalServiceImpl#buildCartAndExpandSubjectConfig` 第 2924 行用 `selectByRenewalNumber(renewalNumber)` —— **只按计划号，忽略 node_number**。
+  - 管理页 `ExpandSubjectServiceImpl#list:73`、节点回显 `ProcessService#convertNodeConfigVO:1179` 用 `selectByNodeNumber(nodeNumber)` —— **按节点**。
+  - 写侧 `expandSubject/add`（`ExpandSubjectServiceImpl#add`）只校验节点存在，**不校验 `type=6`，也不校验节点属于本计划**。
+- 数据核对：test 计划 `586333423417849856` 的 2 条记录挂在 **type=3 购物车节点** `586333640670214145`，而 type=6 扩科节点 `586446512379162624` 下 0 条 → 管理页 0 条、但 cart/recommend 仍出 2 条（初二物理 `586333286253586432`/初二化学 `586333327565383680`）。生产/测试存量：**prod 15 条全部挂 type=6（5 计划）**；test 45 条 type=6 + 仅该计划 2 条 type=3。
+- 正常路径不可复现：FE（`gaotu-fe-promotions` `ExpandSubject/*`，`services/expandSubject.js`）nodeNumber 明确取自 `process/list` 返回的 `nodeConfigs[type=6].nodeNumber`，AddDrawer/ManageDrawer 均用该值；工单复现是测试用接口把记录写到了 type=3 节点。
+- 定性：**代码层面确为「读/管两条口径不一致」的真实缺陷**（建议修）；但按 UI 正常操作不可触发，属健壮性/一致性缺口，**非现网事故**（prod 均挂 type=6）。修法：读侧 `selectByRenewalNumber` → `selectByNodeNumber(node.getNumber())`（与 `list` 对齐）；可选加固 `add/delete` 校验节点 `type=6`。归属 product-server。<br>以上为只读诊断，未改任何代码/数据。
