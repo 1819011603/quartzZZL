@@ -58,7 +58,7 @@ tags: [需求]
 
 ## 现在什么情况
 
-> **2026-10-23 C端页面验收发现缺口，T-18修复中**：券范围未渲染属于前端；切年级删除选择、组合productList只读6004导致信息丢失属于后端；前端同时漏传renewalNumber。用户已授权补后端，代码已写，正JDK8编译/测试，尚未部署。前端修复要求已写入对接文档第九节。新测试未支付订单432448477038903616已取消、order_status=3；原4条课程选择和购物车已恢复。
+> **2026-10-23 新增跨年级记忆已撤回，原行为真实复验通过**：cart 91964dcd已部署dev-1（流水线1311910，新Pod/Eureka UP）；JDK8全仓编译及17项测试通过。同年级课程/券保存、取消券不影响课程、切年级清空、切回不恢复、组合详情真实HTTP通过；原另一计划4条选择保持不变，年级恢复16。保留原8014适配及组合详情修复；前端文档已撤销记忆参数/全局跨年级清单要求，CASE-126按原行为验收。页面其他展示与生单超时仍待前端验证。
 
 > **2026-10-23 C 端加购后端改造与部分接口实测完成，人工验收未完成**：cart `1357f368`（含8014及独立6003）、order `5ab5476dfb` 已部署 dev-1，新Pod/Eureka UP。独立6003详情/大小班展示、券多范围、勾选隔离、新旧算价、确认页、生单取消与停售负向均有真实接口证据；JDK8编译及cart13项/order4项契约测试通过。前端文档已回填并回读，测试数据恢复。兼容旧前端与既有灰度。独立6003缺口已补齐；组合首子项和券范围两处PRD文字差异继续按用户明确口径实现，见 [待办-膨胀券C端8014适配.md](待办-膨胀券C端8014适配.md)；trace见 [[verify]]。验收用例已补至飞书P0的CASE-121～134（14条现场执行卡），支付/退款后signUp、同productId多SKU去重、独立限购边界、命中优惠、混合课程负向、页面与完整灰度矩阵仍待真实验收，不宣称全部通过。
 
@@ -71,7 +71,7 @@ tags: [需求]
 | | |
 |---|---|
 | 阶段 | **上线准备**（问卷匹配 + 调课同步 → 发布计划 23716，2026-10-13 起；见下「上线准备」） |
-| 进度 | T 17/18 · R 4/4 · C 2/4；本轮审计与 P0 编写完成，增量验收与确定缺陷修复进行中，不可直接放行 |
+| 进度 | T 18/18 · R 4/4 · C 2/4；本轮审计与 P0 编写完成，增量验收与确定缺陷修复进行中，不可直接放行 |
 | 部署泳道 | **`feature-xuban-match-opt` → `test-gtbg-dev-3`**（product-task / student-data / teacher-tool）；**`feature-xuban-expand-exclude` → `test-gtbg-dev-1`**（product-b / product / student-data / cart / student-center，2026-09-24 已迁完、均 eureka UP）。2026-09-24 用户定，两分支不再共用泳道 |
 | 当前卡点 | 上线准备：🔴 DDL 工单 **146826**（`gaotu.questionnaire_record` 加 `retry_count`，待审批，须先于 product-task）、🔴 MQ 工单 **90538**（PROD group `GID_student-data_renewal_questionnaire_transfer_prod`，实例 `gaotu`，待审批）均待 SRE 审批；teacher-tool-api `1.0.29` RELEASE 已发、两处 pom 已切 RELEASE 并 push；Apollo `renewal.questionnaire.transfer.consumer.group` 待 group 审批后配（未配会走测试组名默认值）。 |
 | 最近更新 | 2026-10-21：P0文档20条/53子场景及上线方案已写回；student-data f5540c121最新扩科空类型兼容修复32测通过、部署1308190已EurekaUP并7项实测通过；student-center 8cffd81c5已UP复验；promotions新版1308187已实际加载并页面必填/默认/保存回显通过。 |

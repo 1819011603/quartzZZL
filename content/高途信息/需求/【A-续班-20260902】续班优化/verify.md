@@ -1187,4 +1187,17 @@ cart `12cba6a949b0021df8a346e9e789cc903fbcbff1`，流水线1311214，dev-1新pod
 
 - 用户截图为C端/suggestShoppingCart，本轮按121→124→125→126→127→128复验，页面与接口分别判定。
 - CASE-121：大小班真实GET均返回完整availableScope及10000分，trace243915bf-820e-4e4f-9304-7f75075b709a.0.3、44d44c71-ce9c-489a-a1c7-46e6d53d14cd.0.3；Chrome185/186实际卡片只显示学科/名称/价格，未渲染availableScope，页面验收失败。当前加载mweb master资源的CourseItem未识别券专用范围。
-- 切年级嫌疑链：实际页面handleGradeChange请求productList未带renewalNumber；随后onCacheGrade调用productSelectGrade，后端沿用按user+plan删除全部选择。待真实切换请求与DB前后对照完成后更新结论。
+- 原有勾选行为已确认：origin/release e6bf1241 的 RenewalService#productSelectConfirm 仅处理有 beforeCourseNumber 的旧商品；#productSelectGrade → RenewalDataService → repository.delete 按 user+renewalNumber 清空全部操作。旧前端 handleGradeChange 调 productList 替换当前列表，再 onCacheGrade 清空后端；原 productList 不读取选择表。既有实测清空 trace 0d632b2e-7c55-4284-8d32-31c1c5eb7f7f.0.3。没有跨年级记忆，按用户指示不新增。
+- 前端反馈当前已增加无选中项时清空 payList，符合仅当前年级结算；用户提供的 /Users/linn 路径不在本机，尚未独立核验其最新代码。券共用SKU选择键不代表可绕过年级切换清空；preserveSelection 是33711ae0新加字段，不能当作历史能力。91964dcd已移除新增字段/通用SKU记忆并部署dev-1；JDK8全仓编译及17项测试通过。
+
+### 撤回新增记忆后的最终验证（2026-10-23）
+
+- cart 91964dcd，流水线1311910，新Pod cart-gaotu100-com-597d7fd948-x68mj / 10.218.251.153，Eureka UP后执行真实C端HTTP，全部status=0；order未改动。
+- 同年级课程与券select均1：trace `8e92b9dc-b933-4bc7-806a-51881ad2ccc3.0.3`。
+- 取消券后课程仍1、券0：trace `260198d7-e660-41b2-893b-ad478a677b9f.0.3`。
+- 切年级按user+plan清空：trace `550efc0b-3e9d-4329-8382-983ca3d9385b.0.3`。
+- 切回原年级旧勾选均0：trace `f2879bf7-19e2-43cc-bb28-df9b0beaf56f.0.3`。
+- 已撤销保留参数不再生效：trace `29153d2e-b60c-4d38-aede-b04a1fba00e0.0.3`。
+- 组合混合子项与仅6003详情正确：trace `20adabd9-a3ca-4554-a961-cd84b19e3bb1.0.3`。
+- 纯其他组合过滤：trace `39e1d620-5a7c-4f6f-a19b-0c0681201b2e.0.3`。
+- 无前置课51/6003沿用原早退，没有新增选择记录；另一计划原4条选择逐字段比对不变，测试课程/券选择已清理，年级恢复16。未动教师购物车、未生单/支付。前端文档删除新增记忆契约，CASE-126验证同年级保存/取消及切年级清空；付款只来自当前年级。
