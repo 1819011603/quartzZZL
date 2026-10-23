@@ -1127,3 +1127,13 @@ student-center `2cc0194a9` 在 `/roster/refund/analysis` 返回前，按 `predic
 - `POST /bgwApi/orderComponent/b/cart/addCart`（order-b；header `b_client: OES`）—— 老师为学员加购
   - body：`{"userId":<学员>,"accountId":<二讲 accountId>,"productList":[{"productNumber":"<券SKU/组合SKU>","productType":<8014/51/...>,"quantity":1}]}`；⚠️ **大数字 productNumber 必须传字符串**（否则精度截断）。
 - 加购商品查询（反射桥）：`com.gaotu.facade.bcart.BCartFacadeImpl#listAdditionalPurchase(userId, sellerId)`。
+
+
+### 2026-10-23 TAPD#1122531521001483911 扩科排除 excludeMode=1「未排除物理」——核查为**造数问题**
+
+- 工单现象（`test-gtbg-dev-1`，分支 `feature-xuban-expand-exclude`）：计划 `586478827253954560`（节点 `586479612247175168` ext_config.excludeMode=1）候选 初二化学/初二物理，学员 `7658131792` 小班"在读"初二物理，cart 未排除物理。traceId `c3da9429-3298-47d6-adfe-84254e72f9f7.0.3`。
+- 配置核对 OK：`gaotu.node_config` 586479612247175168 = `{"excludeMode":1,"expandSubject":true,...}`；`gaotu.renewal_expand_subject_recommend` 2 条 → subject **2**/product 化学 `586333327565383680`、subject **6**/product 物理 `586333286253586432`（物理=6 正确）。
+- 排除读侧实调（ACL 桥 student-data，dev-1）：`RenewalInReadSubjectService#listOtherModeInReadSubjects(7658131792, 1, 2026, "C")` = **`[4]`**。
+- 小班在读行（`ees_data.dws_small_clazz_user_subject`，该学员仅 1 行）：clazz `586478070328846336`（`dcg-G001-小班-初二物理-S2clean`）、year 2026/term **1**（CES，=OES C）、**subject_id=4**。计划前置 3 课（`586478949184432128/…949184432128…`）均为 2026 C → 学年学期匹配无误。
+- 该小班课在 course-center `subjects=[4]`、品类=语文(1010)；**真实小班物理课**（`458397534824491008`「初二物理」、`579394671130843136`「高中物理」）`subjects=[6]`；全表 `subject_id=6`(物理) 有 206 行 → 小班在读表用 **OES 科码、物理=6**。
+- **结论**：排除逻辑/配置/链路均正确——读到的「其它模式在读」是 subject 4，与候选 {2 化学, 6 物理} 无交集 → 不排除，cart 输出物理+化学与代码一致。**根因是造数：该小班课 course-center `subjects=4`（非物理 6）**，需修正/重建该小班课 subject=物理(6) 后复测；product-server / student-data 无需改代码。未改任何数据。
