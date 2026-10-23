@@ -36,7 +36,7 @@ tags: [需求, 链接]
 | TAPD | 迭代「【A-续班-20260902】续班优化」id `1122531521001014934`（workspace `22531521`；我的任务按第二批排期对齐） | https://www.tapd.cn/tapd_fe/22531521/iteration/card/1122531521001014934 | 2026-10-12 |
 | case | | | |
 | MR | | | |
-| 接口文档 | | | |
+| 接口文档 | 小班续班优化：膨胀券 C 端接口对接说明（组合/6003/8014；已撤回新增跨年级记忆，保持原勾选行为；待验项见P0） | https://gaotuedu.feishu.cn/wiki/GCIvwipSYiJKVrk8ESmc9qrKn7c | 2026-10-23 |
 
 ## 上线
 
