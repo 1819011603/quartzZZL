@@ -1201,3 +1201,52 @@ cart `12cba6a949b0021df8a346e9e789cc903fbcbff1`，流水线1311214，dev-1新pod
 - 组合混合子项与仅6003详情正确：trace `20adabd9-a3ca-4554-a961-cd84b19e3bb1.0.3`。
 - 纯其他组合过滤：trace `39e1d620-5a7c-4f6f-a19b-0c0681201b2e.0.3`。
 - 无前置课51/6003沿用原早退，没有新增选择记录；另一计划原4条选择逐字段比对不变，测试课程/券选择已清理，年级恢复16。未动教师购物车、未生单/支付。前端文档删除新增记忆契约，CASE-126验证同年级保存/取消及切年级清空；付款只来自当前年级。
+
+## 2026-10-23 晚 后端接口逐条复验（CASE-121/123/124/125/126/127/129/132/134）
+
+> 本轮只动接口，未造数据、未建订单、未改商品/活动；共享选择表仅经 `productSelectConfirm`/`productSelectGrade` 正规接口写入并已恢复。执行前重新核对 dev-1 实际版本。
+
+**环境核对（2026-10-23 19:1x）**：dev-1 实际运行 cart `91964dcd`（pod `cart-gaotu100-com-597d7fd948-x68mj` / `10.218.251.153`，Eureka UP）、order `5ab5476d`（pod `order-gaotu100-com-7f8f5c6c67-9l2fq` / `10.218.250.93`，Eureka UP），与记录一致。另发现 base `test` 组 cart pod `...5cf59d89d6`（`trafficEnv=test`、2026-10-13 启动）为主干组、非 dev-1，已排除。
+
+**cart（反射桥 `com.gaotu.renewal.*`，泳道 `test-gtbg-dev-1`，无登录态）**
+
+| CASE | 结论 | trace |
+|---|---|---|
+| 121 大班GET | 券A `availableScope=六年级语文`、price=10000、canChangeCourse=false、无教师/时间/课次字段；组合51展示 | `cart_gaotu100_com.297.17927538275060035` |
+| 121 小班GET | 券B `availableScope=一年级数学`、price=10000、canChangeCourse=false | `cart_gaotu100_com.299.17927538391530032` |
+| 123 组合 | 混合组合`579426174109902848`（大班+小班）、仅含小班`402910767185154048`均在C端展示；纯其他组合`584632626097291265`**不展示** | 同上两条GET |
+| 124 混合详情 | productList(小班; 6003+6004+8014) 类型分别保留 6003/6004/8014，价格 1000/0/10000分 | `cart_gaotu100_com.297.17927544962350043` |
+| 125 带/不带计划 | 带 renewalNumber→范围+选择态；不带→名称/价正常、范围空、select0、不报必填错 | `...303.17927544894630037` / `...304.17927544905960041` |
+| 126 勾选 | 选券A→select1（DB `front_course_number=-SKU`、`clazz_number=0`）；重复勾选幂等（仍1行）；取消→行删除；切年级`productSelectGrade`→**本计划选择清空(0)、另一计划4条不变**；grade恢复16 | `...301.17927546757020042`/`303.17927546807680041`/`304.17927546900460045`/`296.17927547000790040`/`298.17927547181520042`/`296.17927547294570042` |
+| 127 算价 | 新`skuNumbers`=10000；旧`clazzNumbers`=10000；同SKU两桶=10000；`skuNumbers`重复=10000；课程(0分)+券=10000；totalDiscount均0 | `...295/298/296/300/302.17927545...` 系列 |
+| 132 课程兼容 | 普通课程 productType2 预检 status0；课程+券 status0 | `order_gaotu100_com.467.17927550770270037` / `...465.17927550777230036` |
+| 134 纯券跳过课程校验 | 纯券 force 预检 status0（不要求班级/课时） | `order_gaotu100_com.442.17927548700410035` |
+| 129 限购正向/负向 | 券数量1预检 status0；数量2→status1「已购买过此商品，请勿重复购买」 | `order_gaotu100_com.442.17927548700410035` / `...433.17927548767010036` |
+| — 6004+券 | 预检 status0 | `order_gaotu100_com.469.17927550785820037` |
+
+- **数据漂移提示（非代码缺陷）**：`402910767185154048` 现返回 name=`2222`、subject=`成人`、price=2（文档早期描述为"只含小班6003组合"）；混合组合与纯其他过滤行为与实现一致，属共享数据被改。
+- order 服务**未挂 acl 反射桥**，Bean 走不通；改用内部 Feign `invoke_feign ORDER.GAOTU100.COM /feignOrderInfo/batchCanCreateOrderForAtom`（容器直连、无 CAS）。C端 `web/order/batch/createOrder` 需学员 `sid`，无登录态不可复现。
+
+**生单（B）实数**：从上一轮真实 createOrder 记录 trace `order_gaotu100_com.434.17927407804790005` 读回：HTTP `/web/order/batch/createOrder` 端到端 **3245ms**、statusCode 0、无异常 span；核心 `BatchCreateOrderFacade` ~3201ms，内部热点 `BatchOrderPreviewService#getCalculatePromotionRequest` 842ms、`PromotionHistoryService#getHistoryOrderByUserIdFromRedis` 696ms、`tj-activity` 消费 636ms。**后端成功生单且 <5s，但仅余 ~1.7s 余量**；前端（mweb）全局 `$axios.defaults.timeout = 5000`（`base/plugins/axios.js:81` 等），`ERR_ABORTED` 为前端 5s 超时中断，非后端失败。
+
+**本轮未能复验（明确待验，不标通过）**
+
+- CASE-128 生单+取消、CASE-130 支付/退款后 signUp：无学员登录态；内部原子入口 `batchCreateOrderForAtom` 用最小 cmd 返回 status1「创建订单失败！」（`BatchCreateOrderFacade:464` 包装，根因未在可查询日志中定位；该入口非 C 端链路）。C端仍只有上轮 HTTP 证据（主单`432448477038903616`/`432439620802707776` 已取消）。
+- CASE-122 同券多年级/多学科、CASE-131 同productId多SKU去重：当前共享数据未呈现该前置（券A仅六年级语文、券B仅一年级数学），需恢复多范围/重复券数据后验，本轮未造。
+- CASE-133 命中优惠、CASE-134 真实课程时间冲突/分层考试负向：无适用活动/冲突样本，未命中即不能判通过。
+- CASE-129 独立SKU单次/个人上限、全退、不限购边界：仍仅有 4 项契约测试，无真实接口边界样本。
+
+**前端（附带核查，按用户指示本轮不处理前端）**：`gaotu-mweb` 仓 `release`/`master`（2026-10-22）及所有相关分支**均未包含本需求前端改动**——`business/pages/suggestShoppingCart/utils/index.js#getProductsTotalPrice` 只认 23/51/6004，8014/6003 落入 `clazzNumbers`；`CourseItem.vue` `showTag` 仅判 23、`isSmallClass` 不含 6003、无 `availableScope` 渲染；`index.vue#handleGradeChange` 仅在 `checkHasDefaultSelect()` 为真时经 `getPresent()` 重建 payList，无勾选时不清空（残留风险）。`/Users/linn` 为同事本机路径，本机不存在。
+
+**CASE-122 同券多范围（修正结论：可以，已实测跨年级通过）**：一张券可挂多个 `(grade_code,subject_code)` scope 行，cart 逐年级各产出一行。机制：`PreOrderCouponIntersectService.intersect(计划绑定活动, 学员可达后置课程)` 决定命中（券范围的「年级+学科」须落在该学员前置换出的后置课程年级学科对集合内）。本轮实测：临时把活动 `578667303502106624` 的 `(11,1)` 范围行指向券A `578323391191220225`（原本被券B占用），同一张券A 在小班显示「一年级数学」、在大班显示「六年级语文」——**同券跨年级成立**。trace：小班 `cart_gaotu100_com.299.17927559535350059` / `cart_gaotu100_com.300.17927559541690056`、大班 `cart_gaotu100_com.297.17927559771800062`、productList `cart_gaotu100_com.299.17927559788590061`（同SKU仅1条）。**同年级多学科**（六年级数学+语文）因该计划无 grade16 数学 后置课不命中，待验（非代码缺陷）；共享活动行已还原为原 4 行（大班券A/六年级语文、小班券B/一年级数学），读回确认。**CASE-131 第1条已通过**：大班 grade16 分组内课程(语文,type2)与券A(8014,语文)同年级同学科并存，券未被课程年级学科去重剔除。同 productId 多 SKU 去重仍待验。
+
+**飞书 P0 已回填并订正**：`WpNuwpXLqi5JsskcmXFcwT2dnkg`（docx `KbCWdw4HaoFNcAxVunScnhRZnAk`）顶部「2026-10-23新增」段与补录段已写入本轮结论；随后订正了初稿中「CASE-122 不可复现」的错误结论（一张券可多年级范围，跨年级已实测通过），读回 revision 224。未改其它 CASE 原文。
+
+**C 端真实页面复验（Chrome DevTools，2026-10-23 晚，泳道已正确）**：打开大班页 `test-m.gaotu.cn/suggestShoppingCart?renewalNumber=585960797778243584&seller_id=8645&p_client=1&includeBCart=true`。cart 响应含 **券A 8014（`availableScope=六年级语文`）/组合51**；页面实测：
+- **六年级分组券卡片只渲染「券名 + 售价 100.00」、无「更换课程」→ `availableScope` 未渲染**（后端有、前端未显示）。**CASE-121 页面判定不通过**。
+- 51 组合卡片显示「学科标签 + 教师 + 时间 + 课次」，**无「组合商品」标识**（`showTag` 仅 23）。
+- 6003 卡片（seller8597 / page187）显示名称 `zc-线下--复制的room2` + 10.00，正常。
+- 勾选券后合计 1 门 ¥100.00；**切年级到「一年级」后合计清 0、无跨年级残留**（付款只来自当前年级）。
+结论：**页面级 CASE-121 不通过（缺 availableScope）**；51 组合标识缺失；其余（6003、切年级清空）页面层面 OK。需前端 `CourseItem.vue` 适配（`availableScope`/51 `showTag`/6003 `isSmallClass`）。浏览器临时 header 已清除。
+
+（附：**更正**——此前一次页面复验因页面临时未挂泳道、`traffic-env: test` 打到默认集群而无券，属**环境路由问题**，非后端/前端结论；泳道正确后券与组合均返回。）
