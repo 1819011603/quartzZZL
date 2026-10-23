@@ -1110,7 +1110,7 @@ student-center `2cc0194a9` 在 `/roster/refund/analysis` 返回前，按 `predic
   - 券：年级/学科取 `listDisplayableCoupons(renewalNumber,userId)` 命中行、名称/售价取单品；同一商品(productId)去重、不参与(年级,学科)去重。
 - 测试数据（test，已回读）：`renewal_pre_order_activity_coupon_scope` 券范围行 `is_del` 置 0；计划补预报名流程并绑活动 `578667303502106624`（`process_config type=3`+`node_config type=4`+`renewal_link_activity`）；小班补「一年级·数学」券范围行；**`gaotu.coupon_expand_config` 3 张券 `sale_status` 1→2 + `sale_end_time` 延后**（B 端出券关键）。
 - 接口实测：B 端 `POST /bgwApi/component/student-center/renewal/pre/coupon/list`（大班/小班各 `total=1`、使用中+售卖中）；加购 `POST /bgwApi/orderComponent/b/cart/addCart`(8014)；C 端 `GET /cart/web/renewal/cart`（大班 grade16 券「六年级语文」、小班 grade11 券「一年级数学」，`recommendType=3`、未被去重）。纯其他组合（会员卡/实物）已按规则过滤不展示。
-- 边界：组合「含课程子项」正向用例 —— 组合 `579426174109902848`（「组合大班课+小班课」，含大班课子班 `579423901640169472`）加入购物车后 **C 端已展示**（grade 11、`productType=51`、`recommendType=3`、数学，年级取首个子项）；纯其他组合已验证被过滤。B/C 页面 UI 未逐页点击。
+- 边界与验证状态：组合「含课程子项」正向已实测 —— 组合 `579426174109902848`（大班课子班）在**大班**展示；组合 `402910767185154048`（**只含小班课子项 6003**）也在 C 端展示 → 证明小班课子商品(6003/6004)读取生效（`9bfb6fea` 放开 6003+6004）。纯其他组合已验证被过滤。**未实测**：加购项「已报名」signUp（代码已加、仅小班路径 context builder，未造已购订单；大班路径加购 signUp 仍为 0）、券「同一商品去重」（商品级去重共用，无重复券数据可触发）。B/C 页面 UI 未逐页点击。
 
 ### 加购相关接口清单（test-gtbg-dev-1）
 
