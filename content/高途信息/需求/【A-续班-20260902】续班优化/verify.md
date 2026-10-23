@@ -1106,11 +1106,34 @@ student-center `2cc0194a9` 在 `/roster/refund/analysis` 返回前，按 `predic
 - cart 改动（`feature-xuban-expand-exclude` → `test-gtbg-dev-1`）：
   - `75507a43` 大班路径 `RenewalService#convertResultToClazzDetailDTO` 增 `productType=8014` 分支；
   - `334fa126` 小班路径 `#convertToRenewalCartVO` 增 8014 分支；
-  - `6b988e9e` 组合商品转换（大班/小班）子项 = 大班课子班(`combineClazzNumberList`) + 小班课子商品(`combinedSingleProductDtoList` 中 `productType=6004`，skuNumber 即班级号)；**纯「其他商品」组合过滤不展示**；展示年级/学科取**首个子项**（对齐联报）；新增 `PurchasedAdditionalPurchaseSkuSubBuilder`(order=97) 单独查加购商品(券/组合)有效订单填 `purchasedAdditionalPurchaseSkuNumbers` 供加购项 signUp，**不动**既有 `purchasedPostClazzSkuNumbers`。
+  - `6b988e9e` 组合商品转换（大班/小班）子项 = 大班课子班(`combineClazzNumberList`) + 小班课子商品(`combinedSingleProductDtoList` 中 `productType=6003/6004`，skuNumber 即班级号)；**纯「其他商品」组合过滤不展示**；展示年级/学科取**首个子项**（对齐联报）；新增 `PurchasedAdditionalPurchaseSkuSubBuilder`(order=97) 单独查加购商品(券/组合)有效订单填 `purchasedAdditionalPurchaseSkuNumbers` 供加购项 signUp，**不动**既有 `purchasedPostClazzSkuNumbers`。
   - 券：年级/学科取 `listDisplayableCoupons(renewalNumber,userId)` 命中行、名称/售价取单品；同一商品(productId)去重、不参与(年级,学科)去重。
 - 测试数据（test，已回读）：`renewal_pre_order_activity_coupon_scope` 券范围行 `is_del` 置 0；计划补预报名流程并绑活动 `578667303502106624`（`process_config type=3`+`node_config type=4`+`renewal_link_activity`）；小班补「一年级·数学」券范围行；**`gaotu.coupon_expand_config` 3 张券 `sale_status` 1→2 + `sale_end_time` 延后**（B 端出券关键）。
 - 接口实测：B 端 `POST /bgwApi/component/student-center/renewal/pre/coupon/list`（大班/小班各 `total=1`、使用中+售卖中）；加购 `POST /bgwApi/orderComponent/b/cart/addCart`(8014)；C 端 `GET /cart/web/renewal/cart`（大班 grade16 券「六年级语文」、小班 grade11 券「一年级数学」，`recommendType=3`、未被去重）。纯其他组合（会员卡/实物）已按规则过滤不展示。
-- 边界与验证状态：组合「含课程子项」正向已实测 —— 组合 `579426174109902848`（大班课子班）在**大班**展示；组合 `402910767185154048`（**只含小班课子项 6003**）也在 C 端展示 → 证明小班课子商品(6003/6004)读取生效（`9bfb6fea` 放开 6003+6004）。纯其他组合已验证被过滤。**未实测**：加购项「已报名」signUp（代码已加、仅小班路径 context builder，未造已购订单；大班路径加购 signUp 仍为 0）、券「同一商品去重」（商品级去重共用，无重复券数据可触发）。B/C 页面 UI 未逐页点击。
+- 边界与验证状态：组合「含课程子项」正向已实测 —— 组合 `579426174109902848`（大班课子班）在**大班**展示；组合 `402910767185154048`（**只含小班课子项 6003**）也在 C 端展示 → 证明小班课子商品(6003/6004)读取生效（`9bfb6fea` 放开 6003+6004）。纯其他组合已验证被过滤。**未实测**：加购项「已报名」signUp（大小班代码均已补齐按加购 SKU 查询，未造支付订单验已购）、券「同一商品去重」（商品级去重共用，无重复券数据可触发）。B/C 页面 UI 未逐页点击。
+
+### 本轮新增接口验证（2026-10-23）
+
+cart `12cba6a949b0021df8a346e9e789cc903fbcbff1`，流水线1311214，dev-1新pod UP；JDK8全仓编译成功、6项TestNG测试通过。order `5ab5476dfb`补齐canCreate券上下文、prepare券限购量；JDK8全仓编译及4项JUnit测试通过，流水线1311467构建成功，指定5ab镜像发布后等待新pod UP。
+
+真实 HTTP 使用学员7658127801有效sid，lane请求头 dev-1；大班计划585960797778243584/券578323391191220225，小班计划586116340522184704/券578323085464207361，sellerId8645。认证材料不入归档。
+
+| 场景 | 实测结论 | trace |
+|---|---|---|
+| 大班/小班GET加购 | 券名、范围、10000分、canChangeCourse=false | cart_gaotu100_com.298.17927404377750025 / cart_gaotu100_com.301.17927404417930026 |
+| productList带计划 | 正确范围与券详情 | cart_gaotu100_com.302.17927404412010024 / cart_gaotu100_com.303.17927404434110026 |
+| productList旧请求无计划 | 名称售价正常；无范围、select0 | cart_gaotu100_com.304.17927404439610028 |
+| 同券跨两个年级 | 大小班每个命中年级各1行；真实范围一年级数学、六年级语文 | cart_gaotu100_com.299.17927392875480013 / cart_gaotu100_com.301.17927392895120014 |
+| 新skuNumbers/旧clazzNumbers/跨桶重复 | totalPrice均10000，不重复计价 | cart_gaotu100_com.305.17927404441640025 / cart_gaotu100_com.307.17927404467640027 / cart_gaotu100_com.299.17927404476900028 |
+| 课程+券算价 | 课程0分、券10000分，总价10000；discount0 | cart_gaotu100_com.298.17927404486510027 |
+| 券选择、重复提交、取消另一券隔离 | 选中券仍select1；取消后0；原4条课程选择不变 | cart_gaotu100_com.303.17927404505550028 / cart_gaotu100_com.305.17927404513200027 / cart_gaotu100_com.301.17927404539760030 |
+| fullGive/validateNew | 8014商品保留，status0；无满赠数据 | promotion-app_gaotu100_com.96023.17927393454000426 |
+| prepare | 返回券名/8014/10000分 | order_gaotu100_com.417.17927404429440004 |
+| createOrder | 主单432439620802707776，子项432439620802708288，8014、10000分；DB与订单事件核实。客户端响应中断未保存 | order_gaotu100_com.434.17927407804790005 |
+| 测试订单清理 | 未支付，取消接口status0，DB状态3 | order_gaotu100_com.453.17927413243960006 |
+| 独立6003需求核对 | 有效单品SKU401085548055267328传productType6003，productList返回空；组合内6003支持不代表独立路径支持 | cart_gaotu100_com.304.17927428631760060 |
+
+多范围临时关系、scope行以及券选择均已恢复。停售测试商品已通过sale接口恢复，并独立读回SPU/SKU saleStatus40、canBeSold=true（product_gaotu100_com.258.17927420483371395）。promotion-app在测试共享default实例处理，非专属dev-1 pod。本次未命中优惠，不能声称已覆盖所有折扣。支付、退款、页面逐项点击不在本轮实测结果中。
 
 ### 加购相关接口清单（test-gtbg-dev-1）
 

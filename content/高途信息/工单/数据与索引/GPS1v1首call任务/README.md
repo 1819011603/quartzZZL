@@ -1,0 +1,22 @@
+# GPS 1v1 首call任务
+
+GPS（一对一）首call任务：为什么没生成 / 查不到，以及这类业务表怎么同步到大数据（天工/数据湖）。
+
+## 症状路由
+
+| 症状（用户会怎么说） | 去哪 |
+|---|---|
+| 1v1首call任务没生成 / 在 EES「一对一任务」里查不到 / 核对某学员没有任务 | [`1v1首call任务没生成或查不到.md`](排查/1v1首call任务没生成或查不到.md) |
+| 某张业务表在大数据/天工没有，怎么同步、找谁 | [`天工没有业务表怎么同步.md`](排查/天工没有业务表怎么同步.md) |
+
+## 案例
+
+| 日期 | 现象 | 状态 |
+|---|---|---|
+| 2026-10-23 | [容器进事件字段取错致1v1首call漏建（含大数据缺表同步）](案例/2026-10-23-容器进事件字段取错致1v1首call漏建.md) | 已解决 |
+
+## 关键事实速查
+
+- 落库表：`gaotu.first_call_task_1v1`，维度 = (`sub_teach_product_number`, `user_id`)。
+- 任务列表索引：ES `task_platform_main_task`（1v1 文档有 `subTeachProductNumber`）；读 `isdel=false`。
+- 大数据 ODS：`data_lake_ods.ods_gaotu_first_call_task_1v1_rt`（Iceberg 外表）。

@@ -88,6 +88,12 @@ tags: [需求, 任务]
 | Q-10 | product-server | `QuestionnaireRecordService.java:637/650` | 契约/影响面 | `planCourseNumbersCache` 只用 `questionnaireNumber` 做 key，缺 `projectNumber` → 跨 project 复用错结果，算错计划级匹配范围 |
 | Q-11 | student-data | `InnerBackController.java` + `LoginInfoFilter.java` | 风险/上线 | ✅ **已完成**（`a5fc17adf`，2026-10-13，在 release）：删除 `testRenewalQuestionnaireTransferConsumer/Sync` 两个 TEMP 接口 + `LoginInfoFilter` 放行白名单 |
 
+## 2026-10-23 C 端加购适配
+
+| 编号 | 任务 | 状态 | 证据/要求 |
+|---|---|---|---|
+| T-16 | 正式续班8014展示、选择、算价及订单链路 | 进行中 | cart 12cba6a9已部署并真实HTTP通过；order 253be420已生单/取消，停售负向暴露canCreate券上下文缺口，补丁复测中。见verify.md与膨胀券适配说明 |
+
 ## 完成判据
 
 > 每个未闭环任务「怎样才算完成」的可检查判据；完成一项删一行，全部闭环后本节为空。
@@ -230,3 +236,5 @@ Cronus补测走真实小班页面：唐稳01/tangwen01登录→清空续班计�
 ## 完成判据
 
 - C-04：当前改动限RenewalContentCommonSupport账号候选流status=1筛选、TeacherInfoDO及TeacherServiceImpl映射；真实Feign/ACL测试验证停用/初始化/缺省状态排除与正常启用选值，失败先查下游baseInfo.status及DO映射。原seller_id=null根因另需员工身份一致性修复并用tangwen01推荐/预报名appInfo验证，不能仅凭教师状态筛选标记闭环。
+
+- T-16：order CanCreateOrderForNeoService将配置券类型加载进ProductContext；dev-1上8014停售请求应拒绝，开售恢复后通过、超限数量拒绝，prepare限购字段与SKU一致；失败先看商品真实canBeSold与校验上下文productInfoDTOS。提交/部署前JDK8编译通过，更新前端对接文档并回读。
