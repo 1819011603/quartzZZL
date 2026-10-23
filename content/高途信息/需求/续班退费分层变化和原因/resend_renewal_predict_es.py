@@ -105,7 +105,11 @@ def send_one(row, dry_run, retries):
         "levelOnly": True,
         "predictLevelChanged": False,
     }
-    payload = {"serviceNameAndMethodName": SEND_METHOD, "params": [TOPIC, [TAG], body]}
+    payload = {"serviceNameAndMethodName": SEND_METHOD,
+               # ⚠️ 必须命中 (String topic, String tags, String body) 重载：
+               # tag 传纯字符串、body 传【预先序列化的 JSON 字符串】。
+               # 若传 List/Object，桥会把 body 当成字符串（Map.toString → {key=value}）发出去 → 消费端 JSON 解析失败 → 死信。
+               "params": [TOPIC, TAG, json.dumps(body, ensure_ascii=False)]}
     if dry_run:
         return True
     for _ in range(retries + 1):

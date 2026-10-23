@@ -94,7 +94,7 @@ tags: [需求, 任务]
 |---|---|---|---|
 | T-16 | 正式续班8014展示、选择、算价及订单链路 | 已完成 | cart 12cba6a9 / order 5ab5476dfb已部署dev-1并实测；10项契约测试通过，停售/超限拦截及课程兼容通过，测试状态恢复、前端文档回读完成。需求差异与独立6003缺口见适配说明；非生产准出 |
 
-| T-17 | 独立6003加购展示及详情 | 进行中 | cart 1357f368已推送；详情、大小班展示及按SKU已购判定已补齐，JDK8编译/13测通过，dev-1部署实测中。前端文档已同步已确认契约 |
+| T-17 | 独立6003加购展示及详情 | 已完成 | cart 1357f368已部署dev-1新Pod UP；JDK8编译/13测通过，详情/大小班/includeBCart/混合类型真实HTTP通过；临时加购清理、原8条购物车记录不变，前端文档回读完成 |
 
 ## 完成判据
 
@@ -240,4 +240,3 @@ Cronus补测走真实小班页面：唐稳01/tangwen01登录→清空续班计�
 - C-04：当前改动限RenewalContentCommonSupport账号候选流status=1筛选、TeacherInfoDO及TeacherServiceImpl映射；真实Feign/ACL测试验证停用/初始化/缺省状态排除与正常启用选值，失败先查下游baseInfo.status及DO映射。原seller_id=null根因另需员工身份一致性修复并用tangwen01推荐/预报名appInfo验证，不能仅凭教师状态筛选标记闭环。
 
 
-- T-17：cart RenewalService的productList、大小班单课转换支持6003；SKU401085548055267328应返回名称/价格/productType6003，大小班含B端加购时可展示；6004及8014既有契约对照通过。失败先查SKU对应班级/课程数据及类型分支。JDK8编译、部署dev-1新Pod UP后真实接口留trace，并回填前端文档。
