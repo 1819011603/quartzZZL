@@ -15,7 +15,7 @@ branches:
   - gaotu-fe-promotions:feature-xuban-202610
   - aianalysisinformations:feature-renewal-20260922
   - continu-clazz-order:feature-renewal-20260922
-updated: 2026-10-22
+updated: 2026-10-23
 tags: [需求]
 ---
 
@@ -58,7 +58,7 @@ tags: [需求]
 
 ## 现在什么情况
 
-> **2026-10-22 加购展示定位**：原链接sellerId=null跳过加购；改传员工8645实测恢复1件小班课，但另3件无课程子项的组合商品因无法解析年级被cart转换丢弃。用户明确要求大班/小班/联报/组合商品及膨胀券进入C端加购展示，已完成定位并创建[产品确认稿](https://gaotuedu.feishu.cn/docx/RuYOdNkIfoP7fAxPlhecESgYnrc)，未实施修复，详见verify.md「C端推荐加购不展示」。
+> **2026-10-23 C 端加购续接进行中**：组合子项展示、纯其他组合过滤、8014 基础展示及按加购 SKU 判已购已提交部署（cart 最新 fe6a54f0）。本轮补券多年级范围、productList、勾选持久化及 skuNumbers 算价验证，并核实订单四入口；详见 [待办-膨胀券C端8014适配.md](待办-膨胀券C端8014适配.md)。cart 第一轮 JDK8 编译及 6 项契约测试通过，继续部署验收；订单 C 端真实接口缺学员 sid，等待登录后验证。
 
 > **2026-10-22 本轮仅改后端（C-03已完成）**：cart `bdba9e90` 兼容既有请求 `sellerId=null`，10项测试通过，流水线1309368部署dev-1新pod UP；原请求已返回status=0，7项接口验证通过且推荐数据与原基线一致。前端未修改。**上游另已查明：tangwen01当前CAS132658→employee8645正常，但旧教师记录仍status1，认证层按账号/类型取首条指向离职员工2994/CAS120805，student-center优先取旧CAS，promotion再拼出null；C-04按最新指示仅补教师启用状态筛选，已撤回直接返回登录CAS的改动；该筛选不能排除本例status1旧记录，上游身份问题仍未闭环，详见verify.md。**
 
