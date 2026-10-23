@@ -1098,3 +1098,32 @@ student-center `2cc0194a9` 在 `/roster/refund/analysis` 返回前，按 `predic
 - 数据核对：test 计划 `586333423417849856` 的 2 条记录挂在 **type=3 购物车节点** `586333640670214145`，而 type=6 扩科节点 `586446512379162624` 下 0 条 → 管理页 0 条、但 cart/recommend 仍出 2 条（初二物理 `586333286253586432`/初二化学 `586333327565383680`）。生产/测试存量：**prod 15 条全部挂 type=6（5 计划）**；test 45 条 type=6 + 仅该计划 2 条 type=3。
 - 正常路径不可复现：FE（`gaotu-fe-promotions` `ExpandSubject/*`，`services/expandSubject.js`）nodeNumber 明确取自 `process/list` 返回的 `nodeConfigs[type=6].nodeNumber`，AddDrawer/ManageDrawer 均用该值；工单复现是测试用接口把记录写到了 type=3 节点。
 - 定性：**代码层面确为「读/管两条口径不一致」的真实缺陷**（建议修）；但按 UI 正常操作不可触发，属健壮性/一致性缺口，**非现网事故**（prod 均挂 type=6）。修法：读侧 `selectByRenewalNumber` → `selectByNodeNumber(node.getNumber())`（与 `list` 对齐）；可选加固 `add/delete` 校验节点 `type=6`。归属 product-server。<br>以上为只读诊断，未改任何代码/数据。
+
+
+## 2026-10-23 膨胀券「加购」C端展示 + 组合商品含小班课子项（已实现·已实测）
+
+- 目标：B 端加购的**膨胀券 / 组合商品**在 C 端续班推荐展示；口径 —— 组合商品**跟联报一致**、膨胀券**不按年级学科过滤/不去重（同一商品去重保留一个）**。
+- cart 改动（`feature-xuban-expand-exclude` → `test-gtbg-dev-1`）：
+  - `75507a43` 大班路径 `RenewalService#convertResultToClazzDetailDTO` 增 `productType=8014` 分支；
+  - `334fa126` 小班路径 `#convertToRenewalCartVO` 增 8014 分支；
+  - `6b988e9e` 组合商品转换（大班/小班）子项 = 大班课子班(`combineClazzNumberList`) + 小班课子商品(`combinedSingleProductDtoList` 中 `productType=6004`，skuNumber 即班级号)；**纯「其他商品」组合过滤不展示**；展示年级/学科取**首个子项**（对齐联报）；新增 `PurchasedAdditionalPurchaseSkuSubBuilder`(order=97) 单独查加购商品(券/组合)有效订单填 `purchasedAdditionalPurchaseSkuNumbers` 供加购项 signUp，**不动**既有 `purchasedPostClazzSkuNumbers`。
+  - 券：年级/学科取 `listDisplayableCoupons(renewalNumber,userId)` 命中行、名称/售价取单品；同一商品(productId)去重、不参与(年级,学科)去重。
+- 测试数据（test，已回读）：`renewal_pre_order_activity_coupon_scope` 券范围行 `is_del` 置 0；计划补预报名流程并绑活动 `578667303502106624`（`process_config type=3`+`node_config type=4`+`renewal_link_activity`）；小班补「一年级·数学」券范围行；**`gaotu.coupon_expand_config` 3 张券 `sale_status` 1→2 + `sale_end_time` 延后**（B 端出券关键）。
+- 接口实测：B 端 `POST /bgwApi/component/student-center/renewal/pre/coupon/list`（大班/小班各 `total=1`、使用中+售卖中）；加购 `POST /bgwApi/orderComponent/b/cart/addCart`(8014)；C 端 `GET /cart/web/renewal/cart`（大班 grade16 券「六年级语文」、小班 grade11 券「一年级数学」，`recommendType=3`、未被去重）。纯其他组合（会员卡/实物）已按规则过滤不展示。
+- 边界：组合「含课程子项」正向用例 —— 组合 `579426174109902848`（「组合大班课+小班课」，含大班课子班 `579423901640169472`）加入购物车后 **C 端已展示**（grade 11、`productType=51`、`recommendType=3`、数学，年级取首个子项）；纯其他组合已验证被过滤。B/C 页面 UI 未逐页点击。
+
+### 加购相关接口清单（test-gtbg-dev-1）
+
+**C 端**（学员登录态；header 带 `traffic-env: test-gtbg-dev-1`）
+- `GET /cart/web/renewal/cart`（网关 `https://test-api.gaotu.cn`；header 另带 `ingress-traffic-env: test-gtbg-dev-1`、`pt=<学员登录令牌>`）
+  - 入参：`renewalNumber`、`appointUserId`、`sellerId`（**二讲 employeeId**，非 accountId）、`includeBCart`、`p_client`。
+  - 返回 `data.gradeClazzList[].clazzDetailDTOList[]`，关键字段：`productSkuNumber`、`productType`（**51 组合 / 8014 膨胀券 / 2 大班课 / 6004 小班课 / 23 联报**）、`recommendType`（**1 纯续 / 2 扩科 / 3 加购**）、`subjectNames`、`price`、`signUp`（1 已报名）、`grade`（分组年级）。
+- 无登录态时验服务层（反射桥）：`com.gaotu.renewal.RenewalService#getRenewalDetail`，params `[userId, renewalNumber, false, false, null, sellerId, includeBCart]`。
+
+**B 端**
+- `POST /bgwApi/component/student-center/renewal/pre/coupon/list`（student-center；header `b_client: EES`）—— 续班计划下的膨胀券选品
+  - body：`{"renewMasterNumber":"<计划号>","statusList":[1],"saleStatusList":[2],"pageNum":1,"pageSize":50}`（`statusList` 1 使用中 / `saleStatusList` 2 售卖中；都不传时按计划场景默认这两个）。
+  - 返回 `data.list[]`：`couponName`、`couponId`、`couponSkuNumber`、`productType`(8014)、`buyAmount`、`deductibleAmount`、`couponStatus`(1 使用中)、`saleStatus`(2 售卖中)、`selectable`、`availableScope`（如「六年级语文」）。
+- `POST /bgwApi/orderComponent/b/cart/addCart`（order-b；header `b_client: OES`）—— 老师为学员加购
+  - body：`{"userId":<学员>,"accountId":<二讲 accountId>,"productList":[{"productNumber":"<券SKU/组合SKU>","productType":<8014/51/...>,"quantity":1}]}`；⚠️ **大数字 productNumber 必须传字符串**（否则精度截断）。
+- 加购商品查询（反射桥）：`com.gaotu.facade.bcart.BCartFacadeImpl#listAdditionalPurchase(userId, sellerId)`。
