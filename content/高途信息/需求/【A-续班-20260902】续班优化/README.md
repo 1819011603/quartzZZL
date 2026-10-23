@@ -58,7 +58,7 @@ tags: [需求]
 
 ## 现在什么情况
 
-> **2026-10-23 C 端加购**：cart `12cba6a9`、order `253be420` 已部署 dev-1。券多范围/多年级、productList、勾选隔离、新旧算价入参、prepare 和真实生单已验证，测试单已取消。停售负向实测发现 canCreateOrder/v2 未加载券校验上下文，正在补齐并复测；不是登录态阻塞。兼容和 PRD 差异见 [待办-膨胀券C端8014适配.md](待办-膨胀券C端8014适配.md)，trace 见 [[verify]]。
+> **2026-10-23 C 端加购8014适配已完成本轮验证**：cart `12cba6a9`、order `5ab5476dfb` 已部署 dev-1，新Pod/Eureka UP。券多范围/多年级、productList、选择隔离、新旧算价、确认页、生单/取消及停售负向均有真实接口证据，JDK8编译和10项契约测试通过；前端对接文档已回填并回读。兼容旧前端请求，普通课程预校验前后相同。需求核对另发现独立6003仍返回空，用户已要求补齐、正在开发；另有组合首子项/券范围两处PRD差异，见 [待办-膨胀券C端8014适配.md](待办-膨胀券C端8014适配.md)；trace见 [[verify]]。
 
 > **2026-10-22 本轮仅改后端（C-03已完成）**：cart `bdba9e90` 兼容既有请求 `sellerId=null`，10项测试通过，流水线1309368部署dev-1新pod UP；原请求已返回status=0，7项接口验证通过且推荐数据与原基线一致。前端未修改。**上游另已查明：tangwen01当前CAS132658→employee8645正常，但旧教师记录仍status1，认证层按账号/类型取首条指向离职员工2994/CAS120805，student-center优先取旧CAS，promotion再拼出null；C-04按最新指示仅补教师启用状态筛选，已撤回直接返回登录CAS的改动；该筛选不能排除本例status1旧记录，上游身份问题仍未闭环，详见verify.md。**
 
@@ -69,7 +69,7 @@ tags: [需求]
 | | |
 |---|---|
 | 阶段 | **上线准备**（问卷匹配 + 调课同步 → 发布计划 23716，2026-10-13 起；见下「上线准备」） |
-| 进度 | T 15/16 · R 4/4 · C 2/4；本轮审计与 P0 编写完成，增量验收与确定缺陷修复进行中，不可直接放行 |
+| 进度 | T 16/17 · R 4/4 · C 2/4；本轮审计与 P0 编写完成，增量验收与确定缺陷修复进行中，不可直接放行 |
 | 部署泳道 | **`feature-xuban-match-opt` → `test-gtbg-dev-3`**（product-task / student-data / teacher-tool）；**`feature-xuban-expand-exclude` → `test-gtbg-dev-1`**（product-b / product / student-data / cart / student-center，2026-09-24 已迁完、均 eureka UP）。2026-09-24 用户定，两分支不再共用泳道 |
 | 当前卡点 | 上线准备：🔴 DDL 工单 **146826**（`gaotu.questionnaire_record` 加 `retry_count`，待审批，须先于 product-task）、🔴 MQ 工单 **90538**（PROD group `GID_student-data_renewal_questionnaire_transfer_prod`，实例 `gaotu`，待审批）均待 SRE 审批；teacher-tool-api `1.0.29` RELEASE 已发、两处 pom 已切 RELEASE 并 push；Apollo `renewal.questionnaire.transfer.consumer.group` 待 group 审批后配（未配会走测试组名默认值）。 |
 | 最近更新 | 2026-10-21：P0文档20条/53子场景及上线方案已写回；student-data f5540c121最新扩科空类型兼容修复32测通过、部署1308190已EurekaUP并7项实测通过；student-center 8cffd81c5已UP复验；promotions新版1308187已实际加载并页面必填/默认/保存回显通过。 |

@@ -1114,7 +1114,7 @@ student-center `2cc0194a9` 在 `/roster/refund/analysis` 返回前，按 `predic
 
 ### 本轮新增接口验证（2026-10-23）
 
-cart `12cba6a949b0021df8a346e9e789cc903fbcbff1`，流水线1311214，dev-1新pod UP；JDK8全仓编译成功、6项TestNG测试通过。order `5ab5476dfb`补齐canCreate券上下文、prepare券限购量；JDK8全仓编译及4项JUnit测试通过，流水线1311467构建成功，指定5ab镜像发布后等待新pod UP。
+cart `12cba6a949b0021df8a346e9e789cc903fbcbff1`，流水线1311214，dev-1新pod UP；JDK8全仓编译成功、6项TestNG测试通过。order `5ab5476dfb`补齐canCreate券上下文、prepare券限购量；JDK8全仓编译及4项JUnit测试通过，流水线1311467构建成功；新Pod `order-gaotu100-com-77d749995d-mvlxk` / `10.218.239.138:28688` 确认镜像5ab5476d且Eureka UP。测试集群滚动发布资源不足已通过该泳道短暂0→1副本释放旧资源解决，副本恢复1。
 
 真实 HTTP 使用学员7658127801有效sid，lane请求头 dev-1；大班计划585960797778243584/券578323391191220225，小班计划586116340522184704/券578323085464207361，sellerId8645。认证材料不入归档。
 
@@ -1132,8 +1132,14 @@ cart `12cba6a949b0021df8a346e9e789cc903fbcbff1`，流水线1311214，dev-1新pod
 | createOrder | 主单432439620802707776，子项432439620802708288，8014、10000分；DB与订单事件核实。客户端响应中断未保存 | order_gaotu100_com.434.17927407804790005 |
 | 测试订单清理 | 未支付，取消接口status0，DB状态3 | order_gaotu100_com.453.17927413243960006 |
 | 独立6003需求核对 | 有效单品SKU401085548055267328传productType6003，productList返回空；组合内6003支持不代表独立路径支持 | cart_gaotu100_com.304.17927428631760060 |
+| 新版纯券canCreate（force=true） | status0，券不进入课程冲突/分层考试 | order_gaotu100_com.419.17927440955560001 |
+| 新版超量购买 | 券A数量2拒绝，先命中既有商品总限购 | order_gaotu100_com.424.17927440978430001 |
+| 已有订单后超限再购 | 内部HTTP共用预校验；用户1437332、SKU577635362308947969已买1，再请求2，总上限2，拒绝 | order_gaotu100_com.431.17927441701380001 |
+| 新版prepare券限购字段 | onceBuyLimit=1，与商品SKU一致，价格10000 | order_gaotu100_com.429.17927441642990001 |
+| 普通课程兼容对照 | SKU585960755422160896/productType2，补丁前后均status0，响应一致 | order_gaotu100_com.459.17927431045320011 / order_gaotu100_com.434.17927441715600001 |
+| 商品停售预校验/生单 | 通过商品stopSale置SPU/SKU不可售，两个C入口均返回60048 | order_gaotu100_com.443.17927442011550001 / order_gaotu100_com.447.17927442038370001 |
 
-多范围临时关系、scope行以及券选择均已恢复。停售测试商品已通过sale接口恢复，并独立读回SPU/SKU saleStatus40、canBeSold=true（product_gaotu100_com.258.17927420483371395）。promotion-app在测试共享default实例处理，非专属dev-1 pod。本次未命中优惠，不能声称已覆盖所有折扣。支付、退款、页面逐项点击不在本轮实测结果中。
+多范围临时关系、scope行以及券选择均已恢复。停售测试商品已通过sale接口恢复，并独立读回SPU/SKU saleStatus40、canBeSold=true（product_gaotu100_com.273.17927442102001374）。promotion-app在测试共享default实例处理，非专属dev-1 pod。本次未命中优惠，不能声称已覆盖所有折扣。超量/已有订单负向先命中既有商品总限购，SKU单次/个人上限独立边界、全退和不限购另由4项契约测试覆盖。支付、退款、页面逐项点击不在本轮实测结果中。
 
 ### 加购相关接口清单（test-gtbg-dev-1）
 
