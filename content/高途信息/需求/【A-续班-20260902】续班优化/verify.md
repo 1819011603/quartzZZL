@@ -1250,3 +1250,46 @@ cart `12cba6a949b0021df8a346e9e789cc903fbcbff1`，流水线1311214，dev-1新pod
 结论：**页面级 CASE-121 不通过（缺 availableScope）**；51 组合标识缺失；其余（6003、切年级清空）页面层面 OK。需前端 `CourseItem.vue` 适配（`availableScope`/51 `showTag`/6003 `isSmallClass`）。浏览器临时 header 已清除。
 
 （附：**更正**——此前一次页面复验因页面临时未挂泳道、`traffic-env: test` 打到默认集群而无券，属**环境路由问题**，非后端/前端结论；泳道正确后券与组合均返回。）
+
+## 2026-10-24 正式 C 页复验（CASE-121/123/126/128，✅后端 / ❌页面 / 待验项单列）
+
+> 执行前重核环境：cart `91964dcd`（pod `cart-gaotu100-com-597d7fd948-x68mj` / `10.218.251.153`，镜像 `feature-xuban-expand-exclude-91964dcd-20261023183432`，Eureka UP）、order `5ab5476d`（pod `order-gaotu100-com-7f8f5c6c67-9l2fq` / `10.218.250.93`，镜像 `feature-xuban-expand-exclude-5ab5476d-20261023162306`，Eureka UP）。与上轮记录一致。本轮**未改后端代码**。
+
+### 前端实际部署版本（不是同事本机路径）
+
+- `test-m.gaotu.cn/suggestShoppingCart` 302 到登录页后实际加载 `https://gtoss.gsxcdn.com/business/master/platform/projects/mweb/*.js`；`app`/`CourseItem` 所在 chunk 的 `Last-Modified` 均为 **2026-10-22 09:20 CST**，早于本需求 10-23 后端改动。
+- 下载实际 chunk（`307`/`114`/`342` 等）反查：`CourseItem.vue` 的 `showTag` 仍只判 23、`isSmallClass` 仅 `51||6004`、无 `availableScope`；`utils/index.js#getProductsTotalPrice` 仍把 8014/6003 落入 `clazzNumbers`；`index.vue#handleGradeChange` 只在 `checkHasDefaultSelect()` 为真时重建 payList；`productList` 请求仅传 `productNumberList`，无 `renewalNumber`。
+- 结论：**当前 test-m 部署的前端 master 未包含本需求改动**；需前端发布后重新做页面验收。本机无 gaotu-mweb 仓库，**无法核对未发布分支源码**；若前端已在其他分支修复，须发布到 test-m 后复验，不能以描述代替。已把精确文件、改法、请求示例和验收标准写回前端对接文档第十节。
+
+### CASE-121/123 后端与页面（页面不通过）
+
+- 大班页 `renewalNumber=585960797778243584&seller_id=8645&p_client=1&includeBCart=true`，页面 header 注入 `traffic-env`/`ingress-traffic-env: test-gtbg-dev-1`（Chrome DevTools `emulate --extraHttpHeaders`）。
+- 后端 GET 返回：券 A `productType=8014`、`availableScope=六年级语文`、`price=10000`、`canChangeCourse=false`、`recommendType=3`；组合 `579426174109902848`（大班+小班，grade11）、`402910767185154048`（现共享数据 name=2222/成人/2分）均展示；纯其他组合 `584632626097291265` 未展示。trace `cart_gaotu100_com.302.17928206937690890`。
+- 页面：券卡只显示“语文 / 券名 / ¥100.00”，**未渲染 availableScope**；切一年级后 51 组合卡显示“数学 / 组合大班课+小班课 / 时间 / 课次”，**无“组合商品”标识**。前端问题，非后端缺字段。
+
+### CASE-126 勾选与切年级（后端通过、页面 payList 残留）
+
+- 后端复验：同年级勾选→`select=1`；取消→`select=0`；切年级后本计划全部选择清空；切回不恢复；另一计划 4 条记录不变。今日再次 READ 回券/课程 `select=0`，trace `cart_gaotu100_com.301.17928207894260883`。
+- 页面复验：在六年级勾选券 A（合计 1 门 ¥100）→ 切一年级。页面 DOM 合计变为 0，但读取 Vue 实例为 `payList=[{"productNumber":"578323191391220225","productType":8014}]`，且“去结算”按钮仍可点。**符合部署版本代码逻辑（无已选项不重建/不清空 payList），页面不通过**。需前端发布后按前端文档 10.3 复验。
+
+### CASE-128 真实生单 + 取消（通过；5s 超时未复现）
+
+- 确认页：仅选券 A → `/newApply` 显示券名、数量 1、¥100；`POST /web/order/batch/canCreateOrder/v2` status0（trace `0d50f911-67f1-4c4c-97da-12450b92db4e.0.3`）；`prepare` status0、`totalPrice=10000`、`onceBuyLimit=1`、`productType=8014`（trace `2fb8198a-2cb9-4b60-bd24-12574627506e.0.3`）。
+- 点击“立即购买”：页面进入支付页（success_url 订单号 `432524641841447232`），**未出现 ERR_ABORTED**。order 服务日志读回 `/web/order/batch/createOrder consume 2393 millis`、status0，trace `eebafe36-c188-4787-8a35-0929acbe1cfd.0.3`。
+- 订单落库：order-b `listByPayNumber` 响应含 `order_item number=432524642915189056`、`order_status=1`、`pay_number=432524641841447232`、`sku_number=578323391191220225`、`price=10000`、`order_type=8014`（trace `eebafe36...`）。
+- 取消：订单详情页“取消订单”→“忍痛取消”，页面回到订单列表；order-b 仓库 `OrderItemRepositoryImpl#getByOrderItemNumber(432524642915189056)` 读回 `orderStatus=3`、`price=10000`、`skuNumber=578323391191220225`。旧历史单未重复操作。
+- 超时结论：本轮后端 2393ms < 前端 5s，故未复现；上轮真实 trace 3245ms 已证明 `ERR_ABORTED` 是前端全局 axios 5s 超时中断，非后端失败。**前端责任**：超时应给出“订单可能已创建”的明确反馈并按订单列表查单恢复，不能仅延长超时或自动重试。后端不把单纯延长超时当幂等保证。
+
+### 未验证 / 待验（明确不标通过）
+
+- CASE-130 支付/退款后的 signUp：本轮只有未支付→取消样本，已读回取消单 `orderStatus=3`、券 `signUp=0`；**有效支付后 signUp=1、全退后回 0 未执行**（无已支付样本，未手改订单/支付状态）。
+- CASE-131 去重口径（2026-10-24 用户澄清）：**商品按 SKU 维度，不同 SKU 是不同商品，不按 SPU 合并**；P0 原“同 productId 两个 SKU 只展示一个”表述作废。现有代码按券 SKU 去重，符合该口径；同 SKU 在算价/productList/推荐合并层只保留一次，不同券 A/B 均展示。
+- CASE-133 命中真实优惠：本轮生单实付 10000 分、无折扣/满赠，不能声称覆盖。
+- CASE-134 真实课程时间冲突/分层考试负向：纯券 `canCreateOrder/v2` status0 已复验，但无冲突/考试样本，混合负向矩阵待验。
+- CASE-129 独立 SKU 单次/个人上限、全退、不限购：仍只有契约测试与既有 SPU 先拦截结果，独立边界待造数。
+- CASE-122 同年级多学科：仍因无 grade16 数学后置课不命中，非代码缺陷；跨年级已通过。
+- 完整旧前端/灰度矩阵、CASE-124 当前 6003 页面（独立 seller8597 购物车已清空）未重新造数。
+
+### 数据与恢复
+
+- 本轮页面操作后已取消订单、清空券选择；`getRenewalDetail` 读回年级 16 分组券/课程 `select=0`；原 seller8645 购物车未改动。临时浏览器 header 仍在当前标签，未写入代码或文档；token 未输出。
