@@ -1293,3 +1293,25 @@ cart `12cba6a949b0021df8a346e9e789cc903fbcbff1`，流水线1311214，dev-1新pod
 ### 数据与恢复
 
 - 本轮页面操作后已取消订单、清空券选择；`getRenewalDetail` 读回年级 16 分组券/课程 `select=0`；原 seller8645 购物车未改动。临时浏览器 header 仍在当前标签，未写入代码或文档；token 未输出。
+
+## 2026-10-24 组合加购修复与 dev-1 部署（cart 7f298d68）
+
+> 修复用户确认的两个代码问题：① 大班路径组合未展开子班，导致组合不参与 (年级,学科) 去重，与小班路径不一致；② 组合只取第一个子项课程，首个无效子项会导致整条组合不展示。
+
+**改动**
+- `RenewalService#buildPurchaseGradeSubjectMap`：加购去重时，券跳过；普通单课按 SKU 查课程；组合先展开 `combineClazzNumberList` + `combinedSingleProductDtoList` 的 6003/6004 子 SKU，再批量查 clazz/course，合并所有子项的 (grade,subject)。大班路径改用它，与小班 `RecommendMergeService` 对齐。
+- `convertCombineResultToDTO` / `processCombineProductResult`：按子项顺序找**第一个 course 非空**的子项定年级/学科，不再只取 `get(0)`。
+- 未改前端；未改 8014 券 SKU 去重口径。
+
+**验证**
+- JDK8 全仓编译：`mvn8 clean install -DskipTests` 通过。
+- 契约测试：`RenewalCombinedDetailContractTest`/`RenewalCouponContractTest`/`RenewalSingleProductContractTest` 共 19 项通过；`RenewalControllerTest` 10 项通过。新增两条测试：组合子班展开去重、首个子项课程缺失时使用下一个有效子项。
+- 部署：流水线 `1312177` SUCCESS；新 pod `cart-gaotu100-com-64f5bcbb6b-v5h2t` / `10.218.236.158`，镜像 `feature-xuban-expand-exclude-7f298d68-...`，Eureka UP；旧 pod 已 Removing。
+- 新 pod 真实调用（ACL 反射桥，`traffic-env: test-gtbg-dev-1`）：
+  - `getRenewalDetail(7658127801, 585960797778243584, false, false, null, 8645, true)`：8014 `available_scope=六年级语文`/10000/canChangeCourse=false；组合 579426174109902848、402910767185154048 仍展示；纯其他过滤行为未变。
+  - `productList`（8014，带 renewalNumber）：范围、价格、canChangeCourse 正确。
+  - `RenewalPriceService#renewalPrice`（skuNumbers=券 A）：total_price=10000、total_discount=0。
+- **未构造“组合与纯续同年级同学科”的真实数据**，大班去重修复由新增单测覆盖；现有共享数据回归未发现组合误删。
+
+**待办**
+- 6004 子项组合的真实生单未验证：测试组合只有 6003；order `CombinedProductLoader` 对 6003 有单课分支、6004 落普通商品分支。需另找/造 6004 组合样本走 `canCreateOrder → createOrder`，确认子项、价格、权益。已记入 tasks C-06。
