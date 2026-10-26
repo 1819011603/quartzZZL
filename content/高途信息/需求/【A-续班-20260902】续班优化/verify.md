@@ -1324,3 +1324,24 @@ cart `12cba6a949b0021df8a346e9e789cc903fbcbff1`，流水线1311214，dev-1新pod
 - 订单详情页实际展示两项：大班课 `zhangqiuhong-高中物理`（订单 `432531877787599680`）和 6004 `测试小班课商品2`（原价 ¥500、实付 0，订单项 `432531877787600192`，skuType/orderType=6004）。说明 6004 子项组合**能下单**，order 侧现有逻辑可落 6004 子项。
 - 该组合课程已结课，页面售后提示“已结课课程，不可申请退款”；0 元测试单保留，未产生实付。后续如需清理需走 BOSS/后台，不在本轮擅自改库。
 - 结论：C-06 由“待验/失败”更正为**通过（需邮寄地址）**；不是 order 缺口。
+
+## 2026-10-26 切年级保留勾选（口径更正，已部署 707cf664）
+
+> 用户明确更正：切年级要**保留课程/券全部勾选，切回原年级恢复选中态**；原“切年级清空、切回不恢复”作废。
+
+**改动**
+- `RenewalDataService#productSelectGrade`：只 `deleteGrade + insertGrade` 记录当前年级，**不再删除** `user_renewal_clazz` 勾选。
+- `RenewalService#productList`：`setClazzVO` / `setSmallClazzVO` 增加按 `user + renewalNumber + frontCourseNumber + type=1` 回填课程 `select`；券仍走 `applyCouponSelections`。
+- 新增 `RenewalGradeSelectionTest`：切年级只调用 deleteGrade/insertGrade，不调用 delete。
+- 前端仍只按当前年级生成 payList，不跨年级下单；切到无已选年级时 payList 应为空（前端逻辑）。
+
+**验证（真实接口，dev-1）**
+- 选中课程 `585960755422160896`（beforeCourseNumber `585960577856301056`）+ 券 `578323391191220225`（8014）。
+- `productSelectGrade` 切 `grade=11` 后 `productList`（带 renewalNumber）：课程 `select=1`、券 `select=1`（`availableScope=六年级语文`）。
+- 再切回 `grade=16`：课程/券仍 `select=1`；`getRenewalDetail` 六年级分组同样 `select=1`。
+- 验证后对两项 `productSelectConfirm status=0`，读回 `select=0`，未改其他用户/计划选择。
+
+**部署**
+- cart `046533da`（切年级不删选择）+ `707cf664`（productList 回填课程勾选）。
+- 流水线 `1312764` / `1312811` SUCCESS；新 pod `cart-gaotu100-com-5874cd87bc-7x6z8` / `10.218.237.97`，Eureka UP。
+- JDK8 全仓编译通过；20 项契约/回归测试通过。
