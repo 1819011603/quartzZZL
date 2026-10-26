@@ -36,14 +36,14 @@ tags: [需求, 链接]
 | TAPD | 迭代「【A-续班-20260902】续班优化」id `1122531521001014934`（workspace `22531521`；我的任务按第二批排期对齐） | https://www.tapd.cn/tapd_fe/22531521/iteration/card/1122531521001014934 | 2026-10-12 |
 | case | | | |
 | MR | | | |
-| 接口文档 | 小班续班优化：膨胀券 C 端接口对接说明（组合/6003/8014；已撤回新增跨年级记忆，保持原勾选行为；待验项见P0） | https://gaotuedu.feishu.cn/wiki/GCIvwipSYiJKVrk8ESmc9qrKn7c | 2026-10-23 |
+| 接口文档 | 小班续班优化：膨胀券 C 端接口对接说明（组合/6003/8014；切年级保留课程/券勾选、切回恢复；前端只提交当前年级payList；待验项见P0） | https://gaotuedu.feishu.cn/wiki/GCIvwipSYiJKVrk8ESmc9qrKn7c | 2026-10-23 |
 
 ## 上线
 
 | 类型 | 标题 | 链接 | 记录日期 |
 |---|---|---|---|
 | 上线checklist | 【A-续班-20260902】续班优化 · 上线方案（问卷匹配优化）（需求总入口子节点） | https://gaotuedu.feishu.cn/wiki/JBsywJOuiijDT9k3MD7cFyl8n9b | 2026-10-08 |
-| 上线checklist | 【A-续班-20260902】续班优化 · 上线方案（扩科推荐 + AI 模块配置化）（需求总入口子节点） | https://gaotuedu.feishu.cn/wiki/KSDfwlojaipDqWkUcbfckjnwnyd | 2026-10-10 |
+| 上线checklist | 【A-续班-20260902】续班优化 · 上线方案（扩科推荐＋AI模块化＋下单优化；2026-10-26按最新diff补充）（需求总入口子节点） | https://gaotuedu.feishu.cn/wiki/KSDfwlojaipDqWkUcbfckjnwnyd | 2026-10-26 |
 | 发布计划 | 青舟「问卷匹配优化」id 23716（teacher-tool → product-b → product-task → student-data） | https://qingzhou.baijia.com/#/publishArrangement/subPublishArrangement/publishPlan/detail?storyId=&pageNum=1&id=23716&action=edit | 2026-09-24 |
 | 发布计划 | 青舟「扩科推荐+AI模块配置化」id 23819（product → product-task → product-b → student-data → student-data-dws → student-data-gps → student-center → cart；另含 order/order-task/order-ad/order-b，实际顺序以编排为准；泳道 test-gtbg-dev-1） | https://qingzhou.baijia.com/#/publishArrangement/subPublishArrangement/publishPlan/detail?storyId=&pageNum=1&id=23819&action=edit | 2026-10-10 |
 | 工单 | | | |

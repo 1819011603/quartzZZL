@@ -7,6 +7,22 @@ tags: [需求, 验证]
 
 > 只保留当前可执行条件、仍有效数据和最新预期。
 
+## 发布计划23819上线核对（2026-10-26，只读）
+
+本轮依据五仓 `feature-xuban-expand-exclude` 对最新 `origin/release` 的 diff、青舟23819详情/质量接口和 PROD 已发布 Apollo 核对上线 checklist；没有执行生产配置、合并、部署或门禁重算。在线操作方案为唯一明细入口：[扩科推荐＋AI模块化＋下单优化上线 checklist](https://gaotuedu.feishu.cn/wiki/KSDfwlojaipDqWkUcbfckjnwnyd)。
+
+| 核对对象 | 当前证据与结论 |
+|---|---|
+| 计划/泳道 | `releasePlanStep=2`，提测/准出环境均为 `test-gtbg-dev-1`；14个部署=12后端＋2前端，GAIA两组件另发；当前计划无C端mweb项目，新增C页适配需确认发布归属。 |
+| 准出（stepOut） | 总门禁 `hasPassedAc=false`。COVERAGE_BE 82%通过，COVERAGE_FE 60%未通过；USER_CASE/ALARM/DSCD均0%且未达标。PYTEST_JOB/PYTEST_INC_API/ALARM_CHECK为100%通过。报告存在不证明覆盖最新增量。 |
+| 后端报告 | product 94.74%/39501、data 82.27%/39502、center 83.91%/39503、cart 84.07%/39507、order 83.80%/39505；前端promotions 86.36%/39499、cronus 60%/39500。 |
+| 本轮diff锚点 | data `7bfa46b2e`、center `b6e564488b`、cart `a6978058d8`、order `0aec823154`、product `c1b9225eff`。依次落后最新release 47/111/0/6/5个提交，发布窗口需重新比较、合流复测；不是本轮已合。 |
+| PROD student-data/application | `studying.subject.course.tag.exclude.list=13`，该既有值覆盖新代码默认`13,4,26,11,27`，不能把默认值写成线上值或直接覆盖既有配置；`renewal.inread.operation.modes`、两个AI部门授权key、`refund.ai.module.deps`均未命中。 |
+| PROD cart/application | `renewal.expand.exclude.switch=true`，`renewal.query.cache.enabled=false`。 |
+| PROD order四应用/application | `order.gaotu100.com`、`order-b`、`order-ad.gaotu100.com`、`gaotu-order-task`均未命中`order.cart.combinedSubProduct.types`和`order.cart.combineProduct.onceBuyLimit`；代码默认分别为`[]`（全部子类型）、`1`（组合单次上限）。 |
+| 正式包 | product-server自身属性/模块与cart仍为`1.5.9-SNAPSHOT`；data client及service/facade/dws/gps四处仍为`0.0.52.5-SNAPSHOT`。须定正式版并同步引用；已存在同版本RELEASE不能覆盖重发，需核验内容/选新版本。 |
+| 身份代码口径 | center最新`b6e564488b`增加按登录employeeId匹配师资CAS，再回退原教师号/启用记录逻辑；旧“仅status筛选”不再描述当前HEAD。当前部署和真实账号闭环本轮未复验，不据源码标C-04完成。 |
+
 ## C 端推荐加购不展示（2026-10-22，只读定位）
 
 对象：test-gtbg-dev-1，学员 `7658127801`，大班续班计划 `585960797778243584`。原请求 `includeBCart=true&sellerId=null` 返回 status=0，但仅纯续语文、扩科英语两项；trace `0cefcfc7-3cb1-4908-a9bb-f4920961b621.0.3`。仅将 sellerId 改为员工ID `8645` 后，增加小班课 `586267768769386496`（高一、recommendType=3）；trace `4b3693a8-6532-4008-a88a-14cbfa1324dd.0.3`。sellerId 语义为 employeeId，不是 accountId 90247；上游错配原因见下节。
@@ -27,13 +43,11 @@ tags: [需求, 验证]
 
 **当前有效结果**：新 pod `cart-gaotu100-com-57dc9dcb6c-6kgxd`，commit `bdba9e90`，Eureka UP。复用原 trace 的测试学员登录上下文，调用同一 GET `/web/renewal/cart`：sellerId 字符串 `null` / 省略 / 空串 / 数字 `90247`（仅验证数字绑定）均 `status=0` 且响应 data 完全一致，也与修复前省略 sellerId 的 data 基线一致（保留纯续与扩科两类推荐）；`sellerId=abc`、Long 越界、`renewalNumber=null` 均仍为 `status=5/参数异常`。7项均命中新pod。原请求修复后 trace：`cart_gaotu100_com.292.17926514768370006`。本轮为后端接口验证，未修改或验证前端页面。AICR分支暂无评审任务，不记为评审通过。
 
-### C-04 student-center教师状态筛选（进行中）
+### C-04 student-center教师身份匹配（进行中）
 
-按用户最新指定，仅在 `getCasUidByLoginInfo` 的账号查询候选流增加 `status=1` 筛选；`TeacherInfoDO` 补教师状态字段，`TeacherServiceImpl` 从 `baseInfo.status` 映射。该状态为教师启用状态（0初始化、1启用、2停用），不是员工在离职状态。已撤回直接返回LoginInfo.casUid的改动，保留教师号优先、账号查询兜底及异常逻辑。前端不修改。
+2026-10-26源码核对：`b6e564488b`已在`getCasUidByLoginInfo`先按登录`accountId + employeeId`从师资列表匹配CAS，缺失或无匹配时回退原教师号/账号启用教师选值；`TeacherInfoDO.status`及`TeacherServiceImpl`状态映射仍保留。当前代码已超出早期“仅教师status=1筛选”的快照，不能继续按旧描述判断HEAD；本轮仅代码与上线影响核对，未验证该SHA当前部署或真实账号闭环，不标C-04完成。
 
-验证范围：真实Feign/ACL/TeacherService链路覆盖停用记录排前、启用记录被选中，状态null/0/2/-1均不被选中、启用但CAS缺失时继续筛选、无教师记录保留业务异常。当前测试待执行；尚未提交、部署。
-
-此改动不等于tangwen01根因修复：旧教师仍status1，单加教师状态筛选无法排除其对应离职员工。原推荐和预报名appInfo基线4个链接均seller_id=null，不能写成筛选后应自动变8645；需另行处理员工身份一致性。
+待验：真实Feign/ACL链路中同账号存在离职员工但教师仍status1的候选时，优先选中当前登录employeeId的CAS；缺少employeeId/无匹配时旧回退与业务异常保持。用tangwen01生成推荐/预报名appInfo，核seller_id为当前employeeId=8645，并确认实际命中新SHA。失败先查登录employeeId、师资employeeId/CAS映射、实际部署SHA与下游链接生成trace。以下10月22日调用链只作原问题证据，不描述当前HEAD。
 
 ### tangwen01 上游身份核验（2026-10-22，测试环境，仅定位）
 
@@ -48,7 +62,7 @@ tags: [需求, 验证]
 | 映射对照 | base test真实 `/service/employee/queryId/byCasuid` 传 `[120805,132658]`，code0只返回 `132658→8645`；当前登录CAS映射正常 |
 | promotion | `PersonalLinkDomainService#groupUrl2` 查询空列表后取空对象employeeId=null，直接拼出seller_id=null；Cronus传回、mweb转名 |
 
-**结论**：这是“员工已离职但旧教师记录仍status1 + 认证层按账号/类型取首条、未限定当前员工 → student-center取到旧CAS → teacher-basic排除离职员工 → promotion未校验空值”的组合问题，不能记为当前登录CAS缺失员工映射。cart `bdba9e90` 仅完成消费端兼容；C-04按最新指示仅补教师启用状态筛选，不改变CAS身份取值优先级；这不能消除本例旧教师status1的问题。promotion及认证服务本轮不修改。认证选值源码定位：`GHArch/arch-general-apisix-auth` deployed commit `3e1d691a`，`EmployeeAppService#loadTeacherInfo`（437行附近）；本地只读检出 `/tmp/tangwen-auth-source`。查询教师列表trace `teacher-basic_gaotu100_com.583.17926545680258941`，查询员工状态trace `teacher-basic_gaotu100_com.284.17926543443153319`。定位阶段未改业务代码、配置或身份数据。数字90247仅是前轮参数绑定验证输入，不是该老师employeeId；其当前employeeId为8645。
+**结论**：这是“员工已离职但旧教师记录仍status1 + 认证层按账号/类型取首条、未限定当前员工 → student-center取到旧CAS → teacher-basic排除离职员工 → promotion未校验空值”的组合问题，不能记为当前登录CAS缺失员工映射。cart `bdba9e90` 仅完成消费端兼容；当前HEAD已增加按登录employeeId优先匹配CAS，部署与真实账号闭环尚待核验，见上节C-04。promotion及认证服务本轮不修改。认证选值源码定位：`GHArch/arch-general-apisix-auth` deployed commit `3e1d691a`，`EmployeeAppService#loadTeacherInfo`（437行附近）；本地只读检出 `/tmp/tangwen-auth-source`。查询教师列表trace `teacher-basic_gaotu100_com.583.17926545680258941`，查询员工状态trace `teacher-basic_gaotu100_com.284.17926543443153319`。定位阶段未改业务代码、配置或身份数据。数字90247仅是前轮参数绑定验证输入，不是该老师employeeId；其当前employeeId为8645。
 
 ## CASE-108 第1步最新实测（2026-10-22）
 
