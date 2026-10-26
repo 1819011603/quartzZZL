@@ -1,0 +1,16 @@
+{
+  "page": 29,
+  "widget": "0.0.19-alpha.6",
+  "checks": [
+    "exact ID only one",
+    "batch IDs two results",
+    "name search"
+  ],
+  "defaultAllFilter": {
+    "saleStatus": [
+      40
+    ]
+  },
+  "matchesRequirementAllStatuses": false,
+  "cartRestored": true
+}

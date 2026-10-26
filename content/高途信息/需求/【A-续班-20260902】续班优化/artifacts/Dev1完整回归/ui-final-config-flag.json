@@ -1,0 +1,24 @@
+{
+  "ok": true,
+  "url": "https://test-fuwu.baijia.com/bgwApi/product-b/b/renewMaster/configFlag",
+  "trafficEnv": "test-gtbg-dev-1",
+  "httpStatus": 200,
+  "resolvedRoute": {
+    "appId": "product-b",
+    "pathInfo": "/product-b",
+    "rewriteInfo": null,
+    "statusInfo": null,
+    "routeId": null
+  },
+  "request": {},
+  "traceId": "4c37b15e-99c7-47aa-85c6-f206e5471920.0.3",
+  "gapmApp": "product-b",
+  "response": {
+    "code": 0,
+    "data": {
+      "recommendFlag": 1,
+      "newOrder": 1
+    },
+    "errorTypeCode": 0
+  }
+}

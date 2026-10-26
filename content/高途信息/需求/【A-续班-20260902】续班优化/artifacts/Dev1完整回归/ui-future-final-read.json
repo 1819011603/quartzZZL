@@ -1,0 +1,74 @@
+{
+  "url": "http://10.218.238.49:28688/test/acl/compare/service",
+  "trafficEnv": "test-gtbg-dev-1",
+  "httpStatus": 200,
+  "directIp": true,
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.product.service.renewal.process.ProcessService#listProcess",
+    "params": [
+      "587049288356409344"
+    ]
+  },
+  "traceId": "product-b.289.17930086950310016",
+  "rvoCode": 0,
+  "result": [
+    {
+      "administrators": [
+        {
+          "id": 177071,
+          "name": "弓雪萌"
+        }
+      ],
+      "beginTime": "1793152800000",
+      "configType": 1,
+      "endTime": "1798596000000",
+      "nodeConfigs": [
+        {
+          "administrators": [
+            {
+              "id": 177071,
+              "name": "弓雪萌"
+            }
+          ],
+          "beginTime": "1793152800000",
+          "endTime": "1798596000000",
+          "extConfig": {
+            "excludeMode": 0,
+            "forceBuy": false
+          },
+          "number": "587049292376649729",
+          "processNumber": "587049292376649728",
+          "recommendProductType": "2",
+          "type": 3
+        },
+        {
+          "administrators": [
+            {
+              "id": 90247,
+              "name": "唐稳01"
+            }
+          ],
+          "beginTime": "1793152860000",
+          "endTime": "1793203200000",
+          "expandSubjectCount": 0,
+          "extConfig": {
+            "allowDuplicate": false,
+            "excludeMode": 1,
+            "expandSubject": true,
+            "forceBuy": false
+          },
+          "number": "587049292385038336",
+          "processNumber": "587049292376649728",
+          "recommendProductType": "0",
+          "type": 6
+        }
+      ],
+      "number": "587049292376649728",
+      "renewalNumber": "587049288356409344",
+      "type": 2
+    }
+  ],
+  "eurekaService": "PRODUCT-B",
+  "instanceId": "product-b-6b6fd65f77-rlm86:product-b:28688:@test-gtbg-dev-1",
+  "instanceCount": 5
+}

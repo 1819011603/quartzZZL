@@ -1,0 +1,4 @@
+Script ran on page and returned:
+```json
+{"selected":true,"text":"排除不同授课模式在读"}
+```

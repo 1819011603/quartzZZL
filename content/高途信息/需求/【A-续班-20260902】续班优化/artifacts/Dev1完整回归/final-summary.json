@@ -441,10 +441,117 @@
     "generatedModelOutputRetained": true
   },
   "limitations": [
-    "Chrome CLI no response; native browser inventory empty. No fresh page acceptance.",
+    "Fresh UI verification completed for expansion form, four AI gate cases and B search/add/details/remove; B filtering, type labels and tab order remain unresolved.",
     "Current B detail onceBuyLimit defaults to 1; backend unlimited SKU accepts 20. Old page 19-to-20 expectation must be checked against current configuration.",
     "New payment is membership-only and does not prove class attribution, real refunds or coupon discounts.",
     "Refund generated model results were reread with live gates; this run did not recreate all refund model inputs/results.",
     "Production release, merge, formal artifacts and quality gates not completed by this verification."
-  ]
+  ],
+  "uiVerification": {
+    "date": "2026-10-26",
+    "lane": "test-gtbg-dev-1",
+    "browserConnected": true,
+    "expansion": {
+      "plan": "587049288356409344",
+      "page": 32,
+      "saveAndReopenZero": true,
+      "saveAndReopenOne": true,
+      "selectedVerifiedBy": "DOM checked class and screenshots; AX checked flags unreliable",
+      "disabledSavedHidesOptions": true,
+      "requiredExclusionValidation": true,
+      "requiredMessage": "请选择流程节点扩科配置的推荐排除",
+      "unpublishedFutureFixture": true,
+      "originalBusinessPlanTimesChanged": false,
+      "overallPassed": true
+    },
+    "ai": {
+      "checks": [
+        "refund closed hides historical cards",
+        "renewal closed empty state",
+        "tutoring alone shows real communication history",
+        "learning alone shown without tutoring"
+      ],
+      "restoredExactly": true,
+      "page": 33,
+      "widget": "0.0.55-alpha.3"
+    },
+    "bSearch": {
+      "page": 29,
+      "widget": "0.0.19-alpha.6",
+      "checks": [
+        "exact ID only one",
+        "batch IDs two results",
+        "name search"
+      ],
+      "defaultAllFilter": {
+        "saleStatus": [
+          40
+        ]
+      },
+      "matchesRequirementAllStatuses": false,
+      "cartRestored": true
+    },
+    "bAddRemove": {
+      "passed": true,
+      "userId": "7658129872",
+      "sku": "584632626097291265",
+      "addedPriceCents": 9900,
+      "originalCouponPriceCents": 10000,
+      "uiTotalCents": 19900,
+      "originalCartRestoredExactly": true
+    },
+    "widget": {
+      "name": "ContinuClazzOrder",
+      "number": "254175514196977664",
+      "currentVersion": "0.0.19-alpha.6(0.0.19-alpha.5)",
+      "url": "https://gtoss.gsxcdn.com/gaia-widget/test/0.0.19-alpha.5/ContinuClazzOrder.js"
+    },
+    "findings": [
+      {
+        "id": "UI-B-01",
+        "status": "unresolved",
+        "expected": "PRD全部组合商品",
+        "actual": "alpha.6及alpha.5固定saleStatus=[40]",
+        "allCount": 9561,
+        "shownCount": 9333,
+        "missingCount": 228,
+        "endpoint": "/product-b/b/product/combine/search/noAuth"
+      },
+      {
+        "id": "UI-B-02",
+        "status": "unresolved",
+        "actual": "alpha.5组合明细会员卡8007及实物8010均显示未知",
+        "backendTypes": [
+          8007,
+          8010
+        ],
+        "sourceHint": "ProductsDetail.js读取productTypeChineseMap，当前本地map仅2/23/51/6004"
+      },
+      {
+        "id": "UI-B-03",
+        "status": "unresolved",
+        "widget": "0.0.19-alpha.5",
+        "expectedTabs": [
+          "小班课",
+          "组合商品",
+          "膨胀券"
+        ],
+        "actualTabs": [
+          "小班课",
+          "膨胀券",
+          "组合商品"
+        ]
+      }
+    ],
+    "restoration": {
+      "runtimeMapsRestoredExactly": true,
+      "apolloPublished": false,
+      "existingPlanTimesChanged": false,
+      "isolatedPlanUnpublished": true,
+      "originalPrimaryCartCount": 8,
+      "isolatedBOrderCartEmpty": true,
+      "pageVerificationCartRestoredExactly": true
+    },
+    "overallAccepted": false
+  }
 }

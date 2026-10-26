@@ -1,0 +1,13 @@
+{
+  "plan": "587049288356409344",
+  "page": 32,
+  "saveAndReopenZero": true,
+  "saveAndReopenOne": true,
+  "selectedVerifiedBy": "DOM checked class and screenshots; AX checked flags unreliable",
+  "disabledSavedHidesOptions": true,
+  "requiredExclusionValidation": true,
+  "requiredMessage": "请选择流程节点扩科配置的推荐排除",
+  "unpublishedFutureFixture": true,
+  "originalBusinessPlanTimesChanged": false,
+  "overallPassed": true
+}

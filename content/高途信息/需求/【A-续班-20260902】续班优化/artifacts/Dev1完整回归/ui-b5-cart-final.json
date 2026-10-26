@@ -1,0 +1,38 @@
+{
+  "ok": true,
+  "url": "https://test-fuwu.baijia.com/bgwApi/orderComponent/order/cart/detail",
+  "trafficEnv": "test-gtbg-dev-1",
+  "httpStatus": 200,
+  "resolvedRoute": {
+    "appId": "order-b",
+    "pathInfo": "/orderComponent",
+    "rewriteInfo": null,
+    "statusInfo": null,
+    "routeId": null
+  },
+  "request": {
+    "userId": "7658129872",
+    "accountId": "90247"
+  },
+  "traceId": "9a0b35bb-cf4e-45e3-b03e-5be131995d66.0.3",
+  "gapmApp": "order-b-gaotu100-com",
+  "response": {
+    "code": 0,
+    "msg": "",
+    "data": [
+      {
+        "productSkuName": "叠加膨胀券caseSDD_1788846272645",
+        "productNumber": "578323085464207361",
+        "productType": 8014,
+        "price": "10000",
+        "onceBuyLimit": 1,
+        "cartCount": 1,
+        "canCreateOrder": 1,
+        "productSpuNumber": "578323085464207360",
+        "productSpuName": "叠加膨胀券caseSDD_1788846272645",
+        "image": "",
+        "saleStatus": 40
+      }
+    ]
+  }
+}

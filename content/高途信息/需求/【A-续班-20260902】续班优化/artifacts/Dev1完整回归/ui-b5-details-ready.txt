@@ -1,0 +1,21 @@
+## Latest page snapshot
+uid=131_0 RootWebArea "教学服务效率系统-班级花名册" url="https://test-fuwu.baijia.com/crm/cronus/microClazzRoster?tabKey=continuationService"
+  uid=156_0 dialog "组合商品明细" modal
+    uid=156_1 generic focusable focused
+    uid=156_2 button "Close"
+    uid=156_3 "组合商品明细"
+    uid=156_4 "商品名称"
+    uid=156_5 "数量"
+    uid=156_6 "商品原价"
+    uid=156_7 "商品类型"
+    uid=156_8 "组合商品-脚本-子1会员卡-SKU"
+    uid=156_9 "1"
+    uid=156_10 "￥0"
+    uid=156_11 "未知"
+    uid=156_12 "组合商品-脚本-子2实物-SKU"
+    uid=156_13 "1"
+    uid=156_14 "￥99.00"
+    uid=156_15 "未知"
+    uid=156_16 button "关 闭"
+    uid=156_17 generic
+

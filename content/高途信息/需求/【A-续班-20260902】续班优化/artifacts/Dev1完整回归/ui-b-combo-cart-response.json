@@ -1,0 +1,48 @@
+{
+  "code": 0,
+  "msg": "",
+  "data": [
+    {
+      "productSkuName": "",
+      "productNumber": "584632626097291265",
+      "productType": 51,
+      "price": "9900",
+      "onceBuyLimit": 1,
+      "cartCount": 1,
+      "hasExpress": 1,
+      "canCreateOrder": 1,
+      "productSkuNormValue": "阅读创作",
+      "productSpuNumber": "584632626097291264",
+      "productSpuName": "组合商品-脚本",
+      "combinedSubProductInfos": [
+        {
+          "number": "584632609697562624",
+          "productName": "组合商品-脚本-子1会员卡-SKU",
+          "quantity": 1,
+          "originalPrice": "0",
+          "productType": 8007
+        },
+        {
+          "number": "584632617884844032",
+          "productName": "组合商品-脚本-子2实物-SKU",
+          "quantity": 1,
+          "originalPrice": "9900",
+          "productType": 8010
+        }
+      ]
+    },
+    {
+      "productSkuName": "叠加膨胀券caseSDD_1788846272645",
+      "productNumber": "578323085464207361",
+      "productType": 8014,
+      "price": "10000",
+      "onceBuyLimit": 1,
+      "cartCount": 1,
+      "canCreateOrder": 1,
+      "productSpuNumber": "578323085464207360",
+      "productSpuName": "叠加膨胀券caseSDD_1788846272645",
+      "image": "",
+      "saleStatus": 40
+    }
+  ]
+}

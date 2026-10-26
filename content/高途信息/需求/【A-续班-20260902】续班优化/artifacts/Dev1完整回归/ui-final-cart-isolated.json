@@ -1,0 +1,24 @@
+{
+  "ok": true,
+  "url": "https://test-fuwu.baijia.com/bgwApi/orderComponent/order/cart/detail",
+  "trafficEnv": "test-gtbg-dev-1",
+  "httpStatus": 200,
+  "resolvedRoute": {
+    "appId": "order-b",
+    "pathInfo": "/orderComponent",
+    "rewriteInfo": null,
+    "statusInfo": null,
+    "routeId": null
+  },
+  "request": {
+    "userId": "7658129769",
+    "accountId": "90247"
+  },
+  "traceId": "f13dae8b-cb5e-4f48-b20c-f25ce953195b.0.3",
+  "gapmApp": "order-b-gaotu100-com",
+  "response": {
+    "code": 0,
+    "msg": "",
+    "data": []
+  }
+}

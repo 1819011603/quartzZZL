@@ -1,0 +1,41 @@
+{
+  "ok": true,
+  "url": "https://test-fuwu.baijia.com/bgwApi/component/student-center/ai/moduleSwitch",
+  "trafficEnv": "test-gtbg-dev-1",
+  "httpStatus": 200,
+  "resolvedRoute": {
+    "appId": "student-center",
+    "pathInfo": "/component/student-center",
+    "rewriteInfo": null,
+    "statusInfo": null,
+    "routeId": null
+  },
+  "request": {},
+  "traceId": "b6656a6b-44d0-4c17-a31e-c7fa26eb6be0.0.3",
+  "gapmApp": "student-center",
+  "response": {
+    "code": 0,
+    "data": {
+      "renewal": {
+        "user_portrait": true,
+        "communication_summary": true,
+        "communication_suggestion_and_score": true,
+        "service_suggestion_and_score": true,
+        "renewed_unrenewed_follow_up": true,
+        "user_feedback": true,
+        "manager_evaluate": true,
+        "intention_prediction": true
+      },
+      "refund": {
+        "service_suggestion": false,
+        "prediction": true,
+        "manual_reason": false,
+        "learning": true,
+        "tutoring": true,
+        "refund_root_cause": false,
+        "satisfaction": true
+      }
+    },
+    "msg": ""
+  }
+}

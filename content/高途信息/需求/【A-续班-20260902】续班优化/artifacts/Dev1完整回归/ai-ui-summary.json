@@ -1,0 +1,11 @@
+{
+  "checks": [
+    "refund closed hides historical cards",
+    "renewal closed empty state",
+    "tutoring alone shows real communication history",
+    "learning alone shown without tutoring"
+  ],
+  "restoredExactly": true,
+  "page": 33,
+  "widget": "0.0.55-alpha.3"
+}
