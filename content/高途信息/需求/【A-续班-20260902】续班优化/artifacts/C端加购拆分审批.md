@@ -6,7 +6,7 @@ tags: [需求, 审批]
 
 # C端膨胀券与组合加购拆分审批
 
-状态：**本地待审批**。用户要求“先别提交，给我审批”。没有commit、push、保存青舟、改线上配置或部署。
+状态：**本地待审批**。用户要求“先别提交，给我审批”。拆分代码没有commit、push，24038没有保存。503恢复操作由用户另行授权，独立记录在文末。
 
 ## 审批对象
 
@@ -72,3 +72,19 @@ order的组合详情由B端ContinuClazzOrder调用`/orderComponent/order/cart/de
 - 新分支：保留C端生产代码与原HEAD逐文件相同；原C端契约及公共已报名测试共28项通过，JDK8 reactor编译通过。
 - order生产代码与HEAD一致；本轮未改B端/前端代码。
 - 本轮只证明本地编译/测试与diff边界，未部署、未证明dev-3运行链路已通过。
+
+## 自审结果（2026-10-26）
+
+- 拆除后相对bdba9e90，生产代码差异确实只剩扩科有效订单已报名判断；B端商品推荐使用该字段，保留有依据。
+- order共享逻辑与HEAD完全相同，原有未跟踪测试hash未变；未发现本次拆分引入的阻断项。
+- 24038本地payload曾缺少structuredConfigInfo。已从getStructureConfig读取并补入16行配置，避免审批后整体保存误清空已有配置；实际保存前仍需重新读取。
+- 13个服务无重复，8个前端保留，后端提测dev-3、前端提测dev-1。提测产物占位及未完成环境回归仍是审批后事项。
+- 新分支继承拆除提交、再以独立提交恢复C端的Git顺序必须执行，当前仍为本地备份分支，尚未执行提交。
+
+## 503恢复（另行授权）
+
+用户明确指定test-gtbg-dev-1，并要求“发布原镜像”“先保证能用”。product-b该泳道replicas=0、无Pod，Eureka无对应实例；网关路由正常。
+
+已核对listWorkDeploy保存的原镜像为`feature-xuban-expand-exclude-c1b9225e-20261019094500`，无运行中构建。使用qingzhou_redeploy显式指定该镜像，青舟返回code=200。目标commit为`c1b9225eff85f60f0d52b4a5d162b8b91f3172ee`，恢复验证进行中。该操作没有提交或构建拆分代码，也没有保存24038。
+
+恢复过程中发现原镜像启动被TEST/default共享Apollo配置阻断：`TestProductExemptPredicate.exempt.shopNumbers`的数组缺少开头`[`，导致TestProductExemptPredicate初始化失败，Spring上下文退出。已核对已发布值与草稿一致、无其他待发布项；仅补`[`且保留原六个门店号，已暂存草稿。发布预览仅此一项modified。因Apollo技能要求已有值变更先展示old→new并确认，已请求用户确认，尚未发布配置；接口恢复验证尚未通过。
