@@ -1,0 +1,35 @@
+{
+  "all": {
+    "total": 9561,
+    "returned": 20,
+    "descendingSpu": true,
+    "saleStatuses": [
+      0,
+      40
+    ]
+  },
+  "name": {
+    "total": 18,
+    "returned": 18,
+    "descendingSpu": true,
+    "saleStatuses": [
+      40
+    ]
+  },
+  "exact": {
+    "total": 1,
+    "returned": 1,
+    "descendingSpu": true,
+    "saleStatuses": [
+      40
+    ]
+  },
+  "batch": {
+    "total": 2,
+    "returned": 2,
+    "descendingSpu": true,
+    "saleStatuses": [
+      40
+    ]
+  }
+}

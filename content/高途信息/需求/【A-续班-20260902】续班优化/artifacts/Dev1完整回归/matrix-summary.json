@@ -1,0 +1,323 @@
+{
+  "passed": 55,
+  "checks": [
+    {
+      "grant": "prediction",
+      "module": "prediction",
+      "value": true,
+      "trace": "2714baff-99ab-4b1e-b60a-878e709f6391.0.3"
+    },
+    {
+      "grant": "prediction",
+      "module": "manual_reason",
+      "value": false,
+      "trace": "998d87cb-f5b2-4ed9-974e-2c0f6a394c3d.0.3"
+    },
+    {
+      "grant": "prediction",
+      "module": "learning",
+      "value": false,
+      "trace": "534f7022-9c3d-4083-aa3f-420600f5d94c.0.3"
+    },
+    {
+      "grant": "prediction",
+      "module": "tutoring",
+      "value": false,
+      "trace": "76253e65-033d-4764-b936-48f4f1370db7.0.3"
+    },
+    {
+      "grant": "prediction",
+      "module": "satisfaction",
+      "value": false,
+      "trace": "ffa1e90a-715a-4947-abfe-ef4b7610cdc6.0.3"
+    },
+    {
+      "grant": "prediction",
+      "module": "refund_root_cause",
+      "value": false,
+      "trace": "47a1c779-173d-413c-bdc0-5810efb7444d.0.3"
+    },
+    {
+      "grant": "prediction",
+      "module": "service_suggestion",
+      "value": false,
+      "trace": "d7ebc503-96ca-4cf1-b74b-fec2c8fb136a.0.3"
+    },
+    {
+      "grant": "manual_reason",
+      "module": "prediction",
+      "value": false,
+      "trace": "9619b14e-7d17-499a-a3fd-b9d29bb8dd21.0.3"
+    },
+    {
+      "grant": "manual_reason",
+      "module": "manual_reason",
+      "value": true,
+      "trace": "a7a7ca4e-0216-43dc-9e69-7265a5a0101a.0.3"
+    },
+    {
+      "grant": "manual_reason",
+      "module": "learning",
+      "value": false,
+      "trace": "6f993ff9-6b81-4838-921b-f12d4fe0ac66.0.3"
+    },
+    {
+      "grant": "manual_reason",
+      "module": "tutoring",
+      "value": false,
+      "trace": "f510cda1-3ae5-4a72-8ea4-5159105f30af.0.3"
+    },
+    {
+      "grant": "manual_reason",
+      "module": "satisfaction",
+      "value": false,
+      "trace": "6ce4da99-ef91-4518-af05-e483fcc0a09e.0.3"
+    },
+    {
+      "grant": "manual_reason",
+      "module": "refund_root_cause",
+      "value": false,
+      "trace": "cfbbccb5-cec5-4f0a-b261-2375705f8678.0.3"
+    },
+    {
+      "grant": "manual_reason",
+      "module": "service_suggestion",
+      "value": false,
+      "trace": "e44c8929-3cfc-4de9-bc81-dbd14378ae25.0.3"
+    },
+    {
+      "grant": "learning",
+      "module": "prediction",
+      "value": false,
+      "trace": "181ab2ea-52af-481f-8396-8989fa29149a.0.3"
+    },
+    {
+      "grant": "learning",
+      "module": "manual_reason",
+      "value": false,
+      "trace": "f6892b8a-b255-4bea-b4d2-3f21cfd2b561.0.3"
+    },
+    {
+      "grant": "learning",
+      "module": "learning",
+      "value": true,
+      "trace": "9cb97c38-b04e-44a2-af76-ad98028f4b08.0.3"
+    },
+    {
+      "grant": "learning",
+      "module": "tutoring",
+      "value": false,
+      "trace": "5cfe62a3-e80e-4647-9574-02da27c51e97.0.3"
+    },
+    {
+      "grant": "learning",
+      "module": "satisfaction",
+      "value": false,
+      "trace": "affb86f4-dd96-496f-ae6b-0a489c4c5ae7.0.3"
+    },
+    {
+      "grant": "learning",
+      "module": "refund_root_cause",
+      "value": false,
+      "trace": "68375a43-4212-49a0-853b-84254d335b3a.0.3"
+    },
+    {
+      "grant": "learning",
+      "module": "service_suggestion",
+      "value": false,
+      "trace": "4dddac14-6e62-46b5-bd1d-7a2f59cd59ca.0.3"
+    },
+    {
+      "grant": "tutoring",
+      "module": "prediction",
+      "value": false,
+      "trace": "e51a0939-681b-42bd-a6b1-3d646a21e09b.0.3"
+    },
+    {
+      "grant": "tutoring",
+      "module": "manual_reason",
+      "value": false,
+      "trace": "03fc5119-6640-4ca8-8611-f7d92bbf8005.0.3"
+    },
+    {
+      "grant": "tutoring",
+      "module": "learning",
+      "value": false,
+      "trace": "7fda7655-8001-4bf3-8c3b-3a0b62416777.0.3"
+    },
+    {
+      "grant": "tutoring",
+      "module": "tutoring",
+      "value": true,
+      "trace": "8fc5928c-2c62-419b-a2db-402677216be9.0.3"
+    },
+    {
+      "grant": "tutoring",
+      "module": "satisfaction",
+      "value": false,
+      "trace": "77404476-51c4-4a88-9da3-40693f259945.0.3"
+    },
+    {
+      "grant": "tutoring",
+      "module": "refund_root_cause",
+      "value": false,
+      "trace": "38fb8e9c-bdcc-44bf-95b9-970a86315245.0.3"
+    },
+    {
+      "grant": "tutoring",
+      "module": "service_suggestion",
+      "value": false,
+      "trace": "90a7d3de-ade4-4a3b-a6a6-348acc3292b5.0.3"
+    },
+    {
+      "grant": "refund_root_cause",
+      "module": "prediction",
+      "value": false,
+      "trace": "9eae6d96-b5a1-40be-a94a-083bab09cebf.0.3"
+    },
+    {
+      "grant": "refund_root_cause",
+      "module": "manual_reason",
+      "value": false,
+      "trace": "9a5e7dac-f257-41dd-9c52-da3913c21169.0.3"
+    },
+    {
+      "grant": "refund_root_cause",
+      "module": "learning",
+      "value": true,
+      "trace": "4ed5bbf5-ef89-477b-bb6c-97ca92adfda3.0.3"
+    },
+    {
+      "grant": "refund_root_cause",
+      "module": "tutoring",
+      "value": true,
+      "trace": "cc735864-6dd2-4c7a-8afe-6a5a0956fee6.0.3"
+    },
+    {
+      "grant": "refund_root_cause",
+      "module": "satisfaction",
+      "value": true,
+      "trace": "c035b425-4c75-41d7-8ae1-23cbd8c50d5f.0.3"
+    },
+    {
+      "grant": "refund_root_cause",
+      "module": "refund_root_cause",
+      "value": true,
+      "trace": "7649d747-7216-4868-8797-a01683486f76.0.3"
+    },
+    {
+      "grant": "refund_root_cause",
+      "module": "service_suggestion",
+      "value": false,
+      "trace": "6806f073-15d1-4157-8447-f722a24095f3.0.3"
+    },
+    {
+      "grant": "service_suggestion",
+      "module": "prediction",
+      "value": false,
+      "trace": "0c1bf646-4546-455d-a621-32ebf2a1fed5.0.3"
+    },
+    {
+      "grant": "service_suggestion",
+      "module": "manual_reason",
+      "value": false,
+      "trace": "6d00c5f9-31c6-4747-8bae-eb33f07d19b4.0.3"
+    },
+    {
+      "grant": "service_suggestion",
+      "module": "learning",
+      "value": true,
+      "trace": "40579918-9c13-4110-a4c6-d47273389268.0.3"
+    },
+    {
+      "grant": "service_suggestion",
+      "module": "tutoring",
+      "value": true,
+      "trace": "5af517b0-4fd7-433b-84f8-23ad7b4b9374.0.3"
+    },
+    {
+      "grant": "service_suggestion",
+      "module": "satisfaction",
+      "value": true,
+      "trace": "17b59a20-34f2-4854-b0e7-0d17b2d576d2.0.3"
+    },
+    {
+      "grant": "service_suggestion",
+      "module": "refund_root_cause",
+      "value": true,
+      "trace": "a0bb2c03-1a9d-49f1-bd38-d3d96056c5c1.0.3"
+    },
+    {
+      "grant": "service_suggestion",
+      "module": "service_suggestion",
+      "value": true,
+      "trace": "0695537b-f10f-47d4-87cb-cf57d9bd0c41.0.3"
+    },
+    {
+      "path": "self",
+      "value": true,
+      "trace": "d2c07a62-2951-454f-b514-d3b1e56216b6.0.3"
+    },
+    {
+      "path": "child",
+      "value": true,
+      "trace": "448a580f-44cf-4c02-8803-a1636c213200.0.3"
+    },
+    {
+      "path": "prefix",
+      "value": false,
+      "trace": "820d203e-3259-4a40-8c32-2b35ebf42020.0.3"
+    },
+    {
+      "path": "sibling",
+      "value": false,
+      "trace": "f1897973-ec12-4113-a362-382de38dba06.0.3"
+    },
+    {
+      "nullGrantModule": "prediction",
+      "value": false,
+      "trace": "cb945559-9b50-4a3e-9bac-6f6a25754c83.0.3"
+    },
+    {
+      "nullGrantModule": "manual_reason",
+      "value": false,
+      "trace": "a2e7348e-9f0c-4bdf-8cc1-c24348a3067b.0.3"
+    },
+    {
+      "nullGrantModule": "learning",
+      "value": true,
+      "trace": "6d20ef19-81eb-457c-9a97-4d118a4b63a5.0.3"
+    },
+    {
+      "nullGrantModule": "tutoring",
+      "value": true,
+      "trace": "c0fdd16d-e979-425d-809e-819f0d4a1d06.0.3"
+    },
+    {
+      "nullGrantModule": "satisfaction",
+      "value": true,
+      "trace": "15999cb6-2a29-43ca-81b9-72136e484743.0.3"
+    },
+    {
+      "nullGrantModule": "refund_root_cause",
+      "value": true,
+      "trace": "534bd85d-f3ab-4394-a06d-63e9e0b3c578.0.3"
+    },
+    {
+      "nullGrantModule": "service_suggestion",
+      "value": true,
+      "trace": "ce0921fc-e410-41e6-8973-cc847eda6701.0.3"
+    },
+    {
+      "nullGrantModule": null,
+      "value": false,
+      "trace": "e998788d-5a77-44b6-a8cf-ed27ac27e885.0.3"
+    },
+    {
+      "nullGrantModule": " ",
+      "value": false,
+      "trace": "c4848035-d7ee-4603-9a35-7fd7e5352a5e.0.3"
+    }
+  ],
+  "runtimeRestored": true
+}

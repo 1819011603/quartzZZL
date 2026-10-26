@@ -1,0 +1,24 @@
+{
+  "payNumber": "432723431179944012",
+  "userId": "7658129769",
+  "sku": "584458543193819137",
+  "amountCents": 27,
+  "children": 3,
+  "childTypes": [
+    8007,
+    8007,
+    8007
+  ],
+  "payStatus": [
+    0,
+    1
+  ],
+  "orderStatuses": [
+    1,
+    2
+  ],
+  "mockPayRun": "r-20261026170040-79606dd8",
+  "databaseReadback": true,
+  "membershipOnly": true,
+  "doesNotProveClassAttribution": true
+}

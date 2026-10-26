@@ -1,0 +1,12 @@
+{
+  "closedHandles": [
+    0,
+    0,
+    0
+  ],
+  "openHandle": 2,
+  "entryKey": "887115fbdb1cc9e5eed7c2eae8469caa-7658127801_585960582537144320_36622538973250048-4f35ac6f-e9f2-4968-9486-66c33de8667d-v4",
+  "savedSceneValue": "{\"aiToken\":\"887115fbdb1cc9e5eed7c2eae8469caa-7658127801_585960582537144320_36622538973250048-4f35ac6f-e9f2-4968-9486-66c33de8667d-v4\",\"directReason\":\"孩子学校晚自习与下期课程时间冲突，家长暂未续班，希望提供回放或调整时段后再决定\",\"fundamentalReason\":\"线上直播课程时间与学员线下学校晚自习安排冲突，学员无法协调出固定时间参与，导致续班决策搁置\",\"mentionedFollowupTime\":\"否\",\"rationales\":[{\"categoryCode\":\"1-2\",\"coreReason\":\"是\",\"keywords\":[\"晚自习\",\"课时冲突\",\"时间冲突\",\"回放\",\"调整时段\"],\"newCategory\":\"\",\"nonRenewalReasonSummary\":\"家长认可老师授课效果，说明教学质量和老师服务不是主要阻碍。未续核心原因是孩子学校晚自习与下期直播课时冲突，无法保证固定出勤，家长希望获得回放或调整到其他时段后再决定。属于线上课程与线下学校安排冲突导致的被动搁置，可通过错峰排课、回放补课等方式挽回。\",\"primaryCategory\":\"时间问题\",\"reasonJudgeCommOriginalList\":[{\"chatTime\":\"2026-10-21 19:43:04\",\"communicateId\":1434,\"customerRole\":\"家长\",\"customerWords\":\"家长认可老师的授课效果，但孩子学校晚自习与下期课时冲突，暂未续班。希望老师提供回放或其他时段课程后再决定。\"}],\"reasonJudgeForecastOriginalList\":[],\"reasonJudgeQuestionnaireOriginalList\":[],\"reasonJudgeType\":\"1\",\"secondaryCategory\":\"与学校安排冲突\"}],\"serviceSuggestion\":\"1. 48小时内整理下期课表，标出可避开晚自习的直播时段并确认回放覆盖，发给家长选择；2. 提供直播+回放双轨方案，说明回放可倍速、可反复看，降低出勤顾虑；3. 约定一周内回访，确认孩子可固定学习时段，再匹配班型推动续班；4. 结合薄弱点布置每周2-3次、每次20分钟碎片任务，保持学习连贯。\",\"subclazzNumber\":36622538973250048,\"suggestedFollowupTime\":\"\"}",
+  "freshModel": true,
+  "forceRefreshExistingValidContext": true
+}

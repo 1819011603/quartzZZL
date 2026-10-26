@@ -1,0 +1,78 @@
+{
+  "ok": true,
+  "url": "https://test-fuwu.baijia.com/bgwApi/orderComponent/order/product/calculateAll",
+  "trafficEnv": "test-gtbg-dev-1",
+  "httpStatus": 200,
+  "resolvedRoute": {
+    "appId": "order-b",
+    "pathInfo": "/orderComponent",
+    "rewriteInfo": null,
+    "statusInfo": null,
+    "routeId": null
+  },
+  "request": {
+    "userId": "7658129769",
+    "choiceProductList": [
+      {
+        "productNumber": "584458543193819137",
+        "productType": 51,
+        "quantity": 1
+      }
+    ],
+    "needCoupon": true
+  },
+  "curl": "curl -sk \\\n  -x \"${AGENT_PROXY_URL:-http://127.0.0.1:8888}\" \\\n  'https://test-fuwu.baijia.com/bgwApi/orderComponent/order/product/calculateAll' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-1' \\\n  -H 'b_client: EES' \\\n  -H 'identification: refundPrevention' \\\n  --data-raw '{\"userId\": \"7658129769\", \"choiceProductList\": [{\"productNumber\": \"584458543193819137\", \"productType\": 51, \"quantity\": 1}], \"needCoupon\": true}'",
+  "traceId": "f09e6988-b35b-4fb1-a6aa-2ae92f538ce5.0.3",
+  "gapmApp": "order-b-gaotu100-com",
+  "response": {
+    "code": 0,
+    "data": {
+      "userId": "7658129769",
+      "totalPrice": "27",
+      "promotionPrice": "0",
+      "couponPrice": "0",
+      "realPrice": "27",
+      "validateNewDto": {
+        "needSelectGift": false,
+        "productList": [
+          {
+            "productNumber": "584458543193819137",
+            "productType": 51,
+            "productName": "【26秋联报】学期卡（混合履约模式）",
+            "amount": 1,
+            "quantity": 1,
+            "detailList": [
+              {
+                "productNumber": "584457485224675328",
+                "productType": 8007,
+                "productName": "【26秋】初阶语文单科学期卡（1001-1031）",
+                "amount": 1,
+                "quantity": 1
+              },
+              {
+                "productNumber": "584457321992849408",
+                "productType": 8007,
+                "productName": "【26秋】初阶数学单科学期卡（3个月有效期）",
+                "amount": 1,
+                "quantity": 1
+              },
+              {
+                "productNumber": "584457264983869440",
+                "productType": 8007,
+                "productName": "【26秋】初阶英语单科学期卡（0131到期）",
+                "amount": 1,
+                "quantity": 1
+              }
+            ]
+          }
+        ],
+        "giftObjList": [],
+        "giftPromotionList": [],
+        "promotionList": [],
+        "timeStamp": "1793004887066"
+      },
+      "promotionCouponDtos": []
+    },
+    "errorTypeCode": 0
+  }
+}

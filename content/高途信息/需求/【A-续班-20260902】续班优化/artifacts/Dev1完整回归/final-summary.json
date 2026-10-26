@@ -1,0 +1,450 @@
+{
+  "date": "2026-10-26",
+  "lane": "test-gtbg-dev-1",
+  "branch": "feature-xuban-expand-exclude",
+  "scope": "23819 CASE-101~120 and current C split compatibility",
+  "backendVerified": true,
+  "overallAccepted": false,
+  "deployments": [
+    {
+      "service": "baijia.gt.ecommerce.product.product",
+      "logicEnv": "dev",
+      "namespace": "test-gtbg-dev-1",
+      "branch": "feature-xuban-expand-exclude",
+      "commit": "c1b9225e",
+      "pod": "product-gaotu100-com-cbd4497b6-4gxj2",
+      "ip": "10.218.238.185",
+      "status": "Running",
+      "eureka": "UP"
+    },
+    {
+      "service": "baijia.gt.ecommerce.product.product-task",
+      "logicEnv": "dev",
+      "namespace": "test-gtbg-dev-1",
+      "branch": "feature-xuban-expand-exclude",
+      "commit": "c1b9225e",
+      "pod": "product-task-gaotu100-com-6d59f8dbbf-tzkn5",
+      "ip": "10.218.238.30",
+      "status": "Running",
+      "eureka": "UP"
+    },
+    {
+      "service": "baijia.gt.ecommerce.product.product-b",
+      "logicEnv": "dev",
+      "namespace": "test-gtbg-dev-1",
+      "branch": "feature-xuban-expand-exclude",
+      "commit": "c1b9225e",
+      "pod": "product-b-6b6fd65f77-rlm86",
+      "ip": "10.218.238.49",
+      "status": "Running",
+      "eureka": "UP"
+    },
+    {
+      "service": "baijia.gaotu.Business.operation-workbench.student-data",
+      "logicEnv": "dev",
+      "namespace": "test-gtbg-dev-1",
+      "branch": "feature-xuban-expand-exclude",
+      "commit": "7bfa46b2",
+      "pod": "student-data-7cdbc55c7c-rwh9h",
+      "ip": "10.218.250.247",
+      "status": "Running",
+      "eureka": "UP"
+    },
+    {
+      "service": "baijia.gaotu.Business.counseling-workbench.student-data-dws",
+      "logicEnv": "dev",
+      "namespace": "test-gtbg-dev-1",
+      "branch": "feature-xuban-expand-exclude",
+      "commit": "7bfa46b2",
+      "pod": "student-data-dws-8559d8dbdd-h687s",
+      "ip": "10.218.238.38",
+      "status": "Running",
+      "eureka": "UP"
+    },
+    {
+      "service": "baijia.gt.jiaoyan.ees-be.student-data-gps",
+      "logicEnv": "dev",
+      "namespace": "test-gtbg-dev-1",
+      "branch": "feature-xuban-expand-exclude",
+      "commit": "7bfa46b2",
+      "pod": "student-data-gps-df9b58bc6-x5kls",
+      "ip": "10.218.236.63",
+      "status": "Running",
+      "eureka": "UP"
+    },
+    {
+      "service": "baijia.gaotu.Business.operation-workbench.student-center",
+      "logicEnv": "dev",
+      "namespace": "test-gtbg-dev-1",
+      "branch": "feature-xuban-expand-exclude",
+      "commit": "b6e56448",
+      "pod": "student-center-67c69c56c9-x5jvm",
+      "ip": "10.218.238.21",
+      "status": "Running",
+      "eureka": "UP"
+    },
+    {
+      "service": "gaotu_cart",
+      "logicEnv": "dev",
+      "namespace": "test-gtbg-dev-1",
+      "branch": "feature-xuban-expand-exclude",
+      "commit": "58dcd914",
+      "pod": "cart-gaotu100-com-5d68dc5f4-l7458",
+      "ip": "10.218.248.18",
+      "status": "Running",
+      "eureka": "UP"
+    },
+    {
+      "service": "gaotu_order",
+      "logicEnv": "dev",
+      "namespace": "test-gtbg-dev-1",
+      "branch": "feature-xuban-expand-exclude",
+      "commit": "6a36d7a4",
+      "pod": "order-gaotu100-com-5f8586b96-9ks77",
+      "ip": "10.218.251.239",
+      "status": "Running",
+      "eureka": "UP"
+    },
+    {
+      "service": "gaotu_order_task",
+      "logicEnv": "dev",
+      "namespace": "test-gtbg-dev-1",
+      "branch": "feature-xuban-expand-exclude",
+      "commit": "6a36d7a4",
+      "pod": "order-task-gaotu100-com-84885549bd-ppffp",
+      "ip": "10.218.238.164",
+      "status": "Running",
+      "eureka": "UP"
+    },
+    {
+      "service": "baijia.gaotu.tech.trade.order-ad",
+      "logicEnv": "dev",
+      "namespace": "test-gtbg-dev-1",
+      "branch": "feature-xuban-expand-exclude",
+      "commit": "6a36d7a4",
+      "pod": "order-ad-gaotu100-com-5d566f6f9f-mcbtv",
+      "ip": "10.218.238.44",
+      "status": "Running",
+      "eureka": "UP"
+    },
+    {
+      "service": "baijia.gaotu.tech.trade.order-b",
+      "logicEnv": "dev",
+      "namespace": "test-gtbg-dev-1",
+      "branch": "feature-xuban-expand-exclude",
+      "commit": "6a36d7a4",
+      "pod": "order-b-gaotu100-com-5564545c98-4rsxk",
+      "ip": "10.218.237.64",
+      "status": "Running",
+      "eureka": "UP"
+    }
+  ],
+  "freshLocalTests": {
+    "studentData": 90,
+    "studentCenter": 11,
+    "allPassed": true
+  },
+  "runtimeRefundMatrixAssertions": 55,
+  "aiBusiness": {
+    "passed": 19,
+    "checks": [
+      {
+        "closed": "analysis",
+        "empty": true,
+        "trace": "5ccd224e-1706-48fa-b8c3-f03a7dfd8503.0.3"
+      },
+      {
+        "closed": "reason",
+        "empty": true,
+        "trace": "05a93dc0-0e6c-4a4e-9cc5-6b6fd9c5b69d.0.3"
+      },
+      {
+        "closed": "reasonType",
+        "empty": true,
+        "trace": "c7690e0b-8ac2-4dae-8b5d-9e08ee6e5b0a.0.3"
+      },
+      {
+        "closed": "course",
+        "empty": true,
+        "trace": "51b41098-2ad5-43f8-b6c4-eae0871bfaff.0.3"
+      },
+      {
+        "closed": "stage",
+        "empty": true,
+        "trace": "dc7cf286-0096-45ad-b3bb-3976db68a5d3.0.3"
+      },
+      {
+        "closed": "intent/record",
+        "empty": true,
+        "trace": "bf8644c1-5878-434d-adf2-fd61fbfb21e8.0.3"
+      },
+      {
+        "closed": "portrait",
+        "trace": "6b7c56bd-9607-4c51-992f-af7bbcf270c2.0.3"
+      },
+      {
+        "closed": "comm",
+        "trace": "8ce9e350-cbb7-4c00-bd21-62ecb99f3e26.0.3"
+      },
+      {
+        "closed": "reason-detail",
+        "trace": "2780dd07-9403-42be-b193-d7605165f0ee.0.3"
+      },
+      {
+        "rejectedWrite": "feedback",
+        "code": 8,
+        "trace": "146573fc-0ed5-4016-9951-4ab853be0991.0.3"
+      },
+      {
+        "rejectedWrite": "manager",
+        "code": 8,
+        "trace": "86efeafd-0574-4e34-8e86-297b6d62bddf.0.3"
+      },
+      {
+        "rejectedWrite": "manual",
+        "code": 8,
+        "trace": "bfe0ba17-353c-4bdf-98ff-19e54cc276b1.0.3"
+      },
+      {
+        "singleModule": "prediction",
+        "returnedData": true,
+        "trace": "d9ff2d39-adc5-4da4-8cad-c6ba525958e1.0.3"
+      },
+      {
+        "singleModule": "learning",
+        "returnedData": true,
+        "trace": "e4a02814-2c35-4c81-a480-860cf32d2d94.0.3"
+      },
+      {
+        "singleModule": "tutoring",
+        "returnedData": true,
+        "trace": "d2791414-7f7d-4bc5-ba6a-2d0dcd9de7f6.0.3"
+      },
+      {
+        "singleModule": "manual_reason",
+        "returnedData": true,
+        "trace": "a8e07503-cd69-42bf-9158-f409774699c3.0.3"
+      },
+      {
+        "combo": 1,
+        "enabled": [
+          "learning",
+          "refund_root_cause",
+          "satisfaction",
+          "tutoring"
+        ],
+        "rootResult": true
+      },
+      {
+        "combo": 2,
+        "enabled": [
+          "learning",
+          "refund_root_cause",
+          "satisfaction",
+          "service_suggestion",
+          "tutoring"
+        ],
+        "suggestion": true,
+        "predictionNotLeaked": true
+      },
+      {
+        "portraitRetained": true,
+        "predictionNotLeaked": true
+      }
+    ],
+    "restored": true
+  },
+  "manualWrite": {
+    "openWriteRead": true,
+    "closedWriteRejected": true,
+    "closedNoChange": true
+  },
+  "expansionSave": {
+    "passed": 2,
+    "results": [
+      {
+        "plan": "585960797778243584",
+        "initialExcludeMode": 1,
+        "off": [
+          "585960755422160896",
+          "585963387758962688",
+          "585963404555053056"
+        ],
+        "on": [
+          "585960755422160896"
+        ],
+        "pureRetained": "585960755422160896",
+        "passed": true
+      },
+      {
+        "plan": "586116340522184704",
+        "initialExcludeMode": 0,
+        "off": [
+          "585960755422160896",
+          "585963404555053056",
+          "586097025945298944"
+        ],
+        "on": [
+          "586097025945298944"
+        ],
+        "pureRetained": "586097025945298944",
+        "passed": true
+      }
+    ],
+    "restored": true
+  },
+  "bCart": {
+    "checks": [
+      {
+        "step": "one",
+        "quantity": 1,
+        "detailOnceBuyLimit": 1
+      },
+      {
+        "step": "nineteen",
+        "quantity": 19,
+        "detailOnceBuyLimit": 1
+      },
+      {
+        "step": "twenty",
+        "quantity": 20,
+        "detailOnceBuyLimit": 1
+      },
+      {
+        "step": "twentyone-rejected",
+        "businessCode": 1,
+        "message": "超过购物车商品最大数量"
+      },
+      {
+        "step": "sku-limit-one-reject-two",
+        "businessCode": 1,
+        "message": "单次购买数量超过限制"
+      }
+    ],
+    "passed": true,
+    "restored": true
+  },
+  "search": {
+    "all": {
+      "total": 9561,
+      "returned": 20,
+      "descendingSpu": true,
+      "saleStatuses": [
+        0,
+        40
+      ]
+    },
+    "name": {
+      "total": 18,
+      "returned": 18,
+      "descendingSpu": true,
+      "saleStatuses": [
+        40
+      ]
+    },
+    "exact": {
+      "total": 1,
+      "returned": 1,
+      "descendingSpu": true,
+      "saleStatuses": [
+        40
+      ]
+    },
+    "batch": {
+      "total": 2,
+      "returned": 2,
+      "descendingSpu": true,
+      "saleStatuses": [
+        40
+      ]
+    }
+  },
+  "newPayment": {
+    "payNumber": "432723431179944012",
+    "userId": "7658129769",
+    "sku": "584458543193819137",
+    "amountCents": 27,
+    "children": 3,
+    "childTypes": [
+      8007,
+      8007,
+      8007
+    ],
+    "payStatus": [
+      0,
+      1
+    ],
+    "orderStatuses": [
+      1,
+      2
+    ],
+    "mockPayRun": "r-20261026170040-79606dd8",
+    "databaseReadback": true,
+    "membershipOnly": true,
+    "doesNotProveClassAttribution": true
+  },
+  "renewalModel": {
+    "closedHandleCodes": [
+      0,
+      0,
+      0
+    ],
+    "openHandleCode": 2,
+    "entryKey": "887115fbdb1cc9e5eed7c2eae8469caa-7658127801_585960582537144320_36622538973250048-4f35ac6f-e9f2-4968-9486-66c33de8667d-v4",
+    "databaseId": 1950,
+    "databaseUpdated": "2026-10-26 17:00:41",
+    "sameValidContextForceRefresh": true
+  },
+  "traces": {
+    "model-closed-trace": {
+      "errorSpanCount": 0,
+      "services": [
+        "arch-general-apisix",
+        "ngapi_test-fuwu.baijia.com",
+        "student-data"
+      ],
+      "dev1": true
+    },
+    "model-open-trace": {
+      "errorSpanCount": 0,
+      "services": [
+        "arch-general-apisix",
+        "litellm",
+        "ngapi_test-fuwu.baijia.com",
+        "ngapi_test-llm.baijia.com",
+        "student-data"
+      ],
+      "dev1": true
+    },
+    "price-trace": {
+      "errorSpanCount": 0,
+      "services": [
+        "arch-general-apisix",
+        "course-setting.gaotu100.com",
+        "ngapi_test-fuwu.baijia.com",
+        "order.gaotu100.com",
+        "product.gaotu100.com",
+        "promotion-app.gaotu100.com",
+        "promotion-c.gaotu100.com"
+      ],
+      "dev1": true
+    }
+  },
+  "restoration": {
+    "apolloPublished": false,
+    "runtimeMapsRestoredExactly": true,
+    "renewalPlansRestoredExactly": true,
+    "originalTeacherCartUnchangedCount": 8,
+    "isolatedCartRestoredEmpty": true,
+    "manualReasonRestoredExactly": true,
+    "paidTestOrderRetainedForReadback": "432723431179944012",
+    "generatedModelOutputRetained": true
+  },
+  "limitations": [
+    "Chrome CLI no response; native browser inventory empty. No fresh page acceptance.",
+    "Current B detail onceBuyLimit defaults to 1; backend unlimited SKU accepts 20. Old page 19-to-20 expectation must be checked against current configuration.",
+    "New payment is membership-only and does not prove class attribution, real refunds or coupon discounts.",
+    "Refund generated model results were reread with live gates; this run did not recreate all refund model inputs/results.",
+    "Production release, merge, formal artifacts and quality gates not completed by this verification."
+  ]
+}

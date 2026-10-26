@@ -1,0 +1,129 @@
+{
+  "target": "http://10.218.238.49:28688/feign/combinedProduct/searchSpuNoAuth",
+  "trafficEnv": "test-gtbg-dev-1",
+  "instanceId": "product-b-6b6fd65f77-rlm86:product-b:28688:@test-gtbg-dev-1",
+  "httpStatus": 200,
+  "instanceCount": 5,
+  "request": {
+    "productSpuNumber": "584632626097291264",
+    "pager": {
+      "current": 1,
+      "pageSize": 20
+    }
+  },
+  "curl": "curl -sk \\\n  'http://10.218.238.49:28688/feign/combinedProduct/searchSpuNoAuth' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-1' \\\n  -H 'host: PRODUCT-B' \\\n  --data-raw '{\"productSpuNumber\": \"584632626097291264\", \"pager\": {\"current\": 1, \"pageSize\": 20}}'",
+  "traceId": "product-b.283.17930041676550007",
+  "response": {
+    "data": [
+      {
+        "auditStatus": 0,
+        "autoSwitchClazz": 0,
+        "canCopySaleUrl": 0,
+        "capacity": -1,
+        "clazzTimeDesc": "",
+        "combineList": [
+          {
+            "combineCount": 1,
+            "combineName": "组合商品-脚本-子1会员卡",
+            "combinePrice": 0,
+            "combineProductSkuNorm": "阅读创作",
+            "combineProductSkuNumber": "584632609697562624",
+            "productType": 8007
+          },
+          {
+            "combineCount": 1,
+            "combineName": "组合商品-脚本-子2实物",
+            "combinePrice": 9900,
+            "combineProductSkuNorm": "人教",
+            "combineProductSkuNumber": "584632617884844032",
+            "productType": 8010
+          }
+        ],
+        "countdownTime": 0,
+        "isSoloClazz": 0,
+        "orderShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          },
+          {
+            "appCode": 2,
+            "appName": "途途课堂"
+          },
+          {
+            "appCode": 3,
+            "appName": "高途心理"
+          },
+          {
+            "appCode": 4,
+            "appName": "高途雅思"
+          },
+          {
+            "appCode": 5,
+            "appName": "途途乐学"
+          },
+          {
+            "appCode": 6,
+            "appName": "公考"
+          },
+          {
+            "appCode": 7,
+            "appName": "高途留学"
+          },
+          {
+            "appCode": 8,
+            "appName": "高途高中规划"
+          }
+        ],
+        "productShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          },
+          {
+            "appCode": 2,
+            "appName": "途途课堂"
+          },
+          {
+            "appCode": 3,
+            "appName": "高途心理"
+          },
+          {
+            "appCode": 4,
+            "appName": "高途雅思"
+          },
+          {
+            "appCode": 5,
+            "appName": "途途乐学"
+          },
+          {
+            "appCode": 6,
+            "appName": "公考"
+          },
+          {
+            "appCode": 7,
+            "appName": "高途留学"
+          },
+          {
+            "appCode": 8,
+            "appName": "高途高中规划"
+          }
+        ],
+        "productSkuNumber": "584632626097291265",
+        "productSpuName": "组合商品-脚本",
+        "productSpuNumber": "584632626097291264",
+        "publishStatus": 40,
+        "salePrice": 9900,
+        "saleStatus": 40,
+        "saleType": 2,
+        "soldCount": 2,
+        "stopSaleTime": 0,
+        "upStatus": 0,
+        "upTime": 0
+      }
+    ],
+    "pageNumber": 1,
+    "pageSize": 20,
+    "total": 1
+  }
+}

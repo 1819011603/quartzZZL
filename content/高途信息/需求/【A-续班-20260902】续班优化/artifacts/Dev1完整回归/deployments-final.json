@@ -1,0 +1,134 @@
+[
+  {
+    "service": "baijia.gt.ecommerce.product.product",
+    "logicEnv": "dev",
+    "namespace": "test-gtbg-dev-1",
+    "branch": "feature-xuban-expand-exclude",
+    "commit": "c1b9225e",
+    "pod": "product-gaotu100-com-cbd4497b6-4gxj2",
+    "ip": "10.218.238.185",
+    "status": "Running",
+    "eureka": "UP"
+  },
+  {
+    "service": "baijia.gt.ecommerce.product.product-task",
+    "logicEnv": "dev",
+    "namespace": "test-gtbg-dev-1",
+    "branch": "feature-xuban-expand-exclude",
+    "commit": "c1b9225e",
+    "pod": "product-task-gaotu100-com-6d59f8dbbf-tzkn5",
+    "ip": "10.218.238.30",
+    "status": "Running",
+    "eureka": "UP"
+  },
+  {
+    "service": "baijia.gt.ecommerce.product.product-b",
+    "logicEnv": "dev",
+    "namespace": "test-gtbg-dev-1",
+    "branch": "feature-xuban-expand-exclude",
+    "commit": "c1b9225e",
+    "pod": "product-b-6b6fd65f77-rlm86",
+    "ip": "10.218.238.49",
+    "status": "Running",
+    "eureka": "UP"
+  },
+  {
+    "service": "baijia.gaotu.Business.operation-workbench.student-data",
+    "logicEnv": "dev",
+    "namespace": "test-gtbg-dev-1",
+    "branch": "feature-xuban-expand-exclude",
+    "commit": "7bfa46b2",
+    "pod": "student-data-7cdbc55c7c-rwh9h",
+    "ip": "10.218.250.247",
+    "status": "Running",
+    "eureka": "UP"
+  },
+  {
+    "service": "baijia.gaotu.Business.counseling-workbench.student-data-dws",
+    "logicEnv": "dev",
+    "namespace": "test-gtbg-dev-1",
+    "branch": "feature-xuban-expand-exclude",
+    "commit": "7bfa46b2",
+    "pod": "student-data-dws-8559d8dbdd-h687s",
+    "ip": "10.218.238.38",
+    "status": "Running",
+    "eureka": "UP"
+  },
+  {
+    "service": "baijia.gt.jiaoyan.ees-be.student-data-gps",
+    "logicEnv": "dev",
+    "namespace": "test-gtbg-dev-1",
+    "branch": "feature-xuban-expand-exclude",
+    "commit": "7bfa46b2",
+    "pod": "student-data-gps-df9b58bc6-x5kls",
+    "ip": "10.218.236.63",
+    "status": "Running",
+    "eureka": "UP"
+  },
+  {
+    "service": "baijia.gaotu.Business.operation-workbench.student-center",
+    "logicEnv": "dev",
+    "namespace": "test-gtbg-dev-1",
+    "branch": "feature-xuban-expand-exclude",
+    "commit": "b6e56448",
+    "pod": "student-center-67c69c56c9-x5jvm",
+    "ip": "10.218.238.21",
+    "status": "Running",
+    "eureka": "UP"
+  },
+  {
+    "service": "gaotu_cart",
+    "logicEnv": "dev",
+    "namespace": "test-gtbg-dev-1",
+    "branch": "feature-xuban-expand-exclude",
+    "commit": "58dcd914",
+    "pod": "cart-gaotu100-com-5d68dc5f4-l7458",
+    "ip": "10.218.248.18",
+    "status": "Running",
+    "eureka": "UP"
+  },
+  {
+    "service": "gaotu_order",
+    "logicEnv": "dev",
+    "namespace": "test-gtbg-dev-1",
+    "branch": "feature-xuban-expand-exclude",
+    "commit": "6a36d7a4",
+    "pod": "order-gaotu100-com-5f8586b96-9ks77",
+    "ip": "10.218.251.239",
+    "status": "Running",
+    "eureka": "UP"
+  },
+  {
+    "service": "gaotu_order_task",
+    "logicEnv": "dev",
+    "namespace": "test-gtbg-dev-1",
+    "branch": "feature-xuban-expand-exclude",
+    "commit": "6a36d7a4",
+    "pod": "order-task-gaotu100-com-84885549bd-ppffp",
+    "ip": "10.218.238.164",
+    "status": "Running",
+    "eureka": "UP"
+  },
+  {
+    "service": "baijia.gaotu.tech.trade.order-ad",
+    "logicEnv": "dev",
+    "namespace": "test-gtbg-dev-1",
+    "branch": "feature-xuban-expand-exclude",
+    "commit": "6a36d7a4",
+    "pod": "order-ad-gaotu100-com-5d566f6f9f-mcbtv",
+    "ip": "10.218.238.44",
+    "status": "Running",
+    "eureka": "UP"
+  },
+  {
+    "service": "baijia.gaotu.tech.trade.order-b",
+    "logicEnv": "dev",
+    "namespace": "test-gtbg-dev-1",
+    "branch": "feature-xuban-expand-exclude",
+    "commit": "6a36d7a4",
+    "pod": "order-b-gaotu100-com-5564545c98-4rsxk",
+    "ip": "10.218.237.64",
+    "status": "Running",
+    "eureka": "UP"
+  }
+]

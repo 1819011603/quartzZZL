@@ -1,0 +1,71 @@
+{
+  "ok": true,
+  "url": "https://test-fuwu.baijia.com/bgwApi/orderComponent/order/product/calculateAll",
+  "trafficEnv": "test-gtbg-dev-1",
+  "httpStatus": 200,
+  "resolvedRoute": {
+    "appId": "order-b",
+    "pathInfo": "/orderComponent",
+    "rewriteInfo": null,
+    "statusInfo": null,
+    "routeId": null
+  },
+  "request": {
+    "userId": "7658129769",
+    "choiceProductList": [
+      {
+        "productNumber": "584631715075588097",
+        "productType": 51,
+        "quantity": 1
+      }
+    ],
+    "needCoupon": true
+  },
+  "curl": "curl -sk \\\n  -x \"${AGENT_PROXY_URL:-http://127.0.0.1:8888}\" \\\n  'https://test-fuwu.baijia.com/bgwApi/orderComponent/order/product/calculateAll' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-1' \\\n  -H 'b_client: EES' \\\n  -H 'identification: refundPrevention' \\\n  --data-raw '{\"userId\": \"7658129769\", \"choiceProductList\": [{\"productNumber\": \"584631715075588097\", \"productType\": 51, \"quantity\": 1}], \"needCoupon\": true}'",
+  "traceId": "69bd54b9-362f-451d-a18d-0401a7ff4fe4.0.3",
+  "gapmApp": "order-b-gaotu100-com",
+  "response": {
+    "code": 0,
+    "data": {
+      "userId": "7658129769",
+      "totalPrice": "9900",
+      "promotionPrice": "0",
+      "couponPrice": "0",
+      "realPrice": "9900",
+      "validateNewDto": {
+        "needSelectGift": false,
+        "productList": [
+          {
+            "productNumber": "584631715075588097",
+            "productType": 51,
+            "productName": "组合商品-脚本",
+            "amount": 1,
+            "quantity": 1,
+            "detailList": [
+              {
+                "productNumber": "584631693032423424",
+                "productType": 8007,
+                "productName": "组合商品-脚本-子1会员卡-SKU",
+                "amount": 1,
+                "quantity": 1
+              },
+              {
+                "productNumber": "584631703304273920",
+                "productType": 8010,
+                "productName": "组合商品-脚本-子2实物-SKU",
+                "amount": 1,
+                "quantity": 1
+              }
+            ]
+          }
+        ],
+        "giftObjList": [],
+        "giftPromotionList": [],
+        "promotionList": [],
+        "timeStamp": "1793004200389"
+      },
+      "promotionCouponDtos": []
+    },
+    "errorTypeCode": 0
+  }
+}

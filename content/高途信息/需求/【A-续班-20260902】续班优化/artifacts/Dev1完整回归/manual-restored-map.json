@@ -1,0 +1,28 @@
+{
+  "url": "https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service",
+  "trafficEnv": "test-gtbg-dev-1",
+  "httpStatus": 200,
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.student.data.domain.service.ai.AiDeptModuleSwitchConfig#getRefundDeptModuleSwitch",
+    "params": []
+  },
+  "curl": "curl -sk \\\n  -x \"${AGENT_PROXY_URL:-http://127.0.0.1:8888}\" \\\n  'https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-1' \\\n  -H 'identification: microLessonStudent' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.student.data.domain.service.ai.AiDeptModuleSwitchConfig#getRefundDeptModuleSwitch\", \"params\": []}'",
+  "traceId": "8b3fd721-534d-4c17-ac89-79ee75f47f0d.0.3",
+  "gapmApp": "student-data",
+  "identification": "microLessonStudent",
+  "rvoCode": 0,
+  "result": {
+    "5253663827314688": [
+      "tutoring",
+      "learning",
+      "satisfaction",
+      "prediction"
+    ],
+    "6816343048455168": [
+      "tutoring",
+      "learning",
+      "satisfaction",
+      "prediction"
+    ]
+  }
+}

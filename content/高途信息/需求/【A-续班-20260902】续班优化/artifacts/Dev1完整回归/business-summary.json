@@ -1,0 +1,109 @@
+{
+  "passed": 19,
+  "checks": [
+    {
+      "closed": "analysis",
+      "empty": true,
+      "trace": "5ccd224e-1706-48fa-b8c3-f03a7dfd8503.0.3"
+    },
+    {
+      "closed": "reason",
+      "empty": true,
+      "trace": "05a93dc0-0e6c-4a4e-9cc5-6b6fd9c5b69d.0.3"
+    },
+    {
+      "closed": "reasonType",
+      "empty": true,
+      "trace": "c7690e0b-8ac2-4dae-8b5d-9e08ee6e5b0a.0.3"
+    },
+    {
+      "closed": "course",
+      "empty": true,
+      "trace": "51b41098-2ad5-43f8-b6c4-eae0871bfaff.0.3"
+    },
+    {
+      "closed": "stage",
+      "empty": true,
+      "trace": "dc7cf286-0096-45ad-b3bb-3976db68a5d3.0.3"
+    },
+    {
+      "closed": "intent/record",
+      "empty": true,
+      "trace": "bf8644c1-5878-434d-adf2-fd61fbfb21e8.0.3"
+    },
+    {
+      "closed": "portrait",
+      "trace": "6b7c56bd-9607-4c51-992f-af7bbcf270c2.0.3"
+    },
+    {
+      "closed": "comm",
+      "trace": "8ce9e350-cbb7-4c00-bd21-62ecb99f3e26.0.3"
+    },
+    {
+      "closed": "reason-detail",
+      "trace": "2780dd07-9403-42be-b193-d7605165f0ee.0.3"
+    },
+    {
+      "rejectedWrite": "feedback",
+      "code": 8,
+      "trace": "146573fc-0ed5-4016-9951-4ab853be0991.0.3"
+    },
+    {
+      "rejectedWrite": "manager",
+      "code": 8,
+      "trace": "86efeafd-0574-4e34-8e86-297b6d62bddf.0.3"
+    },
+    {
+      "rejectedWrite": "manual",
+      "code": 8,
+      "trace": "bfe0ba17-353c-4bdf-98ff-19e54cc276b1.0.3"
+    },
+    {
+      "singleModule": "prediction",
+      "returnedData": true,
+      "trace": "d9ff2d39-adc5-4da4-8cad-c6ba525958e1.0.3"
+    },
+    {
+      "singleModule": "learning",
+      "returnedData": true,
+      "trace": "e4a02814-2c35-4c81-a480-860cf32d2d94.0.3"
+    },
+    {
+      "singleModule": "tutoring",
+      "returnedData": true,
+      "trace": "d2791414-7f7d-4bc5-ba6a-2d0dcd9de7f6.0.3"
+    },
+    {
+      "singleModule": "manual_reason",
+      "returnedData": true,
+      "trace": "a8e07503-cd69-42bf-9158-f409774699c3.0.3"
+    },
+    {
+      "combo": 1,
+      "enabled": [
+        "learning",
+        "refund_root_cause",
+        "satisfaction",
+        "tutoring"
+      ],
+      "rootResult": true
+    },
+    {
+      "combo": 2,
+      "enabled": [
+        "learning",
+        "refund_root_cause",
+        "satisfaction",
+        "service_suggestion",
+        "tutoring"
+      ],
+      "suggestion": true,
+      "predictionNotLeaked": true
+    },
+    {
+      "portraitRetained": true,
+      "predictionNotLeaked": true
+    }
+  ],
+  "restored": true
+}

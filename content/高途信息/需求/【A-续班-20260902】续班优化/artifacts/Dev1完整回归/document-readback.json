@@ -1,0 +1,17 @@
+{
+  "launch": {
+    "headingIds": [
+      "doxcnQL9kJPY2YE5vEz4CUfeFii"
+    ],
+    "newPaymentReadback": true,
+    "backendAndPageStatusSeparated": true
+  },
+  "p0": {
+    "headingIds": [
+      "doxcnZ9vbkpRCeGc6j094nl4kDg"
+    ],
+    "newPaymentReadback": true,
+    "backendAndPageStatusSeparated": true,
+    "restorationParagraphsCorrected": 7
+  }
+}

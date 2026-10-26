@@ -1,0 +1,26 @@
+{
+  "url": "https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service",
+  "trafficEnv": "test-gtbg-dev-1",
+  "httpStatus": 200,
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.student.data.domain.renewal.reasoning.RenewalReasoningService#reasoningEvent",
+    "params": [
+      {
+        "userId": "7658127801",
+        "clazzNumber": "585960582537144320",
+        "subclazzNumber": "36622538973250048",
+        "reasoningEnum": "RENEWED_REASON_AI",
+        "refreshForce": true,
+        "triggerSource": "dev1-full-regression-20261026"
+      }
+    ]
+  },
+  "curl": "curl -sk \\\n  -x \"${AGENT_PROXY_URL:-http://127.0.0.1:8888}\" \\\n  'https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-1' \\\n  -H 'identification: microLessonStudent' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.student.data.domain.renewal.reasoning.RenewalReasoningService#reasoningEvent\", \"params\": [{\"userId\": \"7658127801\", \"clazzNumber\": \"585960582537144320\", \"subclazzNumber\": \"36622538973250048\", \"reasoningEnum\": \"RENEWED_REASON_AI\", \"refreshForce\": true, \"triggerSource\": \"dev1-full-regression-20261026\"}]}'",
+  "traceId": "b6fcbdf6-3da8-44b2-a8da-0111368f0282.0.3",
+  "gapmApp": "student-data",
+  "identification": "microLessonStudent",
+  "rvoCode": 0,
+  "result": {
+    "handleCode": 0
+  }
+}

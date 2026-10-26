@@ -1,0 +1,142 @@
+{
+  "ok": true,
+  "traceId": "3fbb261f-b02c-4545-9959-ddc04fb582c6.0.3",
+  "env": "test",
+  "host": "https://test-qingzhou.baijia.com",
+  "spanCount": 12,
+  "errorSpanCount": 0,
+  "mode": "flat",
+  "returned": 12,
+  "spans": [
+    {
+      "service": "ngapi_test-fuwu.baijia.com",
+      "env": "default",
+      "type": "nginx_api",
+      "operation": "/student-data/test/acl/compare/service",
+      "cost": 15032,
+      "error": false,
+      "trafficMarker": "default",
+      "statusCode": 200,
+      "count": 1
+    },
+    {
+      "service": "ngapi_test-fuwu.baijia.com",
+      "env": "default",
+      "type": "nginx_call",
+      "operation": "/student-data/test/acl/compare/service",
+      "cost": 15033,
+      "error": false,
+      "trafficMarker": "default",
+      "statusCode": 200,
+      "count": 1
+    },
+    {
+      "service": "arch-general-apisix",
+      "env": "default",
+      "type": "apisix_api",
+      "operation": "/student-data/test/acl/compare/service",
+      "cost": 15029,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-1",
+      "statusCode": 200,
+      "count": 1
+    },
+    {
+      "service": "arch-general-apisix",
+      "env": "default",
+      "type": "apisix_call",
+      "operation": "/student-data/test/acl/compare/service",
+      "cost": 14988,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-1",
+      "statusCode": 200,
+      "count": 1
+    },
+    {
+      "service": "student-data",
+      "env": "test-gtbg-dev-1",
+      "type": "http_api",
+      "operation": "/test/acl/compare/service",
+      "cost": 14975,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-1",
+      "statusCode": 200,
+      "count": 1
+    },
+    {
+      "service": "student-data",
+      "env": "test-gtbg-dev-1",
+      "type": "http_call",
+      "operation": "/v1/chat/completions",
+      "cost": 13919,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-1",
+      "statusCode": 0,
+      "count": 1
+    },
+    {
+      "service": "ngapi_test-llm.baijia.com",
+      "env": "default",
+      "type": "nginx_api",
+      "operation": "/v1/chat/completions",
+      "cost": 13908,
+      "error": false,
+      "trafficMarker": "default",
+      "statusCode": 200,
+      "count": 1
+    },
+    {
+      "service": "ngapi_test-llm.baijia.com",
+      "env": "default",
+      "type": "nginx_call",
+      "operation": "/v1/chat/completions",
+      "cost": 13895,
+      "error": false,
+      "trafficMarker": "default",
+      "statusCode": 200,
+      "count": 1
+    },
+    {
+      "service": "arch-general-apisix",
+      "env": "default",
+      "type": "apisix_api",
+      "operation": "/v1/chat/completions",
+      "cost": 13892,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-1",
+      "statusCode": 200,
+      "count": 1
+    },
+    {
+      "service": "arch-general-apisix",
+      "env": "default",
+      "type": "apisix_call",
+      "operation": "/v1/chat/completions",
+      "cost": 13892,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-1",
+      "statusCode": 200,
+      "count": 1
+    },
+    {
+      "service": "litellm",
+      "env": "test",
+      "type": "http_api",
+      "operation": "/chat/completions",
+      "cost": 13887,
+      "error": false,
+      "statusCode": 200,
+      "count": 1
+    },
+    {
+      "service": "litellm",
+      "env": "test",
+      "type": "Unknown",
+      "operation": "/v1/chat/completions",
+      "cost": 13855,
+      "error": false,
+      "statusCode": 200,
+      "count": 1
+    }
+  ]
+}

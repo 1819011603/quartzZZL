@@ -1,0 +1,31 @@
+{
+  "checks": [
+    {
+      "step": "one",
+      "quantity": 1,
+      "detailOnceBuyLimit": 1
+    },
+    {
+      "step": "nineteen",
+      "quantity": 19,
+      "detailOnceBuyLimit": 1
+    },
+    {
+      "step": "twenty",
+      "quantity": 20,
+      "detailOnceBuyLimit": 1
+    },
+    {
+      "step": "twentyone-rejected",
+      "businessCode": 1,
+      "message": "超过购物车商品最大数量"
+    },
+    {
+      "step": "sku-limit-one-reject-two",
+      "businessCode": 1,
+      "message": "单次购买数量超过限制"
+    }
+  ],
+  "passed": true,
+  "restored": true
+}

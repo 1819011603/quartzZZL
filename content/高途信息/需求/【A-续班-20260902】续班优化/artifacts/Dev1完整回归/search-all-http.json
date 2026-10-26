@@ -1,0 +1,1642 @@
+{
+  "target": "http://10.218.238.49:28688/feign/combinedProduct/searchSpuNoAuth",
+  "trafficEnv": "test-gtbg-dev-1",
+  "instanceId": "product-b-6b6fd65f77-rlm86:product-b:28688:@test-gtbg-dev-1",
+  "httpStatus": 200,
+  "instanceCount": 5,
+  "request": {
+    "pager": {
+      "current": 1,
+      "pageSize": 20
+    }
+  },
+  "curl": "curl -sk \\\n  'http://10.218.238.49:28688/feign/combinedProduct/searchSpuNoAuth' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-1' \\\n  -H 'host: PRODUCT-B' \\\n  --data-raw '{\"pager\": {\"current\": 1, \"pageSize\": 20}}'",
+  "traceId": "product-b.290.17930041693220008",
+  "response": {
+    "data": [
+      {
+        "auditStatus": 10,
+        "autoSwitchClazz": 0,
+        "canCopySaleUrl": 1,
+        "capacity": -1,
+        "clazzTimeDesc": "2026-11-18 14:00:00至2026-11-26 15:00:00",
+        "combineList": [
+          {
+            "clazzTimeDesc": "2026-11-19 14:00:00至2026-11-26 15:00:00",
+            "combineCount": 2,
+            "combineName": "税测-P09G4-买赠赠课",
+            "combinePrice": 9900,
+            "combineProductSkuNumber": "586305516920236032",
+            "mainTeacherName": "木孟奇兼职01",
+            "productType": 2
+          },
+          {
+            "clazzTimeDesc": "2026-11-18 14:00:00至2026-11-25 15:00:00",
+            "combineCount": 2,
+            "combineName": "税测-P09G3-买赠赠课",
+            "combinePrice": 9900,
+            "combineProductSkuNumber": "586305433873016832",
+            "mainTeacherName": "木孟奇001",
+            "productType": 2
+          }
+        ],
+        "countdownTime": 0,
+        "isSoloClazz": 0,
+        "orderShowApp": [
+          {
+            "appCode": 2,
+            "appName": "途途课堂"
+          },
+          {
+            "appCode": 18,
+            "appName": "高途课堂"
+          }
+        ],
+        "productShowApp": [
+          {
+            "appCode": 2,
+            "appName": "途途课堂"
+          }
+        ],
+        "productSkuNumber": "586306128198004737",
+        "productSpuName": "测试组合帐篷",
+        "productSpuNumber": "586306128198004736",
+        "publishStatus": 40,
+        "salePrice": 39600,
+        "saleStatus": 0,
+        "saleType": 1,
+        "soldCount": 0,
+        "stopSaleTime": 0,
+        "upStatus": 0,
+        "upTime": 0
+      },
+      {
+        "auditStatus": 0,
+        "autoSwitchClazz": 0,
+        "canCopySaleUrl": 0,
+        "capacity": -1,
+        "clazzTimeDesc": "",
+        "combineList": [
+          {
+            "combineCount": 1,
+            "combineName": "组合商品-脚本-子1会员卡",
+            "combinePrice": 0,
+            "combineProductSkuNorm": "阅读创作",
+            "combineProductSkuNumber": "584632609697562624",
+            "productType": 8007
+          },
+          {
+            "combineCount": 1,
+            "combineName": "组合商品-脚本-子2实物",
+            "combinePrice": 9900,
+            "combineProductSkuNorm": "人教",
+            "combineProductSkuNumber": "584632617884844032",
+            "productType": 8010
+          }
+        ],
+        "countdownTime": 0,
+        "isSoloClazz": 0,
+        "orderShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          },
+          {
+            "appCode": 2,
+            "appName": "途途课堂"
+          },
+          {
+            "appCode": 3,
+            "appName": "高途心理"
+          },
+          {
+            "appCode": 4,
+            "appName": "高途雅思"
+          },
+          {
+            "appCode": 5,
+            "appName": "途途乐学"
+          },
+          {
+            "appCode": 6,
+            "appName": "公考"
+          },
+          {
+            "appCode": 7,
+            "appName": "高途留学"
+          },
+          {
+            "appCode": 8,
+            "appName": "高途高中规划"
+          }
+        ],
+        "productShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          },
+          {
+            "appCode": 2,
+            "appName": "途途课堂"
+          },
+          {
+            "appCode": 3,
+            "appName": "高途心理"
+          },
+          {
+            "appCode": 4,
+            "appName": "高途雅思"
+          },
+          {
+            "appCode": 5,
+            "appName": "途途乐学"
+          },
+          {
+            "appCode": 6,
+            "appName": "公考"
+          },
+          {
+            "appCode": 7,
+            "appName": "高途留学"
+          },
+          {
+            "appCode": 8,
+            "appName": "高途高中规划"
+          }
+        ],
+        "productSkuNumber": "584632626097291265",
+        "productSpuName": "组合商品-脚本",
+        "productSpuNumber": "584632626097291264",
+        "publishStatus": 40,
+        "salePrice": 9900,
+        "saleStatus": 40,
+        "saleType": 2,
+        "soldCount": 2,
+        "stopSaleTime": 0,
+        "upStatus": 0,
+        "upTime": 0
+      },
+      {
+        "auditStatus": 0,
+        "autoSwitchClazz": 0,
+        "canCopySaleUrl": 0,
+        "capacity": -1,
+        "clazzTimeDesc": "",
+        "combineList": [
+          {
+            "combineCount": 1,
+            "combineName": "组合商品-脚本-子1会员卡",
+            "combinePrice": 0,
+            "combineProductSkuNorm": "阅读创作",
+            "combineProductSkuNumber": "584631693032423424",
+            "productType": 8007
+          },
+          {
+            "combineCount": 1,
+            "combineName": "组合商品-脚本-子2实物",
+            "combinePrice": 9900,
+            "combineProductSkuNorm": "人教",
+            "combineProductSkuNumber": "584631703304273920",
+            "productType": 8010
+          }
+        ],
+        "countdownTime": 0,
+        "isSoloClazz": 0,
+        "orderShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          },
+          {
+            "appCode": 2,
+            "appName": "途途课堂"
+          },
+          {
+            "appCode": 3,
+            "appName": "高途心理"
+          },
+          {
+            "appCode": 4,
+            "appName": "高途雅思"
+          },
+          {
+            "appCode": 5,
+            "appName": "途途乐学"
+          },
+          {
+            "appCode": 6,
+            "appName": "公考"
+          },
+          {
+            "appCode": 7,
+            "appName": "高途留学"
+          },
+          {
+            "appCode": 8,
+            "appName": "高途高中规划"
+          }
+        ],
+        "productShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          },
+          {
+            "appCode": 2,
+            "appName": "途途课堂"
+          },
+          {
+            "appCode": 3,
+            "appName": "高途心理"
+          },
+          {
+            "appCode": 4,
+            "appName": "高途雅思"
+          },
+          {
+            "appCode": 5,
+            "appName": "途途乐学"
+          },
+          {
+            "appCode": 6,
+            "appName": "公考"
+          },
+          {
+            "appCode": 7,
+            "appName": "高途留学"
+          },
+          {
+            "appCode": 8,
+            "appName": "高途高中规划"
+          }
+        ],
+        "productSkuNumber": "584631715075588097",
+        "productSpuName": "组合商品-脚本",
+        "productSpuNumber": "584631715075588096",
+        "publishStatus": 40,
+        "salePrice": 9900,
+        "saleStatus": 40,
+        "saleType": 2,
+        "soldCount": 3,
+        "stopSaleTime": 0,
+        "upStatus": 0,
+        "upTime": 0
+      },
+      {
+        "auditStatus": 30,
+        "autoSwitchClazz": 0,
+        "canCopySaleUrl": 1,
+        "capacity": -1,
+        "clazzTimeDesc": "",
+        "combineList": [
+          {
+            "combineCount": 1,
+            "combineName": "【26秋】初阶语文单科学期卡（1001-1031）",
+            "combinePrice": 10,
+            "combineProductSkuNorm": "阅读创作",
+            "combineProductSkuNumber": "584457485224675328",
+            "productType": 8007
+          },
+          {
+            "combineCount": 1,
+            "combineName": "【26秋】初阶数学单科学期卡（3个月有效期）",
+            "combinePrice": 9,
+            "combineProductSkuNorm": "数理思维",
+            "combineProductSkuNumber": "584457321992849408",
+            "productType": 8007
+          },
+          {
+            "combineCount": 1,
+            "combineName": "【26秋】初阶英语单科学期卡（0131到期）",
+            "combinePrice": 8,
+            "combineProductSkuNorm": "双语演说",
+            "combineProductSkuNumber": "584457264983869440",
+            "productType": 8007
+          }
+        ],
+        "countdownTime": 0,
+        "isSoloClazz": 0,
+        "orderShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          }
+        ],
+        "productShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          }
+        ],
+        "productSkuNumber": "584458543193819137",
+        "productSpuName": "【26秋联报】学期卡（混合履约模式）",
+        "productSpuNumber": "584458543193819136",
+        "publishStatus": 40,
+        "salePrice": 27,
+        "saleStatus": 40,
+        "saleType": 1,
+        "soldCount": 4,
+        "stopSaleTime": 0,
+        "upStatus": 0,
+        "upTime": 0
+      },
+      {
+        "auditStatus": 30,
+        "autoSwitchClazz": 0,
+        "canCopySaleUrl": 1,
+        "capacity": -1,
+        "clazzTimeDesc": "",
+        "combineList": [
+          {
+            "combineCount": 1,
+            "combineName": "【26秋】初阶语文单科学期卡（3个月有效期）",
+            "combinePrice": 7,
+            "combineProductSkuNorm": "阅读创作",
+            "combineProductSkuNumber": "584457378978760704",
+            "productType": 8007
+          },
+          {
+            "combineCount": 1,
+            "combineName": "【26秋】初阶数学单科学期卡（3个月有效期）",
+            "combinePrice": 7,
+            "combineProductSkuNorm": "数理思维",
+            "combineProductSkuNumber": "584457321992849408",
+            "productType": 8007
+          }
+        ],
+        "countdownTime": 0,
+        "isSoloClazz": 0,
+        "orderShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          }
+        ],
+        "productShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          }
+        ],
+        "productSkuNumber": "584458441576318977",
+        "productSpuName": "【26秋双科联报】学期卡（3个月）",
+        "productSpuNumber": "584458441576318976",
+        "publishStatus": 40,
+        "salePrice": 14,
+        "saleStatus": 40,
+        "saleType": 1,
+        "soldCount": 0,
+        "stopSaleTime": 0,
+        "upStatus": 0,
+        "upTime": 0
+      },
+      {
+        "auditStatus": 30,
+        "autoSwitchClazz": 0,
+        "canCopySaleUrl": 1,
+        "capacity": -1,
+        "clazzTimeDesc": "",
+        "combineList": [
+          {
+            "combineCount": 1,
+            "combineName": "【26秋】初阶英语单科学期卡（0131到期）",
+            "combinePrice": 8,
+            "combineProductSkuNorm": "双语演说",
+            "combineProductSkuNumber": "584457264983869440",
+            "productType": 8007
+          },
+          {
+            "combineCount": 1,
+            "combineName": "【26秋】初阶语文单科学期卡（0131到期）",
+            "combinePrice": 8,
+            "combineProductSkuNorm": "阅读创作",
+            "combineProductSkuNumber": "584457223451871232",
+            "productType": 8007
+          },
+          {
+            "combineCount": 1,
+            "combineName": "【26秋】初阶数学单科学期卡（0131到期）",
+            "combinePrice": 8,
+            "combineProductSkuNorm": "数理思维",
+            "combineProductSkuNumber": "584457060463314944",
+            "productType": 8007
+          }
+        ],
+        "countdownTime": 0,
+        "isSoloClazz": 0,
+        "orderShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          }
+        ],
+        "productShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          }
+        ],
+        "productSkuNumber": "584458369312655361",
+        "productSpuName": "【26秋三科联报】学期卡（0131结束）",
+        "productSpuNumber": "584458369312655360",
+        "publishStatus": 40,
+        "salePrice": 24,
+        "saleStatus": 40,
+        "saleType": 1,
+        "soldCount": 0,
+        "stopSaleTime": 0,
+        "upStatus": 0,
+        "upTime": 0
+      },
+      {
+        "auditStatus": 30,
+        "autoSwitchClazz": 0,
+        "canCopySaleUrl": 1,
+        "capacity": -1,
+        "clazzTimeDesc": "",
+        "combineList": [
+          {
+            "combineCount": 1,
+            "combineName": "【26秋】初阶数学单科学期卡（1001-0131）",
+            "combinePrice": 9,
+            "combineProductSkuNorm": "数理思维",
+            "combineProductSkuNumber": "584457443944335360",
+            "productType": 8007
+          },
+          {
+            "combineCount": 1,
+            "combineName": "【26秋】初阶语文单科学期卡（1001-1031）",
+            "combinePrice": 9,
+            "combineProductSkuNorm": "阅读创作",
+            "combineProductSkuNumber": "584457485224675328",
+            "productType": 8007
+          }
+        ],
+        "countdownTime": 0,
+        "isSoloClazz": 0,
+        "orderShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          }
+        ],
+        "productShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          }
+        ],
+        "productSkuNumber": "584458263437936641",
+        "productSpuName": "【26秋双科联报】初阶学期卡（1001-0131）",
+        "productSpuNumber": "584458263437936640",
+        "publishStatus": 40,
+        "salePrice": 18,
+        "saleStatus": 40,
+        "saleType": 1,
+        "soldCount": 1,
+        "stopSaleTime": 0,
+        "upStatus": 0,
+        "upTime": 0
+      },
+      {
+        "auditStatus": 30,
+        "autoSwitchClazz": 0,
+        "canCopySaleUrl": 1,
+        "capacity": -1,
+        "clazzTimeDesc": "",
+        "combineList": [
+          {
+            "combineCount": 1,
+            "combineName": "优惠活动班级",
+            "combinePrice": 400000,
+            "combineProductSkuNorm": "",
+            "combineProductSkuNumber": "580507069560399872",
+            "productType": 6003
+          },
+          {
+            "combineCount": 1,
+            "combineName": "优惠活动班级",
+            "combinePrice": 500000,
+            "combineProductSkuNorm": "",
+            "combineProductSkuNumber": "580507110352103424",
+            "productType": 6003
+          }
+        ],
+        "countdownTime": 0,
+        "isSoloClazz": 1,
+        "orderShowApp": [
+          {
+            "appCode": 2,
+            "appName": "途途课堂"
+          },
+          {
+            "appCode": 18,
+            "appName": "高途课堂"
+          }
+        ],
+        "productShowApp": [
+          {
+            "appCode": 2,
+            "appName": "途途课堂"
+          }
+        ],
+        "productSkuNumber": "580508980380479488",
+        "productSpuName": "线下组合商品",
+        "productSpuNumber": "580508980378382336",
+        "publishStatus": 40,
+        "salePrice": 900000,
+        "saleStatus": 40,
+        "saleType": 1,
+        "soldCount": 0,
+        "stopSaleTime": 0,
+        "upStatus": 0,
+        "upTime": 0
+      },
+      {
+        "auditStatus": 0,
+        "autoSwitchClazz": 0,
+        "canCopySaleUrl": 1,
+        "capacity": -1,
+        "clazzTimeDesc": "",
+        "combineList": [
+          {
+            "combineCount": 1,
+            "combineName": "B钱包B",
+            "combinePrice": 1,
+            "combineProductSkuNorm": "",
+            "combineProductSkuNumber": "579758002161090560",
+            "productType": 6003
+          },
+          {
+            "combineCount": 1,
+            "combineName": "钱包支付",
+            "combinePrice": 3,
+            "combineProductSkuNorm": "",
+            "combineProductSkuNumber": "578347159116756992",
+            "productType": 6003
+          }
+        ],
+        "countdownTime": 0,
+        "isSoloClazz": 1,
+        "orderShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          },
+          {
+            "appCode": 2,
+            "appName": "途途课堂"
+          }
+        ],
+        "productShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          },
+          {
+            "appCode": 2,
+            "appName": "途途课堂"
+          }
+        ],
+        "productSkuNumber": "579776626871662593",
+        "productSpuName": "钱包（高途教育+gsx）",
+        "productSpuNumber": "579776626871662592",
+        "publishStatus": 40,
+        "salePrice": 4,
+        "saleStatus": 40,
+        "saleType": 2,
+        "soldCount": 0,
+        "stopSaleTime": 0,
+        "upStatus": 0,
+        "upTime": 0
+      },
+      {
+        "auditStatus": 0,
+        "autoSwitchClazz": 0,
+        "canCopySaleUrl": 1,
+        "capacity": -1,
+        "clazzTimeDesc": "",
+        "combineList": [
+          {
+            "combineCount": 1,
+            "combineName": "B钱包B",
+            "combinePrice": 50,
+            "combineProductSkuNorm": "",
+            "combineProductSkuNumber": "579758054424215552",
+            "productType": 6003
+          },
+          {
+            "combineCount": 1,
+            "combineName": "B钱包B",
+            "combinePrice": 150,
+            "combineProductSkuNorm": "",
+            "combineProductSkuNumber": "579758077511761920",
+            "productType": 6003
+          }
+        ],
+        "countdownTime": 0,
+        "isSoloClazz": 1,
+        "orderShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          }
+        ],
+        "productShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          }
+        ],
+        "productSkuNumber": "579774323804502017",
+        "productSpuName": "钱包",
+        "productSpuNumber": "579774323804502016",
+        "publishStatus": 40,
+        "salePrice": 200,
+        "saleStatus": 40,
+        "saleType": 2,
+        "soldCount": 2,
+        "stopSaleTime": 0,
+        "upStatus": 0,
+        "upTime": 0
+      },
+      {
+        "auditStatus": 0,
+        "autoSwitchClazz": 0,
+        "canCopySaleUrl": 1,
+        "capacity": -1,
+        "clazzTimeDesc": "",
+        "combineList": [
+          {
+            "combineCount": 1,
+            "combineName": "B钱包B",
+            "combinePrice": 362,
+            "combineProductSkuNorm": "",
+            "combineProductSkuNumber": "578882621753440256",
+            "productType": 6003
+          },
+          {
+            "combineCount": 1,
+            "combineName": "B钱包B",
+            "combinePrice": 38,
+            "combineProductSkuNorm": "",
+            "combineProductSkuNumber": "579388092111241216",
+            "productType": 6003
+          }
+        ],
+        "countdownTime": 0,
+        "isSoloClazz": 1,
+        "orderShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          }
+        ],
+        "productShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          }
+        ],
+        "productSkuNumber": "579756140368394241",
+        "productSpuName": "钱包测试",
+        "productSpuNumber": "579756140368394240",
+        "publishStatus": 40,
+        "salePrice": 400,
+        "saleStatus": 40,
+        "saleType": 2,
+        "soldCount": 0,
+        "stopSaleTime": 0,
+        "upStatus": 0,
+        "upTime": 0
+      },
+      {
+        "auditStatus": 0,
+        "autoSwitchClazz": 0,
+        "canCopySaleUrl": 1,
+        "capacity": -1,
+        "clazzTimeDesc": "2026-09-14 20:00:00至2026-09-14 20:05:00",
+        "combineList": [
+          {
+            "combineCount": 1,
+            "combineName": "测试部分退款-教务1",
+            "combinePrice": 0,
+            "combineProductSkuNorm": "",
+            "combineProductSkuNumber": "578121883707406336",
+            "productType": 6003
+          },
+          {
+            "clazzTimeDesc": "2026-09-14 20:00:00至2026-09-14 20:05:00",
+            "combineCount": 1,
+            "combineName": "914新的非TT入口课程",
+            "combinePrice": 0,
+            "combineProductSkuNumber": "579423901640169472",
+            "mainTeacherName": "何水明",
+            "productType": 2
+          }
+        ],
+        "countdownTime": 0,
+        "isSoloClazz": 1,
+        "orderShowApp": [
+          {
+            "appCode": 2,
+            "appName": "途途课堂"
+          },
+          {
+            "appCode": 4,
+            "appName": "高途雅思"
+          }
+        ],
+        "productShowApp": [
+          {
+            "appCode": 2,
+            "appName": "途途课堂"
+          },
+          {
+            "appCode": 6,
+            "appName": "公考"
+          },
+          {
+            "appCode": 7,
+            "appName": "高途留学"
+          }
+        ],
+        "productSkuNumber": "579426174109902848",
+        "productSpuName": "组合大班课+小班课",
+        "productSpuNumber": "579426174107805696",
+        "publishStatus": 40,
+        "salePrice": 0,
+        "saleStatus": 40,
+        "saleType": 2,
+        "soldCount": 1,
+        "stopSaleTime": 0,
+        "upStatus": 0,
+        "upTime": 0
+      },
+      {
+        "auditStatus": 0,
+        "autoSwitchClazz": 0,
+        "canCopySaleUrl": 1,
+        "capacity": -1,
+        "clazzTimeDesc": "2026-10-01 10:00:00至2026-10-01 10:30:00",
+        "combineList": [
+          {
+            "combineCount": 1,
+            "combineName": "测试小班课商品22",
+            "combinePrice": 0,
+            "combineProductSkuNorm": "主讲1",
+            "combineProductSkuNumber": "575799239135889408",
+            "productType": 6004
+          },
+          {
+            "clazzTimeDesc": "2026-10-01 10:00:00至2026-10-01 10:30:00",
+            "combineCount": 1,
+            "combineName": "zhangqiuhong-高中物理",
+            "combinePrice": 0,
+            "combineProductSkuNumber": "579414091483977728",
+            "mainTeacherName": "张秋红",
+            "productType": 2
+          }
+        ],
+        "countdownTime": 0,
+        "isSoloClazz": 0,
+        "orderShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          },
+          {
+            "appCode": 2,
+            "appName": "途途课堂"
+          },
+          {
+            "appCode": 5,
+            "appName": "途途乐学"
+          },
+          {
+            "appCode": 6,
+            "appName": "公考"
+          },
+          {
+            "appCode": 8,
+            "appName": "高途高中规划"
+          },
+          {
+            "appCode": 26,
+            "appName": "高途乐学"
+          }
+        ],
+        "productShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          },
+          {
+            "appCode": 2,
+            "appName": "途途课堂"
+          },
+          {
+            "appCode": 5,
+            "appName": "途途乐学"
+          },
+          {
+            "appCode": 21,
+            "appName": "CA-公用"
+          },
+          {
+            "appCode": 6,
+            "appName": "公考"
+          },
+          {
+            "appCode": 8,
+            "appName": "高途高中规划"
+          },
+          {
+            "appCode": 26,
+            "appName": "高途乐学"
+          }
+        ],
+        "productSkuNumber": "579426070135203841",
+        "productSpuName": "大小班组合",
+        "productSpuNumber": "579426070135203840",
+        "publishStatus": 40,
+        "salePrice": 0,
+        "saleStatus": 0,
+        "saleType": 1,
+        "soldCount": 1,
+        "stopSaleTime": 0,
+        "upStatus": 0,
+        "upTime": 0
+      },
+      {
+        "auditStatus": 0,
+        "autoSwitchClazz": 0,
+        "canCopySaleUrl": 0,
+        "capacity": -1,
+        "clazzTimeDesc": "",
+        "combineList": [
+          {
+            "combineCount": 1,
+            "combineName": "造数-会员卡-0914-145348",
+            "combinePrice": 60000,
+            "combineProductSkuNorm": "阅读创作",
+            "combineProductSkuNumber": "579418932755185664",
+            "productType": 8007
+          },
+          {
+            "combineCount": 1,
+            "combineName": "造数-实物-0914-145355",
+            "combinePrice": 40000,
+            "combineProductSkuNorm": "人教",
+            "combineProductSkuNumber": "579418944776060928",
+            "productType": 8010
+          }
+        ],
+        "countdownTime": 0,
+        "isSoloClazz": 0,
+        "orderShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          },
+          {
+            "appCode": 2,
+            "appName": "途途课堂"
+          },
+          {
+            "appCode": 3,
+            "appName": "高途心理"
+          },
+          {
+            "appCode": 4,
+            "appName": "高途雅思"
+          },
+          {
+            "appCode": 5,
+            "appName": "途途乐学"
+          },
+          {
+            "appCode": 6,
+            "appName": "公考"
+          },
+          {
+            "appCode": 7,
+            "appName": "高途留学"
+          },
+          {
+            "appCode": 8,
+            "appName": "高途高中规划"
+          }
+        ],
+        "productShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          },
+          {
+            "appCode": 2,
+            "appName": "途途课堂"
+          },
+          {
+            "appCode": 3,
+            "appName": "高途心理"
+          },
+          {
+            "appCode": 4,
+            "appName": "高途雅思"
+          },
+          {
+            "appCode": 5,
+            "appName": "途途乐学"
+          },
+          {
+            "appCode": 6,
+            "appName": "公考"
+          },
+          {
+            "appCode": 7,
+            "appName": "高途留学"
+          },
+          {
+            "appCode": 8,
+            "appName": "高途高中规划"
+          }
+        ],
+        "productSkuNumber": "579418955941298176",
+        "productSpuName": "组合商品-脚本",
+        "productSpuNumber": "579418955939201024",
+        "publishStatus": 40,
+        "salePrice": 100000,
+        "saleStatus": 40,
+        "saleType": 2,
+        "soldCount": 1,
+        "stopSaleTime": 0,
+        "upStatus": 0,
+        "upTime": 0
+      },
+      {
+        "auditStatus": 0,
+        "autoSwitchClazz": 0,
+        "canCopySaleUrl": 0,
+        "capacity": -1,
+        "clazzTimeDesc": "",
+        "combineList": [
+          {
+            "combineCount": 1,
+            "combineName": "造数-会员卡-0914-112337",
+            "combinePrice": 60000,
+            "combineProductSkuNorm": "阅读创作",
+            "combineProductSkuNumber": "579392485879552000",
+            "productType": 8007
+          },
+          {
+            "combineCount": 1,
+            "combineName": "造数-实物-0914-112343",
+            "combinePrice": 40000,
+            "combineProductSkuNorm": "人教",
+            "combineProductSkuNumber": "579392496744896512",
+            "productType": 8010
+          }
+        ],
+        "countdownTime": 0,
+        "isSoloClazz": 0,
+        "orderShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          },
+          {
+            "appCode": 2,
+            "appName": "途途课堂"
+          },
+          {
+            "appCode": 3,
+            "appName": "高途心理"
+          },
+          {
+            "appCode": 4,
+            "appName": "高途雅思"
+          },
+          {
+            "appCode": 5,
+            "appName": "途途乐学"
+          },
+          {
+            "appCode": 6,
+            "appName": "公考"
+          },
+          {
+            "appCode": 7,
+            "appName": "高途留学"
+          },
+          {
+            "appCode": 8,
+            "appName": "高途高中规划"
+          }
+        ],
+        "productShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          },
+          {
+            "appCode": 2,
+            "appName": "途途课堂"
+          },
+          {
+            "appCode": 3,
+            "appName": "高途心理"
+          },
+          {
+            "appCode": 4,
+            "appName": "高途雅思"
+          },
+          {
+            "appCode": 5,
+            "appName": "途途乐学"
+          },
+          {
+            "appCode": 6,
+            "appName": "公考"
+          },
+          {
+            "appCode": 7,
+            "appName": "高途留学"
+          },
+          {
+            "appCode": 8,
+            "appName": "高途高中规划"
+          }
+        ],
+        "productSkuNumber": "579392507283085313",
+        "productSpuName": "组合商品-脚本",
+        "productSpuNumber": "579392507283085312",
+        "publishStatus": 40,
+        "salePrice": 100000,
+        "saleStatus": 40,
+        "saleType": 2,
+        "soldCount": 0,
+        "stopSaleTime": 0,
+        "upStatus": 0,
+        "upTime": 0
+      },
+      {
+        "auditStatus": 30,
+        "autoSwitchClazz": 0,
+        "canCopySaleUrl": 1,
+        "capacity": -1,
+        "clazzTimeDesc": "",
+        "combineList": [
+          {
+            "combineCount": 1,
+            "combineName": "Theta单科学期卡-秋季",
+            "combinePrice": 10,
+            "combineProductSkuNorm": "阅读创作",
+            "combineProductSkuNumber": "578489606450747392",
+            "productType": 8007
+          },
+          {
+            "combineCount": 1,
+            "combineName": "Theta单科学期卡-秋季",
+            "combinePrice": 10,
+            "combineProductSkuNorm": "数理思维",
+            "combineProductSkuNumber": "578489606457038848",
+            "productType": 8007
+          }
+        ],
+        "countdownTime": 0,
+        "isSoloClazz": 0,
+        "orderShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          }
+        ],
+        "productShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          }
+        ],
+        "productSkuNumber": "578519834493612032",
+        "productSpuName": "Theta联报双科",
+        "productSpuNumber": "578519834491514880",
+        "publishStatus": 40,
+        "salePrice": 20,
+        "saleStatus": 40,
+        "saleType": 1,
+        "soldCount": 3,
+        "stopSaleTime": 0,
+        "upStatus": 0,
+        "upTime": 0
+      },
+      {
+        "auditStatus": 0,
+        "autoSwitchClazz": 0,
+        "canCopySaleUrl": 1,
+        "capacity": -1,
+        "clazzTimeDesc": "",
+        "combineList": [
+          {
+            "combineCount": 1,
+            "combineName": "测试商品单元",
+            "combinePrice": 1000,
+            "combineProductSkuNorm": "1年,10",
+            "combineProductSkuNumber": "577086342050226176",
+            "productType": 8027
+          },
+          {
+            "combineCount": 1,
+            "combineName": "测试商品单元",
+            "combinePrice": 1000,
+            "combineProductSkuNorm": "2年,10",
+            "combineProductSkuNumber": "577061616303050752",
+            "productType": 8027
+          }
+        ],
+        "countdownTime": 0,
+        "isSoloClazz": 0,
+        "orderShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          },
+          {
+            "appCode": 2,
+            "appName": "途途课堂"
+          },
+          {
+            "appCode": 3,
+            "appName": "高途心理"
+          },
+          {
+            "appCode": 4,
+            "appName": "高途雅思"
+          },
+          {
+            "appCode": 5,
+            "appName": "途途乐学"
+          },
+          {
+            "appCode": 6,
+            "appName": "公考"
+          },
+          {
+            "appCode": 7,
+            "appName": "高途留学"
+          },
+          {
+            "appCode": 8,
+            "appName": "高途高中规划"
+          },
+          {
+            "appCode": 9,
+            "appName": "云帆在线"
+          },
+          {
+            "appCode": 10,
+            "appName": "高途技术"
+          },
+          {
+            "appCode": 11,
+            "appName": "微师"
+          },
+          {
+            "appCode": 12,
+            "appName": "高途考研"
+          },
+          {
+            "appCode": 13,
+            "appName": "线下门店"
+          },
+          {
+            "appCode": 14,
+            "appName": "测试"
+          },
+          {
+            "appCode": 15,
+            "appName": "高途青少成长"
+          },
+          {
+            "appCode": 16,
+            "appName": "财经学部"
+          }
+        ],
+        "productShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          },
+          {
+            "appCode": 2,
+            "appName": "途途课堂"
+          },
+          {
+            "appCode": 3,
+            "appName": "高途心理"
+          },
+          {
+            "appCode": 4,
+            "appName": "高途雅思"
+          },
+          {
+            "appCode": 5,
+            "appName": "途途乐学"
+          },
+          {
+            "appCode": 6,
+            "appName": "公考"
+          },
+          {
+            "appCode": 7,
+            "appName": "高途留学"
+          },
+          {
+            "appCode": 8,
+            "appName": "高途高中规划"
+          },
+          {
+            "appCode": 9,
+            "appName": "云帆在线"
+          },
+          {
+            "appCode": 10,
+            "appName": "高途技术"
+          },
+          {
+            "appCode": 11,
+            "appName": "微师"
+          },
+          {
+            "appCode": 12,
+            "appName": "高途考研"
+          },
+          {
+            "appCode": 13,
+            "appName": "线下门店"
+          },
+          {
+            "appCode": 14,
+            "appName": "测试"
+          },
+          {
+            "appCode": 15,
+            "appName": "高途青少成长"
+          },
+          {
+            "appCode": 16,
+            "appName": "财经学部"
+          },
+          {
+            "appCode": 17,
+            "appName": "高途外教"
+          }
+        ],
+        "productSkuNumber": "577086405747023873",
+        "productSpuName": "111111",
+        "productSpuNumber": "577086405747023872",
+        "publishStatus": 40,
+        "salePrice": 2000,
+        "saleStatus": 40,
+        "saleType": 2,
+        "soldCount": 0,
+        "stopSaleTime": 0,
+        "upStatus": 0,
+        "upTime": 0
+      },
+      {
+        "auditStatus": 30,
+        "autoSwitchClazz": 0,
+        "canCopySaleUrl": 1,
+        "capacity": -1,
+        "clazzTimeDesc": "",
+        "combineList": [
+          {
+            "combineCount": 1,
+            "combineName": "造数-OMO课时包-0901-170601",
+            "combinePrice": 9900,
+            "combineProductSkuNorm": "1年,10",
+            "combineProductSkuNumber": "577080054799015936",
+            "productType": 8027
+          },
+          {
+            "combineCount": 1,
+            "combineName": "造数-OMO课时包-0901-170549",
+            "combinePrice": 9900,
+            "combineProductSkuNorm": "1年,10",
+            "combineProductSkuNumber": "577080032231563264",
+            "productType": 8027
+          }
+        ],
+        "countdownTime": 0,
+        "isSoloClazz": 0,
+        "orderShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          },
+          {
+            "appCode": 2,
+            "appName": "途途课堂"
+          },
+          {
+            "appCode": 3,
+            "appName": "高途心理"
+          },
+          {
+            "appCode": 4,
+            "appName": "高途雅思"
+          },
+          {
+            "appCode": 5,
+            "appName": "途途乐学"
+          },
+          {
+            "appCode": 6,
+            "appName": "公考"
+          },
+          {
+            "appCode": 7,
+            "appName": "高途留学"
+          },
+          {
+            "appCode": 8,
+            "appName": "高途高中规划"
+          }
+        ],
+        "productShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          },
+          {
+            "appCode": 2,
+            "appName": "途途课堂"
+          },
+          {
+            "appCode": 3,
+            "appName": "高途心理"
+          },
+          {
+            "appCode": 4,
+            "appName": "高途雅思"
+          },
+          {
+            "appCode": 5,
+            "appName": "途途乐学"
+          },
+          {
+            "appCode": 6,
+            "appName": "公考"
+          },
+          {
+            "appCode": 7,
+            "appName": "高途留学"
+          },
+          {
+            "appCode": 8,
+            "appName": "高途高中规划"
+          }
+        ],
+        "productSkuNumber": "577080179732652033",
+        "productSpuName": "11111111",
+        "productSpuNumber": "577080179732652032",
+        "publishStatus": 40,
+        "salePrice": 19800,
+        "saleStatus": 40,
+        "saleType": 1,
+        "soldCount": 0,
+        "stopSaleTime": 0,
+        "upStatus": 0,
+        "upTime": 0
+      },
+      {
+        "auditStatus": 30,
+        "autoSwitchClazz": 0,
+        "canCopySaleUrl": 1,
+        "capacity": -1,
+        "clazzTimeDesc": "",
+        "combineList": [
+          {
+            "combineCount": 1,
+            "combineName": "测试商品单元",
+            "combinePrice": 1000,
+            "combineProductSkuNorm": "1年,20",
+            "combineProductSkuNumber": "577067368235241472",
+            "productType": 8027
+          },
+          {
+            "combineCount": 1,
+            "combineName": "0817-复现",
+            "combinePrice": 0,
+            "combineProductSkuNorm": "1年,10",
+            "combineProductSkuNumber": "574352621616349184",
+            "productType": 8027
+          }
+        ],
+        "countdownTime": 0,
+        "isSoloClazz": 0,
+        "orderShowApp": [
+          {
+            "appCode": 5,
+            "appName": "途途乐学"
+          }
+        ],
+        "productShowApp": [
+          {
+            "appCode": 5,
+            "appName": "途途乐学"
+          }
+        ],
+        "productSkuNumber": "577079872642490369",
+        "productSpuName": "111111",
+        "productSpuNumber": "577079872642490368",
+        "publishStatus": 40,
+        "salePrice": 1000,
+        "saleStatus": 40,
+        "saleType": 1,
+        "soldCount": 0,
+        "stopSaleTime": 0,
+        "upStatus": 0,
+        "upTime": 0
+      },
+      {
+        "auditStatus": 30,
+        "autoSwitchClazz": 0,
+        "canCopySaleUrl": 1,
+        "capacity": -1,
+        "clazzTimeDesc": "",
+        "combineList": [
+          {
+            "combineCount": 1,
+            "combineName": "测试商品单元",
+            "combinePrice": 1000,
+            "combineProductSkuNorm": "2年,10",
+            "combineProductSkuNumber": "577061616303050752",
+            "productType": 8027
+          },
+          {
+            "combineCount": 1,
+            "combineName": "造数-OMO课时包-0901-143332",
+            "combinePrice": 9900,
+            "combineProductSkuNorm": "1年,10",
+            "combineProductSkuNumber": "577060871371591680",
+            "productType": 8027
+          }
+        ],
+        "countdownTime": 0,
+        "isSoloClazz": 0,
+        "orderShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          },
+          {
+            "appCode": 2,
+            "appName": "途途课堂"
+          },
+          {
+            "appCode": 3,
+            "appName": "高途心理"
+          },
+          {
+            "appCode": 4,
+            "appName": "高途雅思"
+          },
+          {
+            "appCode": 5,
+            "appName": "途途乐学"
+          },
+          {
+            "appCode": 6,
+            "appName": "公考"
+          },
+          {
+            "appCode": 7,
+            "appName": "高途留学"
+          },
+          {
+            "appCode": 8,
+            "appName": "高途高中规划"
+          },
+          {
+            "appCode": 9,
+            "appName": "云帆在线"
+          },
+          {
+            "appCode": 10,
+            "appName": "高途技术"
+          },
+          {
+            "appCode": 11,
+            "appName": "微师"
+          },
+          {
+            "appCode": 12,
+            "appName": "高途考研"
+          },
+          {
+            "appCode": 13,
+            "appName": "线下门店"
+          },
+          {
+            "appCode": 14,
+            "appName": "测试"
+          },
+          {
+            "appCode": 15,
+            "appName": "高途青少成长"
+          },
+          {
+            "appCode": 16,
+            "appName": "财经学部"
+          }
+        ],
+        "productShowApp": [
+          {
+            "appCode": 1,
+            "appName": "高途"
+          },
+          {
+            "appCode": 2,
+            "appName": "途途课堂"
+          },
+          {
+            "appCode": 3,
+            "appName": "高途心理"
+          },
+          {
+            "appCode": 4,
+            "appName": "高途雅思"
+          },
+          {
+            "appCode": 5,
+            "appName": "途途乐学"
+          },
+          {
+            "appCode": 6,
+            "appName": "公考"
+          },
+          {
+            "appCode": 7,
+            "appName": "高途留学"
+          },
+          {
+            "appCode": 8,
+            "appName": "高途高中规划"
+          },
+          {
+            "appCode": 9,
+            "appName": "云帆在线"
+          },
+          {
+            "appCode": 10,
+            "appName": "高途技术"
+          },
+          {
+            "appCode": 11,
+            "appName": "微师"
+          },
+          {
+            "appCode": 12,
+            "appName": "高途考研"
+          },
+          {
+            "appCode": 13,
+            "appName": "线下门店"
+          },
+          {
+            "appCode": 14,
+            "appName": "测试"
+          },
+          {
+            "appCode": 15,
+            "appName": "高途青少成长"
+          },
+          {
+            "appCode": 16,
+            "appName": "财经学部"
+          },
+          {
+            "appCode": 17,
+            "appName": "高途外教"
+          }
+        ],
+        "productSkuNumber": "577079612658556929",
+        "productSpuName": "11111",
+        "productSpuNumber": "577079612658556928",
+        "publishStatus": 40,
+        "salePrice": 10900,
+        "saleStatus": 40,
+        "saleType": 1,
+        "soldCount": 0,
+        "stopSaleTime": 0,
+        "upStatus": 0,
+        "upTime": 0
+      }
+    ],
+    "pageNumber": 1,
+    "pageSize": 20,
+    "total": 9561
+  }
+}

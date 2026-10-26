@@ -1,0 +1,78 @@
+{
+  "ok": true,
+  "traceId": "e5f12f4c-05cb-40d7-89fd-9958d58c29c3.0.3",
+  "env": "test",
+  "host": "https://test-qingzhou.baijia.com",
+  "spanCount": 6,
+  "errorSpanCount": 0,
+  "mode": "flat",
+  "returned": 6,
+  "spans": [
+    {
+      "service": "ngapi_test-fuwu.baijia.com",
+      "env": "default",
+      "type": "nginx_api",
+      "operation": "/student-data/test/acl/compare/service",
+      "cost": 161,
+      "error": false,
+      "trafficMarker": "default",
+      "statusCode": 200,
+      "count": 1
+    },
+    {
+      "service": "ngapi_test-fuwu.baijia.com",
+      "env": "default",
+      "type": "nginx_call",
+      "operation": "/student-data/test/acl/compare/service",
+      "cost": 159,
+      "error": false,
+      "trafficMarker": "default",
+      "statusCode": 200,
+      "count": 1
+    },
+    {
+      "service": "arch-general-apisix",
+      "env": "default",
+      "type": "apisix_api",
+      "operation": "/student-data/test/acl/compare/service",
+      "cost": 157,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-1",
+      "statusCode": 200,
+      "count": 1
+    },
+    {
+      "service": "arch-general-apisix",
+      "env": "default",
+      "type": "apisix_call",
+      "operation": "/student-data/test/acl/compare/service",
+      "cost": 110,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-1",
+      "statusCode": 200,
+      "count": 1
+    },
+    {
+      "service": "student-data",
+      "env": "test-gtbg-dev-1",
+      "type": "http_api",
+      "operation": "/test/acl/compare/service",
+      "cost": 99,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-1",
+      "statusCode": 200,
+      "count": 1
+    },
+    {
+      "service": "student-data",
+      "env": "test-gtbg-dev-1",
+      "type": "spring_bean",
+      "operation": "spring/RenewalReasoningService/reasoningEvent/RenewalReasoningEvent [RenewalReasoningService#reasoningEvent]",
+      "cost": 87,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-1",
+      "statusCode": 0,
+      "count": 1
+    }
+  ]
+}

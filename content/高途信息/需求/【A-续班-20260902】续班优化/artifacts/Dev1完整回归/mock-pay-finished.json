@@ -1,0 +1,49 @@
+{
+  "status": "ok",
+  "run": {
+    "run_id": "r-20261026170040-79606dd8",
+    "scenario": "mock_pay",
+    "workflow": "mock_pay_order",
+    "status": "ok",
+    "http_status": 200,
+    "duration_ms": 8021,
+    "traffic": "test-gtbg-dev-1",
+    "params": {
+      "pay_order_number": "432723431179944012",
+      "pay_type": 303
+    },
+    "outputs": {
+      "step_1_mock_pay": {
+        "raw": {
+          "code": 0,
+          "msg": "success",
+          "data": {
+            "code": 0,
+            "msg": "成功",
+            "ts": 1793005240,
+            "rid": "2b8f54ff52b9573503385ec5425aab2a",
+            "data": "OK",
+            "pay_order_number": "102610267083367704"
+          }
+        }
+      },
+      "mock_pay": {
+        "raw": {
+          "code": 0,
+          "msg": "success",
+          "data": {
+            "code": 0,
+            "msg": "成功",
+            "ts": 1793005240,
+            "rid": "2b8f54ff52b9573503385ec5425aab2a",
+            "data": "OK",
+            "pay_order_number": "102610267083367704"
+          }
+        }
+      }
+    },
+    "error": null,
+    "extra": {},
+    "created_at": "2026-10-26 17:00:40"
+  }
+}

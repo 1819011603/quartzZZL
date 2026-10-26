@@ -1,0 +1,29 @@
+{
+  "ok": true,
+  "url": "https://test-fuwu.baijia.com/bgwApi/component/student-center/roster/refund/reason",
+  "trafficEnv": "test-gtbg-dev-1",
+  "httpStatus": 200,
+  "resolvedRoute": {
+    "appId": "student-center",
+    "pathInfo": "/component/student-center",
+    "rewriteInfo": null,
+    "statusInfo": null,
+    "routeId": null
+  },
+  "request": {
+    "userId": "7658127801",
+    "clazzNumber": "585960582537144320",
+    "subclazzNumber": "36622538973250048"
+  },
+  "curl": "curl -sk \\\n  -x \"${AGENT_PROXY_URL:-http://127.0.0.1:8888}\" \\\n  'https://test-fuwu.baijia.com/bgwApi/component/student-center/roster/refund/reason' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-1' \\\n  -H 'b_client: EES' \\\n  -H 'identification: refundPrevention' \\\n  --data-raw '{\"userId\": \"7658127801\", \"clazzNumber\": \"585960582537144320\", \"subclazzNumber\": \"36622538973250048\"}'",
+  "traceId": "5aa74ee6-6989-4421-83b0-b164832c3369.0.3",
+  "gapmApp": "student-center",
+  "response": {
+    "code": 0,
+    "data": {
+      "refundReason": "P0模块化授权写入20261021：课时冲突，暂缓退费",
+      "refundReasonSource": 2
+    },
+    "msg": ""
+  }
+}

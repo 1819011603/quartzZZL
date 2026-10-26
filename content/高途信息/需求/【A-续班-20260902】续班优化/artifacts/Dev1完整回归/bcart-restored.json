@@ -1,0 +1,25 @@
+{
+  "ok": true,
+  "url": "https://test-fuwu.baijia.com/bgwApi/orderComponent/order/cart/detail",
+  "trafficEnv": "test-gtbg-dev-1",
+  "httpStatus": 200,
+  "resolvedRoute": {
+    "appId": "order-b",
+    "pathInfo": "/orderComponent",
+    "rewriteInfo": null,
+    "statusInfo": null,
+    "routeId": null
+  },
+  "request": {
+    "userId": "7658129769",
+    "accountId": "90247"
+  },
+  "curl": "curl -sk \\\n  -x \"${AGENT_PROXY_URL:-http://127.0.0.1:8888}\" \\\n  'https://test-fuwu.baijia.com/bgwApi/orderComponent/order/cart/detail' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-1' \\\n  -H 'b_client: EES' \\\n  -H 'identification: refundPrevention' \\\n  --data-raw '{\"userId\": \"7658129769\", \"accountId\": \"90247\"}'",
+  "traceId": "936807e6-6dd5-405d-ae7b-9e24b34dc07a.0.3",
+  "gapmApp": "order-b-gaotu100-com",
+  "response": {
+    "code": 0,
+    "msg": "",
+    "data": []
+  }
+}
