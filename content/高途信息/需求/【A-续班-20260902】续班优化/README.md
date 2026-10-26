@@ -133,7 +133,7 @@ tags: [需求]
 - ✅ 【扩科推荐】【推荐排除】为**新增配置**（不与【纯续和扩科是否重复推荐】合并）；粒度 = **续班计划级**。
 - ✅ 【扩科推荐】B 端 `POST /product-b/b/renewMaster/recommendProductList` + C 端接口**按「纯续+扩科推荐范围」展示**；**「下单页选品」(`productSelect`，换班选品) 不需要排除过滤**（2026-09-23 定，反讲原「选品也按排除范围」口径作废）。
 - ✅ 【扩科推荐】「在读」口径：**复用 student-data 现有 + 补 2 条** —— 现有在读科目链路已覆盖 非成人 / 专题系列课 / 不含赠课标签 / 非纯预售（`OdsSmallRenewalSubjectSyncService:189-221`、`DwsRenewalSubjectConsumer#checkFilter`、`BackClazzUserSubjectService#isValidClazz`），相同学年学期靠 `yearTermGrade` 分组、授课模式靠数据源（小班在读科目来自小班课在班）；**但「上课形式为线上(operationMode)」与「订单未全部退款」现有链路没有，需补**（退款状态现网有 {6,10} / {6} 两套，需统一）。
-- ✅ 【AI 配置化】配置入口**先用 Apollo 后端配置**（先搞简单点，GAIA 页面后续再议）：续班 / 退费各一个 `Map<虚拟架构部门, Set<模块>>`，如 `{虚拟架构部门A:[1,2,3], 虚拟架构部门B:[1,2,3,4,5]}`；部门 key = 虚拟架构部门 org number，匹配 = **老师（二讲）主岗部门路径**任一段命中（本部门及下属）；展示侧取登录老师、分析侧取辅导老师（2026-09-23 修正，原「课程部门」口径作废）。
+- ✅ 【AI 配置化】配置入口**先用 Apollo 后端配置**（先搞简单点，GAIA 页面后续再议）：续班 / 退费各一个 `Map<虚拟架构部门, Set<模块>>`，如 `{虚拟架构部门A:[1,2,3], 虚拟架构部门B:[1,2,3,4,5]}`；部门 key = 虚拟架构部门 org number，匹配 = **老师（二讲）主岗部门路径**取**最具体（最深）命中的已配置部门**（子部门单独配置优先、覆盖父部门；子部门未配置则继承最近父部门，2026-10-26 由原「任一段命中=本部门及下属」并集口径改为此，`ebd93de9b`）；展示侧取登录老师、分析侧取辅导老师（2026-09-23 修正，原「课程部门」口径作废）。
 - ✅ 【AI 配置化】「用户反馈」「主管点评」**算 AI 模块**；无需枚举映射；关闭模块后历史数据按**隐藏**处理。
 - ✅ 【AI 配置化】「不展示」落点 = 前端仓 `ees/aianalysisinformations`（分支 `feature-refund-reason-20260825`）：沟通建议 `/component/student-center/problem/fulfillProblem/overview`、服务建议 `/component/student-center/fulfillSop/overview`、退费 tab 接口（`src/tabs/refund/*`），入参统一 `{ userId, clazzNumber, subclazzNumber }`。
 - ✅ 【AI 配置化】部门→模块配置放 **student-data 的 Apollo**（`renewal.ai.dept.module.switch` / `refund.ai.dept.module.switch`；展示侧 student-center 只透传登录老师 accountId 给 student-data 解析部门。注：`compute.rule.name.list` 是问卷匹配的、仍在 product 公共 namespace `gt.product-public-app`）。

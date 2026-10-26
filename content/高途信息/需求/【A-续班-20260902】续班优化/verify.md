@@ -366,6 +366,18 @@ product-task pod `product-task-gaotu100-com-5c49c6f665-fgmjd`（10.218.237.230�
 
 **坑**：arthas 线程里直调 cart 推荐会因 Ribbon 子上下文懒加载失败抛 `HystrixRuntimeException`，排除逻辑按设计 fail-open 成「无排除」——是 arthas 调用环境问题，改走 acl 桥（真实 servlet 线程）即正常。
 
+### AI 模块部门开关口径改为「最具体部门优先」（2026-10-26，dev-1，✅ 已验证）
+
+原口径「老师主岗路径任一段命中即生效（本部门及下属）」= 并集继承；改为**最具体（最深）命中的已配置部门优先**（子部门覆盖父部门；子部门未配则继承最近父部门）。student-data `AiModuleSwitchService`（renewal+refund）改为 `effectiveDeptModules` 取最深命中部门，commit `ebd93de9b`（分支 `feature-xuban-expand-exclude`），单测 `AiModuleSwitchServiceTest` 32 项全过。
+
+| 例 | 调用 | 实测 |
+|---|---|---|
+| 部署 | 青舟流水线 1313970 | ✅ 新 pod `student-data-6d8b855cfc-l7qhk`（10.218.238.248）eureka UP，commit `ebd93de9` |
+| 续班（子部门未配 user_portrait） | `queryModuleSwitch(1, 177071, [])` | ✅ `user_portrait=false`，其余 8 项 true（原口径下 user_portrait=true） |
+| 退费无回归 | `queryModuleSwitch(2, 177071, [])` | ✅ tutoring/learning/satisfaction/prediction=true，refund_root_cause/service_suggestion/manual_reason=false（与改前一致） |
+
+背景：唐稳报组织节点 `66707677944472576` 未配 user_portrait 却返回 true（TAPD 1122531521001484125，已按新口径修复置「已解决」）；PROD 两个 key 未配置（未配=全量放开）→ 上线后行为不变、仅配置后按新口径生效。
+
 ### AI 开关灰度语义修正（2026-09-24，dev-1）
 
 用户订正：未配置应=全量放开（灰度未开始），否则发版即停全部 AI。student-data `24be1d776`（空配置→true；已配置时无部门/未命中→false）、student-center `a3a4d7cb5`（开关查询异常/缺值/无登录→fail-open）。单测 student-data 12 条、student-center 3 条通过。
