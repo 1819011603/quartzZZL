@@ -1,0 +1,240 @@
+{
+  "ok": true,
+  "url": "https://test-fuwu.baijia.com/bgwApi/orderComponent/order/cart/detail",
+  "trafficEnv": "test-gtbg-dev-1",
+  "httpStatus": 200,
+  "resolvedRoute": {
+    "appId": "order-b.gaotu100.com",
+    "pathInfo": "/orderComponent",
+    "rewriteInfo": "--",
+    "statusInfo": "正常",
+    "routeId": 67
+  },
+  "request": {
+    "userId": "7658127801",
+    "accountId": "90247"
+  },
+  "traceId": "67c25415-ba8c-4624-a5d5-e37a7c2206da.0.3",
+  "gapmApp": "order-b-gaotu100-com",
+  "response": {
+    "code": 0,
+    "msg": "",
+    "data": [
+      {
+        "productSkuName": "",
+        "productNumber": "584631715075588097",
+        "productType": 51,
+        "price": "9900",
+        "onceBuyLimit": 1,
+        "cartCount": 3,
+        "hasExpress": 1,
+        "canCreateOrder": 1,
+        "productSkuNormValue": "阅读创作",
+        "productSpuNumber": "584631715075588096",
+        "productSpuName": "组合商品-脚本",
+        "combinedSubProductInfos": [
+          {
+            "number": "584631693032423424",
+            "productName": "组合商品-脚本-子1会员卡-SKU",
+            "quantity": 1,
+            "originalPrice": "0",
+            "productType": 8007
+          },
+          {
+            "number": "584631703304273920",
+            "productName": "组合商品-脚本-子2实物-SKU",
+            "quantity": 1,
+            "originalPrice": "9900",
+            "productType": 8010
+          }
+        ]
+      },
+      {
+        "productSkuName": "",
+        "productNumber": "584458543193819137",
+        "productType": 51,
+        "price": "27",
+        "onceBuyLimit": 1,
+        "cartCount": 1,
+        "hasExpress": 0,
+        "canCreateOrder": 1,
+        "productSkuNormValue": "阅读创作",
+        "productSpuNumber": "584458543193819136",
+        "productSpuName": "【26秋联报】学期卡（混合履约模式）",
+        "combinedSubProductInfos": [
+          {
+            "number": "584457485224675328",
+            "productName": "【26秋】初阶语文单科学期卡（1001-1031）",
+            "quantity": 1,
+            "originalPrice": "10",
+            "productType": 8007
+          },
+          {
+            "number": "584457321992849408",
+            "productName": "【26秋】初阶数学单科学期卡（3个月有效期）",
+            "quantity": 1,
+            "originalPrice": "10",
+            "productType": 8007
+          },
+          {
+            "number": "584457264983869440",
+            "productName": "【26秋】初阶英语单科学期卡（0131到期）",
+            "quantity": 1,
+            "originalPrice": "10",
+            "productType": 8007
+          }
+        ]
+      },
+      {
+        "productSkuName": "",
+        "productNumber": "584632626097291265",
+        "productType": 51,
+        "price": "9900",
+        "onceBuyLimit": 1,
+        "cartCount": 1,
+        "hasExpress": 1,
+        "canCreateOrder": 0,
+        "canCreateOrderMsg": "该商品下的子商品：【组合商品-脚本-子2实物-SKU】已存在订单",
+        "productSkuNormValue": "阅读创作",
+        "productSpuNumber": "584632626097291264",
+        "productSpuName": "组合商品-脚本",
+        "combinedSubProductInfos": [
+          {
+            "number": "584632609697562624",
+            "productName": "组合商品-脚本-子1会员卡-SKU",
+            "quantity": 1,
+            "originalPrice": "0",
+            "productType": 8007
+          },
+          {
+            "number": "584632617884844032",
+            "productName": "组合商品-脚本-子2实物-SKU",
+            "quantity": 1,
+            "originalPrice": "9900",
+            "productType": 8010
+          }
+        ]
+      },
+      {
+        "productSkuName": "",
+        "productNumber": "584458369312655361",
+        "productType": 51,
+        "price": "24",
+        "onceBuyLimit": 1,
+        "cartCount": 1,
+        "hasExpress": 0,
+        "canCreateOrder": 1,
+        "productSkuNormValue": "双语演说",
+        "productSpuNumber": "584458369312655360",
+        "productSpuName": "【26秋三科联报】学期卡（0131结束）",
+        "combinedSubProductInfos": [
+          {
+            "number": "584457264983869440",
+            "productName": "【26秋】初阶英语单科学期卡（0131到期）",
+            "quantity": 1,
+            "originalPrice": "10",
+            "productType": 8007
+          },
+          {
+            "number": "584457223451871232",
+            "productName": "【26秋】初阶语文单科学期卡（0131到期）",
+            "quantity": 1,
+            "originalPrice": "10",
+            "productType": 8007
+          },
+          {
+            "number": "584457060463314944",
+            "productName": "【26秋】初阶数学单科学期卡（0131到期）",
+            "quantity": 1,
+            "originalPrice": "10",
+            "productType": 8007
+          }
+        ]
+      },
+      {
+        "productSkuName": "",
+        "productNumber": "579426174109902848",
+        "productType": 51,
+        "price": "0",
+        "onceBuyLimit": 1,
+        "cartCount": 1,
+        "hasExpress": 1,
+        "canCreateOrder": 0,
+        "canCreateOrderMsg": "该商品下的子商品：【测试小班课11】已存在订单",
+        "productSpuNumber": "579426174107805696",
+        "productSpuName": "组合大班课+小班课",
+        "combinedSubProductInfos": [
+          {
+            "number": "579423901640169472",
+            "productName": "914新的非TT入口课程",
+            "quantity": 1,
+            "originalPrice": "0",
+            "productType": 2
+          },
+          {
+            "number": "578121883707406336",
+            "productName": "测试小班课11",
+            "quantity": 1,
+            "originalPrice": "0",
+            "productType": 6003
+          }
+        ]
+      },
+      {
+        "productSkuName": "",
+        "productNumber": "402910767185154048",
+        "productType": 51,
+        "price": "2",
+        "onceBuyLimit": 1,
+        "cartCount": 1,
+        "hasExpress": 1,
+        "canCreateOrder": 0,
+        "canCreateOrderMsg": "该商品未开售",
+        "productSpuNumber": "402910767176765440",
+        "productSpuName": "2222",
+        "combinedSubProductInfos": [
+          {
+            "number": "401085548055267328",
+            "productName": "zc-线下--复制的room2",
+            "quantity": 1,
+            "originalPrice": "1000",
+            "productType": 6003
+          },
+          {
+            "number": "401008662818138112",
+            "productName": "zc-线下--复制的room",
+            "quantity": 1,
+            "originalPrice": "1000",
+            "productType": 6003
+          }
+        ]
+      },
+      {
+        "productSkuName": "退款口径膨胀券caseSDD_1788846422662",
+        "productNumber": "578323391191220225",
+        "productType": 8014,
+        "price": "10000",
+        "onceBuyLimit": 1,
+        "cartCount": 1,
+        "canCreateOrder": 1,
+        "productSpuNumber": "578323391191220224",
+        "productSpuName": "退款口径膨胀券caseSDD_1788846422662",
+        "image": "",
+        "saleStatus": 40
+      },
+      {
+        "productSkuName": "叠加膨胀券caseSDD_1788846272645",
+        "productNumber": "578323085464207361",
+        "productType": 8014,
+        "price": "10000",
+        "onceBuyLimit": 1,
+        "cartCount": 1,
+        "canCreateOrder": 1,
+        "productSpuNumber": "578323085464207360",
+        "productSpuName": "叠加膨胀券caseSDD_1788846272645",
+        "image": "",
+        "saleStatus": 40
+      }
+    ]
+  }
+}

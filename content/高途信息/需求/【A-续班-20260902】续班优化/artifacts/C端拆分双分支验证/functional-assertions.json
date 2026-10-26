@@ -1,0 +1,90 @@
+{
+  "passed": 17,
+  "checks": [
+    {
+      "lane": "test-gtbg-dev-1",
+      "name": "large-cart-true",
+      "trace": "cart_gaotu100_com.299.17930016361450032"
+    },
+    {
+      "lane": "test-gtbg-dev-1",
+      "name": "large-cart-false",
+      "trace": "cart_gaotu100_com.300.17930016387030033"
+    },
+    {
+      "lane": "test-gtbg-dev-1",
+      "name": "small-cart-true",
+      "trace": "cart_gaotu100_com.296.17930016390810031"
+    },
+    {
+      "lane": "test-gtbg-dev-1",
+      "name": "small-cart-false",
+      "trace": "cart_gaotu100_com.294.17930016404790032"
+    },
+    {
+      "lane": "test-gtbg-dev-1",
+      "name": "product-list",
+      "trace": "cart_gaotu100_com.295.17930016411270036"
+    },
+    {
+      "lane": "test-gtbg-dev-1",
+      "name": "price-course",
+      "trace": "cart_gaotu100_com.299.17930016415800034"
+    },
+    {
+      "lane": "test-gtbg-dev-3",
+      "name": "large-cart-true",
+      "trace": "cart_gaotu100_com.295.17930016361450035"
+    },
+    {
+      "lane": "test-gtbg-dev-3",
+      "name": "large-cart-false",
+      "trace": "cart_gaotu100_com.300.17930016394440032"
+    },
+    {
+      "lane": "test-gtbg-dev-3",
+      "name": "small-cart-true",
+      "trace": "cart_gaotu100_com.301.17930016398290032"
+    },
+    {
+      "lane": "test-gtbg-dev-3",
+      "name": "small-cart-false",
+      "trace": "cart_gaotu100_com.296.17930016415230033"
+    },
+    {
+      "lane": "test-gtbg-dev-3",
+      "name": "product-list",
+      "trace": "cart_gaotu100_com.303.17930016421760035"
+    },
+    {
+      "lane": "test-gtbg-dev-3",
+      "name": "price-course",
+      "trace": "cart_gaotu100_com.298.17930016429110031"
+    },
+    {
+      "lane": "test-gtbg-dev-3",
+      "name": "price-coupon",
+      "trace": "cart_gaotu100_com.300.17930016452340034"
+    },
+    {
+      "lane": "test-gtbg-dev-3",
+      "name": "price-coupon-duplicate",
+      "trace": "cart_gaotu100_com.301.17930016461990034"
+    },
+    {
+      "lane": "test-gtbg-dev-3",
+      "name": "price-coupon-legacy",
+      "trace": "cart_gaotu100_com.296.17930016474650035"
+    },
+    {
+      "lane": "test-gtbg-dev-1",
+      "name": "b-cart-detail",
+      "trace": "67c25415-ba8c-4624-a5d5-e37a7c2206da.0.3"
+    },
+    {
+      "lane": "test-gtbg-dev-3",
+      "name": "b-cart-detail",
+      "trace": "2fc660e4-3850-4795-a389-b2aae7aee0b9.0.3"
+    }
+  ]
+}

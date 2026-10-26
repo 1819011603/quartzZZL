@@ -61,11 +61,13 @@ tags: [需求]
 
 ## 现在什么情况
 
-> [本地拆分审批材料](artifacts/C端加购拆分审批.md)：diff、保留边界、测试及24038服务/泳道预览。
+> **2026-10-26 当前验证目标**：按用户要求集中完整验证dev-1当前批次（扩科、AI与B端下单），CASE-101～120及C端拆分兼容；接口/业务链路进行中，浏览器连接暂不响应，页面验证不冒记通过。24038后续C端功能不再作为本轮目标。
 
-> **2026-10-26 发布拆分（双分支验证中）**：用户已批准提交、发布测试、分别验证两个分支及修改上线方案。当前`feature-xuban-expand-exclude`先上线，B端保留；cart拆除C端增量提交`58dcd914`已推送，新分支`feature-xuban-c-cart-addons`在其上恢复C端，提交`30e7ccb9`已推送；order两个分支已同步共享修复`6a36d7a4b5`。当前分支dev-1、新分支dev-3测试发布与功能验证进行中，24038与飞书方案更新进行中。
+> [本地拆分审批材料](artifacts/C端加购拆分审批.md)：diff、保留边界、双分支后端验证及24038服务/泳道登记。
 
-> **2026-10-26 上线核对**：已按五仓最新diff补充[扩科推荐＋AI模块化＋下单优化上线 checklist](https://gaotuedu.feishu.cn/wiki/KSDfwlojaipDqWkUcbfckjnwnyd)。青舟23819当前step2，准出后端82%通过、前端60%未过，USER_CASE/ALARM/DSCD未过、总门禁未过；不再采用“准出未执行”作为当前结论。正式包、PROD配置、mweb发布归属及最新增量验收仍待闭环。只读核对详见 [[verify]] 首节。
+> **2026-10-26 发布拆分（后端双分支验证完成）**：当前`feature-xuban-expand-exclude`先上线并保留B端，cart`58dcd914`；C端新分支`feature-xuban-c-cart-addons`继承拆除提交再恢复，cart`30e7ccb9`；order两分支同`6a36d7a4b5`修复组合多条校验重复键。dev-1/dev-3共10部署实际SHA/UP已核，15个C端读请求、两泳道B端详情、选课写入/跨年级恢复及隔离通过，原选择数据已恢复。24038已保存5后端＋8mweb、后端dev-3，23819和24038订单产物及飞书方案已更新。dev-3页面及新增真实支付退款未验，不表示生产准出；证据见 [[verify]] 首节。
+
+> **2026-10-26 上线核对**：已按五仓最新diff补充[扩科推荐＋AI模块化＋下单优化上线 checklist](https://gaotuedu.feishu.cn/wiki/KSDfwlojaipDqWkUcbfckjnwnyd)。青舟23819当前step2，准出后端82%通过、前端60%未过，USER_CASE/ALARM/DSCD未过、总门禁未过；不再采用“准出未执行”作为当前结论。正式包、PROD配置、mweb页面验收及最新SHA质量准出仍待闭环（mweb归属24038已确定）。只读核对详见 [[verify]] 首节。
 
 > **2026-10-26 口径更正：切年级保留课程/券勾选，切回恢复**：按用户最新要求，`productSelectGrade` 只记录当前年级，不再删除 `user_renewal_clazz` 选择；`productList` 增加课程勾选态回填。cart `046533da` + `707cf664` + `1ad93cab`（无前置课课程/组合也支持保存）+ `e59e6794`（负 SKU 隔离键注释），流水线 `1312764`/`1312811`/`1312842`/`1312890`，最新 pod `cart-gaotu100-com-67f954c696-97brc` / `10.218.238.15` Eureka UP；JDK8 全仓编译、21 项测试通过。真实接口：同计划选中 3 门课程（含无前置课的数学/英语）+ 券 A，切 grade11 后 productList 4 项仍 select=1，切回 grade16 仍为1，getRenewalDetail 也全部 select=1；验后已取消 4 项勾选。**原“切年级清空、切回不恢复”口径作废。** 前端仍只提交当前年级 payList，不跨年级下单。
 
@@ -89,10 +91,10 @@ tags: [需求]
 | | |
 |---|---|
 | 阶段 | **上线准备**（问卷匹配 + 调课同步 → 发布计划 23716，2026-10-13 起；见下「上线准备」） |
-| 进度 | T 19/22 · R 4/4 · C 6/9；本轮审计与 P0 编写完成，增量验收与确定缺陷修复进行中，不可直接放行 |
+| 进度 | T 20/23 · R 4/4 · C 6/9；本轮审计与 P0 编写完成，增量验收与确定缺陷修复进行中，不可直接放行 |
 | 部署泳道 | **`feature-xuban-match-opt` → `test-gtbg-dev-3`**（product-task / student-data / teacher-tool）；**`feature-xuban-expand-exclude` → `test-gtbg-dev-1`**（product-b / product / student-data / cart / student-center，2026-09-24 已迁完、均 eureka UP）。2026-09-24 用户定，两分支不再共用泳道 |
 | 当前卡点 | 上线准备：🔴 DDL 工单 **146826**（`gaotu.questionnaire_record` 加 `retry_count`，待审批，须先于 product-task）、🔴 MQ 工单 **90538**（PROD group `GID_student-data_renewal_questionnaire_transfer_prod`，实例 `gaotu`，待审批）均待 SRE 审批；teacher-tool-api `1.0.29` RELEASE 已发、两处 pom 已切 RELEASE 并 push；Apollo `renewal.questionnaire.transfer.consumer.group` 待 group 审批后配（未配会走测试组名默认值）。 |
-| 最近更新 | 2026-10-26：五仓diff、PROD已发布配置、青舟23819当前门禁核对并回填上线checklist；后端准出82%通过、前端60%未过，总门禁未通过。正式包/灰度配置/mweb发布及增量验收待闭环；本轮未合并部署。 |
+| 最近更新 | 2026-10-26：C端后端拆分完成，两分支测试部署/10目标SHA与UP/核心接口和选择回归通过；23819与24038产物、泳道及飞书方案已保存读回。正式包/PROD配置/最新质量准出、dev-3页面及支付退款P0仍待闭环；未合release或生产发布。 |
 
 ## 上线准备（2026-10-13 · 发布计划 23716「问卷匹配 + 调课同步」）
 

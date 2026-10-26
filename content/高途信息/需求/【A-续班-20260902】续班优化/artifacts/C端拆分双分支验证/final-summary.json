@@ -1,0 +1,247 @@
+{
+  "date": "2026-10-26",
+  "completeBackendChecks": true,
+  "currentBranch": "feature-xuban-expand-exclude",
+  "newBranch": "feature-xuban-c-cart-addons",
+  "cartCurrentCommit": "58dcd914f0460c11f23bdd36918315f55c0c1f6f",
+  "cartNewCommit": "30e7ccb988bbb2607f678b2ed86342d7258f61e5",
+  "orderCommit": "6a36d7a4b50495256116e322f114d12ebe8f3827",
+  "deployments": [
+    {
+      "service": "gaotu_cart",
+      "lane": "test-gtbg-dev-1",
+      "pod": "cart-gaotu100-com-5d68dc5f4-l7458",
+      "ip": "10.218.248.18",
+      "image": "feature-xuban-expand-exclude-58dcd914-20261026152451",
+      "commit": "58dcd914",
+      "branch": "feature-xuban-expand-exclude",
+      "status": "Running",
+      "eureka": "UP",
+      "matches": true
+    },
+    {
+      "service": "gaotu_cart",
+      "lane": "test-gtbg-dev-3",
+      "pod": "cart-gaotu100-com-5764d6fddf-nqh6g",
+      "ip": "10.218.248.218",
+      "image": "feature-xuban-c-cart-addons-30e7ccb9-20261026152656",
+      "commit": "30e7ccb9",
+      "branch": "feature-xuban-c-cart-addons",
+      "status": "Running",
+      "eureka": "UP",
+      "matches": true
+    },
+    {
+      "service": "gaotu_order",
+      "lane": "test-gtbg-dev-1",
+      "pod": "order-gaotu100-com-5f8586b96-9ks77",
+      "ip": "10.218.251.239",
+      "image": "feature-xuban-expand-exclude-6a36d7a4-20261026154947",
+      "commit": "6a36d7a4",
+      "branch": "feature-xuban-expand-exclude",
+      "status": "Running",
+      "eureka": "UP",
+      "matches": true
+    },
+    {
+      "service": "gaotu_order",
+      "lane": "test-gtbg-dev-3",
+      "pod": "order-gaotu100-com-79cc677889-62qpc",
+      "ip": "10.218.238.67",
+      "image": "feature-xuban-c-cart-addons-6a36d7a4-20261026155549",
+      "commit": "6a36d7a4",
+      "branch": "feature-xuban-c-cart-addons",
+      "status": "Running",
+      "eureka": "UP",
+      "matches": true
+    },
+    {
+      "service": "gaotu_order_task",
+      "lane": "test-gtbg-dev-1",
+      "pod": "order-task-gaotu100-com-84885549bd-ppffp",
+      "ip": "10.218.238.164",
+      "image": "feature-xuban-expand-exclude-6a36d7a4-20261026155720",
+      "commit": "6a36d7a4",
+      "branch": "feature-xuban-expand-exclude",
+      "status": "Running",
+      "eureka": "UP",
+      "matches": true
+    },
+    {
+      "service": "gaotu_order_task",
+      "lane": "test-gtbg-dev-3",
+      "pod": "order-task-gaotu100-com-7d6fc4fd96-8k6hc",
+      "ip": "10.218.239.243",
+      "image": "feature-xuban-c-cart-addons-6a36d7a4-20261026155139",
+      "commit": "6a36d7a4",
+      "branch": "feature-xuban-c-cart-addons",
+      "status": "Running",
+      "eureka": "UP",
+      "matches": true
+    },
+    {
+      "service": "baijia.gaotu.tech.trade.order-ad",
+      "lane": "test-gtbg-dev-1",
+      "pod": "order-ad-gaotu100-com-5d566f6f9f-mcbtv",
+      "ip": "10.218.238.44",
+      "image": "feature-xuban-expand-exclude-6a36d7a4-20261026154947",
+      "commit": "6a36d7a4",
+      "branch": "feature-xuban-expand-exclude",
+      "status": "Running",
+      "eureka": "UP",
+      "matches": true
+    },
+    {
+      "service": "baijia.gaotu.tech.trade.order-ad",
+      "lane": "test-gtbg-dev-3",
+      "pod": "order-ad-gaotu100-com-6c467776d4-zbsx4",
+      "ip": "10.218.238.154",
+      "image": "feature-xuban-c-cart-addons-6a36d7a4-20261026155549",
+      "commit": "6a36d7a4",
+      "branch": "feature-xuban-c-cart-addons",
+      "status": "Running",
+      "eureka": "UP",
+      "matches": true
+    },
+    {
+      "service": "baijia.gaotu.tech.trade.order-b",
+      "lane": "test-gtbg-dev-1",
+      "pod": "order-b-gaotu100-com-5564545c98-4rsxk",
+      "ip": "10.218.237.64",
+      "image": "feature-xuban-expand-exclude-6a36d7a4-20261026154947",
+      "commit": "6a36d7a4",
+      "branch": "feature-xuban-expand-exclude",
+      "status": "Running",
+      "eureka": "UP",
+      "matches": true
+    },
+    {
+      "service": "baijia.gaotu.tech.trade.order-b",
+      "lane": "test-gtbg-dev-3",
+      "pod": "order-b-gaotu100-com-947d7cd75-wxbg8",
+      "ip": "10.218.238.97",
+      "image": "feature-xuban-c-cart-addons-6a36d7a4-20261026155550",
+      "commit": "6a36d7a4",
+      "branch": "feature-xuban-c-cart-addons",
+      "status": "Running",
+      "eureka": "UP",
+      "matches": true
+    }
+  ],
+  "deploymentMarkdown": "| 部署 | 当前dev-1提交/状态 | C端dev-3提交/状态 |\n|---|---|---|\n| gaotu_cart | 58dcd914 / UP | 30e7ccb9 / UP |\n| gaotu_order | 6a36d7a4 / UP | 6a36d7a4 / UP |\n| gaotu_order_task | 6a36d7a4 / UP | 6a36d7a4 / UP |\n| baijia.gaotu.tech.trade.order-ad | 6a36d7a4 / UP | 6a36d7a4 / UP |\n| baijia.gaotu.tech.trade.order-b | 6a36d7a4 / UP | 6a36d7a4 / UP |\n",
+  "functionalChecks": {
+    "passed": 17,
+    "checks": [
+      {
+        "lane": "test-gtbg-dev-1",
+        "name": "large-cart-true",
+        "trace": "cart_gaotu100_com.299.17930016361450032"
+      },
+      {
+        "lane": "test-gtbg-dev-1",
+        "name": "large-cart-false",
+        "trace": "cart_gaotu100_com.300.17930016387030033"
+      },
+      {
+        "lane": "test-gtbg-dev-1",
+        "name": "small-cart-true",
+        "trace": "cart_gaotu100_com.296.17930016390810031"
+      },
+      {
+        "lane": "test-gtbg-dev-1",
+        "name": "small-cart-false",
+        "trace": "cart_gaotu100_com.294.17930016404790032"
+      },
+      {
+        "lane": "test-gtbg-dev-1",
+        "name": "product-list",
+        "trace": "cart_gaotu100_com.295.17930016411270036"
+      },
+      {
+        "lane": "test-gtbg-dev-1",
+        "name": "price-course",
+        "trace": "cart_gaotu100_com.299.17930016415800034"
+      },
+      {
+        "lane": "test-gtbg-dev-3",
+        "name": "large-cart-true",
+        "trace": "cart_gaotu100_com.295.17930016361450035"
+      },
+      {
+        "lane": "test-gtbg-dev-3",
+        "name": "large-cart-false",
+        "trace": "cart_gaotu100_com.300.17930016394440032"
+      },
+      {
+        "lane": "test-gtbg-dev-3",
+        "name": "small-cart-true",
+        "trace": "cart_gaotu100_com.301.17930016398290032"
+      },
+      {
+        "lane": "test-gtbg-dev-3",
+        "name": "small-cart-false",
+        "trace": "cart_gaotu100_com.296.17930016415230033"
+      },
+      {
+        "lane": "test-gtbg-dev-3",
+        "name": "product-list",
+        "trace": "cart_gaotu100_com.303.17930016421760035"
+      },
+      {
+        "lane": "test-gtbg-dev-3",
+        "name": "price-course",
+        "trace": "cart_gaotu100_com.298.17930016429110031"
+      },
+      {
+        "lane": "test-gtbg-dev-3",
+        "name": "price-coupon",
+        "trace": "cart_gaotu100_com.300.17930016452340034"
+      },
+      {
+        "lane": "test-gtbg-dev-3",
+        "name": "price-coupon-duplicate",
+        "trace": "cart_gaotu100_com.301.17930016461990034"
+      },
+      {
+        "lane": "test-gtbg-dev-3",
+        "name": "price-coupon-legacy",
+        "trace": "cart_gaotu100_com.296.17930016474650035"
+      },
+      {
+        "lane": "test-gtbg-dev-1",
+        "name": "b-cart-detail",
+        "trace": "67c25415-ba8c-4624-a5d5-e37a7c2206da.0.3"
+      },
+      {
+        "lane": "test-gtbg-dev-3",
+        "name": "b-cart-detail",
+        "trace": "2fc660e4-3850-4795-a389-b2aae7aee0b9.0.3"
+      }
+    ]
+  },
+  "plans": [
+    {
+      "plan": 23819,
+      "services": 14,
+      "backendEnv": "test-gtbg-dev-1",
+      "configRows": 36,
+      "originalConfigRowsPreserved": 36,
+      "verified": true
+    },
+    {
+      "plan": 24038,
+      "services": 13,
+      "backendEnv": "test-gtbg-dev-3",
+      "configRows": 31,
+      "originalConfigRowsPreserved": 16,
+      "verified": true
+    }
+  ],
+  "documentSummary": "两分支后端分别完成测试部署与实际SHA/Eureka UP核验：当前cart58dcd914在dev-1，C端新cart30e7ccb9在dev-3，order四部署两泳道均6a36d7a4。当前cart16项及扩科JUnit10项、新cart28项、order组合/券/重复校验10项通过。15个C端真实读请求HTTP200/status0，大小班/includeBCart及纯续基线对照通过：dev-1撤去本批8014增强并保留release原51，dev-3完整券范围、组合明细/已报名与纯券/重复券/旧clazzNumbers算价正常。真实选课写接口验证旧分支切年级清选择、新分支跨年级保留与回填/单项取消隔离；验后DMS核原8条选择业务字段一致，年级16恢复。B端两泳道详情HTTP200/code0，均8项（6组合＋2券），已购组合禁止下单且返回首条失败提示，Duplicate key已修复；两条实际trace均命中对应泳道、无错误span。503原configFlag再次HTTP200/code0。23819/24038提测产物与方案已保存读回，原配置与前端保留。dev-3浏览器页面因实际请求固定dev-1及后续浏览器连接不可用，未记验收通过；当前年级payList、真实新增支付退款及剩余P0仍须独立验收，不把后端测试当整体验收。",
+  "limitations": [
+    "dev-3页面未验收",
+    "本轮无新增真实支付/退款",
+    "release未合并/生产未发布/最新质量准出未重算",
+    "AICR无任务，不算通过"
+  ]
+}

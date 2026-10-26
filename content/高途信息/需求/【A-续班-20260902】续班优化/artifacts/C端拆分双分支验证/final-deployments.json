@@ -1,0 +1,122 @@
+[
+  {
+    "service": "gaotu_cart",
+    "lane": "test-gtbg-dev-1",
+    "pod": "cart-gaotu100-com-5d68dc5f4-l7458",
+    "ip": "10.218.248.18",
+    "image": "feature-xuban-expand-exclude-58dcd914-20261026152451",
+    "commit": "58dcd914",
+    "branch": "feature-xuban-expand-exclude",
+    "status": "Running",
+    "eureka": "UP",
+    "matches": true
+  },
+  {
+    "service": "gaotu_cart",
+    "lane": "test-gtbg-dev-3",
+    "pod": "cart-gaotu100-com-5764d6fddf-nqh6g",
+    "ip": "10.218.248.218",
+    "image": "feature-xuban-c-cart-addons-30e7ccb9-20261026152656",
+    "commit": "30e7ccb9",
+    "branch": "feature-xuban-c-cart-addons",
+    "status": "Running",
+    "eureka": "UP",
+    "matches": true
+  },
+  {
+    "service": "gaotu_order",
+    "lane": "test-gtbg-dev-1",
+    "pod": "order-gaotu100-com-5f8586b96-9ks77",
+    "ip": "10.218.251.239",
+    "image": "feature-xuban-expand-exclude-6a36d7a4-20261026154947",
+    "commit": "6a36d7a4",
+    "branch": "feature-xuban-expand-exclude",
+    "status": "Running",
+    "eureka": "UP",
+    "matches": true
+  },
+  {
+    "service": "gaotu_order",
+    "lane": "test-gtbg-dev-3",
+    "pod": "order-gaotu100-com-79cc677889-62qpc",
+    "ip": "10.218.238.67",
+    "image": "feature-xuban-c-cart-addons-6a36d7a4-20261026155549",
+    "commit": "6a36d7a4",
+    "branch": "feature-xuban-c-cart-addons",
+    "status": "Running",
+    "eureka": "UP",
+    "matches": true
+  },
+  {
+    "service": "gaotu_order_task",
+    "lane": "test-gtbg-dev-1",
+    "pod": "order-task-gaotu100-com-84885549bd-ppffp",
+    "ip": "10.218.238.164",
+    "image": "feature-xuban-expand-exclude-6a36d7a4-20261026155720",
+    "commit": "6a36d7a4",
+    "branch": "feature-xuban-expand-exclude",
+    "status": "Running",
+    "eureka": "UP",
+    "matches": true
+  },
+  {
+    "service": "gaotu_order_task",
+    "lane": "test-gtbg-dev-3",
+    "pod": "order-task-gaotu100-com-7d6fc4fd96-8k6hc",
+    "ip": "10.218.239.243",
+    "image": "feature-xuban-c-cart-addons-6a36d7a4-20261026155139",
+    "commit": "6a36d7a4",
+    "branch": "feature-xuban-c-cart-addons",
+    "status": "Running",
+    "eureka": "UP",
+    "matches": true
+  },
+  {
+    "service": "baijia.gaotu.tech.trade.order-ad",
+    "lane": "test-gtbg-dev-1",
+    "pod": "order-ad-gaotu100-com-5d566f6f9f-mcbtv",
+    "ip": "10.218.238.44",
+    "image": "feature-xuban-expand-exclude-6a36d7a4-20261026154947",
+    "commit": "6a36d7a4",
+    "branch": "feature-xuban-expand-exclude",
+    "status": "Running",
+    "eureka": "UP",
+    "matches": true
+  },
+  {
+    "service": "baijia.gaotu.tech.trade.order-ad",
+    "lane": "test-gtbg-dev-3",
+    "pod": "order-ad-gaotu100-com-6c467776d4-zbsx4",
+    "ip": "10.218.238.154",
+    "image": "feature-xuban-c-cart-addons-6a36d7a4-20261026155549",
+    "commit": "6a36d7a4",
+    "branch": "feature-xuban-c-cart-addons",
+    "status": "Running",
+    "eureka": "UP",
+    "matches": true
+  },
+  {
+    "service": "baijia.gaotu.tech.trade.order-b",
+    "lane": "test-gtbg-dev-1",
+    "pod": "order-b-gaotu100-com-5564545c98-4rsxk",
+    "ip": "10.218.237.64",
+    "image": "feature-xuban-expand-exclude-6a36d7a4-20261026154947",
+    "commit": "6a36d7a4",
+    "branch": "feature-xuban-expand-exclude",
+    "status": "Running",
+    "eureka": "UP",
+    "matches": true
+  },
+  {
+    "service": "baijia.gaotu.tech.trade.order-b",
+    "lane": "test-gtbg-dev-3",
+    "pod": "order-b-gaotu100-com-947d7cd75-wxbg8",
+    "ip": "10.218.238.97",
+    "image": "feature-xuban-c-cart-addons-6a36d7a4-20261026155550",
+    "commit": "6a36d7a4",
+    "branch": "feature-xuban-c-cart-addons",
+    "status": "Running",
+    "eureka": "UP",
+    "matches": true
+  }
+]

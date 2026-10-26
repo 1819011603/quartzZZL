@@ -1,0 +1,18 @@
+[
+  {
+    "plan": 23819,
+    "services": 14,
+    "backendEnv": "test-gtbg-dev-1",
+    "configRows": 36,
+    "originalConfigRowsPreserved": 36,
+    "verified": true
+  },
+  {
+    "plan": 24038,
+    "services": 13,
+    "backendEnv": "test-gtbg-dev-3",
+    "configRows": 31,
+    "originalConfigRowsPreserved": 16,
+    "verified": true
+  }
+]

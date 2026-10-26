@@ -1,0 +1,144 @@
+{
+  "rows": 8,
+  "businessFields": [
+    "renewal_number",
+    "front_course_number",
+    "clazz_number",
+    "type",
+    "product_type",
+    "product_sku_number"
+  ],
+  "before": [
+    {
+      "renewal_number": "585960797778243584",
+      "front_course_number": "-402910767185154048",
+      "clazz_number": "402910767185154048",
+      "type": "1",
+      "product_type": "51",
+      "product_sku_number": "402910767185154048"
+    },
+    {
+      "renewal_number": "585960797778243584",
+      "front_course_number": "-578323391191220225",
+      "clazz_number": "0",
+      "type": "1",
+      "product_type": "8014",
+      "product_sku_number": "578323391191220225"
+    },
+    {
+      "renewal_number": "585960797778243584",
+      "front_course_number": "-585963404555053056",
+      "clazz_number": "585963404555053056",
+      "type": "1",
+      "product_type": "2",
+      "product_sku_number": "585963404555053056"
+    },
+    {
+      "renewal_number": "585960797778243584",
+      "front_course_number": "585960577856301056",
+      "clazz_number": "",
+      "type": "1",
+      "product_type": "2",
+      "product_sku_number": "585960755422160896"
+    },
+    {
+      "renewal_number": "586116340522184704",
+      "front_course_number": "18314034380997173",
+      "clazz_number": "",
+      "type": "1",
+      "product_type": "6004",
+      "product_sku_number": "586097025945298944"
+    },
+    {
+      "renewal_number": "586116340522184704",
+      "front_course_number": "18314034380997173",
+      "clazz_number": "586097025945298944",
+      "type": "2",
+      "product_type": "6004",
+      "product_sku_number": "586097025945298944"
+    },
+    {
+      "renewal_number": "586116340522184704",
+      "front_course_number": "585960751831836672",
+      "clazz_number": "",
+      "type": "1",
+      "product_type": "2",
+      "product_sku_number": "585960755422160896"
+    },
+    {
+      "renewal_number": "586116340522184704",
+      "front_course_number": "585963400792762368",
+      "clazz_number": "",
+      "type": "1",
+      "product_type": "2",
+      "product_sku_number": "585963404555053056"
+    }
+  ],
+  "after": [
+    {
+      "renewal_number": "585960797778243584",
+      "front_course_number": "-402910767185154048",
+      "clazz_number": "402910767185154048",
+      "type": "1",
+      "product_type": "51",
+      "product_sku_number": "402910767185154048"
+    },
+    {
+      "renewal_number": "585960797778243584",
+      "front_course_number": "-578323391191220225",
+      "clazz_number": "0",
+      "type": "1",
+      "product_type": "8014",
+      "product_sku_number": "578323391191220225"
+    },
+    {
+      "renewal_number": "585960797778243584",
+      "front_course_number": "-585963404555053056",
+      "clazz_number": "585963404555053056",
+      "type": "1",
+      "product_type": "2",
+      "product_sku_number": "585963404555053056"
+    },
+    {
+      "renewal_number": "585960797778243584",
+      "front_course_number": "585960577856301056",
+      "clazz_number": "",
+      "type": "1",
+      "product_type": "2",
+      "product_sku_number": "585960755422160896"
+    },
+    {
+      "renewal_number": "586116340522184704",
+      "front_course_number": "18314034380997173",
+      "clazz_number": "",
+      "type": "1",
+      "product_type": "6004",
+      "product_sku_number": "586097025945298944"
+    },
+    {
+      "renewal_number": "586116340522184704",
+      "front_course_number": "18314034380997173",
+      "clazz_number": "586097025945298944",
+      "type": "2",
+      "product_type": "6004",
+      "product_sku_number": "586097025945298944"
+    },
+    {
+      "renewal_number": "586116340522184704",
+      "front_course_number": "585960751831836672",
+      "clazz_number": "",
+      "type": "1",
+      "product_type": "2",
+      "product_sku_number": "585960755422160896"
+    },
+    {
+      "renewal_number": "586116340522184704",
+      "front_course_number": "585963400792762368",
+      "clazz_number": "",
+      "type": "1",
+      "product_type": "2",
+      "product_sku_number": "585963404555053056"
+    }
+  ],
+  "equal": true
+}

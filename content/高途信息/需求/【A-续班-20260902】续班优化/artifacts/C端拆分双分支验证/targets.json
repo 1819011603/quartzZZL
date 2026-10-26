@@ -1,0 +1,148 @@
+{
+  "test-gtbg-dev-1": {
+    "deploymentName": "cart-gaotu100-com",
+    "podDeploymentName": "cart-gaotu100-com",
+    "podName": "cart-gaotu100-com-5d68dc5f4-l7458",
+    "podIP": "10.218.248.18",
+    "namespace": "test-gtbg-dev-1",
+    "envInfoId": 313,
+    "status": "Running",
+    "createTime": 1792999589000,
+    "restartCount": 0,
+    "prometheusUrl": "https://hs-grafana.baijia.com/d/15185338-k8s-pod-nonprod/kubernetes-pod-noprod?orgId=1&refresh=60s&var-ClusterId=ccjs24mhg52uk3nqlqrag&var-namespace=test-gtbg-dev-1&var-pod=cart-gaotu100-com-5d68dc5f4-l7458",
+    "nodePrometheusUrl": "https://hs-grafana.baijia.com/d/15185338-k8s-node-overview-noprod/node-overview-noprod?orgId=1&refresh=60s&var-ClusterId=ccjs24mhg52uk3nqlqrag&var-node=10.218.1.241",
+    "nodeIp": "10.218.1.241",
+    "terminalUrl": "http://container.baijia.com/api/v1/webterminal?cluster=hs-bj-qingzhou-k8s-nonprod&namespace=test-gtbg-dev-1&env=dev&podName=cart-gaotu100-com-5d68dc5f4-l7458&container=cart-gaotu100-com",
+    "imageName": "feature-xuban-expand-exclude-58dcd914-20261026152451",
+    "batchTest": false,
+    "grayTest": false,
+    "eurekaStatus": "UP",
+    "isEciCluster": false,
+    "eciPod": false,
+    "replayFlag": false,
+    "showEci": false,
+    "cluster": "hs-bj-qingzhou-k8s-nonprod",
+    "containerBOList": [
+      {
+        "name": "cart-gaotu100-com",
+        "imageName": "acr.baijia.com/uqun/cart-gaotu100-com:feature-xuban-expand-exclude-58dcd914-20261026152451",
+        "status": "running",
+        "restartCount": 0
+      },
+      {
+        "name": "mesh",
+        "imageName": "acr.baijia.com/uqun/mesh:0.0.1-202604150000",
+        "status": "running",
+        "restartCount": 0
+      },
+      {
+        "name": "multi-test-agent",
+        "imageName": "acr.baijia.com/uqun/multi-test-agent:v7.0.0_260129-test",
+        "status": "terminated",
+        "restartCount": 0,
+        "reason": "Completed"
+      },
+      {
+        "name": "scripts",
+        "imageName": "acr.baijia.com/uqun/scripts:2024080202",
+        "status": "terminated",
+        "restartCount": 0,
+        "reason": "Completed"
+      },
+      {
+        "name": "cat-client",
+        "imageName": "acr.baijia.com/uqun/cat-client-test:1.0.1",
+        "status": "terminated",
+        "restartCount": 0,
+        "reason": "Completed"
+      },
+      {
+        "name": "arms-agent",
+        "imageName": "acr.baijia.com/uqun/arms-agent:1.7.0",
+        "status": "terminated",
+        "restartCount": 0,
+        "reason": "Completed"
+      },
+      {
+        "name": "jacoco",
+        "imageName": "acr.baijia.com/uqun/jacoco-agent:v0.8.8.6",
+        "status": "terminated",
+        "restartCount": 0,
+        "reason": "Completed"
+      }
+    ]
+  },
+  "test-gtbg-dev-3": {
+    "deploymentName": "cart-gaotu100-com",
+    "podDeploymentName": "cart-gaotu100-com",
+    "podName": "cart-gaotu100-com-5764d6fddf-nqh6g",
+    "podIP": "10.218.248.218",
+    "namespace": "test-gtbg-dev-3",
+    "envInfoId": 314,
+    "status": "Running",
+    "createTime": 1792999707000,
+    "restartCount": 0,
+    "prometheusUrl": "https://hs-grafana.baijia.com/d/15185338-k8s-pod-nonprod/kubernetes-pod-noprod?orgId=1&refresh=60s&var-ClusterId=ccjs24mhg52uk3nqlqrag&var-namespace=test-gtbg-dev-3&var-pod=cart-gaotu100-com-5764d6fddf-nqh6g",
+    "nodePrometheusUrl": "https://hs-grafana.baijia.com/d/15185338-k8s-node-overview-noprod/node-overview-noprod?orgId=1&refresh=60s&var-ClusterId=ccjs24mhg52uk3nqlqrag&var-node=10.218.2.53",
+    "nodeIp": "10.218.2.53",
+    "terminalUrl": "http://container.baijia.com/api/v1/webterminal?cluster=hs-bj-qingzhou-k8s-nonprod&namespace=test-gtbg-dev-3&env=dev&podName=cart-gaotu100-com-5764d6fddf-nqh6g&container=cart-gaotu100-com",
+    "imageName": "feature-xuban-c-cart-addons-30e7ccb9-20261026152656",
+    "batchTest": false,
+    "grayTest": false,
+    "eurekaStatus": "UP",
+    "isEciCluster": false,
+    "eciPod": false,
+    "replayFlag": false,
+    "showEci": false,
+    "cluster": "hs-bj-qingzhou-k8s-nonprod",
+    "containerBOList": [
+      {
+        "name": "cart-gaotu100-com",
+        "imageName": "acr.baijia.com/uqun/cart-gaotu100-com:feature-xuban-c-cart-addons-30e7ccb9-20261026152656",
+        "status": "running",
+        "restartCount": 0
+      },
+      {
+        "name": "mesh",
+        "imageName": "acr.baijia.com/uqun/mesh:0.0.1-202604150000",
+        "status": "running",
+        "restartCount": 0
+      },
+      {
+        "name": "multi-test-agent",
+        "imageName": "acr.baijia.com/uqun/multi-test-agent:v7.0.0_260129-test",
+        "status": "terminated",
+        "restartCount": 0,
+        "reason": "Completed"
+      },
+      {
+        "name": "scripts",
+        "imageName": "acr.baijia.com/uqun/scripts:2024080202",
+        "status": "terminated",
+        "restartCount": 0,
+        "reason": "Completed"
+      },
+      {
+        "name": "cat-client",
+        "imageName": "acr.baijia.com/uqun/cat-client-test:1.0.1",
+        "status": "terminated",
+        "restartCount": 0,
+        "reason": "Completed"
+      },
+      {
+        "name": "arms-agent",
+        "imageName": "acr.baijia.com/uqun/arms-agent:1.7.0",
+        "status": "terminated",
+        "restartCount": 0,
+        "reason": "Completed"
+      },
+      {
+        "name": "jacoco",
+        "imageName": "acr.baijia.com/uqun/jacoco-agent:v0.8.8.6",
+        "status": "terminated",
+        "restartCount": 0,
+        "reason": "Completed"
+      }
+    ]
+  }
+}
