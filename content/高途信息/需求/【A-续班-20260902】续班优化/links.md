@@ -48,6 +48,8 @@ tags: [需求, 链接]
 | 发布计划 | 青舟「扩科推荐+AI模块配置化」id 23819（product → product-task → product-b → student-data → student-data-dws → student-data-gps → student-center → cart；另含 order/order-task/order-ad/order-b，实际顺序以编排为准；泳道 test-gtbg-dev-1） | https://qingzhou.baijia.com/#/publishArrangement/subPublishArrangement/publishPlan/detail?storyId=&pageNum=1&id=23819&action=edit | 2026-10-10 |
 | 工单 | | | |
 
+| 发布计划 | C端支持膨胀券/组合加购24038（现有前端计划；后端cart/order新分支登记待审批，目标dev-3） | https://qingzhou.baijia.com/#/publishArrangement/subPublishArrangement/publishPlan/detail?storyId=&pageNum=1&id=24038&action=edit | 2026-10-26 |
+
 ## 跨会话检索锚点
 
 - 问卷匹配优化 wiki token：`Ijz3w9ZgAi8ncakFs3jcKZI9nxi`（document_id: `ILXidWPl5occSSxa6qdcaiosnfe`）

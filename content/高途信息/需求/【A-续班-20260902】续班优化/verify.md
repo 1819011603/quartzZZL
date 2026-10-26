@@ -7,6 +7,12 @@ tags: [需求, 验证]
 
 > 只保留当前可执行条件、仍有效数据和最新预期。
 
+## C端加购拆分本地验证（2026-10-26，待审批）
+
+本次改动与待审批边界详见[拆分审批材料](artifacts/C端加购拆分审批.md)。cart当前分支未提交的拆除版本，JDK8全模块clean test成功：已报名状态/回退6项、MVC参数10项、扩科推荐/真实Feign异常恢复JUnit10项通过。新分支worktree原C端生产代码与a6978058一致，22项原C端契约＋6项公共已报名测试通过。order代码无改动。原未跟踪测试hash不变。
+
+没有commit/push/保存青舟/部署；本地测试不代表dev-3实测。24038目前仍是8个mweb服务、后端提测dev-1；本地预览才是新增5后端和后端提测dev-3，前端dev-1/准出test保留。审批后重读青舟配置与当前值再保存。此段是发布拆分当前状态，下一节23819核对是拆分前只读快照。
+
 ## 发布计划23819上线核对（2026-10-26，只读）
 
 本轮依据五仓 `feature-xuban-expand-exclude` 对最新 `origin/release` 的 diff、青舟23819详情/质量接口和 PROD 已发布 Apollo 核对上线 checklist；没有执行生产配置、合并、部署或门禁重算。在线操作方案为唯一明细入口：[扩科推荐＋AI模块化＋下单优化上线 checklist](https://gaotuedu.feishu.cn/wiki/KSDfwlojaipDqWkUcbfckjnwnyd)。
