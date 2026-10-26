@@ -1356,3 +1356,18 @@ cart `12cba6a949b0021df8a346e9e789cc903fbcbff1`，流水线1311214，dev-1新pod
 - order-b `OrderItemRepositoryImpl#listByPayNumber`：订单项 `432702026138257728`、orderStatus=2、orderType=8014、skuType=8014、SKU `578323391191220225`、price=10000。
 - cart `getRenewalDetail(7658127801, 585960797778243584, ..., 8645, true)`：券 A `signUp=1`（pay 前为 0）。
 - 未做退款；退款后 signUp 回 0 仍待验。页面已报名/重复勾选限制未做页面复验。
+
+## 2026-10-26 扩科课程/组合已报名 signUp 修复
+
+- 现象：mock 支付 `432702026138255680` 后，六年级只有语文+券显示已报名，数学/英语扩科课程仍 signUp=0；一年级组合 `579426174109902848` 也 signUp=0。
+- 根因：
+  1. 大班扩科推荐调用 `ExpandSubjectRecommendService.recommend(..., Collections.emptySet())`，已购集合恒空，扩科 result.signUp 永远 0。
+  2. 组合订单不落组合 SKU 订单项，只落子班（order_info）和 6003/6004（order_item）订单，按组合 SKU 查已购永远空。
+- 修复（cart `a6978058`）：
+  - 扩科结果按 clazz 调 `ListByClazzNumbersAndUserIds`，有效订单 status 2/7 回填 signUp。
+  - 组合无自身订单时，回退校验组合**全部课程子项**已支付：大班 clazz 订单 status 2/7、6003/6004 order_item 在 `PAID_AND_HAVE_RIGHT_STATUS`(2,4)；全部命中才把组合 SKU 标记已购，避免单个子商品误判。
+  - `listPurchasedAdditionalSkuNumbers` 与 `setCombinedProductList` 均接入回退。
+- 验证：
+  - `getRenewalDetail`：六年级语文/数学/英语 signUp=1、券 signUp=1；一年级组合 `579426174109902848` signUp=1；未购组合 `402910767185154048` 仍 0。
+  - 真实页面 `/suggestShoppingCart?...seller_id=8645...`：六年级 3 门课程 + 券均显示“已报名”；切一年级后组合显示“已报名”。
+- 部署：流水线 `1313017` SUCCESS；新 pod `cart-gaotu100-com-f5c65666d-jxhrv` / `10.218.250.231`，Eureka UP；JDK8 全仓编译 + 22 项测试通过。
