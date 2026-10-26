@@ -63,7 +63,7 @@ tags: [需求]
 
 > [本地拆分审批材料](artifacts/C端加购拆分审批.md)：diff、保留边界、测试及24038服务/泳道预览。
 
-> **2026-10-26 发布拆分（双分支验证中）**：用户已批准提交、发布测试、分别验证两个分支及修改上线方案。当前`feature-xuban-expand-exclude`先上线，B端保留；cart拆除C端增量提交`58dcd914`已推送，新分支`feature-xuban-c-cart-addons`在其上恢复C端，提交`30e7ccb9`已推送；order两分支同为`0aec823154`。当前分支dev-1、新分支dev-3测试发布与功能验证进行中，24038与飞书方案更新进行中。
+> **2026-10-26 发布拆分（双分支验证中）**：用户已批准提交、发布测试、分别验证两个分支及修改上线方案。当前`feature-xuban-expand-exclude`先上线，B端保留；cart拆除C端增量提交`58dcd914`已推送，新分支`feature-xuban-c-cart-addons`在其上恢复C端，提交`30e7ccb9`已推送；order两个分支已同步共享修复`6a36d7a4b5`。当前分支dev-1、新分支dev-3测试发布与功能验证进行中，24038与飞书方案更新进行中。
 
 > **2026-10-26 上线核对**：已按五仓最新diff补充[扩科推荐＋AI模块化＋下单优化上线 checklist](https://gaotuedu.feishu.cn/wiki/KSDfwlojaipDqWkUcbfckjnwnyd)。青舟23819当前step2，准出后端82%通过、前端60%未过，USER_CASE/ALARM/DSCD未过、总门禁未过；不再采用“准出未执行”作为当前结论。正式包、PROD配置、mweb发布归属及最新增量验收仍待闭环。只读核对详见 [[verify]] 首节。
 
