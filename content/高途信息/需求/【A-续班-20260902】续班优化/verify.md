@@ -1332,16 +1332,27 @@ cart `12cba6a949b0021df8a346e9e789cc903fbcbff1`，流水线1311214，dev-1新pod
 **改动**
 - `RenewalDataService#productSelectGrade`：只 `deleteGrade + insertGrade` 记录当前年级，**不再删除** `user_renewal_clazz` 勾选。
 - `RenewalService#productList`：`setClazzVO` / `setSmallClazzVO` 增加按 `user + renewalNumber + frontCourseNumber + type=1` 回填课程 `select`；券仍走 `applyCouponSelections`。
-- 新增 `RenewalGradeSelectionTest`：切年级只调用 deleteGrade/insertGrade，不调用 delete。
+- `productSelectConfirm`：无前置课的非券商品（如新后置数学/英语、组合、6003/6004）也允许保存，使用负 SKU 作为内部隔离键，避免 delete 误删同计划其他选择。
+- `productList` / `getRenewalDetail` 增加按 `user+plan+所有 type=1 SKU` 的统一回填，覆盖课程、无前置课课程、组合、券。
+- 新增 `RenewalGradeSelectionTest`：切年级只调用 deleteGrade/insertGrade，不调用 delete；无前置课课程 productSelectConfirm 走 skuSelectConfirm。
 - 前端仍只按当前年级生成 payList，不跨年级下单；切到无已选年级时 payList 应为空（前端逻辑）。
 
-**验证（真实接口，dev-1）**
-- 选中课程 `585960755422160896`（beforeCourseNumber `585960577856301056`）+ 券 `578323391191220225`（8014）。
-- `productSelectGrade` 切 `grade=11` 后 `productList`（带 renewalNumber）：课程 `select=1`、券 `select=1`（`availableScope=六年级语文`）。
-- 再切回 `grade=16`：课程/券仍 `select=1`；`getRenewalDetail` 六年级分组同样 `select=1`。
-- 验证后对两项 `productSelectConfirm status=0`，读回 `select=0`，未改其他用户/计划选择。
+**验证（真实接口，dev-1，2026-10-26）**
+- 同计划选中 3 门课程：`585960755422160896`（有前置课）、`585963387758962688` / `585963404555053056`（无前置课，只有 clazzNumber）；同时选中券 `578323391191220225`。
+- DB `user_renewal_clazz` 读到 4 条 type=1 记录：券 front=-SKU、两门无前置课课程 front=-SKU、第一门课程 front=前置课号。
+- `productSelectGrade` 切 `grade=11` → `productList`（带 renewalNumber）4 项全部 `select=1`（券 scope=六年级语文）。
+- 再切回 `grade=16` → `productList` 4 项仍 `select=1`；`getRenewalDetail` 六年级分组 4 项也全部 `select=1`。
+- 验证后对 4 项 `productSelectConfirm status=0`，读回全部 `select=0`，未改其他用户/计划选择。
 
 **部署**
-- cart `046533da`（切年级不删选择）+ `707cf664`（productList 回填课程勾选）。
-- 流水线 `1312764` / `1312811` SUCCESS；新 pod `cart-gaotu100-com-5874cd87bc-7x6z8` / `10.218.237.97`，Eureka UP。
-- JDK8 全仓编译通过；20 项契约/回归测试通过。
+- cart `046533da`（切年级不删选择）+ `707cf664`（productList 回填课程勾选）+ `1ad93cab`（无前置课课程/组合保存 + 全量选择回填）+ `e59e6794`（负 SKU 隔离键注释）。
+- 流水线 `1312764` / `1312811` / `1312842` / `1312890` SUCCESS；最新 pod `cart-gaotu100-com-67f954c696-97brc` / `10.218.238.15`，Eureka UP。
+- JDK8 全仓编译通过；21 项契约/回归测试通过。
+
+## 2026-10-26 mock 支付与券 signUp
+
+- 用户 7658127801，批次单号 `432702026138255680`，data-agent `mock_pay`：run `r-20261026112738-776da509`，status ok，pay_order_number `102610262519698842`。
+- DB `gaotu.pay_info`（cluster142）：number `432702026138255680`、price=10000、pay_status=1、paid_time `2026-10-26 11:27:39`、pay_channel=6。
+- order-b `OrderItemRepositoryImpl#listByPayNumber`：订单项 `432702026138257728`、orderStatus=2、orderType=8014、skuType=8014、SKU `578323391191220225`、price=10000。
+- cart `getRenewalDetail(7658127801, 585960797778243584, ..., 8645, true)`：券 A `signUp=1`（pay 前为 0）。
+- 未做退款；退款后 signUp 回 0 仍待验。页面已报名/重复勾选限制未做页面复验。
