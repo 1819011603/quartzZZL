@@ -17,7 +17,7 @@ tags: [需求, 任务]
 | T-04 | 测试环境切一个试点应用并验证功能 | 已完成 | — | 试点 `沟通摘要-test`：开关开=网关/关=Dify、模型=按应用指定、`params` 生效，均实测通过 |
 | T-05 | 全量切换剩余续班 + 退费 Dify 应用并逐个验证 | 待办 | — | prod 17 个应用，见 README 清单 |
 | T-06 | 代码切换：收口 / 移除 Dify 路径 | 待办 | T-05 | 功能替换稳定后再做 |
-| T-07 | 每应用模型一一对应：按应用配 `model`/`params` + 网关加路由 | 进行中 | — | 开关已支持 `name/platformType/model/params`；gps-ai test 已加 `doubao-seed-2-0-lite-260428`（id 37268）；**仅剩精品班 3 个应用的 `DeepSeek-R1-250528` 替换待定** |
+| T-07 | 每应用模型一一对应：按应用配 `model`/`params` + 网关加路由 | 已完成 | — | 映射全定：Doubao 旧系列→`doubao-seed-2-0-lite-260428`、R1→`deepseek-v4.1-flash-1017`；gps-ai test 加 2 条路由（37268/37270）；prod 路由并入 T-05 上线前做 |
 
 ## R- 反讲整改项
 

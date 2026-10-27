@@ -81,21 +81,19 @@ test 环境对应应用见 [`verify.md`](verify.md)。
 | | |
 |---|---|
 | 阶段 | 开发中 |
-| 进度 | T 4/7 · R 0/0 · C 0/0 |
-| 部署泳道 | `student-data=test-gtbg-dev-1`（流水线 1316179） |
-| 当前卡点 | 精品班 3 个应用的模型（原 `deepseek/DeepSeek-R1-250528`）无官方替换，待定 |
-| 最近更新 | 2026-10-27：开关升级为**按应用覆盖**（`{name, platformType, model, params}`）；试点配 `model=doubao-seed-2-0-lite-260428` + `params.response_format=json_object`，实测 `event=litellm_proxy/doubao-seed-2.0-lite`、输出纯 JSON；模型按官方下线替换映射对齐 |
+| 进度 | T 5/7 · R 0/0 · C 0/0 |
+| 部署泳道 | `student-data=test-gtbg-dev-1`（流水线 1316286） |
+| 当前卡点 | 无 |
+| 最近更新 | 2026-10-27：模型替换映射**全部确定**（Doubao 旧系列→`doubao-seed-2-0-lite-260428`；退费整条线→`deepseek-v4.1-flash-1017`）；gps-ai test 路由已加 2 条（id 37268/37270）；试点模型+params 实测通过 |
 
 ## 下一步
 
-1. 定精品班 3 个应用的模型（原 DeepSeek-R1-250528 的替换）
-2. 按官方映射补齐 gps-ai（test/prod）路由
-3. 全量切剩余续班 + 退费应用（每应用配 name+model+params）并逐个验证（T-05）
-4. 功能替换稳定后，代码切换：收口/移除 Dify 路径（T-06）
+1. 全量切剩余续班 + 退费应用（T-05）：**只改 Apollo**——在 `ai.agent.accessor.override.map` 里按 `ai_agent.number` 增条目 `{name, platformType:2, model, params}`，**无需改代码/发版**
+2. 上线前把 gps-ai **prod** 路由补齐（`doubao-seed-2-0-lite-260428`、`deepseek-v4.1-flash-1017`；test 已有）
+3. 功能替换稳定后，代码切换：收口/移除 Dify 路径（T-06）
 
 ## 待确认
 
-- [ ] 精品班 3 个应用原 `deepseek/DeepSeek-R1-250528` 的替换模型 —— 官方通知未覆盖，等确认
 - [ ] 「功能替换稳定」的观察窗口与放量节奏（全量一次性还是分批）
 
 ## 涉及的代码

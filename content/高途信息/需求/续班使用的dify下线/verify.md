@@ -79,6 +79,23 @@ tags: [需求, 验证]
 | **自定义参数**（`params.response_format=json_object`） | 通。`answer` 为纯 JSON、无 \`\`\`json 包裹 |
 | 触发方式 | ACL 桥直调 `AiApplicationTestServiceImpl#quickTestAiApplication`（`POST /bgwApi/student-data/test/acl/compare/service`，头 `traffic-env: test-gtbg-dev-1`） |
 
+## 新旧链路对比方法（桥调用）
+
+- 方法：`com.gaotu.student.data.domain.ai.manager.service.impl.AiApplicationTestServiceImpl#compareAiApplication`
+- 入参：`[aiApplicationName, userQuery, userTag, context]`；`context` 至少含 `clazzNumber`、`userId`（沟通摘要/画像类），大 ID 传**字符串**避免精度截断
+- 行为：同一输入**串行**跑 Dify(`platformType=1`) 与 LLM 网关(`platformType=2`)，返回 `{dify, gateway}` 两侧原始响应（`event`/`messageId`/`answer`）供人工比对；任一侧失败返回 `event=ERROR`（不吞另一侧）。网关侧模型/参数取应用级覆盖
+- 命令（ACL 桥）：
+  ```bash
+  curl -sk -x "${AGENT_PROXY_URL:-http://127.0.0.1:8888}" \
+    'https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service' \
+    -H 'content-type: application/json' -H 'traffic-env: test-gtbg-dev-1' -H 'identification: microLessonStudent' \
+    --data-raw '{"serviceNameAndMethodName":"com.gaotu.student.data.domain.ai.manager.service.impl.AiApplicationTestServiceImpl#compareAiApplication","params":["沟通摘要-test","","test",{"clazzNumber":"500775385189890048","userId":"7404351741","commTag":0}]}'
+  ```
+- 2026-10-27 实测（`沟通摘要-test`，clazz `500775385189890048` / user `7404351741`，traceId `005cf022-…`）：
+  - Dify：`event=message`，answer 为 ```json 包裹
+  - 网关：`event=litellm_proxy/doubao-seed-2.0-lite`，answer 为**纯 JSON**（`response_format` 生效）
+  - 两侧语义一致
+
 ## Dify 控制台/服务 API（查应用与模型）
 
 > 用途：从 Dify 反查每个应用用的模型（迁移时一一对应）。全部经 **baijia-proxy**（`http://127.0.0.1:8888`）注入 Cookie，`curl -s -k -x`。
@@ -139,13 +156,13 @@ tags: [需求, 验证]
 | 用户画像 / 沟通摘要 / 问题建议-高中 / 服务SOP分析 | doubao-seed-2-0-lite-260428 | doubao-seed-2-0-lite-260428（不变） |
 | 问题建议-素养 | doubao/Doubao-Seed-1-6 | doubao-seed-2-0-lite-260428（映射） |
 | 续班分层原因分析-素养 / -高中 | doubao/Doubao-1-5-pro-32k | doubao-seed-2-0-lite-260428（映射） |
-| 退费根因(素养) / 退费NPS(素养) / 退费旅程(素养/精品班) / 退费课程体验(素养) / 降退费(素养) | deepseek-v4-flash-0731 | deepseek-v4-flash-0731（不变） |
-| 退费NPS(精品班) / 课程体验(精品班) / 降退费(精品班) | deepseek/DeepSeek-R1-250528 | **待定**（官方通知未覆盖 R1） |
+| 退费全部 10 个（根因/NPS/旅程/课程体验/降退费，素养+精品班） | deepseek-v4-flash-0731 或 deepseek/DeepSeek-R1-250528 | **`deepseek-v4.1-flash-1017`**（统一） |
+
+> 退费整条线统一迁到 `deepseek-v4.1-flash-1017`（含原用 `deepseek-v4-flash-0731` 的素养学部与用 R1 的精品班学部）。R1/V3 下线通知建议 DeepSeek-V4-Flash，具体采用 `deepseek-v4.1-flash-1017`。
 
 - gps-ai **原有**：`deepseek-v4-flash-0731`（id 24983）。
-- gps-ai **test 已新增**：`doubao-seed-2-0-lite-260428`（id 37268，`callerRoute/save`，`env=test`）。
+- gps-ai **test 已新增**：`doubao-seed-2-0-lite-260428`（id 37268）、`deepseek-v4.1-flash-1017`（id 37270），均 `callerRoute/save`、`env=test`。
 - 网关目录里下线模型 `status=2`、`save` 报 `模型不存在或已下线`，加不了同 code，只能迁到替换模型。
-- ⚠️ `deepseek/DeepSeek-R1-250528`（精品班 3 个应用）官方通知未给替换，**待定**。
 
 > 新增路由的 CLI：`gateway_admin.py save --env test --file <json> --confirm`；json 见 [`llm-gateway-admin/references/admin-api.md`](../../../.claude/skills-cold/llm-gateway-admin/references/admin-api.md) 的 `save 请求体`（新建时**不带 `id`**）。
 

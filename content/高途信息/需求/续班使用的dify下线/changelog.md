@@ -27,6 +27,8 @@ tags: [需求, 日志]
 - 请求侧落地：`AiModelCallOption.extraParams` + `LlmGatewayAccessor` 合并进请求体（`model`/`max_tokens`/`messages` 不可被 params 覆盖）
 - 试点按应用配 `model=doubao-seed-2-0-lite-260428` + `params.response_format=json_object` 后实测：`event=litellm_proxy/doubao-seed-2.0-lite`、输出**纯 JSON** → 模型覆盖与自定义参数均生效
 - 模型替换以官方【模型下线通知】（火山引擎 2026-09-21）为准：`Doubao-1.5-Pro-32K`/`Doubao-Seed-1.6` → `doubao-seed-2-0-lite-260428`；`DeepSeek-R1-250528`（精品班 3 应用）通知未覆盖，**待定**
+- R1/V3 下线通知（建议替换 DeepSeek-V4-Flash）→ 具体采用 `deepseek-v4.1-flash-1017`；gps-ai test 加该路由（id 37270）。至此替换映射**全部确定**
+- 退费整条线**统一**迁到 `deepseek-v4.1-flash-1017`（原用 `deepseek-v4-flash-0731` 的素养学部也一并改）——替代「素养用 0731、精品班用 v4.1」的旧口径
 
 ### 👤 我
 
