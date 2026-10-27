@@ -18,6 +18,15 @@ tags: [需求, 日志]
 - 开关落点为新增 `AiAgentPlatformTypeResolver`（Apollo json map `ai.agent.platform.type.override.map`），在 `AiApplicationExecutor` 两处解析处接覆盖——不改库即可单应用切/回滚
 - 范围扩到**退费 AI**（prod 共 17 个 Dify 应用：续班 7 + 退费 10），不再只续班
 - 试点定为 test `用户画像/沟通摘要-test`（`ai_agent.number=255107338300556288`）
+- 试点**双向验证通过**：开关开走网关（`litellm_proxy/...`）、关回 Dify（`message`）——证明「按应用切换 + 可回滚」成立
+- 查模型改用 **Dify 控制台 API**（`os.baijia.com/dify/api/console/api/...`，经 baijia-proxy）+ 服务 API `/info` 核归属；得到「agent↔应用↔模型」对应表
+- 发现模型不一致：网关走的是默认模型而非原 Dify 模型；且 `doubao*`/`DeepSeek-R1-250528` 不在 gps-ai 可用模型里 → 新增 T-07 处理
+- gps-ai **test 加路由** `doubao-seed-2-0-lite-260428`（id 37268）；其余 3 个（Doubao-Seed-1.6 / Doubao-1.5-Pro-32K / DeepSeek-R1(0528)）在网关目录 `status=2` 已下线，加不了同 code，列候选交用户找人确认
+- `response_format=json_object`（gps-ai prod DeepSeek 路由 33566，force=false）：**保留**——续班归因靠它稳定 JSON；若退费类迁来共用该 route 且存在纯文本场景，则改为**请求级按应用下发**而非删 route 默认值
+- 开关结构定为**按应用的自定义参数**：key `ai.agent.accessor.override.map`，value=`{name, platformType, model, params}`；`name` 必填便于识别 ID；`params` 为任意网关请求参数字段（如 `response_format`）。取代早期只含 platformType 的 `ai.agent.platform.type.override.map`
+- 请求侧落地：`AiModelCallOption.extraParams` + `LlmGatewayAccessor` 合并进请求体（`model`/`max_tokens`/`messages` 不可被 params 覆盖）
+- 试点按应用配 `model=doubao-seed-2-0-lite-260428` + `params.response_format=json_object` 后实测：`event=litellm_proxy/doubao-seed-2.0-lite`、输出**纯 JSON** → 模型覆盖与自定义参数均生效
+- 模型替换以官方【模型下线通知】（火山引擎 2026-09-21）为准：`Doubao-1.5-Pro-32K`/`Doubao-Seed-1.6` → `doubao-seed-2-0-lite-260428`；`DeepSeek-R1-250528`（精品班 3 应用）通知未覆盖，**待定**
 
 ### 👤 我
 

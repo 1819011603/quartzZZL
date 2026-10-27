@@ -13,10 +13,11 @@ tags: [需求, 任务]
 |---|---|---|---|---|
 | T-01 | 从 `origin/release` 建分支 `feature-xuban-dify-offline` | 已完成 | — | `--no-track`，起点 `origin/release` |
 | T-02 | 定切换粒度与测试环境首个试点应用 | 已完成 | — | 粒度 `ai_agent`；试点 `用户画像/沟通摘要-test`(255107338300556288)；复用 `LlmGatewayAccessor` |
-| T-03 | Apollo 新增按应用链路开关并落地（命中走 LLM 网关 `gps-ai`） | 进行中 | — | `AiAgentPlatformTypeResolver` + 接入 `AiApplicationExecutor`；待编译 + 配 TEST Apollo + 部署 |
-| T-04 | 测试环境切一个试点应用并验证功能 | 待办 | T-03 | 与 Dify 结果对齐，见 [`verify.md`](verify.md) |
-| T-05 | 全量切换剩余续班 + 退费 Dify 应用并逐个验证 | 待办 | T-04 | prod 17 个应用，见 README 清单 |
+| T-03 | Apollo 新增按应用链路开关并落地（命中走 LLM 网关 `gps-ai`） | 已完成 | — | 现为 `ai.agent.accessor.override.map`（`{name,platformType,model,params}`）+ `AiApplicationExecutor` 接入（commit `f0c58aaf`）；TEST Apollo 已发布 |
+| T-04 | 测试环境切一个试点应用并验证功能 | 已完成 | — | 试点 `沟通摘要-test`：开关开=网关/关=Dify、模型=按应用指定、`params` 生效，均实测通过 |
+| T-05 | 全量切换剩余续班 + 退费 Dify 应用并逐个验证 | 待办 | — | prod 17 个应用，见 README 清单 |
 | T-06 | 代码切换：收口 / 移除 Dify 路径 | 待办 | T-05 | 功能替换稳定后再做 |
+| T-07 | 每应用模型一一对应：按应用配 `model`/`params` + 网关加路由 | 进行中 | — | 开关已支持 `name/platformType/model/params`；gps-ai test 已加 `doubao-seed-2-0-lite-260428`（id 37268）；**仅剩精品班 3 个应用的 `DeepSeek-R1-250528` 替换待定** |
 
 ## R- 反讲整改项
 
@@ -35,5 +36,6 @@ tags: [需求, 任务]
 - T-02 切换粒度与试点应用确定并写入 README → 判据：README「待确认」对应项清空
 - T-03 Apollo 开关读回确认已发布 → 判据：`apollo_get_key` 读回命中新 key
 - T-04 测试环境试点应用走新链路且功能正常（含日志 traceId 证据）→ 判据：产出与 Dify 对齐、无报错
-- T-05 7 个续班应用全部切到新链路并逐个验证 → 判据：每个应用各有一次成功调用留痕
+- T-05 17 个应用（续班+退费）全部切到新链路并逐个验证 → 判据：每个应用各有一次成功调用留痕
+- T-07 每应用 `model`/`params` 落 Apollo 且 gps-ai 路由齐 → 判据：`apollo_get_key` 读回各应用配置、`callerRoute` 读回目标模型
 - T-06 Dify 路径移除后无引用 → 判据：全仓检索 `Dify`/`dify-open` 无续班调用残留

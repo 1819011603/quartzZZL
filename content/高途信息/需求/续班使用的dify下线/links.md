@@ -19,6 +19,8 @@ tags: [需求, 链接]
 |---|---|---|---|
 | AI 应用平台 | 应用列表（智能体 / 对话流） | https://os.baijia.com/apps | 2026-10-27 |
 | AI 服务访问 | 大模型网关 access / caller 路由（caller = `gps-ai`） | https://ai.baijia.com/ai-service/access | 2026-10-27 |
+| Dify 控制台（os.baijia.com 代理） | 团队应用列表 `…/dify/api/console/api/gt-apps?scope=team`；应用详情 `…/dify/api/console/api/apps/{app_id}` | https://os.baijia.com/dify/api/console/api | 2026-10-27 |
+| Dify 服务 API | `/info`（用 `ai_agent.access_key` 返应用名，核对归属）；`/chat-messages`（业务调用） | https://dify-open.baijia.com/dify/api/v1 | 2026-10-27 |
 | Dify 引擎 | 待下线的 Dify（续班现用） | https://dify-open.baijia.com/dify/api/v1 | 2026-10-27 |
 
 ## 开发与测试
