@@ -4,8 +4,20 @@
 
 > **RD 重点关注：① Apollo 配置 ② MQ 堆积情况。**
 
-- 飞书 SOP：https://gaotuedu.feishu.cn/wiki/Z05zw0Wl3i9z4kkug9ociTF2nxe
 - 相邻模块：[续班关系配置](../续班关系配置/README.md)、[业绩归因](../业绩归因/README.md)
+
+## 关联资源
+
+飞书：
+
+- 续班保障 SOP：https://gaotuedu.feishu.cn/wiki/Z05zw0Wl3i9z4kkug9ociTF2nxe
+- 续班保障记录（知识库根）：https://gaotuedu.feishu.cn/wiki/NgbHwPnC1iXnnckJDQSccXdPnRf
+  - 续班保障 SOP / 续班副本数快照 / 产研侧续班保障信息收集 / 续班保障相关前置 check / 2026 续班集中保障-值班 / 续班问题记录-2026 / 2026 续班变更 review
+- 续班压测记录（每次压测的留档）：https://gaotuedu.feishu.cn/wiki/PZPAwR1DFi4uBlkBN6IcEOZan2d
+
+代码：
+
+- 续班扩容计划：https://git.baijia.com/gaotu/yunying_workbench/student-renewal-info
 
 ## 症状路由
 
