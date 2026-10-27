@@ -32,6 +32,8 @@ tags: [需求, 日志]
 - 退费提示词迁移方式定为**原地更新 `prompt_config.core_prompt`**（`updatePromptConfig`，存历史版本、`auto_use_current_version=1` 即生效）；**必须回传原 `afterProcessorPromptConfig`**（「结果JSON格式(...);敏感词过滤」）否则被清空
 - 副作用已接受：`core_prompt` 新旧链路共用，过渡期 Dify 侧会看到两份指令；test 直接改，prod 待定「同步切 or 随代码切换」
 - 逐应用验证在 test 全通（续班 5 + 退费 6）；`退费NPS` 输出为纯文本、**不带 `params`**（该模型对 `json_object` 返 400）——即「返回格式按应用定」的实例
+- 返回格式最终定：**续班(doubao)带 `json_object`；退费(deepseek)一律不带**——实测同模型（deepseek-v4.1）对 `json_object` 行为不稳（课程体验成功、NPS 400），一律去掉靠提示词约束（学生端剥 ``` 围栏）
+- prod 待办拆开：T-09 prod Apollo 补 params、T-11 prod 退费提示词迁移、T-12 路由工单审批、T-13 prod 发布、T-14 表状态同步
 
 ### 👤 我
 

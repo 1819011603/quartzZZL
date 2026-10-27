@@ -18,9 +18,13 @@ tags: [需求, 任务]
 | T-05 | 全量切换剩余续班 + 退费 Dify 应用并逐个验证 | 进行中 | — | **test 全验**：续班 5（用户画像/沟通摘要/服务SOP/生成沟通建议-高中/预测分层原因）+ 退费 6（根因/旅程/课程体验/NPS/素养服务建议/降退费服务建议）全通；问题建议-素养 test 无 app 未验；prod 17 待发 |
 | T-06 | 代码切换：收口 / 移除 Dify 路径 | 待办 | T-05 | 功能替换稳定后再做 |
 | T-07 | 每应用模型一一对应：按应用配 `model`/`params` + 网关加路由 | 已完成 | — | 映射全定：Doubao 旧系列→`doubao-seed-2-0-lite-260428`、R1→`deepseek-v4.1-flash-1017`；gps-ai test 加 2 条路由（37268/37270）；prod 路由已提工单 5546/5547 |
-| T-08 | 退费 10 个应用的提示词从 Dify 迁到 student-data `prompt_config` | 进行中 | — | **test 6 条已迁**（core_prompt 换成 Dify 提示词，见 [`verify.md`](verify.md#退费提示词迁移test2026-10-27)）；prod 10 个待迁 |
-| T-09 | prod 应用（Apollo/路由/提示词）推进 | 待办 | T-08 | **暂缓**，先把 test 弄好；prod Apollo 新 key 已发但暂不生效 |
-| T-10 | 按应用定返回格式：`params.response_format=json_object` | 进行中 | — | test 已给续班应用配；prod 待推进时补 |
+| T-08 | 退费 10 个应用的提示词从 Dify 迁到 student-data `prompt_config` | 进行中 | — | **test 6 条已迁**（core_prompt 换成 Dify 提示词，见 [`verify.md`](verify.md#退费提示词迁移test2026-10-27)）；**prod 10 个待迁** |
+| T-09 | prod Apollo：补 `params` 并发布 | 待办 | T-08 | 续班(doubao)带 `json_object`；**退费(deepseek)不带**（行为不稳，见 T-10）；prod 新 key 已发但暂不生效 |
+| T-10 | 按应用定返回格式 | 已完成 | — | 结论：续班 doubao 带 `response_format=json_object`；**退费 deepseek 一律不带**（NPS/课程体验同模型行为不一致） |
+| T-11 | prod 退费 10 个提示词迁移 | 待办 | — | 同 test 方法（`updatePromptConfig`，回传原 `afterProcessorPromptConfig`） |
+| T-12 | prod 路由工单 5546/5547 审批通过 | 待办 | — | gps-ai prod 加 `doubao-seed-2-0-lite-260428`、`deepseek-v4.1-flash-1017` |
+| T-13 | prod 代码发布 | 待办 | T-09,T-12 | 合 release / 发版；发布后按应用逐个 `compare` 复验 |
+| T-14 | 迁移表 tab 状态同步（prod） | 待办 | T-13 | 表链接见 [`links.md`](links.md) |
 
 ## R- 反讲整改项
 

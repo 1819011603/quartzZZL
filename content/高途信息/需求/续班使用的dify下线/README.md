@@ -81,7 +81,7 @@ test 环境对应应用见 [`verify.md`](verify.md)。
 | | |
 |---|---|
 | 阶段 | 开发中 |
-| 进度 | T 5/10 · R 0/0 · C 0/0 |
+| 进度 | T 6/14 · R 0/0 · C 0/0 |
 | 部署泳道 | `student-data=test-gtbg-dev-1`（流水线 1316286） |
 | 当前卡点 | 退费 10 个应用的**提示词在 Dify**（student-data `prompt_config.core_prompt` 只是「退费根因分析」这类标签），只改 Apollo 切网关会丢提示词 → 需先把 Dify 提示词搬进 student-data（续班 7 个提示词在 student-data，可直接切） |
 | 最近更新 | 2026-10-27：**test 全验通过**——续班 5 + 退费 6（退费提示词已迁入 `core_prompt`），逐应用 Dify vs 网关对比见 [`verify.md`](verify.md#逐应用对比结果test2026-10-27)；退费NPS 不带 `params`（纯文本）；MR `!1796` |
