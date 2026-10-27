@@ -19,7 +19,7 @@ tags: [需求, 任务]
 | T-06 | 代码切换：收口 / 移除 Dify 路径 | 待办 | T-05 | 功能替换稳定后再做 |
 | T-07 | 每应用模型一一对应：按应用配 `model`/`params` + 网关加路由 | 已完成 | — | 映射全定：Doubao 旧系列→`doubao-seed-2-0-lite-260428`、R1→`deepseek-v4.1-flash-1017`；gps-ai test 加 2 条路由（37268/37270）；prod 路由已提工单 5546/5547 |
 | T-08 | 退费 10 个应用的提示词从 Dify 迁到 student-data | 进行中 | — | 方式改为写 **`prompt_config.gateway_core_prompt`**（新增列，仅新链路用；`core_prompt` 保持原标签）；**test 5 条已迁**（见 [`verify.md`](verify.md#退费提示词迁移test2026-10-27)）；prod 待迁 |
-| T-09 | prod Apollo：补 `params` 并发布 | 待办 | T-11 | 续班(doubao)带 `json_object`；**退费(deepseek)不带**；退费 model 用 `deepseek-flash`；prod 新 key 已发但暂不生效 |
+| T-09 | prod Apollo：补 `params` 并发布 | 待办 | T-13 | **prod 现置空 `{}`（全走老链路）**；**代码上线后**再发正式配置（15 应用，退费 `deepseek-flash` + 各应用 params） |
 | T-10 | 按应用定返回格式 | 已完成 | — | 结论：续班 doubao 带 `response_format=json_object`；**退费 deepseek 一律不带**（NPS/课程体验同模型行为不一致） |
 | T-11 | prod：`prompt_config` 加 `gateway_core_prompt` 列 + 迁移退费提示词 | 待办 | — | 先提 DDL 工单加列；再写入 10 条退费应用的 gateway 提示词 |
 | T-12 | prod 路由工单审批（gps-ai） | 待办 | — | 需 `doubao-seed-2-0-lite-260428`、**`deepseek-flash`**（替换已提的 5547 用 v4.1-1017） |

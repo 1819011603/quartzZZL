@@ -38,6 +38,9 @@ tags: [需求, 日志]
 - 访问覆盖去掉 `prompt` 字段；`AiApplicationExecutor` 在 `platformType==2` 时读 `gatewayCorePrompt` 覆盖 system 提示词
 - 查网关映射：**在控制面**（`tech.baijia.com/llm-gateway/admin/config/all?env=`，字段 `redirectToModelCode`；repo `aitech/litellm`），**不是仓库写死**——旧模型已被自动重定向（0731/R1→`deepseek-flash`；Doubao-1.5/1.6→`doubao-seed-2-0-lite-260428`）
 - 退费模型**改为 `deepseek-flash`**（= 官方接管值，取代 `deepseek-v4.1-flash-1017`；两者同为 v4.1 但部署不同）；test 已改并复验（event `litellm_proxy/deepseek-v4.1-flash`）
+- **消息结构对齐 Dify 试过、无收益、已回退**（同一应用相似度 0.37/0.55 落在简单结构 0.53 的噪声内）→ 剩余差异主要来自模型随机性+措辞
+- **隐藏能力扫描**：全部应用 `tools` 为空、`gt_configs`/敏感词/注释 均关；**唯一功能性隐藏依赖=知识库(dataset)**，仅「生成沟通建议」2 个（已保留 Dify）与【废弃】降退费
+- **prod Apollo 置空 `{}` 并发布**（线上全走老链路 Dify）；正式配置（15 应用）等**代码上线后再发**
 
 ### 👤 我
 

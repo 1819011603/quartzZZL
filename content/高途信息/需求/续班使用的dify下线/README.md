@@ -84,7 +84,7 @@ test 环境对应应用见 [`verify.md`](verify.md)。
 | 进度 | T 6/14 · R 0/0 · C 0/0 |
 | 部署泳道 | `student-data=test-gtbg-dev-1`（流水线 1316286） |
 | 当前卡点 | 退费 10 个应用的**提示词在 Dify**（student-data `prompt_config.core_prompt` 只是「退费根因分析」这类标签），只改 Apollo 切网关会丢提示词 → 需先把 Dify 提示词搬进 student-data（续班 7 个提示词在 student-data，可直接切） |
-| 最近更新 | 2026-10-28：退费模型**改为 `deepseek-flash`**（= 网关控制面 `redirectToModelCode` 官方接管值；取代 `deepseek-v4.1-flash-1017`），test 已改并复验通过（网关 event `litellm_proxy/deepseek-v4.1-flash`）；映射表见 [`artifacts/llm-gateway-model-mapping.md`](artifacts/llm-gateway-model-mapping.md) |
+| 最近更新 | 2026-10-28：**prod Apollo 置空 `{}`（线上全走老链路 Dify）**，等代码上线后再发正式配置（15 应用）；test 消息结构对齐试后无收益**已回退**；隐藏能力扫描：**除知识库外无其它**；退费模型统一 `deepseek-flash` |
 
 ## 下一步
 

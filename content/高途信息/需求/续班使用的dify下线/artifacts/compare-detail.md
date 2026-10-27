@@ -106,3 +106,10 @@ traceId `9e84dced-3614-499e-80b7-b1fb0bb0ca4d.0.3`（退费根因分析）：
 - 退费NPS/课程体验（旧 R1）：`{"stop": []}`
 - 用户画像/沟通摘要、服务SOP（doubao）：`{"stop": []}`
 - 素养服务建议（工作流）：`{"temperature": 0.7, "enable_thinking": true}`
+### 更正 / 结论（2026-10-28）
+- **「agent 机制(function_call/tools)不同」不成立**：扫描全部应用 `agent_mode.tools` **全为空**、`datasets` 仅 3 个（见下），没配就是空。收回该差异项。
+- **隐藏能力扫描**（除知识库外无其它）：
+  - `tools`=空；敏感词/注释/more_like_this/`gt_configs`=关；`completion_prompt_config` 对 agent-chat 不生效；`文件上传` enabled 但我们不传文件。
+  - **`DATASET`(知识库) 仅 3 个**：【废弃】降退费服务建议、问题建议-素养、问题建议-高中（后两个=已保留的「生成沟通建议」；前者废弃态）。
+- **消息结构对齐 Dify：试过、无收益、已回退**。同一应用相似度 0.37/0.55（两次）落在简单结构 0.53 的噪声区间内 → 剩余差异主要来自**模型随机性 + 措辞**，不是结构。
+- **可补齐的参数已补齐**（`completion_params`：`enable_thinking`/`stop`/`temperature`，配在 Apollo 按应用区分）→ 退费根因相似度 0.228→0.531、用户画像 0.36→0.598。
