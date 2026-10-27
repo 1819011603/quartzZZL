@@ -29,6 +29,9 @@ tags: [需求, 日志]
 - 模型替换以官方【模型下线通知】（火山引擎 2026-09-21）为准：`Doubao-1.5-Pro-32K`/`Doubao-Seed-1.6` → `doubao-seed-2-0-lite-260428`；`DeepSeek-R1-250528`（精品班 3 应用）通知未覆盖，**待定**
 - R1/V3 下线通知（建议替换 DeepSeek-V4-Flash）→ 具体采用 `deepseek-v4.1-flash-1017`；gps-ai test 加该路由（id 37270）。至此替换映射**全部确定**
 - 退费整条线**统一**迁到 `deepseek-v4.1-flash-1017`（原用 `deepseek-v4-flash-0731` 的素养学部也一并改）——替代「素养用 0731、精品班用 v4.1」的旧口径
+- 退费提示词迁移方式定为**原地更新 `prompt_config.core_prompt`**（`updatePromptConfig`，存历史版本、`auto_use_current_version=1` 即生效）；**必须回传原 `afterProcessorPromptConfig`**（「结果JSON格式(...);敏感词过滤」）否则被清空
+- 副作用已接受：`core_prompt` 新旧链路共用，过渡期 Dify 侧会看到两份指令；test 直接改，prod 待定「同步切 or 随代码切换」
+- 逐应用验证在 test 全通（续班 5 + 退费 6）；`退费NPS` 输出为纯文本、**不带 `params`**（该模型对 `json_object` 返 400）——即「返回格式按应用定」的实例
 
 ### 👤 我
 

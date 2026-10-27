@@ -46,11 +46,9 @@ tags: [需求, 验证]
 
 - 证据：`select a.name, p.core_prompt from ai_application a join prompt_config p on p.number=a.prompt_config_number` → 退费类 `core_prompt` 仅为标签；`RefundReasonServiceImpl` 内有注释 `// todo: few-shot write in system prompt`（说明 system prompt 本就在 Dify）。
 
-## 判定是否走了新链路（不看库，看留痕）
+## 判定是否走了新链路
 
-- `ees_data.ai_application_call_task` / `ai_application_call_task_result`：按 `ai_application_number` 看本次调用的平台与响应。
-- 走 Dify：响应 `event=message` + UUID message_id；走网关：`event=litellm_proxy/...`、message_id 形如 `chatcmpl-...`。
-- 服务端日志按 traceId 定位（`qingzhou-observe`）。
+- 响应 `event`：Dify=`message`+UUID message_id；网关=`litellm_proxy/...`+`chatcmpl-...`。看 `ees_data.ai_application_call_task_result` 或服务端日志按 traceId。
 
 ## Apollo 开关
 
@@ -108,6 +106,21 @@ tags: [需求, 验证]
   - 网关：`event=litellm_proxy/doubao-seed-2.0-lite`，answer 为**纯 JSON**（`response_format` 生效）
   - 两侧语义一致
 
+## 退费提示词迁移（test，2026-10-27）
+
+把 Dify 的提示词写回 student-data `prompt_config.core_prompt`（走 `PromptConfigController#updatePromptConfig`，会存历史版本；**必须回传原 `afterProcessorPromptConfig`**，否则被清空）：
+
+| 应用 | pc_num | 来源（artifacts） | core_prompt 长度 | 新 versionName |
+|-|-|-|-|-|
+| 退费根因分析 | 255746898733840384 | 精品退费根因.pre_prompt | 2254 | 1.0.4-dify迁移 |
+| 退费旅程分析 | 255732761706379264 | 精品退费旅程.pre_prompt | 2482 | 1.0.0-dify迁移 |
+| 退费课程体验分析 | 261248376600798208 | 精品课程体验.pre_prompt | 2381 | 退费课程体验分析提示词1.0.0-dify迁移 |
+| 退费NPS分析 | 255746467812096000 | 精品课程NPS.pre_prompt | 473 | 1.0.1-dify迁移 |
+| 服务建议（素养+降退费共用 pc） | 255746685990352896 | 素养降退费工作流.nodes | 1412 | 1.0.2-dify迁移 |
+
+- 关联 `ai_application.auto_use_current_version=1` → 改完即生效，无需改引用。
+- ⚠️ `素养服务建议`/`降退费服务建议`（test）共用 `prompt_config 255746685990352896`，改一次两条都变（取工作流提示词）；过渡期 Dify 侧会看到两份指令（自身 pre_prompt + 拼进去的），属冗余不坏。
+
 ## 逐应用对比结果（test，2026-10-27）
 
 方法：`compareAiApplication(app名, "", "test", {clazzNumber,userId})`，同输入串行跑 Dify vs 网关。
@@ -119,10 +132,15 @@ tags: [需求, 验证]
 | 服务SOP分析 | `message`（含 think） | `doubao-seed-2.0-lite`、纯 JSON | 一致 |
 | 生成沟通建议-高中 | `message`（含 think） | `doubao-seed-2.0-lite`、纯 JSON（调课咨询话术） | 一致 |
 | 预测分层原因 | `message`「暂无分析原因」 | `doubao-seed-2.0-lite`「暂无分析原因」 | 一致 |
-| 问题建议-素养-豆包 | — | — | test 无对应 ai_application（待查 app 名） |
-| 退费类 6 个 | — | — | 待提示词迁移后再验 |
+| 问题建议-素养-豆包 | — | — | test 无对应 ai_application（未验） |
+| 退费根因分析 | `message`（含 think） | `deepseek-flash`、纯 JSON（`directReason`/`rationales`） | 一致 |
+| 退费旅程分析 | `message`（含 think） | `deepseek-flash`、纯 JSON（`tutoringSummary`） | 一致 |
+| 退费课程体验分析 | `message`（含 think） | `deepseek-flash`、纯 JSON（`courseExperienceSummary`） | 一致 |
+| 退费NPS分析 | `message`（文本） | `deepseek-flash`、文本（`本班级/其他班级分析`） | 一致；**该应用不带 `params`**（纯文本，`json_object` 会 400） |
+| 素养服务建议 | `message`（含 think） | `deepseek-flash`、纯 JSON（`suggestion`） | 一致 |
+| 降退费服务建议 | `message`（含 think） | `deepseek-flash`、纯 JSON（`suggestion`） | 一致 |
 
-> 触发口径：桥调 `AiApplicationTestServiceImpl#compareAiApplication`；`aiApplicationName` 要传 **ai_application 名**（如「生成沟通建议-高中」），不是 agent 名。样本 clazz `500775385189890048` / user `7404351741`。
+> 触发口径：桥调 `AiApplicationTestServiceImpl#compareAiApplication`；`aiApplicationName` 要传 **ai_application 名**（如「生成沟通建议-高中」）。续班样本 clazz `500775385189890048` / user `7404351741`；退费类把 **mock 退费内容当 `userQuery`** 传（数据走 userQuery）。
 
 ## Dify 控制台/服务 API（查应用与模型）
 
