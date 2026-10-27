@@ -84,7 +84,7 @@ test 环境对应应用见 [`verify.md`](verify.md)。
 | 进度 | T 6/14 · R 0/0 · C 0/0 |
 | 部署泳道 | `student-data=test-gtbg-dev-1`（流水线 1316286） |
 | 当前卡点 | 退费 10 个应用的**提示词在 Dify**（student-data `prompt_config.core_prompt` 只是「退费根因分析」这类标签），只改 Apollo 切网关会丢提示词 → 需先把 Dify 提示词搬进 student-data（续班 7 个提示词在 student-data，可直接切） |
-| 最近更新 | 2026-10-27：**`生成沟通建议-高中/素养` 本期保留 Dify**（有知识库/检索，切 LLM 非无损，T-15 取消）；test 已撤这两个的开关回到 Dify；其余 15 个 test 已验证 |
+| 最近更新 | 2026-10-28：退费模型**改为 `deepseek-flash`**（= 网关控制面 `redirectToModelCode` 官方接管值；取代 `deepseek-v4.1-flash-1017`），test 已改并复验通过（网关 event `litellm_proxy/deepseek-v4.1-flash`）；映射表见 [`artifacts/llm-gateway-model-mapping.md`](artifacts/llm-gateway-model-mapping.md) |
 
 ## 下一步
 

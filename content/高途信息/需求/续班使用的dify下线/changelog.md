@@ -36,6 +36,8 @@ tags: [需求, 日志]
 - prod 待办拆开：T-09 prod Apollo 补 params、T-11 prod 退费提示词迁移、T-12 路由工单审批、T-13 prod 发布、T-14 表状态同步
 - **最终采用 `prompt_config.gateway_core_prompt`（新增列）承载新链路提示词**，替代早期「原地改 core_prompt」（会导致 Dify 双指令）与「放 Apollo `prompt`」（Apollo 有值长度限制，27KB 写不进去）。`core_prompt` 保持原样 → 可回退、老链路零变化
 - 访问覆盖去掉 `prompt` 字段；`AiApplicationExecutor` 在 `platformType==2` 时读 `gatewayCorePrompt` 覆盖 system 提示词
+- 查网关映射：**在控制面**（`tech.baijia.com/llm-gateway/admin/config/all?env=`，字段 `redirectToModelCode`；repo `aitech/litellm`），**不是仓库写死**——旧模型已被自动重定向（0731/R1→`deepseek-flash`；Doubao-1.5/1.6→`doubao-seed-2-0-lite-260428`）
+- 退费模型**改为 `deepseek-flash`**（= 官方接管值，取代 `deepseek-v4.1-flash-1017`；两者同为 v4.1 但部署不同）；test 已改并复验（event `litellm_proxy/deepseek-v4.1-flash`）
 
 ### 👤 我
 

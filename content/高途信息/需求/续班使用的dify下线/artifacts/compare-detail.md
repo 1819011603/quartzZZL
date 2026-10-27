@@ -49,3 +49,60 @@ traceId `9e84dced-3614-499e-80b7-b1fb0bb0ca4d.0.3`（退费根因分析）：
 1. 固定一批样本（含边界：未开课/无数据/多原因）；
 2. 只对**枚举/分类字段**（`problemTypeName`/`strategy`/`category`/`reasonJudgeType`/`score`）定命中率门槛（如语义一致 ≥80%）；
 3. 文案类字段接受措辞差异，只校验「非空 + 结构合法 + 关键约束（字数/占位符）」。
+
+## 5. 线上真实案例对比（prod Dify vs 网关）
+
+用**线上真实调用**同输入对比（消除 test 数据差异）：
+
+- 案例：`entry_key` 尾 `...-v5`（学员 `7650003008`，班级 `545548561373222912`，辅导班 `35873565594092032`），prod `ai_application_call_task_result.id=75006117`。
+- 做法：取该行 `actual_query`（发给 Dify 的输入）+ `result`（Dify 答案）；用**同一输入**打网关（test-llm，`deepseek-v4.1-flash-1017`），对比。
+
+| | 线上 Dify（deepseek-v4-flash-0731） | 网关（deepseek-v4.1-flash-1017） |
+|-|-|-|
+| 条数 | 6 | 5 |
+| 分类 | 400-2、300-3、200-2、500-1、800-1、700-5 | 300-3、400-2、500-1、400-3、200-2 |
+| 核心原因 | 400-2、300-3（是） | 300-3、400-2（是） |
+
+- **交集**：`200-2 / 300-3 / 400-2 / 500-1`（4 个）
+- 线上独有：`700-5 / 800-1`；网关独有：`400-3`
+- **核心原因一致**；边缘原因随模型不同小幅漂移。
+- 复现脚本：`/tmp/cmp_prod.py`（prod 数据先落盘 `/tmp/prod_rows_clean.json`）。
+
+**结论**：线上案例的核心退费原因对得上；分类集合有 1-2 条漂移，需业务确认可接受。
+
+## 6. Dify（源）与我们直连网关的**代码级差异**（模型同名后仍低相似度的原因）
+
+对同一模型（如退费 `deepseek`），Dify 与我们的调用仍有以下差别（源码 `api/core/agent/*`）：
+
+| 差异点 | Dify 做法 | 我们的做法 |
+|-|-|-|
+| **模型参数** | 用应用配置的 `model_config.model.completion_params` 下发，如退费应用设了 **`enable_thinking: true`**、`stop: []`（`fc_agent_runner` → `invoke_llm(model_parameters=app_config.model_conf.parameters)`） | 只传 `model` + `max_tokens`，其余走网关默认 → **thinking 等参数不同** |
+| **消息结构** | `_organize_prompt_messages` = `[system(pre_prompt)]` + `[user(我们发去的整段 flat prompt 文本)]` | `[system(gateway_core_prompt+JSON要求)]` + `[user(数据)]` |
+| **agent 机制** | agent-chat + `function_call`，传 `tools`（即使空数组）、可 `max_iteration` 多轮 | 单次调用、不传 tools |
+| **max_tokens** | `recalc_llm_max_tokens` 按上下文动态算 | 固定 8192 |
+| **后处理** | `sensitive_word_avoidance` / moderation / annotation_reply 等开关 | 无（这些开关在部分应用是关的） |
+
+> 最直接、可对齐的一项：**`completion_params`**（尤其 deepseek 的 `enable_thinking`）。在 Apollo override 的 `params` 里比照 Dify 应用的同名字段下发，相似度会显著提升。
+
+### 已对齐的参数（配在 Apollo `ai.agent.accessor.override.map[].params`，按应用区分）
+| 应用 | params |
+|-|-|
+| 用户画像/沟通摘要、服务SOP分析、预测分层原因 | `{"response_format":{"type":"json_object"},"stop":[]}` |
+| 退费根因 / 退费旅程 / 降退费服务建议 | `{"enable_thinking":true,"stop":[]}` |
+| 退费NPS / 退费课程体验 | `{"stop":[]}` |
+| 素养服务建议 | `{"temperature":0.7,"enable_thinking":true}` |
+
+### 对齐后相似度（test，同上输入）
+| 应用 | 对齐前 | 对齐后 |
+|-|-|-|
+| 退费根因分析 | 0.228 | **0.531** |
+| 用户画像-test | 0.36 | **0.598** |
+| 服务SOP分析 | — | 0.246（长列表，条目措辞散，结构对齐即可） |
+
+> 仍存的差异：**消息结构**（Dify `user`=我们发的整段 flat prompt/嵌套 JSON；我们 `user`=纯数据）、**agent 机制**（function_call/tools/多轮）、**动态 max_tokens**、LLM 随机性。列表型应用相似度天然偏低。
+
+### 可核对项（各应用 Dify 的 completion_params）
+- 退费根因/旅程/降退费（deepseek）：`{"enable_thinking": true, "stop": []}`
+- 退费NPS/课程体验（旧 R1）：`{"stop": []}`
+- 用户画像/沟通摘要、服务SOP（doubao）：`{"stop": []}`
+- 素养服务建议（工作流）：`{"temperature": 0.7, "enable_thinking": true}`

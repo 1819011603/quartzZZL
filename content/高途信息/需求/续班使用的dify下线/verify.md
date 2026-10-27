@@ -202,9 +202,9 @@ tags: [需求, 验证]
 | 用户画像 / 沟通摘要 / 问题建议-高中 / 服务SOP分析 | doubao-seed-2-0-lite-260428 | doubao-seed-2-0-lite-260428（不变） |
 | 问题建议-素养 | doubao/Doubao-Seed-1-6 | doubao-seed-2-0-lite-260428（映射） |
 | 续班分层原因分析-素养 / -高中 | doubao/Doubao-1-5-pro-32k | doubao-seed-2-0-lite-260428（映射） |
-| 退费全部 10 个（根因/NPS/旅程/课程体验/降退费，素养+精品班） | deepseek-v4-flash-0731 或 deepseek/DeepSeek-R1-250528 | **`deepseek-v4.1-flash-1017`**（统一） |
+| 退费全部 10 个（根因/NPS/旅程/课程体验/降退费，素养+精品班） | deepseek-v4-flash-0731 或 deepseek/DeepSeek-R1-250528 | **`deepseek-flash`**（统一，= 网关官方接管值） |
 
-> 退费整条线统一迁到 `deepseek-v4.1-flash-1017`（含原用 `deepseek-v4-flash-0731` 的素养学部与用 R1 的精品班学部）。R1/V3 下线通知建议 DeepSeek-V4-Flash，具体采用 `deepseek-v4.1-flash-1017`。
+> 退费整条线统一迁到 **`deepseek-flash`**（DeepSeek-V4.1-Flash，网关 `redirectToModelCode` 的官方接管目标）；取代早期选的 `deepseek-v4.1-flash-1017`（同为 v4.1，但部署不同）。见 [`artifacts/llm-gateway-model-mapping.md`](artifacts/llm-gateway-model-mapping.md)。
 
 - gps-ai **原有**：`deepseek-v4-flash-0731`（id 24983）。
 - gps-ai **test 已新增**：`doubao-seed-2-0-lite-260428`（id 37268）、`deepseek-v4.1-flash-1017`（id 37270），均 `callerRoute/save`、`env=test`。
