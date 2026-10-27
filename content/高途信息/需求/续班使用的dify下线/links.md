@@ -28,6 +28,7 @@ tags: [需求, 链接]
 | 类型 | 标题 | 链接 | 记录日期 |
 |---|---|---|---|
 | 提示词归档 | 退费 10 个 Dify 提示词（迁移用） | `artifacts/dify-refund-prompts/` | 2026-10-27 |
+| 对比明细 | 逐应用 Dify vs 网关 字段级对比 | [`artifacts/compare-detail.md`](artifacts/compare-detail.md) | 2026-10-27 |
 | 迁移表 | 续班退费Dify下线（sheet 新建 tab） | https://gaotuedu.feishu.cn/sheets/T9lhsNwL4hzovStIDVDcyy8znRf?sheet=Fn06qE | 2026-10-27 |
 | MR | student-data !1796（feature-xuban-dify-offline → release） | https://git.baijia.com/gaotu/yunying_workbench/student-data/-/merge_requests/1796 | 2026-10-27 |
 | 接口文档 | — | — | 2026-10-27 |

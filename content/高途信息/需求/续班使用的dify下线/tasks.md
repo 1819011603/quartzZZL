@@ -15,7 +15,7 @@ tags: [需求, 任务]
 | T-02 | 定切换粒度与测试环境首个试点应用 | 已完成 | — | 粒度 `ai_agent`；试点 `用户画像/沟通摘要-test`(255107338300556288)；复用 `LlmGatewayAccessor` |
 | T-03 | Apollo 新增按应用链路开关并落地（命中走 LLM 网关 `gps-ai`） | 已完成 | — | 现为 `ai.agent.accessor.override.map`（`{name,platformType,model,params}`）+ `AiApplicationExecutor` 接入（commit `f0c58aaf`）；TEST Apollo 已发布 |
 | T-04 | 测试环境切一个试点应用并验证功能 | 已完成 | — | 试点 `沟通摘要-test`：开关开=网关/关=Dify、模型=按应用指定、`params` 生效，均实测通过 |
-| T-05 | 全量切换剩余续班 + 退费 Dify 应用并逐个验证 | 进行中 | — | **test 全验**：续班 5（用户画像/沟通摘要/服务SOP/生成沟通建议-高中/预测分层原因）+ 退费 6（根因/旅程/课程体验/NPS/素养服务建议/降退费服务建议）全通；问题建议-素养 test 无 app 未验；prod 17 待发 |
+| T-05 | 全量切换剩余续班 + 退费 Dify 应用并逐个验证 | 进行中 | — | **test 17 全验完**（续班 7 经 6 个 test app + 退费 10 经 6 个 test app；问题建议-素养已新建 test app 后验）；prod 待发 |
 | T-06 | 代码切换：收口 / 移除 Dify 路径 | 待办 | T-05 | 功能替换稳定后再做 |
 | T-07 | 每应用模型一一对应：按应用配 `model`/`params` + 网关加路由 | 已完成 | — | 映射全定：Doubao 旧系列→`doubao-seed-2-0-lite-260428`、R1→`deepseek-v4.1-flash-1017`；gps-ai test 加 2 条路由（37268/37270）；prod 路由已提工单 5546/5547 |
 | T-08 | 退费 10 个应用的提示词从 Dify 迁到 student-data | 进行中 | — | 方式改为写 **`prompt_config.gateway_core_prompt`**（新增列，仅新链路用；`core_prompt` 保持原标签）；**test 5 条已迁**（见 [`verify.md`](verify.md#退费提示词迁移test2026-10-27)）；prod 待迁 |

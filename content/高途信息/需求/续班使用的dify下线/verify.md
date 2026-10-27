@@ -132,7 +132,7 @@ tags: [需求, 验证]
 | 服务SOP分析 | `message`（含 think） | `doubao-seed-2.0-lite`、纯 JSON | 一致 |
 | 生成沟通建议-高中 | `message`（含 think） | `doubao-seed-2.0-lite`、纯 JSON（调课咨询话术） | 一致 |
 | 预测分层原因 | `message`「暂无分析原因」 | `doubao-seed-2.0-lite`「暂无分析原因」 | 一致 |
-| 问题建议-素养-豆包 | — | — | test 无对应 ai_application（未验） |
+| 问题建议-素养（app：生成沟通建议-素养） | `message`（含 think） | `doubao-seed-2.0-lite`、纯 JSON（调课咨询话术） | 一致；test 原无此 app，**已新建后再验** |
 | 退费根因分析 | `message`（含 think） | `deepseek-flash`、纯 JSON（`directReason`/`rationales`） | 一致 |
 | 退费旅程分析 | `message`（含 think） | `deepseek-flash`、纯 JSON（`tutoringSummary`） | 一致 |
 | 退费课程体验分析 | `message`（含 think） | `deepseek-flash`、纯 JSON（`courseExperienceSummary`） | 一致 |
