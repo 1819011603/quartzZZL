@@ -42,13 +42,9 @@ tags: [需求, 验证]
 |-|-|-|
 | 用户画像 / 沟通摘要 / 服务SOP分析 / 问题建议-高中 / 问题建议-素养 | 535 ~ 4239 | **student-data**（可直接切） |
 | 续班分层原因分析-高中 / -素养 | 7489 | **student-data**（可直接切） |
-| 退费根因/NPS/旅程/课程体验/降退费（素养+精品班，10 个） | 18 ~ 30（只是「退费根因分析」这类标签） | **Dify**（切前须把提示词搬进 student-data） |
+| 退费根因/NPS/旅程/课程体验/降退费（素养+精品班，10 个） | 18 ~ 30（只是「退费根因分析」这类标签） | **Dify**（迁到 `gateway_core_prompt`，仅新链路用） |
 
 - 证据：`select a.name, p.core_prompt from ai_application a join prompt_config p on p.number=a.prompt_config_number` → 退费类 `core_prompt` 仅为标签；`RefundReasonServiceImpl` 内有注释 `// todo: few-shot write in system prompt`（说明 system prompt 本就在 Dify）。
-
-## 判定是否走了新链路
-
-- 响应 `event`：Dify=`message`+UUID message_id；网关=`litellm_proxy/...`+`chatcmpl-...`。看 `ees_data.ai_application_call_task_result` 或服务端日志按 traceId。
 
 ## Apollo 开关
 
@@ -108,18 +104,22 @@ tags: [需求, 验证]
 
 ## 退费提示词迁移（test，2026-10-27）
 
-把 Dify 的提示词写回 student-data `prompt_config.core_prompt`（走 `PromptConfigController#updatePromptConfig`，会存历史版本；**必须回传原 `afterProcessorPromptConfig`**，否则被清空）：
+**新链路提示词存 `prompt_config.gateway_core_prompt`（新增列，仅 `platform_type=2` 时用作 system 提示词）；`core_prompt` 保持原标签不动** → 切回 Dify 老链路零变化，满足「可回退」。**不再放 Apollo**（Apollo 有值长度限制）。
 
-| 应用 | pc_num | 来源（artifacts） | core_prompt 长度 | 新 versionName |
-|-|-|-|-|-|
-| 退费根因分析 | 255746898733840384 | 精品退费根因.pre_prompt | 2254 | 1.0.4-dify迁移 |
-| 退费旅程分析 | 255732761706379264 | 精品退费旅程.pre_prompt | 2482 | 1.0.0-dify迁移 |
-| 退费课程体验分析 | 261248376600798208 | 精品课程体验.pre_prompt | 2381 | 退费课程体验分析提示词1.0.0-dify迁移 |
-| 退费NPS分析 | 255746467812096000 | 精品课程NPS.pre_prompt | 473 | 1.0.1-dify迁移 |
-| 服务建议（素养+降退费共用 pc） | 255746685990352896 | 素养降退费工作流.nodes | 1412 | 1.0.2-dify迁移 |
+- DDL（test 直连 `gaotu_test_rw`）：`ALTER TABLE prompt_config ADD COLUMN gateway_core_prompt text NULL ... AFTER core_prompt`
+- 代码：`AiApplicationExecutor` 在 `platformType==2` 时用 `gatewayCorePrompt` 覆盖 system 提示词（`DynamicPromptGenerator#buildSystemPrompt` 支持覆盖）
+- 5 条 pc 数据（`core_prompt`=原标签；`gateway_core_prompt`=提示词）：
 
-- 关联 `ai_application.auto_use_current_version=1` → 改完即生效，无需改引用。
-- ⚠️ `素养服务建议`/`降退费服务建议`（test）共用 `prompt_config 255746685990352896`，改一次两条都变（取工作流提示词）；过渡期 Dify 侧会看到两份指令（自身 pre_prompt + 拼进去的），属冗余不坏。
+| 应用 | pc_num | gateway_core_prompt 来源 | 长度 |
+|-|-|-|-|
+| 退费根因分析 | 255746898733840384 | 精品退费根因.pre_prompt | 2254 |
+| 退费旅程分析 | 255732761706379264 | 精品退费旅程.pre_prompt | 2482 |
+| 退费课程体验分析 | 261248376600798208 | 精品课程体验.pre_prompt | 2381 |
+| 退费NPS分析 | 255746467812096000 | 精品课程NPS.pre_prompt | 473 |
+| 服务建议（素养+降退费共用 pc） | 255746685990352896 | 素养降退费工作流.nodes | 1412 |
+
+- ⚠️ `素养服务建议`/`降退费服务建议`（test）共用 `prompt_config 255746685990352896`，gateway 提示词取工作流版。
+- prod 需走 DDL 工单加该列。
 
 ## 逐应用对比结果（test，2026-10-27）
 
