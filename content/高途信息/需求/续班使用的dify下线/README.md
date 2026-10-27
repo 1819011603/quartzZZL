@@ -30,7 +30,7 @@ tags: [需求]
   （复用已上线的 `LlmGatewayAccessor`，`platform_type=2`），未命中原样走 Dify；每个应用可单独切、可单独回滚。
 - **判定做完的标准**：每个目标应用都能经 Apollo 独立切到新链路且功能正常；全量切换并稳定后，
   代码移除 Dify 路径（代码切换阶段）。
-- **明确不做**：本期不迁与 AI 无关的链路；`我家子涵最近学的怎么样` 归属待定，暂不纳入。
+- **明确不做**：本期不迁与 AI 无关的链路；`我家子涵最近学的怎么样` 归属待定，暂不纳入；**`生成沟通建议-高中/素养` 有知识库（Dify dataset 检索），切 LLM 非无损，本期保留 Dify、不迁**。
 
 ## 已定共识
 
@@ -84,7 +84,7 @@ test 环境对应应用见 [`verify.md`](verify.md)。
 | 进度 | T 6/14 · R 0/0 · C 0/0 |
 | 部署泳道 | `student-data=test-gtbg-dev-1`（流水线 1316286） |
 | 当前卡点 | 退费 10 个应用的**提示词在 Dify**（student-data `prompt_config.core_prompt` 只是「退费根因分析」这类标签），只改 Apollo 切网关会丢提示词 → 需先把 Dify 提示词搬进 student-data（续班 7 个提示词在 student-data，可直接切） |
-| 最近更新 | 2026-10-27：退费提示词改存 **`prompt_config.gateway_core_prompt`**（新列，仅新链路用；`core_prompt` 保持原样 → 可回退、老链路零变化）；test 迁 5 条并全验通过；MR `!1796` |
+| 最近更新 | 2026-10-27：**`生成沟通建议-高中/素养` 本期保留 Dify**（有知识库/检索，切 LLM 非无损，T-15 取消）；test 已撤这两个的开关回到 Dify；其余 15 个 test 已验证 |
 
 ## 下一步
 
