@@ -40,3 +40,5 @@ Git继承：a6978058 → 当前拆除58dcd914 → 新分支独立恢复30e7ccb9�
 ## 503恢复与配置归因
 
 此前dev-1 product-b无实例，先按用户授权发布原镜像；随后发现TEST/default/application的TestProductExemptPredicate.exempt.shopNumbers缺开头“[”导致启动失败。Apollo发布423816（2026-10-24 10:44:55，wangjinfeng03）引入，修复424667（2026-10-26 15:07:14，zhangzeling）仅补“[”，未恢复此前被移走的首店铺ID；本轮没有自行发布该Apollo修复。外部同事重新构建原commit c1b9225e后UP，原configFlag接口已HTTP200/code0。不能归因为本轮拆分代码或用户修改。
+
+
