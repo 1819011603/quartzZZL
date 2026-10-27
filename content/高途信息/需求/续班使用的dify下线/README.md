@@ -81,10 +81,10 @@ test 环境对应应用见 [`verify.md`](verify.md)。
 | | |
 |---|---|
 | 阶段 | 开发中 |
-| 进度 | T 5/7 · R 0/0 · C 0/0 |
+| 进度 | T 5/10 · R 0/0 · C 0/0 |
 | 部署泳道 | `student-data=test-gtbg-dev-1`（流水线 1316286） |
-| 当前卡点 | 无 |
-| 最近更新 | 2026-10-27：模型替换映射**全部确定**（Doubao 旧系列→`doubao-seed-2-0-lite-260428`；退费整条线→`deepseek-v4.1-flash-1017`）；gps-ai test 路由已加 2 条（id 37268/37270）；试点模型+params 实测通过 |
+| 当前卡点 | 退费 10 个应用的**提示词在 Dify**（student-data `prompt_config.core_prompt` 只是「退费根因分析」这类标签），只改 Apollo 切网关会丢提示词 → 需先把 Dify 提示词搬进 student-data（续班 7 个提示词在 student-data，可直接切） |
+| 最近更新 | 2026-10-27：续班 5 个应用 test 逐个 `compare` 通过（用户画像/沟通摘要/服务SOP/生成沟通建议-高中/预测分层原因），见 [`verify.md`](verify.md#逐应用对比结果test2026-10-27)；MR `!1796`；迁移表 tab 建好含 MR 可点链接 |
 
 ## 下一步
 
@@ -94,6 +94,7 @@ test 环境对应应用见 [`verify.md`](verify.md)。
 
 ## 待确认
 
+- [ ] 退费 10 个应用的处理：先把 Dify 提示词迁进 student-data `prompt_config`，还是本期先只切续班 7 个？—— 等确认
 - [ ] 「功能替换稳定」的观察窗口与放量节奏（全量一次性还是分批）
 
 ## 涉及的代码

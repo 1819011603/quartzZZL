@@ -33,6 +33,8 @@ tags: [需求, 日志]
 ### 👤 我
 
 - 给出技术项表链接 `https://gaotuedu.feishu.cn/sheets/LvFhsGY7UhTjbWtO7r9c6nkCnbS`（第 10 行）
+- 给出迁移表 `https://gaotuedu.feishu.cn/sheets/T9lhsNwL4hzovStIDVDcyy8znRf`，要求新建 tab 并按其他 tab 格式（日期/服务/分支/MR 置前）
 - 给出 AI 应用平台链接 `https://os.baijia.com/apps`
 - 明确：用 LLM 替换，都用 `https://ai.baijia.com/ai-service/access`、`gps-ai` 这个场景
 - 确认：粒度用 `ai_agent`；试点用 `用户画像/沟通摘要-test`；复用现有 `LlmGatewayAccessor`；退费也在范围
+- 确认：prod 用官方替换映射；`deepseek-v4-flash-0731` 也统一换成 `deepseek-v4.1-flash-1017`；先弄 test、prod 先别写；17 个迁完都要验证（可 mock）

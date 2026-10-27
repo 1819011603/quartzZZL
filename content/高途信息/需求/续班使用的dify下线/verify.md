@@ -34,6 +34,18 @@ tags: [需求, 验证]
 
 新链路对照：`LLM网关-claude-sonnet-5`（prod 288169334962948096 / test 286798016992532480，`platform_type=2`）。
 
+## 提示词归属（重要）
+
+切网关后提示词由 `DynamicPromptGenerator` 从 student-data 的 `prompt_config.core_prompt` 拼装下发。**提示词不在 student-data 的应用，只改 Apollo 会丢提示词、行为不对。**
+
+| 应用 | core_prompt 长度 | 提示词在哪 |
+|-|-|-|
+| 用户画像 / 沟通摘要 / 服务SOP分析 / 问题建议-高中 / 问题建议-素养 | 535 ~ 4239 | **student-data**（可直接切） |
+| 续班分层原因分析-高中 / -素养 | 7489 | **student-data**（可直接切） |
+| 退费根因/NPS/旅程/课程体验/降退费（素养+精品班，10 个） | 18 ~ 30（只是「退费根因分析」这类标签） | **Dify**（切前须把提示词搬进 student-data） |
+
+- 证据：`select a.name, p.core_prompt from ai_application a join prompt_config p on p.number=a.prompt_config_number` → 退费类 `core_prompt` 仅为标签；`RefundReasonServiceImpl` 内有注释 `// todo: few-shot write in system prompt`（说明 system prompt 本就在 Dify）。
+
 ## 判定是否走了新链路（不看库，看留痕）
 
 - `ees_data.ai_application_call_task` / `ai_application_call_task_result`：按 `ai_application_number` 看本次调用的平台与响应。
@@ -95,6 +107,22 @@ tags: [需求, 验证]
   - Dify：`event=message`，answer 为 ```json 包裹
   - 网关：`event=litellm_proxy/doubao-seed-2.0-lite`，answer 为**纯 JSON**（`response_format` 生效）
   - 两侧语义一致
+
+## 逐应用对比结果（test，2026-10-27）
+
+方法：`compareAiApplication(app名, "", "test", {clazzNumber,userId})`，同输入串行跑 Dify vs 网关。
+
+| 应用（app 名） | Dify | 网关 | 结论 |
+|-|-|-|-|
+| 用户画像-test | `event=message`、```json 包裹 | `litellm_proxy/doubao-seed-2.0-lite`、纯 JSON | 一致 |
+| 沟通摘要-test | `event=message`、```json 包裹 | `doubao-seed-2.0-lite`、纯 JSON | 一致 |
+| 服务SOP分析 | `message`（含 think） | `doubao-seed-2.0-lite`、纯 JSON | 一致 |
+| 生成沟通建议-高中 | `message`（含 think） | `doubao-seed-2.0-lite`、纯 JSON（调课咨询话术） | 一致 |
+| 预测分层原因 | `message`「暂无分析原因」 | `doubao-seed-2.0-lite`「暂无分析原因」 | 一致 |
+| 问题建议-素养-豆包 | — | — | test 无对应 ai_application（待查 app 名） |
+| 退费类 6 个 | — | — | 待提示词迁移后再验 |
+
+> 触发口径：桥调 `AiApplicationTestServiceImpl#compareAiApplication`；`aiApplicationName` 要传 **ai_application 名**（如「生成沟通建议-高中」），不是 agent 名。样本 clazz `500775385189890048` / user `7404351741`。
 
 ## Dify 控制台/服务 API（查应用与模型）
 
