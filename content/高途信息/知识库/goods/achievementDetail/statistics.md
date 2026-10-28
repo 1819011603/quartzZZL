@@ -54,6 +54,7 @@
 
 - 统计数和明细对不上：统计读 ADB（同步延迟），明细读 MySQL `performance_order_attribution_total`，先排除 ADB 延迟
 - 导出没收到邮件：看 `sendMailLimitSwitch` / `sendMailLimitList`（Apollo），以及异步线程异常日志
+- **看不到某人的商品（住宿费等）业绩 / 该人整行不出现**：员工与部门列表派生自**课程业绩 ES 聚合桶**（`total` 宽表，按 `biz_line∈{1,2}` 过滤），商品中心 SKU 判单落 `performance_physical_attribution` 且 `biz_line=0`，不进该聚合 ⇒ 区间内只有商品业绩、无课程业绩的人不会进入列表（回溯补数无效，属取数架构缺口）。见工单案例库 [业绩统计看不到商品业绩](../../../工单/续班与业绩/业绩归因/排查/业绩统计看不到商品业绩.md)
 
 ## 青舟接口详情页
 

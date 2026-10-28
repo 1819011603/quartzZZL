@@ -25,7 +25,7 @@ tags: [需求, 任务]
 | T-12 | prod 路由工单审批（gps-ai） | 待办 | — | 需 `doubao-seed-2-0-lite-260428`、**`deepseek-flash`**（替换已提的 5547 用 v4.1-1017） |
 | T-13 | prod 代码发布 | 待办 | T-09,T-12 | 合 release / 发版；发布后按应用逐个 `compare` 复验 |
 | T-14 | 迁移表 tab 状态同步（prod） | 待办 | T-13 | 表链接见 [`links.md`](links.md) |
-| T-15 | 生成沟通建议-高中/素养：知识库检索替换 | 已取消 | — | **本期不迁，这两个保留 Dify**（有知识库/检索，切 LLM 非无损）。评估见 [`artifacts/dify-kb-eval.md`](artifacts/dify-kb-eval.md)；test 已撤其开关回到 Dify |
+| T-15 | 生成沟通建议-高中/素养：知识库检索替换 | 已取消 | — | **本期不迁，这两个保留 Dify**。原因：Dify 上为 agent-chat+function_call 且**绑定 Dify 知识库(dataset)**，运行时由模型自行检索（向量检索+rerank 回灌），**知识不在提示词里**；而网关是单次 chat completion、**无工具/检索** → 直接切属**有损**。可后续用 Teable 结构化话术复刻（须单独立项）。评估见 [`artifacts/dify-kb-eval.md`](artifacts/dify-kb-eval.md)；test 已撤其开关回到 Dify |
 
 ## R- 反讲整改项
 

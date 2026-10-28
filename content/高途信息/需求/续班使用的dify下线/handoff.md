@@ -9,7 +9,7 @@ tags: [需求, 交接]
 > 详细背景：[`README.md`](README.md) · 逐应用对比 [`artifacts/compare-detail.md`](artifacts/compare-detail.md) · 模型映射 [`artifacts/llm-gateway-model-mapping.md`](artifacts/llm-gateway-model-mapping.md) · 知识库评估 [`artifacts/dify-kb-eval.md`](artifacts/dify-kb-eval.md) · 提示词归档 [`artifacts/dify-refund-prompts/`](artifacts/dify-refund-prompts/)
 
 ## 0. 一句话
-把续班/退费共 **15 个 Dify 应用**（续班 5 + 退费 10）切到公司 LLM 网关（caller `gps-ai`）；用 Apollo `ai.agent.accessor.override.map` 按应用控制，可回退。**2 个有知识库的应用（生成沟通建议-高中/素养）保留 Dify，不迁。**
+把续班/退费共 **15 个 Dify 应用**（续班 5 + 退费 10）切到公司 LLM 网关（caller `gps-ai`）；用 Apollo `ai.agent.accessor.override.map` 按应用控制，可回退。**2 个有知识库的应用（生成沟通建议-高中/素养）保留 Dify，不迁**——原因见第 5 节。
 
 ## 1. 已定结论（不要改）
 - 切换粒度：`ai_agent.number`；开关走 **Apollo `ai.agent.accessor.override.map`**（`{name, platformType:2, model, params}`）。
@@ -88,6 +88,11 @@ curl -sk -x "${AGENT_PROXY_URL:-http://127.0.0.1:8888}" \
 （prod 复验把 host 换 prod、去掉 `traffic-env`）
 
 ## 5. 不在本次范围
-- `生成沟通建议-高中/素养`（有知识库，保留 Dify）
-- `我家子涵最近学的怎么样`（归属待定）
+- **`生成沟通建议-高中`（问题建议-高中 `256918735665808384`）/ `生成沟通建议-素养`（问题建议-素养 `256918818763359232`）——保留 Dify，不迁**。原因（给领导口径）：
+  1. 这两个应用在 Dify 上是 **agent-chat + function_call 且绑定了 Dify 知识库（dataset）**；Dify 把知识库**注册成一个工具**交给模型，**由模型运行时自己发起检索**，Dify 做**向量检索 + rerank**，再把命中的话术片段**回灌**给模型。**知识不在提示词里，而在「运行时检索」这一步**。
+  2. 我们迁移的目标链路（公司 LLM 网关）是**标准单次 chat completion**：只发 `system`（指令）+ `user`（数据），**没有工具/检索能力** → 直接切会**丢掉知识库检索**、答案不再基于话术库，**属有损替换**，不能做。
+  3. 对比其余 15 个应用：无知识库（`tools` 全空、无 dataset），提示词可完整搬到 student-data，**切换无损、已逐个验证结构一致**。差别就在**知识库**。
+  4. **不是完全没法做**：这两个知识库其实是 **Teable 结构化话术表**（高中 ~10.4 万字 / 素养 ~4.8K 字，字段：问题类型/适用课程/标准回复/评分标准…），student-data 已有 `TableApiDataHolder` 取数能力，可「先判问题类型+课程 → 从 Teable 取话术 → 拼进 prompt」等价复刻（不需向量库）——但**属额外开发、须单独立项，本期未做**。
+  - **结论：本期 15 个切网关、这 2 个留 Dify，故 Dify 在这 2 个应用上暂不能完全下线**。评估明细见 [`artifacts/dify-kb-eval.md`](artifacts/dify-kb-eval.md)。
+- `我家子涵最近学的怎么样`（Dify「二讲回复」；归属待定）
 - ~~退费「素养/精品班」共用同一 `prompt_config` 的应用~~ —— **已由「改挂 `ai_application`（应用级）」解决**（2026-10-28）。
