@@ -31,18 +31,27 @@
 ### A. 压测期止血（配置级，最快）
 
 1. **调大班级缓存 TTL**：`student-data` `clazz.data.query.cache.time` 60 → 300~600s，减少过期→回源→重建频率。
+   > ⚠️ 只治 **miss→回源→重建** 那段；每次**命中的"取字符串 + JSON 解析"照旧**，不降读命令数、也不降应用侧解析 CPU → **光调 TTL 无效**。要省必须"减次数 + 降单次成本"（见 B 档）。
+   > 另：**JSON 解析/（反）序列化在应用侧**（客户端），不是 Redis 实例；Redis 实例 CPU≈命令条数+返回数据网络，**value 越长越贵**。
+   > 客户端编解码（**已核实运行态**：dws 的 `RedisTemplate` key/value/hash 序列化器均为 `StringRedisSerializer` = **String↔byte[]**）+ 业务工具自身 fastjson（`toJSONString`/`parseObject`，JSON 层）→ 都在应用侧、**每次命中都做**，成本=次数×value长度。→ 拉长 TTL 不减它；只有"减次数 / 本地缓存存已解析对象 / 缩小 value"能省。
+   > （`student-data-service/config/RedisConfig.java` 里另有 `GenericJackson2JsonRedisSerializer` 的模板，但班级缓存这条链路用的不是它。）
 2. **缓存过期加随机抖动**：同一批 key 补随机秒数，避免同时过期造成尖峰。
 3. **压测前预热**：脚本按本轮压测班级调一次 `ClazzSyncAclService.listByNumbersFromCache`，把 key 提前铺好。
 4. **Pipeline 不用动（已开，且非本问题解药）**：`redis.v1.cache.use.pipeline` 代码默认 `true`、线上未覆盖（arthas 实读 `usePipeline=true`、`pipelineMinBatchSize=1`）。
    它只优化**写**路径（`batchSetCache → executePipelined`）；**读路径本来就是批量 `multiGet`**（`RedisCacheUtilV1.java:169`），而本次热点是**读**(`GetQps ~11.4万/s`) → 开关它不解决读热点，别把它当止血项。
+   > 原理：pipeline 只减少**网络往返**，**不减少 Redis 执行的命令条数**（Redis 仍逐条执行），所以对实例 CPU 基本无影响——**已开 pipeline，CPU 依然 81%** 就是这个理。降 CPU 只能降**命令总条数**。
 5. **实例侧**：确认规格/加只读从节点分摊读；压测期必要时临时升配。
 6. **消费/实例隔离兜底**：压测前把非关键 consumer 降速，减少对同一实例的争抢。
 
 ### B. 低风险代码改造（收益最大）
 
 7. **加进程内 L1 本地缓存**：`student-data-client` `RedisCacheUtilV1` 前置 Caffeine/Guava 本地缓存（TTL 5~30s），命中直接返回、Redis 只兜底 → 可将读放大降一个数量级。
+   **关键：本地缓存必须存「已解析对象」（`ClazzDO`），不能只存字符串** —— 存对象才能同时省掉 Redis GET 和 JSON 解析；只存字符串则解析成本仍在、应用 CPU 省不到。
+   代价：接受本地 TTL 内（如 15s）的脏读（`deleteKeys` 只能失效 Redis，删不到各 pod 本地）。
+   **建议做成 Apollo 开关（+可配 TTL）**：本地缓存吃的是"时间局部性"——压测/大促时同批次班级被高频重复读，命中率高、收益大；**平时流量稀疏、命中率趋近 0，常开只会白加一层查找+内存+15s 脏读（即"浪费"）**。→ 保障窗口开启（TTL 10~15s），平时关闭；或用极短 TTL（1~3s）常开。
 8. **逻辑过期（soft TTL）**：缓存值带逻辑过期时间，过期时**返回旧值 + 异步单飞刷新**，避免过期瞬间的 miss 风暴（缓存击穿）。
-9. **消费侧批量化/去重**：`DwsSubclazzStudentSyncConsumer` 对一批消息的 `clazzNumber` 先去重合并（含相邻消息），再一次性 MGET，避免同一班级重复读。
+9. **消费侧去重（受顺序消费限制）**：`DwsSubclazzStudentSyncConsumer` 是 `MessageOrderListener`——**顺序(FIFO)消费、一次一条，无法批量合并**，所以"按批 MGET 去重"这条路走不通。
+   > 替代：靠**短 TTL 本地缓存**承接连续/近邻消息对同一班级的重复读（见第 7 条，TTL 1~5s 即可、存对象）；若单条消息内部对同一 clazz 多次读，则先做**消息内去重**。
 10. **回源合并**：miss 回源前先合并去重，并按更大的 `clazz.query.size` 批量调 `course-center /feign/clazz/query/listByNumbers`（它自身也有限流规则）。
 
 ### C. 架构（中长期）
