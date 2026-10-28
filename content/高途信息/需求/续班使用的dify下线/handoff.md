@@ -16,38 +16,39 @@ tags: [需求, 交接]
 - 模型：续班 `doubao-seed-2-0-lite-260428`；**退费 `deepseek-flash`**（= 网关控制面 `redirectToModelCode` 官方接管值）。
 - 返回格式：续班 doubao **带** `response_format={"type":"json_object"}`；**退费不带**。
 - 参数（`params`）按应用对齐 Dify 的 `completion_params`：退费根因/旅程/降退费 `enable_thinking:true`；各应用 `stop:[]`；素养服务建议加 `temperature:0.7`。
-- **退费提示词**用新列 `prompt_config.gateway_core_prompt`（仅 `platform_type=2` 时作 system 提示词）；`core_prompt` 保持原样（可回退、老链路零变化）。
+- **退费提示词**用新列 `ai_application.gateway_core_prompt`（应用级，仅 `platform_type=2` 时作 system 提示词）；老链路(Dify)仍读 `prompt_config.core_prompt` 保持原样（可回退、老链路零变化）。
 - **不要对齐 Dify 的消息结构**（试过、无收益、已回退），保持：`system=完整指令`、`user=数据`。
 - 隐藏能力已扫：除知识库外无其它（tools 全空、敏感词/注释/gt_configs 均关）。
 
 ## 2. prod 待办（按序）
 
-### T-11a　DDL 工单：给 prod `prompt_config` 加列
+### T-11a　DDL 工单：给 prod `ai_application` 加列
 ```sql
-ALTER TABLE prompt_config ADD COLUMN gateway_core_prompt text NULL
-  COMMENT '新链路(网关)system提示词，仅platform_type=2时使用' AFTER core_prompt;
+ALTER TABLE ai_application ADD COLUMN gateway_core_prompt text NULL
+  COMMENT '新链路(网关)system提示词，仅platform_type=2时使用' AFTER prompt_config_version_number;
 ```
 （test 已直连加过；prod 走 DDL 工单）
-> 代码读取：`PromptConfigMapper.xml`（resultMap + Base_Column_List）、`PromptConfig`/`PromptConfigBO.gatewayCorePrompt`。
+> **改到 `ai_application`（应用级）**：每个 agent 恰好 1 个 app，可逐应用给不同提示词；`prompt_config` 那版已废弃（prod 上 10 个退费应用只落到 3 个共享 pc，挂 pc 无法按应用区分）。
+> 代码读取：`AiApplication`/`AiApplicationBO.gatewayCorePrompt`、`AiApplicationMapper.xml`、`AiApplicationExecutor`（主路径，`platformType==2` 时取，为空回落 `prompt_config.core_prompt`）。
 
-### T-11b　迁 prod 退费提示词到 `gateway_core_prompt`
-内容取自 [`artifacts/dify-refund-prompts/`](artifacts/dify-refund-prompts/)；**关联的 `prompt_config.number`（prod）**：
+### T-11b　迁 prod 退费提示词到 `ai_application.gateway_core_prompt`
+按 **`ai_application.number`** 逐应用写入（每应用一条）。内容取自 [`artifacts/dify-refund-prompts/`](artifacts/dify-refund-prompts/)；**按学部取对应文件**（根因/旅程/课程体验 两学部**同文**；**NPS 素养≠精品**；降退费两学部近乎相同）。
 
-| 应用（ai_agent name） | prod app number | prompt_config.number | 提示词文件 |
+| 应用（ai_agent name） | ai_agent.number | ai_application.number | 提示词文件 |
 |-|-|-|-|
-| 退费根因分析(素养学部) | 261425035474903040 | （按 app join 取） | 精品退费根因.pre_prompt.txt |
-| 退费根因分析(精品班学部) | 256995936629163008 | | 精品退费根因.pre_prompt.txt |
-| 退费NPS分析(素养学部) | 261424803504732160 | | 精品课程NPS.pre_prompt.txt |
-| 退费NPS分析(精品班学部) | 256996044560210944 | | 精品课程NPS.pre_prompt.txt |
-| 退费旅程分析(素养学部) | 261425336093323264 | | 精品退费旅程.pre_prompt.txt |
-| 退费旅程分析(精品班学部) | 256995767298823168 | | 精品退费旅程.pre_prompt.txt |
-| 退费课程体验分析(素养学部) | 261425205028651008 | | 精品课程体验.pre_prompt.txt |
-| 退费课程体验分析(精品班学部) | 256995860148134912 | | 精品课程体验.pre_prompt.txt |
-| 降退费服务建议（素养学部） | 261424650482886656 | | 素养降退费工作流.nodes.txt |
-| 降退费服务建议（精品班学部） | 256995990719977472 | | 素养降退费工作流.nodes.txt |
+| 退费根因分析(素养学部) | 261424983727715328 | 261425035474903040 | 素养退费根因.pre_prompt.txt |
+| 退费根因分析(精品班学部) | 256995079971961856 | 256995936629163008 | 精品退费根因.pre_prompt.txt |
+| 退费NPS分析(素养学部) | 261424755557579776 | 261424803504732160 | 素养课程NPS.pre_prompt.txt |
+| 退费NPS分析(精品班学部) | 256995228385317888 | 256996044560210944 | 精品课程NPS.pre_prompt.txt |
+| 退费旅程分析(素养学部) | 261425291830803456 | 261425336093323264 | 素养退费旅程.pre_prompt.txt |
+| 退费旅程分析(精品班学部) | 256994902246699008 | 256995767298823168 | 精品退费旅程.pre_prompt.txt |
+| 退费课程体验分析(素养学部) | 261425172233344000 | 261425205028651008 | 素养课程体验.pre_prompt.txt |
+| 退费课程体验分析(精品班学部) | 256994989452607488 | 256995860148134912 | 精品课程体验.pre_prompt.txt |
+| 降退费服务建议（素养学部） | 261424592068814848 | 261424650482886656 | 素养降退费工作流.nodes.txt |
+| 降退费服务建议（精品班学部） | 256995156763347968 | 256995990719977472 | 精品降退费工作流.nodes.txt |
 
-> 取 `prompt_config.number`：`select p.number from ai_application a join prompt_config p on p.number=a.prompt_config_number where a.number=<app_num>`
-> **写入要求（关键）**：只写 `gateway_core_prompt`，**`core_prompt` 不动**；若走 `updatePromptConfig` 接口，**必须回传原 `afterProcessorPromptConfig`**（否则被清空），且该接口当前会保留 gateway_core_prompt（已加保护）。prod 只读连接 `user_dynamic_rw`（Apollo PROD `jdbc-mysql` namespace）。
+> 取 `ai_application.number`：`select ap.number from ees_data.ai_application ap where ap.ai_agent_number=<agent_num>`（prod 每 agent 恰 1 个 app）。
+> **写入要求（关键）**：只写 `ai_application.gateway_core_prompt`，**`prompt_config.core_prompt` 不动**；**不走 `updatePromptConfig` 接口**（提示词不在 pc 上，无 afterProcessor 回传问题）。prod 只读连接 `user_dynamic_rw`（Apollo PROD `jdbc-mysql` namespace）。
 
 ### T-12　gps-ai prod 路由（工单）
 在 AI 平台给 caller `gps-ai`（env=prod）加两条路由：
@@ -89,4 +90,4 @@ curl -sk -x "${AGENT_PROXY_URL:-http://127.0.0.1:8888}" \
 ## 5. 不在本次范围
 - `生成沟通建议-高中/素养`（有知识库，保留 Dify）
 - `我家子涵最近学的怎么样`（归属待定）
-- 退费「素养/精品班」共用同一 `prompt_config` 的应用（test 上存在，prod 注意核对）
+- ~~退费「素养/精品班」共用同一 `prompt_config` 的应用~~ —— **已由「改挂 `ai_application`（应用级）」解决**（2026-10-28）。

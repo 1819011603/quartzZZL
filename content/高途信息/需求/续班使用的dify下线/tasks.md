@@ -18,10 +18,10 @@ tags: [需求, 任务]
 | T-05 | 全量切换剩余续班 + 退费 Dify 应用并逐个验证 | 进行中 | — | **test 15 个已验证**（续班 5 个 test app + 退费 6 个 test app；`生成沟通建议-高中/素养` 2 个保留 Dify 不迁）；prod 待发 |
 | T-06 | 代码切换：收口 / 移除 Dify 路径 | 待办 | T-05 | 功能替换稳定后再做 |
 | T-07 | 每应用模型一一对应：按应用配 `model`/`params` + 网关加路由 | 已完成 | — | 映射全定：Doubao 旧系列→`doubao-seed-2-0-lite-260428`、R1→`deepseek-v4.1-flash-1017`；gps-ai test 加 2 条路由（37268/37270）；prod 路由已提工单 5546/5547 |
-| T-08 | 退费 10 个应用的提示词从 Dify 迁到 student-data | 进行中 | — | 方式改为写 **`prompt_config.gateway_core_prompt`**（新增列，仅新链路用；`core_prompt` 保持原标签）；**test 5 条已迁**（见 [`verify.md`](verify.md#退费提示词迁移test2026-10-27)）；prod 待迁 |
+| T-08 | 退费提示词从 Dify 迁到 student-data（新链路用） | 已完成(test) | — | 承载列改为 **`ai_application.gateway_core_prompt`**（应用级；`prompt_config.core_prompt` 保持原标签，老链路零影响）；**test 6 应用已迁并复验**（commit 91012878，见 [`verify.md`](verify.md#应用级提示词复验test2026-10-28commit-91012878--pod-student-data-6cb8c4b998-9j2zn)）；prod 待迁 |
 | T-09 | prod Apollo：补 `params` 并发布 | 待办 | T-13 | **prod 现置空 `{}`（全走老链路）**；**代码上线后**再发正式配置（15 应用，退费 `deepseek-flash` + 各应用 params） |
 | T-10 | 按应用定返回格式 | 已完成 | — | 结论：续班 doubao 带 `response_format=json_object`；**退费 deepseek 一律不带**（NPS/课程体验同模型行为不一致） |
-| T-11 | prod：`prompt_config` 加 `gateway_core_prompt` 列 + 迁移退费提示词 | 待办 | — | 先提 DDL 工单加列；再写入 10 条退费应用的 gateway 提示词 |
+| T-11 | prod：`ai_application` 加 `gateway_core_prompt` 列 + 迁移退费提示词 | 待办 | — | 先提 DDL 工单加列（应用级，替代 prompt_config 方案）；再按 `ai_application.number` 写 10 条退费应用提示词（按学部取文件，NPS 素养≠精品） |
 | T-12 | prod 路由工单审批（gps-ai） | 待办 | — | 需 `doubao-seed-2-0-lite-260428`、**`deepseek-flash`**（替换已提的 5547 用 v4.1-1017） |
 | T-13 | prod 代码发布 | 待办 | T-09,T-12 | 合 release / 发版；发布后按应用逐个 `compare` 复验 |
 | T-14 | 迁移表 tab 状态同步（prod） | 待办 | T-13 | 表链接见 [`links.md`](links.md) |

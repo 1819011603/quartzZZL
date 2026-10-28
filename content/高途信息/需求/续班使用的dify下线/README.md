@@ -83,8 +83,8 @@ test 环境对应应用见 [`verify.md`](verify.md)。
 | 阶段 | 开发中 |
 | 进度 | T 6/14 · R 0/0 · C 0/0 |
 | 部署泳道 | `student-data=test-gtbg-dev-1`（流水线 1316286） |
-| 当前卡点 | 退费 10 个应用的**提示词在 Dify**（student-data `prompt_config.core_prompt` 只是「退费根因分析」这类标签），只改 Apollo 切网关会丢提示词 → 需先把 Dify 提示词搬进 student-data（续班 7 个提示词在 student-data，可直接切） |
-| 最近更新 | 2026-10-28：**prod Apollo 置空 `{}`（线上全走老链路 Dify）**，等代码上线后再发正式配置（15 应用）；test 消息结构对齐试后无收益**已回退**；隐藏能力扫描：**除知识库外无其它**；退费模型统一 `deepseek-flash` |
+| 当前卡点 | 无（退费提示词已改挂 `ai_application.gateway_core_prompt` 应用级列，绕开 prod 的 pc 共享问题）；等 prod 按序上线 |
+| 最近更新 | 2026-10-28：**退费提示词承载改为 `ai_application.gateway_core_prompt`（应用级，替代 prompt_config）**；test 已迁并复验（commit `91012878`）；prod 待 DDL 工单加列后再迁。prod Apollo 仍置空 `{}`（全走老链路），代码未进 release |
 
 ## 下一步
 
@@ -109,7 +109,7 @@ test 环境对应应用见 [`verify.md`](verify.md)。
 |---|---|---|
 | Apollo | 是 | `ai.agent.accessor.override.map`（json map：`ai_agent.number` → `{name, platformType, model, params}`），默认 `{}` |
 | ES | 否 | |
-| MySQL DDL | 否 | 不改表结构；代码切换阶段可能改 `ai_agent.platform_type`（数据变更非 DDL） |
+| MySQL DDL | 是 | prod `ai_application` 加列 `gateway_core_prompt`（DDL 工单，T-11a）；`prompt_config` 不动 |
 | MQ | 否 | |
 | 代课接口权限 | 否 | |
 

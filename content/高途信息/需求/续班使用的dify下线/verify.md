@@ -102,24 +102,38 @@ tags: [需求, 验证]
   - 网关：`event=litellm_proxy/doubao-seed-2.0-lite`，answer 为**纯 JSON**（`response_format` 生效）
   - 两侧语义一致
 
-## 退费提示词迁移（test，2026-10-27）
+## 退费提示词迁移（test）
 
-**新链路提示词存 `prompt_config.gateway_core_prompt`（新增列，仅 `platform_type=2` 时用作 system 提示词）；`core_prompt` 保持原标签不动** → 切回 Dify 老链路零变化，满足「可回退」。**不再放 Apollo**（Apollo 有值长度限制）。
+**新链路提示词存 `ai_application.gateway_core_prompt`（2026-10-28 起改为应用级，新增列，仅 `platform_type=2` 时用作 system 提示词）；老链路(Dify)仍读 `prompt_config.core_prompt`（原标签）不动** → 切回 Dify 零变化，满足「可回退」。**不放 Apollo**（Apollo 有值长度限制）。
 
-- DDL（test 直连 `gaotu_test_rw`）：`ALTER TABLE prompt_config ADD COLUMN gateway_core_prompt text NULL ... AFTER core_prompt`
-- 代码：`AiApplicationExecutor` 在 `platformType==2` 时用 `gatewayCorePrompt` 覆盖 system 提示词（`DynamicPromptGenerator#buildSystemPrompt` 支持覆盖）
-- 5 条 pc 数据（`core_prompt`=原标签；`gateway_core_prompt`=提示词）：
+> **为什么从 prompt_config 改成 ai_application**：prod 退费 10 个应用只落到 3 个 `prompt_config`（根因×2 / 降退费×2 / **旅程+NPS+课程体验 共 6 个共用 1 个 pc**），提示词挂 pc 上无法按应用区分；挂 `ai_application`（每个 agent 恰好 1 个 app）才能逐应用给不同提示词。老链路/老数据零影响。
 
-| 应用 | pc_num | gateway_core_prompt 来源 | 长度 |
+- DDL（test 直连 `gaotu_test_rw`）：`ALTER TABLE ai_application ADD COLUMN gateway_core_prompt text NULL ... AFTER prompt_config_version_number`
+- 代码：`AiApplicationExecutor`（主执行路径）在 `platformType==2` 时用 `aiApplicationBO.gatewayCorePrompt` 覆盖 system 提示词，**为空则回落 `prompt_config.core_prompt`**（续班应用不配即用原提示词）。`DynamicPromptGenerator#buildSystemPrompt` 支持覆盖。
+- test 6 个应用已迁移（值=旧 `prompt_config.gateway_core_prompt`，保持既有行为）：
+
+| 应用（app） | app_num | gateway_core_prompt 来源 | 长度 |
 |-|-|-|-|
-| 退费根因分析 | 255746898733840384 | 精品退费根因.pre_prompt | 2254 |
-| 退费旅程分析 | 255732761706379264 | 精品退费旅程.pre_prompt | 2482 |
-| 退费课程体验分析 | 261248376600798208 | 精品课程体验.pre_prompt | 2381 |
-| 退费NPS分析 | 255746467812096000 | 精品课程NPS.pre_prompt | 473 |
-| 服务建议（素养+降退费共用 pc） | 255746685990352896 | 素养降退费工作流.nodes | 1412 |
+| 退费根因分析 | 255743373455931392 | 精品退费根因.pre_prompt | 2254 |
+| 退费旅程分析 | 255733517892204544 | 精品退费旅程.pre_prompt | 2482 |
+| 退费课程体验分析 | 255742588441606144 | 精品课程体验.pre_prompt | 2381 |
+| 退费NPS分析 | 255743873725249536 | 精品课程NPS.pre_prompt | 473 |
+| 降退费服务建议 | 255743654696597504 | 素养降退费工作流.nodes | 1412 |
+| 素养服务建议 | 261424322528162816 | 素养降退费工作流.nodes | 1412 |
 
-- ⚠️ `素养服务建议`/`降退费服务建议`（test）共用 `prompt_config 255746685990352896`，gateway 提示词取工作流版。
-- prod 需走 DDL 工单加该列。
+- `prompt_config.gateway_core_prompt`（test 遗留列）已不再被代码读取，值可忽略。
+- prod 需走 DDL 工单给 `ai_application` 加该列。
+
+### 应用级提示词复验（test，2026-10-28，commit 91012878 / pod student-data-6cb8c4b998-9j2zn）
+
+`compareAiApplication("退费根因分析", <退费内容>, "test", {})` 同输入串行两侧，落库 `ai_application_call_task_result`：
+
+| 侧 | id | system 提示词 | q_len | 结果 |
+|-|-|-|-|-|
+| Dify（老链路） | 263717 | 标签「退费根因分析」 | 1205 | 合法 JSON，`directReason`/`rationales[]` |
+| 网关（新链路） | 263718 | **完整提示词**「##任务背景 分析客户…」 | 3453 | 合法 JSON，结构一致 |
+
+→ 应用级 `gateway_core_prompt` 被网关路径正确读取；老链路仍发标签，行为未变。
 
 ## 逐应用对比结果（test，2026-10-27）
 

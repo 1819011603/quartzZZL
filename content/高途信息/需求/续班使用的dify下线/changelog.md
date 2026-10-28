@@ -7,6 +7,22 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-10-28
+
+### 🤖 Claude
+
+- prod 现状核对：Apollo 置空、`prompt_config` 无列、代码未进 release → **prod 一步未做**；gps-ai prod 已有 `doubao-seed-2-0-lite-260428`(37274) 但**缺 `deepseek-flash`**
+- 发现 **T-11b 硬阻塞**：prod 10 个退费应用只落到 3 个 `prompt_config`（旅程+NPS+课程体验 共 6 个**共用 1 个 pc**），提示词挂 pc 无法按应用区分
+- 定**走应用级**：新链路提示词改挂 **`ai_application.gateway_core_prompt`**（每 agent 恰 1 app），`platform_type==2` 时读取、为空回落 `prompt_config.core_prompt`；**老链路(Dify)零影响**，Apollo 按应用切换不变
+- 回退 `prompt_config.gateway_core_prompt` 相关代码改动
+- test 直连给 `ai_application` 加列 + 迁移 6 个应用提示词（保持既有行为）；发版 commit `91012878`（pod `student-data-6cb8c4b998-9j2zn`）
+- test 复验（`退费根因分析` compare，落库 `ai_application_call_task_result`）：Dify 侧 system=标签(1205)、网关侧 system=**完整提示词**(3453)、两侧 JSON 结构一致 → **应用级提示词生效、老链路不变**
+- 备注：归档的提示词文件里 **NPS 素养≠精品**（根因/旅程/课程体验两学部同文），故 T-11b 按学部取文件
+
+### 👤 我
+
+- 决定阻塞按「方案 2：改成应用级列」处理；再次强调**老链路不要受影响 + 要支持 Apollo 切换**
+
 ## 2026-10-27
 
 ### 🤖 Claude
