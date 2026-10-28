@@ -31,6 +31,7 @@ tags: [需求, 链接]
 | 对比明细 | 逐应用 Dify vs 网关 字段级对比 | [`artifacts/compare-detail.md`](artifacts/compare-detail.md) | 2026-10-27 |
 | 知识库替换评估 | 生成沟通建议（有知识库）替换评估 | [`artifacts/dify-kb-eval.md`](artifacts/dify-kb-eval.md) | 2026-10-27 |
 | 网关模型映射 | LLM 网关 redirectToModelCode 映射表 | [`artifacts/llm-gateway-model-mapping.md`](artifacts/llm-gateway-model-mapping.md) | 2026-10-28 |
+| **prod 交接待办** | 交接给其他 AI 执行的 prod 上线清单 | [`handoff.md`](handoff.md) | 2026-10-28 |
 | 迁移表 | 续班退费Dify下线（sheet 新建 tab） | https://gaotuedu.feishu.cn/sheets/T9lhsNwL4hzovStIDVDcyy8znRf?sheet=Fn06qE | 2026-10-27 |
 | MR | student-data !1796（feature-xuban-dify-offline → release） | https://git.baijia.com/gaotu/yunying_workbench/student-data/-/merge_requests/1796 | 2026-10-27 |
 | 接口文档 | — | — | 2026-10-27 |
