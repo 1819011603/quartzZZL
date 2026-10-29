@@ -46,7 +46,7 @@ tags: [需求, 链接]
 - 模块② 技术方案 node_token：`CwkcwY5Q9iAD7fkx6CBcPKRDnpg`（obj_token `L763djIJhoYuamx8z77c4gOjnNd`）
 - PRD（模块①）token：`TIGtweLV4iWdYtksyqNcWhIhnYb`（obj_token `KsdfdFRUeofBeLxzFhtckHcInda`）
 - PRD（模块②）token：`PVy5woTCoiMvoMkQzKrcXckHnLw`（obj_token `QGG8dQwwQoxWuCxqiYRctOTUnNf`）
-- 统一分支（2 子需求共用）：`feature-xuban-20261001`，建于 8 仓（product-server / promotion / promotion-management / student-center / cart / teacher-tool / ces-teach-product / course-center），均基于最新 `origin/release`、本地未推远端；student-data 无改动、不建分支。
+- 统一分支（2 子需求共用）：`feature-xuban-20261001`，建于 **6 个真实涉及仓库**（product-server / promotion / promotion-management / student-center / cart / teacher-tool），均基于最新 `origin/release`、本地未推远端；student-data 无改动、不建分支；ces-teach-product / course-center 不需改动、已撤分支。
 - 旧占位分支（已清理，勿再用）：`feature-xuban-presale-expand-opt`、`feature-small-clazz-limit-and-search`
 
 ## 只存链接，不镜像明细

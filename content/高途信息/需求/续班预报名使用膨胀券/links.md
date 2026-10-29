@@ -105,7 +105,7 @@ tags: [需求, 链接]
 - 后端反讲 token：`RC4DwjusfinikRk9IM9c88l1nZW`
 - PRD token：`N58DwzUDoi3sK3k1nCqcPOBMn3d`
 - **PRD A（优化）token：`TIGtweLV4iWdYtksyqNcWhIhnYb`**（已并入迭代需求 `MwezwKLebiU0afkphtCcNTgbndf`，技术方案 node token：`VMNYwMWA2iTvqskLi0ocNRyQnWg`；旧 `Kgphw2GhciYHuvkyy03coeHUnOh` 已取代）
-- **PRD A（优化）迭代需求统一分支**：`feature-xuban-20261001`（2026-10-29 从最新 `origin/release` 建；旧占位 `feature-xuban-presale-expand-opt` 已清理）。**student-data 无改动、不建分支**，本需求涉及 8 仓（见迭代需求归档）。
+- **PRD A（优化）迭代需求统一分支**：`feature-xuban-20261001`（2026-10-29 从最新 `origin/release` 建；旧占位 `feature-xuban-presale-expand-opt` 已清理）。**student-data 无改动、不建分支**，本需求涉及 6 仓（见迭代需求归档）。
 - 待办表：base `VaqXbgkElanMhbs8ZCmcnNtJnog` / table `tblWl0uXntBAdIHq`
 - TAPD story_id：`1122531521001392077`（workspace `22531521`，iteration `1122531521001014792`）
 - banshan caseId：`49252`（冒烟 record `69604` / 功能用例 `69605` / 线上回归 `69606`）

@@ -17,10 +17,11 @@ tags: [需求, 任务]
 
 | 编号 | 任务 | 状态 | 阻塞在哪 | 备注 |
 |---|---|---|---|---|
-| T-01 | 模块① 技术方案评审：拍板「下单页券列表口径」 | 待办 | — | 仓库归属已按代码证据定（见 README「涉及的代码」） |
-| T-02 | 模块② 确认工具箱「家长会/小班课/自习室」选学员/搜索接口所在服务与仓库 | 阻塞 | 待页面负责人确认 | 初步证据：student-center `StudentGlobalSearchController#searchByUserIds`(L58-63)/`GpsGroupController#studentPick`(L209)，teacher-tool `ManageSubclazzController#listSubclazzStudent`；需确认三页面实际调用 |
-| T-03 | 评审后落地各仓 `specs/<迭代>/tech_spec.md` 并进入开发（统一分支 `feature-xuban-20261001`） | 待办 | 依赖 T-01、T-02 | 8 仓统一分支已就绪 |
-| T-04 | 收敛统一分支 `feature-xuban-20261001` 并同步技术方案/归档 | 已完成 | — | 2026-10-29：8 仓从最新 origin/release 建分支（旧占位分支已删）；student-data 复核无改动不建；两篇飞书方案与本地归档已改统一分支口径并回读 |
+| T-01 | 模块① 技术方案评审：拍板「下单页券列表口径」 | 待办 | — | 仓库归属已按代码证据定（见 README「涉及的代码」）；下单页口径证据见方案① §8 |
+| T-02 | 模块② 确认工具箱选学员/搜索接口所在服务与仓库 | 已完成 | — | 2026-10-29 定案：= **teacher-tool `ManageSubclazzController#/studentList`**（工具箱 `boss-counselor` 调 `/bgwApi/teacher-tool/manage/subclazz/studentList`）；现手机号批量+姓名模糊，PRD 新增手机号后4位+学员ID批量精确。非 student-center/GPS |
+| T-03 | 评审后落地各仓 `specs/<迭代>/tech_spec.md` 并进入开发（统一分支 `feature-xuban-20261001`） | 待办 | 依赖 T-01 | 6 仓统一分支已就绪 |
+| T-04 | 收敛统一分支 `feature-xuban-20261001` 并同步技术方案/归档 | 已完成 | — | 2026-10-29：从最新 origin/release 建分支（旧占位分支已删）；student-data 复核无改动不建；两篇飞书方案与本地归档已改统一分支口径并回读 |
+| T-05 | 逐仓复核改动归属、撤无关仓库分支、模块②按「小灶课」纠正 | 已完成 | — | 2026-10-29：确认需改 6 仓（product-server/promotion/promotion-management/student-center/cart/teacher-tool）；**撤 ces-teach-product / course-center**（教室上限已 32、PRD 不涉及）；剔除 GPS 小班课误判；两篇方案 + 需求入口已回读 |
 
 ## R- 反讲整改项
 
@@ -43,10 +44,7 @@ tags: [需求, 任务]
 
 > 每个「阻塞」任务都要写清楚卡在谁/什么事上，否则下个会话判断不了能不能推进。
 
-### T-02
-- **卡在**：工具箱三页面（家长会/小班课/自习室）的选学员接口到底走哪条链路未最终确认。已有两类候选实现：①student-center `StudentGlobalSearchController#searchByUserIds`(L58-63) + `GpsGroupController#studentPick`(L209) + `MyStudentController#list`；②teacher-tool `ManageSubclazzController#listSubclazzStudent`(L185)/`ParentsMeetingBiz#listSubclazzStudent`(L383)。
-- **需要谁**：工具箱页面负责人 / 本次反讲对口后端。
-- **可以先做**：模块② 上限 15→32（Apollo `parentsMeeting.type.limit.map`）这条与搜索无关，可先行。
+（当前无阻塞任务；模块②选学员接口已定案。）
 
 ## 完成判据
 
@@ -54,6 +52,5 @@ tags: [需求, 任务]
 > 每条写死落点 / 怎么验 / 不达标先查）。
 > 完成一项删一行；全部闭环后本节为空。
 
-- T-01 落点：模块①技术方案评审通过，README「已定共识」记录下单页口径与改动仓库归属。怎么验：评审结论写入 已定共识并清空对应「待确认」。不达标先查：先约产品当面确认口径。
-- T-02 落点：给出工具箱三页面搜索接口的服务名+路径+类#方法（含证据，如青舟路由或代码 file:line）。怎么验：用该接口按姓名/手机号各调一次，命中现有行为。不达标先查：先查三页面前端调用的网关路由，再顺路由反查服务。
+- T-01 落点：模块①技术方案评审通过，README「已定共识」记录下单页口径。怎么验：评审结论写入 已定共识并清空对应「待确认」。不达标先查：先约产品当面确认口径。
 - T-03 落点：两模块各改动仓 `specs/<迭代>/tech_spec.md` 落地，覆盖推荐规则/外显抵扣金额与上限/ID 搜索。怎么验：spec 头部三项齐全、接口变更类型已标注，与飞书技术方案一致。不达标先查：对照开发操作 SOP（links.md）核对格式。
