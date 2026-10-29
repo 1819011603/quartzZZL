@@ -22,6 +22,10 @@ tags: [需求, 验证]
   - 大班计划 `585960797778243584`：纯续语文（type2,recommendType1,signUp1）+ **膨胀券 8014** `578323391191220225` `available_scope=六年级语文`、price=10000、recommendType=3；组合 **51** `579426174109902848`「组合大班课+小班课」。trace `cart_gaotu100_com.315.17932562685080018`。
   - 小班计划 `586116340522184704`：**膨胀券 8014** `578323085464207361` `available_scope=一年级数学`、price=10000；组合 **51**；小班课 6004 保留。trace `cart_gaotu100_com.317.17932562773250016`。
 - 编排补齐：24038 前端 8 个 mweb 服务的提测/上线产物已补齐并存草稿（`gaotu_m`/`tutu`=`feature-renewal-cart-coupon-20261023-c9673d86`/`release-*`；`gaotujingpin`/`suyang`/`yunfanonline`/`zhixue`/`lexue`/`gongkao` 该分支无镜像，填非空占位 `1`，触发时按分支重建）。前端 8 站点本次未部署。
+- 编排补齐（续）：5 后端提测产物刷新为合并后镜像（cart `...-44e82e61-...`、order 四部署 `...-50681b70-...`）；前端 8 服务**回滚产物**补齐为 test 在跑主镜像 `hotfix-mweb-8.2.0-auto-6c9fa664-*`。均已读回。
+- 告警：24038 告警共 5 条现全部 `非bug(不解决)` `alarmStatus=0`（已回读）——`order-ad` 2026-10-29 14:27 启动失败 `Too many connections`、`order-b` 2026-10-27 09:26 `系统繁忙` RedisLock（旧版本 1.1.209，与本需求无关）、以及本轮压路径（非法参数/组合放行）触发的 `Monitor Biz Key Lost OrderQueryApplication.batchCanCreateOrderResult` ×3（order/order-ad/order-b，监控噪声非缺陷）。
+- 覆盖率：准入 `COVERAGE_BE` 由 **51.0%（<60 强卡未过）** 重跑后 **74.0% ≥60 通过**（ccmId 40057→40073）；瓶颈 `gaotu_order` 51.08%(166/325)→**74.81%(193/258)**。差异行是 cancreate（批量可下单校验，`CanCreateOrderApiFeignService`/`CanCreateOrderForNeoService`/`OrderValidateService`），新 pod 重启后运行时 jacoco 为空导致首测 0.78%；对 dev-3 四个 order pod 直连 HTTP `POST /feignService/canCreateOrder/batchCanCreateOrder`（contextPath 空，port 28688）打全路径（正常课程/force跳过冲突/重复购买/组合51放行/8014/LAYER_EXAM/参数错误/null）后重跑抬到 74.81%。cart 75.48% 通过。
+- 质量准入：`allBlockingPassed=True`，无未过强卡（USER_CASE/ALARM/ALARM_CHECK/PYTEST_JOB/COVERAGE_BE/COVERAGE_FE/ESAI_CR 均过）。
 
 ## dev-1当前批次完整回归（2026-10-26，后端闭环、页面已恢复验证）
 
