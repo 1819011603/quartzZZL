@@ -14,7 +14,9 @@ tags: [需求, 链接]
 | 需求wiki节点 | 【续班】预报名使用膨胀劵（父节点，下挂 5 份子文档）      | https://gaotuedu.feishu.cn/wiki/W3SSwxr1AieysikF0D3csT4EnBh                        | 2026-09-08 |
 | PRD      | 【PRD】续班预报名使用膨胀券 V1.0（2026-08-25） | https://gaotuedu.feishu.cn/wiki/N58DwzUDoi3sK3k1nCqcPOBMn3d                        | 2026-09-08 |
 | PRD（优化） | 【PRD】膨胀券预报名优化-推荐和外显抵扣金额（PRD A，父节点=N58DwzUDoi3sK3k1nCqcPOBMn3d） | https://gaotuedu.feishu.cn/wiki/TIGtweLV4iWdYtksyqNcWhIhnYb                        | 2026-10-29 |
-| 技术方案（优化） | 膨胀券预报名优化（推荐规则+外显抵扣金额）技术方案（建在 PRD A 子级） | https://gaotuedu.feishu.cn/wiki/Kgphw2GhciYHuvkyy03coeHUnOh                        | 2026-10-29 |
+| 迭代需求（权威） | 【A-续班-20261001】膨胀券优化（合并 PRD A + 小班课，下挂两份技术方案） | https://gaotuedu.feishu.cn/wiki/MwezwKLebiU0afkphtCcNTgbndf                        | 2026-10-29 |
+| 技术方案（优化） | 技术方案 · 膨胀券预报名优化（推荐规则 + 外显抵扣金额）（权威，挂迭代需求节点） | https://gaotuedu.feishu.cn/wiki/VMNYwMWA2iTvqskLi0ocNRyQnWg                        | 2026-10-29 |
+| ~~技术方案（优化·旧）~~ | ~~膨胀券预报名优化技术方案（建在 PRD A 子级）~~ 已取代，见上；节点改名「【已取代·历史参考】」 | https://gaotuedu.feishu.cn/wiki/Kgphw2GhciYHuvkyy03coeHUnOh                        | 2026-10-29 |
 | PRD      | 膨胀券（定金膨胀）购买 PRD —— 券本体的售卖与配置     | https://gaotuedu.feishu.cn/wiki/UJf9w72zoinjMSk63DNcKkRTnOc                        | 2026-09-08 |
 | 技术反讲     | 预报名使用膨胀劵-**后端反讲文档**（v0.2，主文档）    | https://gaotuedu.feishu.cn/wiki/RC4DwjusfinikRk9IM9c88l1nZW                        | 2026-09-08 |
 | 技术反讲     | 预报名整体技术方案                        | https://gaotuedu.feishu.cn/wiki/BLlgwXUSniQ2DpkpKnmc8MeCnWe                        | 2026-09-08 |
@@ -102,7 +104,7 @@ tags: [需求, 链接]
 - 需求 wiki 节点 token：`W3SSwxr1AieysikF0D3csT4EnBh`
 - 后端反讲 token：`RC4DwjusfinikRk9IM9c88l1nZW`
 - PRD token：`N58DwzUDoi3sK3k1nCqcPOBMn3d`
-- **PRD A（优化）token：`TIGtweLV4iWdYtksyqNcWhIhnYb`；技术方案（优化）node token：`Kgphw2GhciYHuvkyy03coeHUnOh`（2026-10-29 建，父节点 = PRD A）**
+- **PRD A（优化）token：`TIGtweLV4iWdYtksyqNcWhIhnYb`**（已并入迭代需求 `MwezwKLebiU0afkphtCcNTgbndf`，技术方案 node token：`VMNYwMWA2iTvqskLi0ocNRyQnWg`；旧 `Kgphw2GhciYHuvkyy03coeHUnOh` 已取代）
 - **PRD A 对应 student-data 分支（2026-10-29 从 origin/release 新建）：`feature-xuban-presale-expand-opt`**
 - 待办表：base `VaqXbgkElanMhbs8ZCmcnNtJnog` / table `tblWl0uXntBAdIHq`
 - TAPD story_id：`1122531521001392077`（workspace `22531521`，iteration `1122531521001014792`）
@@ -153,3 +155,8 @@ tags: [需求, 链接]
 
 > serviceCode `gaotu_promotion_management` · appId `promotionmanagement.gaotu100.com`
 > 链路位置：`OES 页面 → promotion-management → promotion-b`
+
+## 优化迭代交付记录（2026-10-29）
+
+- 本需求 PRD A 的优化（推荐规则 + 外显抵扣金额）与另一需求「小班课学员人数上限修改」合并为迭代需求「【A-续班-20261001】膨胀券优化」交付，本地归档 `../【A-续班-20261001】膨胀券优化/`，权威飞书节点见上「技术方案（优化）」行。
+- 交付证据（两篇飞书技术方案链接与回读、各仓占位分支 `merge-base` 校验）：[`artifacts/tech-plan-delivery-20261029.md`](artifacts/tech-plan-delivery-20261029.md)。

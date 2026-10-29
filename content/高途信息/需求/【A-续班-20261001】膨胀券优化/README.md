@@ -4,16 +4,14 @@ aliases: [膨胀券预报名优化-推荐和外显抵扣金额, 膨胀券预报�
 status: 需求评审
 owner: zhangzeling
 branches:
-  - product-server:feature-xuban-presale-expand-opt
-  - promotion:feature-xuban-presale-expand-opt
-  - promotion-management:feature-xuban-presale-expand-opt
-  - student-center:feature-xuban-presale-expand-opt
-  - cart:feature-xuban-presale-expand-opt
-  - teacher-tool:feature-small-clazz-limit-and-search
-  - ces-teach-product:feature-small-clazz-limit-and-search
-  - course-center:feature-small-clazz-limit-and-search
-  - student-data:feature-xuban-presale-expand-opt
-  - student-data:feature-small-clazz-limit-and-search
+  - product-server:feature-xuban-20261001
+  - promotion:feature-xuban-20261001
+  - promotion-management:feature-xuban-20261001
+  - student-center:feature-xuban-20261001
+  - cart:feature-xuban-20261001
+  - teacher-tool:feature-xuban-20261001
+  - ces-teach-product:feature-xuban-20261001
+  - course-center:feature-xuban-20261001
 updated: 2026-10-29
 tags: [需求]
 ---
@@ -26,7 +24,7 @@ tags: [需求]
 
 ## 一句话
 
-A-续班-20261001 迭代含两个模块：①膨胀券预报名推荐范围放宽为「后置年级全学科券」并新增业务可填的「C 端外显抵扣金额」；②辅导班小班课可选学员上限 15→32，并在工具箱「家长会/小班课/自习室」新增「学员ID批量精确搜索」。
+**这是 1 个需求、含 2 个子需求**（同批评审、共用统一分支 `feature-xuban-20261001`）：①膨胀券预报名推荐范围放宽为「后置年级全学科券」并新增业务可填的「C 端外显抵扣金额」；②辅导班小班课可选学员上限 15→32，并在工具箱「家长会/小班课/自习室」新增「学员ID批量精确搜索」。
 
 ## 需求摘要
 
@@ -46,9 +44,11 @@ A-续班-20261001 迭代含两个模块：①膨胀券预报名推荐范围放�
 
 > 硬约束：改代码前先扫一眼。每条一句话说完，只保留最终口径；必要理由放 changelog。
 
-- 本迭代为**本期在范围内的新需求**，两个模块同批评审、一起做（2026-10-29）。
-- 模块① 改动点均不在 student-data；模块①各仓 `feature-xuban-presale-expand-opt` 为占位分支（2026-10-29）。
-- 模块② 改动点不在 student-data；`feature-small-clazz-limit-and-search` 为占位分支（2026-10-29）。
+- 本迭代为**本期在范围内的新需求**，两个子需求同批评审、一起做（2026-10-29）。
+- **统一分支**：本需求 2 个子需求共用同一个分支名 **`feature-xuban-20261001`**，不按子需求拆分支（2026-10-29 所有者明确）。
+- 统一分支已从**最新 `origin/release`** 建在 8 个真实涉及仓库：product-server / promotion / promotion-management / student-center / cart / teacher-tool / ces-teach-product / course-center；各分支 `ahead=0`、无 upstream（本地占位，未推远端）。
+- **student-data 无代码改动**，不建本需求分支（已删两个与此前占位分支；证据见「必须知道的坑」）。（2026-10-29 复核）
+- 模块① 改动点均不在 student-data；模块② 改动点不在 student-data（均有类/行号证据）。
 - 模块① 券推荐交集是唯一同源实现（发链接 / B 端下单弹窗 / C 端落地页三处共用），改口径必须只改一处（2026-10-29）。
 
 ## 现在什么情况
@@ -56,10 +56,10 @@ A-续班-20261001 迭代含两个模块：①膨胀券预报名推荐范围放�
 | | |
 |---|---|
 | 阶段 | 需求评审（技术方案已出，待评审） |
-| 进度 | T 0/3 · R 0/0 · C 0/0 |
+| 进度 | T 1/4 · R 0/0 · C 0/0 |
 | 部署泳道 | 未部署 |
-| 当前卡点 | 模块①：下单页券列表口径未拍板、改动仓库归属未定；模块②：工具箱三页面选学员接口所属服务/仓库未确认 |
-| 最近更新 | 2026-10-29：合并并新建本迭代归档，产出飞书需求文档与两个模块技术方案 |
+| 当前卡点 | 模块①：下单页券列表口径未拍板；模块②：工具箱三页面选学员接口所属服务/仓库未确认 |
+| 最近更新 | 2026-10-29：合并为「1 需求 + 2 子需求」；收敛为统一分支 `feature-xuban-20261001`（8 仓，基于最新 release，旧占位分支已清理，student-data 无改动）；两篇技术方案与本地归档同步统一分支口径 |
 
 ## 下一步
 
@@ -80,10 +80,9 @@ A-续班-20261001 迭代含两个模块：①膨胀券预报名推荐范围放�
 > 需求评审/反讲里没定的问题。定了就删掉，并在 changelog 记结论。
 
 - [ ] （模块①）下单页券列表是「页面范围不变但口径随推荐规则变」还是「连口径也不变」—— 等产品
-- [ ] （模块①）本次代码归属哪些仓库（product-server / promotion / promotion-management / student-center / cart）—— 等评审
 - [ ] （模块①）「C 端外显抵扣金额」与「抵扣金额」样式二选一是否需要过渡期并存 —— 等产品
 - [ ] （模块①）本模块与 EM 续班的关系（王永诗口径备注）—— 等产品
-- [ ] （模块②）工具箱三页面「选学员」接口在哪个服务/仓库？—— 等页面负责人答
+- [ ] （模块②）工具箱三页面「选学员」接口在哪个服务/仓库？—— 等页面负责人答（初步证据指向 student-center / teacher-tool，见「涉及的代码」）
 - [ ] （模块②）「小班预约EM改」是否限 EM 业务线、上限 32 是否灰度 —— 等产品答
 - [ ] （模块②）学员ID搜索是否含已在班学员、是否按辅导班范围限制 —— 等产品答
 
@@ -91,15 +90,15 @@ A-续班-20261001 迭代含两个模块：①膨胀券预报名推荐范围放�
 
 | 仓库 | 分支 | 模块 | 关键位置 |
 |---|---|---|---|
-| /Users/gaotu/IdeaProjects/JavaProject/product-server | feature-xuban-presale-expand-opt | ① | `PreOrderCouponIntersectService#intersect`、`CStyleConfigVO`、`ProcessService` |
-| /Users/gaotu/IdeaProjects/JavaProject/promotion | feature-xuban-presale-expand-opt | ① | `PreOrderActivityProduct*`（新增外显抵扣金额列） |
-| /Users/gaotu/IdeaProjects/JavaProject/promotion-management | feature-xuban-presale-expand-opt | ① | `PreOrderActivityProductEditReq` / `PreOrderActivityDomainServiceImpl` |
-| /Users/gaotu/IdeaProjects/JavaProject/student-center | feature-xuban-presale-expand-opt / feature-small-clazz-limit-and-search | ①② | ①`PreOrderCouponController` / `PreOrderCouponVO`；②选学员/搜索（`StudentGlobalSearchController#searchByUserIds` 待定） |
-| /Users/gaotu/IdeaProjects/JavaProject/cart | feature-xuban-presale-expand-opt | ① | `RegistrationService` / `PreRegistrationCoupon*` |
-| /Users/gaotu/IdeaProjects/JavaProject/teacher-tool | feature-small-clazz-limit-and-search | ② | `ParentsMeetServiceImpl`（`parentsMeeting.type.limit.map` 默认 `{3:15;4:30}`）、`ParentsMeetErrorCode.STUDENT_EXCEED_RELATION_LIMIT` |
-| /Users/gaotu/IdeaProjects/JavaProject/ces-teach-product | feature-small-clazz-limit-and-search | ② | `NodeInstanceUserCountValidator`（`ces.nodeInstance.userCountLimit.roomTypeMaxCount` 默认 `{"4":32,"5":32}`，已是 32） |
-| /Users/gaotu/IdeaProjects/JavaProject/course-center | feature-small-clazz-limit-and-search | ② | `Clazz1vNArrangeAddBaseChecker` / `ClazzArrangeOutlineConfigMatchChecker`（排课人数 vs 教室上限） |
-| /Users/gaotu/IdeaProjects/JavaProject/student-data | feature-xuban-presale-expand-opt / feature-small-clazz-limit-and-search | ①② | 占位分支，本次无改动 |
+| /Users/gaotu/IdeaProjects/JavaProject/product-server | feature-xuban-20261001 | ① | `PreOrderCouponIntersectService#intersect`（L345 `postPairs.contains(pairKey(grade,subject))` 现为年级+学科成对；L379/399-403 `isCouponInUse` 仅【使用中】）、`CStyleConfigVO`、`ProcessService` |
+| /Users/gaotu/IdeaProjects/JavaProject/promotion | feature-xuban-20261001 | ① | `PreOrderActivityProduct*`（新增外显抵扣金额列） |
+| /Users/gaotu/IdeaProjects/JavaProject/promotion-management | feature-xuban-20261001 | ① | `PreOrderActivityProductEditReq` / `PreOrderActivityDomainServiceImpl` |
+| /Users/gaotu/IdeaProjects/JavaProject/student-center | feature-xuban-20261001 | ①② | ①`PreOrderCouponController` / `PreOrderCouponVO`；②选学员/搜索：`StudentGlobalSearchController#searchByUserIds`（L58-63）、`GpsGroupController#studentPick`（L209）、`MyStudentController#list` |
+| /Users/gaotu/IdeaProjects/JavaProject/cart | feature-xuban-20261001 | ① | `RegistrationService` / `PreRegistrationCoupon*` |
+| /Users/gaotu/IdeaProjects/JavaProject/teacher-tool | feature-xuban-20261001 | ② | `ParentsMeetServiceImpl`：L180-181 `@ApolloJsonValue("${parentsMeeting.type.limit.map:{3:15;4:30}}")`、L273/347/1131 校验、L1122 `checkRelationStudentLimit`；`ParentsMeetErrorCode.STUDENT_EXCEED_RELATION_LIMIT`（L67 文案「小班课上限15，自习室上限30」）、`ManageSubclazzController#listSubclazzStudent` |
+| /Users/gaotu/IdeaProjects/JavaProject/ces-teach-product | feature-xuban-20261001 | ② | `NodeInstanceUserCountValidator`（`ces.nodeInstance.userCountLimit.roomTypeMaxCount` 默认 `{"4":32,"5":32}`，已是 32，预计仅回归） |
+| /Users/gaotu/IdeaProjects/JavaProject/course-center | feature-xuban-20261001 | ② | `Clazz1vNArrangeAddBaseChecker` / `ClazzArrangeOutlineConfigMatchChecker`（排课人数 vs 教室上限，预计仅回归） |
+| /Users/gaotu/IdeaProjects/JavaProject/student-data | **无（不建分支）** | — | 已核：无 `externalDeduct`/`deductibleAmount`、无 `PreOrderCouponIntersect`/`listDisplayableCoupons`；家长会/小班课相关仅有 DWS ETL（`DwsParentMeetingUserInfoConsumer`、`DwsLessonUserRemindSyncConsumer` 等），与选人上限/ID 搜索无关 |
 
 > 分支名同时写进上面 frontmatter 的 `branches:`，下个会话可 `rg -l "<分支名>" 需求根目录` 直接反查到本目录。
 
@@ -123,4 +122,5 @@ A-续班-20261001 迭代含两个模块：①膨胀券预报名推荐范围放�
 - **模块① 券状态枚举**：`COUPON_STATUS_IN_USE = 1`（使用中），2 是已失效；本次需补【售卖中】过滤。
 - **模块② 真正卡「15」的是 teacher-tool 的 `typeLimitMap`**，不是 ces-teach-product 的教室形态上限（默认已 32）；改错地方会导致「前端可选 32 但教室/后端仍按 15 卡」。
 - **模块②「小班课」是 B 端工具箱的小灶课类型**（`ParentMeetingTypeEnum` type=3），不是学生端的 subclazz；人数上限走 `parentsMeeting.type.limit.map`。
-- **student-data 不在本次改动范围**：两个占位分支与 `origin/release` 同点，无代码。
+- **student-data 不在本次改动范围**：已核无相关代码（无外显抵扣/推荐交集；家长会/小班课相关仅 DWS ETL），两个旧占位分支已删，本需求不建分支。
+- **分支基线漂移**：旧占位分支（`feature-xuban-presale-expand-opt` / `feature-small-clazz-limit-and-search`）中，product-server、ces-teach-product、course-center、student-center 基于**过期** release 头（如 product-server 旧 `a91c18697`，现 `548e8a8c7`）。统一分支已统一改为从**最新 `origin/release`** 建，别再从旧占位分支续。

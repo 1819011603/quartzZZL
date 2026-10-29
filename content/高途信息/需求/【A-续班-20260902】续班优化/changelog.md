@@ -9,7 +9,7 @@ tags: [需求, 日志]
 
 ## 2026-10-29 C 端分支合 release 并重发 dev-3（提测准备）
 
-复用发布编排 **24038**（C端支持膨胀券）。用户要求 C 端分支先合 `origin/release` 再重发后提测。已推送：cart `feature-xuban-c-cart-addons` `30e7ccb9`→**`44e82e61`**（真合并；带入 `41fc524a` product-server-client 1.5.11 定版、`de2f693a` UserRenewalClazzExample、`3e1e366c` 扩科 release 合并）；order 同分支 `6a36d7a4b5`→**`50681b7073`**（fast-forward，分支提交本就已在 release）。5 后端重建发布 `test-gtbg-dev-3`：cart `1319574`、order `1319575`、order_task `1319577`、order-ad `1319578`、order-b `1319579`（构建中，待 UP 核版本）。前端 8 站点未动。
+复用发布编排 **24038**（C端支持膨胀券）。用户要求 C 端分支先合 `origin/release` 再重发后提测。已推送：cart `feature-xuban-c-cart-addons` `30e7ccb9`→**`44e82e61`**（真合并；带入 `41fc524a` product-server-client 1.5.11 定版、`de2f693a` UserRenewalClazzExample、`3e1e366c` 扩科 release 合并）；order 同分支 `6a36d7a4b5`→**`50681b7073`**（fast-forward，分支提交本就已在 release）。5 后端重建发布 `test-gtbg-dev-3`（流水线 cart `1319574`、order `1319575`、order_task `1319577`、order-ad `1319578`、order-b `1319579`，均 SUCCESS），全部到目标版本且 Eureka UP。order/order-ad/order-b 首启因测试库 `Too many connections` 失败、重启后自愈（非代码问题）。自验通过：dev-3 券 8014（大班 availableScope=六年级语文 / 小班=一年级数学，price=10000，recommendType=3）与组合 51 正常展示。24038 前端 8 服务产物参数已补齐（`gaotu_m`/`tutu` 真镜像，其余占位 1），前端 8 站点本次未部署；同时把 5 后端的提测产物刷新为合并后镜像（cart `...-44e82e61-...`、order 四部署 `...-50681b70-...`），避免提测跑合并前代码。遗留：青舟「提测」步骤未见可调接口。
 
 ## 2026-10-26 dev-1当前批次完整回归
 

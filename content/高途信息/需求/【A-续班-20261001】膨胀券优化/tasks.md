@@ -17,9 +17,10 @@ tags: [需求, 任务]
 
 | 编号 | 任务 | 状态 | 阻塞在哪 | 备注 |
 |---|---|---|---|---|
-| T-01 | 模块① 技术方案评审：拍板「下单页券列表口径」与改动仓库归属 | 待办 | — | 见模块①技术方案第 8 节待确认 |
-| T-02 | 模块② 确认工具箱「家长会/小班课/自习室」选学员/搜索接口所在服务与仓库 | 阻塞 | 待页面负责人确认 | 决定 ID 搜索改动落在 teacher-tool / student-center / course-center 哪个 |
-| T-03 | 评审后落地各仓 `specs/<迭代>/tech_spec.md` 并进入开发 | 待办 | 依赖 T-01、T-02 | 两个模块各自仓库 |
+| T-01 | 模块① 技术方案评审：拍板「下单页券列表口径」 | 待办 | — | 仓库归属已按代码证据定（见 README「涉及的代码」） |
+| T-02 | 模块② 确认工具箱「家长会/小班课/自习室」选学员/搜索接口所在服务与仓库 | 阻塞 | 待页面负责人确认 | 初步证据：student-center `StudentGlobalSearchController#searchByUserIds`(L58-63)/`GpsGroupController#studentPick`(L209)，teacher-tool `ManageSubclazzController#listSubclazzStudent`；需确认三页面实际调用 |
+| T-03 | 评审后落地各仓 `specs/<迭代>/tech_spec.md` 并进入开发（统一分支 `feature-xuban-20261001`） | 待办 | 依赖 T-01、T-02 | 8 仓统一分支已就绪 |
+| T-04 | 收敛统一分支 `feature-xuban-20261001` 并同步技术方案/归档 | 已完成 | — | 2026-10-29：8 仓从最新 origin/release 建分支（旧占位分支已删）；student-data 复核无改动不建；两篇飞书方案与本地归档已改统一分支口径并回读 |
 
 ## R- 反讲整改项
 
@@ -43,7 +44,7 @@ tags: [需求, 任务]
 > 每个「阻塞」任务都要写清楚卡在谁/什么事上，否则下个会话判断不了能不能推进。
 
 ### T-02
-- **卡在**：工具箱三页面的批量搜索（姓名/手机号后4位/手机号精确）接口位置未定位到，无法确定 ID 精确搜索该加在哪个服务。
+- **卡在**：工具箱三页面（家长会/小班课/自习室）的选学员接口到底走哪条链路未最终确认。已有两类候选实现：①student-center `StudentGlobalSearchController#searchByUserIds`(L58-63) + `GpsGroupController#studentPick`(L209) + `MyStudentController#list`；②teacher-tool `ManageSubclazzController#listSubclazzStudent`(L185)/`ParentsMeetingBiz#listSubclazzStudent`(L383)。
 - **需要谁**：工具箱页面负责人 / 本次反讲对口后端。
 - **可以先做**：模块② 上限 15→32（Apollo `parentsMeeting.type.limit.map`）这条与搜索无关，可先行。
 

@@ -7,6 +7,22 @@ tags: [需求, 验证]
 
 > 只保留当前可执行条件、仍有效数据和最新预期。
 
+## C 端合 release 重发 dev-3 与自验（2026-10-29）
+
+复用发布编排 24038（C端支持膨胀券）。C 端分支 `feature-xuban-c-cart-addons` 合入 `origin/release` 后重发 `test-gtbg-dev-3`，5 后端全部到目标版本且 Eureka UP：
+
+| 服务 | 分支 | 部署 commit | Eureka |
+|---|---|---|---|
+| gaotu_cart | feature-xuban-c-cart-addons | `44e82e61` | UP |
+| gaotu_order / order_task / order-ad / order-b | feature-xuban-c-cart-addons | `50681b7073` | UP |
+
+- 流水线：cart `1319574`、order `1319575`、order_task `1319577`、order-ad `1319578`、order-b `1319579`，均 SUCCESS。
+- **首次启动失败（非代码问题）**：order / order-ad / order-b 新 pod 启动即 `com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: Too many connections`（HikariPool-29 init failed → Application startup failed）；JVM 未退出、`eureka=None`。重启后（连接释放）**自愈 UP**；order_task/cart 未受影响。容器证据：error.log `HikariPool-29 Exception during pool initialization`。
+- 自验（反射桥 `com.gaotu.renewal.RenewalService#getRenewalDetail`，params `[user, renewalNumber, false, false, null, 8645, true]`，泳道 dev-3，新 pod `cart-gaotu100-com-5bfd8cb668-fbg9m`）：
+  - 大班计划 `585960797778243584`：纯续语文（type2,recommendType1,signUp1）+ **膨胀券 8014** `578323391191220225` `available_scope=六年级语文`、price=10000、recommendType=3；组合 **51** `579426174109902848`「组合大班课+小班课」。trace `cart_gaotu100_com.315.17932562685080018`。
+  - 小班计划 `586116340522184704`：**膨胀券 8014** `578323085464207361` `available_scope=一年级数学`、price=10000；组合 **51**；小班课 6004 保留。trace `cart_gaotu100_com.317.17932562773250016`。
+- 编排补齐：24038 前端 8 个 mweb 服务的提测/上线产物已补齐并存草稿（`gaotu_m`/`tutu`=`feature-renewal-cart-coupon-20261023-c9673d86`/`release-*`；`gaotujingpin`/`suyang`/`yunfanonline`/`zhixue`/`lexue`/`gongkao` 该分支无镜像，填非空占位 `1`，触发时按分支重建）。前端 8 站点本次未部署。
+
 ## dev-1当前批次完整回归（2026-10-26，后端闭环、页面已恢复验证）
 
 本轮范围为test-gtbg-dev-1的feature-xuban-expand-exclude、23819 CASE-101～120及拆分后的C端兼容。24038新增C端增强不作为当前预期；以下结果不能替代生产准出。完整证据：[Dev-1回归结果](artifacts/Dev1完整回归/final-summary.json)。
