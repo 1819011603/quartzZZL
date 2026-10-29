@@ -19,6 +19,8 @@ date: 2026-10-29
 | 回读标题 | 技术方案 · 膨胀券预报名优化（推荐规则 + 外显抵扣金额） | 技术方案 · 小班课学员人数上限修改 |
 | 回读正文字符数 | 6324 | 4694 |
 
+> **更新（2026-10-29）**：本文件记录的两篇旧文档 A `Kgphw2GhciYHuvkyy03coeHUnOh` / B `JlJcwTRtLiwaxJk1Yhuc9UQznIa` 已被本次新建文档取代（不删旧内容，仅作历史参考）——A → 技术方案 https://gaotuedu.feishu.cn/wiki/VMNYwMWA2iTvqskLi0ocNRyQnWg （需求节点 https://gaotuedu.feishu.cn/wiki/MwezwKLebiU0afkphtCcNTgbndf）；B → 技术方案 https://gaotuedu.feishu.cn/wiki/CwkcwY5Q9iAD7fkx6CBcPKRDnpg （需求节点 https://gaotuedu.feishu.cn/wiki/Ffa2wzqvQiXmnukVWJRcUXm0nlo）。
+
 回读命令：`lark-cli docs +fetch --doc <token> --doc-format markdown`（字符数取返回 `data.document.content` 长度；两篇均含第 9 节「目标仓库与分支」，revision_id=4）。
 
 ## 2. student-data 校验

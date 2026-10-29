@@ -290,6 +290,12 @@ Cronus补测走真实小班页面：唐稳01/tangwen01登录→清空续班计�
 |---|---|---|---|
 | T-22 | C端加购拆分与24038后端登记 | 已完成 | cart当前58dcd914/新30e7ccb9，order两分支6a36d7a4b5；10部署实际SHA/UP、15个C端读接口、两泳道B端详情、选择保存/跨年级/取消隔离及恢复通过。24038保存5后端＋8mweb、后端dev-3，23819/24038产物与飞书方案已读回；本项仅后端拆分闭环，C-05页面/支付退款P0仍进行中。 |
 
+## C 端合 release 并重发（2026-10-29，提测准备）
+
+| 编号 | 任务 | 状态 | 证据/要求 |
+|---|---|---|---|
+| T-24 | C 端分支合 release 后重发 dev-3 准备提测 | 进行中 | 复用 24038。cart `feature-xuban-c-cart-addons` `30e7ccb9`→`44e82e61`（真合并 release：product-server-client 1.5.11 定版/UserRenewalClazzExample/扩科 release 合并）；order 同分支 `6a36d7a4b5`→`50681b7073`（fast-forward）。5 后端重建发布 dev-3：cart 1319574、order 1319575、order_task 1319577、order-ad 1319578、order-b 1319579，待新 pod 目标版本 UP 后交提测。前端 8 站点本次未动。 |
+
 ## dev-1当前分支完整回归（2026-10-26）
 
 | 编号 | 任务 | 状态 | 备注 |
