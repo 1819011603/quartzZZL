@@ -14,9 +14,10 @@ tags: [需求, 日志]
 ### 🤖 Claude
 
 - 定了（定稿）：**模块②「选学员搜索」= teacher-tool**，非 student-center。证据：工具箱前端 `boss-counselor/src/pages/Toolbox/SmallClazz` 的 `services/manage.ts`（root=`/bgwApi/teacher-tool`）选学员搜索调 `/manage/subclazz/studentList`、人数上限调 `/manage/subclazz/getSignCountLimit`；现支持手机号（逗号/空格批量）+ 姓名模糊，PRD 新增手机号后4位批量 + 学员ID批量精确。GPS（GpsGroupController/MyStudent）与 student-center 选学员链路排除。
-- 定了（定稿）：模块①**下单页口径**仍待产品——代码证据 `PreOrderCouponIntersectService#intersect` 被下单页/C 端/发链接三处共用，若「下单页口径不变」则交集需按调用方分叉；已写入方案① §8。
+- 定了（定稿）：模块①**下单页的券是否随新推荐规则一起变**仍待产品——已重写为业务语言：A（统一改一处，下单页券跟着变）/ B（按调用方分叉，下单页不变），并推荐 A；含 `PreOrderCouponIntersectService#intersect` 被下单页/C 端/发链接三处共用的证据（方案① §8.1）。
 - 定了：模块① 改动仓库已定（product-server/promotion/promotion-management/student-center/cart），仓库归属项从待确认移除。
-- 定了：**「膨胀券的，这次不用」的确切边界仍待所有者确认**（方案① §8/需求入口 §6），未臆造。
+- 定了（2026-10-29 所有者反馈）：**删除「膨胀券的，这次不用」边界项**——所有者明确「不用管」，模块①按在范围内推进（方案① §8 与需求入口 §6 已移除）。
+- 定了（2026-10-29 所有者反馈）：**模块①「C 端外显抵扣金额」与「抵扣金额」是同一概念**——不新增并列字段/开关；业务手填值落券的 `deductible_amount`、C 端按 `showDiscountAmount` 展示（方案① §3.2/§4.2 已按同一概念改写）。
 - 更新：两篇技术方案 + 需求入口 + 本地归档按上述定稿并回读；模块② 全文按「小灶课/辅导班小班课」、无 GPS 残留。
 
 ### 👤 我
