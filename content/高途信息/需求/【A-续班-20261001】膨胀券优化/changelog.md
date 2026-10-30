@@ -9,6 +9,16 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-10-30（①-8 补齐 + ②-3 结论 + Boss 提示词新增⑧）
+
+### 🤖 Claude
+
+- 定（①-8 属需求）：spec §6.2「下单页（student-center）」、§6.3「student-center `/renewal/pre/coupon/list` 新增【C端外显抵扣金额】」、§8.1 透传链「…→ product-server → cart / student-center」。
+- 做（后端补齐，不改前端）：product-server `PreOrderCouponIntersectResult` 加 `couponExternalAmount`、`intersect` 从活动商品填充；`PreOrderDisplayableCouponRow` 加 `externalDeductibleAmount`；`PreOrderDisplayableCouponService` 透传。student-center `ProductDisplayableCouponDTO` 加字段（`@JSONField external_deductible_amount`）；`PreOrderCouponBiz` 加 `buildScopeExternalMap`/`fillExternalDeductibleAmount` 回填 VO。提交+推送（product-server `1109a3c35`、student-center `889354d67`）。
+- 验：部署 product-b `1322183`、student-center `1322184` SUCCESS、pod eureka UP；`listCoupon(renewMasterNumber=578668076965308416)` 返回 **`externalDeductibleAmount:5000`**（trace `student-center.636.17933766634250001`）。
+- ②-3：`edit` 33 人 → `code 30033`（trace `efff0b99-…`），加 create 33→30033/32→越过，证明上限=32；**同房间关联聚合 `checkRelationStudentLimit` 未单独运行**（需「同房间多课节+合法在读学员」，候选房间仅 20 人且 edit 路径 `checkStudentStatus` 先于关联校验）→ 代码实现+同源配置，残余风险低。
+- Boss 提示词：`managed-boss.md`「硬性验收」新增 **⑧ 收尾前必须做「需求↔实现」逐点核对或代码 diff 复核，缺项未清不得判 done**；回读+`tests.test_boss_guidance` 12 tests OK；本地提交 `657d084`。
+
 ## 2026-10-30（需求文档 vs 后端实现对比 + 两处带数据 E2E）
 
 ### 🤖 Claude
