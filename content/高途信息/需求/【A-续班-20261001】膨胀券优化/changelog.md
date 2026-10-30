@@ -9,6 +9,17 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-10-30（需求文档 vs 后端实现对比 + 两处带数据 E2E）
+
+### 🤖 Claude
+
+- 造数（复用前置真实场景 + test 改数据）：计划 `578668076965308416` 改绑活动 `296`（券【使用中且售卖中】）、活动 296 范围行改 `(年级16 语文)`、活动商品 `external_deductible_amount=5000`、该计划 C 端样式节点 `showExternalDeductAmount=true`。
+- 验（带数据 HTTP）：
+  - **cart** `RegistrationService#preRegistration(7489622228, 578668076965308416, 0, null)` → **product_list 非空 `discount_price:5000`**（价格 10000），traceId `cart_gaotu100_com.289.17933755997410037` ✅
+  - **student-center** `PreOrderCouponBiz#listCoupon(renewMasterNumber=578668076965308416)` → **total:1 非空**，但**无 `externalDeductibleAmount`**（traceId `student-center.611.17933755984270016`）。
+- 发现缺口：student-center 券列表源＝coupon-a（`PreOrderCouponAclServiceImpl#pageQueryCoupon` → `expandCouponAdapter.queryList`，L56-73），coupon-a 不含 `external_deductible_amount` → 单加 VO 字段不下发；B端下单弹窗若要展示须从活动商品 enrich（设计待定；PRD「续班服务下单」是否=该弹窗待确认）。
+- 结论：模块① C 端（cart）已端到端带数据通过；模块② 全部验证通过；后端仅此 1 处「待确认范围」缺口 + 前端项待前端。
+
 ## 2026-10-30（测试泳道 student-center 拉起）
 
 ### 🤖 Claude
