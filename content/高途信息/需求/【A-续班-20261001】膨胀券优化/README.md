@@ -10,7 +10,7 @@ branches:
   - student-center:feature-xuban-20261001
   - cart:feature-xuban-20261001
   - teacher-tool:feature-xuban-20261001
-updated: 2026-10-29
+updated: 2026-10-30
 tags: [需求]
 ---
 
@@ -47,6 +47,8 @@ tags: [需求]
 - 统一分支已从**最新 `origin/release`** 建在 **6 个真实涉及仓库**：product-server / promotion / promotion-management / student-center / cart / teacher-tool；各分支 `ahead=0`、无 upstream（本地占位，未推远端）。
 - 模块① **外显抵扣金额按 PRD（方向 A，所有者确认）**：**新增独立【C 端外显抵扣金额】字段**（与【抵扣金额】并列、不共用），配置页在抵扣金额列后新增该列（0–100000/两位小数/默认0/支持批量修改）；C 端样式配置**新增配套开关**，与【抵扣金额】开关**二选一**；下单页/C 端按配置展示。**promotion 需新增 DB 列（DDL 工单）**。（2026-10-29）
 - 模块② **上限 15→32 直接全量、不需要灰度、不按业务线区分**；「小班预约EM改」无特殊含义；**学员 ID 搜索范围与现有搜索一致**（不额外限辅导班、不扩大范围）。（2026-10-29 产品/所有者答复）
+- 模块② **上限来源链路（2026-10-29 核查）**：唯一配置源 = teacher-tool Apollo `parentsMeeting.type.limit.map`（type=3）；EES 工具箱动态读 `getSignCountLimit`/`allTypeLimit`；`ParentsMeetServiceImpl#createParentsMeeting`（L283-284）创建时 `setSignCount(typeLimitMap.get(type))` → 写 `gaotu.parents_metting.sign_count`（**创建时快照**）→ ILIVE `getParentMeetingInfoFromCache.signCount` → 预约服务「先拦一次」。**改 Apollo 后新建即 32（无需改 ILIVE/预约服务）；存量 sign_count 仍 15，是否订正待产品。**
+- 模块② **TEST 上限已改 32（2026-10-30）**：teacher-tool Apollo `parentsMeeting.type.limit.map` `{3:20;4:30}`→`{3:32;4:30}`（已发布，回读已发布值 `{3:32;4:30}`）。**PROD 未配该 key（走代码默认 15），上线需配 `{3:32;4:30}`。**
 - 模块②「小班课」= **小灶课 / 辅导班小班课（工具箱-小班课）**，不是 GPS 小班课；主链路在 teacher-tool（`ParentsMeetServiceImpl`）。
 - **模块② 选学员搜索已定案在 teacher-tool**：工具箱（`boss-counselor` Toolbox）调 `/bgwApi/teacher-tool/manage/subclazz/studentList`（现仅手机号批量+姓名模糊，PRD 新增手机号后4位批量+学员ID批量精确）；**不在 student-center**（GPS/MyStudent 链路排除）。（2026-10-29 依据前端调用链定案）
 - **ces-teach-product / course-center 不需改动**（教室形态上限默认已 32、排课随教室上限自动放宽，PRD 不涉及），已撤其统一分支。
@@ -63,7 +65,7 @@ tags: [需求]
 | | |
 |---|---|
 | 阶段 | 需求评审（技术方案已出，待评审） |
-| 进度 | T 8/9 · R 0/0 · C 0/0 |
+| 进度 | T 10/11 · R 0/0 · C 0/0 |
 | 部署泳道 | 未部署 |
 | 当前卡点 | 无（技术方案已出，待评审） |
 | 最近更新 | 2026-10-29：统一分支 `feature-xuban-20261001`（6 仓）；模块① 外显抵扣按方向 A（新增独立字段 + 二选一开关）、**下单页券口径确认为 A（三处共用，券随新规则变）**；模块② 页面=家长会、上限走 Apollo 配置=32（全量/不按业务线）、忽略「C端预约」；模块② 选学员=teacher-tool。**两篇方案已按「后端反讲权威模板」重构为最终版并加 3 张示意图**（方案①：推荐匹配链路、外显抵扣数据流；方案②：工具箱→teacher-tool 链路） |
@@ -107,7 +109,8 @@ tags: [需求]
 
 | 配置项 | 涉及 | 工单/说明 |
 |---|---|---|
-| Apollo | 是 | 模块② `parentsMeeting.type.limit.map`（teacher-tool）type3 15→32（直接全量，无需灰度）；模块① 券状态白名单（沿用既有 key） |
+| Apollo | 是 | 模块② `parentsMeeting.type.limit.map`（teacher-tool）type3 15→32：**TEST 已完成（{3:20;4:30}→{3:32;4:30}，2026-10-30 发布）**；**PROD 未配、上线需配 `{3:32;4:30}`**；模块① 券状态白名单（沿用既有 key） |
+| 数据订正 | 可能 | 模块② 存量小灶课 `gaotu.parents_metting.sign_count` 仍 15（创建时快照），**是否订正为 32 待产品**（订正则走数据订正/DBA） |
 | ES | 否 | |
 | MySQL DDL | 是 | 模块① promotion 预报名活动商品**新增独立列** `external_deductible_amount`（需 promotion 库 DDL 工单）；模块② 无 |
 | MQ | 否 | |

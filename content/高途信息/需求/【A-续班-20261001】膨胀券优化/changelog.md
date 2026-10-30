@@ -9,6 +9,37 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-10-30（TEST 上限改 32）
+
+### 🤖 Claude
+
+- 做了：**TEST 环境** teacher-tool Apollo `parentsMeeting.type.limit.map` 由 `{3:20;4:30}` 改为 `{3:32;4:30}` 并**已发布**（appId=`teacher-tool` / ns=`application` / cluster=`default`；releaseKey `20261030160241-ab716f5d9e0ec330`；回读**已发布值** = `{3:32;4:30}`）。
+- 注：TEST 原值实为 `{3:20;4:30}`（非 15）；**PROD 未配置该 key**，走代码默认 `{3:15;4:30}`，**上线需在 PROD 配 `{3:32;4:30}`**。
+- 记录：方案② §6.1（配置落地）/§11.2（上线方案）、需求入口 §4.1、本地 README（已定共识 + 上线影响面）。
+- 遗留：**生产存量** `gaotu.parents_metting.sign_count` 订正为 32 **待产品**（走数据订正/DBA，本次不动库）。
+
+### 👤 我
+
+- 所有者：测试环境改成 32，记录到技术方案。
+
+---
+
+## 2026-10-29（核查小班课上限来源）
+
+### 🤖 Claude
+
+- 定了（核查结论）：小班课人数上限的**唯一配置源 = teacher-tool Apollo `parentsMeeting.type.limit.map`（type=3）**。读取方两条链：
+  - **EES 工具箱**：动态读 teacher-tool `getSignCountLimit` / `allTypeLimit`；
+  - **快照链**：`ParentsMeetServiceImpl#createParentsMeeting`（L283-284）创建时 `setSignCount(typeLimitMap.get(type))` → 写 `gaotu.parents_metting.sign_count` → ILIVE `feignParentMeet/getParentMeetingInfoFromCache.signCount` → 预约服务「先拦一次」（`size>=signCount` 抛 `IS_FULL`）。
+- 定了：**改 Apollo type=3=32 后，EES 与「新建」小灶课自动为 32，无需改 ILIVE / 预约服务代码**；**存量小灶课 `sign_count` 仍 15**，预约/ILIVE 侧对存量仍卡 15，**是否订正（`UPDATE gaotu.parents_metting SET sign_count=32 WHERE type=3`）待产品**。
+- 改：方案② §5.1 画板（加入 sign_count→ILIVE→预约链）、§6.1（上限来源与读取方）、§8.1（存量影响）、§11.2（存量订正）；需求入口 §4.1；README 已定共识/上线影响面。
+
+### 👤 我
+
+- 所有者转发讨论，要求核实上限来源与「小班预约 / C端预约」是否需改。
+
+---
+
 ## 2026-10-29（技术文档收敛为最终版 + 可视化）
 
 ### 🤖 Claude
