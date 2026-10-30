@@ -28,6 +28,14 @@ tags: [需求, 验证]
 - 覆盖率：准入 `COVERAGE_BE` 由 **51.0%（<60 强卡未过）** 重跑后 **74.0% ≥60 通过**（ccmId 40057→40073）；瓶颈 `gaotu_order` 51.08%(166/325)→**74.81%(193/258)**。差异行是 cancreate（批量可下单校验，`CanCreateOrderApiFeignService`/`CanCreateOrderForNeoService`/`OrderValidateService`），新 pod 重启后运行时 jacoco 为空导致首测 0.78%；对 dev-3 四个 order pod 直连 HTTP `POST /feignService/canCreateOrder/batchCanCreateOrder`（contextPath 空，port 28688）打全路径（正常课程/force跳过冲突/重复购买/组合51放行/8014/LAYER_EXAM/参数错误/null）后重跑抬到 74.81%。cart 75.48% 通过。
 - 质量准入：`allBlockingPassed=True`，无未过强卡（USER_CASE/ALARM/ALARM_CHECK/PYTEST_JOB/COVERAGE_BE/COVERAGE_FE/ESAI_CR 均过）。
 
+### 去掉 C 端膨胀券加购（2026-10-30）
+
+按飞书结论去掉膨胀券加购、只留组合商品。cart `44e82e61`→**`8d9d1f6b`**（移除 8014 券加购/展示/算价/勾选代码，保留 51 组合与勾选记忆；相对 release 的 diff 1515→~1141 行）。
+- 编译/测试：`mvn8 -DskipTests compile` + `test-compile` 通过；`RenewalCombinedDetailContractTest`/`RenewalSingleProductContractTest`/`RenewalGradeSelectionTest` 共 **16 项通过**；删除 `RenewalCouponContractTest`。
+- 部署：流水线 `1321159` SUCCESS，新 pod `cart-gaotu100-com-76d5c4887d-vr8qh` / `10.218.251.17`，分支 `feature-xuban-c-cart-addons` commit `8d9d1f6b`，Eureka UP。
+- 自验（反射桥 `getRenewalDetail`/`productList`，泳道 dev-3）：大班 `585960797778243584` 与 小班 `586116340522184704` → **8014 膨胀券消失**（原券 `578323391191220225`/`578323085464207361` 不再返回）、**组合 51 仍在**（`579426174109902848` 等）、纯续语文/6004 保留；`productList` 组合 51 正常。traces `cart_gaotu100_com.297/298/299.1793337*`。
+- 24038 cart 提测产物刷新为 `...-8d9d1f6b-...`；前端 8 站点未动（后端不返券即不展示）。计划改名：青舟工具无改名参数，跳过。
+
 ## dev-1当前批次完整回归（2026-10-26，后端闭环、页面已恢复验证）
 
 本轮范围为test-gtbg-dev-1的feature-xuban-expand-exclude、23819 CASE-101～120及拆分后的C端兼容。24038新增C端增强不作为当前预期；以下结果不能替代生产准出。完整证据：[Dev-1回归结果](artifacts/Dev1完整回归/final-summary.json)。

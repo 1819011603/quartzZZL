@@ -294,7 +294,7 @@ Cronus补测走真实小班页面：唐稳01/tangwen01登录→清空续班计�
 
 | 编号 | 任务 | 状态 | 证据/要求 |
 |---|---|---|---|
-| T-24 | C 端分支合 release 后重发 dev-3 准备提测 | 进行中 | 复用 24038。cart `30e7ccb9`→`44e82e61`（真合并 release：product-client 1.5.11 定版/UserRenewalClazzExample/扩科 release 合并）；order `6a36d7a4b5`→`50681b7073`（fast-forward）。5 后端重建发布 dev-3 均 SUCCESS 且 UP（cart `44e82e61`；order/order_task/order-ad/order-b `50681b7073`）。order/order-ad/order-b 首启仅因测试库 `Too many connections` 失败、重启自愈。自验通过：8014 券 availableScope（大班六年级语文/小班一年级数学、price10000）+组合51 正常。24038 前端 8 服务产物参数+回滚产物补齐、5 后端提测产物刷新为合并后镜像。告警 5 条全清 `非bug`。准入 COVERAGE_BE 51%→74% 通过（order 74.81%/cart 75.48%，打 cancreate 路径后重跑）；`allBlockingPassed=true`。order 四个部署已从 24038 移除（本批无独有提交，随 expand-exclude/23819 上），24038 现 = cart + 8 mweb（9 服务），9 个回滚产物全齐。遗留：青舟「提测」步骤无可用接口，待触发。 |
+| T-24 | C 端分支合 release 后重发 dev-3 准备提测 | 进行中 | 复用 24038。cart `30e7ccb9`→`44e82e61`（真合并 release：product-client 1.5.11 定版/UserRenewalClazzExample/扩科 release 合并）；order `6a36d7a4b5`→`50681b7073`（fast-forward）。5 后端重建发布 dev-3 均 SUCCESS 且 UP（cart `44e82e61`；order/order_task/order-ad/order-b `50681b7073`）。order/order-ad/order-b 首启仅因测试库 `Too many connections` 失败、重启自愈。自验通过：8014 券 availableScope（大班六年级语文/小班一年级数学、price10000）+组合51 正常。24038 前端 8 服务产物参数+回滚产物补齐、5 后端提测产物刷新为合并后镜像。告警 5 条全清 `非bug`。准入 COVERAGE_BE 51%→74% 通过（order 74.81%/cart 75.48%，打 cancreate 路径后重跑）；`allBlockingPassed=true`。order 四个部署已从 24038 移除（本批无独有提交，随 expand-exclude/23819 上），24038 现 = cart + 8 mweb（9 服务），9 个回滚产物全齐。2026-10-30 按飞书去掉膨胀券加购：cart `8d9d1f6b`（留组合51+勾选记忆），编译+16 项测试通过，重发 dev-3 自验膨胀券消失/组合仍在，24038 cart 产物刷新。遗留：青舟「提测」步骤无可用接口，待触发。 |
 
 ## dev-1当前分支完整回归（2026-10-26）
 
