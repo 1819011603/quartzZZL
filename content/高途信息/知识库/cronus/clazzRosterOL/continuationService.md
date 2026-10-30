@@ -87,6 +87,13 @@
 > 列表里的**科目字段**（`studyingSubject` 在读 / `renewalSubject` 续班 / `renewalExpansionSubject` 扩科 / `gradeRenewalSubject`·`gradeRenewalExpansionSubject` 分年级 / `smallStudyingSubject`·`smallRenewalSubject`·`smallRenewalExpansionSubject` 小班关联）口径、源表与计算见 [续班科目/大班与小班续班科目字段口径](../../续班科目/大班与小班续班科目字段口径.md)。
 > ⚠️ 本页 doc 是 `ads_large_subclazz_user_index`（大班**辅导班**文档，id=subclazzNumber-userId）；「小班在读科目」这类 `small*` 字段**只在这份索引**，大班花名册 `ads_large_clazz_user_<年>` 没有。
 
+### 学员辅导班状态字段口径（`clazzStudentStatus` × `subclazzStudentStatus`）
+
+- `clazzStudentStatus`（**班级维度**，在读状态）：1 在读 / 0 退班。权威值 = 该学员在该班级下是否还有 `subclazzStudentStatus=1` 的辅导班；由 `SubclazzTransferStudentDataQueryServiceV2`（student-data）重算——**触发字段 `transClazzStudentStatus` 不是真实存储字段**（文档里查出来是 null，仅作 DataQueryServiceV2 的 `getFields()` 触发名）。
+- `subclazzStudentStatus`（**辅导班维度**，是否本人辅导班）：1 在 / 2 不在。
+- 合法组合（`StudentSubStatusEnum`，student-data-client）：`(clazzStudentStatus, subclazzStudentStatus)` = `(1,1)` 在读且本人辅导班 / `(1,2)` 在读非本人辅导班 / `(0,2)` 退款；**没有 `(0,1)` —— 出现即非法态**（常见于退班事件按班级维度广播、误清同班其它仍在班辅导班；见工单 `续班与业绩/业绩归因/排查/大班续班服务漏在班学员.md`）。
+- 页面顶部「可续学员数」≈ `canRenewal ∈ {1,2,8} 且 clazzStudentStatus=1` 的条数。
+
 ## 排查提示
 
 - **列表为空 / 数量不对** → `/roster/renewal/page` 的 `filter`/`quickFilter`；total 触顶看 `/roster/renewal/count`。
