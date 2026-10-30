@@ -1,7 +1,7 @@
 ---
 title: 【A-续班-20261001】膨胀券优化
 aliases: [膨胀券预报名优化-推荐和外显抵扣金额, 膨胀券预报名优化, 小班课学员人数上限修改]
-status: 需求评审
+status: 开发中
 owner: zhangzeling
 branches:
   - product-server:feature-xuban-20261001
@@ -16,7 +16,7 @@ tags: [需求]
 
 # 【A-续班-20261001】膨胀券优化
 
-> **本目录导航**：[[links|🔗 链接中心]] · [[tasks|✅ 当前任务板]] · [[changelog|📜 决策摘要]]
+> **本目录导航**：[[links|🔗 链接中心]] · [[tasks|✅ 当前任务板]] · [[changelog|📜 决策摘要]] · [[前端如何改|🧩 前端如何改]]
 > 技术方案在飞书（见 [[links]]），本地不留副本。
 > 续接这个需求：读完本文件即可。
 
@@ -60,21 +60,28 @@ tags: [需求]
 - 模块② **人数上限配置化 = Apollo `parentsMeeting.type.limit.map` 的 type=3 设为 32**；PRD 备注「C端预约」**不属本需求、忽略**（2026-10-29）。
 - **文案/提醒**：①外显抵扣「二选一」报错「C端外显抵扣金额和抵扣金额二选一，不能同时开启」、为 0 不展示提示；②模块②输入框文案「请输入姓名/ID/手机号/手机号后4位」；③模块②超限报错 `ParentsMeetErrorCode.STUDENT_EXCEED_RELATION_LIMIT` 文案由「小班课上限15，自习室上限30」**同步为「小班课上限32，自习室上限30」**。
 
+- **前端由前端同学实现，后端只提供字段/开关**：「前端如何改」已写入子需求①技术方案 §15（docx `TmaqdSPepo9Mv9x4fFCcNUEbnYg` rev51）并回读，本地副本见 [[前端如何改]]。（2026-10-30 所有者定）
+- **模块① C 端取值由后端完成**：cart `/web/renewal/preRegistration` 的券 `discountPrice` 按续班计划 C 端样式开关选好（开=外显/关=抵扣），前端直接展示；开关经 `product-server` 的 `RenewalMasterWithProcessDTO.showExternalDeductAmount` 传给 cart（**product-server-client 升 `1.5.12-SNAPSHOT`**）。（2026-10-30）
+- **模块① 外显金额落点=券商品级，存预报名活动侧表** `promotion.pre_order_activity_product.external_deductible_amount`（不挂商品侧表）；TEST DDL 已于 2026-10-30 执行并回读。（所有者 2026-10-30 定）
+- 后端 6 仓改动已提交并推送统一分支 `feature-xuban-20261001`（含 cart + client 升级）。（2026-10-30）
+
 ## 现在什么情况
 
 | | |
 |---|---|
-| 阶段 | 需求评审（技术方案已出，待评审） |
-| 进度 | T 10/11 · R 0/0 · C 0/0 |
-| 部署泳道 | 未部署 |
-| 当前卡点 | 无（技术方案已出，待评审） |
-| 最近更新 | 2026-10-29：统一分支 `feature-xuban-20261001`（6 仓）；模块① 外显抵扣按方向 A（新增独立字段 + 二选一开关）、**下单页券口径确认为 A（三处共用，券随新规则变）**；模块② 页面=家长会、上限走 Apollo 配置=32（全量/不按业务线）、忽略「C端预约」；模块② 选学员=teacher-tool。**两篇方案已按「后端反讲权威模板」重构为最终版并加 3 张示意图**（方案①：推荐匹配链路、外显抵扣数据流；方案②：工具箱→teacher-tool 链路） |
+| 阶段 | 开发中（后端 6 仓已实现并提交/推送 feature-xuban-20261001；前端由前端同学实现，改法已写入技术方案 §15 + [[前端如何改]]） |
+| 进度 | T 19/21 · R 0/0 · C 0/0 |
+| 部署泳道 | test-gtbg-dev-3（dev 逻辑环境，8 服务已发布成功） |
+| 当前卡点 | 端到端验证部分缺「可控样本/造数」（无已配外显的续班计划、扩科对照、B端保存可行载荷）；**线上不动，PROD 项仅记待办** |
+| 最近更新 | 2026-10-30：**后端 6 仓实现完成并提交/推送 `feature-xuban-20261001`**（模块① 推荐按年级+使用中且售卖中、外显金额券商品级落 `pre_order_activity_product.external_deductible_amount`、C 端样式 `showExternalDeductAmount` 二选一；模块② teacher-tool 上限默认 32 + 选学员 `userIds` 批量精确）。TEST DDL 已执行并回读；部署泳道 test-gtbg-dev-3 部署验证中。**前端如何改**写入方案 §15 + [[前端如何改]]。 |
 
 ## 下一步
 
 > **只列还没做的**。必须是能直接上手的动作，"继续推进"不算。
 
-1. 评审后按确认结论在统一分支 `feature-xuban-20261001` 建各仓 `specs/<迭代>/tech_spec.md`。
+1. 造数后端到端验证：模块①（发链接→C 端落地页→加购→下单页；开关二选一互斥、扩科、状态、边界）；模块②（新建选 32、33 拦截、关联校验、`userIds` 精确搜索）。
+2. 前端按 [[前端如何改]]（＝方案 §15）实现：模块① C 端 + B 端 OES 配置页；模块② boss-counselor 工具箱。
+3. 上线前：PROD Apollo `parentsMeeting.type.limit.map` 配 `{3:32;4:30}`；promotion PROD DDL 工单；product-server-client 定版 RELEASE（当前 `1.5.12-SNAPSHOT`）并同步 cart pom。
 
 ## 怎么验 / 新建的东西
 
@@ -86,6 +93,16 @@ tags: [需求]
 > 需求评审/反讲里没定的问题。定了就删掉，并在 changelog 记结论。
 
 （暂无。原「下单页券口径」已确认 A；「膨胀券的，这次不用」已由所有者确认作废、不再记录。）
+
+## 线上待办（仅记录，不执行）
+
+> 所有者 2026-10-30：「先做测试，线上先不动，只记待办」。以下全部**未执行**。
+
+1. **Apollo(PROD)**：teacher-tool `parentsMeeting.type.limit.map` 配 `{3:32;4:30}`（现 PROD 未配、走代码默认，代码默认已改 32）。
+2. **MySQL DDL(PROD)**：promotion 库 `pre_order_activity_product` 新增列 `external_deductible_amount`（提 DDL 工单）。
+3. **发布编排**：青舟 release plan（服务顺序：promotion DDL 先行 → promotion / promotion-management / product-server / student-center / cart；teacher-tool 独立）。
+4. **定版**：`product-server-client` 由 `1.5.12-SNAPSHOT` 定版 RELEASE 并同步 cart pom。
+5. **前端**：按子需求①技术方案 §15 / [[前端如何改]] 实现后联调。
 
 ## 涉及的代码
 

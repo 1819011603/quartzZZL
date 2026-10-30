@@ -9,6 +9,37 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-10-30（测试环境端到端验证）
+
+### 🤖 Claude
+
+- 验（acl 桥 + invoke_feign，泳道 test-gtbg-dev-3）：
+  - 模块②：`getSignCountLimit(type=3)=32`、`allTypeLimit` type3 limitCount=32；`listSubclazzStudent` 传 `userIds=[1449343,5661437961]` 命中 2 条、传 `[999999999999]` 返回空（精确搜索生效）。
+  - 模块①：`promotion-management /preOrderActivity/detail` 回显 `externalDeductibleAmount`；`RenewalServiceImpl#listRenewalWithProcessByNumber`、`PreOrderCouponIntersectService#intersect` 新逻辑正常执行无异常。
+- 卡（测试载荷/样本）：B端 `edit` 自建载荷触发 promotion-b NPE（`系统繁忙` 10240500），无可行造数/登录路径拿到「落库非0」；`showExternalDeductAmount` 无非空样本；二选一互斥被「节点已开始」前置校验拦住；扩科 by-grade 对照无样本。→ 记为待造数/待前端联调，非本次后端缺陷。
+- 定：所有者「只做测试、线上不动、只记待办」；PROD Apollo/DDL/发布编排/client 定版/前端联调 5 项写入 README「线上待办」。
+
+## 2026-10-30（后端实现 + 前端改法沉淀）
+
+### 🤖 Claude
+
+- 定了（所有者最终口径）：**前端由前端同学实现，我们只改后端**；「前端如何改」写入子需求①技术方案 §15（docx `TmaqdSPepo9Mv9x4fFCcNUEbnYg` rev51 回读）并落本地 [[前端如何改]]。前端涉及：模块① C 端（消费 `discountPrice`/`showExternalDeductAmount`）+ B 端 OES（新增列+二选一开关）；模块② boss-counselor 工具箱（改传 `userIds`）。
+- 定了（字段落点，所有者确认）：`external_deductible_amount` **券商品级**，存**预报名活动侧** `promotion.pre_order_activity_product`，不挂商品侧表。TEST DDL 已执行并回读（`bigint(20) DEFAULT 0`）。
+- 做了（后端实现，6 仓 `feature-xuban-20261001`，编译均过、已提交推送）：
+  - product-server：`PreOrderCouponIntersectService`（命中按年级、`isCouponDisplayable` 使用中且售卖中、预警同步）、`ProcessService`（`showExternalDeductAmount` 二选一互斥）、`CStyleConfigVO`、`PreOrderActivityProductDTO`(infra)。
+  - promotion：`pre_order_activity_product` 新增列 + entity/mapper/BO/DTO/CacheDTO/Repository/Service 落库与透传（0–100000 校验）。
+  - promotion-management：`externalDeductibleAmount` 写入/回显。
+  - student-center：`PromotionCouponDTO`/`PreOrderCouponVO` 加字段。
+  - cart：按 C 端样式开关选 `discountPrice`；`RenewalMasterWithProcessDTO.showExternalDeductAmount`（product-server 从预报名节点 C 端样式填充）；**product-server-client 升 `1.5.12-SNAPSHOT`**。
+  - teacher-tool：上限默认 32、超限文案、选学员 `userIds` 批量精确搜索。
+- 部署：test-gtbg-dev-3，8 条 pipeline（见 [[tasks]] T-19）。
+
+### 👤 我
+
+- 所有者：前端有人改；你改完后端，把前端如何改写进技术文档。
+
+---
+
 ## 2026-10-30（TEST 上限改 32）
 
 ### 🤖 Claude

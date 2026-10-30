@@ -19,7 +19,7 @@ tags: [需求, 任务]
 |---|---|---|---|---|
 | T-01 | 模块① 技术方案评审：拍板「下单页的券是否随新推荐规则一起变」 | 已完成 | — | 2026-10-29 所有者确认 **A**：三处共用同一交集实现，下单页券随新规则变（方案① §8.1） |
 | T-02 | 模块② 确认工具箱选学员/搜索接口所在服务与仓库 | 已完成 | — | 2026-10-29 定案：= **teacher-tool `ManageSubclazzController#/studentList`**（工具箱 `boss-counselor` 调 `/bgwApi/teacher-tool/manage/subclazz/studentList`）；现手机号批量+姓名模糊，PRD 新增手机号后4位+学员ID批量精确。非 student-center/GPS |
-| T-03 | 评审后落地各仓 `specs/<迭代>/tech_spec.md` 并进入开发（统一分支 `feature-xuban-20261001`） | 待办 | 依赖 T-01 | 6 仓统一分支已就绪 |
+| T-03 | 评审后落地技术方案并进入开发（统一分支 `feature-xuban-20261001`） | 已完成 | — | 2026-10-30：技术方案维持飞书权威（本仓不落 tech_spec 副本），「前端如何改」写入方案 §15 + [[前端如何改]]；后端 6 仓已开发完成（见 T-12~T-19） |
 | T-04 | 收敛统一分支 `feature-xuban-20261001` 并同步技术方案/归档 | 已完成 | — | 2026-10-29：从最新 origin/release 建分支（旧占位分支已删）；student-data 复核无改动不建；两篇飞书方案与本地归档已改统一分支口径并回读 |
 | T-05 | 逐仓复核改动归属、撤无关仓库分支、模块②按「小灶课」纠正 | 已完成 | — | 2026-10-29：确认需改 6 仓（product-server/promotion/promotion-management/student-center/cart/teacher-tool）；**撤 ces-teach-product / course-center**（教室上限已 32、PRD 不涉及）；剔除 GPS 小班课误判；两篇方案 + 需求入口已回读 |
 | T-06 | 方案①「外显抵扣金额」按方向 A 定稿（新增独立字段 + 二选一开关）、消除内部矛盾、修 §6 表格 | 已完成 | — | 2026-10-29：§0/§2.1/§3.2/§4.2/§5/§6/§7/§9 重写为 PRD 版（`external_deductible_amount` + `showExternalDeductAmount` 二选一 + promotion 新增列/DDL）；更正「同一概念/所有者确认」错记；飞书回读确认 |
@@ -28,6 +28,16 @@ tags: [需求, 任务]
 | T-09 | 两篇方案收敛为最终版、按「后端反讲权威模板」重写、加可视化示意图 | 已完成 | — | 2026-10-29：overwrite 为规范 14 节结构；新增 3 张 mermaid 画板（①推荐匹配链路、①外显抵扣数据流、②工具箱→teacher-tool 链路） |
 | T-10 | 核查「小班课人数上限」来源与 小班预约/C端预约 是否需改，补全 module② 方案与画板 | 已完成 | — | 2026-10-29：上限唯一配置源=teacher-tool Apollo；`parents_metting.sign_count` 为创建时快照（create L283-284）→ ILIVE → 预约。**新建即 32、无需改 ILIVE/预约；存量待产品**。方案②§5画板/§6.1/§8.1/§11.2 + 入口§4.1 + README 已更新 |
 | T-11 | TEST 环境上限改 32（teacher-tool Apollo）并记录到方案/归档 | 已完成 | — | 2026-10-30：appId `teacher-tool`/ns `application`/key `parentsMeeting.type.limit.map`，`{3:20;4:30}`→`{3:32;4:30}` 已发布，回读 `{3:32;4:30}`。PROD 未配（默认15）。方案②§6.1/§11.2 + 入口§4.1 + README 已更新 |
+| T-12 | 模块① 后端实现：product-server 推荐按年级+使用中且售卖中、C 端样式 showExternalDeductAmount 二选一 | 已完成 | — | 2026-10-30：`PreOrderCouponIntersectService`（按年级、`isCouponDisplayable`）、`ProcessService`（互斥）、`CStyleConfigVO`、`PreOrderActivityProductDTO`(infra)。编译 ✅ |
+| T-13 | 模块① 后端实现：promotion 新增列 `external_deductible_amount` 及落库/透传；promotion-management 透传；student-center 回显 | 已完成 | — | 2026-10-30：promotion entity/mapper/BO/DTO/CacheDTO/Repo/Service；promotion-management Req/VO/DTO/DomainService；student-center `PromotionCouponDTO`/`PreOrderCouponVO`。编译 ✅ |
+| T-14 | 模块① cart：按 C 端样式开关展示外显/抵扣 + product-server-client 升 1.5.12-SNAPSHOT | 已完成 | — | 2026-10-30：`RenewalMasterWithProcessDTO.showExternalDeductAmount`（product-server 填充）、`PreRegistrationCouponAssembler.resolveDisplayAmount`、`RegistrationService` 透传；cart pom 升 `1.5.12-SNAPSHOT`。编译 ✅ |
+| T-15 | 模块② teacher-tool：上限默认 32 + 超限文案 + 选学员 `userIds` 批量精确 | 已完成 | — | 2026-10-30：`ParentsMeetServiceImpl` L180、`ParentsMeetErrorCode`、`SubclazzStudentSearchRequest.userIds`、`ParentsMeetingBiz.listSubclazzStudent`。编译 ✅ |
+| T-16 | 6 仓提交并推送统一分支 `feature-xuban-20261001` | 已完成 | — | 2026-10-30：6 仓 commit + push（promotion-management 修 remote 内嵌 token）。 |
+| T-17 | 写「前端如何改」到子需求①技术方案 §15 + 归档 `前端如何改.md` | 已完成 | — | 2026-10-30：docx `TmaqdSPepo9Mv9x4fFCcNUEbnYg` rev51 回读确认；本地 [[前端如何改]]。 |
+| T-18 | promotion TEST DDL 执行并回读表结构 | 已完成 | — | 2026-10-30：`ALTER TABLE promotion.pre_order_activity_product ADD COLUMN external_deductible_amount BIGINT DEFAULT 0`；回读 `information_schema.COLUMNS` 命中。 |
+| T-19 | 部署测试环境（test-gtbg-dev-3）并验证两模块后端 | 已完成 | — | 2026-10-30：8 服务构建发布全部 SUCCESS——teacher-tool 1322156、promotion-management 1322157、student-center 1322158、cart 1322165(重试,首发 1322159 因 client 未发 Nexus 失败)、product-b 1322160、product 1322161、promotion-b 1322162、promotion-c 1322163（client `1.5.12-SNAPSHOT` 已发 Nexus）。 |
+| T-20 | 测试环境端到端验证（acl 桥 + invoke_feign） | 进行中 | 部分项缺可控样本 | **已验证**：`getSignCountLimit(type=3)=32`、`allTypeLimit` type3=32；`listSubclazzStudent` 传 `userIds=[1449343,5661437961]` 命中 2、传 `[999999999999]` 空；`promotion-management detail` 回显 `externalDeductibleAmount`；`RenewalServiceImpl#listRenewalWithProcessByNumber` 与 `PreOrderCouponIntersectService#intersect` 新逻辑均正常执行（无异常）。**未取到样本**：`showExternalDeductAmount` 非空值（无已配外显的续班计划）、按年级 vs 成对的扩科对照、二选一互斥报错（节点已开始，begin 校验先拦）、B端保存落库非0（自建 edit 载荷触发 promotion-b NPE）。 |
+| T-21 | 线上待办（**仅记录，不执行**，所有者 2026-10-30「线上先不动」） | 待办 | — | ①PROD Apollo `parentsMeeting.type.limit.map` 配 `{3:32;4:30}`；②promotion PROD DDL 工单（`external_deductible_amount`）；③青舟发布编排（release plan + 服务顺序）；④`product-server-client` 定版 RELEASE（现 `1.5.12-SNAPSHOT`）并同步 cart pom；⑤前端按 §15 实现后联调。 |
 
 ## R- 反讲整改项
 

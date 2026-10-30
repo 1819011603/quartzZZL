@@ -19,6 +19,7 @@ tags: [需求, 链接]
 | 调研（模块①背景） | 膨胀券业务问题汇总 | https://gaotuedu.feishu.cn/wiki/M4Prwi5uMizbR9kTuUsc4NTVnEe | 2026-10-29 |
 | 待办表 | 教学服务迭代待办 | https://gaotuedu.feishu.cn/wiki/VgbOwav5TigsvDkr0cYcVnF6nsh | 2026-10-29 |
 | 开发操作 SOP | 团队开发操作规范 | https://gaotuedu.feishu.cn/wiki/IJ5VwuzBciJ8uNkY3fOcYNpYnuh | 2026-10-29 |
+| 前端改动说明（本地） | [[前端如何改]]（＝方案 §15；前端由前端同学实现） | 本地文件 `前端如何改.md` | 2026-10-30 |
 
 ## 开发与测试
 
