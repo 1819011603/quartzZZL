@@ -70,10 +70,10 @@ tags: [需求]
 | | |
 |---|---|
 | 阶段 | 开发中（后端 6 仓已实现并提交/推送 feature-xuban-20261001；前端由前端同学实现，改法已写入技术方案 §15 + [[前端如何改]]） |
-| 进度 | T 19/21 · R 0/0 · C 0/0 |
+| 进度 | T 21/22 · R 0/0 · C 0/0 |
 | 部署泳道 | test-gtbg-dev-3（dev 逻辑环境，8 服务已发布成功） |
-| 当前卡点 | 端到端验证部分缺「可控样本/造数」（无已配外显的续班计划、扩科对照、B端保存可行载荷）；**线上不动，PROD 项仅记待办** |
-| 最近更新 | 2026-10-30：**后端 6 仓实现完成并提交/推送 `feature-xuban-20261001`**（模块① 推荐按年级+使用中且售卖中、外显金额券商品级落 `pre_order_activity_product.external_deductible_amount`、C 端样式 `showExternalDeductAmount` 二选一；模块② teacher-tool 上限默认 32 + 选学员 `userIds` 批量精确）。TEST DDL 已执行并回读；部署泳道 test-gtbg-dev-3 部署验证中。**前端如何改**写入方案 §15 + [[前端如何改]]。 |
+| 当前卡点 | 无后端卡点（两模块后端端到端已验证：非0落库、二选一互斥、按年级匹配、33 拦截/32 边界、userIds 搜索）；仅 **C 端页面渲染待前端 §15**；**线上不动，PROD 项仅记待办** |
+| 最近更新 | 2026-10-30：**测试环境端到端验证完成**（完整 B端 edit 落库非0、二选一互斥、按年级匹配扩科对照、模块② 33 拦截/32 边界、userIds 搜索；10240500 复核为缺登录上下文非缺陷）。**后端 6 仓实现完成并提交/推送 `feature-xuban-20261001`**（模块① 外显金额券商品级落 `pre_order_activity_product.external_deductible_amount`、C 端样式 `showExternalDeductAmount` 二选一、推荐按年级+使用中且售卖中；模块② teacher-tool 上限默认 32 + 选学员 `userIds` 批量精确）。TEST DDL 已执行并回读；泳道 test-gtbg-dev-3 部署 SUCCESS。**前端如何改**写入方案 §15 + [[前端如何改]]。 |
 
 ## 下一步
 

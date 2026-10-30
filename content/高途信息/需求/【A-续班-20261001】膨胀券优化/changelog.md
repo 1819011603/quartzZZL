@@ -9,14 +9,38 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-10-30（测试泳道 student-center 拉起）
+
+### 🤖 Claude
+
+- 定：`test-gtbg-dev-3` 泳道 student-center **未启动**根因＝**集群资源不足、pod 无法调度**（`status=Pending`、无 nodeIp、无 container；泳道 imageList 有目标镜像，**非本次代码/镜像问题**，redeploy 同镜像无效）。
+- 做：按所有者方法用 `qingzhou_adjust_pod` 把其他非 test 泳道启动最早的 pod 缩容为 0 腾资源——缩 `test-eco-3`（10-22 最早）、`test-eco-6`、`test-eco-9` 的 student-center（`pod_num=0`，`last_time=28800000`=8h 上限）。
+- 结果：build `1322169` SUCCESS 后，新 pod `student-center-845599d774-b8vdh` **Running + eureka UP（commit 81b44325）**；acl 桥 `PreOrderCouponBiz#listCoupon` 由该实例返回；其余 5 服务 Running/UP。**无代码改动**。
+- 记录：方法写入 `deploy-image/references/deploy-troubleshooting.md`「资源不足→缩容其他泳道最早 pod」；`verify_skills.sh` 通过。
+
+## 2026-10-30（端到端验证全通）
+
+### 🤖 Claude
+
+- 验（缝/网关+改数据，泳道 test-gtbg-dev-3）：
+  - **模块① 完整 B端 edit E2E**：先把活动 296 改「待发布+未来时间」造出可编辑样本（券【使用中且售卖中】），经网关 `promotionManagement/preOrderActivity/edit` 保存 `externalDeductibleAmount=5000` → **code 0**，回读 `pre_order_activity_product` **id=1258 external=5000**；验后还原 296 状态/时间与字段。
+  - **按年级匹配（扩科对照）**：为活动 296 插范围行 (15,语文)，post=(15,数学)（`post_subjects=[1]`）→ `intersect` **命中** coupon（学科不参与命中）；验后删行。（旧成对逻辑需 (15,1) 对，不会命中。）
+  - **模块② 33 拦截/32 边界**：`parentsMeeting/create` 33 人 → `code 30033 小灶课学员达到上限`；32 人 → 越过上限校验（返回 `code 26 学生已退款`）。B端登录态经网关 Cookie 打通（`route=/teacher-tool`）。
+  - 二选一互斥、合法组合落库+出参、userIds 搜索：见上一条。
+- 结论：两模块**后端**端到端验证通过；仅 **C 端页面渲染待前端 §15 实现后验证**。
+
 ## 2026-10-30（测试环境端到端验证）
 
 ### 🤖 Claude
 
-- 验（acl 桥 + invoke_feign，泳道 test-gtbg-dev-3）：
-  - 模块②：`getSignCountLimit(type=3)=32`、`allTypeLimit` type3 limitCount=32；`listSubclazzStudent` 传 `userIds=[1449343,5661437961]` 命中 2 条、传 `[999999999999]` 返回空（精确搜索生效）。
-  - 模块①：`promotion-management /preOrderActivity/detail` 回显 `externalDeductibleAmount`；`RenewalServiceImpl#listRenewalWithProcessByNumber`、`PreOrderCouponIntersectService#intersect` 新逻辑正常执行无异常。
-- 卡（测试载荷/样本）：B端 `edit` 自建载荷触发 promotion-b NPE（`系统繁忙` 10240500），无可行造数/登录路径拿到「落库非0」；`showExternalDeductAmount` 无非空样本；二选一互斥被「节点已开始」前置校验拦住；扩科 by-grade 对照无样本。→ 记为待造数/待前端联调，非本次后端缺陷。
+- 验（acl 桥 / invoke_feign / invoke_http，泳道 test-gtbg-dev-3）：
+  - 模块②：`getSignCountLimit(type=3)=32`、`allTypeLimit` type3=32；`listSubclazzStudent` 传 `userIds=[1449343,5661437961]` 命中 2、传 `[999999999999]` 空。
+  - 模块① 落库：经桥 `PreOrderActivityProductRepositoryImpl#batchInsert` 写 `externalDeductibleAmount=5000` → 回读 `promotion.pre_order_activity_product` **id=1257 external_deductible_amount=5000**（已删除该造数行）。
+  - 模块① 二选一互斥：`ProcessService#saveCStyleConfig`（计划 574500823697111040 / 节点 579414144554473474，节点未开始）两开关同开 → 抛「C端外显抵扣金额和抵扣金额二选一，不能同时开启」。
+  - 模块① 合法组合+出参：`showDiscountAmount=false`+`showExternalDeductAmount=true` 保存成功；节点 `ext_config` 落库含 `showExternalDeductAmount:true`；`listRenewalWithProcessByNumber` 出参 `show_external_deduct_amount:true`（cart 取值链路打通）。
+  - `promotion-management detail` 回显 `externalDeductibleAmount`；`PreOrderCouponIntersectService#intersect` 新逻辑正常执行无异常。
+- 复核 10240500：**直连容器缺登录上下文**所致（`invoke_feign` 调 edit 报 10240500）；改用网关 `invoke_http`（带 Cookie）后返回真实业务信息——「活动[进行中]只允许更新结束时间」「膨胀券状态不是[使用中且售卖中]」→ **非本次代码缺陷**。
+- 未验：按年级 vs 成对（扩科对照）无样本；模块②「新建选 32 通过 / 33 拦截 / 关联校验」（B端 create 需登录态，直连报「登陆信息获取异常」，`invoke_http` 路由 no_match）。
 - 定：所有者「只做测试、线上不动、只记待办」；PROD Apollo/DDL/发布编排/client 定版/前端联调 5 项写入 README「线上待办」。
 
 ## 2026-10-30（后端实现 + 前端改法沉淀）
