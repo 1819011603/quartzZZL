@@ -94,6 +94,16 @@
 - 合法组合（`StudentSubStatusEnum`，student-data-client）：`(clazzStudentStatus, subclazzStudentStatus)` = `(1,1)` 在读且本人辅导班 / `(1,2)` 在读非本人辅导班 / `(0,2)` 退款；**没有 `(0,1)` —— 出现即非法态**（常见于退班事件按班级维度广播、误清同班其它仍在班辅导班；见工单 `续班与业绩/业绩归因/排查/大班续班服务漏在班学员.md`）。
 - 页面顶部「可续学员数」≈ `canRenewal ∈ {1,2,8} 且 clazzStudentStatus=1` 的条数。
 
+### 「预报名情况」字段口径（`presaleStatus`，2026-11-01 核实）
+
+- 列「预报名情况」（已预报/未预报）= ES `ads_large_subclazz_user_index.presaleStatus`（GAIA schema 的 fieldName 就是 `presaleStatus`；1=已预报，0/空=未预报）。
+- 数据链路：`ees_data.dws_fuwu_clazz_user_presale_subject`（**大班订金预报名记录**，按 学员×学年×学期）→ 进/退班或订单事件触发 `PresaleSubjectServiceImpl#updatePresaleStatusAndOrderTime`（**只有记录 `clazz_number` = 该班**才把该班 ES 置 1；`clazz_number=0` = 该前置课没落到具体班，不写该班 ES）→ MQ → student-data 写 ES `presaleStatus`。
+  - 一个后置（预报名）课程会对其**全部前置课程**各生成一条记录；学员实际不在某前置课时该条 `clazz_number=0`。
+- 复现（先代课成带班二讲，`b_client: EES`，线上 `fuwu.baijia.com`）：
+  - 取 `sceneVersionNumber`：`POST /bgwApi/gaiaCenter/page/route`，body `{"identification":"continuationService","domain":"<账号名>","accountId":<id>}`。
+  - `POST /bgwApi/component/student-center/roster/renewal/page`，body（真实日志口径）：`{"identification":"continuationService","route":{"sceneVersionNumber":<n>},"filter":{"clazzNumber":["<班号>"],"studentSubStatus":[0],"leadTeacher":[<accountId>],"renewalRoundFilter":[1],"fuzzyText":""},"pager":{"current":1,"pageSize":500},"quickFilter":{}}`；返回行看 `presaleStatus`。
+- 排查「已预报名却显示未预报」：① 回读 ES 该学员当前 subclazz 的 `presaleStatus`；② 查 `dws_fuwu_clazz_user_presale_subject` 该学员该学期记录的 `clazz_number` 是否=该班；③ 关系是否配（`course_relation_map.calculate_renewal_type=2`）；④ 同步延时走 `续班与业绩/续班看板指标/排查/预报名状态延时排查链路.md`。
+
 ## 排查提示
 
 - **列表为空 / 数量不对** → `/roster/renewal/page` 的 `filter`/`quickFilter`；total 触顶看 `/roster/renewal/count`。
