@@ -11,9 +11,10 @@ tags: [需求, 链接]
 
 | 类型 | 标题 | 链接 | 记录日期 |
 |---|---|---|---|
+| 需求wiki节点 | 日常回访订正规则（GPS 1v1） | https://gaotuedu.feishu.cn/wiki/LzsZwCDYIiksCokUAsQcAR3Jn8g | 2026-11-02 |
 | 规则PRD | 日常回访订正规则（wiki rev876） | https://gaotuedu.feishu.cn/wiki/Q0BkwzqaRiPK42kn1b9cZzDBnzd | 2026-11-02 |
 | 进展表 | 需求进展/回写表 sheet=In7cnX（第 4 行 L4） | https://gaotuedu.feishu.cn/sheets/T9lhsNwL4hzovStIDVDcyy8znRf?sheet=In7cnX | 2026-11-02 |
-| 上线方案 | 日常回访订正规则（GPS 1v1）上线方案 | <建后回填> | 2026-11-02 |
+| 上线方案 | 日常回访订正规则（GPS 1v1）上线方案 | https://gaotuedu.feishu.cn/wiki/PEtvwdzpwiAQAQkyLP5cDbBinDb | 2026-11-02 |
 
 ## 开发与测试
 
@@ -28,7 +29,7 @@ tags: [需求, 链接]
 | 类型 | 标题 | 链接 | 记录日期 |
 |---|---|---|---|
 | 发布计划 | 【A-日常回访-20261102】日常回访订正规则(GPS 1v1) · id `24158` | https://qingzhou.baijia.com/#/publishArrangement/subPublishArrangement/publishPlan/detail?storyId=&pageNum=1&id=24158&action=edit | 2026-11-02 |
-| 上线checklist | 同上「上线方案」 | <建后回填> | 2026-11-02 |
+| 上线checklist | 日常回访订正规则（GPS 1v1）上线方案 | https://gaotuedu.feishu.cn/wiki/PEtvwdzpwiAQAQkyLP5cDbBinDb | 2026-11-02 |
 | 工单 | MySQL DDL（fairy `20261023_1v1_daily_visit_task.sql` / `20261028_daily_visit_teacher_user_unique.sql`） | 待提（上线前） | 2026-11-02 |
 | 工单 | MQ 消费者组（`GID_student-data_dailyVisit_subclazzQuit_prod`） | 待提/确认（上线前） | 2026-11-02 |
 

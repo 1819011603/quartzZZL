@@ -45,7 +45,7 @@ tags: [需求]
 | | |
 |---|---|
 | 阶段 | 上线准备 |
-| 进度 | 13/13 规则实现+验证 · 隔离 E2E 通过 · 待授权合并上线 |
+| 进度 | T 4/5 · R 1/2 · C 1/1（13/13 规则实现+验证 · 隔离 E2E 通过 · 待授权合并上线） |
 | 部署泳道 | `student-data=test-eco-3`（pod `student-data-7d4566c5cd-gfv9v`, commit `b114af4b`）· `fairy=test-eco-3`（pod `fairy-gaotu100-com-784cbb7fcb-lkmhf`, `ed05a2df`）|
 | 当前卡点 | 未授权合并 release / 未授权发布生产 |
 | 最近更新 | 2026-11-02：建免测需求 TAPD story `1122531521001397150`；建发布编排 `24158`（免测，fairy→student-data）|
