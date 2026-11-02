@@ -7,6 +7,15 @@ tags: [需求, 决策]
 
 > 只记会影响后续设计判断的理由，不记流水账。**日期倒序（最新在前）。**
 
+## 2026-11-02｜统计沟通不需要回访任务（GLUE 补任务=错方向）
+- 「统计 10.25–11.2 的沟通」直接查通话表 `first_call_user_call_record`（account_id/user_id/call_time/call_duration）按 `call_time` 过滤即可，**与回访任务无关**。
+- 写 Java GLUE 直接往 `first_call_task(_1v1)` 伪造覆盖 10.25–11.2 的任务：窗覆盖后通话判定会通过（`DailyVisitCallRecordFilter`/`isWithinTaskPeriod`），但需再触发计数、绕过校验、维护唯一键/防重/子任务/ES/MQ，风险高、真实性差 → 不推荐。
+
+## 2026-11-02｜生成基于跑时状态；任务有效期从生成时刻起算（不能统计 10.25–11.2）
+- 生成基于**跑 job 那一刻**的容器/剩余课时/资格（代码：`DailyVisit1v1ScheduleJob.processAccount` 的 `queryContainerByAccountId`/`queryAvailableLessonCount` + `DailyVisitEligibilityService`；老链路 `AbstractScheduledTaskJob.processAccount` 同）。**不是 10.25 当天快照**；批号只是标签。
+- 任务有效期 = 生成时刻 + `taskExpireHour`（config55=11h；实测 id1891-1898 start=2026-11-02 16:34:52、expired=2026-11-03 03:34:52）。通话只在 [start, expired] 内算有效（`DailyVisitCallRecordFilter.isCallInTaskPeriod`；fairy `TaskBizService.isWithinTaskPeriod`）→ **不能统计 10.25–11.2 的沟通**。
+- 无「回填过去周期」口径。结论：要「10.25 批次号」可（传 `2026-10-25`）；要「按 10.25 当天状态 + 统计 10.25–11.2 沟通」不行。
+
 ## 2026-11-02｜批次号=年月_执行日序号；10.25 批次=202610_2（已实测）
 - 执行日=25 生成 25 号批次；批次号 `execution_seq=年月_该执行日在配置执行日列表中的序号`。线上执行日 [10,25] → 10 号=…_1、**25 号=…_2 → 10.25 批次=202610_2**。
 - 手动触发参数：只传 `25` 按**当前月**（11 月→202611_1）；要精确 10 月 25 日批次传完整日期 `2026-10-25`。
