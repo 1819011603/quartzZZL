@@ -35,6 +35,27 @@
 | 详情页 续班关系 | `POST /product-b/b/renewMaster/productRelationList` | `getProductRelationList` | `src/pages/continuationClasses/detail/Relations/provider.js:61（src/services/continuationClasses.js:107）` | product-b | `/b/renewMaster/productRelationList` | 续班关系列表 | 前置产品 ↔ 后置产品 |
 | 详情页 续班关系 | `POST /product-b/b/renewMaster/listCoursesByPreCourseNumber` | `getCourseAllSceneTypeList` | `src/pages/continuationClasses/detail/Relations/index.js:79（src/services/continuationClasses.js:163）` | product-b | `/b/renewMaster/listCoursesByPreCourseNumber` | 按前置课程查后置课程 | 入参 `{"preCourseNumber": ...}` |
 
+## 续班关系管理接口（增删改）
+
+详情页「续班关系」tab：左「前置产品」（= 计划的 `renew_master_course_relation`）、右「后置产品」（= 选中前置课程在 `course_relation_map` 的续报关系）。增删改入口如下（前端均在 `src/pages/continuationClasses/detail/Relations/`）：
+
+| 触发 | 前端调用路径 | 前端方法 | 前端代码位置 | 后端服务 | 后端 path | 接口名 | 说明 |
+|---|---|---|---|---|---|---|---|
+| 「+ 批量修改续班关系」弹窗上传 Excel | `POST /product-b/b/renewMaster/courseRelation/batchFollowRelation` | `batchSettingRelations` | `BatchSettingRelations/index.js:85（services/continuationClasses.js:133）` | product-b | `/b/renewMaster/courseRelation/batchFollowRelation` | 批量修改续班关系 | 入参 `{operationType(1添加/2删除), excelUrl, renewalMasterNumber}`；**按「前置课程」整体增删**，见下方注意 |
+| 前置产品「+添加」 | `POST /product-b/b/renewMaster/bindPreCourse` | `bindPreCourse` | `AddPreProductDrawer/index.js:49（services/continuationClasses.js:177）` | product-b | `/b/renewMaster/bindPreCourse` | 续班计划绑定前置课程 | 入参 `{renewalMasterNumber, preCourseNumberList}` |
+| 前置产品「删除」 | `POST /product-b/b/renewMaster/unbindPreCourse` | `unbindPreCourse` | `Relations/index.js:112（services/continuationClasses.js:184）` | product-b | `/b/renewMaster/unbindPreCourse` | 续班计划解绑前置课程 | 同上入参 |
+| 前置产品「已选平铺」下拉 | `POST /product-b/b/renewMaster/listPreCourseNumberList` | `getSelectedPreCourseNumberList` | `AddPreProductDrawer/index.js:64（services/continuationClasses.js:170）` | product-b | `/b/renewMaster/listPreCourseNumberList` | 查询所有前置课程（平铺） | — |
+| 后置产品「+添加」/编辑 | `POST /product-b/b/renewMaster/courseRelation/add` | `modifyCourseRelation` | `AddPostProductDrawer/index.js:45（services/continuationClasses.js:126）` | product-b | `/b/renewMaster/courseRelation/add` | 修改前后置关系 | — |
+| 后置产品「删除」单条 | `POST /course-center/b/course/deleteRelation` | `deleteCourseRelation` | `Relations/index.js:93（services/continuationClasses.js:119）` | course-center | `/b/course/deleteRelation` | 删除关联关系 | 只删选中那条前置↔后置对 |
+| 后置产品「计算可续」开关 | `POST /product-b/b/renewMaster/courseRelation/modifyCalculate` | `editCanRenewalCount` | `Relations/index.js:338（services/continuationClasses.js:204）` | product-b | `/b/renewMaster/courseRelation/modifyCalculate` | 编辑是否可续 | — |
+
+> **批量修改续班关系（`batchFollowRelation`）的删除是「按前置课程整体解绑」，不是「按前置↔后置对删除」**：
+> 后端 `RenewalServiceImpl#batchFollowRelation` 只用 Excel「前置课程id」列匹配本计划的前置课程（忽略「后置课程id」列），
+> 再 `unbindPreCourse` → `deletePreCourseRelations(plan, 前置课程列表)`，把这些**前置课程从计划里整体软删**；
+> 同时调 course-center `/feign/course/batchFollowRelationByDto`（`SnowBallServiceImpl#deleteCourseRelationClient`）按 (前置,后置) 对删 `course_relation_map`。
+> 所以 Excel 里出现过的前置课程，会连同它在计划下的**所有**后置关系一起从页面消失。目标只是删掉某个后置关系时，应走单条「后置产品-删除」（course-center `deleteRelation`），不要用批量。
+> 相关工单：`续班与业绩/续班关系配置/`。
+
 ## 关键表
 
 | 表 | 含义 |
@@ -53,6 +74,7 @@
 ## 排查提示
 
 - 计划看不到课程 / 续班关系不对 → `productRelationList`、`listCoursesByPreCourseNumber`；另见工单 `续班与业绩/续班关系配置/`
+- 批量改续班关系后「计划下所有续班关系都没了」→ `batchFollowRelation` 按前置课程整体解绑，核对 Excel「前置课程id」列集合；恢复=把 `renew_master_course_relation`（及对应 `course_relation_map` 命中记录）`isdel` 改回 0
 - 要按计划ID批量导出续班关系（前置↔后置对照）→ 工单 `续班与业绩/续班关系导出/`（含可复用脚本）
 - 问卷相关 → [renewalProcess.md](renewalProcess.md)
 
@@ -62,3 +84,11 @@
 - [POST /b/renewMaster/list](https://qingzhou.baijia.com/#/cloud/apiDoc/search/detail?interfaceId=2734125&appId=product-b&branchName=release) id=2734125
 - [POST /b/renewMaster/listCoursesByPreCourseNumber](https://qingzhou.baijia.com/#/cloud/apiDoc/search/detail?interfaceId=2734280&appId=product-b&branchName=release) id=2734280
 - [POST /b/renewMaster/productRelationList](https://qingzhou.baijia.com/#/cloud/apiDoc/search/detail?interfaceId=2734126&appId=product-b&branchName=release) id=2734126
+- [POST /b/renewMaster/courseRelation/batchFollowRelation](https://qingzhou.baijia.com/#/cloud/apiDoc/search/detail?interfaceId=2734274&appId=product-b&branchName=release) id=2734274
+- [POST /b/renewMaster/bindPreCourse](https://qingzhou.baijia.com/#/cloud/apiDoc/search/detail?interfaceId=2734147&appId=product-b&branchName=release) id=2734147
+- [POST /b/renewMaster/unbindPreCourse](https://qingzhou.baijia.com/#/cloud/apiDoc/search/detail?interfaceId=2734183&appId=product-b&branchName=release) id=2734183
+- [POST /b/renewMaster/listPreCourseNumberList](https://qingzhou.baijia.com/#/cloud/apiDoc/search/detail?interfaceId=2734289&appId=product-b&branchName=release) id=2734289
+- [POST /b/renewMaster/courseRelation/add](https://qingzhou.baijia.com/#/cloud/apiDoc/search/detail?interfaceId=2734180&appId=product-b&branchName=release) id=2734180
+- [POST /b/renewMaster/courseRelation/change](https://qingzhou.baijia.com/#/cloud/apiDoc/search/detail?interfaceId=2734118&appId=product-b&branchName=release) id=2734118
+- [POST /b/renewMaster/courseRelation/modifyCalculate](https://qingzhou.baijia.com/#/cloud/apiDoc/search/detail?interfaceId=2734303&appId=product-b&branchName=release) id=2734303
+- [POST /b/course/deleteRelation](https://qingzhou.baijia.com/#/cloud/apiDoc/search/detail?interfaceId=1950093&appId=course-center&branchName=release) id=1950093（course-center）
