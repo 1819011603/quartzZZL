@@ -7,6 +7,21 @@ tags: [需求, 决策]
 
 > 只记会影响后续设计判断的理由，不记流水账。**日期倒序（最新在前）。**
 
+## 2026-11-03｜灰度验证（prod-gray-test，仅 tangwen01、只读无损）
+- **命中灰度 pod**：student-data-graytest-6d8c6897f-qwwsd（ip 10.243.46.228；JVM 元数据 `trafficEnv=grayTest`/`version=grayTest`/`groupId=prod-gray-test`，镜像 `release-4e3c5df4`）。带 `traffic-env: grayTest` 经 ACL 桥调用，traceId `f15f41be-5290-4200-b690-6060bdcc3aa1.0.1`、`8ef61b5d-dccf-40d3-bd9b-59bc24865a9b.0.1` **均出现在该灰度 pod 的 app.log**（各 4 行，含 RequestLogAspect）→ 确认命中灰度、非老 pod。
+- **filterContainers（大班课·小班课剔除）**：输入 tangwen01（accountId **131951**）名下真实容器 3 条（子产品 17641412292575747=小班(3)、18003796307544604=大班(1)、18043610911081577=大班(1)）→ 实际返回 **`[]`（全部剔除）**，与预期一致（`allowedProductTypes=[2]` 仅 1v1）。traceId `f15f41be-…`。
+- **getTeachProductTypeMap**：tangwen01 去重子产品类型 = 17641711169503769/17641412292575747/17641716516716545/17641711169503747→**3(小班)**，18033715231262209/18043610911081577/18003796307544604→**1(大班)**。traceId `8ef61b5d-…`。
+- **未覆盖（如实说明，未造数、未用其它账号）**：tangwen01 名下**无 productType=2(1v1) 容器** → `1v1 保留`、`同老师多子产品取下单最近` 无数据可验。
+- **转班/改派不删**：需真实 MQ 事件（有副作用）→ 本轮只读未触发；该行为已由源码 no-op + 单测 + test 隔离 E2E 覆盖。
+
+## 2026-11-03｜灰度发布完成（四服务 prod-gray-test Running）
+- **发布六步顺序落定**（写进 `deploy-image` / `qingzhou-prod-release` skill）：① 构建集成镜像 → ② 发测试环境 → ③ 等就绪 → ④ 发灰度 → ⑤ 等就绪 → ⑥ 全量（须 owner 确认）。三接口：`createOrUpdatePipeline.ajax`(构建, envInfoId=2/template=4/grayTest) / `serviceDeploy.ajax`(发布, type=1/stepNum=2/envInfoId=2) / `getPipelineList.ajax`(列表, template=4 测试/7 灰度)；发布前先查列表，未完成灰度非本人发起→与 owner 确认；**无 eureka 容器（如 student-data prod-1）不校验 eureka，用 pod Running**。
+- **集成镜像**（含本需求代码，release 合并提交）：fairy `1324853`(`release-54aa10d6-...`) / student-data `1324871` / dws `1324872` / gps `1324873`(`release-4e3c5df4-...`)。
+- **测试环境**：student-data/dws/gps 经 `serviceDeploy` 发布（fairy 由 owner 发），test 主泳道 eureka 均 UP。
+- **灰度**（prod-gray-test，每服务 1 机器）：fairy `1324925` / student-data `1324917`(prod-BJ) + `1324918`(prod-1) / dws `1324922` / gps `1324921`。回读灰度 pod **均 Running**：fairy `...graytest-...nmkr9`(UP)、student-data `...graytest-...qwwsd`(UP) + `...prod-1-gray-test-...mz46q`(**无 eureka**)、dws `...graytest-...qsh82`(UP)、gps `...graytest-...q2glj`(UP)。
+- 流水线列表核对：四服务**无「非本人发起的未完成灰度」**，无冲突。
+- **未上全量**（等 owner 确认灰度验证通过）。
+
 ## 2026-11-03｜AICR 两条 high 修复 + 上线项落定（DDL/Apollo/xjob/表对齐）
 - **AICR #779 两条 high（`ClazzTypeFeignServiceImpl#getTeachProductTypeMap` L604-607 / L632-635）**：owner 判定**真 bug、改**。修复口径：下游**业务失败（`isSuccess=false`/null）→ 抛 `BusinessException` 交调度重试**（对齐 `getCreateTimeOrThrow` L182-185 及 #18001 严格口径）；**成功但空数据 → 跳过**。补 4 个单测（失败/null 抛异常、空数据跳过），9/9 通过、BUILD SUCCESS；push 远端 HEAD `07da7ae45`。**注意：release 已含旧（含 bug）代码，需经 MR !1805(release) 再合入该修复。**
 - **DDL 工单 147777（prod）已 EXECUTED**：`gaotu.first_call_task_1v1` 加 `execution_seq`/`task_dedup_owner` 生成列 + 唯一键 `uq_owner_user_rule_execution`，drop `uq_number`（cluster 211 gaotu-crm-prod）。回读 prod 唯一键 = PRIMARY + uq_owner_user_rule_execution。
