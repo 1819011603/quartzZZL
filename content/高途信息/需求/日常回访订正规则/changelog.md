@@ -7,6 +7,19 @@ tags: [需求, 决策]
 
 > 只记会影响后续设计判断的理由，不记流水账。**日期倒序（最新在前）。**
 
+## 2026-11-03｜青舟流水线「合并代码到master分支」步骤标记完成
+- 背景：release→master 已真合并（fairy codeMerge `205822`、student-data `205823`，均 code 200），但**流水线步骤未自动翻状态**（页面仍显示「未开始」）。
+- 按 owner 要求，用 `release.py mark-done --pipeline-id <id> --pipeline-status`（`updatePipelineRecordStatus` + `updatePipelineStatus`，`status=4`=「标记完成」）标记：
+  - fairy **1324925**、student-data **1324917**、student-data **1324918**（同仓多流水线，一并标记）——均 code 200。
+- 回读（`getPipelineList` templateId=7）：三条 `stepName=合并代码到master分支`、`status=4`。
+- 说明：skill 中 `mark-done` 即「手动把流水线记录/状态标完成」（SKILL.md 第 24 行）；青舟「合并代码到master分支」步骤的「标记完成」对应此接口。
+
+## 2026-11-03｜release→master 合并完成（owner 授权；feature 不补合）
+- **owner 明确**：`feature-1v1-daily-visit-job` 的 `07da7ae45`（AICR 修复）**不补合**，直接 `release`→`master`。
+- **fairy**：`release.py merge --service fairy --pipeline-id 1324925` → `createMergeRequest` pipelineRecordId `1716949` → `codeMerge [205822]` **code 200**；master 新 tip **`fbf51ad8`** 含 release `54aa10d6` ✓。
+- **student-data**：`merge --service student-data --pipeline-id 1324917 --image …release-4e3c5df4-…` → `createMergeRequest` `1716950` → `codeMerge [205823]` **code 200**（**同仓多服务只 merge 一次**，`markDoneIds` 空）；master 新 tip **`c9fc2c410`** 含 release `4e3c5df49` ✓。
+- 顺序 fairy→student-data；**未 force push**；未动 service-dock、未动 service-dock。
+
 ## 2026-11-03｜抓真实「全量发布」接口 + 补发 prod-1
 - **Chrome 抓包**（UI「全量发布」→确定，student-data prod-1）：`POST /qingzhou/tianti/operation/prod/serviceDeploy.ajax`，body `{"type":7,"grayType":"percentage","stepNum":1,"environment":"prod","envInfoId":100,"pipelineId":1324918,"imageCode":"acr.baijia.com/uqun/student-data:release-4e3c5df4-20261103110116"}` → **`{"data":1716651,"code":200,"msg":"success"}`**。
 - **真因**：全量**逐泳道**发，且 **`pipelineId` 必须是该泳道对应的灰度流水线**（14→1324917、100→**1324918**）。此前 `full --pipeline-id 1324917` 对两个泳道都用了 14 的 pipeline，导致 100 被服务端判「灰度发布未完成」；**不是 eureka 豁免问题**，是**泳道↔pipeline 对应错误**。
