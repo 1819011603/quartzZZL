@@ -8,7 +8,8 @@
 - [x] **跨模式并集「订单过滤」缺口已修（A 方案）**：cart 新增 `RenewalCrossModeOrderService`——大班路径旁路补 `order_item`(6004)、小班路径旁路补 `order_info`，并并集(+Redis 缓存/负缓存)；另修 `coreHandle` 库存按班级 productType 分组、旁路补 `orderNumber`。push `8ce7a83e`。复测：开=主(大班)+从(小班)两类、关=回单计划
 - [x] cart 并集端到端 + order 跨模式放行（2026-11-03 Arthas 临时开关，见「已验证」）
 - [x] **预热缺口修复（2026-11-04）**：`RenewalService#preheat` 大班路径与 5 参 `getRenewalDetail` 补齐 `mergeRelatedPreCourseNumbers`（原只在 7 参 getRenewalDetail）；push `e5c30f6e`，重部署 cart `test-gtbg-dev-3` eureka UP；桥 `preheat(7658127801,585960797778243584)` 返回主+从两类
-- [ ] **扩科不变性未做对照验证**：合并 courseNumbers 间接影响扩科 grade 来源；需扩科配置含从计划年级的样本对照（本样本未触发）
+- [x] **同商品×同年级去重（owner 新增，2026-11-04）**：并集纯续各引擎已按商品去重；补兜底 `RenewalService#dedupClazzByGradeByProduct`（3 处 VO 组装点、仅同年级组内、保留首个）；push `56935dcf`，部署 eureka UP，`getRenewalDetail` 无重复
+- [x] **扩科不变性对照（2026-11-04）**：扩科代码未改、配置仅取主计划；经 API 临时加 grade11 扩科项验证「并集会把从计划年级纳入扩科年级上下文」；`excludeMode` 按科目排除；测试数据已清理（回读仅 72/73）
 
 ## 已完成
 

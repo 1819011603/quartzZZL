@@ -142,3 +142,21 @@ tags: [需求]
 - **「扩科不动」的间接影响**：合并后的 `courseNumbers` → `renewalCourseDTOMap` → 决定扩科 `studentPostGrades`（`ExpandSubjectRecommendService` 大班重载）。若扩科配置含从计划年级的条目，扩科结果可能新增项。本样本（扩科仅 grade16）未触发；未做扩科配置含从计划年级的对照验证 → **推断**：口径「扩科不变」在配置年级⊆主计划年级时成立。
 - `PaymentSizeImpl` 未改（技术文档列了 PAYMENT_SIZE 一并放行，实际跨模式未触发该处理器）。
 - 预热**小班**路径（`SmallRenewalPreheatService`）仍不合并：在线小班不走预热结果缓存、会实时重算（正确），仅下游缓存预热少从计划 → 性能影响。
+
+## 收尾补充（2026-11-04）：同商品×同年级去重 + 扩科不变性
+
+### 同商品×同年级去重（owner 新增要求）
+- **代码级结论**：并集纯续各引擎已按商品去重——
+  - 大班 `coreHandle` 构建 `preCourseWithClazzFinal` 时按 `productSkuNumber`（联报 `productType=23` 按 `activityNumber`）去重（`RenewalService:1730-1748`，**origin/release 既有**，2025-07 提交 `4cb9e9eb8`）；
+  - 小班 `RecommendMergeService.merge` Step1 按 `productId_configuredGrade`（纯续 `configuredGrade` 为 null → 按 `productId`；纯续 `productId`=`ProductKey.ofClazz(clazzNumber)`）。
+- **兜底（本轮补齐）**：新增 `RenewalService#dedupClazzByGradeByProduct`，在「纯续+扩科+加购」合并、按年级分组后**同一年级组内按 `productSkuNumber` 去重（保留首个 = 纯续>扩科>加购）**；3 处 VO 组装点（大班 7 参 / 大班 5 参 / 小班）统一调用；**仅同年级组内**，不影响同一商品配在多个年级。push `56935dcf`。
+- **验证**：cart 重部署 `test-gtbg-dev-3`，pod `cart-gaotu100-com-765c8c49b7-xrbgl` eureka UP；桥 `getRenewalDetail(7658127801,585960797778243584)` → grade16(大班纯续)+grade11(小班6004)，**无同年级重复**（traceId `cart_gaotu100_com.297.17937238450230010`）。
+
+### 扩科不变性对照
+- **代码级**：本需求 **未改** `ExpandSubjectRecommendService`（diff 无）；扩科配置仅取主计划（`renewalPreCourseDTO.getExpandSubjectConfig()`），**不并入从计划配置**。
+- 并集的唯一间接影响：合并后 courseNumbers → 大班路径 `renewalCourseDTOMap` → 扩科 `studentPostGrades` 的年级来源扩大（含从计划年级）。
+- **运行时对照**（经官方 API `expandSubject/add` 给主计划**临时**加 grade11 扩科项）：
+  - 开关开 → grade11 出现扩科项 `585960755422160896`(recommend_type=2, 科目"化学", traceId `cart_gaotu100_com.291.17937237475350010`)；开关关则不会（该年级来自从计划）。
+  - `isExcluded`（`excludeMode=1`「排除不同授课模式在读」）**按科目**排除：该学员在对方模式(小班)在读的科目(1/4/5)被剔 → (11,5) 被排除、(11,2) 非排除科目 → 出现。
+- **结论**：扩科**计算逻辑/配置未变**；仅当「主计划扩科配置含从计划年级」时会多出该项（正常情况主计划配置年级 ⊆ 主计划自身年级 → 无实际影响）。
+- **测试数据已清理**：注入的 4 行 `renewal_expand_subject_recommend`(id 103-106) 已删除；回读主计划仅原始 2 行(id 72/73)。
