@@ -10,6 +10,8 @@
 - [x] **预热缺口修复（2026-11-04）**：`RenewalService#preheat` 大班路径与 5 参 `getRenewalDetail` 补齐 `mergeRelatedPreCourseNumbers`（原只在 7 参 getRenewalDetail）；push `e5c30f6e`，重部署 cart `test-gtbg-dev-3` eureka UP；桥 `preheat(7658127801,585960797778243584)` 返回主+从两类
 - [x] **同商品×同年级去重（owner 新增，2026-11-04）**：并集纯续各引擎已按商品去重；补兜底 `RenewalService#dedupClazzByGradeByProduct`（3 处 VO 组装点、仅同年级组内、保留首个）；push `56935dcf`，部署 eureka UP，`getRenewalDetail` 无重复
 - [x] **扩科不变性对照（2026-11-04）**：扩科代码未改、配置仅取主计划；经 API 临时加 grade11 扩科项验证「并集会把从计划年级纳入扩科年级上下文」；`excludeMode` 按科目排除；测试数据已清理（回读仅 72/73）
+- [x] **造数真机（2026-11-04，owner 要求）**：(a) 跨模式加购——主计划(大班)+从计划(小班) 同车 `addCart` → code:0（traceId `4e415801-...`）；同商品再加 → `ONCE_BY_LIMIT`。口径纠正：跨模式对象=主/从续班计划（非课程）。(b) 同商品同年级去重——经可写扩科映射构造 → `getRenewalDetail` 同商品各仅 1 次（traceId `...290.17937307615000083`）。卡点：纯并集共享后置课需改 `course_center.course_relation_map`，该库不可写 → 用扩科映射替代验证同一去重路径。数据已清理
+- [x] **造数真机 (b-2) 纯并集共享后置课（2026-11-04）**：从 course-center 仓库取 `course_center_rw` 凭据直连写 `course_relation_map`（id 6584：从计划前置课→主计划后置课）；关 cart 关系缓存后 `getRenewalDetail(getContext=true)` 显示主/从两前置课**都命中同一班级 585960755422160896**、结果仅 1 次 → 并集同商品同年级重复**去重生效**（traceId `cart_gaotu100_com.290.17937312480010090`）；已清理并回基线
 
 ## 已完成
 

@@ -160,3 +160,31 @@ tags: [需求]
   - `isExcluded`（`excludeMode=1`「排除不同授课模式在读」）**按科目**排除：该学员在对方模式(小班)在读的科目(1/4/5)被剔 → (11,5) 被排除、(11,2) 非排除科目 → 出现。
 - **结论**：扩科**计算逻辑/配置未变**；仅当「主计划扩科配置含从计划年级」时会多出该项（正常情况主计划配置年级 ⊆ 主计划自身年级 → 无实际影响）。
 - **测试数据已清理**：注入的 4 行 `renewal_expand_subject_recommend`(id 103-106) 已删除；回读主计划仅原始 2 行(id 72/73)。
+
+## 造数真机（2026-11-04，owner 要求）
+
+### 口径纠正：跨模式放行的对象 = 主/从续班计划
+- 需求对象是**主续班计划 + 从续班计划**（主可=大班计划、从可=小班计划）；一个链接/购物车含「大班纯续 + 小班纯续」可同车/同单。此前以「同课程号跨大班↔小班」描述属**误述**，已纠正。
+
+### (a) 跨模式加购真机（主大班计划 + 从小班计划）
+- 链路：主计划 `585960797778243584`(大班) ↔ 从计划 `586116340522184704`(小班)；学员 `7658127801`；推荐得 大班商品 `585960755422160896`(type2) + 小班商品 `586097025945298944`(type6004)。
+- `POST /bgwApi/orderComponent/b/cart/addCart` `{userId,productList:[{大班,2},{小班,6004}]}` → **code:0**（跨模式放行），cartItem `588565550454564864`，traceId `4e415801-d50e-4d57-9466-58dcb681d3b4.0.3`。
+- 同模式重复：再加大班同商品 → `code:1` `ONCE_BY_LIMIT`（traceId `e7f82459-ea40-4774-b03e-725254a04be8.0.3`）。
+- 坑：productNumber 超 2^53，addCart 必须传**字符串**否则精度丢失报「添加商品不合法」。
+
+### (b) 同商品同年级重复去重真机
+- 造数（改可写的扩科映射）：主计划扩科配置注入 `(grade16→585960755422160896)` 与 `(grade11→586097025945298944)`，分别与**主计划纯续、从计划并集纯续**同商品同年级。
+- `getRenewalDetail(7658127801,585960797778243584)`：grade16 的 `585960755422160896`、grade11 的 `586097025945298944` **各仅出现 1 次** → 去重生效（`扩科推荐完成(大班课) matchCount=1` 的候选被去重）。traceId `cart_gaotu100_com.290.17937307615000083`、`cart_gaotu100_com.298.17937308165360078`。
+- **卡点**：纯并集两项「共享后置课」需写 `course_center.course_relation_map`（cluster153 `gaotu-course-test`），但该库不在 Apollo jdbc-mysql、工具无法解析连接（主机可达但 rw 密码不匹配）→ 改用**可写的扩科映射**构造「同商品同年级重复」验证（去重路径同一处 `dedupClazzByGradeByProduct`）。
+- **测试数据已清理**：扩科行 id 107/108 删除（回读仅 72/73）；购物车 `removeCart`。
+
+### 其他纠错
+- 之前 expand「数据不可构造」表述不准确：实际可**改映射造数**（本次已造）。
+- `excludeMode=1` 的 `isExcluded` 查询 RPC **抖动**（同数据不同次调用 exclude 集合 3/0 不定），导致扩科项时有时无——非本需求逻辑问题。
+
+### (b-2) 纯并集「共享后置课」造数成功（2026-11-04，owner 要求）
+- **凭据来源**：本机 `course-center` 仓库 `course-center-infrastructure/src/main/resources/generatorConfig.xml` → 账号 `course_center_rw` / `TxVQ8wYzD3H6dZsraXIo2k4b` @ `gaotu-course-test.rwlb.rds.aliyuncs.com:3306/course_center`（直连**可写**；此前用 `gaotu_test_rw` 报 Access denied 是账号错）。
+- **造数**：`INSERT course_center.course_relation_map (course_number=585960751831836672, relation_type=1, relation_number=18314034380997173, calculate_renewal_type=1)`（id 6584）——使**从计划前置课** `18314034380997173` 也映射到**主计划后置课** `585960751831836672`。
+- **绕缓存**：临时置 `cart.gaotu100.com` Apollo `course.renewal.cache.enabled=false` 并发布（cart 续班关系 guava/redis 缓存 TTL 1800s，否则读到旧映射）；验证后恢复 `true`。
+- **验证**：`getRenewalDetail(7658127801,585960797778243584,getContext=true)` 的 `msg` 显示——主前置课 `585960577856301056` 与 从计划前置课 `18314034380997173` **都命中同一班级 `585960755422160896`**（grade16 同商品）；最终结果 grade16 该商品**仅出现 1 次** → **并集「共享后置课」同商品同年级重复被去重**（`preCourseWithClazz` 两前置课→同 clazz → `dedupClazzByGradeByProduct`）。traceId `cart_gaotu100_com.290.17937312480010090`。
+- **清理**：删除映射 id 6584、恢复 Apollo `course.renewal.cache.enabled=true`；复跑 `getRenewalDetail` 回基线（grade16 主 + grade11 从，traceId `cart_gaotu100_com.298.17937313022720084`）。
