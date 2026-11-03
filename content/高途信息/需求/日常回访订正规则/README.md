@@ -30,13 +30,13 @@ tags: [需求]
   - R2/R3：`DailyVisitSubclazzQuitConsumer`、`DailyVisitTaskDeleteService` 改 no-op（老链路）；
   - fairy `FirstCall1v1SaveService` 移除改派/失效的日常回访删除。
 - **判定做完的标准**：13 条规则实现 + 真实验证；转班/改派/退费**不删**任务（已隔离 E2E 验证）。
-- **明确不做**：不改老链路的**生成**逻辑（仅切 Apollo 停课过滤开关）；不动 service-dock；本需求**未合并 release、未上生产**（等授权）。
+- **明确不做**：不动 service-dock；本需求**未合并 release、未上生产**（等授权）。（老链路停课过滤切 Apollo 开关；另老链路生成前调资格接口 `filterLegacyUsers` 已确认属本需求、保留。）
 
 ## 已定共识
 
 - GPS 规则落 student-data；R5b：GPS 仅 `productType=2`(1v1) 生成，Apollo `taskPlatform.dailyVisit1v1.allowedProductTypes` 默认 `[2]`（2026-10-28）
 - **转班/改派不删除日常回访任务（R2/R3）**（2026-10-29）
-- 老链路代码不动（仅 `taskPlatform.dailyVisit.filterStoppedStudents` 开关，默认 false）（2026-10-28）
+- 老链路代码不动（仅 `taskPlatform.dailyVisit.filterStoppedStudents` 开关，默认 false）（2026-10-28）；**例外并已定：老链路生成前调资格接口 `filterLegacyUsers` 属本需求、保留（2026-11-03 owner 明确）**
 - config55（test）改为对齐毛萌当前 org/role（2026-11-02）；这是 test 数据对齐，非代码改动
 - 部署泳道统一 test-eco-3；service-dock 只读（不 push/不部署）
 

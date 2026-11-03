@@ -7,6 +7,13 @@ tags: [需求, 决策]
 
 > 只记会影响后续设计判断的理由，不记流水账。**日期倒序（最新在前）。**
 
+## 2026-11-03｜filterLegacyUsers 属本需求、保留；MR 指向正式分支
+- owner 明确：老链路 `DailyVisitScheduleJob.filterTaskUsers → DailyVisitEligibilityService.filterLegacyUsers`（生成前调 `validateDailyVisit` 资格）**属本需求范围，保留**；旧「老链路生成逻辑不动」口径以本条为准。
+- owner 明确：本特性唯一新增 SNAPSHOT 依赖 `service-dock-api` 改 `1.0.11-RELEASE`（已编译 BUILD SUCCESS、push `2852ce84a`）。
+- 分支规范：正式交付分支 = `feature-1v1-daily-visit-{job,task}`；`feat/1v1-daily-visit-{job,task}` 为旧分支（被正式分支完全包含、0 独有提交）。因 GitLab 不能就地改 MR 源分支，**关旧开新**：
+  - student-data 新 MR **!1805**（`feature-1v1-daily-visit-job → release`）；旧 **!1788**（`feat/... → release`）待关。
+  - fairy 新 MR **!1103**（`feature-1v1-daily-visit-task → release`）；旧 **!1101**（`feat/... → release`）待关。
+
 ## 2026-11-02｜统计沟通不需要回访任务（GLUE 补任务=错方向）
 - 「统计 10.25–11.2 的沟通」直接查通话表 `first_call_user_call_record`（account_id/user_id/call_time/call_duration）按 `call_time` 过滤即可，**与回访任务无关**。
 - 写 Java GLUE 直接往 `first_call_task(_1v1)` 伪造覆盖 10.25–11.2 的任务：窗覆盖后通话判定会通过（`DailyVisitCallRecordFilter`/`isWithinTaskPeriod`），但需再触发计数、绕过校验、维护唯一键/防重/子任务/ES/MQ，风险高、真实性差 → 不推荐。
