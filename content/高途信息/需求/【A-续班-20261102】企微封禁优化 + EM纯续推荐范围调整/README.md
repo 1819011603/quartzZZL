@@ -34,18 +34,46 @@ tags: [需求]
 - 4 仓 HEAD 均为 `feature-xuban-pure-relation-20261102`；cart 已切统一分支，原 `feature-xuban-expand-exclude` 未提交现场（yapidoc.json、ExpandSubjectRecommendContractTest）已 `git stash` 保留。
 - test 建表 `gaotu.renew_master_relation`；Apollo 开关默认 false（product-b/cart 已回读 false，白名单置空）。
 - 编译：cart / product-server-b / order-app 均通过。
-- 部署 `test-gtbg-dev-3` 全部 **eureka UP**：cart `9781f993`、product-b `d99e9162`、product-c `473b26b7`、order `0aaa0f44`。
-- **修复 bug**：`RenewalMasterRelationController` 原直返 `RestResponse` 导致非管理员路径 `ClassCastException`→「未知错误」；改为 `RestTraceResponse`+`RestTraceResponseUtils.handleRequest`（push `d99e9162`）。
-- product-b 已验证：save（白名单/管理员校验）+ list + 全量差分（增/软删/软删复位）+ 缓存 + 下发字段随开关。
+- 部署 `test-gtbg-dev-3` 全部 **eureka UP**：cart `9781f993`、product-b `116175f0`、product-c `473b26b7`、order `0aaa0f44`。
+- **修复 bug 1**：`RenewalMasterRelationController` 原直返 `RestResponse` 导致非管理员路径 `ClassCastException`→「未知错误」；改为 `RestTraceResponse`+`RestTraceResponseUtils.handleRequest`（push `d99e9162`）。
+- **修复 bug 2**：`save` 落库 `create_account_id`（登录上下文兜底），实测新插入行记录操作人（push `116175f00`，实测 `create_account_id=125756`）。
+- product-b 已验证：save（白名单/管理员校验）+ list + 全量差分（增/软删/软删复位）+ 缓存 + 下发字段随开关 + 边界（状态/上限10/非管理员）。
+
+## 端到端验证（2026-11-03，Arthas 临时开开关）
+
+`product`/`order.gaotu100.com` Apollo 无发布权限 → 用 Arthas `vmtool` 在 pod 内置 `pureRelationEnabled=true`（product-c 两 pod + order pod），**测后已全部置回 false**。
+
+- **product-c 下发**：`related_renewMasterNumbers:[586116340522184704]`（开=true 有；关=false 无）。
+- **cart 收到**：`ProductFeignServiceAdapterImpl` 透传 `related_renew_master_numbers` ✓。
+- **cart 并集**：泳道 pod `app.log` = `EM pure relation merged courseNumbers, renewalNumber=585960797778243584, size=2`（主∪从）；开关关→无该日志（门控✓）。
+- **order 跨模式**：大班2+小班6004 同课程 → **放行**；同模式2+2 同课程 → **`SAME_COURSE` 拦**；大班2+小班6004 同班级号 → **放行**；开关关 → **`SAME_COURSE` 拦**（回旧行为）。
+- **未覆盖**：cart 推荐实际报价——test 库主/从前置课无订单，任何 userId 无候选（已用「合并 size=2 + 门控」作该环节运行时证据）。
+
+## cart 推荐「实际报价」验证与跨模式缺口（2026-11-03）
+
+**样本**：主(大班)`585960797778243584` ← 从(小班)`586116340522184704`；学员 `7658127801`（主前置课 `585960577856301056` paid 订单在 `order_info`；从前置课 `18314034380997173` paid 订单在 `order_item`6004）。
+
+- **实际返回**：主计划大班纯续 `dcg-扩科排除-后置-六年级语文`(clazz 585960755422160896,product_type=2) + 扩科数学/英语；**无小班从计划报价**。
+- **根因（采集日志）**：合并生效（coreHandle 收到 `[585960577856301056, 18314034380997173]`），但「订单过滤完成」后只剩 `[585960577856301056]` —— 大班路径订单查询 `listByCourseNumbersAndUserIdAndStatus` 只读 `order_info`(大班)，查不到小班 6004 的 `order_item` 订单。
+- **对称**：`listBySpuNumbersAndUserIdAndStatus([从,主], 学员)` 只返回小班订单，查不到大班 `order_info` 订单。
+- **结论（缺口）**：跨模式并集在**订单过滤**断裂。要满足「一个链接含大班+小班纯续」，需大班路径补 6004/`order_item`、小班路径补 `order_info`（或统一口径）——属主流程订单查询，与「不改主流程」口径冲突，**待决策**。
 
 ## 阻塞
 
-- **product Apollo（app `product`，负责人 litao04）无发布权限** → product-c 的 `renewal.pure.relation.enabled` 无法在 test 打开 → cart 并集端到端无法验证（product-c 下发实测仍无 `related_renewMasterNumbers`）。
-- **order Apollo 无权限（litao04）** → 跨模式放行开关无法在 test 打开 → order 放行未验证（默认 false 兜底）。
+- **product Apollo（app `product`，负责人 litao04）无发布权限**；**order Apollo（litao04）无权限** → 两处开关**无法在 test 持久打开**（本轮用 Arthas 进程内临时验证，重启即复位）。生产/测试持久开启仍需 litao04 授权。
 - GAIA 两场景显示记录无创建入口 → 需 GAIA 后台/管理员；student-center 两套字段配置需管理员。
-- 代码级风险（未实测）：cart 大班 `coreHandle` 按 `course.filter.type:30,40` 过滤后置课程，跨模式（小班）并集可能被排除。
+
+## 代码级结论（cart 跨模式并集）
+
+- 合并发生在 `RenewalService:255`，**早于**按 `renew_master.type` 分流 → 大小班两引擎都收到并集 courseNumbers。
+- **主计划=大班(type=1)**：走 `coreHandle`，全程**无按 `clazzRoomType` 过滤**；`course.filter.type{30,40}` 是**课程类别**（专题/系列）非授课模式 → **跨模式小班并集不被过滤**（无需改码）。
+- **主计划=小班(type=2)**：走 `SmallRenewalCoreService`；`UserOrderQuerySubBuilder` 按合并后 `courseNumbers` 查订单，`RenewalRelationMapBuildSubBuilder`/`ClazzInfoQuerySubBuilder` 按合并前置课泛化取关系与候选；链路内 `ProductType` 分支均为「单课6004/组合51」，**无大班/小班模式或计划归属过滤**；白名单缺项为「降级继续」非丢弃 → 并入的大班课**不被丢弃**（实现用「统一合并 courseNumbers」替代原设计的小班 SubBuilder 改造）。
+- **待运行时确认（开关可开后）**：跨模式结果排序/展示；扩科是否受共享 DTO 影响（口径要求扩科不变）。
 
 ## 涉及代码
 
 - product-server：`RenewMasterRelation` / `RenewMasterRelationBizMapper`(+XML) / `RenewalMasterRelationService#save` / `RenewalMasterRelationController`（list/save）；`RenewalServiceImpl` 下发 `relatedRenewMasterNumbers`。
-- cart/order：并集+预热 / 受控放行（待做）。student-center：两套字段配置（待做）。
+- cart：`RenewalService#mergeRelatedPreCourseNumbers`（并集仅纯续，早于分流）。
+- order：`CartSameClazzOrCourseImpl` 跨模式受控放行。
+- student-center：两套字段配置（待做）；GAIA 两场景显示（待管理员）。
+- 端到端步骤：`e2e.md`。

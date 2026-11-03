@@ -14,3 +14,6 @@
 - 2026-11-03 修复：`RenewalMasterRelationService#save` 落库 `create_account_id`（登录上下文兜底），push `116175f00`。
 - 2026-11-03 代码级结论：cart `course.filter.type{30,40}` 是**课程类别**（30-专题课/40-系列课）非授课模式；`coreHandle` 全程无 `clazzRoomType` 过滤 → **跨模式（小班）并集课程不会被该过滤掉**（此前交接的「大班只处理大班课程类型」属对 `courseTypes` 的误读）。小班主计划走 `SmallRenewalCoreService` 为另一路径，未实测。
 - 2026-11-03 边界用例（product-b HTTP）：非管理员/空白名单、状态非可编辑、超上限10 均按预期拦截。
+- 2026-11-03 小班主计划结论：`SmallRenewalCoreService`/`SmallRenewalContextBuilder` 链路**无大班/小班模式或计划归属过滤**（`ProductType` 分支仅 单课6004/组合51；白名单缺项降级非丢弃），合并后的从计划（大班）课**不被丢弃** → 无需改码（实现用「统一合并 courseNumbers」替代原设计的小班 SubBuilder 改造）。
+- 2026-11-03 端到端（Arthas 临时开 product-c/order 开关，测后复位）：product-c 下发含 `related_renewMasterNumbers`；cart 收到 `related_renew_master_numbers` 且合并（日志 `size=2`，开关关则无）；order 大班2+小班6004 跨模式放行、同模式真重复 `SAME_COURSE` 拦、开关关回拦。
+- 2026-11-03 **cart 实际报价验证发现跨模式缺口**：学员 7658127801（主/从前置课均有已支付订单）下 `getRenewalDetail(主计划)` 只返回主(大班)纯续+扩科，**无小班从计划报价**。根因：合并后小班前置课被「订单过滤」剔除——`listByCourseNumbersAndUserIdAndStatus` 只读 `order_info`(大班)、`listBySpuNumbersAndUserIdAndStatus` 只读 `order_item`(6004)。需补齐另一模式订单查询（主流程，待决策）。

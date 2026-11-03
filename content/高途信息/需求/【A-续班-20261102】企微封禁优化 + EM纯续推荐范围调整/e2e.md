@@ -1,6 +1,6 @@
 # 端到端测试步骤（EM纯续关联；开关可开启后执行）
 
-> 前置阻塞：`product`(app, litao04) 与 `order.gaotu100.com`(litao04) Apollo 无发布权限 → 第 1 步的 product/order 开关目前打不开，故 4~5 未执行。
+> **状态（2026-11-03）：已执行**。product/order Apollo 无发布权限 → 用 Arthas `vmtool` 在 pod 内临时置 `pureRelationEnabled=true`（product-c 两 pod + order pod），测后已全部置回 `false`；cart 开关与 product-b 白名单用 Apollo 临时后恢复。结果见 README「端到端验证」与本文末。
 
 样本（test，`test-gtbg-dev-3`）：
 - **主计划（大班,type=1）**：`585960797778243584`（dcg-扩科排除-大班计划-1020），course_numbers `[585960577856301056]`
@@ -42,3 +42,12 @@ curl -sk -x "${AGENT_PROXY_URL:-http://127.0.0.1:8888}" \
 - 非管理员 + 空白名单 → `仅续班计划管理员可操作`。
 - 从计划 status∉{待开始,进行中} → `仅待开始/进行中的续班计划可关联`。
 - 从计划数 >10 → `最多可纯续关联10个续班计划`。
+
+## 执行结果（2026-11-03，Arthas 临时开关 / test-gtbg-dev-3）
+
+- **Arthas 改值**：`options strict false` → `vmtool --action getInstances --className <bean> --express "instances[i].pureRelationEnabled = true"`；product-c pod 有 2 实例（CGLIB 代理 + target），**两实例都要设**；回读 true/false 确认。测后已置回 false 并 `--stop`。
+- **product-c 下发**（桥 `listRenewalMasterByRenewalNumber` @ PRODUCT.GAOTU100.COM）：开 true → `related_renewMasterNumbers:[586116340522184704]`；关 → 无字段。
+- **cart 收到**（桥 `ProductFeignServiceAdapterImpl#listRenewalMasterByRenewalNumber`）：`related_renew_master_numbers:[586116340522184704]`（productType=2）。
+- **cart 并集**（桥 `RenewalService#getRenewalDetail` + pod `app/log/app.log`）：开 → `EM pure relation merged courseNumbers, renewalNumber=585960797778243584, size=2`；关 → 无新日志（计数不变）。
+- **order 跨模式**（Arthas `vmtool` 调 `CartSameClazzOrCourseImpl#execute`）：大班2+小班6004 同课程 → 空(放行)；同模式2+2 同课程 → `SAME_COURSE`；大班2+小班6004 同班级号 → 空(放行)；开关关 → `SAME_COURSE`(回旧)。
+- **未覆盖**：cart 推荐实际报价——test 库主/从前置课无订单，任何 userId 无候选。
