@@ -31,14 +31,19 @@ tags: [需求]
 
 ## 现在什么情况
 
-- 4 仓分支 `feature-xuban-pure-relation-20261102`（origin/release，--no-track）；cart 未切换、现场未动。
-- test 建表 `gaotu.renew_master_relation`；cart Apollo 开关已发布=false。
-- product-server：关系持久层/服务/控制器 + DTO 下发填充完成；接口收敛为 `relation/save`；编译通过，push `e16e3a27`。
+- 4 仓 HEAD 均为 `feature-xuban-pure-relation-20261102`；cart 已切统一分支，原 `feature-xuban-expand-exclude` 未提交现场（yapidoc.json、ExpandSubjectRecommendContractTest）已 `git stash` 保留。
+- test 建表 `gaotu.renew_master_relation`；Apollo 开关默认 false（product-b/cart 已回读 false，白名单置空）。
+- 编译：cart / product-server-b / order-app 均通过。
+- 部署 `test-gtbg-dev-3` 全部 **eureka UP**：cart `9781f993`、product-b `d99e9162`、product-c `473b26b7`、order `0aaa0f44`。
+- **修复 bug**：`RenewalMasterRelationController` 原直返 `RestResponse` 导致非管理员路径 `ClassCastException`→「未知错误」；改为 `RestTraceResponse`+`RestTraceResponseUtils.handleRequest`（push `d99e9162`）。
+- product-b 已验证：save（白名单/管理员校验）+ list + 全量差分（增/软删/软删复位）+ 缓存 + 下发字段随开关。
 
 ## 阻塞
 
-- order Apollo 无写权限（litao04）→ 默认 false 兜底可先上线。
-- GAIA 两场景显示记录无创建入口 → 需 GAIA 后台/管理员。
+- **product Apollo（app `product`，负责人 litao04）无发布权限** → product-c 的 `renewal.pure.relation.enabled` 无法在 test 打开 → cart 并集端到端无法验证（product-c 下发实测仍无 `related_renewMasterNumbers`）。
+- **order Apollo 无权限（litao04）** → 跨模式放行开关无法在 test 打开 → order 放行未验证（默认 false 兜底）。
+- GAIA 两场景显示记录无创建入口 → 需 GAIA 后台/管理员；student-center 两套字段配置需管理员。
+- 代码级风险（未实测）：cart 大班 `coreHandle` 按 `course.filter.type:30,40` 过滤后置课程，跨模式（小班）并集可能被排除。
 
 ## 涉及代码
 
