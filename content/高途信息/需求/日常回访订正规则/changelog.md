@@ -7,6 +7,15 @@ tags: [需求, 决策]
 
 > 只记会影响后续设计判断的理由，不记流水账。**日期倒序（最新在前）。**
 
+## 2026-11-03｜AICR 两条 high 修复 + 上线项落定（DDL/Apollo/xjob/表对齐）
+- **AICR #779 两条 high（`ClazzTypeFeignServiceImpl#getTeachProductTypeMap` L604-607 / L632-635）**：owner 判定**真 bug、改**。修复口径：下游**业务失败（`isSuccess=false`/null）→ 抛 `BusinessException` 交调度重试**（对齐 `getCreateTimeOrThrow` L182-185 及 #18001 严格口径）；**成功但空数据 → 跳过**。补 4 个单测（失败/null 抛异常、空数据跳过），9/9 通过、BUILD SUCCESS；push 远端 HEAD `07da7ae45`。**注意：release 已含旧（含 bug）代码，需经 MR !1805(release) 再合入该修复。**
+- **DDL 工单 147777（prod）已 EXECUTED**：`gaotu.first_call_task_1v1` 加 `execution_seq`/`task_dedup_owner` 生成列 + 唯一键 `uq_owner_user_rule_execution`，drop `uq_number`（cluster 211 gaotu-crm-prod）。回读 prod 唯一键 = PRIMARY + uq_owner_user_rule_execution。
+- **Apollo PROD** 新增 3 key 已发布（releaseKey `20261103101642-188a560667e40670`）：`taskPlatform.dailyVisit1v1.allowedProductTypes=[2]`、`taskPlatform.dailyVisit1v1.create.batch.size=100`、`taskPlatform.dailyVisit.filterStoppedStudents=false`。
+- **prod xjob**：新建 `DailyVisit1v1ScheduleJob` jobId **13157**（group 314，cron `0 0 * * * ?`，**默认已停止**）；上线时启本 job、停老 `DailyVisitScheduleJob`(10680)，二者不同时调度。
+- **test 表结构对齐 prod**：删除 test 多余的 `uq_task_code`（`ALTER TABLE ... DROP INDEX uq_task_code`，已执行回读）；test 唯一键现与 prod 一致。（test 另有 6 个普通索引 idx_* prod 无，未在本次授权范围，待确认。）
+- **MQ**：本需求**未新增**任何 topic/group；`GID_student-data_dailyVisit_subclazzQuit_prod`、`GID_gps_user_container_fairy_firstCall_group_prod` 生产均已存在且在线 → **无需申请**。
+- **旧 MR** !1788(student-data)/!1101(fairy)：web/接口关闭被 CSRF 422（试 3 次），改由 owner 页面手动关。
+
 ## 2026-11-03｜filterLegacyUsers 属本需求、保留；MR 指向正式分支
 - owner 明确：老链路 `DailyVisitScheduleJob.filterTaskUsers → DailyVisitEligibilityService.filterLegacyUsers`（生成前调 `validateDailyVisit` 资格）**属本需求范围，保留**；旧「老链路生成逻辑不动」口径以本条为准。
 - owner 明确：本特性唯一新增 SNAPSHOT 依赖 `service-dock-api` 改 `1.0.11-RELEASE`（已编译 BUILD SUCCESS、push `2852ce84a`）。
