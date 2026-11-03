@@ -7,6 +7,29 @@ tags: [需求, 决策]
 
 > 只记会影响后续设计判断的理由，不记流水账。**日期倒序（最新在前）。**
 
+## 2026-11-03｜抓真实「全量发布」接口 + 补发 prod-1
+- **Chrome 抓包**（UI「全量发布」→确定，student-data prod-1）：`POST /qingzhou/tianti/operation/prod/serviceDeploy.ajax`，body `{"type":7,"grayType":"percentage","stepNum":1,"environment":"prod","envInfoId":100,"pipelineId":1324918,"imageCode":"acr.baijia.com/uqun/student-data:release-4e3c5df4-20261103110116"}` → **`{"data":1716651,"code":200,"msg":"success"}`**。
+- **真因**：全量**逐泳道**发，且 **`pipelineId` 必须是该泳道对应的灰度流水线**（14→1324917、100→**1324918**）。此前 `full --pipeline-id 1324917` 对两个泳道都用了 14 的 pipeline，导致 100 被服务端判「灰度发布未完成」；**不是 eureka 豁免问题**，是**泳道↔pipeline 对应错误**。
+- **prod-1 已全量（完成）**：经 UI 全量发布（code 200），prod-1 回读 = **2 pod 全 Running、全在新镜像 `release-4e3c5df4-20261103110116`**（无 eureka，符合预期）。至此 **student-data prod(14)+prod-1(100) 均在新镜像**。
+- **skill 更新** `qingzhou-prod-release`：写入真实接口 + 「逐泳道各发、pipelineId 一对一、显式新 imageCode」+ 前置校验（泳道全集 / 泳道↔pipeline / 镜像=新产物 / 灰度就绪含无 eureka 用 Running / DDL 等）。
+
+## 2026-11-03｜student-data 全量参数核实（只读）+ prod-1 未全量原因
+- **student-data 有 2 个 prod 泳道**：`prod`(envInfoId=**14**, prod-BJ-Ali1) + `prod-1`(envInfoId=**100**, prod-1-BJ-Ali1)。依据 `qz_prod.prod_swimlanes()` = `env_infos(sc,'prod')`（只读实测返回 `[{14,prod-BJ-Ali1},{100,prod-1-BJ-Ali1}]`）。
+- **正确参数**：`release.py full` 的 swimlane 默认 = 全部 prod 泳道（`env_info_ids = args.env_info_ids or [g.id for g in prod_swimlanes] or [14]`）→ 默认即 **[14,100]**；接口 = 每泳道一次 `POST /qingzhou/tianti/operation/prod/serviceDeploy.ajax`，body `{type:7, grayType:"percentage", envInfoId:<14|100>, imageCode, pipelineId, stepNum:1, environment:"prod"}`。
+- **此前漏的参数**：① 我用了 `--env-info-ids 14` **显式限制为 14**，漏掉 **100**；② 未传 `--image`，`full` 默认取 `latest_image(release)`，student-data 该值为 **release-a1459ff1（旧）** → 镜像也错。
+- **prod-1 未全量的原因**：①（我）`--env-info-ids 14` 漏 100；② 默认含 100 的 `full` 被**服务端 `code=400 灰度发布未完成`** 拦（prod-1 整组 eureka UNKNOWN）；③ prod(14) 上线新镜像是经其它流程完成。实测 prod-1 **常规部署仍为旧镜像 `release-a1459ff1`**（仅 `graytest` pod 是新镜像）→ 待补发。
+- 未调用发布接口；结论=**必须含 `envInfoIds=[14,100]` 且显式 `--image`（新镜像）**；即便参数正确，prod-1 仍可能被服务端 UNKNOWN-eureka 校验拦，需平台豁免。
+
+## 2026-11-03｜全量发布完成（四服务 prod 新镜像 Running）
+- **前置**：DDL 工单 `147777` **已执行**（executed=true，两条 EXECUTED）；xjob 新 job `13157` 已建（仍**停止**，待上线切换老 job `10680`）。
+- **全量（type=7, percentage）**：
+  - fairy（pipeline `1324925`）→ 镜像 `release-54aa10d6-...`：prod **40 pod 全 Running/UP**。
+  - student-data（pipeline `1324917`）→ `release-4e3c5df4-20261103110116`：prod **90 pod 全 Running/UP**；prod-1 **1 pod Running（无 eureka，符合预期）**。
+  - dws（pipeline `1324922`）→ `release-4e3c5df4-...117`：**90 Running/UP**。
+  - gps（pipeline `1324921`）→ `release-4e3c5df4-...119`：**19 Running/UP + 1 启动中**。
+- **服务端拦截（已知）**：student-data 全量 API 返回 `code=400 灰度发布未完成`（因 **prod-1 整组 eureka 均 UNKNOWN**）；但 prod 实际已滚动到新镜像并经接口验证。兼容规则已写入 `qingzhou-prod-release` skill。
+- **硬性验证**：prod 调 `getTeachProductTypeMap`（`traffic-env: prod`）→ HTTP 200 / rvoCode=0，返回 `{17641711169503747:3, 18043610911081577:1}`，traceId `c2f3461c-229e-417f-9d4f-30e5d92d87c3.0.1`。
+
 ## 2026-11-03｜灰度验证（prod-gray-test，仅 tangwen01、只读无损）
 - **命中灰度 pod**：student-data-graytest-6d8c6897f-qwwsd（ip 10.243.46.228；JVM 元数据 `trafficEnv=grayTest`/`version=grayTest`/`groupId=prod-gray-test`，镜像 `release-4e3c5df4`）。带 `traffic-env: grayTest` 经 ACL 桥调用，traceId `f15f41be-5290-4200-b690-6060bdcc3aa1.0.1`、`8ef61b5d-dccf-40d3-bd9b-59bc24865a9b.0.1` **均出现在该灰度 pod 的 app.log**（各 4 行，含 RequestLogAspect）→ 确认命中灰度、非老 pod。
 - **filterContainers（大班课·小班课剔除）**：输入 tangwen01（accountId **131951**）名下真实容器 3 条（子产品 17641412292575747=小班(3)、18003796307544604=大班(1)、18043610911081577=大班(1)）→ 实际返回 **`[]`（全部剔除）**，与预期一致（`allowedProductTypes=[2]` 仅 1v1）。traceId `f15f41be-…`。
