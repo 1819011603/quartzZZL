@@ -2,11 +2,13 @@
 
 ## 待办 / 阻塞
 
-- [ ] T-4 GAIA：`续班服务的字段集`(246049345610190848) 已含 `studentTagNames`(学员标签)；`continuationService`/`microContinuationService` 无独立场景（为 student-center 场景页编码）。**待管理员**：为两续班服务场景补/放字段（含学员标签）；如需「修改企微备注」列，需先建 GAIA 字段（`gaia_field_list 企微备注` 命中 0）
+- [ ] **T-4 GAIA 测试环境配置（责任人=所有者，手动；⚠️ 不要 worker 自行写）**：为 `continuationService`(大班) / `microContinuationService`(小班) 两续班服务场景**补齐/放开显示记录**，**含 `studentTagNames`(学员标签)**；如需展示**【修改企微备注】**列，需先在 GAIA 建对应字段（`gaia_field_list 企微备注` 命中 0）。背景：GAIA `续班服务的字段集`(246049345610190848) 已含 `studentTagNames`；两场景无独立 GAIA 实体、gaia-field 工具无「新建场景显示记录」入口。
 - [x] **T-5 student-center 字段配置（test 已落）**：`ees_data.student_field_config` 为 `continuationService`/`microContinuationService` 各补 `studentTagNames`(type8)+`wechatRemark`(type1)，回读 4 行。**线下/其它识别仍需管理员**推广。
 - [ ] **product / order Apollo 持久开开关**：app `product`(litao04)、`order.gaotu100.com`(litao04) 无发布权限 → 无法在 test/线上**持久**打开 `renewal.pure.relation.enabled`（本轮已用 Arthas 进程内临时验证，重启复位）
 - [x] **跨模式并集「订单过滤」缺口已修（A 方案）**：cart 新增 `RenewalCrossModeOrderService`——大班路径旁路补 `order_item`(6004)、小班路径旁路补 `order_info`，并并集(+Redis 缓存/负缓存)；另修 `coreHandle` 库存按班级 productType 分组、旁路补 `orderNumber`。push `8ce7a83e`。复测：开=主(大班)+从(小班)两类、关=回单计划
 - [x] cart 并集端到端 + order 跨模式放行（2026-11-03 Arthas 临时开关，见「已验证」）
+- [x] **预热缺口修复（2026-11-04）**：`RenewalService#preheat` 大班路径与 5 参 `getRenewalDetail` 补齐 `mergeRelatedPreCourseNumbers`（原只在 7 参 getRenewalDetail）；push `e5c30f6e`，重部署 cart `test-gtbg-dev-3` eureka UP；桥 `preheat(7658127801,585960797778243584)` 返回主+从两类
+- [ ] **扩科不变性未做对照验证**：合并 courseNumbers 间接影响扩科 grade 来源；需扩科配置含从计划年级的样本对照（本样本未触发）
 
 ## 已完成
 

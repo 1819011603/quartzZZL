@@ -106,3 +106,39 @@ tags: [需求]
 - `ees_data.student_field_config`：为 `continuationService`(大班) 与 `microContinuationService`(小班) 各补 `studentTagNames`(学员标签,`193322071548238848`,type8) + `wechatRemark`(企微备注,`199185371333920768`,type1)，回读 4 行确认。
 - GAIA：`续班服务的字段集`(246049345610190848) 已含 `studentTagNames`；两续班服务场景在 GAIA **无独立实体**、无写入入口 → 需 GAIA 后台/管理员。
 - 跨模式放行**真机**：合成数据（同号跨模式）无法触发冲突（另型无商品）；**逻辑层已验证**（上轮 `CartSameClazzOrCourseImpl#execute`）。
+
+## 收尾核对（需求↔实现）+ 预热缺口修复（2026-11-04）
+
+**逐点核对**（需求点→实现位置→证据）见本节；机械验收（三仓分支）已回跑通过。
+
+### 子项2 对照
+| 需求点 | 实现位置 | 证据 |
+|---|---|---|
+| `renew_master_relation` 建表 | test `gaotu.renew_master_relation`（cluster142） | `SHOW CREATE TABLE` 回读：含 `uk_main_sub` 唯一键、`idx_main/idx_sub`、`create_account_id` |
+| `save`（全量集合差分、无独立增删） | `RenewalMasterRelationService#save`；`RenewalMasterRelationController` 仅 `/b/renewMaster/relation/list`+`/save` | diff：无 bind/unbind 端点；save 内「新增 insert/软删复位 + 移除软删」 |
+| 人员限制（管理员 OR 白名单；空白名单非管理员→提示） | `#checkAdmin` + `@ApolloJsonValue(...admin.accounts:[])` | 上轮 product-b 实测非管理员报「仅续班计划管理员可操作」 |
+| 状态【待开始/进行中】 | `EDITABLE_STATUS={1,2}` + `#checkStatus` | 上轮实测报「仅待开始/进行中的续班计划可关联」 |
+| 关联缓存 `renewal:relation:{main}` + 空值负缓存 | `#listSubNumbers`（1800s/空值哨兵`[]`60s、save 后删、开关关不启用） | diff + 上轮实测 |
+| A 方案旁路补查 + 旁路缓存 + 负缓存 | `RenewalCrossModeOrderService`（key `renewal:relation:order:{userId}:{i2i\|i2o}:{md5}`、300s/空值60s） | diff；`coreHandle`/`UserOrderQuerySubBuilder` 已接入 |
+| cart 并集仅纯续/扩科不动 | `RenewalService#mergeRelatedPreCourseNumbers`（仅改 courseNumbers） | 见「已知风险」：扩科 grade 来源间接受影响（未样本触发） |
+| order 跨模式放行/同模式拦 | `CartSameClazzOrCourseImpl#allowCrossMode`（仅 2↔6004/6003） | 上轮真机 addCart；`PaymentSizeImpl` 未改（技术文档列的 PAYMENT_SIZE 真机未触发） |
+| 开关默认 true + 置 false 回滚 | 5 处 `@Value("${renewal.pure.relation.enabled:true}")`（product 2/cart 2/order 1） | 全仓 grep；cart Apollo=true 回读 |
+| client 1.5.13 | product-server-client/pom、product-server `product.client.version`、cart 依赖 | diff 三处一致 |
+| **预热（RenewalJobHandler）** | **本轮补齐**：`RenewalService#preheat` 与 5 参 `getRenewalDetail` 增加合并 | 见下方修复 |
+
+### 子项1 对照
+| 需求点 | 位置 | 证据 |
+|---|---|---|
+| student-center 两 identification 字段配置 | test `ees_data.student_field_config` | 回读 6 行：`continuationService`/`microContinuationService` 各含 `studentTagNames`+`wechatRemark`（含 2 条历史 `entranceArea`） |
+| GAIA 两场景显示 | owner 手动 | 归档 `tasks.md` T-4 |
+| cronus 前端 | 未改码，说明在技术文档 §五/§六(二) | 无独立文件 |
+
+### 预热缺口与修复（2026-11-04）
+- **缺口**：设计（技术文档 §六(六)）假设「并集在引擎里生效→预热自动产出主+从」，但实现把 `mergeRelatedPreCourseNumbers` 放在 `getRenewalDetail`（引擎之外）；`preheat()` 直接 `coreHandle` **未合并** → 预热结果缓存丢从计划。在线大班路径优先读该缓存（`corePreheatCache`），故为**正确性缺口**。
+- **修复**：`preheat()` 与 5 参 `getRenewalDetail`（`/web/renewal/operation/cart`）在加载 DTO 后、分流前调用 `mergeRelatedPreCourseNumbers`（同一开关门控）。push `e5c30f6e`。
+- **验证**：cart 重部署 `test-gtbg-dev-3`，pod `cart-gaotu100-com-c7b575d8f-w7tvj` **eureka UP**（commit `e5c30f6e`）；桥 `RenewalService#preheat(7658127801, 585960797778243584)` 返回**主(`585960577856301056`→大班)+从(`18314034380997173`→小班6004)**；桥 `getRenewalDetail` 返回 grade16(大班纯续)+grade11(小班6004 纯续)（traceId `cart_gaotu100_com.297.17937224167830007`）。
+
+### 已知风险 / 未覆盖（本轮新增）
+- **「扩科不动」的间接影响**：合并后的 `courseNumbers` → `renewalCourseDTOMap` → 决定扩科 `studentPostGrades`（`ExpandSubjectRecommendService` 大班重载）。若扩科配置含从计划年级的条目，扩科结果可能新增项。本样本（扩科仅 grade16）未触发；未做扩科配置含从计划年级的对照验证 → **推断**：口径「扩科不变」在配置年级⊆主计划年级时成立。
+- `PaymentSizeImpl` 未改（技术文档列了 PAYMENT_SIZE 一并放行，实际跨模式未触发该处理器）。
+- 预热**小班**路径（`SmallRenewalPreheatService`）仍不合并：在线小班不走预热结果缓存、会实时重算（正确），仅下游缓存预热少从计划 → 性能影响。
