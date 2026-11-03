@@ -56,7 +56,23 @@ tags: [需求]
 - **实际返回**：主计划大班纯续 `dcg-扩科排除-后置-六年级语文`(clazz 585960755422160896,product_type=2) + 扩科数学/英语；**无小班从计划报价**。
 - **根因（采集日志）**：合并生效（coreHandle 收到 `[585960577856301056, 18314034380997173]`），但「订单过滤完成」后只剩 `[585960577856301056]` —— 大班路径订单查询 `listByCourseNumbersAndUserIdAndStatus` 只读 `order_info`(大班)，查不到小班 6004 的 `order_item` 订单。
 - **对称**：`listBySpuNumbersAndUserIdAndStatus([从,主], 学员)` 只返回小班订单，查不到大班 `order_info` 订单。
-- **结论（缺口）**：跨模式并集在**订单过滤**断裂。要满足「一个链接含大班+小班纯续」，需大班路径补 6004/`order_item`、小班路径补 `order_info`（或统一口径）——属主流程订单查询，与「不改主流程」口径冲突，**待决策**。
+- **结论（缺口）**：跨模式并集在**订单过滤**断裂。
+
+## A 方案修复 + 端到端复测（2026-11-03）
+
+- **实现**（cart 新增 `RenewalCrossModeOrderService`，**不改主查询**）：大班路径旁路补 `listBySpuNumbersAndUserIdAndStatus`(order_item/6004)、小班路径旁路补 `listByCourseNumbersAndUserIdAndStatus`(order_info)，并并集；仅开关开 && 有从计划时启用。
+- **旁路缓存**（同续班关联缓存口径）：key `renewal:relation:order:{userId}:{i2i|i2o}:{md5(前置课集)}`；TTL 非空 300s / **空值哨兵 60s（负缓存防穿透）**；批量单 RPC、异常降级、开关关不启用。
+- **另修复**：① `coreHandle` 库存查询按班级自身 productType 分组（原 skuType=2 查 6004 班抛「部分商品不存在」）；② 旁路 `OrderInfoDTO` 补 `orderNumber`。
+- **复测**（学员 `7658127801`，主 `585960797778243584` ← 从 `586116340522184704`）：**开关开** → grade16 大班纯续 + grade12 **小班纯续**(clazz 586090628920764416, type=6004)；**开关关** → 仅大班（回单计划）。cart push `8ce7a83e`，pod eureka UP。
+
+## 联测（cart 加购→下单 跨模式）+ 子项1（2026-11-03）
+
+- **部署缺口**：`orderComponent`(B端购物车，`CartSameClazzOrCourseImpl` 校验入口) 属 **order-b**，此前只部署 gaotu_order → **已补部署 order-b**（`0aaa0f44`，eureka UP）。
+- **真机**（Arthas 临时开 order/order-b 开关）：`POST /bgwApi/orderComponent/b/cart/addCart` ——
+  - 大班班+小班班同车加购 → `code:0`（cart `588517111175895040`，traceId `7c22f266-...`）；
+  - 同模式真重复再加同一大班班 → `code:1`，`SAME_CLAZZ`+`SAME_COURSE`（traceId `81c9bc97-...`）。
+- **未覆盖（数据缺口）**：跨模式**放行**（同号跨 大班2↔小班6004）真机——test 计划大/小班后置班 clazz 与 course 均不同，无冲突；逻辑层已验证（上轮 `CartSameClazzOrCourseImpl#execute`）。
+- **子项1 现状**：GAIA `续班服务的字段集`(246049345610190848) 已含 `studentTagNames`；`ees_data.student_field_config` 中 `continuationService` 仅 2 条重复 `entranceArea`、`microContinuationService` **0 条** → **两套均缺字段配置**（待管理员/前端，见文档「子项1 待管理员清单」）。
 
 ## 阻塞
 
