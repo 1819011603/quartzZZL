@@ -93,3 +93,16 @@ tags: [需求]
 - order：`CartSameClazzOrCourseImpl` 跨模式受控放行。
 - student-center：两套字段配置（待做）；GAIA 两场景显示（待管理员）。
 - 端到端步骤：`e2e.md`。
+
+## 开关口径（通用规则）+ 默认开启（2026-11-03）
+
+- **通用口径**：这类 Apollo 开关**代码默认即「开启新需求」**；Apollo **仅用于回滚**（置 `false` 才回退旧逻辑）。
+- **代码默认 true**：product-server（`RenewalServiceImpl`/`RenewalMasterRelationService`）、cart（`RenewalService`/`RenewalCrossModeOrderService`）、order（`CartSameClazzOrCourseImpl`）均改 `@Value("${renewal.pure.relation.enabled:true}")`；push `ab120d4e5`/`4e126df5`/`e464fa98bd`。
+- **部署**：product-b/product-c/cart/order/order-b 全 **eureka UP**。
+- **验证**：不配开关（无 Apollo/Arthas）→ product-c 下发含 `related_renewMasterNumbers`、cart 返回主+从两类；置 cart Apollo `false` → 回单计划（回滚路径可用）。
+
+## 子项1 落 test（2026-11-03）
+
+- `ees_data.student_field_config`：为 `continuationService`(大班) 与 `microContinuationService`(小班) 各补 `studentTagNames`(学员标签,`193322071548238848`,type8) + `wechatRemark`(企微备注,`199185371333920768`,type1)，回读 4 行确认。
+- GAIA：`续班服务的字段集`(246049345610190848) 已含 `studentTagNames`；两续班服务场景在 GAIA **无独立实体**、无写入入口 → 需 GAIA 后台/管理员。
+- 跨模式放行**真机**：合成数据（同号跨模式）无法触发冲突（另型无商品）；**逻辑层已验证**（上轮 `CartSameClazzOrCourseImpl#execute`）。
