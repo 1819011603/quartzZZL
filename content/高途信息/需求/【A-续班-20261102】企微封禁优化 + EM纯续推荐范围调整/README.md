@@ -248,3 +248,57 @@ tags: [需求]
   | 完成 | `publishPlan/finish` | `{planNumber:<计划号>}` | `success` |
 - **实测**：`microContinuationService`（sceneNumber `263719917126160384`）加 `studentTagNames`，版本 `294311853465539584`、镜像 `294311864365492224`、发布计划 `294311864702085120`；`continuationService` 亦已含。
 - **口径固化**：已写入 `gaia-field` skill `references/scene-display-record.md`（含 layoutSchema 字段结构、边界、验证）。MCP gaia-field 无「新建显示记录」写入口。
+
+## 评审逐项核实 + 后端修复（2026-11-04，product-server 提交 `39adf96e8`）
+
+### A. 前端/接口契约（只改后端）
+| # | 评审项 | 判定 | 依据 | 处理 |
+|---|---|---|---|---|
+| A1 | 批量ID搜索：逗号传单值 `number` 报错 | **存在** | TEST `POST /b/renewMaster/list` body `number:"580120868989048832,579985778241837056"` → `{"status":1,"error_info":"未知错误"}`（traceId `7196d227`）；`numberList` 传合法ID也返回全量108（未过滤） | `RenewalMasterListRequest.number` 改 **String**；`transform` 拆「单个/逗号批量」入 `numberList`（IN 精确）；mapper `numberList.size`→`size()`（原 OGNL 不生效）。**单ID兼容** |
+| A2 | 管理员字段不一致 | **存在** | 部署前端 bundle `p__continuationClasses__list__index.*.js`：搜索表列 `dataIndex:"adminName"`、主列表 `dataIndex:"adminList"`；全局 FastJSON 命名=SnakeCase → `relation/list` 输出 `admin_list` | `relation/list` 显式 `@JSONField(name="adminList")`+补 `adminName`；`/b/renewMaster/list` DTO 同时返回 `adminName`（逗号连接） |
+| A3 | 排序 create_time 倒序 | **部分**（关联查询无排序） | `selectSubPlanInfoByMain` 原无 ORDER BY | 加 `order by m.create_time desc`；列表 `RenewMasterBizMapper.list` 已是 create_time desc。「已选项按勾选顺序」=前端问题 |
+
+### B. 后端缺口/风险
+| # | 评审项 | 判定 | 依据 | 处理 |
+|---|---|---|---|---|
+| B4 | 无效关联校验不完整 | **存在** | `checkStatus` 只遍历查到的行，不存在ID静默通过并可 insert | 增 `statusList.size()!=numbers.size()`→报「存在无效的续班计划，请刷新后重试」 |
+| 原子性 | save 多步无事务 | **存在** | `save` 无 `@Transactional` | 加 `@Transactional(rollbackFor=Exception.class)` |
+| 并发 | 并发 save 竞态 | 需确认 | 无锁 | 交 owner 评估 |
+| B5 | 从计划原规则未完整保留 | 待子任务 | — | 只读子任务 W1-7ef5d8 |
+| B6 | 反向跨模式(小班主→大班从) | 待子任务 | — | 只读子任务 W1-7ef5d8 |
+| B7 | 扩科范围可能被扩大 | 待子任务 | 已有一次对照 | 只读子任务 W1-7ef5d8 |
+| B8 | 预热结果可能过期 | 待子任务 | — | 只读子任务 W1-7ef5d8 |
+
+### 需前端/owner
+- 关联弹窗搜索表 `dataIndex:"adminName"`（部署 bundle 实证）：后端已补 `adminName`；若前端别处读 `admin_name`/`adminList` 不一致，需前端映射（前端码不改）。
+- 「已选项」展示顺序按勾选 → 与 PRD create_time 倒序不符，需前端处理。
+
+### 验证（本轮，product-b pod UP @39adf96e，泳道 test-gtbg-dev-3）
+- **A1**：`number:"580120868989048832,579985778241837056"` → 精确返回 2 条（traceId `903e33ed`）；单 ID → 1 条（`b423beb7`）。前端 UI 实测批量 → 共 2 条（截图 `rel_dialog_batch_search.png`）。
+- **A2**：`/b/renewMaster/list` 返回 `adminList`+`adminName`（如「弓雪萌，张岳翔，唐稳01」）；`relation/list` 返回 `adminList`(camel)+`adminName`（traceId `44906dc7`）。浏览器核对搜索表「管理员」列已显示（截图 `rel_dialog_after_fix.png`）。
+- **A3**：`relation/list` 从计划按 `m.create_time desc` 排序（580120868989048832 → 588506(1103) 先于 587730(1030)）。
+- **B4**：save 传无效从计划 ID → `存在无效的续班计划，请刷新后重试`（page fetch code:1）。
+- **回归**：自关联 → `续班计划不能关联自身`；11 个从计划 → `最多可纯续关联10个续班计划`。
+- 机械验收 4/4：四仓分支 = `feature-xuban-pure-relation-20261102`。
+
+### B5–B8 只读核查（子任务 W1-7ef5d8，均为「代码依据」，除 B7 外未复现）
+- **B5 从计划原规则未保留：存在** — cart `RenewalDataService.java:290-315` 仅并 courseNumbers；白名单/联报用主计划 `renewalRecommendMap`（`RenewalService.java:1521,1581`）→从计划白名单不生效。**需 owner 确认范围**（是否要求从计划规则独立）。
+- **B6 反向跨模式(小班主→大班从)：存在，未复现** — `PreClassInfoBuildSubBuilder.java:67` 前置班 productType 强制取主计划；`StockInfoQuerySubBuilder.java:35-68` 仅对 6004 查库存；`StockMatchPlugin.java:84` 缺失库存→`isSalable=false`→大班从计划被剔除；输出 productType 恒 6004。修复需改库存分组 + 输出类型，且需反向关系造数复现。
+- **B7 扩科范围：存在（条件性），已复现** — 仅当主计划扩科配置含「仅从计划侧年级」时多推（README 169-173）。
+- **B8 预热/缓存过期：存在** — cart `RenewalService.java:1319-1343` key `renewal:preheat:{renewalNumber}:{userId}` 无版本/开关、TTL 26h；save 仅删 `renewal:relation:{main}`；另 `RENEWAL_BASIC_MODEL_PRE`(version:6 静态)、旁路订单缓存 key 亦无版本。
+- 其他：换班 `productSelect`(`RenewalService.java:2796`) 未并集、库存硬编码大班；三商品去重未覆盖 legacy/`productSelect` 候选。
+
+
+
+## 发布编排 24210 更新（2026-11-04）
+- **移除 student-center**（本需求 student-center 无代码改动，字段配置在 test 库）→ 更新后 `removed:["...operation-workbench.student-center"]`，`addOrUpdate` 回 200，读回确认不再存在。
+- 后端服务（java-springcloud，8 个，rank）：product(1)/product-task(2)/product-b(3)〔product-server 整仓〕→ cart(4) → order(5)/order_task(6)/order-ad(7)/order-b(8)；提测/上线泳道 `test-gtbg-dev-3`；分支统一 `feature-xuban-pure-relation-20261102`→`release`。
+- 注：Boss 所说的 `product-c` 实际不存在，product-server 的部署为 product/product-task/product-b；另计划内还有 4 个前端服务（cronus/prism/gaotu-fe-promotions/iris），非本轮后端范围。
+- 链接：https://qingzhou.baijia.com/#/publishArrangement/subPublishArrangement/publishPlan/detail?storyId=&pageNum=1&id=24210&action=edit
+
+## owner 决策落地（2026-11-04）：B5 维持 + B6/B7/B8 修
+- **B5 边界（维持，不改代码，仅文档收口）**：**从计划只并入前置课**，推荐规则（白名单/联报/组合）仍按**主计划**——即「并集仅纯续、扩科不变」；**从计划不独立配规则**。主从规则配置不一致时，从计划侧按主计划/自动推荐口径处理（不是缺陷，是本需求边界）。
+- **B6 修（反向跨模式）**：主=小班、从=大班时，cart 库存构建按**班级自身类型**查、输出**真实 productType**；目标两方向（大班主+小班从 / 小班主+大班从）都能推荐大班+小班。
+- **B7 修（扩科范围）**：扩科年级**收口到主计划自身**（不取主∪从）。
+- **B8 修（预热失效）**：关联/预热加**关系版本**（关联集合签名+开关），save/回滚后旧预热立即失效。
+- 实施中：cart 主体（子任务 W1-7ef5d8）；验证后回填 traceId 与结果。
