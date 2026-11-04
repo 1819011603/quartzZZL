@@ -1,0 +1,217 @@
+{
+  "task_id": "e0be7208",
+  "scope": "readonly decision review; no source/business writes",
+  "children": [
+    {
+      "id": "W1-5e0ea8",
+      "title": "EM纯续推荐对照与验证",
+      "status": "completed",
+      "result_seq": 2,
+      "error": "",
+      "result_path": "/Users/gaotu/.local/feishu-bot/logs/managed/subagents/W1-5e0ea8/result-2.json"
+    },
+    {
+      "id": "W1-3558a8",
+      "title": "企微封禁优化对照与验证",
+      "status": "completed",
+      "result_seq": 1,
+      "error": "",
+      "result_path": "/Users/gaotu/.local/feishu-bot/logs/managed/subagents/W1-3558a8/result-1.json"
+    }
+  ],
+  "tests": {
+    "repository": "cart",
+    "commit": "7ea045de6401499607836446c22e22b936e40072",
+    "summary": {
+      "name": "TestSuite",
+      "time": "0.048",
+      "tests": "33",
+      "errors": "0",
+      "skipped": "0",
+      "failures": "0"
+    },
+    "classes": {
+      "com.gaotu.renewal.small.plugin.WhiteListMatchPluginTest": 13,
+      "com.gaotu.renewal.small.service.ExpandSubjectRecommendServiceTest": 7,
+      "com.gaotu.renewal.small.builder.WhitelistBuildSubBuilderTest": 6,
+      "com.gaotu.renewal.small.builder.PreClassInfoBuildSubBuilderTest": 7
+    },
+    "cases": [
+      {
+        "class": "com.gaotu.renewal.small.plugin.WhiteListMatchPluginTest",
+        "name": "testGetOrder on testGetOrder(com.gaotu.renewal.small.plugin.WhiteListMatchPluginTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.plugin.WhiteListMatchPluginTest",
+        "name": "testExecute_WhitelistMatchSuccess on testExecute_WhitelistMatchSuccess(com.gaotu.renewal.small.plugin.WhiteListMatchPluginTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.plugin.WhiteListMatchPluginTest",
+        "name": "testExecute_PreClassNoWhitelistConfig on testExecute_PreClassNoWhitelistConfig(com.gaotu.renewal.small.plugin.WhiteListMatchPluginTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.plugin.WhiteListMatchPluginTest",
+        "name": "should_interrupt_when_scene_type_is_null on should_interrupt_when_scene_type_is_null(com.gaotu.renewal.small.plugin.WhiteListMatchPluginTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.plugin.WhiteListMatchPluginTest",
+        "name": "testExecute_WhitelistMapEmpty on testExecute_WhitelistMapEmpty(com.gaotu.renewal.small.plugin.WhiteListMatchPluginTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.plugin.WhiteListMatchPluginTest",
+        "name": "testExecute_MultipleWhitelistProductsMatch on testExecute_MultipleWhitelistProductsMatch(com.gaotu.renewal.small.plugin.WhiteListMatchPluginTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.plugin.WhiteListMatchPluginTest",
+        "name": "should_interrupt_when_scene_is_select on should_interrupt_when_scene_is_select(com.gaotu.renewal.small.plugin.WhiteListMatchPluginTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.plugin.WhiteListMatchPluginTest",
+        "name": "testExecute_WhitelistProductsNotInCandidates on testExecute_WhitelistProductsNotInCandidates(com.gaotu.renewal.small.plugin.WhiteListMatchPluginTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.plugin.WhiteListMatchPluginTest",
+        "name": "testExecute_PartialWhitelistProductsValid on testExecute_PartialWhitelistProductsValid(com.gaotu.renewal.small.plugin.WhiteListMatchPluginTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.plugin.WhiteListMatchPluginTest",
+        "name": "testExecute_PluginDisabled on testExecute_PluginDisabled(com.gaotu.renewal.small.plugin.WhiteListMatchPluginTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.plugin.WhiteListMatchPluginTest",
+        "name": "testGetPluginName on testGetPluginName(com.gaotu.renewal.small.plugin.WhiteListMatchPluginTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.plugin.WhiteListMatchPluginTest",
+        "name": "should_interrupt_when_scene_is_recommend on should_interrupt_when_scene_is_recommend(com.gaotu.renewal.small.plugin.WhiteListMatchPluginTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.plugin.WhiteListMatchPluginTest",
+        "name": "testExecute_WhitelistProductsInvalid on testExecute_WhitelistProductsInvalid(com.gaotu.renewal.small.plugin.WhiteListMatchPluginTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.service.ExpandSubjectRecommendServiceTest",
+        "name": "should_returnEmpty_when_expandSubjectIsFalse on should_returnEmpty_when_expandSubjectIsFalse(com.gaotu.renewal.small.service.ExpandSubjectRecommendServiceTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.service.ExpandSubjectRecommendServiceTest",
+        "name": "should_returnEmpty_when_expandConfigIsNull on should_returnEmpty_when_expandConfigIsNull(com.gaotu.renewal.small.service.ExpandSubjectRecommendServiceTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.service.ExpandSubjectRecommendServiceTest",
+        "name": "should_returnEmpty_when_recommendListIsEmpty on should_returnEmpty_when_recommendListIsEmpty(com.gaotu.renewal.small.service.ExpandSubjectRecommendServiceTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.service.ExpandSubjectRecommendServiceTest",
+        "name": "should_returnEmpty_when_configIsNull_largeClass on should_returnEmpty_when_configIsNull_largeClass(com.gaotu.renewal.small.service.ExpandSubjectRecommendServiceTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.service.ExpandSubjectRecommendServiceTest",
+        "name": "should_matchByGrade_when_largeClassPath on should_matchByGrade_when_largeClassPath(com.gaotu.renewal.small.service.ExpandSubjectRecommendServiceTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.service.ExpandSubjectRecommendServiceTest",
+        "name": "should_markSignUp_when_alreadyPurchased on should_markSignUp_when_alreadyPurchased(com.gaotu.renewal.small.service.ExpandSubjectRecommendServiceTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.service.ExpandSubjectRecommendServiceTest",
+        "name": "should_matchByGrade_when_contextPath on should_matchByGrade_when_contextPath(com.gaotu.renewal.small.service.ExpandSubjectRecommendServiceTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.builder.WhitelistBuildSubBuilderTest",
+        "name": "should_set_empty_map_when_renewalRecommendMap_is_null on should_set_empty_map_when_renewalRecommendMap_is_null(com.gaotu.renewal.small.builder.WhitelistBuildSubBuilderTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.builder.WhitelistBuildSubBuilderTest",
+        "name": "should_set_empty_map_when_renewalConfig_is_null on should_set_empty_map_when_renewalConfig_is_null(com.gaotu.renewal.small.builder.WhitelistBuildSubBuilderTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.builder.WhitelistBuildSubBuilderTest",
+        "name": "should_build_whitelist_map_when_renewalRecommendMap_has_entries on should_build_whitelist_map_when_renewalRecommendMap_has_entries(com.gaotu.renewal.small.builder.WhitelistBuildSubBuilderTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.builder.WhitelistBuildSubBuilderTest",
+        "name": "should_set_empty_map_when_renewalRecommendMap_is_empty on should_set_empty_map_when_renewalRecommendMap_is_empty(com.gaotu.renewal.small.builder.WhitelistBuildSubBuilderTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.builder.WhitelistBuildSubBuilderTest",
+        "name": "should_wrap_each_value_in_singleton_list on should_wrap_each_value_in_singleton_list(com.gaotu.renewal.small.builder.WhitelistBuildSubBuilderTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.builder.WhitelistBuildSubBuilderTest",
+        "name": "should_return_order_100 on should_return_order_100(com.gaotu.renewal.small.builder.WhitelistBuildSubBuilderTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.builder.PreClassInfoBuildSubBuilderTest",
+        "name": "should_set_empty_list_when_orderItems_is_empty on should_set_empty_list_when_orderItems_is_empty(com.gaotu.renewal.small.builder.PreClassInfoBuildSubBuilderTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.builder.PreClassInfoBuildSubBuilderTest",
+        "name": "should_set_empty_list_when_orderItems_is_null on should_set_empty_list_when_orderItems_is_null(com.gaotu.renewal.small.builder.PreClassInfoBuildSubBuilderTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.builder.PreClassInfoBuildSubBuilderTest",
+        "name": "should_throw_when_renewalConfig_is_null on should_throw_when_renewalConfig_is_null(com.gaotu.renewal.small.builder.PreClassInfoBuildSubBuilderTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.builder.PreClassInfoBuildSubBuilderTest",
+        "name": "should_filter_out_orderItem_with_null_skuNumber on should_filter_out_orderItem_with_null_skuNumber(com.gaotu.renewal.small.builder.PreClassInfoBuildSubBuilderTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.builder.PreClassInfoBuildSubBuilderTest",
+        "name": "should_build_multiple_preClassInfos on should_build_multiple_preClassInfos(com.gaotu.renewal.small.builder.PreClassInfoBuildSubBuilderTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.builder.PreClassInfoBuildSubBuilderTest",
+        "name": "should_return_order_30 on should_return_order_30(com.gaotu.renewal.small.builder.PreClassInfoBuildSubBuilderTest)"
+      },
+      {
+        "class": "com.gaotu.renewal.small.builder.PreClassInfoBuildSubBuilderTest",
+        "name": "should_build_preClassInfo_from_single_orderItem on should_build_preClassInfo_from_single_orderItem(com.gaotu.renewal.small.builder.PreClassInfoBuildSubBuilderTest)"
+      }
+    ],
+    "source_xml": "/Users/gaotu/IdeaProjects/JavaProject/cart/cart-app/target/surefire-reports/TEST-TestSuite.xml",
+    "log": "/tmp/w1-e0be7208/cart-existing-tests.log"
+  },
+  "apollo": {
+    "test": "# cart.gaotu100.com / TEST / application / 8 个 key\n已查 namespace: application\n\n命中:\n- `renewal.pure.relation.enabled` = `true`\n- `renewal.query.cache.enabled` = `false`\n- `preheat.cache.enabled` = `false`\n- `small.renewal.enabled` = `true`\n\n未命中(4): `renewal.query.local.cache.enabled`, `cache.skip.global.guava`, `preheat.cache.time`, `renewal.small.plugin.stock.match.enabled`\n用 fallback_namespaces 补其它 namespace，或 apollo_list_namespaces 核对 namespace 名\n",
+    "prod": "# cart.gaotu100.com / PROD / application / 8 个 key\n已查 namespace: application\n\n命中:\n- `renewal.query.cache.enabled` = `false`\n- `preheat.cache.enabled` = `true`\n- `small.renewal.enabled` = `true`\n\n未命中(5): `renewal.pure.relation.enabled`, `renewal.query.local.cache.enabled`, `cache.skip.global.guava`, `preheat.cache.time`, `renewal.small.plugin.stock.match.enabled`\n用 fallback_namespaces 补其它 namespace，或 apollo_list_namespaces 核对 namespace 名\n"
+  },
+  "production_iris_chunk": {
+    "url": "https://gaotu-fuwu.gsxcdn.com/prod/iris/iris.release.prod.WechatBatchSending.ca2897a415468128bd26.js",
+    "sha256": "3c609eafdb78e46f8353afb5df14b34c5566da41e562fda6642f958250ea471c"
+  },
+  "remaining_source": "docs.baijia.com referenced large-class PRD redirected to OAuth; not read",
+  "not_verified": [
+    "production Git/build mapping",
+    "browser e2e",
+    "business writes/save/order/payment",
+    "concurrency/failure injection",
+    "2026-01-01 class backfill coverage"
+  ],
+  "archive_audit": {
+    "errors": 0,
+    "warnings": 4,
+    "detail": "\n[【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整]\nWARN:  README.md: 250 lines (suggested maximum 180)\nWARN:  README.md: contains 5 historical-process cue(s); rewrite as final wording\nWARN:  tasks.md: contains 1 historical-process cue(s); rewrite as final wording\nWARN:  README.md: no T/R/C progress found in '现在什么情况'\n",
+    "disposition": "历史归档体量/过程文字及旧章节统计格式告警；保留原有证据，不在只读问题调查中重排全部历史。本轮范围/进度/最终入口已单列且回读。"
+  },
+  "final_source_worktrees": {
+    "cart": {
+      "head": "7ea045de6401499607836446c22e22b936e40072",
+      "clean": true
+    },
+    "order": {
+      "head": "e464fa98bd4fdc6c1ad9ee1e5e4f1f90a07bd507",
+      "clean": true
+    },
+    "product-server": {
+      "head": "7da8a1432a22b26694d05ef2bb12a8e661ae21f6",
+      "clean": true,
+      "note": "外部变化，非本轮团队提交"
+    },
+    "student-center": {
+      "head": "396d84f076d066c652a49ce39e68b9b917c242e0",
+      "clean": true
+    }
+  }
+}

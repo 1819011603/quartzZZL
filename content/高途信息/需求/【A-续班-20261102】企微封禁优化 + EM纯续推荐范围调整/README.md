@@ -8,13 +8,24 @@ branches:
   - student-center:feature-xuban-pure-relation-20261102
   - cart:feature-xuban-pure-relation-20261102
   - order:feature-xuban-pure-relation-20261102
-updated: 2026-11-03
+updated: 2026-11-04
 tags: [需求]
 ---
 
 # 【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整
 
 > 飞书方案（含表结构+接口协议）：https://gaotuedu.feishu.cn/docx/AQEtdIeKzo7P5IxeQEzc7EpxnBe
+
+## 本轮只读对照（2026-11-04，所有者最新要求）
+
+- 本轮范围已改为**前后端只读调查、问题清单供所有者判断**。此前后端修复/commit/push授权已撤销，不部署、不写业务数据、不新增测试代码；暂不生成使用说明、不询问详略。
+- 一个主需求、两个子项；前端指定分支实际位于 gaotu-fe-promotions，不能用于代表 cronus 或当前线上版本。
+- 已发现原归档漏项：企微 PRD revision253 包含 **2026-01-01起创建班级回溯** 和 **群发/联系学员说明文档链接统一替换**。阶段反馈/退费管控本期取消。
+- 本轮进度 **T 3/3**（仅只读调查里程碑）：主W1完成cart/order共享链路对照、33个现有单测与Apollo只读查询；两个子任务W1-3558a8（企微，result1）和W1-5e0ea8（纯续，result2）均completed。
+- **本轮交付入口：[只读决策清单](artifacts/20261104-readonly-review/decision-review.md)**。前后端问题、固定版本、实证/推断、建议/不改影响及证据均在此；不是功能修复完成。
+- 最新TEST回读：关联ID已是字符串；管理员实际JSON为admin_list，指定前端仍不匹配。自关联新源码已改报错但本轮未调用save。班级回溯/生产版本/页面端到端仍未证明；大班腾讯引用文档需可用登录态才能补读。
+- product-server共享现场在调查期间由592e96a09变为7da8a1432；不是主W1及已回报纯续子任务的修改，未将其计入本轮交付或认定已部署。
+- 下文多轮记录是**既有验证与历史口径材料**，包含后来被更正的结论，不能直接当作本轮完成证据；本轮按最新PRD、固定SHA与实际只读结果判断。
 
 ## 一句话
 

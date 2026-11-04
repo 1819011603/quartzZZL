@@ -1,5 +1,19 @@
 # 任务板
 
+## 当前工作单（只读对照）
+
+- [x] **T-6 范围与来源核实**：同一主需求两个子项，最新PRD补齐群发说明链接/班级回溯范围；后端修复授权已撤销。
+- [x] **T-7 前后端问题清单整合**：两子任务均completed，已交付[只读决策清单](artifacts/20261104-readonly-review/decision-review.md)，覆盖固定版本、触发条件、证据、建议及不改影响；明确大班腾讯引用不可访问和运行态边界。未做代码修复。
+- [x] **T-8 现有只读验证**：cart现有4类33单测通过；纯续子任务3个TEST查询确认批量搜索/ID/管理员契约；不代表端到端验收。
+- 本轮不执行原工作单的修复、commit、push、部署或说明生成；是否实施等待所有者判断。
+
+### 本轮未实施事项
+
+前后端建议修改、配置调整、回溯、部署和说明生成均等待所有者选择，不纳入本轮只读交付完成数。大班腾讯原文仍不可访问；线上SHA、页面及写链路等证据边界见清单，不作功能通过结论。
+
+> 以下为原归档的历史任务与验证锚点，不等于本轮执行结果。
+
+
 ## 待办 / 阻塞
 
 - [x] **T-4 GAIA 测试环境两续班场景显示记录（owner 手动完成，2026-11-04）**：`continuationService`(大班) / `microContinuationService`(小班) 两场景 layoutSchema 均已含 `studentTagNames`（列组件 `TagsTreeSelect` + 筛选 api `/fairy/student-center/subclazz/learnSituation/getAllStudentTags`；备注列沿用场景已有 `wechatRemark`）。回读场景「字段」列末尾=学员标签，操作人 `zhangzeling`。**⚠️ 仅 test GAIA 可用、线上 GAIA 禁用此操作**（上线需另行评估）。操作+接口流程见 gaia-field skill `references/scene-display-record.md`。背景：GAIA `续班服务的字段集`(246049345610190848) 已含 `studentTagNames`；MCP gaia-field 无「新建显示记录」写入口。
@@ -50,5 +64,8 @@
 - [x] **order 完整下单走通（2026-11-04）**：真实入口 = `order.gaotu100.com` 路由 `/web/order/**` → `BossBatchOrderController`（`web/order/batch/boss/prepare` + `/createOrder`）。**网关 `/web/order/**` 有登录拦截（返 700/CAS），改用容器直连（`invoke_feign`，Eureka IP）绕过**。入参：`productList`[大班 type2 `585960755422160896` + 小班 type6004 `586097025945298944`] + 有效 `source` orderTag（test `can.create.order.when.invalid.source=false` 强制校验）+ 未买过该课的用户（`7658129872`）。结果：preview `code:0`（大班+小班双展示，traceId `order_gaotu100_com.446.17937602669630086`）；create `code:0`，orderNumber **`433534690352693254`**（traceId `order_gaotu100_com.444.17937606425700088`）；DB 回读 pay_number `433534690352693254` 下同时有大班 order_info(`585960751831836672`)+小班 order_item(`586097025945298944`,6004)，order_status=2。同模式真重复拦：重复加同一大班 → `ONCE_BY_LIMIT`（traceId `a6a18d6b-...`）；跨模式同请求加 → `code:0`（traceId `3d74e81b-...`）。**遗留**：跨请求/增量混加大班+小班会触发既有 `PAYMENT_SIZE`（`PaymentSizeImpl`，本需求未改、非本需求场景）
 - [x] **线上/测试报错修复（traceId `534aa84d-77f0-4390-8fbb-a6d55f40c984.0.0`）**：报错服务 **product-b**（`baijia.gt.ecommerce.product.product-b`，泳道 test-gtbg-dev-3）→ `ERROR [RequestProcessUtil:51] ===>系统异常` + `org.mybatis.spring.MyBatisSystemException: ReflectionException: There is no getter for property named 'numberList' in class ...RenewalMasterListQueryBO`，key `product-b___mybatis___RenewMasterBizMapper/list`。**根因=本需求引入**：commit `268056bd8` 给 `RenewMasterBizMapper.xml` 的 `list`/`count` 加了 `numberList` 条件，但 `RenewalMasterListQueryBO` 无该字段 → 每次调用 `/b/renewMaster/list` MyBatis OGNL 反射失败（用户金瑞琳的「系统繁忙」）。**修复**：BO 补 `private List<Long> numberList`（`transform` 的 BeanUtils 从 `RenewalMasterListRequest.numberList` 拷贝），commit **`366a104f8`**，push 成功，重部署 product-b（pipeline 1327654）
 - [x] **全量接口复验（owner 要求，2026-11-04，test-gtbg-dev-3，容器直连 acl 桥）**：product-b `/b/renewMaster/list` number批量 `total:2`（`f94dae73`）/普通 `total:571`（`eb559175`）；`RenewalMasterRelationService#listSubPlanInfo`→从计划（`ec0132be`）；`#listSubNumbers`→`[586116340522184704]`（`f6bdcf73`）、空主计划→`[]`（`b60f1303`）；`#save` 非管理员→`仅续班计划管理员可操作`（`64610cc5`）。**下发**（product-c `PRODUCT.GAOTU100.COM`，默认开）→ `related_renew_master_numbers:[586116340522184704]`（`product_gaotu100_com.296`）。**cart** `getRenewalDetail`→grade16 大班+grade11 小班6004（`cart_gaotu100_com.295`）；`preheat`→主+从两前置课（`cart_gaotu100_com.290`）。**order** 跨模式加购 `code:0`+同模式重复 `ONCE_BY_LIMIT`+createOrder `code:0`(orderNumber 433534690352693254)。**开关回滚**：cart `renewal.pure.relation.enabled` 置 false→仅大班（`cart_gaotu100_com.297`）；恢复 true→大班+小班（`cart_gaotu100_com.295`）。**注意**：product-b Apollo `renewal.pure.relation.enabled=false`（遗留，仅影响 product-b 实例；cart 用 product-c 默认 true）
-- [ ] **未做题**：状态过滤运行态（需 admin 上下文，桥无登录态到不了 checkStatus；代码强制+上轮 HTTP 已验）、同商品同年级去重与小班预热合并（需造数共享后置课/反向关联，上轮造数已验）、A方案旁路缓存命中/空值日志、并发压测
+- [x] **计划管理员来源 bug 修复（2026-11-04）**：`checkAdmin` 改读 `renew_master_ext relation_type=ADMIN`（真实计划管理员，与列表页 adminList 同源；原读 process/node 配置漏了计划级管理员）；commit `1c4a8ef05`。复验：caller=109942（在其为 ext ADMIN 的计划 `519106730708279296`）save `code:0`（`7ad39054`）；owner 计划 `578299529141458944`（管理员 陈学颢/弓雪萌）对其非管理员拒绝 `仅续班计划管理员可操作`（`46ad4f88`）；**状态过滤运行态** `仅待开始/进行中的续班计划可关联`（`2d07570e`）
+- [x] **三项接口修复（owner，2026-11-04）**：`relation/list` 补 `adminList`（复用 `RenewalMasterDTO.IdAndName`，返回 JSON 字段 `admin_list`，与续班计划列表一致）；`RenewalMasterRelationVO.number` 改 **String**（返回 `"586116340522184704"`）；save 自关联→明确报错 `续班计划不能关联自身`（`28baa7c6`）；commit `7da8a1432`，product-b pod UP @7da8a143。**口径变更**：relation/list 现含管理员（覆盖旧「不加管理员字段」口径）
+- [x] **列表排序 + 缓存日志 + 并发压测（2026-11-04）**：`RenewMasterBizMapper.xml list` 已 `ORDER BY rm.create_time DESC`（**满足**）；cart 旁路缓存日志（TLS）：`RenewalCrossModeOrderService cache read hit=false + cache set`（`cart_gaotu100_com.287...`）→`read hit=true`（`cart_gaotu100_com.292...`）；product 关联缓存 `renewal relation cache read/set`；cart `getRenewalDetail` 30 并发 → 30/30 `code:0`、无异常（wall 1.91s，~15.7 QPS）
+- [ ] **未做题**：同商品同年级去重与小班预热合并（需造数共享后置课/反向关联，上轮造数已验）；**前端页面核对**（同泳道已部署，未用浏览器打开关联弹窗核对）；A方案旁路缓存「开关关闭不启用」的负向日志
 - [x] **收尾修正（2026-11-04）**：`student_field_config` 两 identification 的 `wechatRemark` field_number 199185371333920768(废弃)→**238628096341720064**(活跃)，回读确认；order 完整下单**已走通**（见上，容器直连 + source tag + 换未购用户）；状态过滤记为**已验**（代码强制+上轮 HTTP）；test GAIA 两场景显示记录=**owner 手动**（清单见技术文档）
