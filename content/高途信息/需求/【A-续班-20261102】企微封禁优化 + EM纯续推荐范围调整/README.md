@@ -188,3 +188,36 @@ tags: [需求]
 - **绕缓存**：临时置 `cart.gaotu100.com` Apollo `course.renewal.cache.enabled=false` 并发布（cart 续班关系 guava/redis 缓存 TTL 1800s，否则读到旧映射）；验证后恢复 `true`。
 - **验证**：`getRenewalDetail(7658127801,585960797778243584,getContext=true)` 的 `msg` 显示——主前置课 `585960577856301056` 与 从计划前置课 `18314034380997173` **都命中同一班级 `585960755422160896`**（grade16 同商品）；最终结果 grade16 该商品**仅出现 1 次** → **并集「共享后置课」同商品同年级重复被去重**（`preCourseWithClazz` 两前置课→同 clazz → `dedupClazzByGradeByProduct`）。traceId `cart_gaotu100_com.290.17937312480010090`。
 - **清理**：删除映射 id 6584、恢复 Apollo `course.renewal.cache.enabled=true`；复跑 `getRenewalDetail` 回基线（grade16 主 + grade11 从，traceId `cart_gaotu100_com.298.17937313022720084`）。
+
+## 收尾验证（2026-11-04，owner 追问）
+
+### 推荐链接展示「主 + 从」（owner 重点）
+- 后端（链接后端，URL 用主计划 renewalNumber：`/web/renewal/cart?renewalNumber=585960797778243584`）：
+  - **开关开**：`getRenewalDetail(7658127801,585960797778243584)` → grade16 **大班纯续**(585960755422160896) + grade11 **小班纯续**(586097025945298944,6004)（traceId `cart_gaotu100_com.299.1793755522658007`）。
+  - **开关关**（cart Apollo `renewal.pure.relation.enabled=false`）：仅 grade16 大班（traceId `cart_gaotu100_com.295.17937555754260008`）；已恢复 true。
+- **未验**：前端页面浏览器渲染（仅验后端接口返回）。
+
+### 小班预热合并（已上）
+- push `f5abee98`；cart pod `cart-gaotu100-com-7f47785644-6hzx4` eureka UP；`SmallRenewalPreheatService#preheatInternal(7658127801, 586116340522184704)`（造数：主=小班计划+从=大班计划）→ `preClassCount=2`（traceId `cart_gaotu100_com.296.17937554235820006`）。
+
+### 状态过滤 / 管理员 / list 字段
+- `save` 非管理员 → `仅续班计划管理员可操作`（traceId `8d3fa07a-ec86-465c-8cd6-a54f7e833468.0.3`）；状态非{待开始/进行中}→拒绝（`checkStatus`，代码强制；状态运行时本轮桥受 admin 前置未复现，上轮 HTTP 已验）；`relation/list` 仅 number/name/status，**无管理员字段**（无需删）。
+
+### 去重口径（owner 确认）
+- `dedupClazzByGradeByProduct` = **同年级同商品**去重（组内按 productSkuNumber）。
+
+### 覆盖清单（已验/未验）
+- 完整清单见技术文档「测试环境验证覆盖清单 + 推荐链接主从展示（2026-11-04）」。**未验**：前端页面(cronus/gaotu-fe-promotions)、GAIA 两场景、子项1 页面端到端、ES 字段/回溯、推荐链接页面渲染、order 完整下单、并发压测、状态过滤运行时。
+
+## 后端接口补验 + test GAIA 现状（2026-11-04）
+- **口径**：只用后端接口（前端未开发）。「跨模式可下单成功」=主(大班)+从(小班)商品可同车/同单、order 放行；「同模式真重复拦」=同模式同商品/课程/班级仍拦。
+- **非管理员报错（HTTP staff 态）**：`POST product-b /b/renewMaster/relation/save` → `{"code":1,"msg":"仅续班计划管理员可操作"}`（traceId `a81399d7-5c33-4cc1-8b7b-37b601162a88.0.3`）。
+- **test GAIA 精确**：`studentTagNames`(193322071548238848) 存在；字段集「续班服务的字段集」(246049345610190848) 含它；`studentTagNames` 显示记录仅 `clazzRosterOL`/`onebyOneOL`，**无 continuationService/microContinuationService**；字段 `wechatRemark` 活跃=238628096341720064，**199185371333920768 是「微信备注(废弃)」**（field_config 目前用的它）。
+- **待 owner 手动(test GAIA)**：两场景各建显示记录（字段 studentTagNames 列 TagsTreeSelect+筛选；如需备注列用活跃 wechatRemark 并复核 field_config）。
+- **未验+原因**：order 完整下单（boss createOrder 网关路由未命中+preview→create 复合入参+mock 支付，未走通；ADD_CART 层跨模式放行已真机验）；状态过滤运行时（staff 态未被识别为计划管理员，未到 checkStatus；上轮 HTTP 白名单已验）；并发压测。
+
+### 收尾修正（2026-11-04）
+- **字段配置修正**：`ees_data.student_field_config` 两 identification 的 `wechatRemark` field_number 由废弃 199185371333920768 → **活跃 238628096341720064**；`studentTagNames` 保持 193322071548238848。回读：continuationService {studentTagNames(…848,type8), wechatRemark(…064,type1)}；microContinuationService 同。
+- **order 完整下单=卡点**：本需求 order 改动点在 ADD_CART 层（真机跨模式 code:0 / 同模式 ONCE_BY_LIMIT+SAME 已验）；完整 `createOrder`（boss `web/order/batch/boss/createOrder`）网关路由未命中 + 需 preview→create 复合入参 + mock 支付 → 未走通。**替代**=ADD_CART 层验。
+- **状态过滤=已验**：代码强制（`checkStatus` 非{待开始/进行中}拒绝）+ 上轮 HTTP 白名单实测。
+- **test GAIA 待 owner 手动**：`continuationService`/`microContinuationService` 两场景各建显示记录：字段 `studentTagNames`(193322071548238848, 列组件 TagsTreeSelect)+筛选；备注列用活跃 `wechatRemark`(238628096341720064)。

@@ -39,3 +39,12 @@
 - [x] **cart 实际报价（造数）**：学员 `7658127801`（主/从前置课均有 paid 订单）→ 初测小班从计划报价缺失；**A 方案修复后复测：开关开=主(大班)+从(小班 6004)两类纯续，开关关=回单计划**。测后 product-c/cart 开关复位
 - [x] **联测 cart 加购→下单（跨模式）**：补部署 **order-b**（`orderComponent`/`CartSameClazzOrCourseImpl` 校验入口，此前只部署 gaotu_order）；真机 `POST /bgwApi/orderComponent/b/cart/addCart`：大班班+小班班同车 → `code:0`（traceId `7c22f266-...`）；同模式真重复 → `SAME_CLAZZ`+`SAME_COURSE`（traceId `81c9bc97-...`）。**未覆盖**：跨模式放行真机（test 计划大小班后置班 clazz/course 均不同，无冲突；逻辑层已验）。测后开关复位、购物车清理
 - [x] **开关默认改 true（通用口径）**：product-server/cart/order 5 处 `@Value(...:true)`；push `ab120d4e5`/`4e126df5`/`e464fa98bd`；部署 product-b/product-c/cart/order/order-b 全 eureka UP。**验证**：不配开关即生效（product-c 下发含 related、cart 主+从）；cart Apollo `false` → 回单计划（回滚可用）
+- [x] **小班预热合并（owner 决定，2026-11-04）**：`RenewalDataService#mergeRelatedPreCourseNumbers` 下沉共享 + `SmallRenewalPreheatService` 预热前合并；push `f5abee98`，cart eureka UP；`preheatInternal(7658127801,586116340522184704,主小班+从大班造数)`→`preClassCount=2`（traceId `cart_gaotu100_com.296.17937554235820006`）
+- [x] **owner 澄清确认**：`relation/list` 不加管理员字段（现状无）；`save` 状态过滤（非{待开始/进行中}拒绝）+ 非管理员报错（traceId `8d3fa07a-...`）；去重口径=同年级同商品
+- [x] **推荐链接展示主+从（owner 重点）**：开关开 `getRenewalDetail(7658127801,585960797778243584)`→grade16 大班 + grade11 小班（traceId `cart_gaotu100_com.299.1793755522658007`）；开关关→仅大班（traceId `cart_gaotu100_com.295.17937555754260008`）；已恢复 true
+- [ ] **未验（诚实）**：前端页面(cronus/gaotu-fe-promotions)、GAIA 两场景、子项1 页面端到端、ES 字段/回溯、推荐链接页面渲染、order 完整下单、并发压测、状态过滤运行时（桥受 admin 前置）
+- [x] **非管理员报错（HTTP staff 态，2026-11-04）**：`POST product-b /b/renewMaster/relation/save` → `仅续班计划管理员可操作`（traceId `a81399d7-...`）
+- [x] **test GAIA 复核（2026-11-04）**：字段集 246049345610190848 含 studentTagNames；显示记录仅 clazzRosterOL/onebyOneOL（无两续班场景）；wechatRemark 活跃=238628096341720064、field_config 用 199185371333920768(废弃)
+- [ ] **owner 手动(test GAIA)**：continuationService/microContinuationService 两场景各建显示记录（studentTagNames 列+筛选；如需备注列用活跃 wechatRemark）
+- [ ] **未验+原因**：order 完整下单(boss createOrder 路由/复合入参未走通)、状态过滤运行时(staff 态未识别为计划管理员)、并发压测
+- [x] **收尾修正（2026-11-04）**：`student_field_config` 两 identification 的 `wechatRemark` field_number 199185371333920768(废弃)→**238628096341720064**(活跃)，回读确认；order 完整下单记为**卡点**（ADD_CART 层已验=order 改动点）；状态过滤记为**已验**（代码强制+上轮 HTTP）；test GAIA 两场景显示记录=**owner 手动**（清单见技术文档）
