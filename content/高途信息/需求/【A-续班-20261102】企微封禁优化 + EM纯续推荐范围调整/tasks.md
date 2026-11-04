@@ -2,7 +2,7 @@
 
 ## 待办 / 阻塞
 
-- [ ] **T-4 GAIA 测试环境配置（责任人=所有者，手动；⚠️ 不要 worker 自行写）**：为 `continuationService`(大班) / `microContinuationService`(小班) 两续班服务场景**补齐/放开显示记录**，**含 `studentTagNames`(学员标签)**；如需展示**【修改企微备注】**列，需先在 GAIA 建对应字段（`gaia_field_list 企微备注` 命中 0）。背景：GAIA `续班服务的字段集`(246049345610190848) 已含 `studentTagNames`；两场景无独立 GAIA 实体、gaia-field 工具无「新建场景显示记录」入口。
+- [x] **T-4 GAIA 测试环境两续班场景显示记录（owner 手动完成，2026-11-04）**：`continuationService`(大班) / `microContinuationService`(小班) 两场景 layoutSchema 均已含 `studentTagNames`（列组件 `TagsTreeSelect` + 筛选 api `/fairy/student-center/subclazz/learnSituation/getAllStudentTags`；备注列沿用场景已有 `wechatRemark`）。回读场景「字段」列末尾=学员标签，操作人 `zhangzeling`。**⚠️ 仅 test GAIA 可用、线上 GAIA 禁用此操作**（上线需另行评估）。操作+接口流程见 gaia-field skill `references/scene-display-record.md`。背景：GAIA `续班服务的字段集`(246049345610190848) 已含 `studentTagNames`；MCP gaia-field 无「新建显示记录」写入口。
 - [x] **T-5 student-center 字段配置（test 已落）**：`ees_data.student_field_config` 为 `continuationService`/`microContinuationService` 各补 `studentTagNames`(type8)+`wechatRemark`(type1)，回读 4 行。**线下/其它识别仍需管理员**推广。
 - [ ] **product / order Apollo 持久开开关**：app `product`(litao04)、`order.gaotu100.com`(litao04) 无发布权限 → 无法在 test/线上**持久**打开 `renewal.pure.relation.enabled`（本轮已用 Arthas 进程内临时验证，重启复位）
 - [x] **跨模式并集「订单过滤」缺口已修（A 方案）**：cart 新增 `RenewalCrossModeOrderService`——大班路径旁路补 `order_item`(6004)、小班路径旁路补 `order_info`，并并集(+Redis 缓存/负缓存)；另修 `coreHandle` 库存按班级 productType 分组、旁路补 `orderNumber`。push `8ce7a83e`。复测：开=主(大班)+从(小班)两类、关=回单计划
@@ -45,6 +45,6 @@
 - [ ] **未验（诚实）**：前端页面(cronus/gaotu-fe-promotions)、GAIA 两场景、子项1 页面端到端、ES 字段/回溯、推荐链接页面渲染、order 完整下单、并发压测、状态过滤运行时（桥受 admin 前置）
 - [x] **非管理员报错（HTTP staff 态，2026-11-04）**：`POST product-b /b/renewMaster/relation/save` → `仅续班计划管理员可操作`（traceId `a81399d7-...`）
 - [x] **test GAIA 复核（2026-11-04）**：字段集 246049345610190848 含 studentTagNames；显示记录仅 clazzRosterOL/onebyOneOL（无两续班场景）；wechatRemark 活跃=238628096341720064、field_config 用 199185371333920768(废弃)
-- [ ] **owner 手动(test GAIA)**：continuationService/microContinuationService 两场景各建显示记录（studentTagNames 列+筛选；如需备注列用活跃 wechatRemark）
+- [x] **test GAIA 完成 + 接口请求分析（2026-11-04）**：`microContinuationService`(sceneNumber 263719917126160384) 加 `studentTagNames`(193322071548238848)：`scene/saveAndPublish`(layoutSchema 含新字段) → `scene/version/create` → `image/create`+`publishPlan/create` → `approval/status/change`(approvalStatus=5) → `publishPlan/finish`；`continuationService` 亦已含。回读两场景「字段」列均含学员标签。**仅 test GAIA 可用、线上禁用**
 - [ ] **未验+原因**：order 完整下单(boss createOrder 路由/复合入参未走通)、状态过滤运行时(staff 态未识别为计划管理员)、并发压测
 - [x] **收尾修正（2026-11-04）**：`student_field_config` 两 identification 的 `wechatRemark` field_number 199185371333920768(废弃)→**238628096341720064**(活跃)，回读确认；order 完整下单记为**卡点**（ADD_CART 层已验=order 改动点）；状态过滤记为**已验**（代码强制+上轮 HTTP）；test GAIA 两场景显示记录=**owner 手动**（清单见技术文档）

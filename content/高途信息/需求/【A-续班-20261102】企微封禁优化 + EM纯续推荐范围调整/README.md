@@ -130,7 +130,7 @@ tags: [需求]
 | 需求点 | 位置 | 证据 |
 |---|---|---|
 | student-center 两 identification 字段配置 | test `ees_data.student_field_config` | 回读 6 行：`continuationService`/`microContinuationService` 各含 `studentTagNames`+`wechatRemark`（含 2 条历史 `entranceArea`） |
-| GAIA 两场景显示 | owner 手动 | 归档 `tasks.md` T-4 |
+| GAIA 两场景显示 | owner 手动完成（test） | 场景「字段」列回读含「学员标签」（`continuationService`/`microContinuationService`）；**仅 test GAIA、线上禁用**；接口见下方「GAIA 场景显示记录」节 |
 | cronus 前端 | 未改码，说明在技术文档 §五/§六(二) | 无独立文件 |
 
 ### 预热缺口与修复（2026-11-04）
@@ -220,4 +220,20 @@ tags: [需求]
 - **字段配置修正**：`ees_data.student_field_config` 两 identification 的 `wechatRemark` field_number 由废弃 199185371333920768 → **活跃 238628096341720064**；`studentTagNames` 保持 193322071548238848。回读：continuationService {studentTagNames(…848,type8), wechatRemark(…064,type1)}；microContinuationService 同。
 - **order 完整下单=卡点**：本需求 order 改动点在 ADD_CART 层（真机跨模式 code:0 / 同模式 ONCE_BY_LIMIT+SAME 已验）；完整 `createOrder`（boss `web/order/batch/boss/createOrder`）网关路由未命中 + 需 preview→create 复合入参 + mock 支付 → 未走通。**替代**=ADD_CART 层验。
 - **状态过滤=已验**：代码强制（`checkStatus` 非{待开始/进行中}拒绝）+ 上轮 HTTP 白名单实测。
-- **test GAIA 待 owner 手动**：`continuationService`/`microContinuationService` 两场景各建显示记录：字段 `studentTagNames`(193322071548238848, 列组件 TagsTreeSelect)+筛选；备注列用活跃 `wechatRemark`(238628096341720064)。
+- **test GAIA 已完成（2026-11-04）**：`continuationService`/`microContinuationService` 两场景 layoutSchema 均已含 `studentTagNames`(193322071548238848, 列组件 `TagsTreeSelect`+筛选)，备注列沿用场景已有 `wechatRemark`；回读场景「字段」列末尾=学员标签。**仅 test GAIA 可用、线上 GAIA 禁用此操作**（上线需另行评估）。
+
+## GAIA 场景显示记录：操作 + 接口请求分析（2026-11-04）
+
+- **用途**：把字段加进 GAIA 场景（使其作为列/筛选项出现在业务页面）。入口 `test-gaia.baijia.com/gaia/page-scene-list` → 场景 → 编辑 → 布局配置加字段 → 保存 →（列表）构建 → 发布 → 强制审核通过 → 完成。
+- **接口（前缀 `/bgwApi/component/gaia-center/`，POST/JSON）按步骤**：
+  | 步骤 | 接口 | 关键入参 | 返回 |
+  |---|---|---|---|
+  | 保存（含新字段） | `scene/saveAndPublish` | `number,name,templateNumber,layoutSchema(含新字段),pageNumber,fieldSetNumbers,…` | `编辑成功` |
+  | 构建 | `scene/version/create` | `{sceneNumber,identification}` | `{number:<版本号>}` |
+  | 发布-建镜像 | `image/create` | `{name,scenes:[{sceneNumber,versionNumber}]}` | `{imageNumber}` |
+  | 发布-取当前镜像 | `image/getCurrentImage` | — | `{imageNumber}` |
+  | 发布-建计划 | `publishPlan/create` | `{publishImageNumber,rollbackImageNumber,grayStrategy,planName}` | `{publishPlanNumber}` |
+  | 强制审核通过 | `approval/status/change` | `{businessKey:<计划号>,processInstId,approvalStatus:"5"}` | `true` |
+  | 完成 | `publishPlan/finish` | `{planNumber:<计划号>}` | `success` |
+- **实测**：`microContinuationService`（sceneNumber `263719917126160384`）加 `studentTagNames`，版本 `294311853465539584`、镜像 `294311864365492224`、发布计划 `294311864702085120`；`continuationService` 亦已含。
+- **口径固化**：已写入 `gaia-field` skill `references/scene-display-record.md`（含 layoutSchema 字段结构、边界、验证）。MCP gaia-field 无「新建显示记录」写入口。
