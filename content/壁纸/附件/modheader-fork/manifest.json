@@ -1,0 +1,74 @@
+{
+  "action": {
+    "default_icon": {
+      "128": "images/icon_128.png",
+      "16": "images/icon_16.png",
+      "48": "images/icon_48.png"
+    },
+    "default_popup": "src/popup_v1.html",
+    "default_title": "Modheader"
+  },
+  "author": "modhader@",
+  "background": {
+    "service_worker": "serviceWorker.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "js": [
+        "src/js/service/content_script_vite.js"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+  "default_locale": "en",
+  "description": "Modify HTTP request headers, response headers, and redirect URLs",
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "icons": {
+    "128": "images/icon_128.png",
+    "16": "images/icon_16.png",
+    "48": "images/icon_48.png"
+  },
+  "manifest_version": 3,
+  "name": "ModHeader (de-fanged fork)",
+  "optional_permissions": [
+    "contentSettings",
+    "browsingData"
+  ],
+  "options_ui": {
+    "open_in_tab": true,
+    "page": "src/app_v1.html"
+  },
+  "permissions": [
+    "alarms",
+    "contextMenus",
+    "storage",
+    "webRequest",
+    "declarativeNetRequest",
+    "scripting"
+  ],
+  "version": "7.0.18",
+  "web_accessible_resources": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "resources": [
+        "assets/AppVite-041b9295.css",
+        "assets/AppVite-af7ada5f.js",
+        "assets/IconBtn-94c9cb85.js",
+        "assets/_commonjsHelpers-187a63f9.js",
+        "assets/browser-polyfill-c2a30efe.js",
+        "assets/dayjs.min-6a736ee8.js",
+        "assets/isObjectLike-7962ce13.js",
+        "assets/renderContent-9d534bdd.js",
+        "assets/src/js/service/content_script_vite-c387a50d.js",
+        "images/*"
+      ]
+    }
+  ]
+}
