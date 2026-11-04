@@ -1,4 +1,6 @@
-# 子项1 大班续班服务「学员标签」—— PROD 配置 diff（对应 test；**未执行**）
+# 子项1 大班续班服务「学员标签」—— PROD 配置 diff（对应 test；**状态：上线待办，现在不执行**）
+
+> **owner 2026-11-04：现在不执行，记为上线待办。** 上线时按下方 A/B 两组配置补 PROD（需授权走配置流程），并回读生效。
 
 ## 一、PROD 现状（只读核对）
 - `ees_data.es_query_config`：`continuationService`(大班续班) **0 行**；`microContinuationService`(小班续班) / `smallClazzRoster` 各有 3 行同款。
