@@ -316,7 +316,7 @@ tags: [需求]
 - **B8 未动**（预热 key/读路径未碰）。
 - **复现（修前）**：B6反向——大班从计划纯续缺失（仅扩科）；B7——grade11 出现临时扩科项。traceId `cart_gaotu100_com.535.17937838513040060` / `...531.17937839391420063`。
 - **复验（修后）**：B6反向 大班从计划纯续 type=2 rec=1 present（`...289.17937844100170008`）；正向 大班+小班纯续均在、无临时扩科（`...292.17937844221310006`）。**主 worker 独立复跑正向**：`getRenewalDetail(7658127801,...,584)` → grade16 type2 + grade11 type6004（`cart_gaotu100_com.293.17937847867120012`）。
-- **测试数据清理**：`renewal_expand_subject_recommend` 回 6 行（临时 id109 删）；`renew_master_relation` 回 8 行（反向行删，正向保留）。单测 48/48 过。
+- **测试数据清理**：`renewal_expand_subject_recommend` 回 6 行（临时 id109 删）；`renew_master_relation` 回 8 行（反向行删，正向保留）。单测（当时跑的子集）48/48 过。**更正：48/48 是 `-Dtest=<指定类>` 子集，非全量；全量见 changelog——受影响类 43/0、新增 29 用例全绿、全量 cart-app 480/15（15 为与本分支无关 pre-existing）。**
 - **残留（待 owner）**：① B7 仅覆盖大班路径；**小班主计划的扩科年级仍取主∪从**（同类问题未修）；② `PreClassInfoBuildSubBuilder` 的 productType 供选 6004/51 分支，有意不改；③ order 真机 addCart/下单未复验（B6 只涉推荐层）。
 
 ## B8 = C（不修，owner 决策 2026-11-04）——预热结果过期边界
@@ -329,5 +329,5 @@ tags: [需求]
 - 改动：`SmallRenewalRecommendContext` 增 `Set<Long> mainOwnPreCourseNumbers`（空=旧行为）；`ExpandSubjectRecommendService#collectStudentPostGrades` 按它过滤前置班（扩科年级只统计主计划自身前置课对应后置班）；`RenewalService` 7参小班分支 `setMainOwnPreCourseNumbers(...)`。
 - **复现（修前 60468ec8）**：小班主 + 从，主计划临时扩科行 grade=16（仅从计划侧年级）→ grade16 多推扩科项 585963387758962688（traceId `cart_gaotu100_com.292.17937852075840016`）。
 - **复验（修后 08228297）**：同调用 grade16 **不再出现**临时扩科项，只剩从计划大班纯续；grade11/12 扩科项不变（traceId `cart_gaotu100_com.291.17937858129660007`）。**主 worker 独立复跑正向**（`...64857bc865-l24l8`）：grade16 type2 + grade11 type6004（`cart_gaotu100_com.292.17937859190250007`）。
-- 清理：expand 表回 6 行（temp id110 删）、relation 表回正向 1 行；单测 48/48。
+- 清理：expand 表回 6 行（temp id110 删）、relation 表回正向 1 行；单测（子集）48/48（**非全量**，见 changelog 更正：受影响类 43/0、全量 480/15）。
 - 未改小班预热路径（`SmallRenewalPreheatService#recommend` 仅触发下游 RPC，不缓存结果）；legacy `smallRenewalEnabled=false` 无扩科调用。
