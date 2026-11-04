@@ -302,3 +302,32 @@ tags: [需求]
 - **B7 修（扩科范围）**：扩科年级**收口到主计划自身**（不取主∪从）。
 - **B8 修（预热失效）**：关联/预热加**关系版本**（关联集合签名+开关），save/回滚后旧预热立即失效。
 - 实施中：cart 主体（子任务 W1-7ef5d8）；验证后回填 traceId 与结果。
+
+## 批量ID分隔符 → Apollo 正则（2026-11-04，product-server 提交 1be485c9c）
+- 需求：续班计划列表「计划ID」批量搜索的分隔符不要写死英文逗号；空格/中文逗号也常见。
+- 实现：`RenewalMasterListQueryBO` 增 `DEFAULT_ID_SPLIT_REGEX="[,，\\s]+"`；`transform(request, idSplitRegex)` 按正则切分；`RenewalMasterRepositoryImpl` 注入 `@Value("${renewal.relation.id.split.regex:[,，\\s]+}")` 传入。Apollo(TEST, product-b) 已加并发布 `renewal.relation.id.split.regex=[,，\s]+`（读回一致）。
+- 部署：product-b `test-gtbg-dev-3` pod UP @`1be485c9`（pipeline 1328299）。
+- 复验（`/b/renewMaster/list`，两 ID）：英文逗号→2条 `31d5dd01`；中文逗号→2条 `1d4283a2`；空格→2条 `f088ee21`（均 code:0）。单 ID 兼容。
+- 私发金瑞琳（张泽灵本人账号，`feishu_send_private.py`）：sent=true，message_id `om_x100b619be168bcb4de0dce775e64e8a`；内容仅「跟前端相关改动」。
+
+## B6/B7 修复（2026-11-04，cart 提交 60468ec8，pod UP @60468ec8）
+- **B6 反向跨模式（主小班+从大班）**：`StockInfoQuerySubBuilder` 库存查询按**班级自身 productType**（不再只查 6004/不跳大班）；`SmallRenewalPostClassInfo#isSalable` 库存 null 宽容（显式 ≤0 才售罄）；`RenewalService#processSingleClazzResult` 输出 productType 用**班级真实类型**。
+- **B7 扩科年级收口**：`getRenewalDetail` 合并前记 `mainOwnPreCourseNumbers`；大班路径扩科年级来源改为**仅主计划自身后置班** `expansionCourseDTOMap`（纯续去重/in-time 仍用完整并集）。
+- **B8 未动**（预热 key/读路径未碰）。
+- **复现（修前）**：B6反向——大班从计划纯续缺失（仅扩科）；B7——grade11 出现临时扩科项。traceId `cart_gaotu100_com.535.17937838513040060` / `...531.17937839391420063`。
+- **复验（修后）**：B6反向 大班从计划纯续 type=2 rec=1 present（`...289.17937844100170008`）；正向 大班+小班纯续均在、无临时扩科（`...292.17937844221310006`）。**主 worker 独立复跑正向**：`getRenewalDetail(7658127801,...,584)` → grade16 type2 + grade11 type6004（`cart_gaotu100_com.293.17937847867120012`）。
+- **测试数据清理**：`renewal_expand_subject_recommend` 回 6 行（临时 id109 删）；`renew_master_relation` 回 8 行（反向行删，正向保留）。单测 48/48 过。
+- **残留（待 owner）**：① B7 仅覆盖大班路径；**小班主计划的扩科年级仍取主∪从**（同类问题未修）；② `PreClassInfoBuildSubBuilder` 的 productType 供选 6004/51 分支，有意不改；③ order 真机 addCart/下单未复验（B6 只涉推荐层）。
+
+## B8 = C（不修，owner 决策 2026-11-04）——预热结果过期边界
+- **边界/风险**：cart 预热缓存 key `renewal:preheat:{renewalNumber}:{userId}`（TTL 26h）**不含关联版本/开关**；`save`（改关联/解绑）只清 `renewal:relation:{main}`，不清预热。故**改关联或开关回退后，已预热用户最长 26h 仍看到旧推荐**（不立即生效）。
+- **运维提示**：需要即时生效时，**低峰期手动触发该计划的预热**（覆盖旧缓存）；否则等 TTL 自然过期。
+- **未采用方案 A（读路径带关系版本失效）原因**：会令改关联后读请求 miss→同步重算，热门计划形成**重算尖峰**（性能风险，owner 否决）。
+- 影响面：仅「已被预热过的用户」在配置变更后的一段时间内；新用户/未预热用户不受影响。
+
+## B7 小班主路径补（2026-11-04，cart 提交 08228297，pod UP @08228297）
+- 改动：`SmallRenewalRecommendContext` 增 `Set<Long> mainOwnPreCourseNumbers`（空=旧行为）；`ExpandSubjectRecommendService#collectStudentPostGrades` 按它过滤前置班（扩科年级只统计主计划自身前置课对应后置班）；`RenewalService` 7参小班分支 `setMainOwnPreCourseNumbers(...)`。
+- **复现（修前 60468ec8）**：小班主 + 从，主计划临时扩科行 grade=16（仅从计划侧年级）→ grade16 多推扩科项 585963387758962688（traceId `cart_gaotu100_com.292.17937852075840016`）。
+- **复验（修后 08228297）**：同调用 grade16 **不再出现**临时扩科项，只剩从计划大班纯续；grade11/12 扩科项不变（traceId `cart_gaotu100_com.291.17937858129660007`）。**主 worker 独立复跑正向**（`...64857bc865-l24l8`）：grade16 type2 + grade11 type6004（`cart_gaotu100_com.292.17937859190250007`）。
+- 清理：expand 表回 6 行（temp id110 删）、relation 表回正向 1 行；单测 48/48。
+- 未改小班预热路径（`SmallRenewalPreheatService#recommend` 仅触发下游 RPC，不缓存结果）；legacy `smallRenewalEnabled=false` 无扩科调用。
