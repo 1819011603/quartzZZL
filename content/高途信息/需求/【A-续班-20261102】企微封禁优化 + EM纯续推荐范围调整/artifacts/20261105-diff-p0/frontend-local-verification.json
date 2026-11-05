@@ -1,0 +1,27 @@
+{
+  "frontendSha": "ba1cf8f9ffee5269e49331e7f7f2bd42e5137183",
+  "adminListRendering": "甲，乙",
+  "batchRequest": {
+    "number": "585960797778243584,586116340522184704",
+    "statusList": [
+      1,
+      2
+    ],
+    "filterTestData": 1
+  },
+  "cronus": {
+    "roster": {
+      "studentTagNames": [
+        101,
+        102
+      ]
+    },
+    "microClazzRoster": {
+      "studentTagNames": [
+        101,
+        102
+      ]
+    }
+  },
+  "scope": "extracted existing pure functions only; no React/browser/API/business writes"
+}

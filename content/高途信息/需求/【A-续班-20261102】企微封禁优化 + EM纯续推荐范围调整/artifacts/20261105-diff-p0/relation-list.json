@@ -1,0 +1,39 @@
+{
+  "ok": true,
+  "url": "https://test-fuwu.baijia.com/bgwApi/product-b/b/renewMaster/relation/list?renewMasterNumber=585960797778243584",
+  "trafficEnv": "test-gtbg-dev-3",
+  "httpStatus": 200,
+  "resolvedRoute": {
+    "appId": "product-b",
+    "pathInfo": "/product-b/b",
+    "rewriteInfo": "StripPrefix = 1",
+    "statusInfo": "正常",
+    "routeId": 189
+  },
+  "request": null,
+  "curl": "curl -sk \\\n  -x \"${AGENT_PROXY_URL:-http://127.0.0.1:8888}\" \\\n  'https://test-fuwu.baijia.com/bgwApi/product-b/b/renewMaster/relation/list?renewMasterNumber=585960797778243584' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'b_client: EES'",
+  "traceId": "2e78a421-4f0d-4b3f-9724-06752c06c409.0.3",
+  "gapmApp": "product-b",
+  "response": {
+    "code": 0,
+    "data": [
+      {
+        "adminList": [
+          {
+            "id": "177071",
+            "name": "弓雪萌"
+          },
+          {
+            "id": "90247",
+            "name": "唐稳01"
+          }
+        ],
+        "adminName": "弓雪萌，唐稳01",
+        "name": "dcg-小班扩科排除-计划",
+        "number": "586116340522184704",
+        "status": 2
+      }
+    ],
+    "msg": "success！"
+  }
+}

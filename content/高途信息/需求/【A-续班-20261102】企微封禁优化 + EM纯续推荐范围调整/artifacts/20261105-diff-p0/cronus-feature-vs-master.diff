@@ -1,0 +1,1672 @@
+diff --git a/package.json b/package.json
+index 7833a83..885a481 100644
+--- a/package.json
++++ b/package.json
+@@ -35,7 +35,7 @@
+         "@feitu/wecom": "1.0.4",
+         "@gaotu-fe/exercise-illustrate": "3.2.4",
+         "@gaotu/fuwu-business": "^0.0.34",
+-        "@gaotu/reach-widget": "^0.1.3",
++        "@gaotu/reach-widget": "0.1.5-beta.4",
+         "@gaotu/sentry-monitor": "2.0.0",
+         "@sentry/react": "9.27.0",
+         "ahooks": "3.7.8",
+diff --git a/pnpm-lock.yaml b/pnpm-lock.yaml
+index 963108b..182ce0f 100644
+--- a/pnpm-lock.yaml
++++ b/pnpm-lock.yaml
+@@ -18,7 +18,7 @@ importers:
+         version: 2.0.9(@alifd/meet-react@2.9.9(rax@1.2.3)(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(@alifd/next@1.27.30(@alifd/meet-react@2.9.9(rax@1.2.3)(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(@types/react@16.14.62)(moment@2.30.1)(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(@alilc/lowcode-engine@1.3.2(@alifd/meet-react@2.9.9(rax@1.2.3)(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(@types/react@16.14.62)(date-fns@2.30.0)(luxon@3.6.1)(moment@2.30.1)(monaco-editor@0.55.1)(reflect-metadata@0.2.2))(@babel/core@7.26.0)(@types/hoist-non-react-statics@3.3.6)(@types/node@22.10.7)(@types/react-dom@16.9.25(@types/react@16.14.62))(@types/react@16.14.62)(@xstate/fsm@1.6.5)(antd@4.24.16(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(date-fns@2.30.0)(encoding@0.1.13)(lodash@4.17.21)(luxon@3.6.1)(moment@2.30.1)(monaco-editor@0.55.1)(prop-types@15.8.1)(rax@1.2.3)(react-dom@16.14.0(react@16.14.0))(react-is@16.13.1)(react@16.14.0)(reflect-metadata@0.2.2)(typescript@4.9.5)
+       '@coeus/business':
+         specifier: 2.9.204
+-        version: 2.9.204(e164fb543eb0e236dd1b3857dd92f68d)
++        version: 2.9.204(fur4dy544arju6zsu3vq7uwpr4)
+       '@coeus/feature':
+         specifier: 2.9.204
+         version: 2.9.204(@ant-design/icons@5.6.1(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(@types/react-dom@16.9.25(@types/react@16.14.62))(@types/react@16.14.62)(antd-mobile@2.3.4(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(antd@4.24.16(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(prop-types@15.8.1)(react-beautiful-dnd@13.1.1(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(react-dom@16.14.0(react@16.14.0))(react-is@16.13.1)(react@16.14.0)(typescript@4.9.5)
+@@ -33,28 +33,28 @@ importers:
+         version: 2.9.204
+       '@coeus/render':
+         specifier: 2.9.204
+-        version: 2.9.204(2f7a7d54b472508c57982a7a814e01b8)
++        version: 2.9.204(k335dtt5sz5uuywu56zszo5q3m)
+       '@feitu/access-umi':
+         specifier: 2.1.2
+         version: 2.1.2(webpack@5.104.1)
+       '@feitu/call-phone':
+         specifier: 1.0.4
+-        version: 1.0.4(@ant-design/icons@5.6.1(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(@umijs/use-request@1.4.3(react@16.14.0))(antd@4.24.16(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(lodash@4.17.21)(react-use@17.6.0(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(react@16.14.0)(umi@3.5.43(react-router@5.3.4(react@16.14.0)))
++        version: 1.0.4(@ant-design/icons@5.6.1(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(@umijs/use-request@1.4.3(react@16.14.0))(antd@4.24.16(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(lodash@4.17.21)(react-use@17.6.0(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(react@16.14.0)(umi@3.5.43(react-router@5.2.0(react@16.14.0)))
+       '@feitu/request':
+         specifier: 1.0.0
+         version: 1.0.0(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
+       '@feitu/wecom':
+         specifier: 1.0.4
+-        version: 1.0.4(ahooks@3.7.8(react@16.14.0))(antd@4.24.16(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(react@16.14.0)(umi@3.5.43(react-router@5.3.4(react@16.14.0)))
++        version: 1.0.4(ahooks@3.7.8(react@16.14.0))(antd@4.24.16(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(react@16.14.0)(umi@3.5.43(react-router@5.2.0(react@16.14.0)))
+       '@gaotu-fe/exercise-illustrate':
+         specifier: 3.2.4
+         version: 3.2.4(axios@0.24.0)(classnames@2.5.1)(habo@2.8.12)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
+       '@gaotu/fuwu-business':
+         specifier: ^0.0.34
+-        version: 0.0.34(b1d925e82a664abd3e9dc20ac9da6140)
++        version: 0.0.34(6fvrz3vonlfttq2kooz3aktwgq)
+       '@gaotu/reach-widget':
+-        specifier: ^0.1.3
+-        version: 0.1.3(44f1d3148ba80fca319b8d3046360d1f)
++        specifier: 0.1.5-beta.4
++        version: 0.1.5-beta.4(szlwvfm2rsogzpjtodssxcvgwu)
+       '@gaotu/sentry-monitor':
+         specifier: 2.0.0
+         version: 2.0.0
+@@ -111,7 +111,7 @@ importers:
+         version: 17.6.0(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
+       umi:
+         specifier: ^3.5.41
+-        version: 3.5.43(react-router@5.3.4(react@16.14.0))
++        version: 3.5.43(react-router@5.2.0(react@16.14.0))
+       use-immer:
+         specifier: 0.5.2
+         version: 0.5.2(immer@7.0.15)(react@16.14.0)
+@@ -133,13 +133,13 @@ importers:
+         version: 4.14.200
+       '@umijs/plugin-qiankun':
+         specifier: ^2.43.3
+-        version: 2.44.1(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(umi@3.5.43(react-router@5.3.4(react@16.14.0)))
++        version: 2.44.1(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(umi@3.5.43(react-router@5.2.0(react@16.14.0)))
+       '@umijs/plugin-sass':
+         specifier: ^1.1.1
+-        version: 1.1.1(umi@3.5.43(react-router@5.3.4(react@16.14.0)))(webpack@5.104.1)
++        version: 1.1.1(umi@3.5.43(react-router@5.2.0(react@16.14.0)))(webpack@5.104.1)
+       '@umijs/preset-react':
+         specifier: 1.x
+-        version: 1.8.32(@ant-design/icons@5.6.1(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(@ant-design/pro-layout@7.22.7(antd@4.24.16(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(dva-core@2.0.4(redux@4.2.1))(react-dom@16.14.0(react@16.14.0))(react-router@5.3.4(react@16.14.0))(react@16.14.0)(redbox-react@1.6.0(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(umi@3.5.43(react-router@5.3.4(react@16.14.0)))
++        version: 1.8.32(@ant-design/icons@5.6.1(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(@ant-design/pro-layout@7.22.7(antd@4.24.16(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(dva-core@2.0.4(redux@4.2.1))(react-dom@16.14.0(react@16.14.0))(react-router@5.2.0(react@16.14.0))(react@16.14.0)(redbox-react@1.6.0(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(umi@3.5.43(react-router@5.2.0(react@16.14.0)))
+       '@umijs/test':
+         specifier: ^3.5.41
+         version: 3.5.43
+@@ -1495,8 +1495,8 @@ packages:
+     resolution: {integrity: sha512-o8y2JIfl0PFarVdzEdjuLs9PvOLw0dA4UqXCPqt6APoixr8d+ESOjA6exzN5DheUzPZuL8ef9hQYJ8zGtpcn2g==}
+     deprecated: '@gaotu/prisma@0.*  version is deprecated. Please use 1.x instead.'
+ 
+-  '@gaotu/reach-widget@0.1.3':
+-    resolution: {integrity: sha512-F1pGKRGPDkLg5LZUorkEw7KPG8Dtl7FZqZ2JMpjEW0+FLkTLaEwc+1folDBlPiKSAS9c9MkedSCjfSrAmKXiIg==}
++  '@gaotu/reach-widget@0.1.5-beta.4':
++    resolution: {integrity: sha512-lcyoMVCpPXt2Q1xa58xgsPjzXZVIfa1SbJApNgV5m8rVRB4RRuWcqWfOZ/ysYHEUd74tQCWaIvWGt0d7yrp9ng==}
+     peerDependencies:
+       '@ant-design/icons': '>=4.0.0'
+       antd: '>=4.24.13 <5.0.0'
+@@ -8238,6 +8238,13 @@ packages:
+       react: '>=16.9.0'
+       react-dom: '>=16.9.0'
+ 
++  rc-virtual-list@3.18.6:
++    resolution: {integrity: sha512-TQ5SsutL3McvWmmxqQtMIbfeoE3dGjJrRSfKekgby7WQMpPIFvv4ghytp5Z0s3D8Nik9i9YNOCqHBfk86AwgAA==}
++    engines: {node: '>=8.x'}
++    peerDependencies:
++      react: '>=16.9.0'
++      react-dom: '>=16.9.0'
++
+   rc@1.2.8:
+     resolution: {integrity: sha1-zZJL9SAKB1uDwYjNa54hG3/A0+0=}
+     hasBin: true
+@@ -12190,11 +12197,11 @@ snapshots:
+       react: 16.14.0
+       react-dom: 16.14.0(react@16.14.0)
+ 
+-  '@coeus/business@2.9.204(e164fb543eb0e236dd1b3857dd92f68d)':
++  '@coeus/business@2.9.204(fur4dy544arju6zsu3vq7uwpr4)':
+     dependencies:
+       '@babel/runtime': 7.27.1
+       '@coeus/icons': 2.9.204(antd@4.24.16(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
+-      '@coeus/render': 2.9.204(2f7a7d54b472508c57982a7a814e01b8)
++      '@coeus/render': 2.9.204(k335dtt5sz5uuywu56zszo5q3m)
+       '@coeus/utils': 2.9.204(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
+       '@gaotu-fe/exercise': 3.6.5(@sentry/browser@9.27.0)(ali-oss@6.22.0)(axios@0.24.0)(classnames@2.5.1)(habo@2.8.12)(lodash-es@4.17.21)(react-dom@16.14.0(react@16.14.0))(react-transition-group@4.4.5(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(react@16.14.0)(swiper@8.4.7)
+       ahooks: 3.7.8(react@16.14.0)
+@@ -12300,12 +12307,12 @@ snapshots:
+       react: 16.14.0
+       react-dom: 16.14.0(react@16.14.0)
+ 
+-  '@coeus/render@2.9.204(2f7a7d54b472508c57982a7a814e01b8)':
++  '@coeus/render@2.9.204(k335dtt5sz5uuywu56zszo5q3m)':
+     dependencies:
+       '@babel/runtime': 7.27.1
+       '@big-data/taitan-component-container': 2.0.9(@alifd/meet-react@2.9.9(rax@1.2.3)(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(@alifd/next@1.27.30(@alifd/meet-react@2.9.9(rax@1.2.3)(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(@types/react@16.14.62)(moment@2.30.1)(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(@alilc/lowcode-engine@1.3.2(@alifd/meet-react@2.9.9(rax@1.2.3)(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(@types/react@16.14.62)(date-fns@2.30.0)(luxon@3.6.1)(moment@2.30.1)(monaco-editor@0.55.1)(reflect-metadata@0.2.2))(@babel/core@7.26.0)(@types/hoist-non-react-statics@3.3.6)(@types/node@22.10.7)(@types/react-dom@16.9.25(@types/react@16.14.62))(@types/react@16.14.62)(@xstate/fsm@1.6.5)(antd@4.24.16(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(date-fns@2.30.0)(encoding@0.1.13)(lodash@4.17.21)(luxon@3.6.1)(moment@2.30.1)(monaco-editor@0.55.1)(prop-types@15.8.1)(rax@1.2.3)(react-dom@16.14.0(react@16.14.0))(react-is@16.13.1)(react@16.14.0)(reflect-metadata@0.2.2)(typescript@4.9.5)
+       '@coeus/algorithm': 2.9.204(antd@4.24.16(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
+-      '@coeus/business': 2.9.204(e164fb543eb0e236dd1b3857dd92f68d)
++      '@coeus/business': 2.9.204(fur4dy544arju6zsu3vq7uwpr4)
+       '@coeus/feature': 2.9.204(@ant-design/icons@5.6.1(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(@types/react-dom@16.9.25(@types/react@16.14.62))(@types/react@16.14.62)(antd-mobile@2.3.4(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(antd@4.24.16(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(prop-types@15.8.1)(react-beautiful-dnd@13.1.1(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(react-dom@16.14.0(react@16.14.0))(react-is@16.13.1)(react@16.14.0)(typescript@4.9.5)
+       '@coeus/icons': 2.9.204(antd@4.24.16(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
+       '@coeus/meta-rule': 2.9.204
+@@ -12442,7 +12449,7 @@ snapshots:
+     transitivePeerDependencies:
+       - webpack
+ 
+-  '@feitu/call-phone@1.0.4(@ant-design/icons@5.6.1(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(@umijs/use-request@1.4.3(react@16.14.0))(antd@4.24.16(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(lodash@4.17.21)(react-use@17.6.0(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(react@16.14.0)(umi@3.5.43(react-router@5.3.4(react@16.14.0)))':
++  '@feitu/call-phone@1.0.4(@ant-design/icons@5.6.1(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(@umijs/use-request@1.4.3(react@16.14.0))(antd@4.24.16(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(lodash@4.17.21)(react-use@17.6.0(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(react@16.14.0)(umi@3.5.43(react-router@5.2.0(react@16.14.0)))':
+     dependencies:
+       '@ant-design/icons': 5.6.1(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
+       '@babel/runtime': 7.27.1
+@@ -12452,7 +12459,7 @@ snapshots:
+       lodash: 4.17.21
+       react: 16.14.0
+       react-use: 17.6.0(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
+-      umi: 3.5.43(react-router@5.3.4(react@16.14.0))
++      umi: 3.5.43(react-router@5.2.0(react@16.14.0))
+ 
+   '@feitu/request@1.0.0(react-dom@16.14.0(react@16.14.0))(react@16.14.0)':
+     dependencies:
+@@ -12483,13 +12490,13 @@ snapshots:
+     transitivePeerDependencies:
+       - react
+ 
+-  '@feitu/wecom@1.0.4(ahooks@3.7.8(react@16.14.0))(antd@4.24.16(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(react@16.14.0)(umi@3.5.43(react-router@5.3.4(react@16.14.0)))':
++  '@feitu/wecom@1.0.4(ahooks@3.7.8(react@16.14.0))(antd@4.24.16(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(react@16.14.0)(umi@3.5.43(react-router@5.2.0(react@16.14.0)))':
+     dependencies:
+       '@babel/runtime': 7.27.1
+       ahooks: 3.7.8(react@16.14.0)
+       antd: 4.24.16(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
+       react: 16.14.0
+-      umi: 3.5.43(react-router@5.3.4(react@16.14.0))
++      umi: 3.5.43(react-router@5.2.0(react@16.14.0))
+ 
+   '@formatjs/ecma402-abstract@1.11.4':
+     dependencies:
+@@ -12741,7 +12748,7 @@ snapshots:
+     transitivePeerDependencies:
+       - encoding
+ 
+-  '@gaotu/fuwu-business@0.0.34(b1d925e82a664abd3e9dc20ac9da6140)':
++  '@gaotu/fuwu-business@0.0.34(6fvrz3vonlfttq2kooz3aktwgq)':
+     dependencies:
+       '@ant-design/icons': 5.6.1(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
+       '@coeus/feature': 2.9.204(@ant-design/icons@5.6.1(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(@types/react-dom@16.9.25(@types/react@16.14.62))(@types/react@16.14.62)(antd-mobile@2.3.4(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(antd@4.24.16(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(prop-types@15.8.1)(react-beautiful-dnd@13.1.1(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(react-dom@16.14.0(react@16.14.0))(react-is@16.13.1)(react@16.14.0)(typescript@4.9.5)
+@@ -12779,11 +12786,11 @@ snapshots:
+ 
+   '@gaotu/prisma@0.2.3': {}
+ 
+-  '@gaotu/reach-widget@0.1.3(44f1d3148ba80fca319b8d3046360d1f)':
++  '@gaotu/reach-widget@0.1.5-beta.4(szlwvfm2rsogzpjtodssxcvgwu)':
+     dependencies:
+       '@ant-design/icons': 5.6.1(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
+       '@feitu/request': 1.0.3(antd@4.24.16(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(react@16.14.0)
+-      '@gaotu/softphonebar': 0.0.3(91a7c65e44d24174ba7dbb7480a87051)
++      '@gaotu/softphonebar': 0.0.3(njexj4bzmjcwqiagtu3tnxulgy)
+       '@yunying-wh/editor-fe': 1.4.4
+       ahooks: 3.7.8(react@16.14.0)
+       antd: 4.24.16(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
+@@ -12823,7 +12830,7 @@ snapshots:
+       '@sentry/utils': 6.19.7
+       rrweb: 1.1.3
+ 
+-  '@gaotu/softphonebar@0.0.3(91a7c65e44d24174ba7dbb7480a87051)':
++  '@gaotu/softphonebar@0.0.3(njexj4bzmjcwqiagtu3tnxulgy)':
+     dependencies:
+       '@feitu/request': 1.0.3(antd@4.24.16(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(react@16.14.0)
+       '@yunying-wh/brick-loader': 0.1.2
+@@ -13478,7 +13485,7 @@ snapshots:
+     dependencies:
+       '@sinonjs/commons': 1.8.6
+ 
+-  '@stylelint/postcss-css-in-js@0.37.3(postcss-syntax@0.36.2)(postcss@7.0.39)':
++  '@stylelint/postcss-css-in-js@0.37.3(postcss-syntax@0.36.2(postcss-html@0.36.0)(postcss-less@3.1.4)(postcss-scss@2.1.1)(postcss@7.0.39))(postcss@7.0.39)':
+     dependencies:
+       '@babel/core': 7.26.0
+       postcss: 7.0.39
+@@ -13486,7 +13493,7 @@ snapshots:
+     transitivePeerDependencies:
+       - supports-color
+ 
+-  '@stylelint/postcss-markdown@0.36.2(postcss-syntax@0.36.2)(postcss@7.0.39)':
++  '@stylelint/postcss-markdown@0.36.2(postcss-syntax@0.36.2(postcss-html@0.36.0)(postcss-less@3.1.4)(postcss-scss@2.1.1)(postcss@7.0.39))(postcss@7.0.39)':
+     dependencies:
+       postcss: 7.0.39
+       postcss-syntax: 0.36.2(postcss@8.5.1)
+@@ -13951,16 +13958,6 @@ snapshots:
+       - react-dom
+       - react-router
+ 
+-  '@umijs/bundler-utils@3.5.43(react-dom@16.14.0(react@16.14.0))(react-router@5.3.4(react@16.14.0))(react@16.14.0)':
+-    dependencies:
+-      '@umijs/babel-preset-umi': 3.5.43
+-      '@umijs/types': 3.5.43(react-dom@16.14.0(react@16.14.0))(react-router@5.3.4(react@16.14.0))(react@16.14.0)
+-      '@umijs/utils': 3.5.43
+-    transitivePeerDependencies:
+-      - react
+-      - react-dom
+-      - react-router
+-
+   '@umijs/bundler-webpack@3.5.43(react-dom@16.14.0(react@16.14.0))(react-router@5.2.0(react@16.14.0))(react@16.14.0)':
+     dependencies:
+       '@umijs/bundler-utils': 3.5.43(react-dom@16.14.0(react@16.14.0))(react-router@5.2.0(react@16.14.0))(react@16.14.0)
+@@ -13983,28 +13980,6 @@ snapshots:
+       - react-dom
+       - react-router
+ 
+-  '@umijs/bundler-webpack@3.5.43(react-dom@16.14.0(react@16.14.0))(react-router@5.3.4(react@16.14.0))(react@16.14.0)':
+-    dependencies:
+-      '@umijs/bundler-utils': 3.5.43(react-dom@16.14.0(react@16.14.0))(react-router@5.3.4(react@16.14.0))(react@16.14.0)
+-      '@umijs/case-sensitive-paths-webpack-plugin': 1.0.1
+-      '@umijs/deps': 3.5.43
+-      '@umijs/types': 3.5.43(react-dom@16.14.0(react@16.14.0))(react-router@5.3.4(react@16.14.0))(react@16.14.0)
+-      '@umijs/utils': 3.5.43
+-      jest-worker: 26.6.2
+-      node-libs-browser: 2.2.1
+-      normalize-url: 1.9.1
+-      postcss: 7.0.32
+-      postcss-flexbugs-fixes: 4.2.1
+-      postcss-loader: 3.0.0
+-      postcss-preset-env: 6.7.0
+-      postcss-safe-parser: 4.0.2
+-      terser: 5.14.2
+-      webpack-chain: 6.5.1
+-    transitivePeerDependencies:
+-      - react
+-      - react-dom
+-      - react-router
+-
+   '@umijs/case-sensitive-paths-webpack-plugin@1.0.1': {}
+ 
+   '@umijs/core@3.5.43':
+@@ -14062,37 +14037,37 @@ snapshots:
+       - postcss-markdown
+       - supports-color
+ 
+-  '@umijs/plugin-access@2.4.3(@umijs/plugin-initial-state@2.4.0(umi@3.5.43(react-router@5.3.4(react@16.14.0))))(@umijs/plugin-model@2.6.2(umi@3.5.43(react-router@5.3.4(react@16.14.0))))(umi@3.5.43(react-router@5.3.4(react@16.14.0)))':
++  '@umijs/plugin-access@2.4.3(@umijs/plugin-initial-state@2.4.0(umi@3.5.43(react-router@5.2.0(react@16.14.0))))(@umijs/plugin-model@2.6.2(umi@3.5.43(react-router@5.2.0(react@16.14.0))))(umi@3.5.43(react-router@5.2.0(react@16.14.0)))':
+     dependencies:
+-      '@umijs/plugin-initial-state': 2.4.0(umi@3.5.43(react-router@5.3.4(react@16.14.0)))
+-      '@umijs/plugin-model': 2.6.2(umi@3.5.43(react-router@5.3.4(react@16.14.0)))
+-      umi: 3.5.43(react-router@5.3.4(react@16.14.0))
++      '@umijs/plugin-initial-state': 2.4.0(umi@3.5.43(react-router@5.2.0(react@16.14.0)))
++      '@umijs/plugin-model': 2.6.2(umi@3.5.43(react-router@5.2.0(react@16.14.0)))
++      umi: 3.5.43(react-router@5.2.0(react@16.14.0))
+ 
+-  '@umijs/plugin-analytics@0.2.2(umi@3.5.43(react-router@5.3.4(react@16.14.0)))':
++  '@umijs/plugin-analytics@0.2.2(umi@3.5.43(react-router@5.2.0(react@16.14.0)))':
+     dependencies:
+-      umi: 3.5.43(react-router@5.3.4(react@16.14.0))
++      umi: 3.5.43(react-router@5.2.0(react@16.14.0))
+ 
+-  '@umijs/plugin-antd@0.13.0(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(umi@3.5.43(react-router@5.3.4(react@16.14.0)))':
++  '@umijs/plugin-antd@0.13.0(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(umi@3.5.43(react-router@5.2.0(react@16.14.0)))':
+     dependencies:
+       antd: 4.24.16(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
+       antd-mobile: 2.3.4(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
+       semver: 7.6.3
+-      umi: 3.5.43(react-router@5.3.4(react@16.14.0))
++      umi: 3.5.43(react-router@5.2.0(react@16.14.0))
+     transitivePeerDependencies:
+       - react
+       - react-dom
+ 
+-  '@umijs/plugin-crossorigin@1.2.1(umi@3.5.43(react-router@5.3.4(react@16.14.0)))':
++  '@umijs/plugin-crossorigin@1.2.1(umi@3.5.43(react-router@5.2.0(react@16.14.0)))':
+     dependencies:
+-      umi: 3.5.43(react-router@5.3.4(react@16.14.0))
++      umi: 3.5.43(react-router@5.2.0(react@16.14.0))
+ 
+-  '@umijs/plugin-dva@0.13.0(dva-core@2.0.4(redux@4.2.1))(react-dom@16.14.0(react@16.14.0))(react-router@5.3.4(react@16.14.0))(react@16.14.0)(redbox-react@1.6.0(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(umi@3.5.43(react-router@5.3.4(react@16.14.0)))':
++  '@umijs/plugin-dva@0.13.0(dva-core@2.0.4(redux@4.2.1))(react-dom@16.14.0(react@16.14.0))(react-router@5.2.0(react@16.14.0))(react@16.14.0)(redbox-react@1.6.0(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(umi@3.5.43(react-router@5.2.0(react@16.14.0)))':
+     dependencies:
+       babel-plugin-dva-hmr: 0.4.2(redbox-react@1.6.0(react-dom@16.14.0(react@16.14.0))(react@16.14.0))
+-      dva: 2.6.0-beta.23(react-dom@16.14.0(react@16.14.0))(react-router@5.3.4(react@16.14.0))(react@16.14.0)
+-      dva-immer: 0.5.2(dva@2.6.0-beta.23(react-dom@16.14.0(react@16.14.0))(react-router@5.3.4(react@16.14.0))(react@16.14.0))
++      dva: 2.6.0-beta.23(react-dom@16.14.0(react@16.14.0))(react-router@5.2.0(react@16.14.0))(react@16.14.0)
++      dva-immer: 0.5.2(dva@2.6.0-beta.23(react-dom@16.14.0(react@16.14.0))(react-router@5.2.0(react@16.14.0))(react@16.14.0))
+       dva-loading: 3.0.25(dva-core@2.0.4(redux@4.2.1))
+-      umi: 3.5.43(react-router@5.3.4(react@16.14.0))
++      umi: 3.5.43(react-router@5.2.0(react@16.14.0))
+     transitivePeerDependencies:
+       - dva-core
+       - react
+@@ -14101,35 +14076,35 @@ snapshots:
+       - react-router
+       - redbox-react
+ 
+-  '@umijs/plugin-helmet@1.1.3(react@16.14.0)(umi@3.5.43(react-router@5.3.4(react@16.14.0)))':
++  '@umijs/plugin-helmet@1.1.3(react@16.14.0)(umi@3.5.43(react-router@5.2.0(react@16.14.0)))':
+     dependencies:
+       '@types/react-helmet': 6.1.11
+       react-helmet: 6.1.0(react@16.14.0)
+-      umi: 3.5.43(react-router@5.3.4(react@16.14.0))
++      umi: 3.5.43(react-router@5.2.0(react@16.14.0))
+     transitivePeerDependencies:
+       - react
+ 
+-  '@umijs/plugin-initial-state@2.4.0(umi@3.5.43(react-router@5.3.4(react@16.14.0)))':
++  '@umijs/plugin-initial-state@2.4.0(umi@3.5.43(react-router@5.2.0(react@16.14.0)))':
+     dependencies:
+-      umi: 3.5.43(react-router@5.3.4(react@16.14.0))
++      umi: 3.5.43(react-router@5.2.0(react@16.14.0))
+ 
+-  '@umijs/plugin-layout@0.18.1(@ant-design/icons@5.6.1(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(@ant-design/pro-layout@7.22.7(antd@4.24.16(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(@umijs/plugin-initial-state@2.4.0(umi@3.5.43(react-router@5.3.4(react@16.14.0))))(@umijs/plugin-locale@0.15.2(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(umi@3.5.43(react-router@5.3.4(react@16.14.0))))(@umijs/plugin-model@2.6.2(umi@3.5.43(react-router@5.3.4(react@16.14.0))))(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(umi@3.5.43(react-router@5.3.4(react@16.14.0)))':
++  '@umijs/plugin-layout@0.18.1(@ant-design/icons@5.6.1(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(@ant-design/pro-layout@7.22.7(antd@4.24.16(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(@umijs/plugin-initial-state@2.4.0(umi@3.5.43(react-router@5.2.0(react@16.14.0))))(@umijs/plugin-locale@0.15.2(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(umi@3.5.43(react-router@5.2.0(react@16.14.0))))(@umijs/plugin-model@2.6.2(umi@3.5.43(react-router@5.2.0(react@16.14.0))))(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(umi@3.5.43(react-router@5.2.0(react@16.14.0)))':
+     dependencies:
+       '@ant-design/icons': 5.6.1(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
+       '@ant-design/pro-layout': 7.22.7(antd@4.24.16(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
+-      '@umijs/plugin-initial-state': 2.4.0(umi@3.5.43(react-router@5.3.4(react@16.14.0)))
+-      '@umijs/plugin-locale': 0.15.2(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(umi@3.5.43(react-router@5.3.4(react@16.14.0)))
+-      '@umijs/plugin-model': 2.6.2(umi@3.5.43(react-router@5.3.4(react@16.14.0)))
++      '@umijs/plugin-initial-state': 2.4.0(umi@3.5.43(react-router@5.2.0(react@16.14.0)))
++      '@umijs/plugin-locale': 0.15.2(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(umi@3.5.43(react-router@5.2.0(react@16.14.0)))
++      '@umijs/plugin-model': 2.6.2(umi@3.5.43(react-router@5.2.0(react@16.14.0)))
+       '@umijs/route-utils': 2.2.2
+       antd: 4.24.16(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
+       lodash: 4.17.21
+       path-to-regexp: 1.9.0
+-      umi: 3.5.43(react-router@5.3.4(react@16.14.0))
++      umi: 3.5.43(react-router@5.2.0(react@16.14.0))
+     transitivePeerDependencies:
+       - react
+       - react-dom
+ 
+-  '@umijs/plugin-locale@0.15.2(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(umi@3.5.43(react-router@5.3.4(react@16.14.0)))':
++  '@umijs/plugin-locale@0.15.2(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(umi@3.5.43(react-router@5.2.0(react@16.14.0)))':
+     dependencies:
+       '@ant-design/icons': 4.8.3(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
+       '@formatjs/intl-pluralrules': 1.5.9
+@@ -14137,18 +14112,18 @@ snapshots:
+       intl: 1.2.5
+       moment: 2.30.1
+       react-intl: 3.12.1(react@16.14.0)
+-      umi: 3.5.43(react-router@5.3.4(react@16.14.0))
++      umi: 3.5.43(react-router@5.2.0(react@16.14.0))
+       warning: 4.0.3
+     transitivePeerDependencies:
+       - react
+       - react-dom
+ 
+-  '@umijs/plugin-model@2.6.2(umi@3.5.43(react-router@5.3.4(react@16.14.0)))':
++  '@umijs/plugin-model@2.6.2(umi@3.5.43(react-router@5.2.0(react@16.14.0)))':
+     dependencies:
+       fast-deep-equal: 3.1.1
+-      umi: 3.5.43(react-router@5.3.4(react@16.14.0))
++      umi: 3.5.43(react-router@5.2.0(react@16.14.0))
+ 
+-  '@umijs/plugin-qiankun@2.44.1(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(umi@3.5.43(react-router@5.3.4(react@16.14.0)))':
++  '@umijs/plugin-qiankun@2.44.1(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(umi@3.5.43(react-router@5.2.0(react@16.14.0)))':
+     dependencies:
+       '@babel/runtime': 7.27.1
+       address: 1.2.2
+@@ -14158,33 +14133,33 @@ snapshots:
+       qiankun: 2.10.16
+       react: 16.14.0
+       react-dom: 16.14.0(react@16.14.0)
+-      umi: 3.5.43(react-router@5.3.4(react@16.14.0))
++      umi: 3.5.43(react-router@5.2.0(react@16.14.0))
+     transitivePeerDependencies:
+       - '@types/express'
+       - debug
+ 
+-  '@umijs/plugin-request@2.8.0(react@16.14.0)(umi@3.5.43(react-router@5.3.4(react@16.14.0)))':
++  '@umijs/plugin-request@2.8.0(react@16.14.0)(umi@3.5.43(react-router@5.2.0(react@16.14.0)))':
+     dependencies:
+       '@ahooksjs/use-request': 2.8.15(react@16.14.0)
+-      umi: 3.5.43(react-router@5.3.4(react@16.14.0))
++      umi: 3.5.43(react-router@5.2.0(react@16.14.0))
+       umi-request: 1.4.0
+     transitivePeerDependencies:
+       - react
+ 
+-  '@umijs/plugin-sass@1.1.1(umi@3.5.43(react-router@5.3.4(react@16.14.0)))(webpack@5.104.1)':
++  '@umijs/plugin-sass@1.1.1(umi@3.5.43(react-router@5.2.0(react@16.14.0)))(webpack@5.104.1)':
+     dependencies:
+       sass: 1.83.4
+       sass-loader: 8.0.2(sass@1.83.4)(webpack@5.104.1)
+-      umi: 3.5.43(react-router@5.3.4(react@16.14.0))
++      umi: 3.5.43(react-router@5.2.0(react@16.14.0))
+     transitivePeerDependencies:
+       - fibers
+       - node-sass
+       - webpack
+ 
+-  '@umijs/plugin-test@1.0.2(umi@3.5.43(react-router@5.3.4(react@16.14.0)))':
++  '@umijs/plugin-test@1.0.2(umi@3.5.43(react-router@5.2.0(react@16.14.0)))':
+     dependencies:
+       '@umijs/test': 3.5.43
+-      umi: 3.5.43(react-router@5.3.4(react@16.14.0))
++      umi: 3.5.43(react-router@5.2.0(react@16.14.0))
+     transitivePeerDependencies:
+       - bufferutil
+       - canvas
+@@ -14224,21 +14199,21 @@ snapshots:
+     transitivePeerDependencies:
+       - react-dom
+ 
+-  '@umijs/preset-react@1.8.32(@ant-design/icons@5.6.1(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(@ant-design/pro-layout@7.22.7(antd@4.24.16(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(dva-core@2.0.4(redux@4.2.1))(react-dom@16.14.0(react@16.14.0))(react-router@5.3.4(react@16.14.0))(react@16.14.0)(redbox-react@1.6.0(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(umi@3.5.43(react-router@5.3.4(react@16.14.0)))':
+-    dependencies:
+-      '@umijs/plugin-access': 2.4.3(@umijs/plugin-initial-state@2.4.0(umi@3.5.43(react-router@5.3.4(react@16.14.0))))(@umijs/plugin-model@2.6.2(umi@3.5.43(react-router@5.3.4(react@16.14.0))))(umi@3.5.43(react-router@5.3.4(react@16.14.0)))
+-      '@umijs/plugin-analytics': 0.2.2(umi@3.5.43(react-router@5.3.4(react@16.14.0)))
+-      '@umijs/plugin-antd': 0.13.0(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(umi@3.5.43(react-router@5.3.4(react@16.14.0)))
+-      '@umijs/plugin-crossorigin': 1.2.1(umi@3.5.43(react-router@5.3.4(react@16.14.0)))
+-      '@umijs/plugin-dva': 0.13.0(dva-core@2.0.4(redux@4.2.1))(react-dom@16.14.0(react@16.14.0))(react-router@5.3.4(react@16.14.0))(react@16.14.0)(redbox-react@1.6.0(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(umi@3.5.43(react-router@5.3.4(react@16.14.0)))
+-      '@umijs/plugin-helmet': 1.1.3(react@16.14.0)(umi@3.5.43(react-router@5.3.4(react@16.14.0)))
+-      '@umijs/plugin-initial-state': 2.4.0(umi@3.5.43(react-router@5.3.4(react@16.14.0)))
+-      '@umijs/plugin-layout': 0.18.1(@ant-design/icons@5.6.1(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(@ant-design/pro-layout@7.22.7(antd@4.24.16(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(@umijs/plugin-initial-state@2.4.0(umi@3.5.43(react-router@5.3.4(react@16.14.0))))(@umijs/plugin-locale@0.15.2(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(umi@3.5.43(react-router@5.3.4(react@16.14.0))))(@umijs/plugin-model@2.6.2(umi@3.5.43(react-router@5.3.4(react@16.14.0))))(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(umi@3.5.43(react-router@5.3.4(react@16.14.0)))
+-      '@umijs/plugin-locale': 0.15.2(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(umi@3.5.43(react-router@5.3.4(react@16.14.0)))
+-      '@umijs/plugin-model': 2.6.2(umi@3.5.43(react-router@5.3.4(react@16.14.0)))
+-      '@umijs/plugin-request': 2.8.0(react@16.14.0)(umi@3.5.43(react-router@5.3.4(react@16.14.0)))
+-      '@umijs/plugin-test': 1.0.2(umi@3.5.43(react-router@5.3.4(react@16.14.0)))
+-      umi: 3.5.43(react-router@5.3.4(react@16.14.0))
++  '@umijs/preset-react@1.8.32(@ant-design/icons@5.6.1(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(@ant-design/pro-layout@7.22.7(antd@4.24.16(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(dva-core@2.0.4(redux@4.2.1))(react-dom@16.14.0(react@16.14.0))(react-router@5.2.0(react@16.14.0))(react@16.14.0)(redbox-react@1.6.0(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(umi@3.5.43(react-router@5.2.0(react@16.14.0)))':
++    dependencies:
++      '@umijs/plugin-access': 2.4.3(@umijs/plugin-initial-state@2.4.0(umi@3.5.43(react-router@5.2.0(react@16.14.0))))(@umijs/plugin-model@2.6.2(umi@3.5.43(react-router@5.2.0(react@16.14.0))))(umi@3.5.43(react-router@5.2.0(react@16.14.0)))
++      '@umijs/plugin-analytics': 0.2.2(umi@3.5.43(react-router@5.2.0(react@16.14.0)))
++      '@umijs/plugin-antd': 0.13.0(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(umi@3.5.43(react-router@5.2.0(react@16.14.0)))
++      '@umijs/plugin-crossorigin': 1.2.1(umi@3.5.43(react-router@5.2.0(react@16.14.0)))
++      '@umijs/plugin-dva': 0.13.0(dva-core@2.0.4(redux@4.2.1))(react-dom@16.14.0(react@16.14.0))(react-router@5.2.0(react@16.14.0))(react@16.14.0)(redbox-react@1.6.0(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(umi@3.5.43(react-router@5.2.0(react@16.14.0)))
++      '@umijs/plugin-helmet': 1.1.3(react@16.14.0)(umi@3.5.43(react-router@5.2.0(react@16.14.0)))
++      '@umijs/plugin-initial-state': 2.4.0(umi@3.5.43(react-router@5.2.0(react@16.14.0)))
++      '@umijs/plugin-layout': 0.18.1(@ant-design/icons@5.6.1(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(@ant-design/pro-layout@7.22.7(antd@4.24.16(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(@umijs/plugin-initial-state@2.4.0(umi@3.5.43(react-router@5.2.0(react@16.14.0))))(@umijs/plugin-locale@0.15.2(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(umi@3.5.43(react-router@5.2.0(react@16.14.0))))(@umijs/plugin-model@2.6.2(umi@3.5.43(react-router@5.2.0(react@16.14.0))))(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(umi@3.5.43(react-router@5.2.0(react@16.14.0)))
++      '@umijs/plugin-locale': 0.15.2(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(umi@3.5.43(react-router@5.2.0(react@16.14.0)))
++      '@umijs/plugin-model': 2.6.2(umi@3.5.43(react-router@5.2.0(react@16.14.0)))
++      '@umijs/plugin-request': 2.8.0(react@16.14.0)(umi@3.5.43(react-router@5.2.0(react@16.14.0)))
++      '@umijs/plugin-test': 1.0.2(umi@3.5.43(react-router@5.2.0(react@16.14.0)))
++      umi: 3.5.43(react-router@5.2.0(react@16.14.0))
+     transitivePeerDependencies:
+       - '@ant-design/icons'
+       - '@ant-design/pro-layout'
+@@ -14274,18 +14249,6 @@ snapshots:
+     transitivePeerDependencies:
+       - react-router
+ 
+-  '@umijs/renderer-react@3.5.43(react-dom@16.14.0(react@16.14.0))(react-router@5.3.4(react@16.14.0))(react@16.14.0)':
+-    dependencies:
+-      '@types/react': 16.14.62
+-      '@types/react-dom': 16.9.25(@types/react@16.14.62)
+-      '@types/react-router-config': 5.0.2
+-      '@umijs/runtime': 3.5.43(react@16.14.0)
+-      react: 16.14.0
+-      react-dom: 16.14.0(react@16.14.0)
+-      react-router-config: 5.1.1(react-router@5.3.4(react@16.14.0))(react@16.14.0)
+-    transitivePeerDependencies:
+-      - react-router
+-
+   '@umijs/route-utils@2.2.2':
+     dependencies:
+       '@qixian.cs/path-to-regexp': 6.1.0
+@@ -14344,20 +14307,6 @@ snapshots:
+       - react-dom
+       - react-router
+ 
+-  '@umijs/types@3.5.43(react-dom@16.14.0(react@16.14.0))(react-router@5.3.4(react@16.14.0))(react@16.14.0)':
+-    dependencies:
+-      '@umijs/babel-preset-umi': 3.5.43
+-      '@umijs/core': 3.5.43
+-      '@umijs/deps': 3.5.43
+-      '@umijs/renderer-react': 3.5.43(react-dom@16.14.0(react@16.14.0))(react-router@5.3.4(react@16.14.0))(react@16.14.0)
+-      '@umijs/server': 3.5.43
+-      '@umijs/utils': 3.5.43
+-      webpack-chain: 6.5.1
+-    transitivePeerDependencies:
+-      - react
+-      - react-dom
+-      - react-router
+-
+   '@umijs/use-params@1.0.9(react@16.14.0)':
+     dependencies:
+       react: 16.14.0
+@@ -15852,14 +15801,14 @@ snapshots:
+       write-file-atomic: 2.4.3
+       xdg-basedir: 3.0.0
+ 
+-  connected-react-router@6.5.2(history@4.10.1)(react-redux@7.2.9(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(react-router@5.3.4(react@16.14.0))(react@16.14.0)(redux@4.2.1):
++  connected-react-router@6.5.2(history@4.10.1)(react-redux@7.2.9(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(react-router@5.2.0(react@16.14.0))(react@16.14.0)(redux@4.2.1):
+     dependencies:
+       history: 4.10.1
+       immutable: 3.8.2
+       prop-types: 15.8.1
+       react: 16.14.0
+       react-redux: 7.2.9(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
+-      react-router: 5.3.4(react@16.14.0)
++      react-router: 5.2.0(react@16.14.0)
+       redux: 4.2.1
+       seamless-immutable: 7.1.4
+ 
+@@ -16468,10 +16417,10 @@ snapshots:
+       redux-saga: 0.16.2
+       warning: 3.0.0
+ 
+-  dva-immer@0.5.2(dva@2.6.0-beta.23(react-dom@16.14.0(react@16.14.0))(react-router@5.3.4(react@16.14.0))(react@16.14.0)):
++  dva-immer@0.5.2(dva@2.6.0-beta.23(react-dom@16.14.0(react@16.14.0))(react-router@5.2.0(react@16.14.0))(react@16.14.0)):
+     dependencies:
+       '@babel/runtime': 7.27.1
+-      dva: 2.6.0-beta.23(react-dom@16.14.0(react@16.14.0))(react-router@5.3.4(react@16.14.0))(react@16.14.0)
++      dva: 2.6.0-beta.23(react-dom@16.14.0(react@16.14.0))(react-router@5.2.0(react@16.14.0))(react@16.14.0)
+       immer: 7.0.15
+ 
+   dva-loading@3.0.25(dva-core@2.0.4(redux@4.2.1)):
+@@ -16479,13 +16428,13 @@ snapshots:
+       '@babel/runtime': 7.27.1
+       dva-core: 2.0.4(redux@4.2.1)
+ 
+-  dva@2.6.0-beta.23(react-dom@16.14.0(react@16.14.0))(react-router@5.3.4(react@16.14.0))(react@16.14.0):
++  dva@2.6.0-beta.23(react-dom@16.14.0(react@16.14.0))(react-router@5.2.0(react@16.14.0))(react@16.14.0):
+     dependencies:
+       '@babel/runtime': 7.27.1
+       '@types/isomorphic-fetch': 0.0.35
+       '@types/react-redux': 7.1.34
+       '@types/react-router-dom': 5.3.3
+-      connected-react-router: 6.5.2(history@4.10.1)(react-redux@7.2.9(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(react-router@5.3.4(react@16.14.0))(react@16.14.0)(redux@4.2.1)
++      connected-react-router: 6.5.2(history@4.10.1)(react-redux@7.2.9(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(react-router@5.2.0(react@16.14.0))(react@16.14.0)(redux@4.2.1)
+       dva-core: 2.0.4(redux@4.2.1)
+       global: 4.4.0
+       history: 4.10.1
+@@ -16880,16 +16829,6 @@ snapshots:
+     transitivePeerDependencies:
+       - supports-color
+ 
+-  eslint-module-utils@2.12.0(@typescript-eslint/parser@4.33.0(eslint@7.32.0)(typescript@4.9.5))(eslint-import-resolver-node@0.3.9)(eslint@7.32.0):
+-    dependencies:
+-      debug: 3.2.7
+-    optionalDependencies:
+-      '@typescript-eslint/parser': 4.33.0(eslint@7.32.0)(typescript@4.9.5)
+-      eslint: 7.32.0
+-      eslint-import-resolver-node: 0.3.9
+-    transitivePeerDependencies:
+-      - supports-color
+-
+   eslint-module-utils@2.12.0(@typescript-eslint/parser@5.62.0(eslint@7.32.0)(typescript@4.9.5))(eslint-import-resolver-node@0.3.9)(eslint@7.32.0):
+     dependencies:
+       debug: 3.2.7
+@@ -16905,35 +16844,6 @@ snapshots:
+       eslint: 7.32.0
+       eslint-rule-composer: 0.3.0
+ 
+-  eslint-plugin-import@2.31.0(@typescript-eslint/parser@4.33.0(eslint@7.32.0)(typescript@4.9.5))(eslint@7.32.0):
+-    dependencies:
+-      '@rtsao/scc': 1.1.0
+-      array-includes: 3.1.8
+-      array.prototype.findlastindex: 1.2.5
+-      array.prototype.flat: 1.3.3
+-      array.prototype.flatmap: 1.3.3
+-      debug: 3.2.7
+-      doctrine: 2.1.0
+-      eslint: 7.32.0
+-      eslint-import-resolver-node: 0.3.9
+-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@4.33.0(eslint@7.32.0)(typescript@4.9.5))(eslint-import-resolver-node@0.3.9)(eslint@7.32.0)
+-      hasown: 2.0.2
+-      is-core-module: 2.16.1
+-      is-glob: 4.0.3
+-      minimatch: 3.1.2
+-      object.fromentries: 2.0.8
+-      object.groupby: 1.0.3
+-      object.values: 1.2.1
+-      semver: 6.3.1
+-      string.prototype.trimend: 1.0.9
+-      tsconfig-paths: 3.15.0
+-    optionalDependencies:
+-      '@typescript-eslint/parser': 4.33.0(eslint@7.32.0)(typescript@4.9.5)
+-    transitivePeerDependencies:
+-      - eslint-import-resolver-typescript
+-      - eslint-import-resolver-webpack
+-      - supports-color
+-
+   eslint-plugin-import@2.31.0(@typescript-eslint/parser@5.62.0(eslint@7.32.0)(typescript@4.9.5))(eslint@7.32.0):
+     dependencies:
+       '@rtsao/scc': 1.1.0
+@@ -16992,7 +16902,7 @@ snapshots:
+       safe-regex-test: 1.1.0
+       string.prototype.includes: 2.0.1
+ 
+-  eslint-plugin-mew@1.0.2(@babel/core@7.26.0)(@babel/eslint-parser@7.26.5(@babel/core@7.26.0)(eslint@7.32.0))(@babel/eslint-plugin@7.25.9(@babel/eslint-parser@7.26.5(@babel/core@7.26.0)(eslint@7.32.0))(eslint@7.32.0))(@babel/plugin-syntax-jsx@7.27.1(@babel/core@7.26.0))(@typescript-eslint/eslint-plugin@4.33.0(@typescript-eslint/parser@4.33.0(eslint@7.32.0)(typescript@4.9.5))(eslint@7.32.0)(typescript@4.9.5))(@typescript-eslint/parser@4.33.0(eslint@7.32.0)(typescript@4.9.5))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@5.62.0(eslint@7.32.0)(typescript@4.9.5))(eslint@7.32.0))(eslint-plugin-jsx-a11y@6.10.2(eslint@7.32.0))(eslint-plugin-mini@0.0.5)(eslint-plugin-react-hooks@4.6.2(eslint@7.32.0))(eslint-plugin-react-native@3.11.0(eslint@7.32.0))(eslint-plugin-react@7.37.4(eslint@7.32.0))(eslint-plugin-vue@7.20.0(eslint@7.32.0))(eslint@7.32.0):
++  eslint-plugin-mew@1.0.2(@babel/core@7.26.0)(@babel/eslint-parser@7.26.5(@babel/core@7.26.0)(eslint@7.32.0))(@babel/eslint-plugin@7.25.9(@babel/eslint-parser@7.26.5(@babel/core@7.26.0)(eslint@7.32.0))(eslint@7.32.0))(@babel/plugin-syntax-jsx@7.27.1(@babel/core@7.26.0))(@typescript-eslint/eslint-plugin@4.33.0(@typescript-eslint/parser@4.33.0(eslint@7.32.0)(typescript@4.9.5))(eslint@7.32.0)(typescript@4.9.5))(@typescript-eslint/parser@4.33.0(eslint@7.32.0)(typescript@4.9.5))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@4.33.0(eslint@7.32.0)(typescript@4.9.5))(eslint@7.32.0))(eslint-plugin-jsx-a11y@6.10.2(eslint@7.32.0))(eslint-plugin-mini@0.0.5)(eslint-plugin-react-hooks@4.6.2(eslint@7.32.0))(eslint-plugin-react-native@3.11.0(eslint@7.32.0))(eslint-plugin-react@7.37.4(eslint@7.32.0))(eslint-plugin-vue@7.20.0(eslint@7.32.0))(eslint@7.32.0):
+     dependencies:
+       '@babel/core': 7.26.0
+       '@babel/eslint-parser': 7.26.5(@babel/core@7.26.0)(eslint@7.32.0)
+@@ -19656,9 +19566,9 @@ snapshots:
+       chalk: 2.4.2
+       debug: 4.4.0
+       eslint: 7.32.0
+-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@4.33.0(eslint@7.32.0)(typescript@4.9.5))(eslint@7.32.0)
++      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@5.62.0(eslint@7.32.0)(typescript@4.9.5))(eslint@7.32.0)
+       eslint-plugin-jsx-a11y: 6.10.2(eslint@7.32.0)
+-      eslint-plugin-mew: 1.0.2(@babel/core@7.26.0)(@babel/eslint-parser@7.26.5(@babel/core@7.26.0)(eslint@7.32.0))(@babel/eslint-plugin@7.25.9(@babel/eslint-parser@7.26.5(@babel/core@7.26.0)(eslint@7.32.0))(eslint@7.32.0))(@babel/plugin-syntax-jsx@7.27.1(@babel/core@7.26.0))(@typescript-eslint/eslint-plugin@4.33.0(@typescript-eslint/parser@4.33.0(eslint@7.32.0)(typescript@4.9.5))(eslint@7.32.0)(typescript@4.9.5))(@typescript-eslint/parser@4.33.0(eslint@7.32.0)(typescript@4.9.5))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@5.62.0(eslint@7.32.0)(typescript@4.9.5))(eslint@7.32.0))(eslint-plugin-jsx-a11y@6.10.2(eslint@7.32.0))(eslint-plugin-mini@0.0.5)(eslint-plugin-react-hooks@4.6.2(eslint@7.32.0))(eslint-plugin-react-native@3.11.0(eslint@7.32.0))(eslint-plugin-react@7.37.4(eslint@7.32.0))(eslint-plugin-vue@7.20.0(eslint@7.32.0))(eslint@7.32.0)
++      eslint-plugin-mew: 1.0.2(@babel/core@7.26.0)(@babel/eslint-parser@7.26.5(@babel/core@7.26.0)(eslint@7.32.0))(@babel/eslint-plugin@7.25.9(@babel/eslint-parser@7.26.5(@babel/core@7.26.0)(eslint@7.32.0))(eslint@7.32.0))(@babel/plugin-syntax-jsx@7.27.1(@babel/core@7.26.0))(@typescript-eslint/eslint-plugin@4.33.0(@typescript-eslint/parser@4.33.0(eslint@7.32.0)(typescript@4.9.5))(eslint@7.32.0)(typescript@4.9.5))(@typescript-eslint/parser@4.33.0(eslint@7.32.0)(typescript@4.9.5))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@4.33.0(eslint@7.32.0)(typescript@4.9.5))(eslint@7.32.0))(eslint-plugin-jsx-a11y@6.10.2(eslint@7.32.0))(eslint-plugin-mini@0.0.5)(eslint-plugin-react-hooks@4.6.2(eslint@7.32.0))(eslint-plugin-react-native@3.11.0(eslint@7.32.0))(eslint-plugin-react@7.37.4(eslint@7.32.0))(eslint-plugin-vue@7.20.0(eslint@7.32.0))(eslint@7.32.0)
+       eslint-plugin-mini: 0.0.5
+       eslint-plugin-react: 7.37.4(eslint@7.32.0)
+       eslint-plugin-react-hooks: 4.6.2(eslint@7.32.0)
+@@ -21538,7 +21448,7 @@ snapshots:
+       rc-overflow: 1.4.1(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
+       rc-trigger: 5.3.4(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
+       rc-util: 5.44.4(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
+-      rc-virtual-list: 3.17.0(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
++      rc-virtual-list: 3.18.6(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
+       react: 16.14.0
+       react-dom: 16.14.0(react@16.14.0)
+ 
+@@ -21816,6 +21726,15 @@ snapshots:
+       react: 16.14.0
+       react-dom: 16.14.0(react@16.14.0)
+ 
++  rc-virtual-list@3.18.6(react-dom@16.14.0(react@16.14.0))(react@16.14.0):
++    dependencies:
++      '@babel/runtime': 7.27.1
++      classnames: 2.5.1
++      rc-resize-observer: 1.4.3(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
++      rc-util: 5.44.4(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
++      react: 16.14.0
++      react-dom: 16.14.0(react@16.14.0)
++
+   rc@1.2.8:
+     dependencies:
+       deep-extend: 0.6.0
+@@ -22015,12 +21934,6 @@ snapshots:
+       react: 16.14.0
+       react-router: 5.2.0(react@16.14.0)
+ 
+-  react-router-config@5.1.1(react-router@5.3.4(react@16.14.0))(react@16.14.0):
+-    dependencies:
+-      '@babel/runtime': 7.27.1
+-      react: 16.14.0
+-      react-router: 5.3.4(react@16.14.0)
+-
+   react-router-dom@5.2.0(react@16.14.0):
+     dependencies:
+       '@babel/runtime': 7.27.1
+@@ -23374,8 +23287,8 @@ snapshots:
+ 
+   stylelint@13.13.1:
+     dependencies:
+-      '@stylelint/postcss-css-in-js': 0.37.3(postcss-syntax@0.36.2)(postcss@7.0.39)
+-      '@stylelint/postcss-markdown': 0.36.2(postcss-syntax@0.36.2)(postcss@7.0.39)
++      '@stylelint/postcss-css-in-js': 0.37.3(postcss-syntax@0.36.2(postcss-html@0.36.0)(postcss-less@3.1.4)(postcss-scss@2.1.1)(postcss@7.0.39))(postcss@7.0.39)
++      '@stylelint/postcss-markdown': 0.36.2(postcss-syntax@0.36.2(postcss-html@0.36.0)(postcss-less@3.1.4)(postcss-scss@2.1.1)(postcss@7.0.39))(postcss@7.0.39)
+       autoprefixer: 9.8.8
+       balanced-match: 2.0.0
+       chalk: 4.1.2
+@@ -23856,14 +23769,14 @@ snapshots:
+       isomorphic-fetch: 2.2.1
+       qs: 6.14.0
+ 
+-  umi@3.5.43(react-router@5.3.4(react@16.14.0)):
++  umi@3.5.43(react-router@5.2.0(react@16.14.0)):
+     dependencies:
+-      '@umijs/bundler-webpack': 3.5.43(react-dom@16.14.0(react@16.14.0))(react-router@5.3.4(react@16.14.0))(react@16.14.0)
++      '@umijs/bundler-webpack': 3.5.43(react-dom@16.14.0(react@16.14.0))(react-router@5.2.0(react@16.14.0))(react@16.14.0)
+       '@umijs/core': 3.5.43
+       '@umijs/deps': 3.5.43
+       '@umijs/preset-built-in': 3.5.43(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
+       '@umijs/runtime': 3.5.43(react@16.14.0)
+-      '@umijs/types': 3.5.43(react-dom@16.14.0(react@16.14.0))(react-router@5.3.4(react@16.14.0))(react@16.14.0)
++      '@umijs/types': 3.5.43(react-dom@16.14.0(react@16.14.0))(react-router@5.2.0(react@16.14.0))(react@16.14.0)
+       '@umijs/utils': 3.5.43
+       react: 16.14.0
+       react-dom: 16.14.0(react@16.14.0)
+diff --git a/src/components/Actions/component/ModifyWechatNote/widget.js b/src/components/Actions/component/ModifyWechatNote/widget.js
+index 5f08505..45bebe2 100644
+--- a/src/components/Actions/component/ModifyWechatNote/widget.js
++++ b/src/components/Actions/component/ModifyWechatNote/widget.js
+@@ -9,7 +9,7 @@ import habo from '@/utils/habo';
+ 
+ const ModifyWechatNoteModal = lazy(() => import('./modal'));
+ 
+-const ModifyWechatNote = ({records: selectedRows, onClose}) => {
++const ModifyWechatNote = ({records: selectedRows, onClose, position = '小班课花名册'}) => {
+     const {name, accountId} = getUserInfo() || {};
+     const [isModalOpen, setIsModalOpen] = useState(false);
+     const {verificationHasUser} = useVerification(selectedRows);
+@@ -34,7 +34,7 @@ const ModifyWechatNote = ({records: selectedRows, onClose}) => {
+                         setIsModalOpen(true);
+                         const point = HABO_CLAZZROSTEROL?.MODIFYWECHATNOTE || CLAZZROSTEROL.LEADS_CLICK_MODIFY_WECHAT;
+                         point && habo.clickReport(point, {
+-                            position: '小班课花名册'
++                            position
+                         });
+                     }
+                     else {
+@@ -67,7 +67,7 @@ const ModifyWechatNote = ({records: selectedRows, onClose}) => {
+                     selectedRows={selectedRows}
+                     haboPoint={HABO_CLAZZROSTEROL}
+                     reportParams={undefined}
+-                    position="小班课花名册"
++                    position={position}
+                 />
+             </Suspense>
+             <Suspense fallback={null}>
+diff --git a/src/components/Actions/component/SettingTags/TagsModal.jsx b/src/components/Actions/component/SettingTags/TagsModal.jsx
+index 79816f7..4fbd829 100644
+--- a/src/components/Actions/component/SettingTags/TagsModal.jsx
++++ b/src/components/Actions/component/SettingTags/TagsModal.jsx
+@@ -17,6 +17,7 @@ const CoinsModal = props => {
+         onOk = void 0,
+         selectedRows = [],
+         type,
++        scene,
+         temporaryTags = true
+     } = props;
+     const clazzStudents = useMemo(() =>
+@@ -61,7 +62,8 @@ const CoinsModal = props => {
+             clazzStudents,
+             studentTags: selected,
+             type,
+-            userIds
++            userIds,
++            scene
+         });
+ 
+         if (code === 0) {
+diff --git a/src/components/Actions/component/SettingTags/index.jsx b/src/components/Actions/component/SettingTags/index.jsx
+index 3d2451b..fd5c9b0 100644
+--- a/src/components/Actions/component/SettingTags/index.jsx
++++ b/src/components/Actions/component/SettingTags/index.jsx
+@@ -15,6 +15,7 @@ const SettingTags = props => {
+         haboPoint,
+         reportParams,
+         position,
++        scene,
+         // type表示维度不同
+         type = EDIT_TYPE.CLAZZ_STUDENT,
+         // 获取学员标签时是否需要获取临时标签
+@@ -58,6 +59,7 @@ const SettingTags = props => {
+                             onClose={handleClose}
+                             onOk={handleOk}
+                             type={type}
++                            scene={scene}
+                             temporaryTags={temporaryTags}
+                         />
+                     </Suspense>
+diff --git a/src/components/Actions/component/SettingTags/widget.js b/src/components/Actions/component/SettingTags/widget.js
+index e470a3d..01613fb 100644
+--- a/src/components/Actions/component/SettingTags/widget.js
++++ b/src/components/Actions/component/SettingTags/widget.js
+@@ -1,12 +1,19 @@
+-import {memo, lazy, Suspense, useMemo} from 'react';
++import {memo, lazy, Suspense, useEffect} from 'react';
+ import {EDIT_TYPE} from '@/components/Actions/config';
++import {HABO_CLAZZROSTEROL} from '@/utils/pointConfig';
++import habo from '@/utils/habo';
+ // import {eventBus} from '@coeus/render';
+ 
+ 
+ const TagsModal = lazy(() => import('./TagsModal'));
+ 
+ const SetTags = props => {
+-    const {records: selectedRows, onClose, type} = props;
++    const {records: selectedRows, onClose, type, position, scene} = props;
++
++    // widget 挂载即代表弹窗打开；只有传了 position 的页面才上报，避免影响未传的既有调用方
++    useEffect(() => {
++        position && HABO_CLAZZROSTEROL?.ADDTAG && habo.clickReport(HABO_CLAZZROSTEROL.ADDTAG, {position});
++    }, []);
+ 
+     return (
+         <>
+@@ -19,6 +26,7 @@ const SetTags = props => {
+                         onClose({isReload: true});
+                     }}
+                     type={type || EDIT_TYPE.CLAZZ_STUDENT}
++                    scene={scene}
+                     temporaryTags
+                 />
+             </Suspense>
+diff --git a/src/pages/microClazzRoster/ContinuationService/config.js b/src/pages/microClazzRoster/ContinuationService/config.js
+index 7735390..6c07efb 100644
+--- a/src/pages/microClazzRoster/ContinuationService/config.js
++++ b/src/pages/microClazzRoster/ContinuationService/config.js
+@@ -431,6 +431,48 @@ export const events = {
+             params: ['userId', 'clazzNumber'],
+             key: 'batchLayerEdit',
+             eventId: '16533877395187712',
++        },
++        {
++            $fmt: true,
++            $fmtWidget: {
++                name: 'EventButton',
++                props: {
++                    text: '添加标签'
++                }
++            },
++            namespace: identification,
++            eventName: `${ACTION.OPEN}:${ACTION_TYPE.WIDGET}`,
++            eventDisPlayName: '打开:添加标签',
++            params: ['userId', 'clazzNumber', 'subclazzNumber'],
++            module: 'SettingTags',
++            props: {
++                type: 1,
++                position: '小班课续班服务',
++                scene: identification
++            },
++            reportCustomParams: {
++                display_name: '添加标签'
++            }
++        },
++        {
++            $fmt: true,
++            $fmtWidget: {
++                name: 'EventButton',
++                props: {
++                    text: '修改企微备注'
++                }
++            },
++            namespace: identification,
++            eventName: `${ACTION.OPEN}:${ACTION_TYPE.WIDGET}`,
++            eventDisPlayName: '打开:修改企微备注',
++            params: ['userId', 'clazzNumber', 'subclazzNumber'],
++            module: 'ModifyWechatNote',
++            props: {
++                position: '小班课续班服务'
++            },
++            reportCustomParams: {
++                display_name: '修改企微备注'
++            }
+         }
+     ]
+ };
+@@ -498,6 +540,11 @@ const formatForRequestHandle = {
+         return {
+             smallClazzFirstLessonBeginTime: formatRangeParamsForTime(origin),
+         };
++    },
++    studentTagNames(origin) {
++        return {
++            studentTags: origin
++        };
+     }
+ };
+ 
+diff --git a/src/pages/microClazzRoster/ContinuationService/custom/event.js b/src/pages/microClazzRoster/ContinuationService/custom/event.js
+index 74ff134..5b4819b 100644
+--- a/src/pages/microClazzRoster/ContinuationService/custom/event.js
++++ b/src/pages/microClazzRoster/ContinuationService/custom/event.js
+@@ -5,7 +5,8 @@ export const eventNames = {
+     openDetail: 'openDetail',
+     callMobile: 'callMobile',
+     openClazzData: 'openClazzData',
+-    openDetailDynamic: 'openDetailDynamic'
++    openDetailDynamic: 'openDetailDynamic',
++    openTagsModal: 'openTagsModal',
+ };
+ 
+ export const customEventName = 'microContinuationServiceCustomEvent';
+diff --git a/src/pages/microClazzRoster/ContinuationService/custom/fields.js b/src/pages/microClazzRoster/ContinuationService/custom/fields.js
+index 4312605..dcd4d2f 100644
+--- a/src/pages/microClazzRoster/ContinuationService/custom/fields.js
++++ b/src/pages/microClazzRoster/ContinuationService/custom/fields.js
+@@ -1,8 +1,38 @@
+ import {Popover} from 'antd';
++import {lazy, Suspense} from 'react';
++import EventProxy from '@/utils/eventProxy';
++import {identification} from '../config';
++import {customEventName, eventNames} from './event';
++
++const StudentTags = lazy(() =>
++    import(/* webpackChunkName: "StudentTags" */ '@/pages/clazzRosterOnLine/components/StudentTags'),
++);
+ 
+ export function getCustomColumns(props) {
+     const {onUpdateCell} = props || {};
+     return {
++        // 学员标签
++        studentTagNames: {
++            render(value, {userId, studentTags, clazzNumber}) {
++                return (
++                    <Suspense fallback={null}>
++                        <StudentTags
++                            value={value}
++                            userId={userId}
++                            studentTags={studentTags}
++                            clazzNumber={clazzNumber}
++                            canEdit
++                            event={params =>
++                                EventProxy.trigger(customEventName, eventNames.openTagsModal, {
++                                    ...params,
++                                    identification,
++                                })
++                            }
++                        />
++                    </Suspense>
++                );
++            },
++        },
+         // 大班在读科目
+         largeStudyingSubject: {
+             render(_, record) {
+diff --git a/src/pages/microClazzRoster/ContinuationService/custom/hooks/useCustomEventDom.js b/src/pages/microClazzRoster/ContinuationService/custom/hooks/useCustomEventDom.js
+index df9dc35..3ade92e 100644
+--- a/src/pages/microClazzRoster/ContinuationService/custom/hooks/useCustomEventDom.js
++++ b/src/pages/microClazzRoster/ContinuationService/custom/hooks/useCustomEventDom.js
+@@ -3,7 +3,7 @@
+  * @file 自定义事件与渲染
+ */
+ import {useModel} from 'umi';
+-import {useEffect, lazy, Suspense, useReducer, useRef} from 'react';
++import {useEffect, lazy, Suspense, useReducer, useRef, useState} from 'react';
+ import {useMemoizedFn} from 'ahooks';
+ import {CallPhone} from '@gaotu/reach-widget';
+ import EventProxy from '@/utils/eventProxy';
+@@ -11,11 +11,15 @@ import {HABO_CLAZZROSTEROL} from '@/utils/pointConfig';
+ import {CLAZZROSTEROL_CLICK} from '@/pointConfig';
+ import {CHANNEL_ENUM} from '@/config/enum';
+ import {USER_FILES_TABS, STUDENT_DETAIL_TOP_MOD} from '@/pages/StudentProfile/config';
++import {CLAZZ_TYPE} from '@/components/Actions/config';
+ import habo from '@/utils/habo';
+ import useAIAnalysis from '@/hooks/useAIAnalysis';
+ import {customEventName, eventNames} from '../event';
++import {identification} from '../../config';
+ 
+ const StudentProfile = lazy(() => import(/* webpackChunkName: "studentProfile" */'@/pages/StudentProfile'));
++// eslint-disable-next-line max-len
++const TagsModal = lazy(() => import(/* webpackChunkName: "TagsModal" */ '@/pages/clazzRosterOnLine/components/StudentTags/TagsModal'));
+ 
+ const stateInit = {
+     logisticsVisible: false,
+@@ -48,6 +52,8 @@ export default function useCustomEventDom({dataSource, setHighlightRows, onRefre
+ 
+     const {setGlobalState} = useModel('@@qiankunStateFromMaster') || {};
+ 
++    const [tagsModalParams, setTagsModalParams] = useState(void 0);
++
+     const handleIntegratedData = (record, activeKey = USER_FILES_TABS.USER_INFO) => {
+         const {userId, subclazzNumber, clazzNumber, id} = record;
+         setUpdateState({
+@@ -67,6 +73,11 @@ export default function useCustomEventDom({dataSource, setHighlightRows, onRefre
+         isReload && onRefresh();
+     };
+ 
++    const handleTagsModalOk = useMemoizedFn(() => {
++        setTagsModalParams(void 0);
++        onRefresh?.();
++    }, []);
++
+     // AI 分析灰度 tab 控制
+     const {renewal: isRenewalGray} = useAIAnalysis();
+     const isRenewalGrayRef = useRef(isRenewalGray);
+@@ -111,7 +122,10 @@ export default function useCustomEventDom({dataSource, setHighlightRows, onRefre
+             setHighlightRows({[id]: '#fff7e4'});
+             HABO_CLAZZROSTEROL?.CALLPHONE
+                 && habo.clickReport(HABO_CLAZZROSTEROL?.CALLPHONE, {position: '小班课续班服务', display_name: '字段列'});
+-        }
++        },
++        [eventNames.openTagsModal](params) {
++            setTagsModalParams(params);
++        },
+     });
+ 
+     const handlePaginationChange = useMemoizedFn(index => {
+@@ -165,6 +179,22 @@ export default function useCustomEventDom({dataSource, setHighlightRows, onRefre
+                     </Suspense>
+                 )
+             }
++            {/* 学员标签编辑弹窗 */}
++            { tagsModalParams
++                ? (
++                    <Suspense fallback={null}>
++                        <TagsModal
++                            onClose={handleTagsModalOk}
++                            onOk={handleTagsModalOk}
++                            scene={identification}
++                            {...tagsModalParams}
++                            type={CLAZZ_TYPE.CLAZZ}
++                            temporaryTags
++                        />
++                    </Suspense>
++                )
++                : null
++            }
+         </>
+     );
+ 
+diff --git a/src/pages/microClazzRoster/ContinuationService/hooks/useExtendComponents.js b/src/pages/microClazzRoster/ContinuationService/hooks/useExtendComponents.js
+index 4c9c662..1ccdb7e 100644
+--- a/src/pages/microClazzRoster/ContinuationService/hooks/useExtendComponents.js
++++ b/src/pages/microClazzRoster/ContinuationService/hooks/useExtendComponents.js
+@@ -1,4 +1,6 @@
+ import * as Comps from '@/components/ConfigAbleComponents';
++import SettingTags from '@/components/Actions/component/SettingTags/widget';
++import ModifyWechatNote from '@/components/Actions/component/ModifyWechatNote/widget';
+ import ReachReportFilter from '../components/ReachReportFilter';
+ import ReachBusiness from '../components/ReachBusiness';
+ import PersonalLink from '../components/PersonalLink';
+@@ -13,7 +15,9 @@ export default function useExtendComponents() {
+             ReachBusiness,
+             PersonalLink,
+             BatchColorEdit,
+-            CreateOrder
++            CreateOrder,
++            SettingTags,
++            ModifyWechatNote
+         }
+     };
+ }
+diff --git a/src/pages/microClazzRoster/ContinuationService/index.js b/src/pages/microClazzRoster/ContinuationService/index.js
+index 8a6a149..324b5ae 100644
+--- a/src/pages/microClazzRoster/ContinuationService/index.js
++++ b/src/pages/microClazzRoster/ContinuationService/index.js
+@@ -4,7 +4,7 @@
+  * @file 小班课续班服务
+  */
+ import {connect} from 'umi';
+-import {useRef, useState, useEffect} from 'react';
++import {useRef, useState, useEffect, useMemo} from 'react';
+ import {useMemoizedFn, useRequest, useLatest} from 'ahooks';
+ import {message} from 'antd';
+ import {useUserInfo} from '@feitu/access-umi';
+@@ -65,6 +65,25 @@ const ContinuationService = ({
+     const eventQueueManagerRef = useRef(new EventQueueManager({eventBus, namespace: identification}));
+     const currentRowSmallRenewalNumberRef = useRef(null);
+ 
++    // Qiankun 切换 tab 时会复用 Dva 中的远端 schema，本地事件配置需要始终取当前版本。
++    const renderSchema = useMemo(() => {
++        if (!layoutSchema?.length) {
++            return layoutSchema;
++        }
++        const [tableSchema, ...restSchema] = layoutSchema;
++        return [
++            {
++                ...tableSchema,
++                props: {
++                    ...tableSchema.props,
++                    events,
++                    configAbleOperateColumns,
++                },
++            },
++            ...restSchema,
++        ];
++    }, [layoutSchema]);
++
+     const storeValueRef = useLatest(storeValue);
+ 
+     const tableRef = useRef();
+@@ -744,7 +763,7 @@ const ContinuationService = ({
+                 >
+                     <div className={style['table-wrapper']}>
+                         {/* 表格 */}
+-                        {layoutSchema && <Render schema={layoutSchema} />}
++                        {renderSchema && <Render schema={renderSchema} />}
+                         {/* 学员档案 */}
+                         {customEventDom}
+                         {tableFlag && fmpReport()}
+diff --git a/src/pages/microClazzRoster/DefaultRoster/config.js b/src/pages/microClazzRoster/DefaultRoster/config.js
+index e4b9bf9..9d29715 100644
+--- a/src/pages/microClazzRoster/DefaultRoster/config.js
++++ b/src/pages/microClazzRoster/DefaultRoster/config.js
+@@ -279,7 +279,8 @@ export const createEvents = ({validateOmoLimit}) => ({
+             params: ['userId', 'clazzNumber', 'subclazzNumber'],
+             module: 'SettingTags',
+             props: {
+-                type: 1
++                type: 1,
++                scene: identification
+             },
+             eventId: '14442197313677312',
+             reportCustomParams: {
+diff --git a/src/pages/roster/ContinuationService/config.js b/src/pages/roster/ContinuationService/config.js
+index 18784b3..05e1225 100644
+--- a/src/pages/roster/ContinuationService/config.js
++++ b/src/pages/roster/ContinuationService/config.js
+@@ -512,6 +512,48 @@ export const events = {
+             eventDisPlayName: '打开:添加颜色',
+             params: ['userId', 'clazzNumber', 'subclazzNumber']
+         },
++        {
++            $fmt: true,
++            $fmtWidget: {
++                name: 'EventButton',
++                props: {
++                    text: '添加标签'
++                }
++            },
++            namespace: identification,
++            eventName: `${ACTION.OPEN}:${ACTION_TYPE.WIDGET}`,
++            eventDisPlayName: '打开:添加标签',
++            params: ['userId', 'clazzNumber', 'subclazzNumber'],
++            module: 'SettingTags',
++            props: {
++                type: 1,
++                position: '续班服务',
++                scene: identification
++            },
++            reportCustomParams: {
++                display_name: '添加标签'
++            }
++        },
++        {
++            $fmt: true,
++            $fmtWidget: {
++                name: 'EventButton',
++                props: {
++                    text: '修改企微备注'
++                }
++            },
++            namespace: identification,
++            eventName: `${ACTION.OPEN}:${ACTION_TYPE.WIDGET}`,
++            eventDisPlayName: '打开:修改企微备注',
++            params: ['userId', 'clazzNumber', 'subclazzNumber'],
++            module: 'ModifyWechatNote',
++            props: {
++                position: '续班服务'
++            },
++            reportCustomParams: {
++                display_name: '修改企微备注'
++            }
++        },
+     ]
+ };
+ 
+@@ -582,6 +624,11 @@ const formatForRequestHandle = {
+     },
+     recentListenTime(origin) {
+         return formatRangeForQuery('recentListenTime', origin);
++    },
++    studentTagNames(origin) {
++        return {
++            studentTags: origin
++        };
+     }
+ };
+ 
+diff --git a/src/pages/roster/ContinuationService/custom/event.js b/src/pages/roster/ContinuationService/custom/event.js
+index 9fd5ddf..9559321 100644
+--- a/src/pages/roster/ContinuationService/custom/event.js
++++ b/src/pages/roster/ContinuationService/custom/event.js
+@@ -5,7 +5,8 @@ export const eventNames = {
+     openDetail: 'openDetail',
+     callMobile: 'callMobile',
+     openClazzData: 'openClazzData',
+-    openDetailDynamic: 'openDetailDynamic'
++    openDetailDynamic: 'openDetailDynamic',
++    openTagsModal: 'openTagsModal',
+ };
+ 
+ export const customEventName = 'clazzRouterCustomEvent';
+diff --git a/src/pages/roster/ContinuationService/custom/fields.js b/src/pages/roster/ContinuationService/custom/fields.js
+index 58eedc3..7c90b2f 100644
+--- a/src/pages/roster/ContinuationService/custom/fields.js
++++ b/src/pages/roster/ContinuationService/custom/fields.js
+@@ -1,5 +1,7 @@
+ import {TreeSelect, Popover} from 'antd';
++import {lazy, Suspense} from 'react';
+ import {SelectTree} from '@coeus/fields';
++import EventProxy from '@/utils/eventProxy';
+ import AccountNameFilterWithDVA from '@/components/AccountNameFilter';
+ import {getUseNewLeadTeacherFilter} from '@/config/featureFlags';
+ import ListenStatusFilter from '@/pages/clazzRosterOnLine/components/ListenStatusFilter';
+@@ -14,7 +16,12 @@ import OverallIntimacy from './components/OverallIntimacy';
+ import CommunicateIntimacy from './components/CommunicateIntimacy';
+ import ServiceIntimacy from './components/ServiceIntimacy';
+ import Intimacy from './components/Intimacy';
+-import {events} from './event';
++import {identification} from '../config';
++import {customEventName, eventNames, events} from './event';
++
++const StudentTags = lazy(() =>
++    import(/* webpackChunkName: "StudentTags" */ '@/pages/clazzRosterOnLine/components/StudentTags'),
++);
+ 
+ // 带班老师筛选组件（用于续班服务页面）
+ const ContinuationServiceAccountNameFilterWrapper = ({value, onChange}) => {
+@@ -230,6 +237,28 @@ export function getCustomColumns(props) {
+ 
+     return {
+         ...columns,
++        // 学员标签
++        studentTagNames: {
++            render(value, {userId, studentTags, clazzNumber}) {
++                return (
++                    <Suspense fallback={null}>
++                        <StudentTags
++                            value={value}
++                            userId={userId}
++                            studentTags={studentTags}
++                            clazzNumber={clazzNumber}
++                            canEdit
++                            event={params =>
++                                EventProxy.trigger(customEventName, eventNames.openTagsModal, {
++                                    ...params,
++                                    identification,
++                                })
++                            }
++                        />
++                    </Suspense>
++                );
++            },
++        },
+         // 听课情况
+         listenStatus: {
+             render(_, record) {
+diff --git a/src/pages/roster/ContinuationService/custom/hooks/useCustomEventDom.js b/src/pages/roster/ContinuationService/custom/hooks/useCustomEventDom.js
+index dee1d76..ca2dd16 100644
+--- a/src/pages/roster/ContinuationService/custom/hooks/useCustomEventDom.js
++++ b/src/pages/roster/ContinuationService/custom/hooks/useCustomEventDom.js
+@@ -3,7 +3,7 @@
+  * @file 自定义事件与渲染
+ */
+ import {useModel} from 'umi';
+-import {useEffect, lazy, Suspense, useReducer, useRef} from 'react';
++import {useEffect, lazy, Suspense, useReducer, useRef, useState} from 'react';
+ import {useMemoizedFn} from 'ahooks';
+ import {CallPhone} from '@gaotu/reach-widget';
+ import EventProxy from '@/utils/eventProxy';
+@@ -11,11 +11,15 @@ import {HABO_CLAZZROSTEROL} from '@/utils/pointConfig';
+ import {CLAZZROSTEROL_CLICK} from '@/pointConfig';
+ import {CHANNEL_ENUM} from '@/config/enum';
+ import {USER_FILES_TABS, STUDENT_DETAIL_TOP_MOD} from '@/pages/StudentProfile/config';
++import {CLAZZ_TYPE} from '@/components/Actions/config';
+ import habo from '@/utils/habo';
+ import useAIAnalysis from '@/hooks/useAIAnalysis';
+ import {customEventName, eventNames} from '../event';
++import {identification} from '../../config';
+ 
+ const StudentProfile = lazy(() => import(/* webpackChunkName: "studentProfile" */'@/pages/StudentProfile'));
++// eslint-disable-next-line max-len
++const TagsModal = lazy(() => import(/* webpackChunkName: "TagsModal" */ '@/pages/clazzRosterOnLine/components/StudentTags/TagsModal'));
+ 
+ const stateInit = {
+     logisticsVisible: false,
+@@ -48,6 +52,8 @@ export default function useCustomEventDom({dataSource, setHighlightRows, onRefre
+ 
+     const {setGlobalState} = useModel('@@qiankunStateFromMaster') || {};
+ 
++    const [tagsModalParams, setTagsModalParams] = useState(void 0);
++
+     const handleIntegratedData = (record, activeKey = USER_FILES_TABS.USER_INFO) => {
+         const {userId, subclazzNumber, clazzNumber, id} = record;
+         setUpdateState({
+@@ -67,6 +73,11 @@ export default function useCustomEventDom({dataSource, setHighlightRows, onRefre
+         isReload && onRefresh();
+     };
+ 
++    const handleTagsModalOk = useMemoizedFn(() => {
++        setTagsModalParams(void 0);
++        onRefresh?.();
++    }, []);
++
+     // AI 分析灰度 tab 控制
+     const {renewal: isRenewalGray} = useAIAnalysis();
+     const isRenewalGrayRef = useRef(isRenewalGray);
+@@ -111,7 +122,10 @@ export default function useCustomEventDom({dataSource, setHighlightRows, onRefre
+             setHighlightRows({[id]: '#fff7e4'});
+             HABO_CLAZZROSTEROL?.CALLPHONE
+                 && habo.clickReport(HABO_CLAZZROSTEROL?.CALLPHONE, {position: '续班服务', display_name: '字段列'});
+-        }
++        },
++        [eventNames.openTagsModal](params) {
++            setTagsModalParams(params);
++        },
+     });
+ 
+     const handlePaginationChange = useMemoizedFn(index => {
+@@ -165,6 +179,23 @@ export default function useCustomEventDom({dataSource, setHighlightRows, onRefre
+                     </Suspense>
+                 )
+             }
++            {/* 学员标签编辑弹窗 */}
++            { tagsModalParams
++                ? (
++                    <Suspense fallback={null}>
++                        <TagsModal
++                            onClose={handleTagsModalOk}
++                            onOk={handleTagsModalOk}
++                            scene={identification}
++                            {...tagsModalParams}
++                            type={CLAZZ_TYPE.CLAZZ}
++                            temporaryTags
++                        />
++                    </Suspense>
++
++                )
++                : null
++            }
+         </>
+     );
+ 
+diff --git a/src/pages/roster/ContinuationService/hooks/useExtendComponents.js b/src/pages/roster/ContinuationService/hooks/useExtendComponents.js
+index e740cf8..5696ae5 100644
+--- a/src/pages/roster/ContinuationService/hooks/useExtendComponents.js
++++ b/src/pages/roster/ContinuationService/hooks/useExtendComponents.js
+@@ -5,6 +5,8 @@ import SendCoins from '@/components/Actions/component/SendCoins/widget';
+ import StudentCertificateReport from '@/components/StudentCertificateReport';
+ import QuestionnaireDetail from '@/components/QuestionnaireDetail/DrawerDetails';
+ import ColorEdit from '@/components/ColorEdit/gaiaFormat';
++import SettingTags from '@/components/Actions/component/SettingTags/widget';
++import ModifyWechatNote from '@/components/Actions/component/ModifyWechatNote/widget';
+ import ReachReportFilter from '../components/ReachReportFilter';
+ import CreateOrder from '../components/CreateOrder';
+ import ReachBusiness from '../components/ReachBusiness';
+@@ -25,6 +27,8 @@ export default function useExtendComponents() {
+             PersonalLink,
+             ColorEdit,
+             SendCoinsButton,
++            SettingTags,
++            ModifyWechatNote,
+         }
+     };
+ }
+diff --git a/src/pages/roster/ContinuationService/index.js b/src/pages/roster/ContinuationService/index.js
+index e4f0949..670f065 100644
+--- a/src/pages/roster/ContinuationService/index.js
++++ b/src/pages/roster/ContinuationService/index.js
+@@ -4,7 +4,7 @@
+  * @file 续班服务
+  */
+ import {connect} from 'umi';
+-import {useRef, useState, useEffect, useContext} from 'react';
++import {useRef, useState, useEffect, useContext, useMemo} from 'react';
+ import {useMemoizedFn, useRequest, useLatest} from 'ahooks';
+ import {message} from 'antd';
+ import {useUserInfo} from '@feitu/access-umi';
+@@ -66,6 +66,25 @@ const ContinuationService = ({
+     const {grayData} = useContext(GrayContext);
+     const eventQueueManagerRef = useRef(new EventQueueManager({eventBus, namespace: identification}));
+ 
++    // Qiankun 切换 tab 时会复用 Dva 中的远端 schema，本地事件配置需要始终取当前版本。
++    const renderSchema = useMemo(() => {
++        if (!layoutSchema?.length) {
++            return layoutSchema;
++        }
++        const [tableSchema, ...restSchema] = layoutSchema;
++        return [
++            {
++                ...tableSchema,
++                props: {
++                    ...tableSchema.props,
++                    events,
++                    configAbleOperateColumns,
++                },
++            },
++            ...restSchema,
++        ];
++    }, [layoutSchema]);
++
+     const storeValueRef = useLatest(storeValue);
+ 
+     const tableRef = useRef();
+@@ -697,7 +716,7 @@ const ContinuationService = ({
+                         />
+                         <div className={style['table-wrapper']}>
+                             {/* 表格 */}
+-                            {layoutSchema && <Render schema={layoutSchema} />}
++                            {renderSchema && <Render schema={renderSchema} />}
+                             {/* 学员档案 */}
+                             {customEventDom}
+                             {tableFlag && fmpReport()}
+diff --git a/src/pages/roster/ContinuationServiceLegacy/config.js b/src/pages/roster/ContinuationServiceLegacy/config.js
+index 1790937..83f94e2 100644
+--- a/src/pages/roster/ContinuationServiceLegacy/config.js
++++ b/src/pages/roster/ContinuationServiceLegacy/config.js
+@@ -514,6 +514,48 @@ export const events = {
+             eventDisPlayName: '打开:添加颜色',
+             params: ['userId', 'clazzNumber', 'subclazzNumber']
+         },
++        {
++            $fmt: true,
++            $fmtWidget: {
++                name: 'EventButton',
++                props: {
++                    text: '添加标签'
++                }
++            },
++            namespace: identification,
++            eventName: `${ACTION.OPEN}:${ACTION_TYPE.WIDGET}`,
++            eventDisPlayName: '打开:添加标签',
++            params: ['userId', 'clazzNumber', 'subclazzNumber'],
++            module: 'SettingTags',
++            props: {
++                type: 1,
++                position: '续班服务',
++                scene: identification
++            },
++            reportCustomParams: {
++                display_name: '添加标签'
++            }
++        },
++        {
++            $fmt: true,
++            $fmtWidget: {
++                name: 'EventButton',
++                props: {
++                    text: '修改企微备注'
++                }
++            },
++            namespace: identification,
++            eventName: `${ACTION.OPEN}:${ACTION_TYPE.WIDGET}`,
++            eventDisPlayName: '打开:修改企微备注',
++            params: ['userId', 'clazzNumber', 'subclazzNumber'],
++            module: 'ModifyWechatNote',
++            props: {
++                position: '续班服务'
++            },
++            reportCustomParams: {
++                display_name: '修改企微备注'
++            }
++        },
+     ]
+ };
+ 
+@@ -585,6 +627,11 @@ const formatForRequestHandle = {
+     },
+     recentListenTime(origin) {
+         return formatRangeForQuery('recentListenTime', origin);
++    },
++    studentTagNames(origin) {
++        return {
++            studentTags: origin
++        };
+     }
+ };
+ 
+diff --git a/src/pages/roster/ContinuationServiceLegacy/custom/event.js b/src/pages/roster/ContinuationServiceLegacy/custom/event.js
+index 9fd5ddf..9559321 100644
+--- a/src/pages/roster/ContinuationServiceLegacy/custom/event.js
++++ b/src/pages/roster/ContinuationServiceLegacy/custom/event.js
+@@ -5,7 +5,8 @@ export const eventNames = {
+     openDetail: 'openDetail',
+     callMobile: 'callMobile',
+     openClazzData: 'openClazzData',
+-    openDetailDynamic: 'openDetailDynamic'
++    openDetailDynamic: 'openDetailDynamic',
++    openTagsModal: 'openTagsModal',
+ };
+ 
+ export const customEventName = 'clazzRouterCustomEvent';
+diff --git a/src/pages/roster/ContinuationServiceLegacy/custom/fields.js b/src/pages/roster/ContinuationServiceLegacy/custom/fields.js
+index 58eedc3..7c90b2f 100644
+--- a/src/pages/roster/ContinuationServiceLegacy/custom/fields.js
++++ b/src/pages/roster/ContinuationServiceLegacy/custom/fields.js
+@@ -1,5 +1,7 @@
+ import {TreeSelect, Popover} from 'antd';
++import {lazy, Suspense} from 'react';
+ import {SelectTree} from '@coeus/fields';
++import EventProxy from '@/utils/eventProxy';
+ import AccountNameFilterWithDVA from '@/components/AccountNameFilter';
+ import {getUseNewLeadTeacherFilter} from '@/config/featureFlags';
+ import ListenStatusFilter from '@/pages/clazzRosterOnLine/components/ListenStatusFilter';
+@@ -14,7 +16,12 @@ import OverallIntimacy from './components/OverallIntimacy';
+ import CommunicateIntimacy from './components/CommunicateIntimacy';
+ import ServiceIntimacy from './components/ServiceIntimacy';
+ import Intimacy from './components/Intimacy';
+-import {events} from './event';
++import {identification} from '../config';
++import {customEventName, eventNames, events} from './event';
++
++const StudentTags = lazy(() =>
++    import(/* webpackChunkName: "StudentTags" */ '@/pages/clazzRosterOnLine/components/StudentTags'),
++);
+ 
+ // 带班老师筛选组件（用于续班服务页面）
+ const ContinuationServiceAccountNameFilterWrapper = ({value, onChange}) => {
+@@ -230,6 +237,28 @@ export function getCustomColumns(props) {
+ 
+     return {
+         ...columns,
++        // 学员标签
++        studentTagNames: {
++            render(value, {userId, studentTags, clazzNumber}) {
++                return (
++                    <Suspense fallback={null}>
++                        <StudentTags
++                            value={value}
++                            userId={userId}
++                            studentTags={studentTags}
++                            clazzNumber={clazzNumber}
++                            canEdit
++                            event={params =>
++                                EventProxy.trigger(customEventName, eventNames.openTagsModal, {
++                                    ...params,
++                                    identification,
++                                })
++                            }
++                        />
++                    </Suspense>
++                );
++            },
++        },
+         // 听课情况
+         listenStatus: {
+             render(_, record) {
+diff --git a/src/pages/roster/ContinuationServiceLegacy/custom/hooks/useCustomEventDom.js b/src/pages/roster/ContinuationServiceLegacy/custom/hooks/useCustomEventDom.js
+index dee1d76..1b1cc8a 100644
+--- a/src/pages/roster/ContinuationServiceLegacy/custom/hooks/useCustomEventDom.js
++++ b/src/pages/roster/ContinuationServiceLegacy/custom/hooks/useCustomEventDom.js
+@@ -3,7 +3,7 @@
+  * @file 自定义事件与渲染
+ */
+ import {useModel} from 'umi';
+-import {useEffect, lazy, Suspense, useReducer, useRef} from 'react';
++import {useEffect, lazy, Suspense, useReducer, useRef, useState} from 'react';
+ import {useMemoizedFn} from 'ahooks';
+ import {CallPhone} from '@gaotu/reach-widget';
+ import EventProxy from '@/utils/eventProxy';
+@@ -11,11 +11,15 @@ import {HABO_CLAZZROSTEROL} from '@/utils/pointConfig';
+ import {CLAZZROSTEROL_CLICK} from '@/pointConfig';
+ import {CHANNEL_ENUM} from '@/config/enum';
+ import {USER_FILES_TABS, STUDENT_DETAIL_TOP_MOD} from '@/pages/StudentProfile/config';
++import {CLAZZ_TYPE} from '@/components/Actions/config';
+ import habo from '@/utils/habo';
+ import useAIAnalysis from '@/hooks/useAIAnalysis';
+ import {customEventName, eventNames} from '../event';
++import {identification} from '../../config';
+ 
+ const StudentProfile = lazy(() => import(/* webpackChunkName: "studentProfile" */'@/pages/StudentProfile'));
++// eslint-disable-next-line max-len
++const TagsModal = lazy(() => import(/* webpackChunkName: "TagsModal" */ '@/pages/clazzRosterOnLine/components/StudentTags/TagsModal'));
+ 
+ const stateInit = {
+     logisticsVisible: false,
+@@ -48,6 +52,8 @@ export default function useCustomEventDom({dataSource, setHighlightRows, onRefre
+ 
+     const {setGlobalState} = useModel('@@qiankunStateFromMaster') || {};
+ 
++    const [tagsModalParams, setTagsModalParams] = useState(void 0);
++
+     const handleIntegratedData = (record, activeKey = USER_FILES_TABS.USER_INFO) => {
+         const {userId, subclazzNumber, clazzNumber, id} = record;
+         setUpdateState({
+@@ -67,6 +73,11 @@ export default function useCustomEventDom({dataSource, setHighlightRows, onRefre
+         isReload && onRefresh();
+     };
+ 
++    const handleTagsModalOk = useMemoizedFn(() => {
++        setTagsModalParams(void 0);
++        onRefresh?.();
++    }, []);
++
+     // AI 分析灰度 tab 控制
+     const {renewal: isRenewalGray} = useAIAnalysis();
+     const isRenewalGrayRef = useRef(isRenewalGray);
+@@ -111,6 +122,9 @@ export default function useCustomEventDom({dataSource, setHighlightRows, onRefre
+             setHighlightRows({[id]: '#fff7e4'});
+             HABO_CLAZZROSTEROL?.CALLPHONE
+                 && habo.clickReport(HABO_CLAZZROSTEROL?.CALLPHONE, {position: '续班服务', display_name: '字段列'});
++        },
++        [eventNames.openTagsModal](params) {
++            setTagsModalParams(params);
+         }
+     });
+ 
+@@ -165,6 +179,22 @@ export default function useCustomEventDom({dataSource, setHighlightRows, onRefre
+                     </Suspense>
+                 )
+             }
++            {/* 学员标签编辑弹窗 */}
++            {tagsModalParams
++                ? (
++                    <Suspense fallback={null}>
++                        <TagsModal
++                            onClose={handleTagsModalOk}
++                            onOk={handleTagsModalOk}
++                            scene={identification}
++                            {...tagsModalParams}
++                            type={CLAZZ_TYPE.CLAZZ}
++                            temporaryTags
++                        />
++                    </Suspense>
++                )
++                : null
++            }
+         </>
+     );
+ 
+diff --git a/src/pages/roster/ContinuationServiceLegacy/hooks/useExtendComponents.js b/src/pages/roster/ContinuationServiceLegacy/hooks/useExtendComponents.js
+index 9fdd23f..d1e1ce8 100644
+--- a/src/pages/roster/ContinuationServiceLegacy/hooks/useExtendComponents.js
++++ b/src/pages/roster/ContinuationServiceLegacy/hooks/useExtendComponents.js
+@@ -5,6 +5,8 @@ import SendCoins from '@/components/Actions/component/SendCoins/widget';
+ import StudentCertificateReport from '@/components/StudentCertificateReport';
+ import QuestionnaireDetail from '@/components/QuestionnaireDetail/DrawerDetails';
+ import ColorEdit from '@/components/ColorEdit/gaiaFormat';
++import SettingTags from '@/components/Actions/component/SettingTags/widget';
++import ModifyWechatNote from '@/components/Actions/component/ModifyWechatNote/widget';
+ import ReachReportFilter from '../components/ReachReportFilter';
+ import CreateOrder from '../components/CreateOrder';
+ import ReachBusiness from '../components/ReachBusiness';
+@@ -23,6 +25,8 @@ export default function useExtendComponents() {
+             CreateOrder,
+             PersonalLink,
+             ColorEdit,
++            SettingTags,
++            ModifyWechatNote,
+         }
+     };
+ }
+diff --git a/src/pages/roster/ContinuationServiceLegacy/index.js b/src/pages/roster/ContinuationServiceLegacy/index.js
+index addfabb..069ead5 100644
+--- a/src/pages/roster/ContinuationServiceLegacy/index.js
++++ b/src/pages/roster/ContinuationServiceLegacy/index.js
+@@ -4,7 +4,7 @@
+  * @file 续班服务
+  */
+ import {connect} from 'umi';
+-import {useRef, useState, useEffect, useContext} from 'react';
++import {useRef, useState, useEffect, useContext, useMemo} from 'react';
+ import {useMemoizedFn, useRequest, useLatest} from 'ahooks';
+ import {message} from 'antd';
+ import {useUserInfo} from '@feitu/access-umi';
+@@ -65,6 +65,25 @@ const ContinuationService = ({
+     const {grayData} = useContext(GrayContext);
+     const eventQueueManagerRef = useRef(new EventQueueManager({eventBus, namespace: identification}));
+ 
++    // 回滚版本与新版本共用 Dva store，始终以当前代码中的本地事件配置渲染。
++    const renderSchema = useMemo(() => {
++        if (!layoutSchema?.length) {
++            return layoutSchema;
++        }
++        const [tableSchema, ...restSchema] = layoutSchema;
++        return [
++            {
++                ...tableSchema,
++                props: {
++                    ...tableSchema.props,
++                    events,
++                    configAbleOperateColumns,
++                },
++            },
++            ...restSchema,
++        ];
++    }, [layoutSchema]);
++
+     const storeValueRef = useLatest(storeValue);
+ 
+     const tableRef = useRef();
+@@ -690,7 +709,7 @@ const ContinuationService = ({
+                         />
+                         <div className={style['table-wrapper']}>
+                             {/* 表格 */}
+-                            {layoutSchema && <Render schema={layoutSchema} />}
++                            {renderSchema && <Render schema={renderSchema} />}
+                             {/* 学员档案 */}
+                             {customEventDom}
+                             {tableFlag && fmpReport()}

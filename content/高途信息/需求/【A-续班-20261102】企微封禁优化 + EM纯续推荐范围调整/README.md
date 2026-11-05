@@ -8,7 +8,7 @@ branches:
   - student-center:feature-xuban-pure-relation-20261102
   - cart:feature-xuban-pure-relation-20261102
   - order:feature-xuban-pure-relation-20261102
-updated: 2026-11-04
+updated: 2026-11-05
 tags: [需求]
 ---
 
@@ -16,16 +16,16 @@ tags: [需求]
 
 > 飞书方案（含表结构+接口协议）：https://gaotuedu.feishu.cn/docx/AQEtdIeKzo7P5IxeQEzc7EpxnBe
 
-## 本轮只读对照（2026-11-04，所有者最新要求）
+## 当前核对与 P0 验证（2026-11-05）
 
-- 本轮范围已改为**前后端只读调查、问题清单供所有者判断**。此前后端修复/commit/push授权已撤销，不部署、不写业务数据、不新增测试代码；暂不生成使用说明、不询问详略。
-- 一个主需求、两个子项；前端指定分支实际位于 gaotu-fe-promotions，不能用于代表 cronus 或当前线上版本。
-- 已发现原归档漏项：企微 PRD revision253 包含 **2026-01-01起创建班级回溯** 和 **群发/联系学员说明文档链接统一替换**。阶段反馈/退费管控本期取消。
-- 本轮进度 **T 3/3**（仅只读调查里程碑）：主W1完成cart/order共享链路对照、33个现有单测与Apollo只读查询；两个子任务W1-3558a8（企微，result1）和W1-5e0ea8（纯续，result2）均completed。
-- **本轮交付入口：[只读决策清单](artifacts/20261104-readonly-review/decision-review.md)**。前后端问题、固定版本、实证/推断、建议/不改影响及证据均在此；不是功能修复完成。
-- 最新TEST回读：关联ID已是字符串；管理员实际JSON为admin_list，指定前端仍不匹配。自关联新源码已改报错但本轮未调用save。班级回溯/生产版本/页面端到端仍未证明；大班腾讯引用文档需可用登录态才能补读。
-- product-server共享现场在调查期间由592e96a09变为7da8a1432；不是主W1及已回报纯续子任务的修改，未将其计入本轮交付或认定已部署。
-- 下文多轮记录是**既有验证与历史口径材料**，包含后来被更正的结论，不能直接当作本轮完成证据；本轮按最新PRD、固定SHA与实际只读结果判断。
+- 本轮代码核对、后端最小修复、本地测试与P0文档已交付；**不是整需求上线完成**。前端不改，后端同一需求分支，未新增仓库/分支。
+- 交付：[P0-case.md](P0-case.md)（12张现场操作卡）、[verify.md](verify.md)（25需求点映射/版本/证据）、[前端报告](artifacts/20261105-diff-p0/frontend-review.md)、[cart报告](artifacts/20261105-diff-p0/cart-review.md)。
+- cart **a34016fd**已推送：修缓存对象污染、扩科学年学期/预热上下文串从计划；94例通过。order **0cc8ef68b6**已推送：修跨模式放行后第三件同模式重复漏拦；26例通过。product-server **07ba05df6**未改，本轮20例通过。**合计140例子集全绿，非全仓/页面全通过。**
+- TEST实际只读接口：product-b@07ba05df批量搜索2条/非法0条/关联管理员字段正确；cart@7bb1fb92五参返回大班+小班。新版cart/order**未部署**，不能将旧镜像接口算新版验收。
+- promotions指定分支 **ba1cf8f9**：已修批量ID/管理员；仍有已选排序、上限交互、移除确认时机差异。cronus实际需求分支 **17ee81cc**：标签/备注/编辑/筛选已接入（不能拿master缺失说未开发）。iris生产静态组件仍旧说明文案，新reach-widget链接待核；页面/线上SHA未证。
+- 保留最新决定：从计划仅并前置课、推荐规则按主；扩科不变；**B8不修，允许26h预热旧结果**。回溯按班级开始时间min(begin_time)≥2026-01-01，生产配置与全量回溯不在本轮执行。
+- 下一步：按获准交付阶段部署新版并联测受影响接口；前端交互差异交金瑞琳；部分P0现场样本/权限未准备，文档明确不能整卡直接执行。无后台构建/部署遗留。
+- 下文为此前开发验证记录，含后续已覆盖的阶段口径；当前状态以上述交付和verify为准。
 
 ## 一句话
 
@@ -36,19 +36,15 @@ tags: [需求]
 - Q1=B：子项1=大班+小班续班服务都做；「企微封禁」属功能缺失、官方接口正常。
 - Q2=A：子项2 采用计划间关联（新建 `renew_master_relation` + 推荐并集 + 下单跨模式放行）。
 - 推荐并集只并纯续（主+从），扩科不变。
-- 单一 Apollo 开关 `renewal.pure.relation.enabled`（默认 false，cart+order 共读）。
+- 单一 Apollo 总开关 `renewal.pure.relation.enabled`（代码默认 true，显式 false 回退；product/cart/order各实例独立配置）。
 - 上限 10、状态【待开始/进行中】；**接口收敛为单个「最终确认」save（全量集合差分）**。
-- 历史兼容：不刷数。
+- EM关联历史兼容：不刷数；企微历史标签另按回溯方案处理。
 
 ## 现在什么情况
 
-- 4 仓 HEAD 均为 `feature-xuban-pure-relation-20261102`；cart 已切统一分支，原 `feature-xuban-expand-exclude` 未提交现场（yapidoc.json、ExpandSubjectRecommendContractTest）已 `git stash` 保留。
-- test 建表 `gaotu.renew_master_relation`；Apollo 开关默认 false（product-b/cart 已回读 false，白名单置空）。
-- 编译：cart / product-server-b / order-app 均通过。
-- 部署 `test-gtbg-dev-3` 全部 **eureka UP**：cart `9781f993`、product-b `116175f0`、product-c `473b26b7`、order `0aaa0f44`。
-- **修复 bug 1**：`RenewalMasterRelationController` 原直返 `RestResponse` 导致非管理员路径 `ClassCastException`→「未知错误」；改为 `RestTraceResponse`+`RestTraceResponseUtils.handleRequest`（push `d99e9162`）。
-- **修复 bug 2**：`save` 落库 `create_account_id`（登录上下文兜底），实测新插入行记录操作人（push `116175f00`，实测 `create_account_id=125756`）。
-- product-b 已验证：save（白名单/管理员校验）+ list + 全量差分（增/软删/软删复位）+ 缓存 + 下发字段随开关 + 边界（状态/上限10/非管理员）。
+- 当前工作单 T 6/7 · R 0/0 · C 0/0：归属、前端调查、cart修复、order修复、product验证、P0文档已完成；新版运行态联测T-15待办。
+- 当前测试泳道 `test-gtbg-dev-3`；已部署版本与新提交不同，详见verify。前端不改、生产不动，需求仍为开发中。
+- 当前卡点是新版部署联测及前端/回溯外部交付，未将本地通过标为全链路验收。
 
 ## 端到端验证（2026-11-03，Arthas 临时开开关）
 

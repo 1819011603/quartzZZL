@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.gaotu.product.service.renewal.RenewalMasterRelationServiceSaveTest" time="0.677" tests="8" errors="0" skipped="0" failures="0">
+  <testcase name="should_read_slave_for_b_page_outside_window" classname="com.gaotu.product.service.renewal.RenewalMasterRelationServiceSaveTest" time="0.214" />
+  <testcase name="should_set_read_master_marker_after_save" classname="com.gaotu.product.service.renewal.RenewalMasterRelationServiceSaveTest" time="0.264" />
+  <testcase name="should_never_force_master_for_c_side_listSubNumbers" classname="com.gaotu.product.service.renewal.RenewalMasterRelationServiceSaveTest" time="0.067" />
+  <testcase name="should_throw_when_main_relates_to_itself" classname="com.gaotu.product.service.renewal.RenewalMasterRelationServiceSaveTest" time="0.011" />
+  <testcase name="should_read_master_for_b_page_within_window" classname="com.gaotu.product.service.renewal.RenewalMasterRelationServiceSaveTest" time="0.043" />
+  <testcase name="should_apply_full_set_diff_when_saving" classname="com.gaotu.product.service.renewal.RenewalMasterRelationServiceSaveTest" time="0.035" />
+  <testcase name="should_deduplicate_repeated_sub_numbers" classname="com.gaotu.product.service.renewal.RenewalMasterRelationServiceSaveTest" time="0.029" />
+  <testcase name="should_skip_read_master_when_disabled" classname="com.gaotu.product.service.renewal.RenewalMasterRelationServiceSaveTest" time="0.014" />
+</testsuite>

@@ -1,0 +1,791 @@
+diff --git a/docs/tech-review/纯续推荐-纯续关联推荐-前端反讲.md b/docs/tech-review/纯续推荐-纯续关联推荐-前端反讲.md
+new file mode 100644
+index 00000000..72037cf2
+--- /dev/null
++++ b/docs/tech-review/纯续推荐-纯续关联推荐-前端反讲.md
+@@ -0,0 +1,107 @@
++# 纯续推荐-纯续关联推荐-前端反讲
++
++| **更新时间** | **变更内容** | **颜色标注** |
++| --- | --- | --- |
++| 2026.11.4 | 创建文档 | 黑色无背景 |
++
++版本更新记录：
++
++---
++
++编写人：jinruilin
++
++创建时间：2026.11.4
++
++| **产品** | **后端** | **测试** |
++| --- | --- | --- |
++| --（本次未提供） | --（本次未提供） | --（本次未提供） |
++
++| **需求评审文档** | [纯续推荐-纯续关联推荐](https://gaotuedu.feishu.cn/wiki/UewqwsMWOiunOgk9Kloce1Jrn52) |
++| --- | --- |
++| **TAPD** | --（本次未提供） |
++| **后端反讲文档** | --（本次未提供） |
++
++相关文档：
++
++关联方：
++
++# 一、涉及服务&NPM包
++
++## 服务
++
++| **项目（轻舟名）** | **分支** | **描述** | **负责人** |
++| --- | --- | --- | --- |
++| gaotu-fe-promotions（app-promotions） | feature-pre-register-coupon-recommend-deduction | 续班计划列表新增纯续关联入口及关联配置抽屉 | jinruilin |
++
++## NPM 包
++
++本次不新增 NPM 包，不变更公共组件包。页面沿用项目已有的 `antd`、`feitud5` 和 `ahooks`。
++
++# 二、业务需求
++
++---
++
++## 模块一：续班计划-纯续关联配置
++
++在续班计划列表操作列新增「纯续关联」入口。当前计划作为主续班计划，可关联多个从续班计划。前端只负责关联配置和结果展示；纯续商品的推荐范围计算及去重逻辑不在本仓库内实现。
++
++### 内部设计
++
++#### 入口与权限
++
++- 入口放在续班计划列表操作列，并调整操作列宽度以容纳新操作。
++- 仅「待开始」、「进行中」状态可操作，其他状态入口置灰。
++- 仅当前续班计划管理员可操作；非管理员 hover 提示「仅续班计划管理员可操作」。
++
++#### 抽屉与状态管理
++
++- 抽屉展示当前计划的状态、名称、ID 和管理员，同时展示已关联计划标签及搜索表格。
++- `selected` 是抽屉内已选计划的唯一数据源，标签区与表格勾选态均由它派生，避免两处状态不一致。
++- `initNumbers` 记录打开抽屉时的原始关联，用于识别本次是否移除了旧关联。
++- 每次打开抽屉都先清空上次本地状态，再拉取当前计划的最新关联数据。
++- 详情未加载完或加载失败时禁用「确定」，防止将未加载状态误保存成空关联。
++
++#### 搜索与选择
++
++- 支持按续班计划名称模糊搜索、按续班计划 ID 搜索。
++- 前端固定向搜索请求追加「待开始」、「进行中」状态范围。
++- 搜索结果展示状态、名称、ID 和管理员，支持跨页多选；超长名称和管理员信息省略并在 hover 时展示全文。
++- 关联上限、禁止自关联、禁止重复关联及计划可关联性由保存接口统一校验，前端展示接口返回的业务错误。
++
++#### 保存与异常处理
++
++- 点击「确定」后全量提交已选关联，传空数组表示清空当前计划的全部关联。
++- 若本次删除了已有关联，在最终保存前统一二次确认；仅新增关联时直接保存。
++- 接口返回 `code !== 0` 时由全局 request 拦截器展示 `notification.error`，组件不重复弹出错误提示。
++- 请求未到达业务层的网络异常仍由组件展示局部 `message.error`，区分「加载失败」和「保存失败」。
++
++#### 数据流转
++
++1. 打开抽屉，调用关联详情接口，将返回列表同步到 `selected` 和 `initNumbers`。
++2. 在搜索表格勾选或取消勾选，同步更新 `selected`；已选标签的移除操作更新同一份数据。
++3. 保存时组装 `{mainRenewMasterNumber, subRenewMasterNumbers}` 全量提交，保存成功后关闭抽屉。
++
++### 涉及接口
++
++> 本次未提供轻舟接口链接，以前端代码中的请求路径和联调契约记录。
++
++| **类型** | **接口** | **描述** |
++| --- | --- | --- |
++| 新增 | 查询已关联计划 `GET /product-b/b/renewMaster/relation/list` | 入参 `{renewMasterNumber}`；返回当前主计划已关联的从计划列表，列表项包含 `number`、`name`、`status`、`adminName` 等展示字段 |
++| 复用 | 搜索续班计划 `POST /product-b/b/renewMaster/list` | 复用续班计划列表接口，传入名称、ID 及 `statusList`；前端从 `renewalMasterDTOList` 取列表数据 |
++| 新增 | 保存纯续关联 `POST /product-b/b/renewMaster/relation/save` | 入参 `{mainRenewMasterNumber, subRenewMasterNumbers}`，按主计划全量覆盖关联；空 `subRenewMasterNumbers` 表示清空关联 |
++
++### 额外影响范围
++
++- 前端改动范围仅限续班计划列表的操作列、纯续关联抽屉及对应 service，不改动续班服务和 C 端推荐页。
++- 历史计划未配置关联时按空列表展示，不需要前端数据迁移。
++- 前端关联配置本身不计算推荐商品，推荐范围生效依赖后端使用关联结果。
++- 回归点：权限及状态置灰、详情回显、名称/ID 搜索、跨页多选、标签移除、删除后保存确认、空数组清空、业务/网络异常提示、关闭后重新打开的状态重置、长 ID 传输。
++
++### 上线方案
++
++- 发布顺序：后端先上线关联查询和保存接口，前端再发布入口及抽屉。
++- 后端需统一保证管理员权限、计划状态、自关联/重复关联、关联数量上限和全量覆盖语义，并通过标准 `code` 和 `msg` 返回业务错误。
++- 无数据迁移，无关联数据时默认为空。
++- 前端回滚时仅隐藏纯续关联操作入口；已保存的后端关联数据保留，如需取消已生效关联由后端单独处理。
++- `mock/pureRenewRelation.js` 仅用于本地开发联调，不作为生产数据源。
+diff --git a/mock/pureRenewRelation.js b/mock/pureRenewRelation.js
+new file mode 100644
+index 00000000..7af1ab94
+--- /dev/null
++++ b/mock/pureRenewRelation.js
+@@ -0,0 +1,70 @@
++import {renewalPlanStatusEnum} from '../src/pages/continuationClasses/config';
++
++const {WAIT_START, IN_PROGRESS, FINISHED} = renewalPlanStatusEnum;
++
++// 已关联的从计划（回显用）
++const RELATED_LIST = [
++    {number: '587948923239491585', name: '2026秋季续班计划-数学小班', status: IN_PROGRESS, adminName: '李四'},
++    {number: '587948923239491586', name: '2026秋季续班计划-英语大班', status: WAIT_START, adminName: '王五'},
++];
++
++// 搜索可选计划（复用 renewMaster/list，这里加几条供筛选）
++const SEARCH_EXTRA = [
++    {
++        number: '587948923239491587', name: '2026秋季续班计划-物理大班', status: IN_PROGRESS, adminName: '赵六',
++        adminList: [{id: '227658129872', name: '赵六'}]
++    },
++    {
++        number: '587948923239491588', name: '2026秋季续班计划-化学小班', status: WAIT_START, adminName: '钱七',
++        adminList: [{id: 30004, name: '钱七'}]
++    },
++    {
++        number: '587948923239491589', name: '2026秋季续班计划-语文大班', status: IN_PROGRESS, adminName: '孙八',
++        adminList: [{id: 30005, name: '孙八'}]
++    },
++    {
++        number: '587948923239491590', name: '2026春季续班计划-数学大班', status: FINISHED, adminName: '周九',
++        adminList: [{id: 30006, name: '周九'}]
++    },
++    {
++        number: '587948923239491591', name: '2026春季续班计划-英语小班', status: IN_PROGRESS, adminName: '吴十',
++        adminList: [{id: 30007, name: '吴十'}]
++    },
++];
++
++export default {
++    // 查询已关联从计划
++    'GET /product-b/b/renewMaster/relation/list': (req, res) => {
++        // 与后端一致：不返回自身（不可自关联）
++        const self = String(req.query?.renewMasterNumber || '');
++        res.json({code: 0, msg: 'success', data: RELATED_LIST.filter(i => i.number !== self)});
++    },
++
++    // 保存关联（全量覆盖，直接返回成功）
++    'POST /product-b/b/renewMaster/relation/save': (req, res) => {
++        res.json({code: 0, msg: 'success', data: null});
++    },
++
++    // 搜索续班计划（在现有 list mock 里追加几条，这里单独覆盖用于演示纯续关联场景）
++    'POST /product-b/b/renewMaster/list': (req, res) => {
++        const {name, statusList} = req.body || {};
++        const all = [
++            ...RELATED_LIST.map(i => ({...i, adminList: [{id: 0, name: i.adminName}]})),
++            ...SEARCH_EXTRA,
++        ];
++        // 与后端一致：按 statusList 过滤（纯续搜索固定传待开始、进行中）
++        const filtered = all
++            .filter(i => !name || i.name.includes(name))
++            .filter(i => !statusList?.length || statusList.includes(i.status));
++        res.json({
++            code: 0,
++            msg: 'success',
++            data: {
++                renewalMasterDTOList: filtered,
++                total: filtered.length,
++                pageNum: 1,
++                pageSize: 10,
++            },
++        });
++    },
++};
+diff --git a/src/pages/continuationClasses/components/PureRenewRelation/index.js b/src/pages/continuationClasses/components/PureRenewRelation/index.js
+new file mode 100644
+index 00000000..a8dd7a73
+--- /dev/null
++++ b/src/pages/continuationClasses/components/PureRenewRelation/index.js
+@@ -0,0 +1,380 @@
++import {memo, useState} from 'react';
++import PropTypes from 'prop-types';
++import {Access, FeituData, QueryFilter, ProFormSelect, ProFormText, FeituTable} from 'feitud5';
++import {Drawer, Button, Tag, Modal, message, Tooltip} from 'antd';
++import {useMemoizedFn, useRequest} from 'ahooks';
++import {getPureRenewRelations, savePureRenewRelations} from '@/services/continuationClasses';
++import {statusMap, statusOptions, renewalPlanStatusEnum} from '../../config';
++import {getEllipsisTooltip} from '../../detail/Relations/utils';
++import listStyles from '../../list/index.less';
++import styles from './index.less';
++
++// 可操作纯续关联的续班计划状态：入口按钮可点、搜索结果范围均以此为准
++const OPERABLE_STATUS = [renewalPlanStatusEnum.WAIT_START, renewalPlanStatusEnum.IN_PROGRESS];
++const OPERABLE_STATUS_OPTIONS = statusOptions.filter(({value}) => OPERABLE_STATUS.includes(+value));
++const OPERABLE_STATUS_VALUES = OPERABLE_STATUS_OPTIONS.map(({value}) => value);
++const IS_TEST_DATA_OPTIONS = [{label: '是', value: 1}, {label: '否', value: 0}];
++
++const planPropType = PropTypes.shape({
++    number: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
++    name: PropTypes.string,
++    status: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
++    adminName: PropTypes.string,
++    adminList: PropTypes.arrayOf(
++        PropTypes.shape({
++            id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
++            name: PropTypes.string,
++        }),
++    ),
++});
++
++const adminNames = list => (Array.isArray(list) ? list.map(i => i.name).join('，') : '--');
++const adminName = item => item?.adminName || adminNames(item?.adminList) || '--';
++
++// 状态标签样式与列表页保持一致
++const STATUS_CLASS = {
++    [renewalPlanStatusEnum.WAIT_PUBLISH]: listStyles.statusTagDraft,
++    [renewalPlanStatusEnum.WAIT_START]: listStyles.statusTagPending,
++    [renewalPlanStatusEnum.IN_PROGRESS]: listStyles.statusTagActive,
++    [renewalPlanStatusEnum.FINISHED]: listStyles.statusTagFinished,
++};
++
++function StatusTag({status}) {
++    return (
++        <span className={STATUS_CLASS[status] || listStyles.statusTag}>
++            {statusMap[status] || '--'}
++        </span>
++    );
++}
++
++StatusTag.propTypes = {
++    status: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
++};
++
++StatusTag.defaultProps = {
++    status: null,
++};
++
++// 名称、管理员超长省略，hover 展示全文（与列表页一致）
++const columns = [
++    {title: '状态', dataIndex: 'status', width: 90, render: s => <StatusTag status={s} />},
++    {title: '续班计划名称', dataIndex: 'name', render: getEllipsisTooltip},
++    {title: '续班计划ID', dataIndex: 'number', width: 180},
++    {
++        title: '管理员',
++        dataIndex: 'adminName',
++        width: 120,
++        render: (_, item) => getEllipsisTooltip(adminName(item)),
++    },
++];
++
++// 计划信息：首行状态 + 名称，次行 ID / 管理员
++function PlanInfo({item}) {
++    return (
++        <>
++            <div className={styles.planName}>
++                <StatusTag status={item?.status} />
++                <span className={styles.planNameText} title={item?.name}>
++                    {item?.name || '--'}
++                </span>
++            </div>
++            <div className={styles.planMeta}>
++                <span>
++                    {`ID：${item?.number || '--'}`}
++                </span>
++                <span>
++                    {`管理员：${adminName(item)}`}
++                </span>
++            </div>
++        </>
++    );
++}
++
++PlanInfo.propTypes = {
++    item: planPropType,
++};
++
++PlanInfo.defaultProps = {
++    item: {},
++};
++
++// Tooltip 深色底，不放状态色块，纯文本展示
++function PlanInfoText({item}) {
++    return (
++        <div className={styles.planTooltip}>
++            <div>
++                {`状态：${statusMap[item?.status] || '--'}`}
++            </div>
++            <div>
++                {`名称：${item?.name || '--'}`}
++            </div>
++            <div>
++                {`ID：${item?.number || '--'}`}
++            </div>
++            <div>
++                {`管理员：${adminName(item)}`}
++            </div>
++        </div>
++    );
++}
++
++PlanInfoText.propTypes = {
++    item: planPropType,
++};
++
++PlanInfoText.defaultProps = {
++    item: {},
++};
++
++function SelectedTag({item, onRemove}) {
++    const handleClose = useMemoizedFn(() => onRemove(item.number));
++    return (
++        <Tooltip title={<PlanInfoText item={item} />} overlayClassName={styles.tagTooltip}>
++            {/* antd Tag needs className for the selected-tag layout; the project rule otherwise forbids it. */}
++            {/* eslint-disable-next-line react/forbid-component-props */}
++            <Tag closable onClose={handleClose} className={styles.selectedTag}>
++                <span className={styles.tagStatus}>
++                    <StatusTag status={item.status} />
++                </span>
++                <span className={styles.tagName}>
++                    {item.name}
++                </span>
++            </Tag>
++        </Tooltip>
++    );
++}
++
++SelectedTag.propTypes = {
++    item: planPropType.isRequired,
++    onRemove: PropTypes.func.isRequired,
++};
++
++/**
++ * 纯续关联入口 + 抽屉
++ * @param {Object} props
++ * @param {Object} props.record - 当前续班计划行数据
++ * @param {boolean} props.isAdmin - 当前用户是否为该续班计划管理员
++ */
++function PureRenewRelation({record, isAdmin}) {
++    const [open, setOpen] = useState(false);
++    const [detailReady, setDetailReady] = useState(false);
++    const [detailError, setDetailError] = useState(false);
++    // 仅待开始、进行中且仅管理员可操作
++    const disabled = !(isAdmin && OPERABLE_STATUS.includes(record?.status));
++    const tooltip = isAdmin ? `${statusMap[record?.status]}的续班计划不支持该操作` : '仅续班计划管理员可操作';
++    // 本地唯一一份已选数据，标签区和表格勾选态都由它派生
++    const [selected, setSelected] = useState([]);
++
++    const renewalNumber = record?.number;
++
++    const {loading: detailLoading} = useRequest(() => getPureRenewRelations({renewMasterNumber: renewalNumber}), {
++        ready: open,
++        onSuccess(res) {
++            const {code, data} = res || {};
++            if (code === 0) {
++                const list = data || [];
++                setSelected(list);
++                setDetailReady(true);
++                setDetailError(false);
++                return;
++            }
++            setDetailReady(true);
++            setDetailError(true);
++            // code !== 0 时全局拦截器已弹 notification.error，不重复提示
++        },
++        onError() {
++            setDetailReady(true);
++            setDetailError(true);
++            message.error('关联数据加载失败，请重试');
++        },
++    });
++
++    const {run: runSave, loading: saving} = useRequest(savePureRenewRelations, {
++        manual: true,
++        onSuccess(res) {
++            if (res?.code === 0) {
++                message.success('保存成功');
++                setOpen(false);
++            }
++            // code !== 0 时全局拦截器已弹 notification.error，不重复提示
++        },
++        onError() {
++            message.error('保存失败，请重试');
++        },
++    });
++
++    const selectedKeys = selected.map(i => i.number);
++
++    const handleOpen = useMemoizedFn(() => {
++        setSelected([]);
++        setDetailReady(false);
++        setDetailError(false);
++        setOpen(true);
++    });
++    const handleClose = useMemoizedFn(() => setOpen(false));
++
++    // 默认查待开始、进行中，清空状态后仍保持这个可关联范围
++    const handleBefore = useMemoizedFn(params => {
++        const next = {
++            ...params,
++            statusList: params.statusList?.length ? params.statusList : OPERABLE_STATUS,
++        };
++        next.name = next.name?.trim();
++        next.number = next.number?.trim();
++        return next;
++    });
++
++    const handleSelect = useMemoizedFn((row, checked) => {
++        setSelected(prev => (checked ? [...prev, row] : prev.filter(i => i.number !== row.number)));
++    });
++
++    const handleRemove = useMemoizedFn(number => setSelected(prev => prev.filter(i => i.number !== number)));
++
++    const handleOk = useMemoizedFn(() => {
++        if (!detailReady || detailLoading || detailError || saving) {
++            return;
++        }
++        const doSave = () =>
++            runSave({
++                mainRenewMasterNumber: renewalNumber,
++                subRenewMasterNumbers: selectedKeys,
++            });
++        Modal.confirm({
++            title: '确认保存绑定关系？',
++            content: selected.length > 0
++                ? (
++                    <div>
++                        <div>最终绑定以下续班计划：</div>
++                        {selected.map(item => (
++                            <div key={item.number}>
++                                {item.name || '--'}
++                            </div>
++                        ))}
++                    </div>
++                )
++                : '最终不绑定任何续班计划。',
++            onOk: doSave,
++        });
++    });
++
++    const rowSelection = {
++        type: 'checkbox',
++        hideSelectAll: true,
++        selectedRowKeys: selectedKeys,
++        onSelect: handleSelect,
++        // 自关联、关联上限均由后端保存时校验
++    };
++
++    return (
++        <>
++            <Tooltip title={disabled ? tooltip : ''}>
++                <span>
++                    <Access.Href disabled={disabled} onClick={handleOpen}>
++                        纯续关联
++                    </Access.Href>
++                </span>
++            </Tooltip>
++            {open && (
++                <Drawer
++                    open
++                    width={720}
++                    title="纯续关联"
++                    styles={{body: {display: 'flex', flexDirection: 'column', overflow: 'hidden'}}}
++                    onClose={handleClose}
++                    footer={(
++                        <div className={styles.footer}>
++                            {/* eslint-disable-next-line react/forbid-component-props */}
++                            <Button onClick={handleClose} className={styles.cancelBtn}>
++                                取消
++                            </Button>
++                            <Button
++                                type="primary"
++                                onClick={handleOk}
++                                loading={saving}
++                                disabled={!detailReady || detailLoading || detailError}
++                            >
++                                确定
++                            </Button>
++                        </div>
++                    )}
++                >
++                    <div className={styles.sectionTitle}>当前续班计划</div>
++                    <div className={styles.currentPlan}>
++                        <PlanInfo item={record} />
++                    </div>
++
++                    <div className={styles.sectionTitle}>
++                        {`已关联续班计划 (${selected.length})`}
++                    </div>
++                    <div className={styles.tags}>
++                        {selected.length === 0 && !detailLoading && !detailError && (
++                            <span className={styles.empty}>暂无关联</span>
++                        )}
++                        {detailError && <span className={styles.empty}>关联加载失败，请关闭后重试</span>}
++                        {selected.map(i => (
++                            <SelectedTag key={i.number} item={i} onRemove={handleRemove} />
++                        ))}
++                    </div>
++
++                    <div className={styles.sectionTitle}>搜索续班计划</div>
++                    <FeituData
++                        fetch="/product-b/b/renewMaster/list"
++                        dataPath="renewalMasterDTOList"
++                        onBefore={handleBefore}
++                    >
++                        <QueryFilter isKeyPressSubmit defaultCollapsed={false} span={8} labelWidth="auto">
++                            <ProFormText
++                                label="计划名称"
++                                name="name"
++                                fieldProps={{placeholder: '请输入计划名称', maxLength: 100}}
++                            />
++                            <ProFormText
++                                label="计划ID"
++                                name="number"
++                                fieldProps={{placeholder: '请输入计划ID'}}
++                            />
++                            <ProFormSelect
++                                label="状态"
++                                name="statusList"
++                                fieldProps={{
++                                    mode: 'multiple',
++                                    placeholder: '请选择状态',
++                                    options: OPERABLE_STATUS_OPTIONS,
++                                    maxTagCount: 2,
++                                }}
++                                initialValue={OPERABLE_STATUS_VALUES}
++                                showAllow
++                            />
++                            <ProFormSelect
++                                label="过滤测试数据"
++                                name="filterTestData"
++                                fieldProps={{
++                                    placeholder: '请选择状态',
++                                    options: IS_TEST_DATA_OPTIONS,
++                                }}
++                                initialValue={1}
++                            />
++                        </QueryFilter>
++                        <FeituTable
++                            columns={columns}
++                            rowSelection={rowSelection}
++                            rowKey="number"
++                            scroll={{y: 'calc(100vh - 540px)'}}
++                        />
++                    </FeituData>
++                </Drawer>
++            )}
++        </>
++    );
++}
++
++PureRenewRelation.propTypes = {
++    record: planPropType.isRequired,
++    isAdmin: PropTypes.bool,
++};
++
++PureRenewRelation.defaultProps = {
++    isAdmin: false,
++};
++
++export default memo(PureRenewRelation);
+diff --git a/src/pages/continuationClasses/components/PureRenewRelation/index.less b/src/pages/continuationClasses/components/PureRenewRelation/index.less
+new file mode 100644
+index 00000000..dd47522b
+--- /dev/null
++++ b/src/pages/continuationClasses/components/PureRenewRelation/index.less
+@@ -0,0 +1,91 @@
++.sectionTitle {
++    margin: 0 0 8px;
++    font-weight: 600;
++    color: #000000d9;
++}
++
++.currentPlan {
++    margin-bottom: 20px;
++    padding: 8px 12px;
++    background: #f5f7fa;
++    border-radius: 4px;
++}
++
++.planName {
++    display: flex;
++    align-items: center;
++    font-weight: 500;
++}
++
++.planMeta {
++    margin-top: 4px;
++    font-size: 12px;
++    opacity: .65;
++
++    span + span {
++        margin-left: 16px;
++    }
++}
++
++.tagTooltip {
++    max-width: 400px;
++}
++
++.planTooltip div + div {
++    margin-top: 2px;
++}
++
++.tags {
++    display: flex;
++    flex-wrap: wrap;
++    align-items: center;
++    gap: 8px;
++    margin-bottom: 16px;
++    min-height: 28px;
++
++    :global(.ant-tag) {
++        margin: 0;
++    }
++}
++
++.empty {
++    color: #00000073;
++}
++
++.footer {
++    text-align: right;
++}
++
++.cancelBtn {
++    margin-right: 8px;
++}
++
++.selectedTag {
++    display: inline-flex;
++    align-items: center;
++    max-width: 300px;
++    height: 28px;
++    padding: 0 8px 0 4px;
++    background: #fff;
++    border-color: #e5e6eb;
++}
++
++.tagStatus {
++    margin-right: 6px;
++    font-size: inherit;
++}
++
++.tagName {
++    font-size: inherit;
++    min-width: 0;
++    overflow: hidden;
++    text-overflow: ellipsis;
++    white-space: nowrap;
++}
++
++.planNameText {
++    min-width: 0;
++    overflow: hidden;
++    text-overflow: ellipsis;
++    white-space: nowrap;
++}
+diff --git a/src/pages/continuationClasses/list/index.js b/src/pages/continuationClasses/list/index.js
+index 5d83a131..1fee1c34 100644
+--- a/src/pages/continuationClasses/list/index.js
++++ b/src/pages/continuationClasses/list/index.js
+@@ -6,7 +6,7 @@
+  * @FilePath: /gaotu-fe-promotions/src/pages/continuationClasses/list/index.js
+  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+  */
+-import {memo, useState, lazy, Suspense, useRef, useEffect} from 'react';
++import {memo, useState, lazy, Suspense, useRef} from 'react';
+ import {Cascader, Modal, message, Space} from 'antd';
+ import dayjs from 'dayjs';
+ import {
+@@ -28,6 +28,7 @@ import {renewalMasterDelete, renewalMasterPublish} from '@/services/continuation
+ import {getEllipsisTooltip} from '../detail/Relations/utils';
+ import {statusOptions, statusMap, renewalPlanStatusEnum} from '../config';
+ import IconFontComponent from '../components/IconFontComponent';
++import PureRenewRelation from '../components/PureRenewRelation';
+ import styles from './index.less';
+ 
+ const EditPlan = lazy(() => import('../components/EditPlan'));
+@@ -98,13 +99,6 @@ function List() {
+         });
+     });
+ 
+-    const handleLimit = (_, value) => {
+-        if (value?.length > 0 && Number.isNaN(+value)) {
+-            return Promise.reject(new Error('只能输入数字'));
+-        }
+-        return Promise.resolve();
+-    };
+-
+     const handleBefore = useMemoizedFn(params => {
+         const tempParams = {...params};
+         const {
+@@ -246,7 +240,7 @@ function List() {
+             title: '操作',
+             key: 'action',
+             fixed: 'right',
+-            width: 120,
++            width: 170,
+             render(_, record) {
+                 // 待发布状态
+                 const isWaitPublish = record.status === renewalPlanStatusEnum.WAIT_PUBLISH;
+@@ -325,26 +319,13 @@ function List() {
+                         >
+                             删除
+                         </Access.Href>
++                        <PureRenewRelation record={record} isAdmin={isAdmin} />
+                     </Space>
+                 );
+             },
+         },
+     ];
+ 
+-    // 增加对enter键的监听，回车搜索
+-    useEffect(() => {
+-        const handleKeydown = e => {
+-            if (e.key === 'Enter') {
+-                feituDataRef.current?.onSubmit();
+-            }
+-        };
+-        document.addEventListener('keydown', handleKeydown);
+-
+-        return () => {
+-            document.removeEventListener('keydown', handleKeydown);
+-        };
+-    }, []);
+-
+     const handleFietuSelectChange = useMemoizedFn(() => {
+         feituDataRef.current?.onSubmit(
+             'submit',
+@@ -363,7 +344,7 @@ function List() {
+                 onBefore={handleBefore}
+                 dataPath="renewalMasterDTOList"
+             >
+-                <QueryFilter isKeyPressSubmit={false} defaultCollapsed={false} >
++                <QueryFilter isKeyPressSubmit defaultCollapsed={false} >
+                     <ProFormText
+                         label="计划名称"
+                         name="name"
+@@ -376,10 +357,8 @@ function List() {
+                         label="计划ID"
+                         name="number"
+                         fieldProps={{
+-                            maxLength: 50,
+                             placeholder: '请输入计划ID',
+                         }}
+-                        rules={[{validator: handleLimit}]}
+                     />
+                     <ProFormText
+                         label="前置产品ID"
+diff --git a/src/services/continuationClasses.js b/src/services/continuationClasses.js
+index 277bfa3e..8d26fa61 100644
+--- a/src/services/continuationClasses.js
++++ b/src/services/continuationClasses.js
+@@ -227,3 +227,22 @@ export const getPreRegistrationActivityDetail = data =>
+         method: 'POST',
+         data,
+     });
++
++// 纯续关联接口（product-server，RenewalMasterManageController）
++/**
++ * 查询已纯续关联的从续班计划
++ * GET /b/renewMaster/relation/list?renewMasterNumber=xxx
++ * @returns {Promise} data: [{number, name, status, adminName}]
++ */
++export const getPureRenewRelations = params =>
++    request(`${productPrefix}/b/renewMaster/relation/list`, {params, method: 'GET'});
++
++/**
++ * 保存纯续关联（全量覆盖，空 subRenewMasterNumbers = 清空）
++ * POST /b/renewMaster/relation/save
++ * @param {Object} data
++ * @param {number} data.mainRenewMasterNumber
++ * @param {number[]} data.subRenewMasterNumbers
++ */
++export const savePureRenewRelations = data =>
++    request(`${productPrefix}/b/renewMaster/relation/save`, {data, method: 'POST'});

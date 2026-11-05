@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.gaotu.app.cart.validate.impl.HistoryHadSameClazzImplTest" time="3.763" tests="9" errors="0" skipped="0" failures="0">
+  <testcase name="should_warnWithChildNameOnlyForPaidUnrefundedOrders_when_orderStateChanges(int, int, int, boolean)[1]" classname="com.gaotu.app.cart.validate.impl.HistoryHadSameClazzImplTest" time="2.537" />
+  <testcase name="should_warnWithChildNameOnlyForPaidUnrefundedOrders_when_orderStateChanges(int, int, int, boolean)[2]" classname="com.gaotu.app.cart.validate.impl.HistoryHadSameClazzImplTest" time="0.2" />
+  <testcase name="should_warnWithChildNameOnlyForPaidUnrefundedOrders_when_orderStateChanges(int, int, int, boolean)[3]" classname="com.gaotu.app.cart.validate.impl.HistoryHadSameClazzImplTest" time="0.126" />
+  <testcase name="should_warnWithChildNameOnlyForPaidUnrefundedOrders_when_orderStateChanges(int, int, int, boolean)[4]" classname="com.gaotu.app.cart.validate.impl.HistoryHadSameClazzImplTest" time="0.134" />
+  <testcase name="should_warnWithChildNameOnlyForPaidUnrefundedOrders_when_orderStateChanges(int, int, int, boolean)[5]" classname="com.gaotu.app.cart.validate.impl.HistoryHadSameClazzImplTest" time="0.104" />
+  <testcase name="should_warnWithChildNameOnlyForPaidUnrefundedOrders_when_orderStateChanges(int, int, int, boolean)[6]" classname="com.gaotu.app.cart.validate.impl.HistoryHadSameClazzImplTest" time="0.073" />
+  <testcase name="should_warnWithChildNameOnlyForPaidUnrefundedOrders_when_orderStateChanges(int, int, int, boolean)[7]" classname="com.gaotu.app.cart.validate.impl.HistoryHadSameClazzImplTest" time="0.065" />
+  <testcase name="should_warnWithChildNameOnlyForPaidUnrefundedOrders_when_orderStateChanges(int, int, int, boolean)[8]" classname="com.gaotu.app.cart.validate.impl.HistoryHadSameClazzImplTest" time="0.071" />
+  <testcase name="should_warnWithChildNameOnlyForPaidUnrefundedOrders_when_orderStateChanges(int, int, int, boolean)[9]" classname="com.gaotu.app.cart.validate.impl.HistoryHadSameClazzImplTest" time="0.075" />
+</testsuite>

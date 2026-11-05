@@ -1,0 +1,34 @@
+{
+  "ok": true,
+  "url": "https://test-fuwu.baijia.com/bgwApi/product-b/b/renewMaster/list",
+  "trafficEnv": "test-gtbg-dev-3",
+  "httpStatus": 200,
+  "resolvedRoute": {
+    "appId": "product-b",
+    "pathInfo": "/product-b/b",
+    "rewriteInfo": "StripPrefix = 1",
+    "statusInfo": "正常",
+    "routeId": 189
+  },
+  "request": {
+    "number": "not-a-plan",
+    "pager": {
+      "current": 1,
+      "pageSize": 10
+    }
+  },
+  "curl": "curl -sk \\\n  -x \"${AGENT_PROXY_URL:-http://127.0.0.1:8888}\" \\\n  'https://test-fuwu.baijia.com/bgwApi/product-b/b/renewMaster/list' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'b_client: EES' \\\n  --data-raw '{\"number\": \"not-a-plan\", \"pager\": {\"current\": 1, \"pageSize\": 10}}'",
+  "traceId": "3bbcfaa1-f95d-4f85-bd6e-c0cef6edb3b4.0.3",
+  "gapmApp": "product-b",
+  "response": {
+    "code": 0,
+    "data": {
+      "pager": {
+        "current": 1,
+        "pageSize": 10,
+        "total": "0"
+      }
+    },
+    "errorTypeCode": 0
+  }
+}

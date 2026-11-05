@@ -1,5 +1,8 @@
 # 决策摘要
 
+- 2026-11-05 本轮owner恢复后端修复/测试授权并要求P0文档，前端仍只读。cart a34016fd修缓存污染及扩科主课程来源；order 0cc8ef68b6修跨模式后同模式重复漏判，140例聚焦回归通过；未部署，运行态待验。
+- 2026-11-05 cronus应核需求分支17ee81cc，标签/备注/编辑/筛选已源码接入；不得以master未合入断言未开发。P0步骤与实际执行边界分开，B5/B8及回溯/生产约束不变。
+
 - 2026-11-02 确认一个主需求两个子项；统一名 `【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整`。
 - Q1=B；Q2=A。
 - 推荐并集只并纯续（主+从），扩科不变。
@@ -107,3 +110,11 @@
   - **判定**：**本次新增缓存不是原因**（排除依据：product-b 关闭该缓存 + relation/list 无缓存 + save 主动清）；来源=**DB 层（读写分离）**，属**既有基础设施行为**；**非本次引入**（关系表/接口是本次新增，但延迟在底层读写路径）。**test 实测延迟幅度很小（≤~1s）**。
   - **是否修**：属底层既有，**不建议改**；若业务要求「保存后列表立即刷新」可选：前端保存成功后延迟 ~0.5–1s 再刷新（最省），或读接口强制走主库（需评估读写分离中间件支持与影响面）。**先报 owner，不擅自改。** PRD 保存措辞=「最终确认生效」，未见读侧毫秒级实时硬要求。
   - **未确定**：测量粒度（acl 桥 ~1s）未精确量化复制延迟；未用真实 `save`（staff 登录态）做端到端复现（改用直写 DB 等效）。
+- 2026-11-05 **修复实施 + 验证（read-after-write，仅 B 端）**：代码 push `07ba05df6 fix(续班计划): B端保存后短窗口读主库(规避主从延迟,仅B端;C端不变)`（local==remote）。
+  - **改动**：`RenewalMasterRelationService#save` 末尾写短 TTL 标记 `renewal:relation:readmaster:{main}`（开关 `renewal.pure.relation.readmaster.enabled` 默认 true，TTL `renewal.pure.relation.readmaster.ttlSeconds` 默认 3）；**B 端** `listSubPlanInfo`/`listSubPlanAdmins` 窗口内走 `selectSubPlanInfoByMainForceMaster`/`selectByMainForceMaster`（SQL 前缀 `/*FORCE_MASTER*/`）；`listSubNumbers`/`listByMain`（**C 端**）保持普通查询。回滚=`readmaster.enabled=false`（或总开关 `renewal.pure.relation.enabled=false`）。
+  - **部署**：pipeline `1329198` SUCCESS；pod `product-b-7d48b8fb74-lxqvg` **eurekaStatus=UP**、镜像 `...feature-xuban-pure-relation-20261102-07ba05df-20261105102154`、泳道 `test-gtbg-dev-3`。
+  - **真实 save 端到端**（identity=计划外白名单 `109942` zhangzeling，**临时**置 `renewal.pure.relation.admin.accounts=[109942]`，验证后**已还原 `[]` 并发布**）：`save(main=585960797778243584, subs=[586116340522184704, 587173440509732864])` → `code:0`；**立即** `relation/list` 即出现新增从计划 `587173440509732864`；还原 `save(subs=[586116340522184704])` → 立即仅剩 1 条。**B 端保存后即可见** ✓。DB 已复原（新增行 is_del 回 1）。
+  - **标记证据**：save 后 Redis **db2** `renewal:relation:readmaster:585960797778243584`=`1`（脚本秒级读到）；app 日志 `renewal read-master marker set, main=..., ttl=3s`（TID `b6f39d4c-...`/`03d71902-...`）。
+  - **C 端不变**：`listSubNumbers(585960797778243584)` 经桥返回 `[586116340522184704]`（与 DB 活跃集一致，逻辑未改，无 force-master）。单测 `RenewalMasterRelationServiceSaveTest` **8/8 绿**。
+  - **rwlb 代理路由实测（pymysql 直连 TEST 端点）**：`plain SELECT`→master(52623918)、`/*FORCE_MASTER*/`→master、`/*FORCE_SLAVE*/`→slave(49303272)；从库 `Seconds_Behind_Master`≈0、read_only=OFF → **TEST 默认读主、无复制延迟**，故 **TEST 无法复现「延迟前后对比」**；`/*FORCE_MASTER*/` 提示被代理识别已证。**PROD 读写拆分行为未从本机验证（推断）**。
+  - **通知**：已用张泽灵本人账号私发金瑞琳（原因=DB 主从复制延迟/非前端问题、处理=B端保存后即可见、前端无需改动），`message_id = om_x100b618afbe86cb8de655b21dab6f1a`。

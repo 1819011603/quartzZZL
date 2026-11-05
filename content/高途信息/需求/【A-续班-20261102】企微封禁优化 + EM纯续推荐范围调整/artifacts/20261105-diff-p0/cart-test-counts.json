@@ -1,0 +1,23 @@
+{
+  "summary": {
+    "name": "TestSuite",
+    "time": "1.46",
+    "tests": "94",
+    "errors": "0",
+    "skipped": "0",
+    "failures": "0"
+  },
+  "classes": {
+    "com.gaotu.renewal.small.context.SmallRenewalPostClassInfoSalableTest": 6,
+    "com.gaotu.renewal.small.service.ExpandSubjectRecommendServiceTest": 7,
+    "com.gaotu.renewal.small.service.SmallRenewalPreheatServiceTest": 10,
+    "com.gaotu.renewal.small.service.SmallRenewalCoreServiceIntegrationTest": 25,
+    "com.gaotu.renewal.small.service.ExpandSubjectRecommendServiceMainOwnPreCourseTest": 5,
+    "com.gaotu.renewal.small.service.RecommendMergeServiceTest": 7,
+    "com.gaotu.renewal.small.builder.UserOrderQuerySubBuilderTest": 9,
+    "com.gaotu.renewal.small.builder.StockInfoQuerySubBuilderSkuTypeTest": 3,
+    "com.gaotu.renewal.RenewalServiceAppointUserCheckTest": 4,
+    "com.gaotu.renewal.RenewalDataServicePureRelationMergeCacheTest": 10,
+    "com.gaotu.renewal.RenewalServiceNewLogicTest": 8
+  }
+}

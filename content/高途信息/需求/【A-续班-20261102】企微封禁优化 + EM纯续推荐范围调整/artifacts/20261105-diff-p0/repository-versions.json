@@ -1,0 +1,26 @@
+{
+  "cart": {
+    "branch": "feature-xuban-pure-relation-20261102",
+    "head": "a34016fdf206d0163b1dd473c67ac10674ecb4b5",
+    "upstream": "a34016fdf206d0163b1dd473c67ac10674ecb4b5",
+    "status": "",
+    "base": "3e1e366ca643a2c823abbfa9186589a3d4f65972",
+    "diff_stat": ".../renewal/RenewalCrossModeOrderService.java      | 244 +++++++++++++++++++++\n .../java/com/gaotu/renewal/RenewalDataService.java | 176 ++++++++++++++-\n .../java/com/gaotu/renewal/RenewalService.java     | 130 +++++++++--\n .../builder/sub/StockInfoQuerySubBuilder.java      |  11 +-\n .../builder/sub/UserOrderQuerySubBuilder.java      |   6 +\n .../small/context/SmallRenewalPostClassInfo.java   |   5 +-\n .../context/SmallRenewalRecommendContext.java      |   9 +\n .../service/ExpandSubjectRecommendService.java     |  12 +\n .../small/service/SmallRenewalPreheatService.java  |  12 +-\n ...newalDataServicePureRelationMergeCacheTest.java | 216 ++++++++++++++++++\n .../gaotu/renewal/RenewalServiceNewLogicTest.java  | 216 ++++++++++++++++++\n .../StockInfoQuerySubBuilderSkuTypeTest.java       | 144 ++++++++++++\n .../builder/UserOrderQuerySubBuilderTest.java      |  15 ++\n .../SmallRenewalPostClassInfoSalableTest.java      |  63 ++++++\n ...ubjectRecommendServiceMainOwnPreCourseTest.java | 180 +++++++++++++++\n .../SmallRenewalCoreServiceIntegrationTest.java    |  14 ++\n .../service/SmallRenewalPreheatServiceTest.java    |  51 +++--\n .../product/ProductFeignServiceAdapter.java        |  10 +\n .../impl/ProductFeignServiceAdapterImpl.java       |  22 ++\n .../product/model/RenewalPreCourseDTO.java         |   5 +\n pom.xml                                            |   3 +-\n 21 files changed, 1505 insertions(+), 39 deletions(-)"
+  },
+  "order": {
+    "branch": "feature-xuban-pure-relation-20261102",
+    "head": "0cc8ef68b6c29f1d3101f5fa08ea7ec634050bf9",
+    "upstream": "0cc8ef68b6c29f1d3101f5fa08ea7ec634050bf9",
+    "status": "",
+    "base": "a97904147c3f9793b94a4c453161609da08c20f4",
+    "diff_stat": ".../validate/impl/CartSameClazzOrCourseImpl.java   |  71 ++++++++++----\n .../impl/CartSameClazzOrCourseImplTest.java        | 105 +++++++++++++++++++++\n 2 files changed, 160 insertions(+), 16 deletions(-)"
+  },
+  "product-server": {
+    "branch": "feature-xuban-pure-relation-20261102",
+    "head": "07ba05df6cfabcf0472e1ad27e26ff95cff98467",
+    "upstream": "07ba05df6cfabcf0472e1ad27e26ff95cff98467",
+    "status": "",
+    "base": "bee4630d88c9dabca426cffa57dc8989e5f2cf68",
+    "diff_stat": "pom.xml                                            |   2 +-\n .../process/RenewalMasterRelationController.java   |  70 ++++\n product-server-client/pom.xml                      |   2 +-\n .../clientv4/renwal/dto/RenewalMasterDTO.java      |   5 +\n .../renwal/dto/RenewalMasterRelationVO.java        |  40 +++\n .../renwal/dto/RenewalMasterWithProcessDTO.java    |   5 +\n .../renwal/dto/RenewalPreCourseListDTO.java        |   3 +\n .../renwal/request/RenewalMasterListRequest.java   |  11 +-\n .../request/RenewalMasterRelationSaveRequest.java  |  22 ++\n .../renewal/RenewalMasterRelationService.java      | 359 +++++++++++++++++++++\n .../service/renewal/RenewalServiceImpl.java        |  28 ++\n .../RenewalMasterRelationServiceSaveTest.java      | 259 +++++++++++++++\n .../dao/renewal/RenewalMasterRepositoryImpl.java   |  11 +-\n .../product/mapper/auto/RenewMasterRelation.java   |  46 +++\n .../product/mapper/manual/RenewMasterBizMapper.xml |   8 +\n .../manual/RenewMasterRelationBizMapper.java       |  96 ++++++\n .../mapper/manual/RenewMasterRelationBizMapper.xml |  83 +++++\n .../product/model/bo/RenewalMasterListQueryBO.java |  44 ++-\n .../model/bo/RenewalMasterListQueryBOTest.java     | 110 +++++++\n 19 files changed, 1198 insertions(+), 6 deletions(-)"
+  }
+}

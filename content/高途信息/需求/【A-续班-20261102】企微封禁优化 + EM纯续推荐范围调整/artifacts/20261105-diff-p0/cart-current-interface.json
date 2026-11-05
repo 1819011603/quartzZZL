@@ -1,0 +1,86 @@
+{
+  "url": "http://10.218.238.185:28688/test/acl/compare/service",
+  "trafficEnv": "test-gtbg-dev-3",
+  "httpStatus": 200,
+  "directIp": true,
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+    "params": [
+      "7658127801",
+      "585960797778243584",
+      false,
+      false,
+      null
+    ]
+  },
+  "curl": "curl -sk \\\n  'http://10.218.238.185:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#getRenewalDetail\", \"params\": [\"7658127801\", \"585960797778243584\", false, false, null]}'",
+  "traceId": "cart_gaotu100_com.292.17938470529730404",
+  "rvoCode": 0,
+  "result": {
+    "all_sign_up": 0,
+    "grade_clazz_list": [
+      {
+        "clazz_detail_d_t_o_list": [
+          {
+            "before_course_number": 585960577856301056,
+            "clazz_number": 585960755422160896,
+            "product_sku_number": 585960755422160896,
+            "product_type": 2,
+            "select": 0,
+            "sign_up": 1,
+            "subject_names": []
+          }
+        ],
+        "grade": 16,
+        "grade_name": "六年级"
+      },
+      {
+        "clazz_detail_d_t_o_list": [
+          {
+            "after_course_number": 18314034380997207,
+            "before_course_number": 18314034380997173,
+            "clazz_date_desc": "",
+            "clazz_time_desc": "",
+            "clazz_week_desc": "",
+            "lesson_count": 2,
+            "price": -1,
+            "product_sku_name": "dcg-小班扩科排除-数学-后置",
+            "product_sku_number": 586097025945298944,
+            "product_type": 6004,
+            "select": 0,
+            "sign_up": 0,
+            "subject_names": [
+              "数学"
+            ],
+            "teacher_list": [
+              {
+                "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                "name": "陈陈",
+                "teacher_number": 346261373801482240,
+                "teacher_role": "主讲老师"
+              },
+              {
+                "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                "name": "陈陈",
+                "teacher_number": 346261373801482240,
+                "teacher_role": "主讲老师"
+              }
+            ]
+          }
+        ],
+        "default_select": 1,
+        "grade": 11,
+        "grade_name": "一年级"
+      }
+    ],
+    "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+    "msg": [],
+    "renewal_end_time": 1798732799000,
+    "renewal_number": 585960797778243584,
+    "renewal_start_time": 1791561600000,
+    "status": 0
+  },
+  "eurekaService": "CART.GAOTU100.COM",
+  "instanceId": "cart-gaotu100-com-698968b48f-zj59h:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+  "instanceCount": 3
+}

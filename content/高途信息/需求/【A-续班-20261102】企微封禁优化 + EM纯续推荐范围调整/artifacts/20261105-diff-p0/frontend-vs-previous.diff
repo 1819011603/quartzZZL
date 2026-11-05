@@ -1,0 +1,176 @@
+diff --git a/src/pages/continuationClasses/components/PureRenewRelation/index.js b/src/pages/continuationClasses/components/PureRenewRelation/index.js
+index 77bae9bf..a8dd7a73 100644
+--- a/src/pages/continuationClasses/components/PureRenewRelation/index.js
++++ b/src/pages/continuationClasses/components/PureRenewRelation/index.js
+@@ -1,16 +1,19 @@
+ import {memo, useState} from 'react';
+ import PropTypes from 'prop-types';
+-import {Access, FeituData, QueryFilter, ProFormText, FeituTable} from 'feitud5';
++import {Access, FeituData, QueryFilter, ProFormSelect, ProFormText, FeituTable} from 'feitud5';
+ import {Drawer, Button, Tag, Modal, message, Tooltip} from 'antd';
+ import {useMemoizedFn, useRequest} from 'ahooks';
+ import {getPureRenewRelations, savePureRenewRelations} from '@/services/continuationClasses';
+-import {statusMap, renewalPlanStatusEnum} from '../../config';
++import {statusMap, statusOptions, renewalPlanStatusEnum} from '../../config';
+ import {getEllipsisTooltip} from '../../detail/Relations/utils';
+ import listStyles from '../../list/index.less';
+ import styles from './index.less';
+ 
+ // 可操作纯续关联的续班计划状态：入口按钮可点、搜索结果范围均以此为准
+ const OPERABLE_STATUS = [renewalPlanStatusEnum.WAIT_START, renewalPlanStatusEnum.IN_PROGRESS];
++const OPERABLE_STATUS_OPTIONS = statusOptions.filter(({value}) => OPERABLE_STATUS.includes(+value));
++const OPERABLE_STATUS_VALUES = OPERABLE_STATUS_OPTIONS.map(({value}) => value);
++const IS_TEST_DATA_OPTIONS = [{label: '是', value: 1}, {label: '否', value: 0}];
+ 
+ const planPropType = PropTypes.shape({
+     number: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+@@ -57,7 +60,12 @@ const columns = [
+     {title: '状态', dataIndex: 'status', width: 90, render: s => <StatusTag status={s} />},
+     {title: '续班计划名称', dataIndex: 'name', render: getEllipsisTooltip},
+     {title: '续班计划ID', dataIndex: 'number', width: 180},
+-    {title: '管理员', dataIndex: 'adminName', width: 120, render: getEllipsisTooltip},
++    {
++        title: '管理员',
++        dataIndex: 'adminName',
++        width: 120,
++        render: (_, item) => getEllipsisTooltip(adminName(item)),
++    },
+ ];
+ 
+ // 计划信息：首行状态 + 名称，次行 ID / 管理员
+@@ -156,7 +164,6 @@ function PureRenewRelation({record, isAdmin}) {
+     const tooltip = isAdmin ? `${statusMap[record?.status]}的续班计划不支持该操作` : '仅续班计划管理员可操作';
+     // 本地唯一一份已选数据，标签区和表格勾选态都由它派生
+     const [selected, setSelected] = useState([]);
+-    const [initNumbers, setInitNumbers] = useState([]);
+ 
+     const renewalNumber = record?.number;
+ 
+@@ -167,7 +174,6 @@ function PureRenewRelation({record, isAdmin}) {
+             if (code === 0) {
+                 const list = data || [];
+                 setSelected(list);
+-                setInitNumbers(list.map(i => i.number));
+                 setDetailReady(true);
+                 setDetailError(false);
+                 return;
+@@ -201,16 +207,18 @@ function PureRenewRelation({record, isAdmin}) {
+ 
+     const handleOpen = useMemoizedFn(() => {
+         setSelected([]);
+-        setInitNumbers([]);
+         setDetailReady(false);
+         setDetailError(false);
+         setOpen(true);
+     });
+     const handleClose = useMemoizedFn(() => setOpen(false));
+ 
+-    // 仅查待开始、进行中；ID 批量精确搜索、已关联计划状态变化均由后端处理，前端原样透传
++    // 默认查待开始、进行中，清空状态后仍保持这个可关联范围
+     const handleBefore = useMemoizedFn(params => {
+-        const next = {...params, statusList: OPERABLE_STATUS};
++        const next = {
++            ...params,
++            statusList: params.statusList?.length ? params.statusList : OPERABLE_STATUS,
++        };
+         next.name = next.name?.trim();
+         next.number = next.number?.trim();
+         return next;
+@@ -231,13 +239,20 @@ function PureRenewRelation({record, isAdmin}) {
+                 mainRenewMasterNumber: renewalNumber,
+                 subRenewMasterNumbers: selectedKeys,
+             });
+-        const removed = initNumbers.filter(n => !selectedKeys.includes(n));
+-        if (removed.length === 0) {
+-            doSave();
+-            return;
+-        }
+         Modal.confirm({
+-            title: `将移除 ${removed.length} 个已有关联，确认保存？`,
++            title: '确认保存绑定关系？',
++            content: selected.length > 0
++                ? (
++                    <div>
++                        <div>最终绑定以下续班计划：</div>
++                        {selected.map(item => (
++                            <div key={item.number}>
++                                {item.name || '--'}
++                            </div>
++                        ))}
++                    </div>
++                )
++                : '最终不绑定任何续班计划。',
+             onOk: doSave,
+         });
+     });
+@@ -307,14 +322,38 @@ function PureRenewRelation({record, isAdmin}) {
+                         dataPath="renewalMasterDTOList"
+                         onBefore={handleBefore}
+                     >
+-                        {/* 两个输入框各占 1/3，查询/重置按钮同行放在最右 1/3 */}
+-                        <QueryFilter isKeyPressSubmit span={8} labelWidth="auto">
++                        <QueryFilter isKeyPressSubmit defaultCollapsed={false} span={8} labelWidth="auto">
+                             <ProFormText
+                                 label="计划名称"
+                                 name="name"
+                                 fieldProps={{placeholder: '请输入计划名称', maxLength: 100}}
+                             />
+-                            <ProFormText label="计划ID" name="number" fieldProps={{placeholder: '请输入计划ID'}} />
++                            <ProFormText
++                                label="计划ID"
++                                name="number"
++                                fieldProps={{placeholder: '请输入计划ID'}}
++                            />
++                            <ProFormSelect
++                                label="状态"
++                                name="statusList"
++                                fieldProps={{
++                                    mode: 'multiple',
++                                    placeholder: '请选择状态',
++                                    options: OPERABLE_STATUS_OPTIONS,
++                                    maxTagCount: 2,
++                                }}
++                                initialValue={OPERABLE_STATUS_VALUES}
++                                showAllow
++                            />
++                            <ProFormSelect
++                                label="过滤测试数据"
++                                name="filterTestData"
++                                fieldProps={{
++                                    placeholder: '请选择状态',
++                                    options: IS_TEST_DATA_OPTIONS,
++                                }}
++                                initialValue={1}
++                            />
+                         </QueryFilter>
+                         <FeituTable
+                             columns={columns}
+diff --git a/src/pages/continuationClasses/list/index.js b/src/pages/continuationClasses/list/index.js
+index b65200ee..1fee1c34 100644
+--- a/src/pages/continuationClasses/list/index.js
++++ b/src/pages/continuationClasses/list/index.js
+@@ -99,13 +99,6 @@ function List() {
+         });
+     });
+ 
+-    const handleLimit = (_, value) => {
+-        if (value?.length > 0 && Number.isNaN(+value)) {
+-            return Promise.reject(new Error('只能输入数字'));
+-        }
+-        return Promise.resolve();
+-    };
+-
+     const handleBefore = useMemoizedFn(params => {
+         const tempParams = {...params};
+         const {
+@@ -364,10 +357,8 @@ function List() {
+                         label="计划ID"
+                         name="number"
+                         fieldProps={{
+-                            maxLength: 50,
+                             placeholder: '请输入计划ID',
+                         }}
+-                        rules={[{validator: handleLimit}]}
+                     />
+                     <ProFormText
+                         label="前置产品ID"

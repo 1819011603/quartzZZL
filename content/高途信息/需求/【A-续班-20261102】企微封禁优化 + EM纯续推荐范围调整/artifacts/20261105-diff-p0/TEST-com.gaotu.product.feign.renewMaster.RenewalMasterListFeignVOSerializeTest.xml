@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.gaotu.product.feign.renewMaster.RenewalMasterListFeignVOSerializeTest" time="7.941" tests="4" errors="0" skipped="0" failures="0">
+  <testcase name="from_copiesEveryDeclaredField" classname="com.gaotu.product.feign.renewMaster.RenewalMasterListFeignVOSerializeTest" time="7.612" />
+  <testcase name="webVO_stillSerializesSnakeCase_provingNoSpillover" classname="com.gaotu.product.feign.renewMaster.RenewalMasterListFeignVOSerializeTest" time="0.222" />
+  <testcase name="feignVO_serializesCamelCase_includingNestedLevels" classname="com.gaotu.product.feign.renewMaster.RenewalMasterListFeignVOSerializeTest" time="0.107" />
+  <testcase name="from_nullAndEmptyInput_returnsEmptyListNotNull" classname="com.gaotu.product.feign.renewMaster.RenewalMasterListFeignVOSerializeTest" time="0" />
+</testsuite>

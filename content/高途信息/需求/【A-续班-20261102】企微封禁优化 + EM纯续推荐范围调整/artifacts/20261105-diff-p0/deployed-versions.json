@@ -1,0 +1,69 @@
+{
+  "product-b": {
+    "serviceCode": "baijia.gt.ecommerce.product.product-b",
+    "environment": "dev",
+    "pods": [
+      {
+        "name": null,
+        "podName": "product-b-7d48b8fb74-lxqvg",
+        "imageName": "feature-xuban-pure-relation-20261102-07ba05df-20261105102154",
+        "eurekaStatus": "UP",
+        "status": "Running",
+        "createTime": 1793845497000
+      }
+    ]
+  },
+  "product": {
+    "serviceCode": "baijia.gt.ecommerce.product.product",
+    "environment": "dev",
+    "pods": [
+      {
+        "podName": "product-gaotu100-com-5fbb74bd96-fxxng",
+        "imageName": "feature-xuban-pure-relation-20261102-ab120d4e-20261103232835",
+        "eurekaStatus": "UP",
+        "status": "Running"
+      },
+      {
+        "podName": "product-gaotu100-com-5fbb74bd96-2h6n9",
+        "imageName": "feature-xuban-pure-relation-20261102-ab120d4e-20261103232835",
+        "eurekaStatus": "UP",
+        "status": "Running"
+      }
+    ]
+  },
+  "cart": {
+    "serviceCode": "gaotu_cart",
+    "environment": "dev",
+    "pods": [
+      {
+        "name": null,
+        "podName": "cart-gaotu100-com-698968b48f-zj59h",
+        "imageName": "feature-xuban-pure-relation-20261102-7bb1fb92-20261104234532",
+        "eurekaStatus": "UP",
+        "status": "Running",
+        "createTime": 1793807236000
+      }
+    ]
+  },
+  "order": {
+    "unresolved": true
+  },
+  "order-b": {
+    "serviceCode": "baijia.gaotu.tech.trade.order-b",
+    "environment": "dev",
+    "pods": [
+      {
+        "podName": "order-b-gaotu100-com-766446f76-qk7rr",
+        "imageName": "feature-xuban-pure-relation-20261102-e464fa98-20261103232837",
+        "eurekaStatus": "UP",
+        "status": "Running"
+      },
+      {
+        "podName": "order-b-gaotu100-com-766446f76-wpnns",
+        "imageName": "feature-xuban-pure-relation-20261102-e464fa98-20261103232837",
+        "eurekaStatus": "UP",
+        "status": "Running"
+      }
+    ]
+  }
+}

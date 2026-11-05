@@ -1,0 +1,24 @@
+{
+  "sha": "17ee81ccb44b95655f1a55494c4d9372b604cc34",
+  "scope": "existing formatFilter functions only; no browser/API/business writes",
+  "results": {
+    "roster/ContinuationService": {
+      "studentTags": [
+        101,
+        102
+      ]
+    },
+    "roster/ContinuationServiceLegacy": {
+      "studentTags": [
+        101,
+        102
+      ]
+    },
+    "microClazzRoster/ContinuationService": {
+      "studentTags": [
+        101,
+        102
+      ]
+    }
+  }
+}

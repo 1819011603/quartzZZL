@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.gaotu.app.cart.validate.impl.CartSameClazzOrCourseImplTest" time="0.158" tests="17" errors="0" skipped="0" failures="0">
+  <testcase name="should_skip_validation_when_degradation_enabled" classname="com.gaotu.app.cart.validate.impl.CartSameClazzOrCourseImplTest" time="0.006" />
+  <testcase name="should_reject_duplicate_class_when_cross_mode_product_precedes_it(int, int, int)[1]" classname="com.gaotu.app.cart.validate.impl.CartSameClazzOrCourseImplTest" time="0.066" />
+  <testcase name="should_reject_duplicate_class_when_cross_mode_product_precedes_it(int, int, int)[2]" classname="com.gaotu.app.cart.validate.impl.CartSameClazzOrCourseImplTest" time="0.002" />
+  <testcase name="should_reject_duplicate_class_when_cross_mode_product_precedes_it(int, int, int)[3]" classname="com.gaotu.app.cart.validate.impl.CartSameClazzOrCourseImplTest" time="0.003" />
+  <testcase name="should_reject_duplicate_class_when_cross_mode_product_precedes_it(int, int, int)[4]" classname="com.gaotu.app.cart.validate.impl.CartSameClazzOrCourseImplTest" time="0.001" />
+  <testcase name="should_report_existing_cart_item_when_it_duplicates_new_item" classname="com.gaotu.app.cart.validate.impl.CartSameClazzOrCourseImplTest" time="0.012" />
+  <testcase name="should_reject_duplicate_course_when_cross_mode_product_precedes_it(int, int, int)[1]" classname="com.gaotu.app.cart.validate.impl.CartSameClazzOrCourseImplTest" time="0.001" />
+  <testcase name="should_reject_duplicate_course_when_cross_mode_product_precedes_it(int, int, int)[2]" classname="com.gaotu.app.cart.validate.impl.CartSameClazzOrCourseImplTest" time="0.003" />
+  <testcase name="should_reject_duplicate_course_when_cross_mode_product_precedes_it(int, int, int)[3]" classname="com.gaotu.app.cart.validate.impl.CartSameClazzOrCourseImplTest" time="0.002" />
+  <testcase name="should_reject_duplicate_course_when_cross_mode_product_precedes_it(int, int, int)[4]" classname="com.gaotu.app.cart.validate.impl.CartSameClazzOrCourseImplTest" time="0.001" />
+  <testcase name="should_preserve_rejection_when_same_mode_or_feature_disabled(int, int, boolean)[1]" classname="com.gaotu.app.cart.validate.impl.CartSameClazzOrCourseImplTest" time="0.003" />
+  <testcase name="should_preserve_rejection_when_same_mode_or_feature_disabled(int, int, boolean)[2]" classname="com.gaotu.app.cart.validate.impl.CartSameClazzOrCourseImplTest" time="0.002" />
+  <testcase name="should_preserve_rejection_when_same_mode_or_feature_disabled(int, int, boolean)[3]" classname="com.gaotu.app.cart.validate.impl.CartSameClazzOrCourseImplTest" time="0.002" />
+  <testcase name="should_preserve_rejection_when_same_mode_or_feature_disabled(int, int, boolean)[4]" classname="com.gaotu.app.cart.validate.impl.CartSameClazzOrCourseImplTest" time="0.001" />
+  <testcase name="should_allow_cross_mode_pair_when_relation_enabled(int, int)[1]" classname="com.gaotu.app.cart.validate.impl.CartSameClazzOrCourseImplTest" time="0.001" />
+  <testcase name="should_allow_cross_mode_pair_when_relation_enabled(int, int)[2]" classname="com.gaotu.app.cart.validate.impl.CartSameClazzOrCourseImplTest" time="0.001" />
+  <testcase name="should_allow_distinct_products_when_no_duplicate_exists" classname="com.gaotu.app.cart.validate.impl.CartSameClazzOrCourseImplTest" time="0.001" />
+</testsuite>

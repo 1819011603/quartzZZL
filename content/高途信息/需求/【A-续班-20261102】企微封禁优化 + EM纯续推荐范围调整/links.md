@@ -21,3 +21,12 @@
 | 调研 | 纯续管理前后端契约与只读查询 | [em-review.md](artifacts/20261104-readonly-review/em-review.md) | 2026-11-04 |
 | 调研 | cart/order推荐与缓存影响 | [shared-backend-review.md](artifacts/20261104-readonly-review/shared-backend-review.md) | 2026-11-04 |
 | 其他 | 子任务最终状态、33单测与配置证据 | [verification-evidence.json](artifacts/20261104-readonly-review/verification-evidence.json) | 2026-11-04 |
+
+## 2026-11-05 核对与P0交付
+
+| 类型 | 标题 | 链接 | 记录日期 |
+|---|---|---|---|
+| case | P0现场步骤与执行边界 | [P0-case.md](P0-case.md) | 2026-11-05 |
+| 其他 | 当前验证与版本证据 | [verify.md](verify.md) | 2026-11-05 |
+| 调研 | 当前前端PRD及25项契约 | [frontend-review.md](artifacts/20261105-diff-p0/frontend-review.md) | 2026-11-05 |
+| 调研 | cart修复、测试与边界 | [cart-review.md](artifacts/20261105-diff-p0/cart-review.md) | 2026-11-05 |

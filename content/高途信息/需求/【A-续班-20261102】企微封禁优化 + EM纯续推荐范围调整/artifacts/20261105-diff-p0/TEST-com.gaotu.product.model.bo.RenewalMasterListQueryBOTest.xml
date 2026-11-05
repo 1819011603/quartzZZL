@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.gaotu.product.model.bo.RenewalMasterListQueryBOTest" time="0.924" tests="8" errors="0" skipped="0" failures="0">
+  <testcase name="should_prefer_explicit_numberList_over_number" classname="com.gaotu.product.model.bo.RenewalMasterListQueryBOTest" time="0.907" />
+  <testcase name="should_respect_custom_split_regex" classname="com.gaotu.product.model.bo.RenewalMasterListQueryBOTest" time="0.011" />
+  <testcase name="should_deduplicate_repeated_numbers" classname="com.gaotu.product.model.bo.RenewalMasterListQueryBOTest" time="0" />
+  <testcase name="should_keep_valid_tokens_and_drop_invalid_ones" classname="com.gaotu.product.model.bo.RenewalMasterListQueryBOTest" time="0.003" />
+  <testcase name="should_split_mixed_separators_into_numberList_when_using_default_regex" classname="com.gaotu.product.model.bo.RenewalMasterListQueryBOTest" time="0.001" />
+  <testcase name="should_not_split_when_number_blank" classname="com.gaotu.product.model.bo.RenewalMasterListQueryBOTest" time="0.001" />
+  <testcase name="should_keep_single_number_compatible" classname="com.gaotu.product.model.bo.RenewalMasterListQueryBOTest" time="0" />
+  <testcase name="should_use_sentinel_when_all_tokens_invalid" classname="com.gaotu.product.model.bo.RenewalMasterListQueryBOTest" time="0.001" />
+</testsuite>
