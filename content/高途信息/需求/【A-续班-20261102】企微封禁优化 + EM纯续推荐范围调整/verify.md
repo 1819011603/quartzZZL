@@ -1,17 +1,19 @@
 # 当前验证与证据（2026-11-05）
 
-## 2026-11-05 W1续接核查（任务 e9aebdb9）
+## 当前核查结果（任务e9aebdb9，2026-11-05）
 
-- **部署已现查**：cart a34016fd@10.218.237.47:28688、order/order-b 0cc8ef68，均test-gtbg-dev-3 Running/UP；product-b 07ba05df@10.218.248.248:28688；product-c仍ab120d4e，不能以仓库HEAD代替。cart/order远端=本地且干净。
-- **EM真实场景已验证（子集）**：A五参主大班+从小班（trace `.297.17938612416400117`）；A七参纯续type1两件、扩科type2仅主grade16两件（`.298.17938612420770116`）；B七参只有自身小班（`.299.17938612431590122`）。同IP重复A（`.301.17938612443150115`）日志明确前置课/订单旁路缓存hit=true。完整trace前缀均cart_gaotu100_com。不同学年学期/真实碰撞去重/本地缓存组合仍未覆盖。
-- **product直连已验证**：Pod+Eureka同IP端口核实后GET关联list，Host PRODUCT-B，traffic-env=test-gtbg-dev-3，b_client=EES，HTTP200/code0；trace `product-b.258.17938612055100011`。文档curl实际复跑同结果（`product-b.261.17938612536690012`）。
-- owner最新硬约束已同步W1-71e288/W1-3138e4：两个子项分别先真实调用，运行证据确认问题才改/提交；修后同IP同场景复验。域名不可用先核注册/Pod的IP端口与服务归属，补正确鉴权/Host/业务头；直连失败两次更换方式或明确阻塞。本轮尚无代码修改/提交/部署。
-- 本轮新增真实HTTP：批量A/B精确total=2（trace `e919e0e0-88b0-456f-90b5-77bc1a8186f9.0.3`）；非法not-a-plan total=0（`a345a13d-70b1-4767-a937-bec91dd6e0dc.0.3`）；B关联list为空（`4899b6bb-2078-4636-b8fe-99d790601036.0.3`）。只证明管理查询，不代表推荐、保存或页面。
-- 已验证：当前 TEST/test-gtbg-dev-3 关联列表 A=585960797778243584 返回 B=586116340522184704，字符串ID、adminList/adminName完整；trace `e004b790-f79e-4d94-a569-103c5930c5f2.0.3`。product-server远端统一分支仍为07ba05df6，工作区干净。
-- Wiki `KeCZwdJTBiIJDJkX8lRcGb9gnCs` 解包为既有P0文档 `ZQUXdlDxWoknJhxu914c2uVYnBr`，读取revision50。正在纠正文档中过期部署状态和过度验收结论，不新建平行文档。
-- 证据边界纠正：单条无重复商品不能证明去重生效；单向双模式推荐不能证明双向整卡；加购不等于完整下单；Q6/Q7是需求内前端交付依赖，不是需求范围外。
-- 单向口径：仅A→B时B不自动扩大；显式设置B→A后应按B规则并入A前置课。历史“写B→A后B仍不扩大”的预期作废。
-- 既有verify后续有新版部署记录，与README首屏“未部署”冲突，当前版本由子任务核实后统一更新。本轮不部署、不改前端。
+- 完整工作单与证据入口：[运行核验](artifacts/20261105-runtime-w1/runtime-review.md)，[backend-report.md](artifacts/20261105-runtime-w1/backend-report.md)，[qiwei-report.md](artifacts/20261105-runtime-w1/qiwei-report.md)。本节为当前状态，后续轮次记录按各自时间/版本复用，不将旧“未部署/未找到表”继续作为当前事实。
+- owner硬约束已落实：两个子项分别真实调用；无运行证据确认问题不改/提交；直连先核Pod/Eureka的IP端口/版本/泳道，失败两次换入口或报阻塞。本轮无代码改动、业务写入、部署或Apollo修改。
+- **已验证：EM管理**。product-b 07ba05df，10.218.248.248:28688，Host PRODUCT-B、traffic-env=test-gtbg-dev-3、b_client=EES；A关联返回B及字符串ID/管理员，trace product-b.258.17938612055100011；文档curl复跑.261.17938612536690012。网关批量A/B total2（e919e0e0）、非法total0（a345a13d）、B关联空（4899b6bb）。原始文件均在上述目录。
+- **已验证：EM推荐子集**。cart a34016fd，10.218.237.47:28688；A五/七参双模式，七参纯续2件、扩科仅主grade16两件（cart_gaotu100_com.298.17938612420770116）；B只自身小班（.299.17938612431590122）。重复A trace .301.17938612443150115的Pod日志证实前置课/订单旁路正缓存hit=true；A自身课程回读未混入B。
+- **已复用：显式B→A反向接口**。原始保存458e4e7b、推荐cart_gaotu100_com.299.17938604090680110、清理094a3ee4日志已定位，同a34016fd，不重放；DB id14软删/Apollo恢复原件本轮未找到，仅归档记录。当前B为空且只自身已另验。
+- **已验证：企微读取子集**。student-center无test-gtbg-dev-3实例；固定默认TEST 10.255.176.174:28688、release-5dce9cdb，学员7489648821/班574882679202260992返回标签[2]/需中关注，与DB id120542一致，trace student-center.900338.17938614686501583。不是目标泳道/页面/新写标签验收。
+- **已核实失败前置**：默认TEST好友接口直连code3（student-center.900339.17938614405711575）；真实网关code0/resultStatus=false（6aa83947）。不能称备注成功或账号被封禁。错误班号行120554实际末尾4300，非目标4320；初读tags=1,2、后续外部变空，不由本轮恢复，原请求精度原因未验证。
+- **已核版本**：cart a34016fd、order/order-b 0cc8ef68、product-b 07ba05df均目标泳道UP；product-c仍ab120d4e。product/cart/order本地=远端且干净；student-center本地同名分支无差异且远端无同名分支，不创建占位。
+- **程序测试记录**：140例既有计数(20+94+26)无失败，未重跑。单测不能证明运行修复生效；order既有跨模式/真重复trace只复用归档，未重新下单。
+- **推断未验证/没做**：不同学年学期及从年级扩科候选隔离、碰撞去重/跨年级、本地缓存组合/负缓存/异常/回退、新版完整下单/主体/优惠；企微标签写-幂等-恢复、真实好友备注和封禁对照、页面筛选/说明链接、ES与历史全量回溯。需独占测试对象/HTTP身份及外部交付，不冒称全测通。
+- P0 Wiki KeCZwdJTBiIJDJkX8lRcGb9gnCs对应docx ZQUXdlDxWoknJhxu914c2uVYnBr，回读revision99；12卡、25契约、3组固定IP、完整trace、恢复/依赖/未完成声明均检查通过，本地P0-case.md已同步。文档readback与manifest在证据目录。
+- 两子任务已完成报告并停止，无后台构建、部署或在途写操作。T-9至T-14完成、T-15仍阻塞；不将阶段结果写成整个需求完成。
 
 ## 本次验证范围
 

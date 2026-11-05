@@ -1,0 +1,6 @@
+
+[【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整]
+WARN:  README.md: 330 lines (suggested maximum 180)
+WARN:  README.md: contains 3 historical-process cue(s); rewrite as final wording
+WARN:  tasks.md: contains 2 historical-process cue(s); rewrite as final wording
+WARN:  verify.md: contains 2 historical-process cue(s); rewrite as final wording

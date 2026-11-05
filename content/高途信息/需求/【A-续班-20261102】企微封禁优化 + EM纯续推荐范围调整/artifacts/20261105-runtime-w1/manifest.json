@@ -33,5 +33,7 @@
   "field-config.txt": "1a48d0127a630586579f1fcb9dac5f3c424a7c4e304efc0728e0c5c3b481e039",
   "media-manifest.json": "76864dd01ae579bd0bfef8a8be9f983c50396bac077488954f7b9fea78a0eb32",
   "document-verification.json": "5bf0010c70ea5086c92586a445c57586164b2d0e4ab94831b636d196c1b53aea",
-  "p0-final-readback.json": "82fac9efddcd1e263faca47b192f4888895657fe6bd8b21aa6e192ac0d1b82d0"
+  "p0-final-readback.json": "82fac9efddcd1e263faca47b192f4888895657fe6bd8b21aa6e192ac0d1b82d0",
+  "archive-audit.txt": "790afc39a0540c1d7ee7ce0991b81353a4d32faa33b3656d3222d1817b9224f4",
+  "runtime-review.md": "59b06bb97481dc47b1a668e3edfd064c49fe660bc750b38750a34916f98f7d99"
 }

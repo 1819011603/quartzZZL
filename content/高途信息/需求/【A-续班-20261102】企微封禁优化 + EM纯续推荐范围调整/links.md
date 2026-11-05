@@ -33,3 +33,11 @@
 | case | P0对象补全版（飞书，revision19回读） | [在线文档](https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr) | 2026-11-05 |
 
 | 需求wiki节点 | 当前P0执行文档（同一对象） | https://gaotuedu.feishu.cn/wiki/KeCZwdJTBiIJDJkX8lRcGb9gnCs | 2026-11-05 |
+
+## 本轮运行证据（任务e9aebdb9）
+
+| 类型 | 标题 | 链接 | 记录日期 |
+|---|---|---|---|
+| 调研 | 两子项真实链路与交付核对 | [运行核验](artifacts/20261105-runtime-w1/runtime-review.md) | 2026-11-05 |
+| 其他 | 飞书revision99回读及结构核对 | [document-verification.json](artifacts/20261105-runtime-w1/document-verification.json) | 2026-11-05 |
+| 其他 | 原始请求响应/日志文件校验值 | [manifest.json](artifacts/20261105-runtime-w1/manifest.json) | 2026-11-05 |
