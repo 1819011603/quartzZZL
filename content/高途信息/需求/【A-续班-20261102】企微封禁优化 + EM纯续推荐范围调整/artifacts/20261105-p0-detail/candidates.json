@@ -1,0 +1,59 @@
+{
+  "time": "2026-11-05T16:19:15.202479",
+  "environment": "TEST",
+  "inactive_plan": {
+    "sql": "SELECT CAST(number AS CHAR) number,name,type,status,isdel,is_test_data FROM renew_master WHERE number=588696758756945920",
+    "rows": [
+      {
+        "number": "588696758756945920",
+        "name": "B测试B",
+        "type": 1,
+        "status": 0,
+        "isdel": 0,
+        "is_test_data": 1
+      }
+    ]
+  },
+  "main_paid_candidates": {
+    "sql": "SELECT CAST(user_id AS CHAR) user_id,CAST(order_number AS CHAR) order_number,order_status,CAST(course_number AS CHAR) course_number FROM order_info WHERE course_number=585960577856301056 AND order_status=2 LIMIT 10",
+    "rows": [
+      {
+        "user_id": "7658127801",
+        "order_number": "432168408644584256",
+        "order_status": 2,
+        "course_number": "585960577856301056"
+      },
+      {
+        "user_id": "7658129872",
+        "order_number": "432354307721396742",
+        "order_status": 2,
+        "course_number": "585960577856301056"
+      }
+    ]
+  },
+  "active_relation_count": {
+    "sql": "SELECT CAST(main_renew_master_number AS CHAR) main_number,CAST(sub_renew_master_number AS CHAR) sub_number,is_del FROM renew_master_relation WHERE main_renew_master_number IN (585960797778243584,586116340522184704)",
+    "rows": [
+      {
+        "main_number": "585960797778243584",
+        "sub_number": "586116340522184704",
+        "is_del": 0
+      },
+      {
+        "main_number": "585960797778243584",
+        "sub_number": "587173440509732864",
+        "is_del": 1
+      },
+      {
+        "main_number": "585960797778243584",
+        "sub_number": "587173458654291968",
+        "is_del": 1
+      },
+      {
+        "main_number": "586116340522184704",
+        "sub_number": "585960797778243584",
+        "is_del": 1
+      }
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "summary": "**已完成增量**：B侧班名已从正确库精确查证并写回P0，revision147受影响小节回读成功。\n**按要求收束**：现有全部工作、证据、剩余信息缺口和子任务状态已写交接；可复现程度三档数量尚未统计，未冒称本轮文档交付全部完成。",
+  "artifacts": [
+    "https://gaotuedu.feishu.cn/wiki/KeCZwdJTBiIJDJkX8lRcGb9gnCs",
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-detail-round2/handoff.md",
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-detail-round2/verification.json",
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-detail-round2/b-class-dms.json",
+    "/Users/gaotu/bridge/payload/skills-cold/banshan-case/SKILL.md",
+    "/Users/gaotu/bridge/payload/skills-cold/banshan-case/references/doc-templates.md",
+    "/Users/gaotu/.claude/skills-cold/banshan-case/SKILL.md",
+    "/Users/gaotu/.claude/skills-cold/banshan-case/references/doc-templates.md"
+  ],
+  "verification": "TEST/course_center.clazz精确SELECT返回3条，补齐B班名与同名不同ID/课程关系；飞书revision147局部回读确认旧“B班名未查到”表述已移除。上一轮revision146全篇及skill自检直接复用。无新业务执行或写入。",
+  "blocker": "所有者要求80%上下文安全收束。本轮尚待补P0-10/11现有身份/好友/原标签备注等信息，并完成逐条缺口表及三档复现数量/编号；尚未开展的新查询不算已完成。子任务W1-e4187e已停止，双方均无在途调用，详见handoff.md。"
+}

@@ -1,5 +1,7 @@
 # 当前验证与证据（2026-11-05）
 
+P0文档补全已回读revision146：12卡、36步、25项契约与原始30条P0逐项核对，附件下载SHA一致，详见[文档核验](artifacts/20261105-p0-detail/document-verification.json)。本次新增仅TEST只读对象事实：status0反例588696758756945920、标签正例7489648821/574882679202260992原标签2及姓名为空、当前A→B有效/B→A软删；不把这些落值当页面或写链路通过。未验范围仍保留T-15。
+
 ## 当前核查结果（任务e9aebdb9，2026-11-05）
 
 - 完整工作单与证据入口：[运行核验](artifacts/20261105-runtime-w1/runtime-review.md)，[backend-report.md](artifacts/20261105-runtime-w1/backend-report.md)，[qiwei-report.md](artifacts/20261105-runtime-w1/qiwei-report.md)。本节为当前状态，后续轮次记录按各自时间/版本复用，不将旧“未部署/未找到表”继续作为当前事实。

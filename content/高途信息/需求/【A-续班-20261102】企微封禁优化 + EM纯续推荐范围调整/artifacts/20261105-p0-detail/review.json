@@ -1,0 +1,70 @@
+{
+  "task_type": "requirement",
+  "document_revision": 146,
+  "sources": {
+    "qiwei-prd": {
+      "ok": true,
+      "revision": 253
+    },
+    "em-prd": {
+      "ok": true,
+      "revision": 675
+    },
+    "teacher-guide": {
+      "ok": true,
+      "revision": 562
+    },
+    "adviser-guide": {
+      "ok": true,
+      "revision": 465
+    },
+    "small-guide": {
+      "ok": true,
+      "revision": 3368
+    },
+    "technical-plan": {
+      "ok": true,
+      "revision": 79
+    }
+  },
+  "frontend": {
+    "repository": "/Users/gaotu/IdeaProjects/WebProject/gaotu-fe-promotions",
+    "remote_branch": "feature-pre-register-coupon-recommend-deduction",
+    "observed_remote_sha": "ba1cf8f9ffee5269e49331e7f7f2bd42e5137183",
+    "evidence": "实际git ls-remote origin refs/heads/feature-pre-register-coupon-recommend-deduction返回；复用原front-end-review源码分析",
+    "online_version_mapped": false,
+    "component": "src/pages/continuationClasses/components/PureRenewRelation/index.js",
+    "services": "src/services/continuationClasses.js",
+    "readback": "本轮fetch指定远端对象成功，git show固定SHA后再次读取：number原串、statusList1/2、filterTestData=1默认过滤、adminName/adminList、全集save、追加顺序/移除确认差异均与既有报告一致；无前端工作树修改"
+  },
+  "scope": "仅P0文档/skill及归档同步；新增业务调用仅TEST只读查询，没改业务代码/造数/部署/生产/发送消息",
+  "historical_evidence": "runtime/为此前同日14:46采样；objects/为此前11:00采样，结论绑定原版本及子集，不算本轮新执行",
+  "archive_audit": {
+    "errors": 0,
+    "warnings": 5,
+    "review": "README过长及旧历史线索属于既有记录，当前摘要/未完成项已明确，不为本次P0文档补全扩大归档重构"
+  },
+  "remaining": "真实独占样本/好友/身份、EM关键反例/新版全下单、页面/回溯均未验，完整清单在P0原30条映射及T-15",
+  "B_sku_followup": {
+    "evidence": "b-sku-values.json",
+    "result": "TEST只读确认B侧SKU586090628920764416→SPU18314034380997186，规格名默认规格，product_type6004；product_sku_clazz_relation指向同号班级；gaotu.clazz精确查无对应行，未取得真实班名，不将规格名冒作班名；没有重调推荐或下单。新查询不替换14:47推荐快照，也不推断可售。"
+  },
+  "skill": {
+    "exists": true,
+    "name": "banshan-case",
+    "modified_files": [
+      "/Users/gaotu/bridge/payload/skills-cold/banshan-case/SKILL.md",
+      "/Users/gaotu/.claude/skills-cold/banshan-case/SKILL.md",
+      "/Users/gaotu/bridge/payload/skills-cold/banshan-case/references/doc-templates.md",
+      "/Users/gaotu/.claude/skills-cold/banshan-case/references/doc-templates.md"
+    ],
+    "verification": "改动文件回读/引用/语义场景通过；安装主库verify_skills UTF8退出0，84条路由0失败；权威源按正确skills根目录运行audit_skills退出0/errors0/warnings0，包含相邻skills-cold路由与链接检查。先前直接传skills-cold导致25个toolbox缺失误报，已由本次正确入口复核替代；不是25项真实技能故障。",
+    "evidence": "skill-report.json、skill-final-*.log、skill-readback.json",
+    "audit_correction": {
+      "incorrect_argument": "/Users/gaotu/bridge/payload/skills-cold",
+      "correct_argument": "/Users/gaotu/bridge/payload/skills",
+      "evidence": "skill-source-root-audit.log",
+      "implementation_basis": "audit_skills.rb:131-134从root读取toolbox并从root.parent读取skills-cold"
+    }
+  }
+}

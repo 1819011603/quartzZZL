@@ -1,0 +1,14 @@
+[
+  {
+    "source": "/Users/gaotu/bridge/payload/skills-cold/banshan-case/SKILL.md",
+    "installed": "/Users/gaotu/.claude/skills-cold/banshan-case/SKILL.md",
+    "sha256": "43d68e75f1774606657a707f08cb9d98bf2a2590c6e024c91a0d28e75cf434d2",
+    "equal": true
+  },
+  {
+    "source": "/Users/gaotu/bridge/payload/skills-cold/banshan-case/references/doc-templates.md",
+    "installed": "/Users/gaotu/.claude/skills-cold/banshan-case/references/doc-templates.md",
+    "sha256": "86768bdb90995b0d18330267f5f056329bffc124e023ecadd09afe81329ff2a9",
+    "equal": true
+  }
+]

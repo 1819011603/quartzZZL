@@ -1,0 +1,74 @@
+{
+  "renew_master_columns": [
+    "id",
+    "number",
+    "name",
+    "begin_time",
+    "end_time",
+    "creator_id",
+    "status",
+    "isdel",
+    "create_time",
+    "update_time",
+    "is_test_data",
+    "type"
+  ],
+  "clazz_columns": [
+    "id",
+    "course_number",
+    "number",
+    "biz_number",
+    "experience_video_url",
+    "status",
+    "publish_time",
+    "off_time",
+    "isdel",
+    "live_room_no",
+    "create_time",
+    "update_time",
+    "cover_storage_id",
+    "name",
+    "time_desc",
+    "clazz_date_desc",
+    "clazz_time_desc",
+    "clazz_week_desc",
+    "end_sale_time",
+    "countdown_time",
+    "version",
+    "property",
+    "clazz_type",
+    "clazz_type_alias",
+    "biz_type",
+    "master_subject_id",
+    "slave_subject_ids",
+    "app",
+    "price",
+    "original_price",
+    "capacity",
+    "vertical_cover_storage_id",
+    "audit_status",
+    "publish_status",
+    "down_time",
+    "teach_clazz_type"
+  ],
+  "inactive_plans": [
+    {
+      "number": "588696758756945920",
+      "name": "B测试B",
+      "type": 1,
+      "status": 0
+    },
+    {
+      "number": "588261764219758592",
+      "name": "B测试-跨年级结算残留-1102-101019B",
+      "type": 1,
+      "status": 0
+    },
+    {
+      "number": "588261204636690432",
+      "name": "B测试-切换年级结算残留-1102-100553B",
+      "type": 1,
+      "status": 0
+    }
+  ]
+}

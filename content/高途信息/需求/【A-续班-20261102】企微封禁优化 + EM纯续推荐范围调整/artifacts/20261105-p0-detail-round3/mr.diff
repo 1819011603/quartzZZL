@@ -1,0 +1,1075 @@
+diff --git a/doc/renewal-student-tags/query-config.sql b/doc/renewal-student-tags/query-config.sql
+new file mode 100644
+index 0000000000000000000000000000000000000000..14403ddc58ed00908273fad9aa05901e9d174184
+--- /dev/null
++++ b/doc/renewal-student-tags/query-config.sql
+@@ -0,0 +1,34 @@
++-- 发布前导出以下结果，核对重复、已删除、降级和已有映射配置。
++-- 2026-11-04 生产快照：小班三条已存在，大班零条，预期新增大班三条。
++SELECT id, identification, field_name, `type`, command, is_del
++FROM ees_data.es_query_config
++WHERE identification IN ('continuationService', 'microContinuationService')
++  AND field_name IN ('studentTags', 'studentTagNames')
++ORDER BY identification, field_name, `type`, command;
++
++-- 精确配置已存在时不重复插入。存在 is_del=1 时也不重复插入，先人工核对。
++INSERT INTO ees_data.es_query_config (identification, field_name, `type`, command, is_del)
++SELECT scenes.identification, fields.field_name, fields.config_type, fields.command, 0
++FROM (
++  SELECT 'continuationService' AS identification
++  UNION ALL SELECT 'microContinuationService'
++) scenes
++CROSS JOIN (
++  SELECT 'studentTags' AS field_name, 2 AS config_type, 'basic' AS command
++  UNION ALL SELECT 'studentTags', 6, 'necessary'
++  UNION ALL SELECT 'studentTagNames', 6, 'extra'
++) fields
++WHERE NOT EXISTS (
++  SELECT 1 FROM ees_data.es_query_config existing
++  WHERE existing.identification = scenes.identification
++    AND existing.field_name = fields.field_name
++    AND existing.`type` = fields.config_type
++    AND existing.command = fields.command
++);
++
++-- 执行后保存新增 ID。回滚只删除这些 ID，不按字段整批删，也不依赖 is_del。
++SELECT id, identification, field_name, `type`, command, is_del
++FROM ees_data.es_query_config
++WHERE identification IN ('continuationService', 'microContinuationService')
++  AND field_name IN ('studentTags', 'studentTagNames')
++ORDER BY identification, field_name, `type`, command;
+diff --git "a/doc/renewal-student-tags/\344\270\212\347\272\277\351\205\215\347\275\256.md" "b/doc/renewal-student-tags/\344\270\212\347\272\277\351\205\215\347\275\256.md"
+new file mode 100644
+index 0000000000000000000000000000000000000000..d7387997fd2ec9de4c197af2402bffa9e032b024
+--- /dev/null
++++ "b/doc/renewal-student-tags/\344\270\212\347\272\277\351\205\215\347\275\256.md"
+@@ -0,0 +1,148 @@
++# 续班服务学员标签、微信备注上线配置
++
++需求：[企微封禁相关优化](https://gaotuedu.feishu.cn/wiki/ZiRZwGOJGi3CtnksQg1cJwZsn9b)，第一项，核对版本为 253（2026-11-04）。
++
++## 范围与交付
++
++续班服务大班、小班复制默认花名册的批量添加标签、修改微信备注；增加学员标签列，支持单个编辑、筛选。需求评论确认入口全量展示。阶段反馈、退费管控不增加入口。历史数据范围按课程班级创建时间大于等于北京时间 2026-01-01 零点判断，不使用学年、开课时间或进班时间。
++
++| 项目 | 大班续班 | 小班续班 |
++| --- | --- | --- |
++| 页面场景 | `continuationService` | `microContinuationService` |
++| 标签保存维度 | `type=1`，班级＋学员 | `type=1`，班级＋学员 |
++| ES 查询目标 | `ads_large_subclazz_user_index` | `ads_small_clazz_user` |
++| student-center ES 客户端 | `studentSubclazzClient` | `studentServeClient` |
++
++2026-11-04 已通过只读查询核实生产字段定义、查询配置和当前索引 mapping。Gaia 续班场景绑定、Apollo 实际字段数组及测试环境配置仍需核对。
++
++| 生产核实项 | 现状 | 上线动作 |
++| --- | --- | --- |
++| 大班 `studentTags` mapping | `ads_large_subclazz_user_index_v2`，`keyword` | 当前无需新增 mapping |
++| 小班 `studentTags` mapping | `ads_small_clazz_user_v1`，`keyword` | 当前无需新增 mapping |
++| 大班续班查询配置 | 标签相关查询结果为零条 | 补齐下述三条配置 |
++| 小班续班查询配置 | `studentTags/2/basic`（ID 486）、`studentTags/6/necessary`（ID 550）、`studentTagNames/6/extra`（ID 528），均为 `is_del=0` | 复用，不重复新增 |
++
++核实入口：SRE DB 集群 336 的 `ees_data`；大班 ES 实例 `es-cn-smw4b9m200004w3hn`，小班 ES 实例 `es-cn-4xl3gu6ls0007l185`。以上是查询时的快照，正式上线前复查是否发生变更。
++
++## 前端接入
++
++复用默认花名册组件、标签选项接口、备注模板和结果反馈，保持已有交互及权限边界。
++
++标签保存接口：`POST /batchOperate/tag/save`。
++
++```json
++{
++  "type": 1,
++  "scene": "continuationService",
++  "clazzStudents": [{"clazzNumber": 123, "userId": 456}],
++  "studentTags": [101, 102]
++}
++```
++
++小班替换 `scene`。编号仅为结构示例。`clazzNumber` 是课程班级编号，不是辅导班编号。单个编辑传一条，批量传多条；同一学员在多个班级出现时保留各班级学员组合，不能仅按学员去重。若页面聚合多班，需要沿用默认花名册的目标班级选择语义。
++
++业务标签保存是覆盖所选业务标签集合，清空显式传 `studentTags: []`。临时标签由现有链路推送企微，不作为业务标签展示、筛选。只选临时标签时不清空原业务标签。
++
++微信备注先调用 `POST /remark/check/wk/friend`，再调用 `POST /remark/creat/edit/task`。两个接口都传去重后的 `userIds`，后者另传 `wkRemarkTemplate`，模板原样复用默认花名册，不自定义占位符。修改对象为当前登录老师的企微好友；创建任务成功不代表所有备注已经修改成功。
++
++## Gaia 与查询配置
++
++分别为两个续班场景复用对应默认花名册的学员标签字段、组件、选项源和单个编辑行为，不新建一套标签字典。
++
++2026-11-04 只读核实的生产复用来源：`publicModel.clazzRosterOL.studentTagNames`，字段 ID 为 `195310847757650944`，组件 `TagsTreeSelect`，数据类型“多选标签－整型数组”。字段中心搜索 `studentTags` 无结果，它是后端保存和筛选的 ID 字段，不能因此另建通用学情字段。字段集查询不能证明页面场景已经绑定，两个续班场景仍须在 Gaia 核对。
++
++- 列展示：`studentTagNames`，展示标签名称。
++- 筛选及编辑值：`studentTags`，使用标签 ID 数组，筛选行为与默认花名册一致。
++- 必返字段：`userId`、`clazzNumber`、`studentTags`；前两项现有场景已依赖，仍需联调核对。
++- 后端查询配置：`studentTags / type=2 / basic`、`studentTags / type=6 / necessary`、`studentTagNames / type=6 / extra`。
++- 不把 `studentTags` 注册为通用学情自定义字段，避免从 ES 返回集合中排除；不必把标签名称冗余写入 ES，名称由现有转换器生成。
++
++执行同目录的 `query-config.sql` 前保存查询结果及本次新增行的 ID。按当前生产快照，脚本应新增大班三条、小班零条；测试环境以查询结果为准。脚本只补不存在的精确配置，不覆盖原配置。发现同字段不同配置、重复记录、`is_del=1` 或 `degraded` 配置时，先核对再处理；当前 DAO 查询未过滤 `is_del`，不能依靠设置 `is_del=1` 回滚。
++
++查询配置缓存默认 300 秒，实际以环境中的 `es.query.config.cache.time`、`es.gaia.field.cache.time` 为准。等待缓存到期后验证。Gaia 自身配置还需按平台发布流程生效。
++
++## ES 检查
++
++在对应客户端的真实集群查询两个逻辑索引的别名、mapping 和样本。确认 `studentTags` 为支持精确匹配的多值字段，参考既有花名册 mapping 为 `keyword`。已有兼容类型时沿用，不能原地修改既有字段类型。字段缺失时，将新增 mapping 工单覆盖到别名所有当前物理索引和后续建索引模板。
++
++```http
++GET /ads_large_subclazz_user_index/_mapping/field/studentTags
++GET /ads_small_clazz_user/_mapping/field/studentTags
++```
++
++新增 mapping 的目标片段（仅字段不存在时使用，不由应用自动执行）：
++
++```json
++{"properties":{"studentTags":{"type":"keyword"}}}
++```
++
++增量沿用标签保存与 MQ 链路。发布前确认 `BatchClazzUserMarkConsumer` 对空串仍发送 `save_tags_tag`，`student-data` 的 `DwsUserClazzMarkConsumer` 把空串转换成空数组，并核对现有 `dws.teacher.user.mark.switch`（student-center）、`dws.user.clazz.mark.switch`、`double.write.switch`（student-data）为开启状态。大班同步会更新辅导班索引，小班同步会更新小班花名册索引。新建档／全量重建也要检查标签回源字段配置，不能仅验证接口直写。
++
++在 student-data 对应应用配置中核对以下现有数组包含 `studentTags`；缺失时在保留全部原值的基础上追加，并记录差异，不把数组替换成单字段。大班进班配置包含此字段后，转辅导班也会复用该集合回源。
++
++| 配置项 | 用途 |
++| --- | --- |
++| `ads.subclazz.user.insert.mq.fieldNames` | 大班进辅导班、转辅导班建档 |
++| `ads.back.subclazz.fieldNames` | 大班既有全量回溯任务 |
++| `dws.sync.small.clazz.user.fieldNames` | 小班花名册同步 |
++
++本次不执行这些全量任务。已有标签同步开关或字段数组若存在缺项，配置补齐、生效及新建档验证属于上线前置项，不能用一次性回溯代替。
++
++## 标签回溯
++
++本次新增 `recallRenewalStudentTagsHandler`，在 `student-center` 执行器配置为手动任务，串行执行，大小班分开运行。无新增 Apollo 配置项。
++
++```json
++{
++  "scene": "continuationService",
++  "beginDate": "2026-01-01",
++  "endDate": "2026-11-05",
++  "clazzNumbers": [123],
++  "dryRun": true,
++  "batchSize": 200,
++  "intervalMillis": 100
++}
++```
++
++`123` 必须替换成核验班级编号。小班 `scene` 改为 `microContinuationService`。日期是北京时间的左闭右开区间，示例覆盖截至 2026-11-04 创建的班级，实际执行时调整上界。`beginDate` 默认 2026-01-01，不能早于该日期；`endDate` 必填。`clazzNumbers` 省略时扫描场景索引全部记录后按班级创建时间过滤，显式空数组会报错；最多 500 个班级。`batchSize` 范围 1～500，默认 200；`intervalMillis` 范围 0～2000，默认 100。
++
++结果字段：`scanned` 扫描数、`outOfRange` 日期范围外数量、`missingSource` 无源标签数量、`unchanged` 无须更新数量、`planned` 待写数量、`updated` 实际提交成功数量，均按 ES 文档计数。大班同一个班级学员可能对应多条辅导班记录。任务输出进度及最终统计；校验、查询、转换或任一批写入失败时返回失败，已成功的批次不会自动撤销。
++
++任务扫描目标索引已有记录，按课程中心返回的班级创建时间过滤，再从 `user_clazz_mark_info` 读取当前业务标签，只更新 `studentTags`。不迁移 `learning_student_info_ext`，不改颜色、分层或源表，不创建残缺 ES 文档。源记录不存在或标签为 null 时跳过并计数，空串表示明确清空。存在跳过记录时单独核对源数据，不使用旧表强行覆盖当前数据。
++
++生产表结构已核实：唯一键为 `(user_id, clazz_number)`，`tags` 为 `varchar(64) NOT NULL DEFAULT ''`。回溯按完整班级学员组合查询，班级维度的标签由多个对应辅导班记录共享。null 标签分支兼容异常数据或不同环境，不代表生产表允许 null。
++
++先使用 `dryRun=true` 预演，并传真实 `clazzNumbers` 小范围核验；核对后以相同参数设置 `dryRun=false`。回溯写入使用 ES 并发版本校验，并发修改或写入失败会让任务失败，排查后重跑。不要与其他回溯或大量标签编辑并发执行。
++
++## 上线顺序与验收
++
++1. 核实两个环境场景及索引配置，保存数据库、Gaia 配置基线。
++2. 发布后端，检查手动任务注册；补齐必要 mapping 和查询配置，等待缓存生效。
++3. Gaia 配置及前端发布，验证大小班的列表返回、单个编辑和批量操作。
++4. 对两个场景分别预演、抽样回溯、核对，再扩大回溯范围。
++5. 验证添加、替换、清空标签及筛选结果；核对默认花名册与续班一致、临时标签不落业务标签、标签名称无残留。
++6. 验证日期边界：2025-12-31 排除，2026-01-01 零点包含；确认没有按进班时间过滤。
++7. 验证新建档、异步同步、全量重建后标签仍正确；微信备注分别验证全为好友、含非好友及任务失败反馈。
++
++## 回滚
++
++先关闭本次前端入口和 Gaia 新增字段，再停止回溯任务。仅按上线记录的 ID 删除本次新增查询配置，已有配置恢复为发布前值；不要按字段名整批删除，不依赖 `is_del`。应用回退到发布前版本。新增 mapping 保留，不能靠删除字段回滚。标签属于与默认花名册共享的业务数据，不能批量清空或将全量旧快照覆盖回去；错误回溯应修正原因后从当前源表定向重刷。
++
++## 实施计划与验证记录
++
++- 已完成：需求原文核对、保存／备注／增量同步链路核对，生产查询配置及 mapping 核实，回溯实现、空标签展示处理。
++- 最终验证：JDK 8 编译通过；16 个新测试、2 个现有字段转换回归测试全部通过，零失败、零错误、零跳过，`BUILD SUCCESS`；`git diff --check` 通过。覆盖真实 MyBatis＋H2 查询、本地 ES HTTP 请求、SQL 重复执行和回溯异常路径。
++- 代码分支：student-center 的 `feature-weixin-opt`，基于 `origin/release` 的 `5dce9cdbb` 开发。当前改动未提交、未推送、未部署。
++- 待上线执行：Apollo／Gaia 场景核对及配置生效、大班查询 SQL、真实环境回溯及前端联调。当前未执行任何业务配置写入或生产回溯。
++
++本地验证命令（先切换至 JDK 8，再在 student-center 根目录执行）：
++
++```bash
++mvn -o -pl student-center-bundle -am test-compile \
++  org.apache.maven.plugins:maven-surefire-plugin:3.0.0:test \
++  -Dtest=RenewalStudentTagsRecallServiceTest,FieldsConvertDataQueryServiceImplTest \
++  -DfailIfNoTests=false -Dsurefire.failIfNoSpecifiedTests=false
++git diff --check
++```
++
++限定上述测试类，使用 H2 和本地 HTTP 服务，不启动完整应用。此结果不替代真实企微操作、Gaia 页面和测试泳道的端到端验收。
+diff --git a/student-center-bundle/src/test/java/com/gaotu/yunying/student/center/domain/service/roster/RenewalStudentTagsRecallServiceTest.java b/student-center-bundle/src/test/java/com/gaotu/yunying/student/center/domain/service/roster/RenewalStudentTagsRecallServiceTest.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..ddd73dfc958cb7d1ab879ff2abdd3df501ace9b0
+--- /dev/null
++++ b/student-center-bundle/src/test/java/com/gaotu/yunying/student/center/domain/service/roster/RenewalStudentTagsRecallServiceTest.java
+@@ -0,0 +1,488 @@
++package com.gaotu.yunying.student.center.domain.service.roster;
++
++import static org.assertj.core.api.Assertions.assertThat;
++import static org.assertj.core.api.Assertions.assertThatThrownBy;
++import static org.mockito.ArgumentMatchers.anyList;
++import static org.mockito.Mockito.mock;
++import static org.mockito.Mockito.when;
++
++import java.io.IOException;
++import java.net.InetSocketAddress;
++import java.nio.charset.StandardCharsets;
++import java.nio.file.Files;
++import java.nio.file.Path;
++import java.nio.file.Paths;
++import java.sql.Connection;
++import java.time.LocalDate;
++import java.time.ZoneId;
++import java.util.ArrayList;
++import java.util.Arrays;
++import java.util.Collections;
++import java.util.HashMap;
++import java.util.List;
++import java.util.Map;
++import java.util.stream.Collectors;
++
++import org.apache.http.HttpHost;
++import org.apache.ibatis.session.SqlSession;
++import org.elasticsearch.client.RestClient;
++import org.elasticsearch.client.RestHighLevelClient;
++import org.junit.After;
++import org.junit.Before;
++import org.junit.Test;
++import org.springframework.core.io.ClassPathResource;
++import org.springframework.core.io.FileSystemResource;
++import org.springframework.jdbc.core.JdbcTemplate;
++import org.springframework.jdbc.datasource.DriverManagerDataSource;
++import org.springframework.jdbc.datasource.init.ScriptUtils;
++import org.springframework.test.util.ReflectionTestUtils;
++import org.springframework.util.StreamUtils;
++
++import com.baomidou.mybatisplus.core.MybatisConfiguration;
++import com.baomidou.mybatisplus.core.config.GlobalConfig;
++import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
++import com.fasterxml.jackson.databind.ObjectMapper;
++import com.gaotu.student.data.client.acl.ClazzSyncAclService;
++import com.gaotu.student.data.client.acl.model.ClazzDO;
++import com.gaotu.student.data.client.data.model.DataContext;
++import com.gaotu.yunying.student.center.app.service.BaseServiceBiz;
++import com.gaotu.yunying.student.center.domain.model.roster.RenewalStudentTagsRecallRequest;
++import com.gaotu.yunying.student.center.domain.service.sync.data.FieldsConvertDataQueryServiceImpl;
++import com.gaotu.yunying.student.center.domain.service.sync.data.UserClazzMarkInfoDataQueryServiceImpl;
++import com.gaotu.yunying.student.center.infrastructure.dao.mapper.UserClazzMarkInfoMapper;
++import com.gaotu.yunying.student.center.infrastructure.dao.service.impl.UserClazzMarkInfoDaoImpl;
++import com.gaotu.yunying.student.center.infrastructure.exception.BusinessException;
++import com.gaotu.yunying.student.center.job.handler.RecallRenewalStudentTagsHandler;
++import com.sun.net.httpserver.HttpExchange;
++import com.sun.net.httpserver.HttpServer;
++import com.xxl.job.core.biz.model.ReturnT;
++
++/**
++ * 使用真实 MyBatis、H2 和 ES HTTP 客户端验证回溯；不启动应用或连接外部环境。
++ *
++ * @author masheng
++ * @date 2026/11/04 15:00
++ */
++public class RenewalStudentTagsRecallServiceTest {
++
++    private final ObjectMapper json = new ObjectMapper();
++    private final List<Map<String, Object>> documents = new ArrayList<>();
++    private final Map<Long, ClazzDO> classes = new HashMap<>();
++    private final List<String> requests = new ArrayList<>();
++    private final List<String> writes = new ArrayList<>();
++    private HttpServer server;
++    private RestHighLevelClient largeClient;
++    private RestHighLevelClient smallClient;
++    private SqlSession session;
++    private JdbcTemplate jdbc;
++    private UserClazzMarkInfoDaoImpl dao;
++    private RenewalStudentTagsRecallService service;
++    private RenewalStudentTagsRecallRequest request;
++    private List<Map<String, Object>> selected;
++    private int offset;
++    private int pageSize;
++    private boolean conflict;
++    private boolean timedOut;
++    private boolean failScroll;
++
++    @Before
++    public void setUp() throws Exception {
++        DriverManagerDataSource dataSource = new DriverManagerDataSource(
++                "jdbc:h2:mem:renewal_tags;MODE=MySQL;DB_CLOSE_DELAY=-1", "sa", "");
++        jdbc = new JdbcTemplate(dataSource);
++        jdbc.execute("DROP TABLE IF EXISTS user_clazz_mark_info");
++        jdbc.execute("CREATE TABLE user_clazz_mark_info (id BIGINT AUTO_INCREMENT PRIMARY KEY,"
++                + "user_id BIGINT,clazz_number BIGINT,account_id BIGINT,color INT,layer INT,tags VARCHAR(1000),"
++                + "create_time TIMESTAMP,update_time TIMESTAMP,UNIQUE(user_id,clazz_number))");
++        MybatisConfiguration configuration = new MybatisConfiguration();
++        configuration.setMapUnderscoreToCamelCase(true);
++        configuration.addMapper(UserClazzMarkInfoMapper.class);
++        MybatisSqlSessionFactoryBean factory = new MybatisSqlSessionFactoryBean();
++        factory.setDataSource(dataSource);
++        factory.setConfiguration(configuration);
++        // 本用例由数据库生成主键，为框架提供确定的测试 ID 生成器。
++        factory.setGlobalConfig(new GlobalConfig().setIdentifierGenerator(entity -> 1L));
++        factory.setMapperLocations(new ClassPathResource("mapper/UserClazzMarkInfoMapper.xml"));
++        session = factory.getObject().openSession(true);
++        UserClazzMarkInfoMapper mapper = session.getMapper(UserClazzMarkInfoMapper.class);
++        dao = new UserClazzMarkInfoDaoImpl();
++        ReflectionTestUtils.setField(dao, "baseMapper", mapper);
++        ReflectionTestUtils.setField(dao, "userClazzMarkInfoMapper", mapper);
++
++        server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
++        server.createContext("/", this::handleEs);
++        server.start();
++        HttpHost host = new HttpHost("127.0.0.1", server.getAddress().getPort());
++        largeClient = new RestHighLevelClient(RestClient.builder(host).setPathPrefix("/large"));
++        smallClient = new RestHighLevelClient(RestClient.builder(host).setPathPrefix("/small"));
++        ClazzSyncAclService clazzAcl = mock(ClazzSyncAclService.class);
++        when(clazzAcl.listByNumbersFromCache(anyList())).thenAnswer(invocation -> {
++            List<Long> numbers = invocation.getArgument(0);
++            return numbers.stream().filter(classes::containsKey).map(classes::get).collect(Collectors.toList());
++        });
++        service = new RenewalStudentTagsRecallService();
++        ReflectionTestUtils.setField(service, "studentSubclazzClient", largeClient);
++        ReflectionTestUtils.setField(service, "studentServeClient", smallClient);
++        ReflectionTestUtils.setField(service, "clazzSyncAclService", clazzAcl);
++        ReflectionTestUtils.setField(service, "userClazzMarkInfoDao", dao);
++        request = new RenewalStudentTagsRecallRequest();
++        request.setScene("continuationService");
++        request.setEndDate("2026-02-01");
++        request.setBatchSize(2);
++        request.setIntervalMillis(0);
++    }
++
++    @After
++    public void tearDown() throws Exception {
++        Thread.interrupted();
++        if (session != null) {
++            session.close();
++        }
++        if (largeClient != null) {
++            largeClient.close();
++        }
++        if (smallClient != null) {
++            smallClient.close();
++        }
++        if (server != null) {
++            server.stop(0);
++        }
++    }
++
++    @Test
++    public void dryRunScansAllPagesAndHonorsClassCreationBoundary() throws Exception {
++        addDocument("old", 10, 100, "2025-12-31", Collections.emptyList());
++        addDocument("boundary", 20, 200, "2026-01-01", Collections.emptyList());
++        addDocument("upper", 30, 300, "2026-02-01", Collections.emptyList());
++        saveTags(10, 100, "1");
++        saveTags(20, 200, "2");
++        saveTags(30, 300, "3");
++
++        RenewalStudentTagsRecallService.RecallResult result = service.recall(request);
++
++        assertThat(result.getScanned()).isEqualTo(3);
++        assertThat(result.getOutOfRange()).isEqualTo(2);
++        assertThat(result.getPlanned()).isEqualTo(1);
++        assertThat(result.getUpdated()).isZero();
++        assertThat(writes).isEmpty();
++        assertThat(requests).contains("DELETE /large/_search/scroll");
++        assertThat(jdbc.queryForObject("SELECT COUNT(*) FROM user_clazz_mark_info", Integer.class)).isEqualTo(3);
++    }
++
++    @Test
++    public void writesTagsAndExplicitClearWithoutChangingOtherFieldsOrCreatingDocuments() throws Exception {
++        addDocument("first", 10, 100, "2026-01-01", Arrays.asList(8, 9));
++        addDocument("second", 10, 100, "2026-01-01", Collections.emptyList());
++        addDocument("clear", 20, 200, "2026-01-01", Collections.singletonList(9));
++        saveTags(10, 100, "1, 2,1");
++        saveTags(20, 200, "");
++        request.setDryRun(false);
++
++        RenewalStudentTagsRecallService.RecallResult result = service.recall(request);
++
++        assertThat(result.getUpdated()).isEqualTo(3);
++        assertThat(writes).hasSize(2);
++        Map<String, Object> action = json.readValue(writes.get(0).split("\n")[0], Map.class);
++        Map<String, Object> update = (Map<String, Object>) action.get("update");
++        assertThat(update).containsEntry("_index", "physical-2026").containsEntry("if_seq_no", 7)
++                .containsEntry("if_primary_term", 1);
++        Map<String, Object> body = json.readValue(writes.get(0).split("\n")[1], Map.class);
++        assertThat((Map<String, Object>) body.get("doc")).containsOnlyKeys("studentTags")
++                .containsEntry("studentTags", Arrays.asList(1, 2));
++        assertThat(writes.get(1)).contains("\"studentTags\":[]").doesNotContain("upsert", "color", "layer");
++        assertThat(jdbc.queryForObject("SELECT tags FROM user_clazz_mark_info WHERE user_id=100", String.class))
++                .isEqualTo("1, 2,1");
++    }
++
++    @Test
++    public void smallSceneUsesSmallClientAndClassFilter() throws Exception {
++        request.setScene("microContinuationService");
++        request.setClazzNumbers(Collections.singletonList(20L));
++        request.setDryRun(false);
++        addDocument("excluded", 10, 100, "2026-01-01", Collections.emptyList());
++        addDocument("selected", 20, 200, "2026-01-01", Collections.emptyList());
++        saveTags(20, 200, "2");
++
++        assertThat(service.recall(request).getUpdated()).isEqualTo(1);
++        assertThat(requests).contains("POST /small/ads_small_clazz_user/_search", "POST /small/_bulk");
++        assertThat(requests).noneMatch(path -> path.contains("/large/"));
++        assertThat(writes.get(0)).contains("selected").doesNotContain("excluded");
++    }
++
++    @Test
++    public void missingNullAndUnchangedSourcesAreCountedWithoutWrites() throws Exception {
++        addDocument("missing", 10, 100, "2026-01-01", Collections.singletonList(9));
++        addDocument("null", 20, 200, "2026-01-01", Collections.singletonList(9));
++        addDocument("same", 30, 300, "2026-01-01", Arrays.asList(1, 2));
++        saveTags(20, 200, null);
++        saveTags(30, 300, "1,2");
++        // 干扰记录：同学员不同班级、同班级不同学员都不能错误匹配。
++        saveTags(99, 100, "8");
++        saveTags(10, 999, "8");
++        request.setDryRun(false);
++
++        RenewalStudentTagsRecallService.RecallResult result = service.recall(request);
++
++        assertThat(result.getMissingSource()).isEqualTo(2);
++        assertThat(result.getUnchanged()).isEqualTo(1);
++        assertThat(result.getUpdated()).isZero();
++        assertThat(writes).isEmpty();
++    }
++
++    @Test
++    public void conflictingWriteFailsAndStillReleasesScroll() {
++        addDocument("conflict", 10, 100, "2026-01-01", Collections.emptyList());
++        saveTags(10, 100, "1");
++        request.setDryRun(false);
++        conflict = true;
++
++        assertThatThrownBy(() -> service.recall(request)).isInstanceOf(IOException.class)
++                .hasMessageContaining("version_conflict_engine_exception");
++        assertThat(requests).contains("DELETE /large/_search/scroll");
++    }
++
++    @Test
++    public void timeoutFailsBeforeAnyWriteAndReleasesScroll() {
++        timedOut = true;
++        assertThatThrownBy(() -> service.recall(request)).isInstanceOf(IOException.class)
++                .hasMessageContaining("查询超时");
++        assertThat(writes).isEmpty();
++        assertThat(requests).contains("DELETE /large/_search/scroll");
++    }
++
++    @Test
++    public void scrollFailureIsNotReportedAsSuccess() {
++        addDocument("first", 10, 100, "2026-01-01", Collections.emptyList());
++        failScroll = true;
++        assertThatThrownBy(() -> service.recall(request)).isInstanceOf(Exception.class);
++        assertThat(requests).contains("DELETE /large/_search/scroll");
++    }
++
++    @Test
++    public void missingClassMetadataFailsWithoutWriting() {
++        addDocument("unknown", 10, 100, "2026-01-01", Collections.emptyList());
++        classes.clear();
++        request.setDryRun(false);
++        assertThatThrownBy(() -> service.recall(request)).isInstanceOf(IOException.class)
++                .hasMessageContaining("班级创建时间");
++        assertThat(writes).isEmpty();
++    }
++
++    @Test
++    public void missingDocumentVersionFailsWithoutWriting() {
++        addDocument("versionless", 10, 100, "2026-01-01", Collections.emptyList());
++        documents.get(0).remove("_seq_no");
++        documents.get(0).remove("_primary_term");
++        saveTags(10, 100, "1");
++        request.setDryRun(false);
++        assertThatThrownBy(() -> service.recall(request)).isInstanceOf(IOException.class)
++                .hasMessageContaining("并发版本");
++        assertThat(writes).isEmpty();
++    }
++
++    @Test
++    public void malformedSourceTagsFailWithoutWriting() {
++        addDocument("invalid", 10, 100, "2026-01-01", Collections.emptyList());
++        saveTags(10, 100, "bad-tag");
++        request.setDryRun(false);
++        assertThatThrownBy(() -> service.recall(request)).isInstanceOf(NumberFormatException.class);
++        assertThat(writes).isEmpty();
++        assertThat(requests).contains("DELETE /large/_search/scroll");
++    }
++
++    @Test
++    public void invalidSceneAndDateRangeAreRejectedBeforeIo() {
++        request.setScene("refundPrevention");
++        assertThatThrownBy(() -> service.recall(request)).isInstanceOf(BusinessException.class);
++        request.setScene("continuationService");
++        request.setBeginDate("2025-12-31");
++        assertThatThrownBy(() -> service.recall(request)).isInstanceOf(BusinessException.class);
++        request.setBeginDate("2026-02-01");
++        assertThatThrownBy(() -> service.recall(request)).isInstanceOf(BusinessException.class);
++        request.setBeginDate("2026-02-30");
++        assertThatThrownBy(() -> service.recall(request)).isInstanceOf(BusinessException.class);
++        request.setBeginDate("2026-01-01");
++        request.setEndDate(null);
++        assertThatThrownBy(() -> service.recall(request)).isInstanceOf(BusinessException.class);
++        assertThat(requests).isEmpty();
++    }
++
++    @Test
++    public void invalidBatchOrExplicitEmptyClassListDoesNotBecomeFullScan() {
++        request.setBatchSize(501);
++        assertThatThrownBy(() -> service.recall(request)).isInstanceOf(BusinessException.class);
++        request.setBatchSize(2);
++        request.setClazzNumbers(Collections.emptyList());
++        assertThatThrownBy(() -> service.recall(request)).isInstanceOf(BusinessException.class);
++        request.setClazzNumbers(Collections.singletonList(null));
++        assertThatThrownBy(() -> service.recall(request)).isInstanceOf(BusinessException.class);
++        request.setClazzNumbers(null);
++        request.setDryRun(null);
++        assertThatThrownBy(() -> service.recall(request)).isInstanceOf(BusinessException.class);
++        assertThat(requests).isEmpty();
++    }
++
++    @Test
++    public void nullSourceTagsCanBeDisplayedAsEmptyInsteadOfThrowing() {
++        saveTags(10, 100, null);
++        UserClazzMarkInfoDataQueryServiceImpl query = new UserClazzMarkInfoDataQueryServiceImpl();
++        ReflectionTestUtils.setField(query, "userClazzMarkInfoDao", dao);
++        Map<String, Object> row = new HashMap<>();
++        row.put("clazzNumber", 10L);
++        row.put("userId", 100L);
++        query.buildData(new DataContext(Collections.singleton("studentTags"), "ods"), Collections.singletonList(row));
++        assertThat((List<?>) row.get("studentTags")).isEmpty();
++    }
++
++    @Test
++    public void explicitlyClearedTagsRemoveStaleDisplayNames() {
++        FieldsConvertDataQueryServiceImpl converter = new FieldsConvertDataQueryServiceImpl();
++        BaseServiceBiz enums = mock(BaseServiceBiz.class);
++        when(enums.getStudentTagMapFromCache()).thenReturn(Collections.singletonMap("1", "重点关注"));
++        when(enums.getAllTextbookVersionMap()).thenReturn(Collections.emptyMap());
++        ReflectionTestUtils.setField(converter, "baseServiceBiz", enums);
++        ReflectionTestUtils.setField(converter, "subjectConvertValueFields", Collections.emptySet());
++        Map<String, Object> empty = new HashMap<>();
++        empty.put("studentTags", Collections.emptyList());
++        empty.put("studentTagNames", Collections.singletonList("旧标签"));
++        Map<String, Object> tagged = new HashMap<>();
++        tagged.put("studentTags", Collections.singletonList(1));
++        converter.buildData(new DataContext(Collections.singleton("studentTagNames"), "ods"), Arrays.asList(empty, tagged));
++        assertThat((List<?>) empty.get("studentTagNames")).isEmpty();
++        assertThat((List<String>) tagged.get("studentTagNames")).containsExactly("重点关注");
++    }
++
++    @Test
++    public void jobDefaultsToDryRunAndReportsBadParametersAsFailure() {
++        addDocument("first", 10, 100, "2026-01-01", Collections.emptyList());
++        saveTags(10, 100, "1");
++        RecallRenewalStudentTagsHandler job = new RecallRenewalStudentTagsHandler();
++        ReflectionTestUtils.setField(job, "objectMapper", json);
++        ReflectionTestUtils.setField(job, "renewalStudentTagsRecallService", service);
++        ReturnT<String> result = job.execute("{\"scene\":\"continuationService\",\"endDate\":\"2026-02-01\",\"intervalMillis\":0}");
++        assertThat(result.getCode()).isEqualTo(ReturnT.SUCCESS_CODE);
++        assertThat(result.getMsg()).contains("planned=1", "updated=0");
++        assertThat(writes).isEmpty();
++        assertThat(job.execute("{}").getCode()).isEqualTo(ReturnT.FAIL_CODE);
++        assertThat(job.execute("invalid-json").getCode()).isEqualTo(ReturnT.FAIL_CODE);
++    }
++
++    private void saveTags(long clazz, long user, String tags) {
++        jdbc.update("INSERT INTO user_clazz_mark_info (clazz_number,user_id,tags) VALUES (?,?,?)", clazz, user, tags);
++    }
++
++    @Test
++    public void queryConfigScriptIsRepeatableAndPreservesExistingRows() throws Exception {
++        jdbc.execute("CREATE SCHEMA IF NOT EXISTS ees_data");
++        jdbc.execute("DROP TABLE IF EXISTS ees_data.es_query_config");
++        jdbc.execute("CREATE TABLE ees_data.es_query_config (id BIGINT AUTO_INCREMENT PRIMARY KEY,"
++                + "identification VARCHAR(100),field_name VARCHAR(100),type INT,command VARCHAR(100),is_del INT)");
++        jdbc.update("INSERT INTO ees_data.es_query_config (id,identification,field_name,type,command,is_del) "
++                + "VALUES (42,'continuationService','studentTags',2,'basic',0)");
++        Path script = Paths.get("doc/renewal-student-tags/query-config.sql");
++        if (!Files.exists(script)) {
++            script = Paths.get("..").resolve(script);
++        }
++        try (Connection connection = jdbc.getDataSource().getConnection()) {
++            ScriptUtils.executeSqlScript(connection, new FileSystemResource(script));
++            ScriptUtils.executeSqlScript(connection, new FileSystemResource(script));
++        }
++        assertThat(jdbc.queryForObject("SELECT COUNT(*) FROM ees_data.es_query_config", Integer.class)).isEqualTo(6);
++        assertThat(jdbc.queryForObject("SELECT id FROM ees_data.es_query_config WHERE identification='continuationService' "
++                + "AND field_name='studentTags' AND type=2 AND command='basic'", Long.class)).isEqualTo(42L);
++    }
++
++    private void addDocument(String id, long clazz, long user, String date, List<Integer> tags) {
++        ClazzDO info = new ClazzDO();
++        info.setNumber(clazz);
++        info.setCreateTime(LocalDate.parse(date).atStartOfDay(ZoneId.of("Asia/Shanghai")).toInstant().toEpochMilli());
++        classes.put(clazz, info);
++        Map<String, Object> source = new HashMap<>();
++        source.put("clazzNumber", clazz);
++        source.put("userId", user);
++        source.put("studentTags", tags);
++        Map<String, Object> hit = new HashMap<>();
++        hit.put("_index", "physical-2026");
++        hit.put("_id", id);
++        hit.put("_score", 1);
++        hit.put("_seq_no", 7);
++        hit.put("_primary_term", 1);
++        hit.put("_source", source);
++        documents.add(hit);
++    }
++
++    private void handleEs(HttpExchange exchange) throws IOException {
++        String path = exchange.getRequestURI().getPath();
++        String method = exchange.getRequestMethod();
++        requests.add(method + " " + path);
++        String body = StreamUtils.copyToString(exchange.getRequestBody(), StandardCharsets.UTF_8);
++        String response;
++        int status = 200;
++        if ("DELETE".equals(method)) {
++            response = "{\"succeeded\":true,\"num_freed\":1}";
++        } else if (path.endsWith("/_bulk")) {
++            writes.add(body);
++            List<Map<String, Object>> items = new ArrayList<>();
++            String[] lines = body.split("\n");
++            for (int i = 0; i < lines.length; i += 2) {
++                Map<String, Object> action = (Map<String, Object>) json.readValue(lines[i], Map.class).get("update");
++                Map<String, Object> item = new HashMap<>();
++                item.put("_index", action.get("_index"));
++                item.put("_type", "_doc");
++                item.put("_id", action.get("_id"));
++                item.put("status", conflict ? 409 : 200);
++                if (conflict) {
++                    Map<String, String> error = new HashMap<>();
++                    error.put("type", "version_conflict_engine_exception");
++                    error.put("reason", "concurrent edit");
++                    item.put("error", error);
++                } else {
++                    item.put("_version", 2);
++                    item.put("result", "updated");
++                    item.put("_seq_no", 8);
++                    item.put("_primary_term", 1);
++                    item.put("_shards", shardInfo());
++                }
++                items.add(Collections.singletonMap("update", item));
++            }
++            response = "{\"took\":1,\"errors\":" + conflict + ",\"items\":" + json.writeValueAsString(items) + "}";
++        } else {
++            if (path.endsWith("/_search")) {
++                Map<String, Object> search = json.readValue(body, Map.class);
++                pageSize = ((Number) search.get("size")).intValue();
++                Map<String, Object> query = (Map<String, Object>) search.get("query");
++                Map<String, Object> terms = (Map<String, Object>) query.get("terms");
++                List<?> clazzNumbers = terms == null ? null : (List<?>) terms.get("clazzNumber");
++                selected = documents.stream().filter(hit -> clazzNumbers == null || clazzNumbers.stream().anyMatch(
++                        number -> ((Number) number).longValue() == ((Number) ((Map<?, ?>) hit.get("_source")).get("clazzNumber")).longValue()))
++                        .collect(Collectors.toList());
++                offset = 0;
++            }
++            if (failScroll && path.endsWith("/_search/scroll")) {
++                status = 400;
++                response = "{\"error\":{\"type\":\"search_context_missing_exception\",\"reason\":\"expired\"},\"status\":400}";
++            } else {
++                int end = Math.min(offset + pageSize, selected.size());
++                List<Map<String, Object>> page = selected.subList(offset, end);
++                offset = end;
++                response = "{\"_scroll_id\":\"cursor\",\"took\":1,\"timed_out\":" + timedOut
++                        + ",\"_shards\":" + json.writeValueAsString(shardInfo())
++                        + ",\"hits\":{\"total\":{\"value\":" + selected.size() + ",\"relation\":\"eq\"},"
++                        + "\"max_score\":1,\"hits\":" + json.writeValueAsString(page) + "}}";
++            }
++        }
++        byte[] bytes = response.getBytes(StandardCharsets.UTF_8);
++        exchange.getResponseHeaders().set("Content-Type", "application/json");
++        exchange.sendResponseHeaders(status, bytes.length);
++        exchange.getResponseBody().write(bytes);
++        exchange.close();
++    }
++
++    private Map<String, Integer> shardInfo() {
++        Map<String, Integer> shards = new HashMap<>();
++        shards.put("total", 1);
++        shards.put("successful", 1);
++        shards.put("failed", 0);
++        return shards;
++    }
++}
+diff --git a/student-center-job/src/main/java/com/gaotu/yunying/student/center/job/handler/RecallRenewalStudentTagsHandler.java b/student-center-job/src/main/java/com/gaotu/yunying/student/center/job/handler/RecallRenewalStudentTagsHandler.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..259800612f9722dad42510fab4e5b34f4dd4a9b0
+--- /dev/null
++++ b/student-center-job/src/main/java/com/gaotu/yunying/student/center/job/handler/RecallRenewalStudentTagsHandler.java
+@@ -0,0 +1,58 @@
++package com.gaotu.yunying.student.center.job.handler;
++
++import javax.annotation.Resource;
++
++import org.springframework.context.annotation.Profile;
++import org.springframework.stereotype.Component;
++
++import com.fasterxml.jackson.databind.ObjectMapper;
++import com.gaotu.yunying.student.center.domain.model.roster.RenewalStudentTagsRecallRequest;
++import com.gaotu.yunying.student.center.domain.service.roster.RenewalStudentTagsRecallService;
++import com.xxl.job.core.biz.model.ReturnT;
++import com.xxl.job.core.handler.IJobHandler;
++import com.xxl.job.core.handler.annotation.JobHandler;
++import com.xxl.job.core.log.XxlJobLogger;
++
++import lombok.extern.slf4j.Slf4j;
++
++/**
++ * 续班业务标签手动回溯入口，默认预演。
++ *
++ * @author masheng
++ * @date 2026/11/04 15:00
++ */
++@Slf4j
++@Component
++@Profile({"test", "beta", "prod"})
++@JobHandler("recallRenewalStudentTagsHandler")
++public class RecallRenewalStudentTagsHandler extends IJobHandler {
++
++    @Resource
++    private ObjectMapper objectMapper;
++    @Resource
++    private RenewalStudentTagsRecallService renewalStudentTagsRecallService;
++
++    /**
++     * 执行手动回溯，参数或数据异常时返回失败。
++     *
++     * @param param JSON 格式回溯参数
++     * @return 执行结果及统计信息
++     */
++    @Override
++    public ReturnT<String> execute(String param) {
++        try {
++            RenewalStudentTagsRecallRequest request = objectMapper.readValue(param, RenewalStudentTagsRecallRequest.class);
++            RenewalStudentTagsRecallService.RecallResult result = renewalStudentTagsRecallService.recall(request);
++            XxlJobLogger.log("续班标签回溯完成，scene={}，dryRun={}，result={}", request.getScene(), request.getDryRun(), result);
++            return new ReturnT<>(ReturnT.SUCCESS_CODE, result.toString());
++        } catch (InterruptedException e) {
++            Thread.currentThread().interrupt();
++            XxlJobLogger.log("续班标签回溯已中断");
++            return ReturnT.FAIL;
++        } catch (Exception e) {
++            log.error("续班标签回溯失败", e);
++            XxlJobLogger.log("续班标签回溯失败：{}", e.getMessage());
++            return ReturnT.FAIL;
++        }
++    }
++}
+diff --git a/student-center-service/src/main/java/com/gaotu/yunying/student/center/domain/model/roster/RenewalStudentTagsRecallRequest.java b/student-center-service/src/main/java/com/gaotu/yunying/student/center/domain/model/roster/RenewalStudentTagsRecallRequest.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..ae77f4ae174f2fc25f5f716b089ecded1af9fba7
+--- /dev/null
++++ b/student-center-service/src/main/java/com/gaotu/yunying/student/center/domain/model/roster/RenewalStudentTagsRecallRequest.java
+@@ -0,0 +1,37 @@
++package com.gaotu.yunying.student.center.domain.model.roster;
++
++import java.util.List;
++
++import io.swagger.annotations.ApiModelProperty;
++import lombok.Data;
++
++/**
++ * 续班标签回溯参数，时间范围按北京时间的班级创建日期判断。
++ *
++ * @author masheng
++ * @date 2026/11/04 15:00
++ */
++@Data
++public class RenewalStudentTagsRecallRequest {
++
++    @ApiModelProperty("续班场景：continuationService 或 microContinuationService")
++    private String scene;
++
++    @ApiModelProperty("班级创建日期下界，包含，格式 yyyy-MM-dd")
++    private String beginDate = "2026-01-01";
++
++    @ApiModelProperty("班级创建日期上界，不包含，必填，格式 yyyy-MM-dd")
++    private String endDate;
++
++    @ApiModelProperty("限定课程班级编号，不填时扫描该场景全部已有记录")
++    private List<Long> clazzNumbers;
++
++    @ApiModelProperty("预演时只统计，不写入 ES，默认 true")
++    private Boolean dryRun = true;
++
++    @ApiModelProperty("每批扫描记录数，范围 1 至 500")
++    private Integer batchSize = 200;
++
++    @ApiModelProperty("批次间隔毫秒数，范围 0 至 2000")
++    private Integer intervalMillis = 100;
++}
+diff --git a/student-center-service/src/main/java/com/gaotu/yunying/student/center/domain/service/roster/RenewalStudentTagsRecallService.java b/student-center-service/src/main/java/com/gaotu/yunying/student/center/domain/service/roster/RenewalStudentTagsRecallService.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..94a66212a018786856ef14e8a2adb60ab6df53dc
+--- /dev/null
++++ b/student-center-service/src/main/java/com/gaotu/yunying/student/center/domain/service/roster/RenewalStudentTagsRecallService.java
+@@ -0,0 +1,247 @@
++package com.gaotu.yunying.student.center.domain.service.roster;
++
++import java.io.IOException;
++import java.time.LocalDate;
++import java.time.ZoneId;
++import java.time.format.DateTimeParseException;
++import java.util.ArrayList;
++import java.util.Arrays;
++import java.util.Collections;
++import java.util.HashMap;
++import java.util.List;
++import java.util.Map;
++import java.util.Objects;
++import java.util.stream.Collectors;
++
++import javax.annotation.Resource;
++
++import org.apache.commons.collections4.CollectionUtils;
++import org.apache.commons.collections4.MapUtils;
++import org.apache.commons.lang3.StringUtils;
++import org.elasticsearch.action.bulk.BulkRequest;
++import org.elasticsearch.action.bulk.BulkResponse;
++import org.elasticsearch.action.search.ClearScrollRequest;
++import org.elasticsearch.action.search.SearchRequest;
++import org.elasticsearch.action.search.SearchResponse;
++import org.elasticsearch.action.search.SearchScrollRequest;
++import org.elasticsearch.action.support.WriteRequest;
++import org.elasticsearch.action.update.UpdateRequest;
++import org.elasticsearch.client.RequestOptions;
++import org.elasticsearch.client.RestHighLevelClient;
++import org.elasticsearch.common.unit.TimeValue;
++import org.elasticsearch.index.query.QueryBuilders;
++import org.elasticsearch.search.SearchHit;
++import org.elasticsearch.search.builder.SearchSourceBuilder;
++import org.springframework.stereotype.Service;
++
++import com.gaotu.student.data.client.acl.ClazzSyncAclService;
++import com.gaotu.student.data.client.acl.model.ClazzDO;
++import com.gaotu.yunying.student.center.constant.ScenePageCodeConstant;
++import com.gaotu.yunying.student.center.domain.model.roster.RenewalStudentTagsRecallRequest;
++import com.gaotu.yunying.student.center.domain.util.EsIndexUtil;
++import com.gaotu.yunying.student.center.domain.util.GaiaPageSceneUtil;
++import com.gaotu.yunying.student.center.infrastructure.dao.entity.UserClazzMarkInfo;
++import com.gaotu.yunying.student.center.infrastructure.dao.service.UserClazzMarkInfoDao;
++import com.gaotu.yunying.student.center.infrastructure.exception.BusinessErrorCode;
++import com.gaotu.yunying.student.center.infrastructure.exception.BusinessException;
++import com.gaotu.yunying.student.center.infrastructure.util.Tuple;
++
++import lombok.Data;
++import lombok.extern.slf4j.Slf4j;
++
++/**
++ * 从当前业务标签表回填续班索引，只更新已有文档的标签。
++ *
++ * @author masheng
++ * @date 2026/11/04 15:00
++ */
++@Slf4j
++@Service
++public class RenewalStudentTagsRecallService {
++
++    private static final String LARGE_INDEX = "ads_large_subclazz_user_index";
++    private static final TimeValue SCROLL_KEEP_ALIVE = TimeValue.timeValueMinutes(5);
++    private static final ZoneId BUSINESS_ZONE = ZoneId.of("Asia/Shanghai");
++
++    @Resource
++    private RestHighLevelClient studentSubclazzClient;
++    @Resource
++    private RestHighLevelClient studentServeClient;
++    @Resource
++    private ClazzSyncAclService clazzSyncAclService;
++    @Resource
++    private UserClazzMarkInfoDao userClazzMarkInfoDao;
++
++    /**
++     * 按班级创建日期回填标签，参数省略 dryRun 时仅预演。
++     *
++     * @param request 回溯场景、日期范围和执行参数
++     * @return 扫描、跳过、待更新及已更新记录数
++     * @throws IOException ES 请求失败或批量写入部分失败
++     * @throws InterruptedException 任务被中断
++     */
++    public RecallResult recall(RenewalStudentTagsRecallRequest request) throws IOException, InterruptedException {
++        long[] range = validate(request);
++        boolean large = ScenePageCodeConstant.RENEWAL_SERVICE.equals(request.getScene());
++        RestHighLevelClient client = large ? studentSubclazzClient : studentServeClient;
++        String index = large ? LARGE_INDEX : EsIndexUtil.SMALL_CLAZZ_USER_INDEX;
++        SearchSourceBuilder source = new SearchSourceBuilder().size(request.getBatchSize()).sort("_doc")
++                .seqNoAndPrimaryTerm(true).fetchSource(new String[]{"clazzNumber", "userId", "studentTags"}, null);
++        source.query(CollectionUtils.isEmpty(request.getClazzNumbers()) ? QueryBuilders.matchAllQuery()
++                : QueryBuilders.termsQuery("clazzNumber", request.getClazzNumbers()));
++        SearchRequest search = new SearchRequest(index).source(source).scroll(SCROLL_KEEP_ALIVE);
++        RecallResult result = new RecallResult();
++        String scrollId = null;
++        try {
++            SearchResponse response = client.search(search, RequestOptions.DEFAULT);
++            while (true) {
++                scrollId = response.getScrollId();
++                // ES 可能返回部分分片结果；不能将其当作完整回溯成功。
++                if (response.isTimedOut() || response.getFailedShards() > 0) {
++                    throw new IOException("标签回溯查询超时或存在失败分片");
++                }
++                SearchHit[] hits = response.getHits().getHits();
++                if (hits.length == 0) {
++                    return result;
++                }
++                if (StringUtils.isBlank(scrollId)) {
++                    throw new IOException("标签回溯查询未返回滚动游标");
++                }
++                if (Thread.currentThread().isInterrupted()) {
++                    throw new InterruptedException("标签回溯任务已中断");
++                }
++                recallBatch(client, hits, request, range, result);
++                log.info("续班标签回溯进度，scene={}，dryRun={}，result={}", request.getScene(), request.getDryRun(), result);
++                if (request.getIntervalMillis() > 0) {
++                    Thread.sleep(request.getIntervalMillis());
++                }
++                response = client.scroll(new SearchScrollRequest(scrollId).scroll(SCROLL_KEEP_ALIVE), RequestOptions.DEFAULT);
++            }
++        } finally {
++            if (StringUtils.isNotBlank(scrollId)) {
++                try {
++                    ClearScrollRequest clear = new ClearScrollRequest();
++                    clear.addScrollId(scrollId);
++                    client.clearScroll(clear, RequestOptions.DEFAULT);
++                } catch (Exception e) {
++                    log.warn("续班标签回溯游标清理失败，scene={}", request.getScene(), e);
++                }
++            }
++        }
++    }
++
++    private void recallBatch(RestHighLevelClient client, SearchHit[] hits, RenewalStudentTagsRecallRequest request,
++            long[] range, RecallResult result) throws IOException {
++        List<Long> clazzNumbers = Arrays.stream(hits).map(hit -> MapUtils.getLong(hit.getSourceAsMap(), "clazzNumber"))
++                .filter(Objects::nonNull).distinct().collect(Collectors.toList());
++        Map<Long, ClazzDO> clazzMap = clazzNumbers.isEmpty() ? Collections.emptyMap()
++                : clazzSyncAclService.listByNumbersFromCache(clazzNumbers).stream()
++                        .collect(Collectors.toMap(ClazzDO::getNumber, clazz -> clazz, (first, second) -> first));
++        Map<Tuple<Long, Long>, UserClazzMarkInfo> pairs = new HashMap<>();
++        for (SearchHit hit : hits) {
++            result.scanned++;
++            Long clazzNumber = MapUtils.getLong(hit.getSourceAsMap(), "clazzNumber");
++            Long userId = MapUtils.getLong(hit.getSourceAsMap(), "userId");
++            if (clazzNumber == null || userId == null || clazzNumber <= 0 || userId <= 0) {
++                throw new IOException("标签回溯记录缺少有效班级或学员编号，id=" + hit.getId());
++            }
++            ClazzDO clazz = clazzMap.get(clazzNumber);
++            if (clazz == null || clazz.getCreateTime() == null) {
++                throw new IOException("标签回溯未查到班级创建时间，clazzNumber=" + clazzNumber);
++            }
++            if (clazz.getCreateTime() < range[0] || clazz.getCreateTime() >= range[1]) {
++                result.outOfRange++;
++                continue;
++            }
++            UserClazzMarkInfo pair = new UserClazzMarkInfo();
++            pair.setClazzNumber(clazzNumber);
++            pair.setUserId(userId);
++            pairs.put(Tuple.of(userId, clazzNumber), pair);
++        }
++        if (pairs.isEmpty()) {
++            return;
++        }
++        Map<Tuple<Long, Long>, UserClazzMarkInfo> marks = userClazzMarkInfoDao
++                .listByUserClazzPairs(new ArrayList<>(pairs.values())).stream()
++                .collect(Collectors.toMap(mark -> Tuple.of(mark.getUserId(), mark.getClazzNumber()), mark -> mark));
++        BulkRequest bulk = new BulkRequest().setRefreshPolicy(WriteRequest.RefreshPolicy.NONE);
++        for (SearchHit hit : hits) {
++            Tuple<Long, Long> key = Tuple.of(MapUtils.getLong(hit.getSourceAsMap(), "userId"),
++                    MapUtils.getLong(hit.getSourceAsMap(), "clazzNumber"));
++            if (!pairs.containsKey(key)) {
++                continue;
++            }
++            UserClazzMarkInfo mark = marks.get(key);
++            if (mark == null || mark.getTags() == null) {
++                result.missingSource++;
++                continue;
++            }
++            List<Integer> tags = Arrays.stream(mark.getTags().split(",")).map(String::trim)
++                    .filter(StringUtils::isNotBlank).map(Integer::valueOf).distinct().collect(Collectors.toList());
++            if (tags.equals(hit.getSourceAsMap().get("studentTags"))) {
++                result.unchanged++;
++                continue;
++            }
++            if (hit.getSeqNo() < 0 || hit.getPrimaryTerm() <= 0) {
++                throw new IOException("标签回溯记录缺少并发版本，id=" + hit.getId());
++            }
++            // 使用扫描时的物理索引、版本，只更新存量记录，避免覆盖并发编辑或重建残缺文档。
++            bulk.add(new UpdateRequest(hit.getIndex(), hit.getId())
++                    .setIfSeqNo(hit.getSeqNo()).setIfPrimaryTerm(hit.getPrimaryTerm())
++                    .doc(Collections.singletonMap("studentTags", tags)));
++            result.planned++;
++        }
++        if (!request.getDryRun() && bulk.numberOfActions() > 0) {
++            BulkResponse response = client.bulk(bulk, RequestOptions.DEFAULT);
++            if (response.hasFailures()) {
++                throw new IOException("标签回溯批量写入失败，排查后重跑：" + response.buildFailureMessage());
++            }
++            result.updated += bulk.numberOfActions();
++        }
++    }
++
++    private long[] validate(RenewalStudentTagsRecallRequest request) {
++        if (request == null || !(ScenePageCodeConstant.RENEWAL_SERVICE.equals(request.getScene())
++                || GaiaPageSceneUtil.MICRO_RENEWAL_SERVICE.equals(request.getScene()))) {
++            throw BusinessException.withMsg(BusinessErrorCode.PARAM_ERROR, "仅支持大小班续班场景");
++        }
++        if (request.getDryRun() == null || request.getBatchSize() == null || request.getBatchSize() < 1
++                || request.getBatchSize() > 500 || request.getIntervalMillis() == null
++                || request.getIntervalMillis() < 0 || request.getIntervalMillis() > 2000
++                || (request.getClazzNumbers() != null && (request.getClazzNumbers().isEmpty()
++                || request.getClazzNumbers().size() > 500
++                || request.getClazzNumbers().stream().anyMatch(number -> number == null || number <= 0)))) {
++            throw BusinessException.withMsg(BusinessErrorCode.PARAM_ERROR, "批次、间隔、预演标志或班级列表不合法");
++        }
++        if (StringUtils.isBlank(request.getBeginDate()) || StringUtils.isBlank(request.getEndDate())) {
++            throw BusinessException.withMsg(BusinessErrorCode.PARAM_ERROR, "必须提供班级创建日期范围");
++        }
++        try {
++            LocalDate begin = LocalDate.parse(request.getBeginDate());
++            LocalDate end = LocalDate.parse(request.getEndDate());
++            if (begin.isBefore(LocalDate.of(2026, 1, 1)) || !begin.isBefore(end)) {
++                throw BusinessException.withMsg(BusinessErrorCode.PARAM_ERROR, "日期下界不得早于 2026-01-01，且必须小于上界");
++            }
++            return new long[]{begin.atStartOfDay(BUSINESS_ZONE).toInstant().toEpochMilli(),
++                    end.atStartOfDay(BUSINESS_ZONE).toInstant().toEpochMilli()};
++        } catch (DateTimeParseException e) {
++            throw new BusinessException(BusinessErrorCode.PARAM_ERROR, e);
++        }
++    }
++
++    /**
++     * 回溯统计均以 ES 文档条数计数，同一班级学员可对应多条辅导班记录。
++     *
++     * @author masheng
++     * @date 2026/11/04 15:00
++     */
++    @Data
++    public static class RecallResult {
++        private long scanned;
++        private long outOfRange;
++        private long missingSource;
++        private long unchanged;
++        private long planned;
++        private long updated;
++    }
++}
+diff --git a/student-center-service/src/main/java/com/gaotu/yunying/student/center/domain/service/sync/data/FieldsConvertDataQueryServiceImpl.java b/student-center-service/src/main/java/com/gaotu/yunying/student/center/domain/service/sync/data/FieldsConvertDataQueryServiceImpl.java
+index 416d674b0b50704834a614aeb786857d31558605..c3125723f6e59bb3dabe02adbe47e9e846e125e1 100644
+--- a/student-center-service/src/main/java/com/gaotu/yunying/student/center/domain/service/sync/data/FieldsConvertDataQueryServiceImpl.java
++++ b/student-center-service/src/main/java/com/gaotu/yunying/student/center/domain/service/sync/data/FieldsConvertDataQueryServiceImpl.java
+@@ -73,7 +73,8 @@ public class FieldsConvertDataQueryServiceImpl implements DataQueryServiceV2 {
+         List<EnumVo> finalCaCategoryEnum = caCategoryEnum;
+         dataMapList.forEach(dataMap -> {
+             List<Integer> studentTags = (List<Integer>) MapUtils.getObject(dataMap, "studentTags");
+-            if (CollectionUtils.isNotEmpty(studentTags)){
++            // 明确清空标签时也覆盖旧名称，避免列表继续展示上次的标签。
++            if (studentTags != null){
+                 List<String> studentTagNames = studentTags.stream().map(String::valueOf).map(studentTagMap::get).collect(Collectors.toList());
+                 dataMap.put("studentTagNames", studentTagNames);
+             }
+diff --git a/student-center-service/src/main/java/com/gaotu/yunying/student/center/domain/service/sync/data/UserClazzMarkInfoDataQueryServiceImpl.java b/student-center-service/src/main/java/com/gaotu/yunying/student/center/domain/service/sync/data/UserClazzMarkInfoDataQueryServiceImpl.java
+index 602775cbeee71835347d9de7014940df198bd08d..f0de69abfdbafeff974a0c4377675d34a5347d75 100644
+--- a/student-center-service/src/main/java/com/gaotu/yunying/student/center/domain/service/sync/data/UserClazzMarkInfoDataQueryServiceImpl.java
++++ b/student-center-service/src/main/java/com/gaotu/yunying/student/center/domain/service/sync/data/UserClazzMarkInfoDataQueryServiceImpl.java
+@@ -68,7 +68,7 @@ public class UserClazzMarkInfoDataQueryServiceImpl implements DataQueryServiceV2
+                     dataMap.put("layer", userClazzMarkInfo.getLayer());
+                 }
+                 if (getTags){
+-                    List<Integer> studentTags = Lists.newArrayList(userClazzMarkInfo.getTags().split(","))
++                    List<Integer> studentTags = Lists.newArrayList(StringUtils.defaultString(userClazzMarkInfo.getTags()).split(","))
+                             .stream().filter(StringUtils::isNotBlank).map(Integer::parseInt).collect(Collectors.toList());
+                     dataMap.put("studentTags", studentTags);
+                 }

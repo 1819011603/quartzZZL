@@ -18,8 +18,12 @@ tags: [需求]
 
 ## 当前核对与 P0 验证（2026-11-05）
 
+- 新增[MR1528静态比较](artifacts/20261105-p0-detail-round3/mr-comparison.md)：源7f9bca38→release基线5dce9cdb，8文件。空标签名称清理和回溯执行保护可借鉴；createTime圈班违背owner已定min(begin_time)口径，不直接采用。仅评估，无业务改动；P0相关说明已保存并回读revision148。
+
+- P0对象信息补查：文档revision147受影响小节已回读，B侧班名已通过TEST course_center.clazz查得，两个同名后置班按ID/课程区分；详见[补证](artifacts/20261105-p0-detail-round2/verification.json)。其余原验证沿用revision146；可复现程度分档及标签/备注信息补查尚未完成，见[本轮交接](artifacts/20261105-p0-detail-round2/handoff.md)。
+
 - **本轮真实调用与文档已交付，整需求仍未全验收。**统一主需求两个子项；前端不改、不新部署；未证实新后端bug，因此本轮无代码修改/commit/push。
-- [P0执行文档](https://gaotuedu.feishu.cn/wiki/KeCZwdJTBiIJDJkX8lRcGb9gnCs)已回读revision99，保留12卡并补25项契约、真实IP调用、预期/实际、恢复、责任与阻塞；本地同源[P0-case.md](P0-case.md)。
+- [P0执行文档](https://gaotuedu.feishu.cn/wiki/KeCZwdJTBiIJDJkX8lRcGb9gnCs)已回读revision146：保留12卡/25项契约，补36步逐项预期/实际/证据及原始30条P0对账；原始响应与只读查询已附同文档并下载核SHA一致。[补全核验](artifacts/20261105-p0-detail/document-verification.json)，本地同源[P0-case.md](P0-case.md)。仅文档补全，不代表30条业务全部通过。
 - [本轮运行核验与证据](artifacts/20261105-runtime-w1/runtime-review.md)：product-b 07ba05df固定IP关联查询正常；cart a34016fd固定IP主从双模式、B不自动扩大、主年级扩科和正缓存命中已验。已有B→A反向原始保存/推荐/清理日志已复用，未重放。
 - 企微：目标student-center泳道无实例；固定默认TEST release-5dce9cdb读取真实标签[2]/需中关注，与DB一致。备注直连code3，网关好友false，不等于备注成功或封禁证据。
 - 已核部署：test-gtbg-dev-3的cart a34016fd、order/order-b 0cc8ef68、product-b 07ba05df均UP；product-c仍ab120d4e。实际IP、请求和trace见verify及运行核验。

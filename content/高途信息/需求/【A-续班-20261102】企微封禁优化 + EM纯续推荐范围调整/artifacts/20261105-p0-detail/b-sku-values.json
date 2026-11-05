@@ -1,0 +1,44 @@
+{
+  "time": "2026-11-05T16:33:41.134735",
+  "environment": "TEST",
+  "sku": {
+    "sql": "SELECT CAST(product_sku_number AS CHAR) product_sku_number,CAST(product_spu_number AS CHAR) product_spu_number,product_sku_name,product_type,isdel,sale_status,up_status,sale_price FROM product_sku WHERE product_sku_number IN (586090628920764416,586097025945298944)",
+    "rows": [
+      {
+        "product_sku_number": "586090628920764416",
+        "product_spu_number": "18314034380997186",
+        "product_sku_name": "默认规格",
+        "product_type": 6004,
+        "isdel": 0,
+        "sale_status": 40,
+        "up_status": 0,
+        "sale_price": 0
+      },
+      {
+        "product_sku_number": "586097025945298944",
+        "product_spu_number": "18314034380997207",
+        "product_sku_name": "默认规格",
+        "product_type": 6004,
+        "isdel": 0,
+        "sale_status": 40,
+        "up_status": 0,
+        "sale_price": 0
+      }
+    ]
+  },
+  "clazz_relation": {
+    "sql": "SELECT CAST(product_sku_number AS CHAR) product_sku_number,CAST(clazz_number AS CHAR) clazz_number,isdel FROM product_sku_clazz_relation WHERE product_sku_number IN (586090628920764416,586097025945298944)",
+    "rows": [
+      {
+        "product_sku_number": "586090628920764416",
+        "clazz_number": "586090628920764416",
+        "isdel": 0
+      },
+      {
+        "product_sku_number": "586097025945298944",
+        "clazz_number": "586097025945298944",
+        "isdel": 0
+      }
+    ]
+  }
+}

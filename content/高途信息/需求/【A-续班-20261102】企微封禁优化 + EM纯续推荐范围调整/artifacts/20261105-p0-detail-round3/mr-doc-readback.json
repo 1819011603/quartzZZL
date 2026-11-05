@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"section\" requested-start=\"doxcnSzLxrxCyD6a2PK0aXvc8xb\"><h1 id=\"doxcnSzLxrxCyD6a2PK0aXvc8xb\">回溯验收与外部前置（不冒充已执行P0）</h1><p id=\"doxcnm0bPCrHrE52yCEQgsZqfDe\">回溯最终口径为班级开始时间 <code>min(课节begin_time) &gt;= 2026-01-01</code>，再更新班下学员；包含小班，不额外补 clazzRoomType。大数据负责圈班SQL/落回溯表，EES负责studentTags字段集与Job，执行者负责ES回读。需要边界前/后两班及大小班样本，逐个比对任务输入、ES更新时间和标签值；报告总量、成功/失败/剩余数量。当前未执行，不能以历史回溯数量代替今天实测。现有方案及责任清单见 回溯方案（本地：artifacts/20261104-owner-ready/pure-relation-backfill-plan.md）。PROD配置保持上线待办。</p><h2 id=\"doxcnxkrHS2nN9oMTQ1W0uS3zce\">他人MR的可借鉴项与不能照搬的口径（静态比较）</h2><p id=\"doxcnZtblYbT5ITPgDmBQ1KcaMc\">已只读核对 <a href=\"https://git.baijia.com/gaotu/yunying_workbench/student-center/-/merge_requests/1528/diffs\">student-center MR1528</a>：feature-weixin-opt → release，源提交7f9bca3872c10f4b6766f1b3a612404805e271fb，基线及查询时目标提交均5dce9cdbb0f2398ff05b2d8ef866637f03a5630d；1个提交、8个文件。主要是标签回溯及空标签转换，没有改备注、好友、身份鉴权或封禁判断。未合并、未部署、未运行其测试，不能当成当前环境已具备。</p><p id=\"doxcnTw2MLZPej0q2QOZjPfLKgc\">可借鉴回溯的预演、小范围班级参数、按学员+课程班级批查、只更新已有文档标签、并发版本保护、部分失败报失败和清游标。现有方案已有圈班→更新班下学员链路，参考这些执行保护即可，不因此另建平行任务。其批写部分失败时可能已有部分成功，但updated只在整批成功时累加，失败后需按具体对象回读，不把该计数当最终落值数量。</p><p id=\"doxcn1zM9MVXkMkHxVCJPzYYcPg\"><b>不能直接采用其日期条件。</b><a href=\"https://git.baijia.com/gaotu/yunying_workbench/student-center/-/blob/7f9bca3872c10f4b6766f1b3a612404805e271fb/student-center-service/src/main/java/com/gaotu/yunying/student/center/domain/service/roster/RenewalStudentTagsRecallService.java#L148\">该实现148–154行</a>按班级createTime过滤；本需求已确认按min(课节begin_time)≥2026-01-01，不使用创建时间，也不额外补clazzRoomType。新增辨别性反例要求：创建在阈值前但最早课节在阈值当天/之后应入选；最早课节在阈值前不能因创建时间较新而入选。真实边界班号尚未固定，实际结果为没做；不得把规则说明当实测或用MR反改owner口径。</p><p id=\"doxcnJbgHtWecKVcENF5zbwvamw\">另可借鉴清空时同步清空标签显示名称，已在P0-10补充验收。null兼容主要针对异常数据/环境，不证明正常生产存在缺陷。结论是有可参考的保护和验收细节，当前无需合并或改业务代码；是否存在运行问题仍须实际复现。</p></fragment>",
+      "document_id": "ZQUXdlDxWoknJhxu914c2uVYnBr",
+      "revision_id": 148
+    }
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.70",
+      "latest": "1.0.99",
+      "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+    }
+  }
+}

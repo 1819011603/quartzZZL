@@ -1,0 +1,43 @@
+{
+  "sampleTime": "2026-11-05T16:18:04.119799",
+  "environment": "TEST",
+  "queryResults": {
+    "inactive_plan": {
+      "sql": "SELECT CAST(number AS CHAR) number,name,type,status FROM renew_master WHERE status NOT IN (1,2) AND is_del=0 ORDER BY id DESC LIMIT 3",
+      "error": "(1054, \"Unknown column 'is_del' in 'where clause'\")"
+    },
+    "known_classes": {
+      "sql": "SELECT CAST(number AS CHAR) number,name,CAST(course_number AS CHAR) course_number FROM clazz WHERE number IN (574882679202260992,586090628920764416)",
+      "rows": [
+        {
+          "number": "574882679202260992",
+          "name": "续班归因-正经前置班-0820",
+          "course_number": "500775364606343168"
+        }
+      ]
+    },
+    "known_tag_user": {
+      "sql": "SELECT CAST(user_id AS CHAR) user_id,name,grade,user_status FROM user WHERE user_id=7489648821",
+      "rows": [
+        {
+          "user_id": "7489648821",
+          "name": "",
+          "grade": "13",
+          "user_status": 0
+        }
+      ]
+    },
+    "tag_baseline": {
+      "sql": "SELECT id,CAST(user_id AS CHAR) user_id,CAST(clazz_number AS CHAR) clazz_number,account_id,tags FROM user_clazz_mark_info WHERE user_id=7489648821 AND clazz_number=574882679202260992",
+      "rows": [
+        {
+          "id": 120542,
+          "user_id": "7489648821",
+          "clazz_number": "574882679202260992",
+          "account_id": 90247,
+          "tags": "2"
+        }
+      ]
+    }
+  }
+}

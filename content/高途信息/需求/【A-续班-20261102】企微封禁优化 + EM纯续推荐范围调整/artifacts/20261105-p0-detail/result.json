@@ -1,0 +1,14 @@
+{
+  "summary": "**已完成**：同一主需求两子项来源与25项契约核对；P0文档改为12卡、36步逐项预期/实际/证据，原30条P0逐项映射，补真实样本、过滤计算和证据附件；确认远端分支属于gaotu-fe-promotions。\n**已完成**：存在专用banshan-case skill，实际更新主入口和doc-templates，权威源/安装副本同步。\n**未完成**：缺独占样本或真实运行证据的场景仍逐项保留，未将文档完善写成全需求验收。",
+  "artifacts": [
+    "https://gaotuedu.feishu.cn/wiki/KeCZwdJTBiIJDJkX8lRcGb9gnCs",
+    "/Users/gaotu/bridge/payload/skills-cold/banshan-case/SKILL.md",
+    "/Users/gaotu/bridge/payload/skills-cold/banshan-case/references/doc-templates.md",
+    "/Users/gaotu/.claude/skills-cold/banshan-case/SKILL.md",
+    "/Users/gaotu/.claude/skills-cold/banshan-case/references/doc-templates.md",
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-detail/document-verification.json",
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-detail/review.json"
+  ],
+  "verification": "**已验证**：飞书revision146回读；12卡/36步/25契约/30原P0均保留，31个文内链接有效；附件下载SHA256与原文件一致。新增TEST只读核实状态0反例、标签原值和单向关联；历史接口/订单证据明确绑定原版本，不算本轮新执行。\nSkill最终语义/链接检查通过，主库审计与84条路由0失败；权威源按正确skills根目录审计errors0/warnings0，源/安装副本一致。归档审计0错误，5项既有篇幅/历史记录提示已复核。\n**推断未验证/没做**：页面与线上Git版本映射、真实标签/备注写入及恢复、EM关键隔离反例、新版完整下单/主体/优惠、历史回溯；无业务代码修改、部署、生产写入、造数或对外联系。",
+  "blocker": "尚不能让整份P0无需准备直接执行：缺大小班独占可写学员组、真实HTTP身份/企微好友及原备注；待开始/10项允许、三计划/无从在读/同科商品、不同学期/碰撞去重/缓存异常、未购可售下单/主体优惠与回溯边界样本和实证仍不足。部分历史HTTP原件及B侧真实班名未取得；大班旧规则链接仍OAuth跳转。缺口已集中写入文档，未在本单禁止的写入范围内补造。"
+}

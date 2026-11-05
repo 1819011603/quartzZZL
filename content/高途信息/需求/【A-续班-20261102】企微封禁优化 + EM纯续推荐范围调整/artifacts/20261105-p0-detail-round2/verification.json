@@ -1,0 +1,11 @@
+{
+  "revision": 147,
+  "scope": "仅P0-04受影响小节回读，复用revision146全篇验证及skill自检",
+  "checks": {
+    "correct_database": true,
+    "B_class_name_and_course_present": true,
+    "same_name_different_id_explained": true,
+    "old_missing_name_statement_removed": true
+  },
+  "business_execution": "本轮未重调推荐或重放写操作"
+}

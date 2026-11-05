@@ -1,0 +1,17 @@
+{
+  "summary": "已完成 P0 专用 skill 收敛：主入口仅保留业务语言优先、真实对象/样本计算/逐步预期实际证据/覆盖版本/未知边界的强制路由，完整清单唯一维护于 doc-templates reference；保留历史证据条件复用与本次只读/不造数/不写平台边界。权威源与安装副本已同步。",
+  "complete": true,
+  "remaining": [],
+  "blocker": "",
+  "artifacts": [
+    "/Users/gaotu/bridge/payload/skills-cold/banshan-case/SKILL.md",
+    "/Users/gaotu/bridge/payload/skills-cold/banshan-case/references/doc-templates.md",
+    "/Users/gaotu/.claude/skills-cold/banshan-case/SKILL.md",
+    "/Users/gaotu/.claude/skills-cold/banshan-case/references/doc-templates.md",
+    "/tmp/w1-p0-243aa61a/skill-final-semantic.log",
+    "/tmp/w1-p0-243aa61a/skill-final-links.log",
+    "/tmp/w1-p0-243aa61a/skill-final-verify.log",
+    "/tmp/w1-p0-243aa61a/skill-final-artifacts.log"
+  ],
+  "verification": "semantic-walk PASS；引用路径检查 PASS；主库 LC_ALL=en_US.UTF-8 verify_skills.sh 退出 0（audit errors=0/warnings=0，触发评测84条0失败）；源/安装副本 shasum -a 256 一致。冷库单独 audit 的25个不可达与2个脚本长度告警为既有 payload 内路径/历史问题，未改动。"
+}
