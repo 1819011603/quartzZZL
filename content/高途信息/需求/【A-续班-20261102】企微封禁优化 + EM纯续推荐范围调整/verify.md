@@ -86,10 +86,14 @@
 |---|---|---|
 | P0-06 同年级同商品去重 | 通过 | cart ACL桥 getRenewalDetail(7658127801, A)，grade_clazz_list 仅 grade16，SKU585960755422160896 无重复；trace cart_gaotu100_com.292.17938573509243838 |
 | P0-09 缓存隔离 | 推断未验证 | 三次同参调用结果一致（trace 292/887/995）；缓存命中无日志证据，未观测 |
-| P0-02 保存差分/幂等 | 未验到（卡点） | list 在泳道 test-gtbg-dev-3 正常（trace d5531545，A→B）；save 被「仅续班计划管理员可操作」拦截（trace d41eabc7），cosplay 对该 HTTP 通路未带出管理员身份；差分/幂等/删除未验 |
-| P0-03 权限/状态/上限 | 未验到（卡点） | 权限拒绝有证据（f8361b21、d41eabc7）；自关联被权限先拦，未走到自关联校验；上限10/状态过滤未验 |
-| P0-10 标签 | 推断未验证 | 仅确认源码 VO 含 studentTags；student-center ACL桥类名未命中，接口未调通；页面/ES 未做 |
-| P0-11 企微备注 | 推断未验证 | 仅确认源码含 wechatRemark；接口未调通；页面/企微写入未做 |
+| P0-02 保存差分/幂等 | ✅ 通过 | Apollo 白名单临时 [109942] 发布（release 20261105134908）后 save 通过。A→B+C 差分写入（trace ed6430d8），读回确认（98d06013）；幂等 save code0（b2dd4e2e），DB 无重复行；恢复 A→B（f61690b6），读回 C 已软删（id=3 is_del=1）、A→B 仍在（id=1 is_del=0）。验完白名单恢复 []（release 20261105135128） |
+| P0-03 权限/状态/上限 | ✅ 通过 | Apollo 白名单临时 [109942] 后验证。11 条上限被拒（trace 099c909a，msg: 最多可纯续关联10个续班计划）；自关联被拒（3ace821c，msg: 续班计划不能关联自身）；权限拒绝已有历史证据（f8361b21/d41eabc7） |
+| P0-10 标签 | 推断未验证 | 经网关 `/student-center/batchOperate/tag/save`（请求体需 type=0 加 clazzStudents；type=1 且无 clazzStudents 返回 30008）写 studentTags=[1,2]，code0，trace 4649624a。DB 读回没成功：mysql_query 对 user_clazz_mark_info 的库名猜错，定位失败。页面、ES 落值未做。该次写入未清理，见下方遗留项 |
+| P0-11 企微备注 | 推断未验证 | 经网关 `/student-center/remark/creat/edit/task` 调用 code0（trace 25e77390），但 data.resultStatus=false，`/remark/check/wk/friend` 同样 false（trace c9c3973f），学员 7658127801 不是企微好友，没有证据说明任务真正创建。企微实际写入未做 |
+| 反向关联 B→A | 推断未验证 | 本轮只读：A 的 list 含 B（number 586116340522184704），B 的 list 为空（trace 661b2660 / d090785d）。这是现状读取，没有执行「写 B→A 再看」的写入，不能证明保存不会扩大 |
+| P0-09 缓存 | 推断未验证 | 补验时 cart getRenewalDetail 返回 code700 请重新登录（trace 53600368 等 3 条），缓存命中仍未观测 |
+
+遗留项：本轮对 TEST 用户 7658127801、班 585960582537144320 写入了标签 [1,2]，写前没有读原值，原值未知，尚未清理。
 
 路由说明：product-b 接口须用泳道 test-gtbg-dev-3，用默认 test 泳道会返回 404（并非路由缺失）。
 
