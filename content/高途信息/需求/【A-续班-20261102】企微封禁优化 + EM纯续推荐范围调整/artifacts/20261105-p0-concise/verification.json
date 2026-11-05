@@ -18,8 +18,8 @@
     "p0_is_self": true,
     "revision_before": 319,
     "chars_before": 131653,
-    "revision_after": 355,
-    "chars_after": 26795,
+    "revision_after": 365,
+    "chars_after": 29757,
     "archive_before": "artifacts/20261105-p0-concise/feishu-revision-before.xml",
     "old_attachments": 7,
     "old_attachments_note": "覆盖写入后旧附件块不再出现在新正文；全文与附件引用已本地存档，飞书版本历史可回滚"
@@ -335,5 +335,36 @@
     "small_class_friend": "7707218285/7707218286 friend0（round10），缺小班好友样本",
     "c_end": "纯续链接由 /reachPortal/reportConfig/getReportUrl 动态生成，无固定带参 URL",
     "cross_year_page": "接口子集 round10 已验证，页面无独立入口"
+  },
+  "c_end": {
+    "entry": {
+      "api": "POST /reachPortal/reportConfig/getRecommendAppInfo",
+      "traceId": "b3084f50-7ba1-4751-970f-12d452cddee0.0.3",
+      "url": "https://test-m.gaotu.cn/suggestShoppingCart?renewalNumber=585960797778243584&seller_id=7682&p_client=1"
+    },
+    "page": {
+      "uid": "7658127801",
+      "product": "586097025945298944",
+      "price": "0"
+    },
+    "select": {
+      "api": "POST /cart/web/renewal/productSelectConfirm",
+      "traceId": "90ba9ce9-6a65-480b-8ec1-f5b2d28823f3.0.3",
+      "response": "code=0"
+    },
+    "price": {
+      "api": "POST /cart/web/renewal/price",
+      "traceId": "07822e8e-193a-46f7-b533-a69cfd3707ad.0.3",
+      "totalPrice": 0,
+      "totalDiscount": 0
+    },
+    "cross_mode_mock_pay": "接口层复用 round7：大班 588861402658267136(100)+小班 586097025945298944(0)，支付 433655835275559341，订单 433655835275559853/433655835275560365",
+    "incomplete": "C 端点去结算仅触发选品/价格，未跳订单确认；当前登录 uid 仅可选 0 元小班，¥100 有价商品不在可选范围，页面下单/mock 支付未验",
+    "page_limit": {
+      "uid": "7658127801",
+      "change_course": "未查询到满足条件的课程",
+      "big_class_trace": "5096f3a3-ab23-4337-8e5e-0c3fe09e6508.0.3",
+      "note": "换大班班号仍同一 URL，当前登录只可选 0 元小班，¥100 大班不可选"
+    }
   }
 }

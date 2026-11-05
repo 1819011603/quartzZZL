@@ -129,6 +129,16 @@
 <p><b>预期</b>：两种发送类型、两个入口均显示正确规范链接；链接不混入正文；点击不提交发送；返回保留编辑内容与目标；不新增不支持的发送类型。</p>
 <p><b>实际/证据</b>：<b>已验证（页面，round7）</b>：默认页私聊/群聊、联系学员官方私聊/群聊四组合均显示链接，两规范实际打开，返回草稿可编辑并已取消丢弃，未发送。课节管理/我的线索、全部业务角色与前端发布 SHA 映射未全验。</p>
 
+<h2>EM-05 C 端纯续链接与下单</h2>
+<p><b>步骤</b></p>
+<ol>
+<li seq="auto">用班级 574882679202260992、续班计划 585960797778243584 调 <code>/reachPortal/reportConfig/getRecommendAppInfo</code> 取售卖主体链接。</li>
+<li seq="auto">用现有 Chrome 打开返回的高途链接 <code>suggestShoppingCart?renewalNumber=585960797778243584&seller_id=7682&p_client=1</code>（登录 uid 7658127801）。</li>
+<li seq="auto">勾选商品，点「去结算」，观察选品/价格请求与页面跳转。</li>
+</ol>
+<p><b>预期</b>：入口可达；页面展示关联推荐商品；选品/价格接口 code=0；价格与页面合计一致；跨商品/跨班型组合可一起下单或明确限制；mock 支付成功并能回读订单。</p>
+<p><b>实际/证据</b>：<b>入口/选品/价格已验证</b>：getRecommendAppInfo trace <code>b3084f50-7ba1-4751-970f-12d452cddee0.0.3</code> 返回高途/途途两条链接；页面展示小班商品 586097025945298944（¥0），选品 <code>productSelectConfirm</code> trace <code>90ba9ce9-6a65-480b-8ec1-f5b2d28823f3.0.3</code>，价格 <code>/cart/web/renewal/price</code> trace <code>07822e8e-193a-46f7-b533-a69cfd3707ad.0.3</code>，totalPrice=0、totalDiscount=0。<b>未完成</b>：点「去结算」只触发选品/价格，未观察到订单确认页/下单/mock 支付；跨商品/跨班型与 mock 支付沿用 round7 接口证据（大班 588861402658267136=100 分、小班 586097025945298944=0 分，支付 433655835275559341，订单 433655835275559853/433655835275560365）。有价商品重试：点「更换课程」返回「未查询到满足条件的课程」；换大班班号 588861397654462464 取链接仍为同一 URL（trace <code>5096f3a3-ab23-4337-8e5e-0c3fe09e6508.0.3</code>），当前登录 uid 7658127801 页面只可选 0 元小班，¥100 大班不在其可选范围，因此页面 ¥100 下单未验。完整 C 端下单需可购有价商品/登录态，本轮未取得。证据：<code>page-evidence/w1-cend-summary.md</code>。</p>
+
 <h1>四、原链路回归（未直接改，但可能受上游影响）</h1>
 <p>原则：直接改动验证与关联接口回归分开记录；关联回归必须有真实调用证据，不能只读代码推断。</p>
 <table>
@@ -205,11 +215,22 @@
 <tbody>
 <tr><td>EM 页面保存</td><td><b>已验证（页面）</b>：确认弹窗后 POST /relation/save，A/B，code=0，trace <code>57d3d20f-b921-46ce-aeaa-507ffa6515f5.0.0</code>；保存后重开弹窗仍为「已关联 (2)」。截图 <code>w1-em-save-result.png</code>、<code>w1-em-relation-reopen.png</code>。</td></tr>
 <tr><td>缓存运行态</td><td><b>配置已核实</b>：cart.gaotu100.com / TEST / application 的 <code>renewal.query.cache.enabled=false</code>、<code>renewal.pure.relation.enabled=true</code>。关闭态可用；<b>开启态未验，需改 Apollo 后复验</b>。</td></tr>
-<tr><td>C 端入口</td><td><b>未验证</b>：纯续链接由 <code>/reachPortal/reportConfig/getReportUrl</code> 动态生成（入参含 clazzNumber、renewalPlanId），没有固定带参 URL；需产品/前端确认固定入口或提供可复现链接。</td></tr>
+<tr><td>C 端入口</td><td><b>入口/选品/价格已验证</b>：getRecommendAppInfo 返回高途链接并实际打开；页面登录 uid 7658127801，展示小班商品 586097025945298944，选品/价格接口 code=0（trace 见 6.6）。<b>完整下单页面未完成</b>：点「去结算」未跳订单确认，需登录/签证码；跨商品/跨班型与 mock 支付复用 round7 接口证据。</td></tr>
 <tr><td>小班批量第三人 / 小班备注</td><td><b>未验证</b>：小班受控学员 7707218285/7707218286 好友数为 0（round10 friend 校验 notFriendCount=2），缺小班企微好友样本；大班页面标签弹窗已通过，备注弹窗本轮未打开。</td></tr>
 <tr><td>跨学年/学期 + 有值从扩科</td><td><b>接口子集已验证</b>（round10：主扩科不被从计划污染、跨年级纯续保留）；页面无独立入口，未验 → 推断未验证。</td></tr>
 </tbody>
 </table>
+<h2>6.6 C 端入口/下单验证（本轮）</h2>
+<table>
+<thead><tr><th>项</th><th>结果</th></tr></thead>
+<tbody>
+<tr><td>入口获取</td><td><b>已验证</b>：getRecommendAppInfo trace <code>b3084f50-7ba1-4751-970f-12d452cddee0.0.3</code> 返回高途/途途两条 URL；实际打开高途 <code>https://test-m.gaotu.cn/suggestShoppingCart?renewalNumber=585960797778243584&seller_id=7682&p_client=1</code>。</td></tr>
+<tr><td>页面/选品</td><td><b>已验证</b>：页面登录 uid 7658127801，展示小班商品 586097025945298944（¥0）；选品 <code>productSelectConfirm</code> trace <code>90ba9ce9-6a65-480b-8ec1-f5b2d28823f3.0.3</code> code=0。</td></tr>
+<tr><td>价格</td><td><b>已验证</b>：<code>/cart/web/renewal/price</code> trace <code>07822e8e-193a-46f7-b533-a69cfd3707ad.0.3</code>，totalPrice=0、totalDiscount=0，与页面合计 ¥0 一致。</td></tr>
+<tr><td>跨商品/跨班型 + mock 支付</td><td><b>接口层已验证（复用 round7）</b>：大班 588861402658267136（100 分）+ 小班 586097025945298944（0 分），应付 100×1+0×1−0=100 分；支付 433655835275559341，订单 433655835275559853/433655835275560365。C 端页面未完成下单/mock 支付。</td></tr>
+<tr><td>C 端完整下单</td><td><b>未完成</b>：点「去结算」只触发选品/价格，未跳转订单确认；「更换课程」返回无满足条件课程，换大班班号仍同一 URL，当前 uid 7658127801 仅可选 0 元小班，¥100 大班不可选。页面 ¥100 下单未验，转接口层兜底。</td></tr>
+</tbody>
+</table>
 
 <h1>七、证据与版本</h1>
-<p>旧版全文与 7 份历史附件引用备份：<code>artifacts/20261105-p0-concise/feishu-revision-before.xml</code>（revision 319，131653 字符）。本轮在 v2 基础上补充 code=35 结论、页面级验证（续班服务标签弹窗通过、EM 计划页跳过）与 7 项剩余范围定性；页面截图和 network 原件（含 EM 保存 <code>w1-em-save-result.png</code>、status1 弹窗 <code>w1-status1-modal.png</code>）见 <code>artifacts/20261105-p0-concise/page-evidence/</code>。新增证据 JSON 见 <code>artifacts/20261105-p0-concise/verification.json</code>（重新挂文末）。历史轮次的订单、DB、ES、页面证据仍保留在归档目录 <code>artifacts/20261105-p0-execution-round7</code>、<code>round11</code> 等，不重复粘贴到正文。</p>
+<p>旧版全文与 7 份历史附件引用备份：<code>artifacts/20261105-p0-concise/feishu-revision-before.xml</code>（revision 319，131653 字符）。本轮在 v2 基础上补充 code=35 结论、页面级验证（续班服务标签弹窗通过、EM 计划页跳过）与 7 项剩余范围定性；页面截图和 network 原件（含 EM 保存 <code>w1-em-save-result.png</code>、status1 弹窗 <code>w1-status1-modal.png</code>、C 端入口/选品/价格 <code>w1-cend-summary.md</code>）见 <code>artifacts/20261105-p0-concise/page-evidence/</code>。新增证据 JSON 见 <code>artifacts/20261105-p0-concise/verification.json</code>（重新挂文末）。历史轮次的订单、DB、ES、页面证据仍保留在归档目录 <code>artifacts/20261105-p0-execution-round7</code>、<code>round11</code> 等，不重复粘贴到正文。</p>
