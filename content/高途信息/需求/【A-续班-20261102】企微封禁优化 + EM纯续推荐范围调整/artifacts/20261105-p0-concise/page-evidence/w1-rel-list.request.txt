@@ -1,0 +1,6 @@
+GET https://test-mi.gaotu100.com/product-b/b/renewMaster/relation/list?renewMasterNumber=588858850300473344
+traffic-env: test-gtbg-dev-3
+b_client: EES
+traceId: 842d509e-eb1c-44d2-b734-d82a5b408e97.0.0
+response: w1-rel-list.network-response
+page: https://test-mi.gaotu100.com/ark/app-promotions/continuation-classes/list

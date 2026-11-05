@@ -18,8 +18,8 @@
     "p0_is_self": true,
     "revision_before": 319,
     "chars_before": 131653,
-    "revision_after": 322,
-    "chars_after": 19945,
+    "revision_after": 355,
+    "chars_after": 26795,
     "archive_before": "artifacts/20261105-p0-concise/feishu-revision-before.xml",
     "old_attachments": 7,
     "old_attachments_note": "覆盖写入后旧附件块不再出现在新正文；全文与附件引用已本地存档，飞书版本历史可回滚"
@@ -260,12 +260,80 @@
     {
       "item": "小班批量第三人未选/小班备注",
       "in_scope": true,
-      "result": "小班单人标签已验证（round9），批量第三人/备注未验 → 子集已验证、剩余没做"
+      "result": "大班页面标签弹窗本轮已验证；小班单人标签已验证（round9）；小班批量第三人/备注模板未验 → 子集已验证、剩余没做"
     },
     {
       "item": "历史 min(begin_time) 回溯",
       "in_scope": false,
       "result": "非本次代码改动（大数据/ES 外部后续），不在本次验证范围"
     }
-  ]
+  ],
+  "page_verification": {
+    "connection": "chrome-devtools-cli --autoConnect（无 debug 端口、未新开/重启 Chrome）",
+    "verified": [
+      {
+        "page": "EM 续班计划管理 /ark/app-promotions/continuation-classes/list",
+        "result": "296 行加载；计划ID 588858850300473344 查到「W1-P0-243aa61a-EM独立主计划」，纯续关联弹窗显示「已关联续班计划 (2)」A/B",
+        "network": "GET /product-b/b/renewMaster/relation/list?renewMasterNumber=588858850300473344 code=0",
+        "traceId": "842d509e-eb1c-44d2-b734-d82a5b408e97.0.0"
+      },
+      {
+        "page": "EES 续班服务 /crm/cronus/clazzRosterOL?tabKey=continuationService",
+        "result": "加载成功，重置筛选后 19 行",
+        "network": "/component/student-center/roster/renewal/page code=0 total=19 含 studentTags",
+        "traceId": "7c7384be-e726-4a6a-a8f4-2f12c0f67bdd.0.0"
+      },
+      {
+        "page": "学员标签弹窗",
+        "result": "批量选择 1 人后打开「设置标签」，显示关注程度/报名意向/学员性格/临时标签",
+        "network": "/fairy/student-center/subclazz/learnSituation/getAllStudentTags",
+        "traceId": "401b4e75-465d-4f47-9cf4-b92379c5c3e7.0.0"
+      },
+      {
+        "page": "EM 关联弹窗保存",
+        "result": "确认弹窗后实际 POST /relation/save，A/B，code=0；保存后重开弹窗仍「已关联 (2)」",
+        "traceId": "57d3d20f-b921-46ce-aeaa-507ffa6515f5.0.0",
+        "screenshots": [
+          "page-evidence/w1-em-save-result.png",
+          "page-evidence/w1-em-relation-reopen.png"
+        ]
+      },
+      {
+        "page": "status1 页面",
+        "result": "588872241920421888 显示「待开始」，纯续关联弹窗打开且「已关联 (0)」",
+        "traceId": "2107bd48-80af-49bf-b274-07d5fd1d72c7.0.0",
+        "screenshot": "page-evidence/w1-status1-modal.png"
+      }
+    ],
+    "skipped": [
+      {
+        "page": "修改企微备注弹窗",
+        "reason": "选中 7704846439 后点击未出现弹窗/未发请求，页面加载 WechatTip，疑似非好友；未反复重试"
+      }
+    ],
+    "screenshots": [
+      "page-evidence/w1-ees-continuation.png",
+      "page-evidence/w1-tag-modal.png",
+      "page-evidence/w1-em-relation-modal.png",
+      "page-evidence/w1-remark.png"
+    ],
+    "network_files": [
+      "page-evidence/w1-page-438.network-request",
+      "page-evidence/w1-page-438.network-response",
+      "page-evidence/w1-tags.network-request",
+      "page-evidence/w1-tags.network-response",
+      "page-evidence/w1-rel-list.network-request",
+      "page-evidence/w1-rel-list.network-response"
+    ]
+  },
+  "config_check": {
+    "cart.gaotu100.com/TEST/renewal.query.cache.enabled": "false",
+    "cart.gaotu100.com/TEST/renewal.pure.relation.enabled": "true",
+    "note": "开启态未验，需改 Apollo"
+  },
+  "remaining": {
+    "small_class_friend": "7707218285/7707218286 friend0（round10），缺小班好友样本",
+    "c_end": "纯续链接由 /reachPortal/reportConfig/getReportUrl 动态生成，无固定带参 URL",
+    "cross_year_page": "接口子集 round10 已验证，页面无独立入口"
+  }
 }

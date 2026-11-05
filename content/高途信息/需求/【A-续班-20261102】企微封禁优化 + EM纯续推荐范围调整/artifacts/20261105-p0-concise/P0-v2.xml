@@ -57,7 +57,7 @@
 <li seq="auto">取消勾选 B 后不保存，重开弹窗核对；再移除 B 并确认，最后恢复 A+B。</li>
 </ol>
 <p><b>预期</b>：保存前只显示原关联；保存后立即显示 A+B，number 为字符串、adminList/adminName 完整、按创建时间倒序；取消不落库；移除只影响 B；恢复后仍为 A+B；B 不反向获得 A。</p>
-<p><b>实际/证据</b>：<b>已验证（接口层）</b>：本轮 POST save（A+B，幂等）trace <code>042fbf96-6975-45e1-8384-e13025c8b682.0.3</code>，紧随 GET list trace <code>4c82b6f7-fb92-4780-9e57-5c53fea7ffab.0.3</code> 返回 A+B 两条、adminList 弓雪萌/唐稳01、status=2。页面按钮/确认时机待页面验证。</p>
+<p><b>实际/证据</b>：<b>已验证（接口层）</b>：本轮 POST save（A+B，幂等）trace <code>042fbf96-6975-45e1-8384-e13025c8b682.0.3</code>，紧随 GET list trace <code>4c82b6f7-fb92-4780-9e57-5c53fea7ffab.0.3</code> 返回 A+B 两条、adminList 弓雪萌/唐稳01、status=2。页面已部分验证：<b>EM 续班计划管理</b>页加载成功，计划ID 588858850300473344 查到「W1-P0-243aa61a-EM独立主计划」；打开「纯续关联」弹窗显示「已关联续班计划 (2)」A/B，network <code>/product-b/b/renewMaster/relation/list</code> trace <code>842d509e-eb1c-44d2-b734-d82a5b408e97.0.0</code>，截图 <code>page-evidence/w1-em-relation-modal.png</code>。页面保存/取消确认时机未实际点击（避免写操作），保存行为以接口层 trace 为准。</p>
 
 <h2>EM-02 推荐并集：主+从生效，从计划不反向</h2>
 <p><b>步骤</b></p>
@@ -88,6 +88,16 @@
 <p><b>预期</b>：应付 100×1+0×1−0=100 分（整数分，无额外取整）；同一支付单包含两件且归属同一学员；跨模式合法，同模式真重复仍拦截。</p>
 <p><b>实际/证据</b>：<b>已验证（round7）</b>：支付 433655835275559341 下大班订单 433655835275559853（100 分）、小班 433655835275560365（0 分），均归 7707220467、status=2，pay_status=1、real_price=100；同模式重复由 order 0cc8ef68 修复并已有 17 规则+9 H2 回归。优惠/异主体/C 端页面没做。</p>
 
+<h2>QW-00 续班服务页加载与标签/备注入口</h2>
+<p><b>步骤</b></p>
+<ol>
+<li seq="auto">用 177071 打开 EES <code>/crm/cronus/clazzRosterOL?tabKey=continuationService</code>，选择大班 574882679202260992。</li>
+<li seq="auto">重置筛选后查询，确认表格加载与「学员标签」列。</li>
+<li seq="auto">勾选 1 名学员，查看批量操作「添加标签」「修改企微备注」。</li>
+</ol>
+<p><b>预期</b>：页面加载 19 行；学员标签列存在；两个批量入口可见且可打开。</p>
+<p><b>实际/证据</b>：<b>已验证（页面）</b>：19 行加载成功；「添加标签」弹窗显示关注程度/报名意向/学员性格/临时标签；network <code>/roster/renewal/page</code> trace <code>7c7384be-e726-4a6a-a8f4-2f12c0f67bdd.0.0</code>，标签字典 trace <code>401b4e75-465d-4f47-9cf4-b92379c5c3e7.0.0</code>；截图 <code>page-evidence/w1-ees-continuation.png</code>、<code>w1-tag-modal.png</code>。备注弹窗本轮未打开（选中 7704846439 疑似非好友），见 QW-02。</p>
+
 <h2>QW-01 批量标签、单人编辑与筛选</h2>
 <p><b>步骤</b></p>
 <ol>
@@ -97,7 +107,7 @@
 <li seq="auto">小班班 588506026511294464 用 7707218285/7707218286 重复批量/单人/筛选/恢复。</li>
 </ol>
 <p><b>预期</b>：批量后 2/2，单人后 3/2，对照始终无标签；筛选只命中保存值且切换不残留；清空后为空，取消不保存；新旧标签源与页面一致。</p>
-<p><b>实际/证据</b>：<b>已验证（接口/DB，round7/round9）</b>：大班批量 2/2→单人 3/2→清空空/空，对照无行，trace <code>2490b2bb-d793-4568-b2fc-4900f59a7e4f.0.3</code>、<code>7df78fce-b798-49da-ad2a-98813493e9b8.0.3</code>、<code>f868a36f-547b-43fa-8bf7-25fae48adcf4.0.3</code>；小班 7707218285 空→3→筛选仅本人→恢复空，trace <code>e62074d4-1ecc-4ac3-8bdd-4e906bcfd817.0.0</code>、<code>851ee85a-7815-4d4c-9844-894ea8a6965f.0.0</code>。ES 父熔断曾阻塞页面筛选，round8 两实例受控筛选已恢复，但完整页面矩阵未全验。</p>
+<p><b>实际/证据</b>：<b>已验证（接口/DB，round7/round9）</b>：大班批量 2/2→单人 3/2→清空空/空，对照无行，trace <code>2490b2bb-d793-4568-b2fc-4900f59a7e4f.0.3</code>、<code>7df78fce-b798-49da-ad2a-98813493e9b8.0.3</code>、<code>f868a36f-547b-43fa-8bf7-25fae48adcf4.0.3</code>；小班 7707218285 空→3→筛选仅本人→恢复空，trace <code>e62074d4-1ecc-4ac3-8bdd-4e906bcfd817.0.0</code>、<code>851ee85a-7815-4d4c-9844-894ea8a6965f.0.0</code>。<b>页面级（本轮）</b>：EES 续班服务页加载 19 行，批量选择 1 人 →「添加标签」弹窗显示关注程度/报名意向/学员性格/临时标签；页面 network <code>/roster/renewal/page</code> trace <code>7c7384be-e726-4a6a-a8f4-2f12c0f67bdd.0.0</code>，标签字典 trace <code>401b4e75-465d-4f47-9cf4-b92379c5c3e7.0.0</code>；截图见 <code>page-evidence/w1-ees-continuation.png</code>、<code>w1-tag-modal.png</code>。完整筛选/恢复矩阵仍需接口与页面结合看。</p>
 
 <h2>QW-02 批量修改企微备注</h2>
 <p><b>步骤</b></p>
@@ -168,25 +178,38 @@
 <tr><td>POST /component/student-center/roster/renewal/page</td><td>同上 default 参数（不带 clazzNumbers）</td><td>code=0，list=[]（无匹配班级过滤）</td><td>5eeecd04-c3b0-466b-9911-27d623a1a35f.0.3</td><td>通过（接口无异常）</td></tr>
 </tbody>
 </table>
-<h2>6.3 页面级验证（阻塞）</h2>
+<h2>6.3 页面级验证（两条主链路通过）</h2>
 <ul>
-<li><b>已尝试 5 种方式</b>：① 新开 Chrome + 8888 cookie 代理，页面跳 CAS；② CDP 注入 168 条 cookie，只加载工作台壳；③ 回连现有 9222/DevToolsActivePort，ws 超时；④ 复制已登录 Profile 1 的 Cookies/Local Storage 到独立目录启动，仍跳 CAS（cookie 为 app-bound 加密，换目录无法解密）；⑤ 恢复正常 Chrome 后 9222 在听，但 autoConnect 找不到 DevToolsActivePort，直接 ws 返回 403（未带 remote-allow-origins）。</li>
-<li><b>目标</b>：EM 续班计划列表/纯续关联弹窗，或 EES 续班服务标签/备注主链路。本轮<b>没有拿到页面级通过</b>，不以接口结果替代页面。</li>
-<li><b>需要 owner</b>：在正常 Chrome 打开 <code>chrome://inspect/#remote-debugging</code> 勾选启用远程调试，或在新开测试浏览器人工登录一次 177071；下一轮可直接用 chrome skill 的 autoConnect 复验。残余风险：页面渲染、按钮/确认时机、前端发布 SHA 映射未验。</li>
+<li><b>接入方式</b>：chrome-devtools-cli 的 <code>--autoConnect</code>，未加 debug 端口、未新开/重启 Chrome，连 owner 已登录实例。</li>
+<li><b>EM 续班计划列表/关联弹窗：已验证</b>：<code>test-mi.gaotu100.com/ark/app-promotions/continuation-classes/list</code> 加载「续班计划管理」296 行；计划ID过滤测试数据改为否后查到 588858850300473344「W1-P0-243aa61a-EM独立主计划」，点「纯续关联」显示「已关联续班计划 (2)」A/B。network <code>GET /product-b/b/renewMaster/relation/list?renewMasterNumber=588858850300473344</code> trace <code>842d509e-eb1c-44d2-b734-d82a5b408e97.0.0</code>，code=0，A/B 与 adminList 弓雪萌/唐稳01 与接口层一致；截图 <code>page-evidence/w1-em-relation-modal.png</code>，请求/响应原件同目录。页面已点「确定」保存：确认弹窗后实际发出 <code>POST /product-b/b/renewMaster/relation/save</code>，请求 A/B，响应 code=0，trace <code>57d3d20f-b921-46ce-aeaa-507ffa6515f5.0.0</code>；保存后重开弹窗仍显示「已关联 (2)」。截图 <code>page-evidence/w1-em-save-result.png</code>、<code>w1-em-relation-reopen.png</code>，请求/响应原件同目录。</li>
+<li><b>EES 续班服务/标签弹窗：已验证</b>：<code>/crm/cronus/clazzRosterOL?tabKey=continuationService</code> 加载成功，重置筛选后 19 行；批量选择 1 人 →「添加标签」弹窗显示关注程度/报名意向/学员性格/临时标签。network <code>/roster/renewal/page</code> trace <code>7c7384be-e726-4a6a-a8f4-2f12c0f67bdd.0.0</code>（code=0、total=19、含 studentTags），标签字典 trace <code>401b4e75-465d-4f47-9cf4-b92379c5c3e7.0.0</code>；截图 <code>page-evidence/w1-ees-continuation.png</code>、<code>w1-tag-modal.png</code>。</li>
+<li><b>跳过</b>：「修改企微备注」点击后未出现弹窗/未发请求（选中 7704846439 非好友，页面加载 WechatTip）；小班批量第三人/小班备注未验。按 owner 策略跳过，未反复重试。</li>
+<li><b>残余风险</b>：EM 页面保存/确认时机、备注弹窗、前端发布 SHA 映射仍未验；不以接口结果替代页面。</li>
 </ul>
 <h2>6.4 剩余范围项定性（一次批量）</h2>
 <table>
 <thead><tr><th>剩余项</th><th>是否属本次改动影响面</th><th>本轮结论</th></tr></thead>
 <tbody>
-<tr><td>status1 页面正例</td><td>属于（状态校验是本次 save 的直接规则）</td><td>接口已验证 status1 保存（round8，管理员 90247 + DB 回读）；页面按钮/置灰未验 → <b>推断未验证</b>。</td></tr>
+<tr><td>status1 页面正例</td><td>属于（状态校验是本次 save 的直接规则）</td><td><b>页面已验证</b>：计划 588872241920421888「W1-P0-243aa61a-待开始状态正例」在 EM 列表显示「待开始」，点「纯续关联」弹窗正常打开并显示「已关联续班计划 (0)」；network <code>/renewMaster/relation/list</code> trace <code>2107bd48-80af-49bf-b274-07d5fd1d72c7.0.0</code>，code=0；截图 <code>page-evidence/w1-status1-modal.png</code>。接口 status1 保存沿用 round8 证据。</td></tr>
 <tr><td>跨学年/学期、有值从扩科</td><td>属于（扩科/年级来源取主计划是本需求规则）</td><td>接口子集已验证主扩科不被从计划污染（round10）；不同学期与有值从扩科页面未验 → <b>推断未验证</b>。</td></tr>
 <tr><td>缓存运行态（负值/故障/关闭）</td><td>属于（cart 新增关联前置课缓存、主计划缓存隔离）</td><td>已发布 <code>renewal.query.cache.enabled=false</code>，本轮未改 Apollo；运行态组合未验 → <b>推断未验证</b>。</td></tr>
 <tr><td>优惠/异主体</td><td>不属于本次代码改动（order 只改跨模式重复校验，未改优惠/收款主体）</td><td><b>非本次改动、不在本次验证范围</b>；保留为下单回归建议，不能据本次接口推出优惠/异主体通过。</td></tr>
 <tr><td>C 端入口</td><td>属于推荐影响面（共用合并结果）</td><td>未固定带计划/学员参数的 C 端入口，页面未验 → <b>没做</b>；不用无参数根页代替。</td></tr>
-<tr><td>小班批量第三人未选/小班备注</td><td>属于子项1（小班续班服务）</td><td>小班单人标签已验证（round9，空→3→筛选→恢复）；小班批量第三人/备注模板未验 → <b>子集已验证，剩余没做</b>。</td></tr>
+<tr><td>小班批量第三人未选/小班备注</td><td>属于子项1（小班续班服务）</td><td>大班页面标签弹窗本轮已验证；小班单人标签已验证（round9，空→3→筛选→恢复）；小班批量第三人/备注模板未验 → <b>子集已验证，剩余没做</b>。</td></tr>
 <tr><td>历史 min(begin_time) 回溯</td><td>不属于本次代码改动（大数据/ES 外部后续）</td><td><b>非本次改动、不在本次验证范围</b>；按既定责任方另行交付，不从 TEST 推断生产。</td></tr>
+</tbody>
+</table>
+<h2>6.5 本轮剩余项结论（接口/配置/页面分开）</h2>
+<table>
+<thead><tr><th>项</th><th>本轮结论</th></tr></thead>
+<tbody>
+<tr><td>EM 页面保存</td><td><b>已验证（页面）</b>：确认弹窗后 POST /relation/save，A/B，code=0，trace <code>57d3d20f-b921-46ce-aeaa-507ffa6515f5.0.0</code>；保存后重开弹窗仍为「已关联 (2)」。截图 <code>w1-em-save-result.png</code>、<code>w1-em-relation-reopen.png</code>。</td></tr>
+<tr><td>缓存运行态</td><td><b>配置已核实</b>：cart.gaotu100.com / TEST / application 的 <code>renewal.query.cache.enabled=false</code>、<code>renewal.pure.relation.enabled=true</code>。关闭态可用；<b>开启态未验，需改 Apollo 后复验</b>。</td></tr>
+<tr><td>C 端入口</td><td><b>未验证</b>：纯续链接由 <code>/reachPortal/reportConfig/getReportUrl</code> 动态生成（入参含 clazzNumber、renewalPlanId），没有固定带参 URL；需产品/前端确认固定入口或提供可复现链接。</td></tr>
+<tr><td>小班批量第三人 / 小班备注</td><td><b>未验证</b>：小班受控学员 7707218285/7707218286 好友数为 0（round10 friend 校验 notFriendCount=2），缺小班企微好友样本；大班页面标签弹窗已通过，备注弹窗本轮未打开。</td></tr>
+<tr><td>跨学年/学期 + 有值从扩科</td><td><b>接口子集已验证</b>（round10：主扩科不被从计划污染、跨年级纯续保留）；页面无独立入口，未验 → 推断未验证。</td></tr>
 </tbody>
 </table>
 
 <h1>七、证据与版本</h1>
-<p>旧版全文与 7 份历史附件引用备份：<code>artifacts/20261105-p0-concise/feishu-revision-before.xml</code>（revision 319，131653 字符）。本轮在 v2 基础上补充 code=35 结论、页面级卡点与 7 项剩余范围定性；覆盖后回读 revision 见本轮回报。新增证据 JSON 见 <code>artifacts/20261105-p0-concise/verification.json</code>（重新挂文末）。历史轮次的订单、DB、ES、页面证据仍保留在归档目录 <code>artifacts/20261105-p0-execution-round7</code>、<code>round11</code> 等，不重复粘贴到正文。</p>
+<p>旧版全文与 7 份历史附件引用备份：<code>artifacts/20261105-p0-concise/feishu-revision-before.xml</code>（revision 319，131653 字符）。本轮在 v2 基础上补充 code=35 结论、页面级验证（续班服务标签弹窗通过、EM 计划页跳过）与 7 项剩余范围定性；页面截图和 network 原件（含 EM 保存 <code>w1-em-save-result.png</code>、status1 弹窗 <code>w1-status1-modal.png</code>）见 <code>artifacts/20261105-p0-concise/page-evidence/</code>。新增证据 JSON 见 <code>artifacts/20261105-p0-concise/verification.json</code>（重新挂文末）。历史轮次的订单、DB、ES、页面证据仍保留在归档目录 <code>artifacts/20261105-p0-execution-round7</code>、<code>round11</code> 等，不重复粘贴到正文。</p>
