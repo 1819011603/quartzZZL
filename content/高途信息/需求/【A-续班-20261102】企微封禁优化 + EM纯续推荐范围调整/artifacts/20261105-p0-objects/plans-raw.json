@@ -1,0 +1,65 @@
+{
+  "code": 200,
+  "data": {
+    "display_msg": false,
+    "has_db_priv": true,
+    "has_table_priv": true,
+    "has_column_priv": true,
+    "filename": "",
+    "results": [
+      {
+        "sql": "\nSELECT number,name,type,status,begin_time,end_time,create_time FROM gaotu.renew_master WHERE number IN (585960797778243584,586116340522184704,587173440509732864)",
+        "has_G": false,
+        "values": [
+          [
+            "585960797778243584",
+            "dcg-扩科排除-大班计划-1020",
+            "1",
+            "2",
+            "2026-10-10 00:00:00",
+            "2026-12-31 23:59:59",
+            "2026-10-20 17:23:54"
+          ],
+          [
+            "586116340522184704",
+            "dcg-小班扩科排除-计划",
+            "2",
+            "2",
+            "2026-10-20 14:00:01",
+            "2026-11-20 14:00:01",
+            "2026-10-21 14:00:02"
+          ],
+          [
+            "587173440509732864",
+            "kk3-大班计划D-例3",
+            "1",
+            "2",
+            "2026-10-27 08:00:00",
+            "2026-12-31 23:59:59",
+            "2026-10-27 10:01:07"
+          ]
+        ],
+        "columns": [
+          "number",
+          "name",
+          "type",
+          "status",
+          "begin_time",
+          "end_time",
+          "create_time"
+        ],
+        "total_count": 3,
+        "time_cost": 0.002141893
+      }
+    ],
+    "msg": "",
+    "secret_columns": null,
+    "secret_level": "",
+    "query_id": 0,
+    "secret_db": "",
+    "has_secret_column": false,
+    "no_permission": null,
+    "secret_table": null
+  },
+  "msg": "ok"
+}

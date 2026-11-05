@@ -1,0 +1,40 @@
+[
+  {
+    "number": "585960582537144320",
+    "name": "dcg-扩科排除-前置-五年级语文",
+    "course_number": "585960577856301056",
+    "clazz_date_desc": "2026年10月22日-2026年10月22日",
+    "clazz_time_desc": "17:25-17:30",
+    "create_time": "2026-10-20 17:22:12",
+    "update_time": "2026-10-20 17:22:13"
+  },
+  {
+    "number": "585960755422160896",
+    "name": "dcg-扩科排除-后置-六年级语文",
+    "course_number": "585960751831836672",
+    "clazz_date_desc": "2026年10月22日-2026年10月22日",
+    "clazz_time_desc": "17:25-17:30",
+    "create_time": "2026-10-20 17:23:34",
+    "update_time": "2026-10-20 17:23:36"
+  },
+  {
+    "number": "586084334251927552",
+    "name": "dcg-小班扩科排除-数学",
+    "course_number": "18314034380997173",
+    "clazz_date_desc": "",
+    "clazz_time_desc": "",
+    "create_time": "2026-10-21 09:45:41",
+    "update_time": "2026-10-21 09:45:41"
+  },
+  {
+    "number": "586097025945298944",
+    "name": "dcg-小班扩科排除-数学-后置",
+    "course_number": "18314034380997207",
+    "clazz_date_desc": "",
+    "clazz_time_desc": "",
+    "create_time": "2026-10-21 11:26:33",
+    "update_time": "2026-10-21 14:44:21"
+  }
+]
+
+-- total_count: 4

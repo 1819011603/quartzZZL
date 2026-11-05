@@ -1,0 +1,36 @@
+[
+  {
+    "number": "18314034380997173",
+    "name": "【造数】线上小班课-小学数学-0917-OP1-2026-2027春",
+    "clazz_room_type": "3",
+    "course_type": "40",
+    "create_time": "2026-10-21 09:45:41",
+    "update_time": "2026-11-03 18:32:35"
+  },
+  {
+    "number": "18314034380997207",
+    "name": "【造数】线上小班课-小学数学-0917-OP1-2027暑",
+    "clazz_room_type": "3",
+    "course_type": "40",
+    "create_time": "2026-10-21 11:26:33",
+    "update_time": "2026-11-03 18:32:36"
+  },
+  {
+    "number": "585960577856301056",
+    "name": "dcg-扩科排除-前置-五年级语文",
+    "clazz_room_type": "1",
+    "course_type": "40",
+    "create_time": "2026-10-20 17:22:09",
+    "update_time": "2026-10-20 17:22:10"
+  },
+  {
+    "number": "585960751831836672",
+    "name": "dcg-扩科排除-后置-六年级语文",
+    "clazz_room_type": "1",
+    "course_type": "40",
+    "create_time": "2026-10-20 17:23:32",
+    "update_time": "2026-10-20 17:23:32"
+  }
+]
+
+-- total_count: 4

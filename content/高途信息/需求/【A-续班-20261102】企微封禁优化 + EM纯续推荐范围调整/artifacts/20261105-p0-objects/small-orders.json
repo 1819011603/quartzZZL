@@ -1,0 +1,43 @@
+[
+  {
+    "user_id": "7658127801",
+    "number": "432249582456931136",
+    "pay_number": "432249582456930624",
+    "order_status": "2",
+    "sku_number": "586084334251927552",
+    "spu_number": "18314034380997173",
+    "sku_type": "6004",
+    "quantity": "1",
+    "price": "0",
+    "create_time": "2026-10-21 14:23:14",
+    "confirmed_time": "2026-10-21 14:23:15"
+  },
+  {
+    "user_id": "7658129872",
+    "number": "432354138075955206",
+    "pay_number": "432354137002213382",
+    "order_status": "2",
+    "sku_number": "586084334251927552",
+    "spu_number": "18314034380997173",
+    "sku_type": "6004",
+    "quantity": "1",
+    "price": "0",
+    "create_time": "2026-10-22 17:26:09",
+    "confirmed_time": "2026-10-22 17:26:10"
+  },
+  {
+    "user_id": "7658129872",
+    "number": "433534690352694278",
+    "pay_number": "433534690352693254",
+    "order_status": "2",
+    "sku_number": "586097025945298944",
+    "spu_number": "18314034380997207",
+    "sku_type": "6004",
+    "quantity": "1",
+    "price": "0",
+    "create_time": "2026-11-04 10:50:45",
+    "confirmed_time": "2026-11-04 10:50:47"
+  }
+]
+
+-- total_count: 3

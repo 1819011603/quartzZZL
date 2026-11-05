@@ -1,0 +1,26 @@
+{
+  "environment": "test",
+  "traffic_env": "test-gtbg-dev-3",
+  "db_clusters": {
+    "gaotu": 142,
+    "super_class": 142,
+    "course_center": 153
+  },
+  "observed_files": {
+    "relations.json": "2026-11-05T11:03:39.248601+08:00",
+    "subclazz.json": "2026-11-05T11:04:37.071099+08:00",
+    "orders.json": "2026-11-05T11:04:02.750941+08:00",
+    "classes.json": "2026-11-05T11:03:38.370700+08:00",
+    "users.json": "2026-11-05T11:04:02.779246+08:00",
+    "eleven-plans.json": "2026-11-05T11:06:57.393509+08:00",
+    "courses.json": "2026-11-05T11:04:37.035421+08:00",
+    "small-orders.json": "2026-11-05T11:04:37.032326+08:00",
+    "plans-raw.json": "2026-11-05T11:05:16.842099+08:00"
+  },
+  "writes": "none; only read-only SQL and document writes",
+  "notes": [
+    "user 7658127801 name is empty in DB",
+    "course clazz_room_type=3 differs from order sku_type=6004; preserve both",
+    "prior test evidence reused; no retest"
+  ]
+}
