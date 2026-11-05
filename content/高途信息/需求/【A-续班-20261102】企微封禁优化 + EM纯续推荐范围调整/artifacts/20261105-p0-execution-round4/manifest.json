@@ -1,6 +1,7 @@
 {
   "log-prod-app.txt": "4664e4d2c3aa518342b511eccc883386a1e3f1e394d5dec3861ba1bce383b1d5",
   "qiwei-candidate-small.json": "e902539a660da1eee6b1c8ca6bc8d1e57d35e448e6aa75752b8da6bec65eb010",
+  "qiwei-diagnostic-receipt.json": "e925aa047fb7a866a8b16d50141a93054c2cb06a87c8bfea0a0fb84348e8fdc9",
   "run-records.json": "78fb69f83258b224ab41f9b663b994d909bbff5a827a98c88f931e6332546cf6",
   "qiwei-handoff.md": "290b56b43367cf62f2c98bfa8329365d4c610bd75f255bf113f5c66a0325fbab",
   "qiwei-candidate-large.json": "3b6f7110c14291a2e10d2ab8df2ad2b4813bc5561e1d7a86a9b96f6b1f67abe0",
@@ -10,15 +11,16 @@
   "deployed-code.json": "fdfb34427793b140f7a65d5e8c9440322a14493efc00b23fc820cfc1492a77bd",
   "qiwei-minimum-help.md": "4542a4df8c6815584b4996fbd89bb03261e060f19110f66b299c9e6cb0c813e7",
   "build-main-request.json": "e5ff12182df0b9eb40d73ff64aca72d846b24082b896675adc3fa983f53509ca",
+  "diagnosis-verification.json": "43c1234ec8baaa9fd3d421fbfa48817bf86d5824a09ea7a1ac45aa2c20d9b3f4",
   "em-probe.json": "3f8f33f2621ae25f7f845593f6e2183debc1983a57fe6c47450bafbf00590862",
   "clone-main-response.json": "f48e425dd2df47c5a408ad2a2d369bcdc364153b6970c63d172589f668be7b5c",
   "clone-main-request.json": "06160a1b90c20680261b13c7acf516cf0fa9567fdb1bf0f1abe1f2f30a5fe5da",
   "pod-run-records.txt": "ec74542b1aaf44039c62da2448d0f3ba1d75559c34a693ca21b950bf67442d97",
   "em-safe-readback.json": "7ee23726c6deea525e744b8fd12ffe469c133ff025600831c75e1dcd59eb451f",
   "qiwei-handoff.json": "8adb33b122a0071811385d3d3d55b4511d3cf6b2753db4ce43decada36c3fdcb",
-  "renew-build-diagnosis.md": "8f073820866f430b612df955d9eea9d010123e1e5c5b11dbdece7efafcc746d9",
+  "renew-build-diagnosis.md": "045d704928e45b46bcc19023d6dff1a6f7b70e7112e06762d04381d05b1aea1a",
   "scenarios.json": "1e9055729ab546b6e46a1fc6c2ec2dce672a10c3b2750886ac84f21824d06f33",
   "build-main-response.json": "bf4d0c2fe5252a3e32908499c90a4da5f961c7a7d989c5ef37b406d145929f1b",
-  "handoff.md": "c43da97735777880259a9c23c5ab7c252715a8f130e87f7ece6a720e76128452",
+  "handoff.md": "6af492a6e8d8d9f4a69a93ad8ba71d6556c443736cbc4554dc8a23ad520d9fbb",
   "pause-source-events.json": "1bdc01add79b9d9b25122bc097a92befba85491b46bee20a89fe670fc74d7710"
 }

@@ -1,0 +1,27 @@
+{
+  "time": "2026-11-05T17:40:56.341845+08:00",
+  "environment": "TEST",
+  "result": {
+    "success": true,
+    "results": [
+      {
+        "projectCode": "3",
+        "request": {
+          "projectCode": "3"
+        },
+        "code": 0,
+        "msg": "删除成功",
+        "success": true
+      },
+      {
+        "projectCode": "4",
+        "request": {
+          "projectCode": "4"
+        },
+        "code": 0,
+        "msg": "删除成功",
+        "success": true
+      }
+    ]
+  }
+}

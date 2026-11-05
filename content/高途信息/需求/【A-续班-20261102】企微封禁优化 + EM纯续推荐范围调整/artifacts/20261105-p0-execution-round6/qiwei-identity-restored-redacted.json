@@ -1,0 +1,90 @@
+{
+  "time": "2026-11-05T17:41:21.915295+08:00",
+  "environment": "TEST",
+  "result": {
+    "ok": true,
+    "url": "https://test-fuwu.baijia.com/bgwApi/student-center/teacher/current/account/info",
+    "trafficEnv": "test",
+    "httpStatus": 200,
+    "resolvedRoute": {
+      "appId": "student-center",
+      "pathInfo": "/student-center",
+      "rewriteInfo": "StripPrefix = 1",
+      "statusInfo": "正常",
+      "routeId": 169
+    },
+    "request": [],
+    "traceId": "020d8c35-35c3-4a6d-a9e0-528ba2dc7f3a.0.3",
+    "gapmApp": "student-center",
+    "response": {
+      "code": 0,
+      "data": [
+        {
+          "teacherNumber": "462009634289360896",
+          "name": "弓雪萌",
+          "nickName": "二讲弓雪萌外显",
+          "type": 2,
+          "typeDesc": "辅导老师"
+        },
+        {
+          "teacherNumber": "462009704724307968",
+          "name": "弓雪萌",
+          "nickName": "弓雪萌外显",
+          "type": 3,
+          "typeDesc": "销售老师"
+        },
+        {
+          "teacherNumber": "462887206592192512",
+          "name": "弓雪萌",
+          "nickName": "弓雪萌",
+          "type": 1,
+          "typeDesc": "主讲老师"
+        },
+        {
+          "teacherNumber": "463997662614528000",
+          "name": "弓雪萌",
+          "nickName": "弓雪萌",
+          "type": 3,
+          "typeDesc": "销售老师"
+        },
+        {
+          "teacherNumber": "470334316434432000",
+          "name": "弓雪萌",
+          "nickName": "外显姓名弓雪萌短期班1",
+          "type": 4,
+          "typeDesc": "克瑞斯辅导老师"
+        },
+        {
+          "teacherNumber": "482445744943415296",
+          "name": "弓雪萌",
+          "nickName": "弓雪萌",
+          "type": 1,
+          "typeDesc": "主讲老师"
+        },
+        {
+          "teacherNumber": "497532550909005824",
+          "name": "弓雪萌123",
+          "nickName": "弓雪萌",
+          "type": 1,
+          "typeDesc": "主讲老师"
+        },
+        {
+          "teacherNumber": "531987062052626432",
+          "name": "弓雪萌",
+          "nickName": "弓雪萌",
+          "type": 2,
+          "typeDesc": "辅导老师"
+        },
+        {
+          "teacherNumber": "537590170260606976",
+          "name": "弓雪萌",
+          "nickName": "弓雪萌",
+          "type": 1,
+          "typeDesc": "主讲老师"
+        }
+      ],
+      "msg": ""
+    }
+  },
+  "redaction": "仅删除可执行curl文本；原件及SHA256见qiwei-manifest.json。"
+}

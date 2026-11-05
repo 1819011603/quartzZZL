@@ -1,0 +1,36 @@
+{
+  "summary": "round6安全交接完成；TEST候选cosplay申请成功但实际身份仍gongxuemeng177071，已退出并恢复回读。真实大班续班服务页面入口可见；未执行业务写入。",
+  "complete": false,
+  "remaining": [
+    "核实需要的TEST实际身份并取得受控同班2目标+1未选对照及原值快照",
+    "执行业务标签批量/单人/筛选/清空/取消/恢复并分别回读DB/ES/接口/页面",
+    "自主查找受控官方老师好友与可恢复原备注，满足前置后执行备注与终态回读",
+    "验证P0-12规范链接入口并交回7条QW及12卡/30条覆盖结果"
+  ],
+  "blocker": "按父Worker运行时80%安全交接停止；未确认新增必须owner介入的外部阻塞，TEST授权仍有效。",
+  "artifacts": [
+    "/tmp/w1-p0-243aa61a/round6/qiwei-handoff.md",
+    "/tmp/w1-p0-243aa61a/round6/qiwei-manifest.json",
+    "/tmp/w1-p0-243aa61a/round6/qiwei-cosplay-login.json",
+    "/tmp/w1-p0-243aa61a/round6/qiwei-cosplay-logout.json",
+    "/tmp/w1-p0-243aa61a/round6/qiwei-identity-restored.json",
+    "/tmp/w1-p0-243aa61a/round6/qiwei-renewal-loaded.txt"
+  ],
+  "verification": {
+    "environment": "TEST",
+    "fixed_pod": "student-center-5d84df769-gxbql/10.255.176.174:28688/release-5dce9cdb-20261103201632 UP",
+    "cosplay_apply": "projects3,4 code0；TEST身份未变",
+    "cosplay_logout": "projects3,4 code0 删除成功",
+    "restored_trace": "020d8c35-35c3-4a6d-a9e0-528ba2dc7f3a.0.3",
+    "business_writes": false,
+    "created_fixtures": [],
+    "pending_operations": [],
+    "page": "tab34大班续班服务16行/添加标签/修改企微备注入口可见；未选中学员、未提交",
+    "limitations": [
+      "页面身份与teacher接口为Gong，未取得Zhang实际身份",
+      "schema查询gaotu.user1146/employee.name1054，不等于对象不存在",
+      "dws DSN空分支未落盘，不称完成好友查询",
+      "未把入口/历史子集称为整卡业务通过"
+    ]
+  }
+}

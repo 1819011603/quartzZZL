@@ -1,0 +1,13 @@
+{
+  "handoff_readback": "pass",
+  "durable_files_sha256_verified": 17,
+  "child_originals_sha256_verified": 30,
+  "pending_operations": [],
+  "p0_revision_reused": 159,
+  "test_objects_retained": [
+    "588858850300473344",
+    "588861397654462464",
+    "588861402658267136"
+  ],
+  "business_scenarios_completed_this_round": false
+}

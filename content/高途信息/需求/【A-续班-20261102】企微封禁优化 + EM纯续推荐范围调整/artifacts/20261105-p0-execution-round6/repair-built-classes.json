@@ -1,0 +1,193 @@
+{
+  "environment": "TEST",
+  "traffic": "test-gtbg-dev-3",
+  "steps": [
+    {
+      "time": "2026-11-05T17:39:36.986730",
+      "tool": "get_lesson_detail",
+      "method": "POST",
+      "url": "https://test-mi.gaotu100.com/course-center/b/clazz/lesson/detail",
+      "request": {
+        "isAnotherClazz": false,
+        "isViewApproval": false,
+        "clazzNumber": "588861397654462464"
+      },
+      "headers": {
+        "Content-Type": "application/json;charset=UTF-8",
+        "Traffic-Env": "test-gtbg-dev-3"
+      },
+      "raw": {
+        "code": 0,
+        "data": {
+          "app": "2",
+          "autoConcomitant": 1,
+          "bizType": 1,
+          "classLiveEndTimeSwitch": 1,
+          "clazzBizNumber": "15YW26C6M111001",
+          "clazzDateDesc": "",
+          "clazzDateDescShow": 1,
+          "clazzLessonCountDesc": 0,
+          "clazzLessonIsExist": false,
+          "clazzLessonToolExcelTemplate": "https://file.baijia.com:9999/lessonTool/test/课节小工具模板（普通模式）.xlsx",
+          "clazzName": "B测试-五年级语文春季前置B",
+          "clazzNumber": "588861397654462464",
+          "clazzRoomType": 1,
+          "clazzTimeDesc": "",
+          "clazzTimeDescShow": 0,
+          "clazzWeekDesc": "",
+          "clazzWeekDescShow": 0,
+          "courseNumber": "588861395571990528",
+          "courseTags": [
+            4
+          ],
+          "courseType": 40,
+          "fakeLiveEndTimeSwitch": 0,
+          "isChapter": false,
+          "isExistDraft": false,
+          "lessonList": [
+            {
+              "chapterNumber": "0",
+              "detailShow": 1,
+              "hasSection": 0,
+              "idx": 1,
+              "isContainsSection": 0,
+              "isGift": 0,
+              "name": "1",
+              "needHidden": 0,
+              "needPlayback": 1,
+              "needReport": 0,
+              "outlineNumber": "588861396261953536",
+              "pay": 1,
+              "property": 0,
+              "roomType": 0,
+              "showTime": 0,
+              "submitAudition": 0,
+              "tinySectionLength": 0
+            }
+          ],
+          "mockClazz": false,
+          "priceFen": "0",
+          "publishStatus": 0,
+          "teacherList": [],
+          "vsn": "0"
+        },
+        "source": "COURSE-CENTER.GAOTU100.COM"
+      },
+      "output": {
+        "raw": {
+          "code": 0,
+          "data": {
+            "app": "2",
+            "autoConcomitant": 1,
+            "bizType": 1,
+            "classLiveEndTimeSwitch": 1,
+            "clazzBizNumber": "15YW26C6M111001",
+            "clazzDateDesc": "",
+            "clazzDateDescShow": 1,
+            "clazzLessonCountDesc": 0,
+            "clazzLessonIsExist": false,
+            "clazzLessonToolExcelTemplate": "https://file.baijia.com:9999/lessonTool/test/课节小工具模板（普通模式）.xlsx",
+            "clazzName": "B测试-五年级语文春季前置B",
+            "clazzNumber": "588861397654462464",
+            "clazzRoomType": 1,
+            "clazzTimeDesc": "",
+            "clazzTimeDescShow": 0,
+            "clazzWeekDesc": "",
+            "clazzWeekDescShow": 0,
+            "courseNumber": "588861395571990528",
+            "courseTags": [
+              4
+            ],
+            "courseType": 40,
+            "fakeLiveEndTimeSwitch": 0,
+            "isChapter": false,
+            "isExistDraft": false,
+            "lessonList": [
+              {
+                "chapterNumber": "0",
+                "detailShow": 1,
+                "hasSection": 0,
+                "idx": 1,
+                "isContainsSection": 0,
+                "isGift": 0,
+                "name": "1",
+                "needHidden": 0,
+                "needPlayback": 1,
+                "needReport": 0,
+                "outlineNumber": "588861396261953536",
+                "pay": 1,
+                "property": 0,
+                "roomType": 0,
+                "showTime": 0,
+                "submitAudition": 0,
+                "tinySectionLength": 0
+              }
+            ],
+            "mockClazz": false,
+            "priceFen": "0",
+            "publishStatus": 0,
+            "teacherList": [],
+            "vsn": "0"
+          },
+          "source": "COURSE-CENTER.GAOTU100.COM"
+        },
+        "vsn": "0",
+        "lessonList": [
+          {
+            "chapterNumber": "0",
+            "detailShow": 1,
+            "hasSection": 0,
+            "idx": 1,
+            "isContainsSection": 0,
+            "isGift": 0,
+            "name": "1",
+            "needHidden": 0,
+            "needPlayback": 1,
+            "needReport": 0,
+            "outlineNumber": "588861396261953536",
+            "pay": 1,
+            "property": 0,
+            "roomType": 0,
+            "showTime": 0,
+            "submitAudition": 0,
+            "tinySectionLength": 0
+          }
+        ],
+        "teacherList": [],
+        "isChapter": false,
+        "publishStatus": 0,
+        "clazzDateDesc": "",
+        "clazzTimeDesc": "",
+        "clazzWeekDesc": ""
+      }
+    },
+    {
+      "time": "2026-11-05T17:39:37.442172",
+      "tool": "clazz_publish",
+      "method": "POST",
+      "url": "https://test-mi.gaotu100.com/course-center/b/clazz/publish",
+      "request": {
+        "publishStatus": 40,
+        "clazzNumber": "588861397654462464"
+      },
+      "headers": {
+        "Content-Type": "application/json;charset=UTF-8",
+        "Uid": "3247",
+        "Traffic-Env": "test-gtbg-dev-3"
+      },
+      "raw": {
+        "code": 1,
+        "msg": "大班课必须有课节后才可以发布!"
+      },
+      "output": {
+        "raw": null
+      }
+    }
+  ],
+  "created_by_this_task": [
+    "588861397654462464",
+    "588861402658267136"
+  ],
+  "status": "stopped_on_failure",
+  "error": "clazz_publish failed: 1 大班课必须有课节后才可以发布!"
+}

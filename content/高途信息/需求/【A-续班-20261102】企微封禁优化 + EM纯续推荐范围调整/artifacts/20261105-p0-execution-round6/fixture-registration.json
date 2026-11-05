@@ -1,0 +1,20 @@
+[
+  {
+    "id": "plan:588858850300473344",
+    "exit_code": 0,
+    "output": "{\n  \"ok\": true,\n  \"action\": \"add\",\n  \"record\": {\n    \"id\": \"plan:588858850300473344\",\n    \"kind\": \"plan\",\n    \"env\": \"test\",\n    \"traffic_env\": \"test-gtbg-dev-3\",\n    \"owner\": \"W1/task243aa61a\",\n    \"status\": \"unknown\",\n    \"evidence\": \"/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-execution-round6/safe-readback.json\",\n    \"notes\": \"计划已发布status2，但所属两班尚未可售；先补课节/发布班/辅导班，不重建计划\",\n    \"recover\": \"保留续接；仅本轮新建对象，清理前核关联/订单/课节及下游状态；不删除他人对象\",\n    \"created\": \"2026-11-05T17:43:08\",\n    \"updated\": \"2026-11-05T17:43:08\"\n  },\n  \"path\": \"/Users/gaotu/.local/share/gaotu-test-fixtures/registry.json\"\n}\n",
+    "error": ""
+  },
+  {
+    "id": "clazz:588861397654462464",
+    "exit_code": 0,
+    "output": "{\n  \"ok\": true,\n  \"action\": \"add\",\n  \"record\": {\n    \"id\": \"clazz:588861397654462464\",\n    \"kind\": \"clazz\",\n    \"env\": \"test\",\n    \"traffic_env\": \"test-gtbg-dev-3\",\n    \"owner\": \"W1/task243aa61a\",\n    \"status\": \"not_sellable\",\n    \"evidence\": \"/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-execution-round6/safe-readback.json\",\n    \"notes\": \"本轮新前班，publishStatus0/saleStatus0/老师为空，课节只有占位未创建\",\n    \"recover\": \"保留续接；仅本轮新建对象，清理前核关联/订单/课节及下游状态；不删除他人对象\",\n    \"created\": \"2026-11-05T17:43:08\",\n    \"updated\": \"2026-11-05T17:43:08\"\n  },\n  \"path\": \"/Users/gaotu/.local/share/gaotu-test-fixtures/registry.json\"\n}\n",
+    "error": ""
+  },
+  {
+    "id": "clazz:588861402658267136",
+    "exit_code": 0,
+    "output": "{\n  \"ok\": true,\n  \"action\": \"add\",\n  \"record\": {\n    \"id\": \"clazz:588861402658267136\",\n    \"kind\": \"clazz\",\n    \"env\": \"test\",\n    \"traffic_env\": \"test-gtbg-dev-3\",\n    \"owner\": \"W1/task243aa61a\",\n    \"status\": \"not_sellable\",\n    \"evidence\": \"/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-execution-round6/safe-readback.json\",\n    \"notes\": \"本轮新后班，publishStatus0/saleStatus0/老师为空，尚不能下单\",\n    \"recover\": \"保留续接；仅本轮新建对象，清理前核关联/订单/课节及下游状态；不删除他人对象\",\n    \"created\": \"2026-11-05T17:43:08\",\n    \"updated\": \"2026-11-05T17:43:08\"\n  },\n  \"path\": \"/Users/gaotu/.local/share/gaotu-test-fixtures/registry.json\"\n}\n",
+    "error": ""
+  }
+]

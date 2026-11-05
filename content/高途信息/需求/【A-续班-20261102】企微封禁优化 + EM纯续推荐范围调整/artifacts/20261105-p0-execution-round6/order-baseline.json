@@ -1,0 +1,42 @@
+{
+  "large_orders": {
+    "sql": "SELECT CAST(user_id AS CHAR) user_id,CAST(order_number AS CHAR) order_number,CAST(course_number AS CHAR) course_number,CAST(clazz_number AS CHAR) clazz_number,order_status,create_time FROM order_info WHERE user_id IN (7658129872,7489648821) AND course_number IN (588861395571990528,588861400563212288,585960577856301056,585960751831836672)",
+    "rows": [
+      {
+        "user_id": "7658129872",
+        "order_number": "432354307721396742",
+        "course_number": "585960577856301056",
+        "clazz_number": "585960582537144320",
+        "order_status": 2,
+        "create_time": "2026-10-22 17:28:48"
+      },
+      {
+        "user_id": "7658129872",
+        "order_number": "433534690352693766",
+        "course_number": "585960751831836672",
+        "clazz_number": "585960755422160896",
+        "order_status": 2,
+        "create_time": "2026-11-04 10:50:45"
+      }
+    ]
+  },
+  "small_orders": {
+    "sql": "SELECT user_id,order_number,sku_number,sku_type,order_status,create_time FROM order_item WHERE user_id IN (7658129872,7489648821) AND sku_number IN (586084334251927552,586097025945298944,586090628920764416)",
+    "error": "(1054, \"Unknown column 'order_number' in 'field list'\")"
+  },
+  "plan_course_rows": {
+    "sql": "SELECT * FROM renew_master_course_relation WHERE renew_master_number=588858850300473344",
+    "rows": [
+      {
+        "id": 69854,
+        "number": 588861421939404800,
+        "renew_master_number": 588858850300473344,
+        "pre_course_number": 588861395571990528,
+        "questionnaire_number": null,
+        "isdel": 0,
+        "create_time": "2026-11-05 17:35:59",
+        "update_time": "2026-11-05 17:35:59"
+      }
+    ]
+  }
+}

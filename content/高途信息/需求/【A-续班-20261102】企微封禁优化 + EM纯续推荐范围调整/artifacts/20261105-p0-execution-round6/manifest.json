@@ -1,0 +1,93 @@
+{
+  "generated_at": "2026-11-05T17:45:56.693920+08:00",
+  "files": [
+    {
+      "file": "build-request.json",
+      "bytes": 238,
+      "sha256": "888905e9e9f5a4b8739531fa19cc70fdc43073ac93c0a304b8256a68da6f8813"
+    },
+    {
+      "file": "build-state-1.json",
+      "bytes": 826,
+      "sha256": "f39319c2e940048fffa7ddf944203a02c4b1330a05c52eab35dc7ab495d354b6"
+    },
+    {
+      "file": "build-submit.json",
+      "bytes": 175,
+      "sha256": "1d243164b30840eff61931ce7004910d1648cb8af266a7773fcaf0d0692a1988"
+    },
+    {
+      "file": "built-objects.json",
+      "bytes": 13425,
+      "sha256": "da6fc77514a239ac815f53b0a9e0a701a4cb27d7607f0822129effe5094c091f"
+    },
+    {
+      "file": "child-result8-receipt.json",
+      "bytes": 483017,
+      "sha256": "7f759d42e18c8cd5aa38d857493bfd7de5b07ae90aa16f13274c6d829f9e0f79"
+    },
+    {
+      "file": "fixture-registration.json",
+      "bytes": 2994,
+      "sha256": "c536bb42f4bedb7d57ee61b9ded395e42ecf73aa63748a9b88a035882c577d36"
+    },
+    {
+      "file": "handoff.md",
+      "bytes": 7779,
+      "sha256": "391a9ed3e0c7fcec54fd1b53f5dafef1ae933794cbdbd208427dea846214a8d0"
+    },
+    {
+      "file": "order-baseline.json",
+      "bytes": 1716,
+      "sha256": "b3f5ae8fe863c3f68306dd912728c4b3738dad1105f24b7b629618ec4c1e774e"
+    },
+    {
+      "file": "pre-build-state.json",
+      "bytes": 1009,
+      "sha256": "95ad42d4943d696508d65e7ca6696741838e4d49287e00408c88d24a9476ff72"
+    },
+    {
+      "file": "qiwei-cosplay-logout.json",
+      "bytes": 495,
+      "sha256": "ce4f51f3b376a8447b519e7d47178786e814057388f794fefaef850d57e84adb"
+    },
+    {
+      "file": "qiwei-handoff.md",
+      "bytes": 8963,
+      "sha256": "90e97faa8859c3b7c35d6e1a27a520daaa9f652412b9a2a57c226a0777d8947c"
+    },
+    {
+      "file": "qiwei-identity-restored-redacted.json",
+      "bytes": 2523,
+      "sha256": "6f5778eb6f9880fa35290819e5acf11544d32d1fc106a15c22536ece6cf8468d"
+    },
+    {
+      "file": "qiwei-manifest.json",
+      "bytes": 5664,
+      "sha256": "86e0cd333aabedbee61790efdb118dcb5e34e9d01c1e0bb36cc48ab4188e5010"
+    },
+    {
+      "file": "qiwei-results.json",
+      "bytes": 1987,
+      "sha256": "3dd60b7d163ba2c14c2717f465668303ed39eda15ea32408402e0e5f4b42825a"
+    },
+    {
+      "file": "repair-built-classes.json",
+      "bytes": 5841,
+      "sha256": "03ec27f6d245be2dbb4cc76f06f764af7bcc9b2ee1899da102cb96eb65eebdee"
+    },
+    {
+      "file": "safe-readback.json",
+      "bytes": 7603,
+      "sha256": "5230d4cf24124d4b83720aeafcdc446a957ec28ecf132b2119b504dfb1dbf2ca"
+    },
+    {
+      "file": "versions.json",
+      "bytes": 1860,
+      "sha256": "6e53f691a14a75c6a30c396cdbab8848a021ec71516a10abc60047a87a659ad9"
+    }
+  ],
+  "child_original_files_verified": 30,
+  "pending_operations": [],
+  "external_p0_modified_this_round": false
+}
