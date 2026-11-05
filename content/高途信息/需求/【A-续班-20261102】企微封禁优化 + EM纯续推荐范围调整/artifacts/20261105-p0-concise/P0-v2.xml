@@ -1,0 +1,178 @@
+<title>A-续班-20261102｜P0 执行用例（按代码改动精简版 v2）</title>
+<p><b>版本</b>：2026-11-05 v2｜<b>环境</b>：TEST / test-gtbg-dev-3｜<b>范围</b>：子项1 企微续班服务标签·备注·说明链接；子项2 EM 纯续关联推荐与下单。</p>
+<p><b>本版说明</b>：按真实代码改动重写，只保留主链路、原链路回归、影响范围、关键步骤与关键信息。旧版全文（revision 319，含 25 项契约、30 条对账和详细证据附录）已存档到本地 <code>artifacts/20261105-p0-concise/feishu-revision-before.xml</code>，飞书版本历史可回滚。</p>
+
+<h1>一、改了什么（先看这里）</h1>
+<h2>1.1 子项1：企微封禁优化</h2>
+<p>在 EES 续班服务（大班、小班）补齐默认花名册已有的「学员标签」「批量改企微备注」和「使用说明链接」。前端复用花名册现有组件与接口，后端以现有 student-center 接口为主，本需求不改标签/备注的业务规则；「企微封禁」按功能缺失处理，官方接口正常。</p>
+<table>
+<thead><tr><th>页面动作</th><th>实际调用接口</th><th>关键入参/字段</th></tr></thead>
+<tbody>
+<tr><td>标签字典</td><td>POST /fairy/student-center/subclazz/learnSituation/getAllStudentTags</td><td>空 body；返回分组、标签名、value</td></tr>
+<tr><td>保存/编辑标签</td><td>POST /component/student-center/batchOperate/tag/save</td><td>clazzStudents[{clazzNumber,userId}]、userIds、studentTags、scene、type</td></tr>
+<tr><td>校验企微好友</td><td>POST /component/student-center/remark/check/wk/friend</td><td>userIds；返回 resultStatus</td></tr>
+<tr><td>创建批量备注任务</td><td>POST /component/student-center/remark/creat/edit/task</td><td>userIds、wkRemarkTemplate；模板变量如 ${wkRemark}</td></tr>
+<tr><td>续班服务花名册</td><td>POST /component/student-center/roster/renewal/page（大班）；/roster/small/renewal/page（小班）</td><td>clazzNumbers、filter、pager、route.sceneVersionNumber</td></tr>
+</tbody>
+</table>
+<p><b>前端代码位置</b>：cronus 的 <code>src/services/actions.js</code>（标签）、<code>src/services/clazzRosterOL.js</code>（备注）、<code>src/services/continuationService.js</code>（续班服务/推荐班级），页面在 <code>src/pages/roster/ContinuationService</code>、<code>src/pages/microClazzRoster/ContinuationService</code>、<code>src/pages/clazzRosterOnLine</code>。当前 local master 未包含关联弹窗代码，EM 关联页在需求分支，实际请求以页面抓包为准。</p>
+
+<h2>1.2 子项2：EM 纯续推荐范围调整</h2>
+<table>
+<thead><tr><th>服务/仓库</th><th>改动</th><th>关键接口或字段</th><th>开关</th></tr></thead>
+<tbody>
+<tr><td>product-server（feature-xuban-pure-relation-20261102）</td><td>新增表 <code>renew_master_relation</code>；主→从单向关联；单个「最终确认」save 做全量集合差分（新增/软删/复位）；上限 10；仅管理员、待开始/进行中可改；关联查询返回字符串 number、adminList/adminName、创建时间倒序；保存后短窗口 B 端读主库</td><td>GET /b/renewMaster/relation/list?renewMasterNumber=<br/>POST /b/renewMaster/relation/save<br/>POST /b/renewMaster/list（number 支持逗号批量，numberList 精确匹配）</td><td><code>renewal.pure.relation.enabled</code> 默认 true<br/><code>renewal.pure.relation.max</code> 默认 10<br/><code>renewal.pure.relation.readmaster.enabled</code> 默认 true<br/><code>renewal.relation.id.split.regex</code> 默认 [,，\s]+</td></tr>
+<tr><td>cart（同分支）</td><td>推荐前置课合并主+从，规则/白名单/扩科仍取主计划；同年级同商品去重、跨年级保留；关联前置课批量取数并加 Redis 缓存（空值哨兵/TTL/开关）；主计划缓存隔离</td><td><code>RenewalService#getRenewalDetail</code>、<code>RenewalDataService#mergeRelatedPreCourseNumbers</code>、<code>preheat</code></td><td><code>renewal.pure.relation.enabled</code> 默认 true<br/><code>renewal.query.cache.enabled</code></td></tr>
+<tr><td>order（同分支）</td><td>跨授课模式（大班↔小班）在开关开启时放行 SAME_CLAZZ/SAME_COURSE；放行后仍拦截同模式真重复商品</td><td><code>CartSameClazzOrCourseImpl</code> / 加购校验</td><td><code>renewal.pure.relation.enabled</code> 默认 true</td></tr>
+</tbody>
+</table>
+<p><b>一句话业务规则</b>：A 关联 B 后，A 的纯续推荐可包含 B 的在读前置课对应后置商品；B 不会反向获得 A；扩科、年级/学年/学期、白名单仍按主计划 A。</p>
+
+<h1>二、关键上下文（执行前对齐）</h1>
+<table>
+<thead><tr><th>项</th><th>本轮使用值</th></tr></thead>
+<tbody>
+<tr><td>环境/泳道</td><td>TEST，<code>test-gtbg-dev-3</code>；接口请求带 <code>traffic-env: test-gtbg-dev-3</code>，B 端页面带 <code>b_client: EES</code></td></tr>
+<tr><td>登录账号</td><td>弓雪萌 <code>gongxuemeng</code> / 177071（浏览器 Gong177071）；唐稳01 <code>tangwen01</code> / 90247；两账号均为 A/B 计划管理员</td></tr>
+<tr><td>EM 主计划</td><td><code>588858850300473344</code>「W1-P0-243aa61a-EM独立主计划」，status=2（进行中）</td></tr>
+<tr><td>关联从计划 A</td><td><code>585960797778243584</code>「dcg-扩科排除-大班计划-1020」，大班，status=2，2026 春→2026 暑假，五年级</td></tr>
+<tr><td>关联从计划 B</td><td><code>586116340522184704</code>「dcg-小班扩科排除-计划」，小班，status=2，2026 春→2027 暑假，一年级</td></tr>
+<tr><td>关键班级/商品</td><td>大班前置 585960577856301056 → 后置 585960755422160896（六年级）；小班前置 18314034380997173 → 后置 586097025945298944（一年级，type=6004）；大班前置 588861395571990528 → 后置 588861402658267136（五年级）</td></tr>
+<tr><td>推荐学员</td><td><code>7658129872</code>：在主+A+B 三个计划均有有效在读前置课；<code>7707220467</code>：先仅主→补 B 前置课后两件，已购样本不可重放未购步骤</td></tr>
+<tr><td>标签样本</td><td>大班 <code>574882679202260992</code>「续班归因-正经前置班-0820」，bizNumber 32YYTS25D6LS11002；目标 7704846434、7704846439，未选对照 7704846440；小班 <code>588506026511294464</code>，学员 7707218285/7707218286</td></tr>
+<tr><td>备注样本</td><td>官方好友 654489（原备注 zhangkaiis）、654500（原备注 1105修改企微备注）；未选 654499；按 userIds 提交，不要求同班</td></tr>
+<tr><td>时间/消耗顺序</td><td>计划 2026 春→2026/2027 暑假；已支付订单、已购后置课、已消费样本按登记保留，不能当「未购」重放；B8 预热旧结果最长 26 小时属于已接受边界</td></tr>
+<tr><td>版本</td><td>product-b <code>07ba05df</code>、cart <code>a34016fd</code>、order/order-b <code>0cc8ef68</code>；企微前端 cronus <code>17ee81cc</code>；EM 前端需求分支 <code>ba1cf8f9</code>（本地未检出，页面以实际抓包为准）</td></tr>
+</tbody>
+</table>
+
+<h1>三、主链路（按顺序执行）</h1>
+
+<h2>EM-01 关联配置：保存后立即回显</h2>
+<p><b>步骤</b></p>
+<ol>
+<li seq="auto">用 177071 登录 EES，打开「续班计划管理」，把「过滤测试数据」改为「否」，搜索主计划 588858850300473344。</li>
+<li seq="auto">打开该计划的「纯续关联」，搜索并勾选 A 585960797778243584、B 586116340522184704，最终确认保存。</li>
+<li seq="auto">不刷新页面，立即重新打开「已关联」列表；再搜索一次 A/B。</li>
+<li seq="auto">取消勾选 B 后不保存，重开弹窗核对；再移除 B 并确认，最后恢复 A+B。</li>
+</ol>
+<p><b>预期</b>：保存前只显示原关联；保存后立即显示 A+B，number 为字符串、adminList/adminName 完整、按创建时间倒序；取消不落库；移除只影响 B；恢复后仍为 A+B；B 不反向获得 A。</p>
+<p><b>实际/证据</b>：<b>已验证（接口层）</b>：本轮 POST save（A+B，幂等）trace <code>042fbf96-6975-45e1-8384-e13025c8b682.0.3</code>，紧随 GET list trace <code>4c82b6f7-fb92-4780-9e57-5c53fea7ffab.0.3</code> 返回 A+B 两条、adminList 弓雪萌/唐稳01、status=2。页面按钮/确认时机待页面验证。</p>
+
+<h2>EM-02 推荐并集：主+从生效，从计划不反向</h2>
+<p><b>步骤</b></p>
+<ol>
+<li seq="auto">主计划 588858850300473344 已关联 A+B；学员 7658129872 保持三计划有效在读。</li>
+<li seq="auto">从主计划打开纯续推荐，记录年级、商品、sign_up。</li>
+<li seq="auto">分别从 A、B 发起推荐；再用学员 7707220467 先看仅主资格，补 B 前置课后复看。</li>
+</ol>
+<p><b>预期</b>：主计划返回三个来源的三个不同商品（大班六年级 585960755422160896、小班一年级 586097025945298944、大班五年级 588861402658267136）；同科目不按学科误去重；A/B 单独发起不扩大对方；7707220467 仅主 1 件、补 B 后 2 件。</p>
+<p><b>实际/证据</b>：<b>已验证（接口层）</b>：本轮 cart <code>getRenewalDetail(7658129872,588858850300473344,true,false,null)</code> 返回 grade16/11/15 三组三商品，trace <code>cart_gaotu100_com.297.17938914022950422</code>。B 反向与 C 端逐入口此前已验证/部分验证，页面入口本轮未全点。</p>
+
+<h2>EM-03 去重与扩科：同年级同商品只一次，扩科只取主</h2>
+<p><b>步骤</b></p>
+<ol>
+<li seq="auto">给学员 7658129872 的两个有效前置课临时映射到同一后置 SKU 585960755422160896，查看推荐；只删除新增映射并回读原映射。</li>
+<li seq="auto">查看主计划 A 的扩科推荐，再查看从计划 B 的扩科；核对年级/学年/学期来源。</li>
+</ol>
+<p><b>预期</b>：两个来源命中同年级同一 SKU 时只展示 1 次；其他商品保留；跨年级不全局误去重；A 的扩科仍只取 A 自身配置，B 不污染 A。</p>
+<p><b>实际/证据</b>：<b>已验证（接口层，round7）</b>：临时映射后 grade16 仅 1 项，删除后主前置课恢复原后置 588861400563212288；A 扩科仅主六年级 2 件。跨年级/有值从扩科反例仍没做。</p>
+
+<h2>EM-04 同单支付与同模式重复拦截</h2>
+<p><b>步骤</b></p>
+<ol>
+<li seq="auto">学员 7707220467，主后置 588861402658267136（type=2，100 分）与小班后置 586097025945298944（type=6004，0 分）各选 1，不选优惠/赠品，预览。</li>
+<li seq="auto">创建订单并 mock 支付；分别查询支付单与两笔订单。</li>
+<li seq="auto">同模式再加一个相同商品作为反例，确认仍被拦截。</li>
+</ol>
+<p><b>预期</b>：应付 100×1+0×1−0=100 分（整数分，无额外取整）；同一支付单包含两件且归属同一学员；跨模式合法，同模式真重复仍拦截。</p>
+<p><b>实际/证据</b>：<b>已验证（round7）</b>：支付 433655835275559341 下大班订单 433655835275559853（100 分）、小班 433655835275560365（0 分），均归 7707220467、status=2，pay_status=1、real_price=100；同模式重复由 order 0cc8ef68 修复并已有 17 规则+9 H2 回归。优惠/异主体/C 端页面没做。</p>
+
+<h2>QW-01 批量标签、单人编辑与筛选</h2>
+<p><b>步骤</b></p>
+<ol>
+<li seq="auto">大班班 574882679202260992，勾选 7704846434、7704846439，添加标签「需中关注」2；未选 7704846440 保持不动。</li>
+<li seq="auto">把 7704846434 单人改为「需弱关注」3；按 2、3 分别筛选，并叠加带班老师条件。</li>
+<li seq="auto">清空两人标签；打开弹窗选值后取消，回读原值。</li>
+<li seq="auto">小班班 588506026511294464 用 7707218285/7707218286 重复批量/单人/筛选/恢复。</li>
+</ol>
+<p><b>预期</b>：批量后 2/2，单人后 3/2，对照始终无标签；筛选只命中保存值且切换不残留；清空后为空，取消不保存；新旧标签源与页面一致。</p>
+<p><b>实际/证据</b>：<b>已验证（接口/DB，round7/round9）</b>：大班批量 2/2→单人 3/2→清空空/空，对照无行，trace <code>2490b2bb-d793-4568-b2fc-4900f59a7e4f.0.3</code>、<code>7df78fce-b798-49da-ad2a-98813493e9b8.0.3</code>、<code>f868a36f-547b-43fa-8bf7-25fae48adcf4.0.3</code>；小班 7707218285 空→3→筛选仅本人→恢复空，trace <code>e62074d4-1ecc-4ac3-8bdd-4e906bcfd817.0.0</code>、<code>851ee85a-7815-4d4c-9844-894ea8a6965f.0.0</code>。ES 父熔断曾阻塞页面筛选，round8 两实例受控筛选已恢复，但完整页面矩阵未全验。</p>
+
+<h2>QW-02 批量修改企微备注</h2>
+<p><b>步骤</b></p>
+<ol>
+<li seq="auto">用 177071 在续班服务勾选真实好友 654489、654500，先保存两人原备注。</li>
+<li seq="auto">按「修改企微备注」模板提交，模板变量使用 <code>${wkRemark}</code>；查父/子任务终态，再到企微好友详情读真实备注。</li>
+<li seq="auto">仅恢复两人原备注并延迟回读；未选 654499 保持不动。</li>
+</ol>
+<p><b>预期</b>：仅所选好友按模板逐人修改；受理不等于成功，父子任务可追踪；未选人、标签/颜色/分层不变；恢复值与快照完全一致（654489=zhangkaiis，654500=1105修改企微备注）。</p>
+<p><b>实际/证据</b>：<b>已验证（接口/任务，round7）</b>：单任务 294433185677210624、双任务 294434116095472640 及子任务成功，真实备注分别变为 W1-zhangkaiis、W1-1105修改企微备注后已精确恢复；未选 654499 不变，标签/颜色/分层不变，延迟回读 trace <code>student-center.610.17938747537998677</code>。错误变量任务 294433631114392576 为 Agent 操作失误，已单独软删，非业务回归；默认模板全部边界与小班页面未全验。</p>
+
+<h2>QW-03 使用说明链接统一替换</h2>
+<p><b>步骤</b></p>
+<ol>
+<li seq="auto">默认花名册与联系学员弹窗，分别切官方私聊、群聊；点击使用说明链接。</li>
+<li seq="auto">确认打开的是二讲规范 Af3VwjizwiKxDhkUFtEcvpZpn4P 或顾问规范 Ar7YdcPqsowMITxRBNacwjkpn3d；返回弹窗继续编辑草稿后取消，不发送。</li>
+<li seq="auto">课节管理、我的线索等其余入口按角色重复核对。</li>
+</ol>
+<p><b>预期</b>：两种发送类型、两个入口均显示正确规范链接；链接不混入正文；点击不提交发送；返回保留编辑内容与目标；不新增不支持的发送类型。</p>
+<p><b>实际/证据</b>：<b>已验证（页面，round7）</b>：默认页私聊/群聊、联系学员官方私聊/群聊四组合均显示链接，两规范实际打开，返回草稿可编辑并已取消丢弃，未发送。课节管理/我的线索、全部业务角色与前端发布 SHA 映射未全验。</p>
+
+<h1>四、原链路回归（未直接改，但可能受上游影响）</h1>
+<p>原则：直接改动验证与关联接口回归分开记录；关联回归必须有真实调用证据，不能只读代码推断。</p>
+<table>
+<thead><tr><th>回归项</th><th>为什么受影响</th><th>步骤/入参</th><th>预期</th><th>本轮结果</th></tr></thead>
+<tbody>
+<tr><td>计划列表普通名称搜索</td><td>同接口 /b/renewMaster/list 新增批量 number 解析，可能影响原查询</td><td>POST /product-b/b/renewMaster/list，name=dcg-扩科排除，filterTestData=0</td><td>只返回名称匹配计划，total=1</td><td><b>已验证</b>：trace e2b184dd-d11c-4584-8b4c-0b0e29ebfc0d.0.3，total=1</td></tr>
+<tr><td>计划列表批量 ID 搜索</td><td>numberList / 逗号拆分为本次改动</td><td>同接口，number=585960797778243584,586116340522184704</td><td>恰好 A/B 两条，非法 ID 不退化全量</td><td><b>已验证</b>：trace 9bf775e4-86d7-4dc3-8d80-0f39cb0f9efb.0.3，total=2；非法 ID 见 round7</td></tr>
+<tr><td>推荐班级列表</td><td>与关联下发共用计划/商品链路，未直接改</td><td>POST /b/renewMaster/recommendClazzList，renewMasterNumber=588858850300473344，userId=7658129872</td><td>返回该学员两件有效后置商品，不串计划</td><td><b>已验证</b>：trace e1ab2353-2e4d-44bd-b7e3-eea56d477c89.0.3，返回 586097025945298944、588861402658267136</td></tr>
+<tr><td>学员标签字典</td><td>标签弹窗依赖，前端复用</td><td>POST /fairy/student-center/subclazz/learnSituation/getAllStudentTags，空 body</td><td>返回分组与 1–43/101–120 标签值</td><td><b>已验证</b>：trace 381a4bde-b09b-4501-863a-281c4a83a9df.0.3，code=0</td></tr>
+<tr><td>企微好友校验</td><td>备注任务前置，前端复用</td><td>POST /component/student-center/remark/check/wk/friend，userIds=[654489,654500,654499]</td><td>真实好友返回 resultStatus=true</td><td><b>已验证</b>：trace 60704748-c9e0-476e-a446-9b53a1ae1788.0.3</td></tr>
+<tr><td>续班服务花名册</td><td>标签/备注列的宿主页面，依赖动态表单场景</td><td>POST /component/student-center/roster/renewal/page，clazzNumbers=[574882679202260992]</td><td>返回学员、标签、备注列</td><td><b>阻塞</b>：trace c97e2058-3679-4e61-a4fb-cd1e9c5144b9.0.3，code=35「调动态表单服务接口失败」，因缺 route.sceneVersionNumber；页面验证时补齐，不据此判缺陷</td></tr>
+<tr><td>未关联/开关关闭</td><td>回旧行为的关键回滚路径</td><td>cart getRenewalDetail 在无关联或 renewal.pure.relation.enabled=false 时调用</td><td>只返回主计划商品</td><td><b>推断未验证（本轮）</b>：此前有开关关闭回单计划证据，本轮未改 Apollo、未重跑</td></tr>
+<tr><td>默认花名册标签/备注</td><td>续班服务复用其规则</td><td>默认页同初始数据做同样标签/备注操作</td><td>与续班服务结果一致</td><td><b>已验证（round11）</b>：默认/续班同班好友三变量实际保存一致；页面全矩阵未全验</td></tr>
+<tr><td>C 端/其他推荐入口</td><td>共用合并结果，但入口未直接改</td><td>C 端链接、单人/批量发链接、通用链接、下单推荐页</td><td>均按学员资格展示主+从商品</td><td><b>没做</b>：本地未固定带计划/学员参数的 C 端入口，未用无参数根页代替</td></tr>
+</tbody>
+</table>
+
+<h1>五、影响范围与回滚</h1>
+<ul>
+<li><b>代码影响</b>：仅 product-server、cart、order 三服务在 <code>renewal.pure.relation.enabled</code> 开启时生效；student-center 标签/备注/花名册接口为复用，本需求无业务代码改动。</li>
+<li><b>数据影响</b>：新增/软删 <code>renew_master_relation</code>；不刷历史标签/备注，不回填历史关联；代码回滚不会删除已写关系、标签、备注。</li>
+<li><b>缓存影响</b>：关联号缓存 <code>renewal:relation:</code>（空值哨兵）；保存主动失效；B 端保存后短窗口读主库；cart 关联前置课缓存与主计划缓存隔离；B8 预热旧结果最长 26 小时不强制清。</li>
+<li><b>回滚方式</b>：product/cart/order 各实例分别发布 <code>renewal.pure.relation.enabled=false</code>，再回调同样本验证退回单计划；不能只改 product-b 就认为 cart/order 已回退。</li>
+<li><b>外部依赖</b>：PROD DDL、GAIA 字段集/显示记录、ES 字段与历史回溯（min(begin_time)≥2026-01-01）由对应负责人另行交付，不从 TEST 推断生产就绪。</li>
+</ul>
+
+<h1>六、接口改动与后端验证</h1>
+<h2>6.1 直接改动验证（本轮真实调用）</h2>
+<table>
+<thead><tr><th>接口</th><th>入参</th><th>关键响应</th><th>traceId</th><th>结论</th></tr></thead>
+<tbody>
+<tr><td>GET /product-b/b/renewMaster/relation/list</td><td>renewMasterNumber=588858850300473344</td><td>A+B 两条；number 字符串；adminList 177071/90247；status=2</td><td>4c82b6f7-fb92-4780-9e57-5c53fea7ffab.0.3</td><td>已验证</td></tr>
+<tr><td>POST /product-b/b/renewMaster/relation/save</td><td>{"mainRenewMasterNumber":"588858850300473344","subRenewMasterNumbers":["586116340522184704","585960797778243584"]}</td><td>code=0；幂等保存，无新增/删除</td><td>042fbf96-6975-45e1-8384-e13025c8b682.0.3</td><td>已验证</td></tr>
+<tr><td>cart RenewalService#getRenewalDetail</td><td>7658129872、588858850300473344、getContext=true</td><td>grade16/11/15 三组三商品；sign_up 1/0/0</td><td>cart_gaotu100_com.297.17938914022950422</td><td>已验证</td></tr>
+</tbody>
+</table>
+<h2>6.2 关联接口回归（本轮真实调用）</h2>
+<table>
+<thead><tr><th>接口</th><th>入参</th><th>关键响应</th><th>traceId</th><th>结论</th></tr></thead>
+<tbody>
+<tr><td>POST /product-b/b/renewMaster/list</td><td>name=dcg-扩科排除；filterTestData=0</td><td>total=1，名称匹配</td><td>e2b184dd-d11c-4584-8b4c-0b0e29ebfc0d.0.3</td><td>通过</td></tr>
+<tr><td>POST /product-b/b/renewMaster/list</td><td>number="585960797778243584,586116340522184704"</td><td>total=2，A/B 精确命中</td><td>9bf775e4-86d7-4dc3-8d80-0f39cb0f9efb.0.3</td><td>通过</td></tr>
+<tr><td>POST /product-b/b/renewMaster/recommendClazzList</td><td>588858850300473344、7658129872</td><td>586097025945298944(type6004)、588861402658267136(type2)</td><td>e1ab2353-2e4d-44bd-b7e3-eea56d477c89.0.3</td><td>通过</td></tr>
+<tr><td>POST /fairy/student-center/subclazz/learnSituation/getAllStudentTags</td><td>{}</td><td>code=0，标签分组完整</td><td>381a4bde-b09b-4501-863a-281c4a83a9df.0.3</td><td>通过</td></tr>
+<tr><td>POST /component/student-center/remark/check/wk/friend</td><td>userIds=[654489,654500,654499]</td><td>code=0，resultStatus=true</td><td>60704748-c9e0-476e-a446-9b53a1ae1788.0.3</td><td>通过</td></tr>
+<tr><td>POST /component/student-center/roster/renewal/page</td><td>clazzNumbers=[574882679202260992]、pager</td><td>code=35「调动态表单服务接口失败」</td><td>c97e2058-3679-4e61-a4fb-cd1e9c5144b9.0.3</td><td>阻塞（缺 route.sceneVersionNumber，需页面补齐）</td></tr>
+</tbody>
+</table>
+<h2>6.3 未完成/阻塞</h2>
+<ul>
+<li><b>页面验证</b>：EM 关联弹窗、续班服务标签/备注/说明链接、C 端推荐/下单页尚未用 chrome 走完；本轮只完成接口层。</li>
+<li><b>未覆盖场景</b>：status1 页面正例；不同学年/学期与有值从扩科反例；跨年级保留/纯续扩科碰撞；缓存负值/故障/关闭运行态；优惠/异主体；小班批量第三人未选/小班备注模板；历史 min(begin_time) 全量回溯。</li>
+<li><b>已知边界</b>：B8 预热旧结果最长 26 小时；已支付/已购样本不可重放；roster 页面接口需动态表单 sceneVersionNumber，未补齐前不能判页面通过。</li>
+</ul>
+
+<h1>七、证据与版本</h1>
+<p>旧版全文与 7 份历史附件引用备份：<code>artifacts/20261105-p0-concise/feishu-revision-before.xml</code>（revision 319，131653 字符）。本轮新增证据 JSON 见 <code>artifacts/20261105-p0-concise/verification.json</code>。历史轮次的订单、DB、ES、页面证据仍保留在归档目录 <code>artifacts/20261105-p0-execution-round7</code>、<code>round11</code> 等，不重复粘贴到正文。</p>
