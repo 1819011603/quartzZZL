@@ -99,3 +99,11 @@
   - **圈班任务推荐+差异**：**推荐 `sync_clazz_back_task_by_clazzlesson`(36654)**（聚合后 `min(begin_time)=clazz_begin >= 阈值`，语义最贴合；需把起点 `2024-01-01` 改 `2026-01-01`）；备选 `sync_clazz_back_task_by_clazzlesson_time`(42118)（聚合前 `begin_time BETWEEN`，按课节窗口增量/补数）。二者差异（班级级阈值 vs 课节级窗口）见方案表。**调整任务 SQL = 大数据侧执行项**。
   - **外部依赖清单（方案 §四）**：D1 圈班 SQL 改起点/跑任务=**大数据侧 `lichenhao02`/`闫旭`**；D2 hive_to_mysql 落 `ees_data.clazz_back_task`=大数据侧；D3 补 `studentTags` 字段集（`ads.back.subclazz.user.fieldNames`+`ads.large.subclazz.user.fieldNames`）=**EES/student-data（需授权）**；D4 跑 xjob `BackSubclazzUserHandler`/`backAllAdsSmallClazzUserHandler`=EES/student-data；D5 回读 ES=`worker`；D6 PROD=上线待办。
   - 已更新 `artifacts/20261104-owner-ready/pure-relation-backfill-plan.md`。**仍不确定**：① 起点日期（默认 PRD 2026-01-01）；② 用 36654 还是 42118（建议 36654，终由大数据定）；③ 是否只留续班范围（课节线含全模式，可选再过滤）。
+- 2026-11-04 **查问题：保存关联后列表未更新（金瑞琳反馈 / owner 判「主从延迟」）——只读定位，非本次缓存**：
+  - **现象**：EES 纯续关联弹窗保存后，`relation/list`（已关联列表）不立即更新，等一会好；owner 判「主从延迟」。
+  - **代码核实**：① `RenewalMasterRelationService#save` **主动删缓存** `ruleMainRedisTemplate.delete("renewal:relation:"+main)`（L236-241，开关无关，含解绑）；② `relation/list` → `listSubPlanInfo`/`listSubPlanAdmins` → **纯 DB 查询，无任何缓存**；③ **product-b（保存与 relation/list 所在服务）Apollo TEST `renewal.pure.relation.enabled=false`** → 该服务 `listSubNumbers` 也**直查 DB（不用缓存）**；product-c 未配→默认 true（用缓存，供 C端/推荐）。→ **本次新增的 Redis 关联缓存不参与该读路径，且 save 本就会清它**。
+  - **DB**：product-b datasource = `gaotu-polar-test03.rwlb.rds.aliyuncs.com`（**读写分离地址**）→ 写主库、读可能走只读副本 → 理论上有复制延迟。
+  - **复现/量化（test-gtbg-dev-3，product-b acl 桥）**：直写 `gaotu.renew_master_relation`（master，id=2 is_del 1→0）后，立即经 product-b 调 `listSubNumbers(585960797778243584)`：**写入 09:48:06 → 首次读 09:48:07 即见新从计划** `[586116340522184704, 587173458654291968]` → **未观察到明显延迟（≤~1s）**；恢复 id=2 is_del=1 后回读仅 row1 `[586116340522184704]`。traceId 例 `8ee8a2be-...`/`70269d0a-...`/`dc97b582-...`。
+  - **判定**：**本次新增缓存不是原因**（排除依据：product-b 关闭该缓存 + relation/list 无缓存 + save 主动清）；来源=**DB 层（读写分离）**，属**既有基础设施行为**；**非本次引入**（关系表/接口是本次新增，但延迟在底层读写路径）。**test 实测延迟幅度很小（≤~1s）**。
+  - **是否修**：属底层既有，**不建议改**；若业务要求「保存后列表立即刷新」可选：前端保存成功后延迟 ~0.5–1s 再刷新（最省），或读接口强制走主库（需评估读写分离中间件支持与影响面）。**先报 owner，不擅自改。** PRD 保存措辞=「最终确认生效」，未见读侧毫秒级实时硬要求。
+  - **未确定**：测量粒度（acl 桥 ~1s）未精确量化复制延迟；未用真实 `save`（staff 登录态）做端到端复现（改用直写 DB 等效）。
