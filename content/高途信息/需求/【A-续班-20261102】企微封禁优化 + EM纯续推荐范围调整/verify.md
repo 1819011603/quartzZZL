@@ -8,26 +8,30 @@
 - order `0cc8ef68b6`（已推送）：修前e464fa98，三件商品跨模式后同模式重复反例17例5失败；修后17例全绿，另9例H2真实Mapper历史购买回归全绿，合计26/0/0/0。
 - 不改B5主规则口径、B8 26h预热延迟；不改前端、生产配置和全量回溯。
 
-## TEST 实际接口（仅当时部署版本）
+## TEST 实际接口（2026-11-05 第二轮补验）
 
-目标 test-gtbg-dev-3；product-b 镜像 feature-xuban-pure-relation-20261102-07ba05df-20261105102154、cart镜像 feature-xuban-pure-relation-20261102-7bb1fb92-20261104234532，均UP。
+目标 test-gtbg-dev-3。本轮部署后版本：product-b `07ba05df`（未变）、cart `a34016fd`（新部署，pipeline 1329507，pod cart-gaotu100-com-79789ddcf4-vqnpj eurekaStatus=UP）。order/order-b 镜像 `0cc8ef68` 已 redeploy（pipeline 1329516/1329510 构建成功，镜像 tag 含 0cc8ef68），pod 滚动中。
 
 | 入口及对象 | 预期/实际 | 证据 |
 |---|---|---|
-| product-b 关联list，主585960797778243584 | 从586116340522184704，字符串ID、adminList/adminName；code0，符合 | trace 2e78a421-4f0d-4b3f-9724-06752c06c409.0.3；relation-list.json |
-| product-b list，number中文逗号主/从两个ID | 精确2条、两计划均进行中、测试数据；code0符合 | trace 2cfdf0ae-617d-4266-8d10-1ff5e387368b.0.3；plan-batch.json |
-| 同list，number=not-a-plan | 0条，不退化全量；code0符合 | trace 3bbcfaa1-f95d-4f85-bd6e-c0cef6edb3b4.0.3；plan-invalid.json |
-| cart五参getRenewalDetail，7658127801/A | 大班商品585960755422160896/type2与小班586097025945298944/type6004同现 | trace cart_gaotu100_com.292.17938470529730404；cart-current-interface.json。大班sign_up=1，不当新下单样本 |
+| product-b 关联list，主585960797778243584 | 从586116340522184704，字符串ID、adminList+adminName（弓雪萌，唐稳01）；code0，符合 | trace de970967-b8ea-4b0c-8313-d6074f9cac89.0.3（本轮）；旧trace 2e78a421 |
+| product-b 关联list，主586116340522184704（反向） | 空数组，B无反向关系；code0，符合 | trace faf6b4e0-30a6-4a73-8a66-d7a2eb0a01e5.0.3 |
+| product-b list，number=两个ID逗号分隔 | 精确2条、adminList/adminName有值、字符串ID；code0符合 | trace af5a37fa-0de1-4862-8897-b158d56d2065.0.3 |
+| product-b list，number=not-a-plan | 0条，不退化全量；code0符合 | trace eb7f125e-bb6b-40f3-9690-3c002853503e.0.3 |
+| product-b save，自关联（main=sub=A） | code1「仅续班计划管理员可操作」（当前登录态非管理员）；本地单测确认自关联报错 | trace f8361b21-2bfd-43c7-b75d-151863046025.0.3；RenewalMasterRelationServiceSaveTest |
+| cart ACL桥 getRenewalDetail(7658127801, A, false, false, null) | 大班grade16/type2/SKU585960755422160896/sign_up=1 + 小班grade11/type6004/SKU586097025945298944/sign_up=0；pod a34016fd | trace cart_gaotu100_com.301.17938509900560010；instanceId cart-gaotu100-com-79789ddcf4-vqnpj |
 
-稳定证据见 [artifacts/20261105-diff-p0](artifacts/20261105-diff-p0/)。完整执行日志在 `/tmp/w1-13ca5996/`；归档保留测试摘要及去除环境属性的Surefire XML。首次探测路由前缀/分页参数错误已修正重跑，不计为产品缺陷；只列最终符合契约的请求。关联list是GET query参数renewMasterNumber，分页current，不是pageNum。
+管理员字段契约：前端读 `adminName`（单值）或 `adminList`（数组），后端实际同时返回两者且 ID 为字符串，前后端一致，**无需改后端**。此前 `admin_list` 为旧版本表现，当前 product-b `07ba05df` 已不存在此问题。
+
+关联list是GET query参数renewMasterNumber，分页current。稳定证据见 [artifacts/20261105-diff-p0](artifacts/20261105-diff-p0/)。
 
 ## 已验证、推断未验证、没做
 
-**已验证**：上列本地聚焦测试和固定版本接口；PRD全文/原图、前端固定分支diff和原函数执行、生产iris静态资源读取。
+**已验证**：上列本地聚焦测试和固定版本接口；PRD全文/原图、前端固定分支diff和原函数执行、生产iris静态资源读取。本轮（第二轮）新增：cart `a34016fd` 部署后 ACL 桥五参推荐确认双模式；product-b `07ba05df` 关联列表/批量搜索/非法ID/反向关系/save 权限 6 项 HTTP 真调；管理员字段前后端一致性已接口确认。
 
-**推断未验证**：新cart修复在线多入口整体效果；当前本地缓存组合是否在生产启用；仅静态资源不能证明每个页面实际加载它，前端分支不等于线上版本。
+**推断未验证**：新cart修复在线多入口整体效果；当前本地缓存组合是否在生产启用；仅静态资源不能证明每个页面实际加载它，前端分支不等于线上版本。order `0cc8ef68` 镜像已 redeploy，pod 滚动中，新版接口待验。
 
-**没做**：新cart/order部署及新版接口/完整下单；页面实际渲染与标签备注写入；生产DDL/GAIA/ES配置变更与历史全量回溯；全仓测试/并发压测。旧版本历史trace仅作补充，不冒充新版运行结果。部分P0现场账号/样本未准备，文档逐条标明。
+**没做**：order新版接口/完整下单；页面实际渲染与标签备注写入；生产DDL/GAIA/ES配置变更与历史全量回溯；全仓测试/并发压测。旧版本历史trace仅作补充，不冒充新版运行结果。部分P0现场账号/样本未准备，文档逐条标明。
 
 ## 数据与资源
 
