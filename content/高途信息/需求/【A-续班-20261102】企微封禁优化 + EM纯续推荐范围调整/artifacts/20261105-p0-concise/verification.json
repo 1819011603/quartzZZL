@@ -1,0 +1,271 @@
+{
+  "task": "P0 精简重写 + banshan skill 固化 + 先后端再前后端验证",
+  "date": "2026-11-05",
+  "environment": {
+    "env": "TEST",
+    "lane": "test-gtbg-dev-3",
+    "versions": {
+      "product-b": "07ba05df",
+      "cart": "a34016fd",
+      "order": "0cc8ef68",
+      "cronus": "17ee81cc",
+      "em_frontend_branch": "ba1cf8f9"
+    }
+  },
+  "document": {
+    "wiki": "https://gaotuedu.feishu.cn/wiki/KeCZwdJTBiIJDJkX8lRcGb9gnCs",
+    "docx": "ZQUXdlDxWoknJhxu914c2uVYnBr",
+    "p0_is_self": true,
+    "revision_before": 319,
+    "chars_before": 131653,
+    "revision_after": 322,
+    "chars_after": 19945,
+    "archive_before": "artifacts/20261105-p0-concise/feishu-revision-before.xml",
+    "old_attachments": 7,
+    "old_attachments_note": "覆盖写入后旧附件块不再出现在新正文；全文与附件引用已本地存档，飞书版本历史可回滚"
+  },
+  "frontend_call_chain": [
+    {
+      "page": "EES 标签字典",
+      "repo": "cronus",
+      "file": "src/services/actions.js",
+      "api": "POST /fairy/student-center/subclazz/learnSituation/getAllStudentTags"
+    },
+    {
+      "page": "EES 保存/编辑标签",
+      "repo": "cronus",
+      "file": "src/services/actions.js",
+      "api": "POST /component/student-center/batchOperate/tag/save"
+    },
+    {
+      "page": "EES 校验企微好友",
+      "repo": "cronus",
+      "file": "src/services/clazzRosterOL.js",
+      "api": "POST /component/student-center/remark/check/wk/friend"
+    },
+    {
+      "page": "EES 创建批量备注任务",
+      "repo": "cronus",
+      "file": "src/services/clazzRosterOL.js",
+      "api": "POST /component/student-center/remark/creat/edit/task"
+    },
+    {
+      "page": "EES 续班服务花名册",
+      "repo": "cronus",
+      "file": "src/services/continuationService.js",
+      "api": "POST /component/student-center/roster/renewal/page（小班 /roster/small/renewal/page）"
+    },
+    {
+      "page": "EES 推荐班级列表",
+      "repo": "cronus",
+      "file": "src/services/continuationService.js",
+      "api": "POST /bgwApi/product-b/b/renewMaster/recommendClazzList"
+    },
+    {
+      "page": "续班计划管理列表",
+      "repo": "gaotu-fe-promotions",
+      "file": "src/pages/continuationClasses/list/index.js",
+      "api": "POST /product-b/b/renewMaster/list"
+    },
+    {
+      "page": "EM 纯续关联弹窗",
+      "repo": "未在当前 local master 检出",
+      "file": "需求分支",
+      "api": "GET /b/renewMaster/relation/list、POST /b/renewMaster/relation/save（以页面抓包为准）"
+    }
+  ],
+  "direct_changes": [
+    {
+      "api": "GET /bgwApi/product-b/b/renewMaster/relation/list",
+      "params": "renewMasterNumber=588858850300473344",
+      "response": "A+B 两条；number 字符串；adminList 177071/90247；status=2",
+      "traceId": "4c82b6f7-fb92-4780-9e57-5c53fea7ffab.0.3",
+      "result": "verified"
+    },
+    {
+      "api": "POST /bgwApi/product-b/b/renewMaster/relation/save",
+      "params": "{\"mainRenewMasterNumber\":\"588858850300473344\",\"subRenewMasterNumbers\":[\"586116340522184704\",\"585960797778243584\"]}",
+      "response": "code=0，幂等保存",
+      "traceId": "042fbf96-6975-45e1-8384-e13025c8b682.0.3",
+      "result": "verified"
+    },
+    {
+      "api": "cart RenewalService#getRenewalDetail",
+      "params": "7658129872, 588858850300473344, true, false, null",
+      "response": "grade16/11/15 三组三商品；sign_up 1/0/0",
+      "traceId": "cart_gaotu100_com.297.17938914022950422",
+      "result": "verified"
+    }
+  ],
+  "related_regressions": [
+    {
+      "api": "POST /bgwApi/product-b/b/renewMaster/list",
+      "params": "name=dcg-扩科排除, filterTestData=0",
+      "response": "total=1",
+      "traceId": "e2b184dd-d11c-4584-8b4c-0b0e29ebfc0d.0.3",
+      "result": "pass"
+    },
+    {
+      "api": "POST /bgwApi/product-b/b/renewMaster/list",
+      "params": "number=585960797778243584,586116340522184704",
+      "response": "total=2，A/B 精确命中",
+      "traceId": "9bf775e4-86d7-4dc3-8d80-0f39cb0f9efb.0.3",
+      "result": "pass"
+    },
+    {
+      "api": "POST /bgwApi/product-b/b/renewMaster/recommendClazzList",
+      "params": "588858850300473344, 7658129872",
+      "response": "586097025945298944(type6004)、588861402658267136(type2)",
+      "traceId": "e1ab2353-2e4d-44bd-b7e3-eea56d477c89.0.3",
+      "result": "pass"
+    },
+    {
+      "api": "POST /fairy/student-center/subclazz/learnSituation/getAllStudentTags",
+      "params": "{}",
+      "response": "code=0，标签分组完整",
+      "traceId": "381a4bde-b09b-4501-863a-281c4a83a9df.0.3",
+      "result": "pass"
+    },
+    {
+      "api": "POST /component/student-center/remark/check/wk/friend",
+      "params": "userIds=[654489,654500,654499]",
+      "response": "code=0，resultStatus=true",
+      "traceId": "60704748-c9e0-476e-a446-9b53a1ae1788.0.3",
+      "result": "pass"
+    },
+    {
+      "api": "POST /component/student-center/roster/renewal/page",
+      "params": "clazzNumbers=[574882679202260992], pager",
+      "response": "code=35 调动态表单服务接口失败（缺 route.sceneVersionNumber）",
+      "traceId": "c97e2058-3679-4e61-a4fb-cd1e9c5144b9.0.3",
+      "result": "blocked"
+    }
+  ],
+  "reused_evidence": [
+    {
+      "item": "关联边界 10/11/自关联/status0 与恢复",
+      "source": "artifacts/20261105-p0-execution-round7/relation-boundaries.json",
+      "result": "verified"
+    },
+    {
+      "item": "三计划三商品、同科不误去重、从计划不反向",
+      "source": "artifacts/20261105-p0-execution-round7/README.md",
+      "result": "verified"
+    },
+    {
+      "item": "同年级同商品去重及恢复",
+      "source": "artifacts/20261105-p0-execution-round7/collision-observe.json",
+      "result": "verified"
+    },
+    {
+      "item": "跨模式同单支付 100 分（支付 433655835275559341；订单 433655835275559853/433655835275560365）",
+      "source": "artifacts/20261105-p0-execution-round7/dual-payment-readback.json",
+      "result": "verified"
+    },
+    {
+      "item": "大班批量标签 2/2→3/2→空/空，trace 2490b2bb-d793-4568-b2fc-4900f59a7e4f.0.3 等",
+      "source": "artifacts/20261105-p0-execution-round7/README.md",
+      "result": "verified"
+    },
+    {
+      "item": "企微备注双人任务 294434116095472640 成功并恢复，未选不变",
+      "source": "artifacts/20261105-p0-execution-round7/qiwei-results.json",
+      "result": "verified"
+    },
+    {
+      "item": "默认/续班同班好友三变量保存一致（round11）",
+      "source": "artifacts/20261105-p0-execution-round11/handoff.md",
+      "result": "verified"
+    }
+  ],
+  "frontend_attempts": [
+    {
+      "method": "新开 Chrome + 8888 cookie 代理",
+      "result": "跳 CAS 登录"
+    },
+    {
+      "method": "CDP 注入 cookie store",
+      "result": "只加载工作台壳，目标内容不渲染"
+    },
+    {
+      "method": "回连现有 9222 / DevToolsActivePort",
+      "result": "ws 握手/命令超时"
+    },
+    {
+      "method": "复制已登录 Profile 1 的 Cookies/Local Storage 到独立目录启动",
+      "result": "仍跳 CAS；cookie 为 app-bound 加密，换目录无法解密"
+    },
+    {
+      "method": "恢复正常 Chrome 后 9222 + chrome://inspect toggle",
+      "result": "autoConnect 找不到 DevToolsActivePort；直接 ws 403（无 remote-allow-origins）"
+    }
+  ],
+  "skill_changes": [
+    {
+      "file": "~/.claude/skills-cold/banshan-case/SKILL.md",
+      "change": "新增「按代码改动写 P0」：先查改动、必查前端调用链、直接改动与关联回归分开、步骤在前控制篇幅"
+    },
+    {
+      "file": "~/.claude/skills-cold/banshan-case/references/doc-templates.md",
+      "change": "新增「按代码改动写 P0」四步与七段结构；简洁执行卡改为步骤在前"
+    },
+    {
+      "file": "/Users/gaotu/bridge/payload/skills-cold/banshan-case/",
+      "change": "同步 SKILL.md 与 doc-templates.md"
+    }
+  ],
+  "audit": {
+    "verify_skills": "bash scripts/verify_skills.sh → verify_skills OK；触发评测 84 条 0 失败"
+  },
+  "code35": {
+    "status": "resolved",
+    "source": "前端 @coeus/render getSchema 返回 data.sceneVersionNumber；页面通过 route.sceneVersionNumber 传入",
+    "values": {
+      "large": "294310981744470016",
+      "small": "294312775746856960"
+    },
+    "traces": {
+      "default_page": "149bd5f0-a3b6-43d3-876d-7d28cf4b8591.0.3",
+      "page": "5eeecd04-c3b0-466b-9911-27d623a1a35f.0.3",
+      "old_missing_param": "c97e2058-3679-4e61-a4fb-cd1e9c5144b9.0.3"
+    },
+    "conclusion": "补 route.sceneVersionNumber 后 code=0，default/page total=19 且含 studentTags；此前 code=35 是缺参，不是业务缺陷"
+  },
+  "scope_classification": [
+    {
+      "item": "status1 页面正例",
+      "in_scope": true,
+      "result": "接口已验证 status1 保存（round8），页面未验 → 推断未验证"
+    },
+    {
+      "item": "跨学年/学期、有值从扩科",
+      "in_scope": true,
+      "result": "接口子集已验证主扩科不被从污染（round10），页面/不同学期反例未验 → 推断未验证"
+    },
+    {
+      "item": "缓存运行态（负值/故障/关闭）",
+      "in_scope": true,
+      "result": "published renewal.query.cache.enabled=false，运行态组合未验 → 推断未验证"
+    },
+    {
+      "item": "优惠/异主体",
+      "in_scope": false,
+      "result": "非本次代码改动（order 只改跨模式重复校验），不在本次验证范围"
+    },
+    {
+      "item": "C 端入口",
+      "in_scope": true,
+      "result": "缺固定带参入口，页面未验 → 没做"
+    },
+    {
+      "item": "小班批量第三人未选/小班备注",
+      "in_scope": true,
+      "result": "小班单人标签已验证（round9），批量第三人/备注未验 → 子集已验证、剩余没做"
+    },
+    {
+      "item": "历史 min(begin_time) 回溯",
+      "in_scope": false,
+      "result": "非本次代码改动（大数据/ES 外部后续），不在本次验证范围"
+    }
+  ]
+}

@@ -129,7 +129,7 @@
 <tr><td>推荐班级列表</td><td>与关联下发共用计划/商品链路，未直接改</td><td>POST /b/renewMaster/recommendClazzList，renewMasterNumber=588858850300473344，userId=7658129872</td><td>返回该学员两件有效后置商品，不串计划</td><td><b>已验证</b>：trace e1ab2353-2e4d-44bd-b7e3-eea56d477c89.0.3，返回 586097025945298944、588861402658267136</td></tr>
 <tr><td>学员标签字典</td><td>标签弹窗依赖，前端复用</td><td>POST /fairy/student-center/subclazz/learnSituation/getAllStudentTags，空 body</td><td>返回分组与 1–43/101–120 标签值</td><td><b>已验证</b>：trace 381a4bde-b09b-4501-863a-281c4a83a9df.0.3，code=0</td></tr>
 <tr><td>企微好友校验</td><td>备注任务前置，前端复用</td><td>POST /component/student-center/remark/check/wk/friend，userIds=[654489,654500,654499]</td><td>真实好友返回 resultStatus=true</td><td><b>已验证</b>：trace 60704748-c9e0-476e-a446-9b53a1ae1788.0.3</td></tr>
-<tr><td>续班服务花名册</td><td>标签/备注列的宿主页面，依赖动态表单场景</td><td>POST /component/student-center/roster/renewal/page，clazzNumbers=[574882679202260992]</td><td>返回学员、标签、备注列</td><td><b>阻塞</b>：trace c97e2058-3679-4e61-a4fb-cd1e9c5144b9.0.3，code=35「调动态表单服务接口失败」，因缺 route.sceneVersionNumber；页面验证时补齐，不据此判缺陷</td></tr>
+<tr><td>续班服务花名册</td><td>标签/备注列的宿主页面，依赖动态表单场景</td><td>POST /component/student-center/roster/renewal/default/page 或 /page，带 route.sceneVersionNumber</td><td>返回学员、标签、备注列</td><td><b>已验证（补参后）</b>：大班 sceneVersionNumber=294310981744470016（来自页面 getSchema 返回）；/default/page trace 149bd5f0-a3b6-43d3-876d-7d28cf4b8591.0.3，code=0、total=19、含 studentTags；/page trace 5eeecd04-c3b0-466b-9911-27d623a1a35f.0.3，code=0。此前 code=35 是缺参，不是缺陷。</td></tr>
 <tr><td>未关联/开关关闭</td><td>回旧行为的关键回滚路径</td><td>cart getRenewalDetail 在无关联或 renewal.pure.relation.enabled=false 时调用</td><td>只返回主计划商品</td><td><b>推断未验证（本轮）</b>：此前有开关关闭回单计划证据，本轮未改 Apollo、未重跑</td></tr>
 <tr><td>默认花名册标签/备注</td><td>续班服务复用其规则</td><td>默认页同初始数据做同样标签/备注操作</td><td>与续班服务结果一致</td><td><b>已验证（round11）</b>：默认/续班同班好友三变量实际保存一致；页面全矩阵未全验</td></tr>
 <tr><td>C 端/其他推荐入口</td><td>共用合并结果，但入口未直接改</td><td>C 端链接、单人/批量发链接、通用链接、下单推荐页</td><td>均按学员资格展示主+从商品</td><td><b>没做</b>：本地未固定带计划/学员参数的 C 端入口，未用无参数根页代替</td></tr>
@@ -164,15 +164,29 @@
 <tr><td>POST /product-b/b/renewMaster/recommendClazzList</td><td>588858850300473344、7658129872</td><td>586097025945298944(type6004)、588861402658267136(type2)</td><td>e1ab2353-2e4d-44bd-b7e3-eea56d477c89.0.3</td><td>通过</td></tr>
 <tr><td>POST /fairy/student-center/subclazz/learnSituation/getAllStudentTags</td><td>{}</td><td>code=0，标签分组完整</td><td>381a4bde-b09b-4501-863a-281c4a83a9df.0.3</td><td>通过</td></tr>
 <tr><td>POST /component/student-center/remark/check/wk/friend</td><td>userIds=[654489,654500,654499]</td><td>code=0，resultStatus=true</td><td>60704748-c9e0-476e-a446-9b53a1ae1788.0.3</td><td>通过</td></tr>
-<tr><td>POST /component/student-center/roster/renewal/page</td><td>clazzNumbers=[574882679202260992]、pager</td><td>code=35「调动态表单服务接口失败」</td><td>c97e2058-3679-4e61-a4fb-cd1e9c5144b9.0.3</td><td>阻塞（缺 route.sceneVersionNumber，需页面补齐）</td></tr>
+<tr><td>POST /component/student-center/roster/renewal/default/page</td><td>filter.studentSubStatus=[0]、leadTeacher=[177071]、route.sceneVersionNumber=294310981744470016、identification=continuationService</td><td>code=0，total=19，含 studentTags/leadTeacher/clazzBizNumber</td><td>149bd5f0-a3b6-43d3-876d-7d28cf4b8591.0.3</td><td>通过（补 sceneVersionNumber 后 code=35 消失）</td></tr>
+<tr><td>POST /component/student-center/roster/renewal/page</td><td>同上 default 参数（不带 clazzNumbers）</td><td>code=0，list=[]（无匹配班级过滤）</td><td>5eeecd04-c3b0-466b-9911-27d623a1a35f.0.3</td><td>通过（接口无异常）</td></tr>
 </tbody>
 </table>
-<h2>6.3 未完成/阻塞</h2>
+<h2>6.3 页面级验证（阻塞）</h2>
 <ul>
-<li><b>页面验证</b>：EM 关联弹窗、续班服务标签/备注/说明链接、C 端推荐/下单页尚未用 chrome 走完；本轮只完成接口层。</li>
-<li><b>未覆盖场景</b>：status1 页面正例；不同学年/学期与有值从扩科反例；跨年级保留/纯续扩科碰撞；缓存负值/故障/关闭运行态；优惠/异主体；小班批量第三人未选/小班备注模板；历史 min(begin_time) 全量回溯。</li>
-<li><b>已知边界</b>：B8 预热旧结果最长 26 小时；已支付/已购样本不可重放；roster 页面接口需动态表单 sceneVersionNumber，未补齐前不能判页面通过。</li>
+<li><b>已尝试 5 种方式</b>：① 新开 Chrome + 8888 cookie 代理，页面跳 CAS；② CDP 注入 168 条 cookie，只加载工作台壳；③ 回连现有 9222/DevToolsActivePort，ws 超时；④ 复制已登录 Profile 1 的 Cookies/Local Storage 到独立目录启动，仍跳 CAS（cookie 为 app-bound 加密，换目录无法解密）；⑤ 恢复正常 Chrome 后 9222 在听，但 autoConnect 找不到 DevToolsActivePort，直接 ws 返回 403（未带 remote-allow-origins）。</li>
+<li><b>目标</b>：EM 续班计划列表/纯续关联弹窗，或 EES 续班服务标签/备注主链路。本轮<b>没有拿到页面级通过</b>，不以接口结果替代页面。</li>
+<li><b>需要 owner</b>：在正常 Chrome 打开 <code>chrome://inspect/#remote-debugging</code> 勾选启用远程调试，或在新开测试浏览器人工登录一次 177071；下一轮可直接用 chrome skill 的 autoConnect 复验。残余风险：页面渲染、按钮/确认时机、前端发布 SHA 映射未验。</li>
 </ul>
+<h2>6.4 剩余范围项定性（一次批量）</h2>
+<table>
+<thead><tr><th>剩余项</th><th>是否属本次改动影响面</th><th>本轮结论</th></tr></thead>
+<tbody>
+<tr><td>status1 页面正例</td><td>属于（状态校验是本次 save 的直接规则）</td><td>接口已验证 status1 保存（round8，管理员 90247 + DB 回读）；页面按钮/置灰未验 → <b>推断未验证</b>。</td></tr>
+<tr><td>跨学年/学期、有值从扩科</td><td>属于（扩科/年级来源取主计划是本需求规则）</td><td>接口子集已验证主扩科不被从计划污染（round10）；不同学期与有值从扩科页面未验 → <b>推断未验证</b>。</td></tr>
+<tr><td>缓存运行态（负值/故障/关闭）</td><td>属于（cart 新增关联前置课缓存、主计划缓存隔离）</td><td>已发布 <code>renewal.query.cache.enabled=false</code>，本轮未改 Apollo；运行态组合未验 → <b>推断未验证</b>。</td></tr>
+<tr><td>优惠/异主体</td><td>不属于本次代码改动（order 只改跨模式重复校验，未改优惠/收款主体）</td><td><b>非本次改动、不在本次验证范围</b>；保留为下单回归建议，不能据本次接口推出优惠/异主体通过。</td></tr>
+<tr><td>C 端入口</td><td>属于推荐影响面（共用合并结果）</td><td>未固定带计划/学员参数的 C 端入口，页面未验 → <b>没做</b>；不用无参数根页代替。</td></tr>
+<tr><td>小班批量第三人未选/小班备注</td><td>属于子项1（小班续班服务）</td><td>小班单人标签已验证（round9，空→3→筛选→恢复）；小班批量第三人/备注模板未验 → <b>子集已验证，剩余没做</b>。</td></tr>
+<tr><td>历史 min(begin_time) 回溯</td><td>不属于本次代码改动（大数据/ES 外部后续）</td><td><b>非本次改动、不在本次验证范围</b>；按既定责任方另行交付，不从 TEST 推断生产。</td></tr>
+</tbody>
+</table>
 
 <h1>七、证据与版本</h1>
-<p>旧版全文与 7 份历史附件引用备份：<code>artifacts/20261105-p0-concise/feishu-revision-before.xml</code>（revision 319，131653 字符）。本轮新增证据 JSON 见 <code>artifacts/20261105-p0-concise/verification.json</code>。历史轮次的订单、DB、ES、页面证据仍保留在归档目录 <code>artifacts/20261105-p0-execution-round7</code>、<code>round11</code> 等，不重复粘贴到正文。</p>
+<p>旧版全文与 7 份历史附件引用备份：<code>artifacts/20261105-p0-concise/feishu-revision-before.xml</code>（revision 319，131653 字符）。本轮在 v2 基础上补充 code=35 结论、页面级卡点与 7 项剩余范围定性；覆盖后回读 revision 见本轮回报。新增证据 JSON 见 <code>artifacts/20261105-p0-concise/verification.json</code>（重新挂文末）。历史轮次的订单、DB、ES、页面证据仍保留在归档目录 <code>artifacts/20261105-p0-execution-round7</code>、<code>round11</code> 等，不重复粘贴到正文。</p>

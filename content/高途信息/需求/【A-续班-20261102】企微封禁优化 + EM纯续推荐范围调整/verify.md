@@ -1,3 +1,13 @@
+## 2026-11-05 P0 v2 精简与验证
+
+- **P0 已重写为 revision325**：正文按「改了什么 → 关键上下文 → 主链路 → 原链路回归 → 影响范围 → 接口改动与关联回归」组织，步骤在前；131653→20114 字符。旧版 revision319 全文与 7 份附件引用存 `artifacts/20261105-p0-concise/feishu-revision-before.xml`，本轮验证证据存 [verification.json](artifacts/20261105-p0-concise/verification.json) 并挂文末。
+- **直接改动（已验证）**：关联 list trace `4c82b6f7-fb92-4780-9e57-5c53fea7ffab.0.3`（A+B/admin/status）；save 幂等 trace `042fbf96-6975-45e1-8384-e13025c8b682.0.3`；cart 推荐三计划三商品 trace `cart_gaotu100_com.297.17938914022950422`。
+- **关联回归（已验证）**：计划列表名称 `e2b184dd-d11c-4584-8b4c-0b0e29ebfc0d.0.3`、批量 ID `9bf775e4-86d7-4dc3-8d80-0f39cb0f9efb.0.3`、recommendClazzList `e1ab2353-2e4d-44bd-b7e3-eea56d477c89.0.3`、标签字典 `381a4bde-b09b-4501-863a-281c4a83a9df.0.3`、好友校验 `60704748-c9e0-476e-a446-9b53a1ae1788.0.3`。
+- **code=35 已定性**：`roster/renewal/default/page` 补 `route.sceneVersionNumber=294310981744470016`（来自页面 getSchema 的 data.sceneVersionNumber）后 code=0、total=19、含 studentTags，trace `149bd5f0-a3b6-43d3-876d-7d28cf4b8591.0.3`；`/page` code=0，trace `5eeecd04-c3b0-466b-9911-27d623a1a35f.0.3`。原 code=35（trace `c97e2058-3679-4e61-a4fb-cd1e9c5144b9.0.3`）是缺参，不是缺陷。小班 sceneVersionNumber=294312775746856960。
+- **页面级验证仍阻塞**：已试 5 种方式（新浏览器+代理、CDP 注入 cookie、回连 9222、复制 Profile 1、正常 Chrome 9222）均未进入目标页；正常 Chrome 的 ws 返回 403（无 remote-allow-origins）。需 owner 在新开浏览器人工登录一次 177071 或启用可用的远程调试后再补。页面结论未验证，不以接口结果替代。
+- **剩余项定性**：status1 页面、跨学年/学期+有值从扩科、缓存运行态、C 端入口、小班批量第三人/小班备注属本次影响面（接口子集已验证，页面/剩余场景未验）；优惠/异主体、历史回溯非本次代码改动，不在本次验证范围。详见 P0 6.4。
+- **skill**：banshan-case 新增「按代码改动写 P0」四规则并同步模板，`verify_skills.sh` 84 条 0 失败。
+
 ## round11 当前结果（2026-11-05）
 
 **P0定向补验与文档写回完成，完整业务验收未完成。** 当前25契约/30条未完项以[逐项映射](artifacts/20261105-p0-execution-round11/contract-evidence-mapping.csv)、[双统计](artifacts/20261105-p0-execution-round11/statistics.json)、[交接](artifacts/20261105-p0-execution-round11/handoff.md)为准；下方历史轮次保留其原版本证据，不覆盖本轮新增事实。
