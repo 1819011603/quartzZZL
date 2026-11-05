@@ -1,0 +1,14 @@
+{
+  "cosplay": {"changed": false, "status": "未切换/未写全局状态"},
+  "writes": {"business": false, "database": false, "es": false, "external_document": false, "skill": false},
+  "created_objects": [],
+  "modified_objects": [],
+  "restore_actions": [],
+  "run_ids": [],
+  "in_flight": [],
+  "readonly_artifacts": [
+    "/tmp/w1-p0-243aa61a/round4/qiwei-candidate-large.json",
+    "/tmp/w1-p0-243aa61a/round4/qiwei-candidate-small.json"
+  ],
+  "handoff": "/tmp/w1-p0-243aa61a/round4/qiwei-handoff.md"
+}

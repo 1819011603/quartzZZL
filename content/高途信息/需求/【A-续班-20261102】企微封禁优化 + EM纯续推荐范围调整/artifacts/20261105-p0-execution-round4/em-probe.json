@@ -1,0 +1,941 @@
+{
+  "time": "2026-11-05T17:15:01.885076",
+  "environment": "TEST",
+  "lane": "test-gtbg-dev-3",
+  "instances": {
+    "CART.GAOTU100.COM": [
+      {
+        "instanceId": "cart-gaotu100-com-79789ddcf4-vqnpj:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+        "hostName": "10.218.237.47",
+        "app": "CART.GAOTU100.COM",
+        "ipAddr": "10.218.237.47",
+        "status": "UP",
+        "overriddenStatus": "UP",
+        "port": {
+          "$": 28688,
+          "@enabled": "true"
+        },
+        "securePort": {
+          "$": 443,
+          "@enabled": "false"
+        },
+        "countryId": 1,
+        "dataCenterInfo": {
+          "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
+          "name": "MyOwn"
+        },
+        "leaseInfo": {
+          "renewalIntervalInSecs": 30,
+          "durationInSecs": 90,
+          "registrationTimestamp": 1793850396939,
+          "lastRenewalTimestamp": 1793870176458,
+          "evictionTimestamp": 0,
+          "serviceUpTimestamp": 1793850396939
+        },
+        "metadata": {
+          "trafficEnv": "test-gtbg-dev-3",
+          "techFramework": "java-springcloud",
+          "regionId": "BJ",
+          "groupId": "test-gtbg-dev-3-BJ-Ve1",
+          "zoneId": "Ve1",
+          "management.port": "28688",
+          "region": "dev",
+          "version": "1.0",
+          "group": "gaotu"
+        },
+        "appGroupName": "TEST-GTBG-DEV-3",
+        "homePageUrl": "http://10.218.237.47:28688/",
+        "statusPageUrl": "http://10.218.237.47:28688/info",
+        "healthCheckUrl": "http://10.218.237.47:28688/health",
+        "vipAddress": "cart.gaotu100.com",
+        "secureVipAddress": "cart.gaotu100.com",
+        "isCoordinatingDiscoveryServer": "false",
+        "lastUpdatedTimestamp": "1793850396939",
+        "lastDirtyTimestamp": "1793850396538",
+        "actionType": "ADDED"
+      },
+      {
+        "instanceId": "cart-gaotu100-com-5f668c7b58-grgcw:cart.gaotu100.com:28688:@default",
+        "hostName": "10.255.165.76",
+        "app": "CART.GAOTU100.COM",
+        "ipAddr": "10.255.165.76",
+        "status": "UP",
+        "overriddenStatus": "UP",
+        "port": {
+          "$": 28688,
+          "@enabled": "true"
+        },
+        "securePort": {
+          "$": 443,
+          "@enabled": "false"
+        },
+        "countryId": 1,
+        "dataCenterInfo": {
+          "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
+          "name": "MyOwn"
+        },
+        "leaseInfo": {
+          "renewalIntervalInSecs": 30,
+          "durationInSecs": 90,
+          "registrationTimestamp": 1793849539980,
+          "lastRenewalTimestamp": 1793870190923,
+          "evictionTimestamp": 0,
+          "serviceUpTimestamp": 1793849539980
+        },
+        "metadata": {
+          "trafficEnv": "test",
+          "techFramework": "java-springcloud",
+          "regionId": "BJ",
+          "groupId": "test-BJ-Ali1",
+          "zoneId": "Ali1",
+          "management.port": "28688",
+          "region": "dev",
+          "version": "1.0",
+          "group": "gaotu"
+        },
+        "homePageUrl": "http://10.255.165.76:28688/",
+        "statusPageUrl": "http://10.255.165.76:28688/info",
+        "healthCheckUrl": "http://10.255.165.76:28688/health",
+        "vipAddress": "cart.gaotu100.com",
+        "secureVipAddress": "cart.gaotu100.com",
+        "isCoordinatingDiscoveryServer": "false",
+        "lastUpdatedTimestamp": "1793849539980",
+        "lastDirtyTimestamp": "1793849539818",
+        "actionType": "ADDED"
+      },
+      {
+        "instanceId": "cart-gaotu100-com-7b88dff6b6-bnpsf:cart.gaotu100.com:28688:@test-eco-1",
+        "hostName": "10.218.238.228",
+        "app": "CART.GAOTU100.COM",
+        "ipAddr": "10.218.238.228",
+        "status": "UP",
+        "overriddenStatus": "UP",
+        "port": {
+          "$": 28688,
+          "@enabled": "true"
+        },
+        "securePort": {
+          "$": 443,
+          "@enabled": "false"
+        },
+        "countryId": 1,
+        "dataCenterInfo": {
+          "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
+          "name": "MyOwn"
+        },
+        "leaseInfo": {
+          "renewalIntervalInSecs": 30,
+          "durationInSecs": 90,
+          "registrationTimestamp": 1793849139211,
+          "lastRenewalTimestamp": 1793870179143,
+          "evictionTimestamp": 0,
+          "serviceUpTimestamp": 1793849139211
+        },
+        "metadata": {
+          "trafficEnv": "test-eco-1",
+          "techFramework": "java-springcloud",
+          "regionId": "BJ",
+          "groupId": "test-eco-1-BJ-Ve1",
+          "zoneId": "Ve1",
+          "management.port": "28688",
+          "region": "dev",
+          "version": "1.0",
+          "group": "gaotu"
+        },
+        "appGroupName": "TEST-ECO-1",
+        "homePageUrl": "http://10.218.238.228:28688/",
+        "statusPageUrl": "http://10.218.238.228:28688/info",
+        "healthCheckUrl": "http://10.218.238.228:28688/health",
+        "vipAddress": "cart.gaotu100.com",
+        "secureVipAddress": "cart.gaotu100.com",
+        "isCoordinatingDiscoveryServer": "false",
+        "lastUpdatedTimestamp": "1793849139211",
+        "lastDirtyTimestamp": "1793849139106",
+        "actionType": "ADDED"
+      }
+    ],
+    "PRODUCT-B": [
+      {
+        "instanceId": "product-b-659856cbbb-72zs9:product-b:28688:@test-eco-1",
+        "hostName": "10.218.249.195",
+        "app": "PRODUCT-B",
+        "ipAddr": "10.218.249.195",
+        "status": "UP",
+        "overriddenStatus": "UP",
+        "port": {
+          "$": 28688,
+          "@enabled": "true"
+        },
+        "securePort": {
+          "$": 443,
+          "@enabled": "false"
+        },
+        "countryId": 1,
+        "dataCenterInfo": {
+          "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
+          "name": "MyOwn"
+        },
+        "leaseInfo": {
+          "renewalIntervalInSecs": 30,
+          "durationInSecs": 90,
+          "registrationTimestamp": 1793267674494,
+          "lastRenewalTimestamp": 1793870108048,
+          "evictionTimestamp": 0,
+          "serviceUpTimestamp": 1793267674494
+        },
+        "metadata": {
+          "trafficEnv": "test-eco-1",
+          "techFramework": "java-springcloud",
+          "regionId": "BJ",
+          "groupId": "test-eco-1-BJ-Ve1",
+          "zoneId": "Ve1",
+          "management.port": "28688",
+          "region": "dev",
+          "version": "1.0",
+          "group": "gaotu"
+        },
+        "appGroupName": "TEST-ECO-1",
+        "homePageUrl": "http://10.218.249.195:28688/",
+        "statusPageUrl": "http://10.218.249.195:28688/info",
+        "healthCheckUrl": "http://10.218.249.195:28688/health",
+        "vipAddress": "product-b",
+        "secureVipAddress": "product-b",
+        "isCoordinatingDiscoveryServer": "false",
+        "lastUpdatedTimestamp": "1793267674494",
+        "lastDirtyTimestamp": "1793267674386",
+        "actionType": "ADDED"
+      },
+      {
+        "instanceId": "product-b-7686db87cc-bp44p:product-b:28688:@default",
+        "hostName": "10.255.189.101",
+        "app": "PRODUCT-B",
+        "ipAddr": "10.255.189.101",
+        "status": "UP",
+        "overriddenStatus": "UP",
+        "port": {
+          "$": 28688,
+          "@enabled": "true"
+        },
+        "securePort": {
+          "$": 443,
+          "@enabled": "false"
+        },
+        "countryId": 1,
+        "dataCenterInfo": {
+          "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
+          "name": "MyOwn"
+        },
+        "leaseInfo": {
+          "renewalIntervalInSecs": 30,
+          "durationInSecs": 90,
+          "registrationTimestamp": 1793597775801,
+          "lastRenewalTimestamp": 1793870108242,
+          "evictionTimestamp": 0,
+          "serviceUpTimestamp": 1793597775801
+        },
+        "metadata": {
+          "trafficEnv": "test",
+          "techFramework": "java-springcloud",
+          "regionId": "BJ",
+          "groupId": "test-BJ-Ali1",
+          "zoneId": "Ali1",
+          "management.port": "28688",
+          "region": "dev",
+          "version": "1.0",
+          "group": "gaotu"
+        },
+        "homePageUrl": "http://10.255.189.101:28688/",
+        "statusPageUrl": "http://10.255.189.101:28688/info",
+        "healthCheckUrl": "http://10.255.189.101:28688/health",
+        "vipAddress": "product-b",
+        "secureVipAddress": "product-b",
+        "isCoordinatingDiscoveryServer": "false",
+        "lastUpdatedTimestamp": "1793597775801",
+        "lastDirtyTimestamp": "1793597775669",
+        "actionType": "ADDED"
+      },
+      {
+        "instanceId": "product-b-6f7cb6f8ff-xlgvm:product-b:28688:@test-eco-3",
+        "hostName": "10.218.236.15",
+        "app": "PRODUCT-B",
+        "ipAddr": "10.218.236.15",
+        "status": "UP",
+        "overriddenStatus": "UP",
+        "port": {
+          "$": 28688,
+          "@enabled": "true"
+        },
+        "securePort": {
+          "$": 443,
+          "@enabled": "false"
+        },
+        "countryId": 1,
+        "dataCenterInfo": {
+          "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
+          "name": "MyOwn"
+        },
+        "leaseInfo": {
+          "renewalIntervalInSecs": 30,
+          "durationInSecs": 90,
+          "registrationTimestamp": 1792999180250,
+          "lastRenewalTimestamp": 1793870108071,
+          "evictionTimestamp": 0,
+          "serviceUpTimestamp": 1792999180250
+        },
+        "metadata": {
+          "trafficEnv": "test-eco-3",
+          "techFramework": "java-springcloud",
+          "regionId": "BJ",
+          "groupId": "test-eco-3-BJ-Ve1",
+          "zoneId": "Ve1",
+          "management.port": "28688",
+          "region": "dev",
+          "version": "1.0",
+          "group": "gaotu"
+        },
+        "appGroupName": "TEST-ECO-3",
+        "homePageUrl": "http://10.218.236.15:28688/",
+        "statusPageUrl": "http://10.218.236.15:28688/info",
+        "healthCheckUrl": "http://10.218.236.15:28688/health",
+        "vipAddress": "product-b",
+        "secureVipAddress": "product-b",
+        "isCoordinatingDiscoveryServer": "false",
+        "lastUpdatedTimestamp": "1792999180250",
+        "lastDirtyTimestamp": "1792999179930",
+        "actionType": "ADDED"
+      },
+      {
+        "instanceId": "product-b-7d48b8fb74-lxqvg:product-b:28688:@test-gtbg-dev-3",
+        "hostName": "10.218.248.248",
+        "app": "PRODUCT-B",
+        "ipAddr": "10.218.248.248",
+        "status": "UP",
+        "overriddenStatus": "UP",
+        "port": {
+          "$": 28688,
+          "@enabled": "true"
+        },
+        "securePort": {
+          "$": 443,
+          "@enabled": "false"
+        },
+        "countryId": 1,
+        "dataCenterInfo": {
+          "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
+          "name": "MyOwn"
+        },
+        "leaseInfo": {
+          "renewalIntervalInSecs": 30,
+          "durationInSecs": 90,
+          "registrationTimestamp": 1793845673050,
+          "lastRenewalTimestamp": 1793870132902,
+          "evictionTimestamp": 0,
+          "serviceUpTimestamp": 1793845673050
+        },
+        "metadata": {
+          "trafficEnv": "test-gtbg-dev-3",
+          "techFramework": "java-springcloud",
+          "regionId": "BJ",
+          "groupId": "test-gtbg-dev-3-BJ-Ve1",
+          "zoneId": "Ve1",
+          "management.port": "28688",
+          "region": "dev",
+          "version": "1.0",
+          "group": "gaotu"
+        },
+        "appGroupName": "TEST-GTBG-DEV-3",
+        "homePageUrl": "http://10.218.248.248:28688/",
+        "statusPageUrl": "http://10.218.248.248:28688/info",
+        "healthCheckUrl": "http://10.218.248.248:28688/health",
+        "vipAddress": "product-b",
+        "secureVipAddress": "product-b",
+        "isCoordinatingDiscoveryServer": "false",
+        "lastUpdatedTimestamp": "1793845673050",
+        "lastDirtyTimestamp": "1793845672897",
+        "actionType": "ADDED"
+      },
+      {
+        "instanceId": "product-b-6d6ddbb54-7cngv:product-b:28688:@test-eco-5",
+        "hostName": "10.218.238.224",
+        "app": "PRODUCT-B",
+        "ipAddr": "10.218.238.224",
+        "status": "UP",
+        "overriddenStatus": "UP",
+        "port": {
+          "$": 28688,
+          "@enabled": "true"
+        },
+        "securePort": {
+          "$": 443,
+          "@enabled": "false"
+        },
+        "countryId": 1,
+        "dataCenterInfo": {
+          "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
+          "name": "MyOwn"
+        },
+        "leaseInfo": {
+          "renewalIntervalInSecs": 30,
+          "durationInSecs": 90,
+          "registrationTimestamp": 1793080092946,
+          "lastRenewalTimestamp": 1793870120575,
+          "evictionTimestamp": 0,
+          "serviceUpTimestamp": 1793080092946
+        },
+        "metadata": {
+          "trafficEnv": "test-eco-5",
+          "techFramework": "java-springcloud",
+          "regionId": "BJ",
+          "groupId": "test-eco-5-BJ-Ve1",
+          "zoneId": "Ve1",
+          "management.port": "28688",
+          "region": "dev",
+          "version": "1.0",
+          "group": "gaotu"
+        },
+        "appGroupName": "TEST-ECO-5",
+        "homePageUrl": "http://10.218.238.224:28688/",
+        "statusPageUrl": "http://10.218.238.224:28688/info",
+        "healthCheckUrl": "http://10.218.238.224:28688/health",
+        "vipAddress": "product-b",
+        "secureVipAddress": "product-b",
+        "isCoordinatingDiscoveryServer": "false",
+        "lastUpdatedTimestamp": "1793080092946",
+        "lastDirtyTimestamp": "1793080092800",
+        "actionType": "ADDED"
+      }
+    ],
+    "ORDER.GAOTU100.COM": [
+      {
+        "instanceId": "order-gaotu100-com-7b4679fbcc-gqhcd:order.gaotu100.com:28688:@test-eco-7",
+        "hostName": "10.218.238.33",
+        "app": "ORDER.GAOTU100.COM",
+        "ipAddr": "10.218.238.33",
+        "status": "UP",
+        "overriddenStatus": "UP",
+        "port": {
+          "$": 28688,
+          "@enabled": "true"
+        },
+        "securePort": {
+          "$": 443,
+          "@enabled": "false"
+        },
+        "countryId": 1,
+        "dataCenterInfo": {
+          "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
+          "name": "MyOwn"
+        },
+        "leaseInfo": {
+          "renewalIntervalInSecs": 30,
+          "durationInSecs": 90,
+          "registrationTimestamp": 1793242904335,
+          "lastRenewalTimestamp": 1793870178037,
+          "evictionTimestamp": 0,
+          "serviceUpTimestamp": 1793242904335
+        },
+        "metadata": {
+          "trafficEnv": "test-eco-7",
+          "techFramework": "java-springcloud",
+          "regionId": "BJ",
+          "groupId": "test-eco-7-BJ-Ve1",
+          "zoneId": "Ve1",
+          "management.port": "28688",
+          "region": "dev",
+          "version": "1.0",
+          "group": "gaotu"
+        },
+        "appGroupName": "TEST-ECO-7",
+        "homePageUrl": "http://10.218.238.33:28688/",
+        "statusPageUrl": "http://10.218.238.33:28688/info",
+        "healthCheckUrl": "http://10.218.238.33:28688/health",
+        "vipAddress": "order.gaotu100.com",
+        "secureVipAddress": "order.gaotu100.com",
+        "isCoordinatingDiscoveryServer": "false",
+        "lastUpdatedTimestamp": "1793242904335",
+        "lastDirtyTimestamp": "1793242904069",
+        "actionType": "ADDED"
+      },
+      {
+        "instanceId": "order-gaotu100-com-6cfc55f6f9-tkwfc:order.gaotu100.com:28688:@test-eco-2",
+        "hostName": "10.218.237.123",
+        "app": "ORDER.GAOTU100.COM",
+        "ipAddr": "10.218.237.123",
+        "status": "UP",
+        "overriddenStatus": "UP",
+        "port": {
+          "$": 28688,
+          "@enabled": "true"
+        },
+        "securePort": {
+          "$": 443,
+          "@enabled": "false"
+        },
+        "countryId": 1,
+        "dataCenterInfo": {
+          "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
+          "name": "MyOwn"
+        },
+        "leaseInfo": {
+          "renewalIntervalInSecs": 30,
+          "durationInSecs": 90,
+          "registrationTimestamp": 1793847022590,
+          "lastRenewalTimestamp": 1793870162805,
+          "evictionTimestamp": 0,
+          "serviceUpTimestamp": 1793847022590
+        },
+        "metadata": {
+          "trafficEnv": "test-eco-2",
+          "techFramework": "java-springcloud",
+          "regionId": "BJ",
+          "groupId": "test-eco-2-BJ-Ve1",
+          "zoneId": "Ve1",
+          "management.port": "28688",
+          "region": "dev",
+          "version": "1.0",
+          "group": "gaotu"
+        },
+        "appGroupName": "TEST-ECO-2",
+        "homePageUrl": "http://10.218.237.123:28688/",
+        "statusPageUrl": "http://10.218.237.123:28688/info",
+        "healthCheckUrl": "http://10.218.237.123:28688/health",
+        "vipAddress": "order.gaotu100.com",
+        "secureVipAddress": "order.gaotu100.com",
+        "isCoordinatingDiscoveryServer": "false",
+        "lastUpdatedTimestamp": "1793847022590",
+        "lastDirtyTimestamp": "1793847022486",
+        "actionType": "ADDED"
+      },
+      {
+        "instanceId": "order-gaotu100-com-756b5754fd-jzk6p:order.gaotu100.com:28688:@test-gtbg-dev-3",
+        "hostName": "10.218.236.236",
+        "app": "ORDER.GAOTU100.COM",
+        "ipAddr": "10.218.236.236",
+        "status": "UP",
+        "overriddenStatus": "UP",
+        "port": {
+          "$": 28688,
+          "@enabled": "true"
+        },
+        "securePort": {
+          "$": 443,
+          "@enabled": "false"
+        },
+        "countryId": 1,
+        "dataCenterInfo": {
+          "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
+          "name": "MyOwn"
+        },
+        "leaseInfo": {
+          "renewalIntervalInSecs": 30,
+          "durationInSecs": 90,
+          "registrationTimestamp": 1793851890405,
+          "lastRenewalTimestamp": 1793870168742,
+          "evictionTimestamp": 0,
+          "serviceUpTimestamp": 1793851890406
+        },
+        "metadata": {
+          "trafficEnv": "test-gtbg-dev-3",
+          "techFramework": "java-springcloud",
+          "regionId": "BJ",
+          "groupId": "test-gtbg-dev-3-BJ-Ve1",
+          "zoneId": "Ve1",
+          "management.port": "28688",
+          "region": "dev",
+          "version": "1.0",
+          "group": "gaotu"
+        },
+        "appGroupName": "TEST-GTBG-DEV-3",
+        "homePageUrl": "http://10.218.236.236:28688/",
+        "statusPageUrl": "http://10.218.236.236:28688/info",
+        "healthCheckUrl": "http://10.218.236.236:28688/health",
+        "vipAddress": "order.gaotu100.com",
+        "secureVipAddress": "order.gaotu100.com",
+        "isCoordinatingDiscoveryServer": "false",
+        "lastUpdatedTimestamp": "1793851890406",
+        "lastDirtyTimestamp": "1793851890210",
+        "actionType": "ADDED"
+      },
+      {
+        "instanceId": "order-gaotu100-com-578c69c554-khwtd:order.gaotu100.com:28688:@test-eco-9",
+        "hostName": "10.218.248.90",
+        "app": "ORDER.GAOTU100.COM",
+        "ipAddr": "10.218.248.90",
+        "status": "UP",
+        "overriddenStatus": "UP",
+        "port": {
+          "$": 28688,
+          "@enabled": "true"
+        },
+        "securePort": {
+          "$": 443,
+          "@enabled": "false"
+        },
+        "countryId": 1,
+        "dataCenterInfo": {
+          "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
+          "name": "MyOwn"
+        },
+        "leaseInfo": {
+          "renewalIntervalInSecs": 30,
+          "durationInSecs": 90,
+          "registrationTimestamp": 1793245696307,
+          "lastRenewalTimestamp": 1793870170834,
+          "evictionTimestamp": 0,
+          "serviceUpTimestamp": 1793245696307
+        },
+        "metadata": {
+          "trafficEnv": "test-eco-9",
+          "techFramework": "java-springcloud",
+          "regionId": "BJ",
+          "groupId": "test-eco-9-BJ-Ve1",
+          "zoneId": "Ve1",
+          "management.port": "28688",
+          "region": "dev",
+          "version": "1.0",
+          "group": "gaotu"
+        },
+        "appGroupName": "TEST-ECO-9",
+        "homePageUrl": "http://10.218.248.90:28688/",
+        "statusPageUrl": "http://10.218.248.90:28688/info",
+        "healthCheckUrl": "http://10.218.248.90:28688/health",
+        "vipAddress": "order.gaotu100.com",
+        "secureVipAddress": "order.gaotu100.com",
+        "isCoordinatingDiscoveryServer": "false",
+        "lastUpdatedTimestamp": "1793245696307",
+        "lastDirtyTimestamp": "1793245696106",
+        "actionType": "ADDED"
+      },
+      {
+        "instanceId": "order-gaotu100-com-dc6f765d8-gwrsz:order.gaotu100.com:28688:@test-eco-4",
+        "hostName": "10.218.248.47",
+        "app": "ORDER.GAOTU100.COM",
+        "ipAddr": "10.218.248.47",
+        "status": "UP",
+        "overriddenStatus": "UP",
+        "port": {
+          "$": 28688,
+          "@enabled": "true"
+        },
+        "securePort": {
+          "$": 443,
+          "@enabled": "false"
+        },
+        "countryId": 1,
+        "dataCenterInfo": {
+          "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
+          "name": "MyOwn"
+        },
+        "leaseInfo": {
+          "renewalIntervalInSecs": 30,
+          "durationInSecs": 90,
+          "registrationTimestamp": 1793864987052,
+          "lastRenewalTimestamp": 1793870179652,
+          "evictionTimestamp": 0,
+          "serviceUpTimestamp": 1793864987052
+        },
+        "metadata": {
+          "trafficEnv": "test-eco-4",
+          "techFramework": "java-springcloud",
+          "regionId": "BJ",
+          "groupId": "test-eco-4-BJ-Ve1",
+          "zoneId": "Ve1",
+          "management.port": "28688",
+          "region": "dev",
+          "version": "1.0",
+          "group": "gaotu"
+        },
+        "appGroupName": "TEST-ECO-4",
+        "homePageUrl": "http://10.218.248.47:28688/",
+        "statusPageUrl": "http://10.218.248.47:28688/info",
+        "healthCheckUrl": "http://10.218.248.47:28688/health",
+        "vipAddress": "order.gaotu100.com",
+        "secureVipAddress": "order.gaotu100.com",
+        "isCoordinatingDiscoveryServer": "false",
+        "lastUpdatedTimestamp": "1793864987052",
+        "lastDirtyTimestamp": "1793864986952",
+        "actionType": "ADDED"
+      },
+      {
+        "instanceId": "order-gaotu100-com-66f9d4b89b-qpptj:order.gaotu100.com:28688:@test-eco-6",
+        "hostName": "10.218.236.206",
+        "app": "ORDER.GAOTU100.COM",
+        "ipAddr": "10.218.236.206",
+        "status": "UP",
+        "overriddenStatus": "UP",
+        "port": {
+          "$": 28688,
+          "@enabled": "true"
+        },
+        "securePort": {
+          "$": 443,
+          "@enabled": "false"
+        },
+        "countryId": 1,
+        "dataCenterInfo": {
+          "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
+          "name": "MyOwn"
+        },
+        "leaseInfo": {
+          "renewalIntervalInSecs": 30,
+          "durationInSecs": 90,
+          "registrationTimestamp": 1793848777598,
+          "lastRenewalTimestamp": 1793870176953,
+          "evictionTimestamp": 0,
+          "serviceUpTimestamp": 1793848777598
+        },
+        "metadata": {
+          "trafficEnv": "test-eco-6",
+          "techFramework": "java-springcloud",
+          "regionId": "BJ",
+          "groupId": "test-eco-6-BJ-Ve1",
+          "zoneId": "Ve1",
+          "management.port": "28688",
+          "region": "dev",
+          "version": "1.0",
+          "group": "gaotu"
+        },
+        "appGroupName": "TEST-ECO-6",
+        "homePageUrl": "http://10.218.236.206:28688/",
+        "statusPageUrl": "http://10.218.236.206:28688/info",
+        "healthCheckUrl": "http://10.218.236.206:28688/health",
+        "vipAddress": "order.gaotu100.com",
+        "secureVipAddress": "order.gaotu100.com",
+        "isCoordinatingDiscoveryServer": "false",
+        "lastUpdatedTimestamp": "1793848777598",
+        "lastDirtyTimestamp": "1793848777020",
+        "actionType": "ADDED"
+      },
+      {
+        "instanceId": "order-gaotu100-com-596676bc48-tm48x:order.gaotu100.com:28688:@default",
+        "hostName": "10.255.164.121",
+        "app": "ORDER.GAOTU100.COM",
+        "ipAddr": "10.255.164.121",
+        "status": "UP",
+        "overriddenStatus": "UP",
+        "port": {
+          "$": 28688,
+          "@enabled": "true"
+        },
+        "securePort": {
+          "$": 443,
+          "@enabled": "false"
+        },
+        "countryId": 1,
+        "dataCenterInfo": {
+          "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
+          "name": "MyOwn"
+        },
+        "leaseInfo": {
+          "renewalIntervalInSecs": 30,
+          "durationInSecs": 90,
+          "registrationTimestamp": 1793598108892,
+          "lastRenewalTimestamp": 1793870184385,
+          "evictionTimestamp": 0,
+          "serviceUpTimestamp": 1793598108892
+        },
+        "metadata": {
+          "trafficEnv": "test",
+          "techFramework": "java-springcloud",
+          "regionId": "BJ",
+          "groupId": "test-BJ-Ali1",
+          "zoneId": "Ali1",
+          "management.port": "28688",
+          "region": "dev",
+          "version": "1.0",
+          "group": "gaotu"
+        },
+        "homePageUrl": "http://10.255.164.121:28688/",
+        "statusPageUrl": "http://10.255.164.121:28688/info",
+        "healthCheckUrl": "http://10.255.164.121:28688/health",
+        "vipAddress": "order.gaotu100.com",
+        "secureVipAddress": "order.gaotu100.com",
+        "isCoordinatingDiscoveryServer": "false",
+        "lastUpdatedTimestamp": "1793598108892",
+        "lastDirtyTimestamp": "1793598108334",
+        "actionType": "ADDED"
+      },
+      {
+        "instanceId": "order-gaotu100-com-7fc66f8d-xkg4k:order.gaotu100.com:28688:@test-eco-10",
+        "hostName": "10.218.237.149",
+        "app": "ORDER.GAOTU100.COM",
+        "ipAddr": "10.218.237.149",
+        "status": "UP",
+        "overriddenStatus": "UP",
+        "port": {
+          "$": 28688,
+          "@enabled": "true"
+        },
+        "securePort": {
+          "$": 443,
+          "@enabled": "false"
+        },
+        "countryId": 1,
+        "dataCenterInfo": {
+          "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
+          "name": "MyOwn"
+        },
+        "leaseInfo": {
+          "renewalIntervalInSecs": 30,
+          "durationInSecs": 90,
+          "registrationTimestamp": 1792985414607,
+          "lastRenewalTimestamp": 1793870191550,
+          "evictionTimestamp": 0,
+          "serviceUpTimestamp": 1792985414607
+        },
+        "metadata": {
+          "trafficEnv": "test-eco-10",
+          "techFramework": "java-springcloud",
+          "regionId": "BJ",
+          "groupId": "test-eco-10-BJ-Ve1",
+          "zoneId": "Ve1",
+          "management.port": "28688",
+          "region": "dev",
+          "version": "1.0",
+          "group": "gaotu"
+        },
+        "appGroupName": "TEST-ECO-10",
+        "homePageUrl": "http://10.218.237.149:28688/",
+        "statusPageUrl": "http://10.218.237.149:28688/info",
+        "healthCheckUrl": "http://10.218.237.149:28688/health",
+        "vipAddress": "order.gaotu100.com",
+        "secureVipAddress": "order.gaotu100.com",
+        "isCoordinatingDiscoveryServer": "false",
+        "lastUpdatedTimestamp": "1792985414607",
+        "lastDirtyTimestamp": "1792985414261",
+        "actionType": "ADDED"
+      },
+      {
+        "instanceId": "order-gaotu100-com-846c88bc8c-sxq5b:order.gaotu100.com:28688:@test-eco-1",
+        "hostName": "10.218.251.241",
+        "app": "ORDER.GAOTU100.COM",
+        "ipAddr": "10.218.251.241",
+        "status": "UP",
+        "overriddenStatus": "UP",
+        "port": {
+          "$": 28688,
+          "@enabled": "true"
+        },
+        "securePort": {
+          "$": 443,
+          "@enabled": "false"
+        },
+        "countryId": 1,
+        "dataCenterInfo": {
+          "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
+          "name": "MyOwn"
+        },
+        "leaseInfo": {
+          "renewalIntervalInSecs": 30,
+          "durationInSecs": 90,
+          "registrationTimestamp": 1793865030558,
+          "lastRenewalTimestamp": 1793870162721,
+          "evictionTimestamp": 0,
+          "serviceUpTimestamp": 1793865030558
+        },
+        "metadata": {
+          "trafficEnv": "test-eco-1",
+          "techFramework": "java-springcloud",
+          "regionId": "BJ",
+          "groupId": "test-eco-1-BJ-Ve1",
+          "zoneId": "Ve1",
+          "management.port": "28688",
+          "region": "dev",
+          "version": "1.0",
+          "group": "gaotu"
+        },
+        "appGroupName": "TEST-ECO-1",
+        "homePageUrl": "http://10.218.251.241:28688/",
+        "statusPageUrl": "http://10.218.251.241:28688/info",
+        "healthCheckUrl": "http://10.218.251.241:28688/health",
+        "vipAddress": "order.gaotu100.com",
+        "secureVipAddress": "order.gaotu100.com",
+        "isCoordinatingDiscoveryServer": "false",
+        "lastUpdatedTimestamp": "1793865030558",
+        "lastDirtyTimestamp": "1793865030229",
+        "actionType": "ADDED"
+      }
+    ]
+  },
+  "plans": {
+    "sql": "SELECT CAST(number AS CHAR) number,name,type,status,isdel,is_test_data FROM renew_master WHERE number IN (585960797778243584,586116340522184704,587173440509732864)",
+    "rows": [
+      {
+        "number": "585960797778243584",
+        "name": "dcg-扩科排除-大班计划-1020",
+        "type": 1,
+        "status": 2,
+        "isdel": 0,
+        "is_test_data": 1
+      },
+      {
+        "number": "586116340522184704",
+        "name": "dcg-小班扩科排除-计划",
+        "type": 2,
+        "status": 2,
+        "isdel": 0,
+        "is_test_data": 1
+      },
+      {
+        "number": "587173440509732864",
+        "name": "kk3-大班计划D-例3",
+        "type": 1,
+        "status": 2,
+        "isdel": 0,
+        "is_test_data": 1
+      }
+    ]
+  },
+  "status1": {
+    "sql": "SELECT CAST(number AS CHAR) number,name,type,status,isdel,is_test_data FROM renew_master WHERE status=1 AND isdel=0 ORDER BY id DESC LIMIT 3",
+    "rows": [
+      {
+        "number": "574500823697111040",
+        "name": "【造数】续班归因-计划P-阶段未开始2027",
+        "type": 1,
+        "status": 1,
+        "isdel": 0,
+        "is_test_data": 1
+      },
+      {
+        "number": "504623326335891456",
+        "name": "冲突验证",
+        "type": 1,
+        "status": 1,
+        "isdel": 0,
+        "is_test_data": 0
+      },
+      {
+        "number": "504615891256807424",
+        "name": "待开始",
+        "type": 1,
+        "status": 1,
+        "isdel": 0,
+        "is_test_data": 0
+      }
+    ]
+  },
+  "c_relations": {
+    "sql": "SELECT * FROM renew_master_course_relation WHERE renew_master_number=587173440509732864 AND isdel=0",
+    "rows": [
+      {
+        "id": 69842,
+        "number": 587173445123467264,
+        "renew_master_number": 587173440509732864,
+        "pre_course_number": 587172666123845632,
+        "questionnaire_number": null,
+        "isdel": 0,
+        "create_time": "2026-10-27 10:01:09",
+        "update_time": "2026-10-27 10:01:09"
+      }
+    ]
+  },
+  "paid_pre": {
+    "sql": "SELECT CAST(user_id AS CHAR) user_id,CAST(order_number AS CHAR) order_number,order_status,CAST(course_number AS CHAR) course_number FROM order_info WHERE user_id=7489648821 AND course_number IN (585960577856301056,585960751831836672)",
+    "rows": []
+  },
+  "courses": {
+    "sql": "SELECT CAST(course_number AS CHAR) course_number,name,grades,subjects FROM course WHERE course_number IN (585960577856301056,585960751831836672)",
+    "error": "(1054, \"Unknown column 'course_number' in 'field list'\")"
+  }
+}

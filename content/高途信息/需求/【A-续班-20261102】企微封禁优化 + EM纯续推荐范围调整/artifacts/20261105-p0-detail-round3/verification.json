@@ -1,0 +1,53 @@
+{
+  "latest_document_revision": 159,
+  "document_url": "https://gaotuedu.feishu.cn/wiki/KeCZwdJTBiIJDJkX8lRcGb9gnCs",
+  "checks": {
+    "classification-final-readback.json": true,
+    "p0-10-final-readback.json": true,
+    "p0-11-final-readback.json": true,
+    "mr-doc-readback.json": true,
+    "attachment-readback.json": true,
+    "original30_each_once_in_classification": true,
+    "sum30": true,
+    "local_counts_match": true,
+    "key_corrected": true,
+    "clear_names_expected": true,
+    "owner_time_rule_preserved": true,
+    "no_pending_manifest_reference": true,
+    "attachment_sha_match": true
+  },
+  "original30_counts": {
+    "信息仍缺失": 18,
+    "前置准备后可执行": 10,
+    "完整可复现": 2
+  },
+  "merged12_counts": {
+    "完整可复现": 1,
+    "前置准备后可执行": 1,
+    "信息仍缺失": 10
+  },
+  "section_readbacks": {
+    "classification": 159,
+    "P0-10": 156,
+    "P0-11": 156,
+    "MR_addendum": 148,
+    "attachment": 158
+  },
+  "reused": "rev146全文12卡/36步/25契约/30原P0/31链接及旧附件校验；rev147 B班名；banshan-case源/安装一致，84路由0失败、正确根审计0错误0警告。未重跑未受影响检查。",
+  "limits": "仅文档信息分档及TEST精确只读查询；MR为静态比较。未运行MR测试、未写业务、未造数、未部署、未联系同事；业务整体验收仍未完成。",
+  "archive_audit": {
+    "exit_code": 0,
+    "errors": 0,
+    "warnings": 4,
+    "assessment": "README篇幅及README/tasks/verify历史过程线索为既有类别警告；本轮未扩展为全归档清理。",
+    "log": "archive-audit.log"
+  },
+  "operations": {
+    "child": "W1-e4187e result_seq5 completed",
+    "in_flight": [],
+    "business_writes": false,
+    "new_seeding": false,
+    "deployment": false,
+    "external_contact": false
+  }
+}

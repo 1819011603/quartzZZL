@@ -1,0 +1,330 @@
+{
+  "definition": "仅评估文档信息可执行程度，不是业务通过数。完整=对象/输入/步骤/预期/观察点无专用缺口，常规登录/执行前版本和基线回读不另算造数；准备=已明确对象但需已知管理员/关系快照/登录态或页面发布准备；缺失=真实合格对象/原值/基准或必要关系还未固定。整卡按全部必验子场景的最弱类别判级；不以内部接口替代页面。",
+  "rows": [
+    {
+      "nodeId": "9aa61dfa9800456f",
+      "title": "TC-G001 关联大小班计划后从一个纯续链接选择对应续班课",
+      "card": 4,
+      "coverage": "已验证：A→B接口两模式；没做：原例三计划及同一C端链接选择。",
+      "caseId": "TC-G001",
+      "reproducibility": "信息仍缺失",
+      "condition": "三计划中第三计划完整前后置/在读及有效商品未固定，不能以两计划子集替代。"
+    },
+    {
+      "nodeId": "6e657d08dceb4b00",
+      "title": "TC-G002 从关联的从计划发起推荐不反向扩大",
+      "card": 4,
+      "coverage": "已验证：B无反向时只自身；没做：页面生成及打开链接。",
+      "caseId": "TC-G002",
+      "reproducibility": "前置准备后可执行",
+      "condition": "对象B/7658127801及B自身SKU已给全；先用相应老师登录，保持B无反向关系，再从B生成/预览链接；仅生成未执行，不发送给学员。"
+    },
+    {
+      "nodeId": "d331e4ed922d4200",
+      "title": "REN-B01-001 计划管理员可为进行中计划操作纯续关联",
+      "card": 3,
+      "coverage": "已验证：历史status2合法保存；没做：真实管理员页面操作。",
+      "caseId": "REN-B01-001",
+      "reproducibility": "前置准备后可执行",
+      "condition": "A状态2、管理员gongxuemeng177071和从B已明确；先由该真实管理员登录并预约A关系可写窗口。"
+    },
+    {
+      "nodeId": "ce1e9e53620a4a4f",
+      "title": "REN-B01-002 计划管理员可为待开始计划操作纯续关联",
+      "card": 3,
+      "coverage": "没做：status1独立正例与真实样本未固定，不能用status2替代。",
+      "caseId": "REN-B01-002",
+      "reproducibility": "信息仍缺失",
+      "condition": "没有固定status=1待开始计划ID与名称，status=2成功不等价。"
+    },
+    {
+      "nodeId": "dfe0db0339b04c28",
+      "title": "REN-B02-001 按计划名称模糊搜索可关联计划",
+      "card": 1,
+      "coverage": "没做：名称模糊页面/接口实测；已给出关键词与预期。",
+      "caseId": "REN-B02-001",
+      "reproducibility": "完整可复现",
+      "condition": "A/B真实对象、名称片段、精确字符串ID、测试数据过滤及操作步骤已给全；常规登录/当前版本核验照统一前置。未执行页面不等于信息缺失。"
+    },
+    {
+      "nodeId": "507460fceea24ee7",
+      "title": "REN-B02-002 批量输入完整计划ID精确搜索",
+      "card": 1,
+      "coverage": "已验证：真实批量ID接口精确2条；没做：页面输入与显示。",
+      "caseId": "REN-B02-002",
+      "reproducibility": "完整可复现",
+      "condition": "A/B真实对象、名称片段、精确字符串ID、测试数据过滤及操作步骤已给全；常规登录/当前版本核验照统一前置。未执行页面不等于信息缺失。"
+    },
+    {
+      "nodeId": "4f86c091171e4bb3",
+      "title": "REN-B03-001 可一次选择多个计划关联",
+      "card": 2,
+      "coverage": "已验证：历史B+C多项保存；没做：原例3项同时保存及页面多选。",
+      "caseId": "REN-B03-001",
+      "reproducibility": "前置准备后可执行",
+      "condition": "A/B/C真实名称ID及{B}→{B,C}已明确；先管理员登录、预约并快照，保存后恢复{B}。"
+    },
+    {
+      "nodeId": "5fe9a9d76ec94294",
+      "title": "REN-B03-002 恰好关联10个计划允许保存",
+      "card": 3,
+      "coverage": "没做：10项允许保存；11项拒绝不是本项通过。",
+      "caseId": "REN-B03-002",
+      "reproducibility": "前置准备后可执行",
+      "condition": "11条真实候选已列；按清单前10条，先核当前状态1/2、过滤测试数据设否、管理员登录及A快照；不新增造数。"
+    },
+    {
+      "nodeId": "b530d1d7cb3d4ff4",
+      "title": "REN-B04-001 保存后重新打开可回看已绑定计划",
+      "card": 2,
+      "coverage": "已验证：保存后接口/DB回读；没做：页面重开回显。",
+      "caseId": "REN-B04-001",
+      "reproducibility": "前置准备后可执行",
+      "condition": "A→{B,C}保存/重开步骤与对象已全；先同上取得真实管理员/写窗口，结束恢复{B}。"
+    },
+    {
+      "nodeId": "039f0f1298ff4e70",
+      "title": "REN-B04-002 确认移除仅删除目标关联",
+      "card": 2,
+      "coverage": "已验证：历史仅软删目标C并保留B；没做：页面移除确认。",
+      "caseId": "REN-B04-002",
+      "reproducibility": "前置准备后可执行",
+      "condition": "移除目标C、保留B及取消/确认步骤已全；先将A准备为{B,C}并留快照，不能直接对当前{B}假称删C。"
+    },
+    {
+      "nodeId": "d07b8802624b49cf",
+      "title": "REN-B05-001 主计划推荐学员在三个计划内全部有效后置商品",
+      "card": 4,
+      "coverage": "已验证：主+1从子集；没做：原例主+2从/3计划全有效商品。",
+      "caseId": "REN-B05-001",
+      "reproducibility": "信息仍缺失",
+      "condition": "同TC-G001，第三计划有效前课、订单、后置商品与预期总集合缺失。"
+    },
+    {
+      "nodeId": "197742b79dfc4851",
+      "title": "REN-B05-002 学员没有从计划在读班级时不推从计划商品",
+      "card": 4,
+      "coverage": "没做：仅主有效在读的真实学员；限定查得两名均有从订单，不能冒充反例。",
+      "caseId": "REN-B05-002",
+      "reproducibility": "信息仍缺失",
+      "condition": "现有两名付费候选均有从计划订单，缺仅主有效在读且从侧无资格的真实学员。"
+    },
+    {
+      "nodeId": "2303d04efe494a38",
+      "title": "REN-B06-001 大班单项发链接包含主从有效商品",
+      "card": 4,
+      "coverage": "没做：大班单项发链接页面；接口两模式只作后台证据。",
+      "caseId": "REN-B06-001",
+      "reproducibility": "前置准备后可执行",
+      "condition": "A、7658127801及主从两件SKU/计算过程已全；先在TEST对应大班续班页用真实老师登录、核当前可见及发布版本，生成/预览而不发送。"
+    },
+    {
+      "nodeId": "eb407aa4f2ed4701",
+      "title": "REN-B06-002 小班作为主计划单项发链接支持关联范围",
+      "card": 4,
+      "coverage": "已验证：历史小班主→大班从内部推荐；没做：小班单项链接页面。",
+      "caseId": "REN-B06-002",
+      "reproducibility": "信息仍缺失",
+      "condition": "B虽有6004订单/推荐，但底层课程room_type=3；未核小班续班页面能定位该真实对象。"
+    },
+    {
+      "nodeId": "d1d1e00113094be9",
+      "title": "REN-B07-001 大班下单推荐页展示关联后的纯续商品",
+      "card": 4,
+      "coverage": "没做：大班下单推荐页；P0-07加购也不替代该页面。",
+      "caseId": "REN-B07-001",
+      "reproducibility": "前置准备后可执行",
+      "condition": "同上，A大班下单推荐页仅观察候选；先页面登录及版本前置，不把推荐观察当完整下单。"
+    },
+    {
+      "nodeId": "54303bd27ef445fa",
+      "title": "REN-B07-002 小班作主时下单推荐页也扩大范围",
+      "card": 4,
+      "coverage": "没做：小班主下单推荐页；已有真实反向后台结果。",
+      "caseId": "REN-B07-002",
+      "reproducibility": "信息仍缺失",
+      "condition": "同REN-B06-002，页面适用性尚缺，反向内部推荐不替代页面对象。"
+    },
+    {
+      "nodeId": "77cb01759f1c47a2",
+      "title": "REN-B08-001 主计划链接展示大小班全部符合资格续班课",
+      "card": 4,
+      "coverage": "没做：C端同学员真实链接打开及商品展示。",
+      "caseId": "REN-B08-001",
+      "reproducibility": "前置准备后可执行",
+      "condition": "A已有两模式推荐对象和资格计算；先由大班入口生成同学员纯续链接，并使用该TEST学员登录C端；仅观察不下单。"
+    },
+    {
+      "nodeId": "6d48abf6ab9a4523",
+      "title": "REN-B08-002 选择从计划续班课进入原报名流程",
+      "card": 8,
+      "coverage": "没做：新版从计划商品C端完整报名；旧订单仅历史子集。",
+      "caseId": "REN-B08-002",
+      "reproducibility": "信息仍缺失",
+      "condition": "现有两名候选已购后置；缺新版完整报名可用的未购可售样本、原优惠/主体和完整请求前置。"
+    },
+    {
+      "nodeId": "760cf8a420db4d7c",
+      "title": "REN-B09-001 主计划扩科仍只推荐自己配置的扩科课",
+      "card": 5,
+      "coverage": "已验证：A真实扩科仅主六年级2件；推断未验证：不同学期/从候选隔离。",
+      "caseId": "REN-B09-001",
+      "reproducibility": "前置准备后可执行",
+      "condition": "A扩科2件SKU585963387758962688/585963404555053056、年级16及纯续分组已给全；先按快照保持主配置，隔离配置变更窗口，再做前后集合对照。"
+    },
+    {
+      "nodeId": "a2cef71762f44a0c",
+      "title": "REN-B09-002 从计划扩科仍只推荐从计划自己配置的课",
+      "card": 5,
+      "coverage": "没做：B关联前后有值扩科集合对照；B当前无扩科不能证明本项。",
+      "caseId": "REN-B09-002",
+      "reproducibility": "信息仍缺失",
+      "condition": "B当前无扩科，缺有值配置及不受A扩科污染的预期集合，空集合不能证明保留行为。"
+    },
+    {
+      "nodeId": "59638fda0b804b24",
+      "title": "QW-G001 大班续班服务按标签筛出待回访学员并联系",
+      "card": 10,
+      "coverage": "没做：筛选后联系的页面链路；只读标签返回不是联系成功。",
+      "caseId": "QW-G001",
+      "reproducibility": "信息仍缺失",
+      "condition": "已定向查两候选正确班级标签源均无行，但不能推出ES/页面为空；仍缺有可见权限的老师、完整筛选目标/对照及联系身份。"
+    },
+    {
+      "nodeId": "5196c5bb8be84d54",
+      "title": "QW-B01-001 大班可给多个选中学员批量添加标签",
+      "card": 10,
+      "coverage": "没做：大班批量写/未选人对照；已有默认TEST标签读取正例。",
+      "caseId": "QW-B01-001",
+      "reproducibility": "信息仍缺失",
+      "condition": "两候选正确班级标签源无行；仍缺同班第三名未选对照、真实可写老师及列表/ES原集合。不能借异班标签正例当对照。"
+    },
+    {
+      "nodeId": "bf3cb8e5e56240a4",
+      "title": "QW-B01-002 小班可给多个选中学员批量添加标签",
+      "card": 10,
+      "coverage": "没做：小班批量写/未选人对照；6004商品候选不是已核页面样本。",
+      "caseId": "QW-B01-002",
+      "reproducibility": "信息仍缺失",
+      "condition": "两候选正确班级标签源无行；仍缺真实小班页面适用对象、同班两目标+一对照、可写老师及列表/ES原集合。"
+    },
+    {
+      "nodeId": "ec888e28ae7b4e9c",
+      "title": "QW-B02-001 大班单个学员编辑后可按新标签筛出",
+      "card": 10,
+      "coverage": "没做：大班单人改标签后筛选；函数转换不能代表筛选人数。",
+      "caseId": "QW-B02-001",
+      "reproducibility": "信息仍缺失",
+      "condition": "可指定7658127801在585960582537144320为待编辑候选、标签2需中关注为既有选项；源无行不等于页面空，仍缺可写身份及原集合快照。"
+    },
+    {
+      "nodeId": "ec7f3c87e1d64e4e",
+      "title": "QW-B02-002 小班学员标签支持单人编辑和筛选",
+      "card": 10,
+      "coverage": "没做：小班单人编辑/筛选；缺完整原集合和页面身份。",
+      "caseId": "QW-B02-002",
+      "reproducibility": "信息仍缺失",
+      "condition": "小班候选586084334251927552已查班名/课程且两学员无标签源行；仍缺页面适用性、可写身份及原集合快照。"
+    },
+    {
+      "nodeId": "b8cfbe7420674fb5",
+      "title": "QW-B03-001 大班批量备注修改与默认花名册一致",
+      "card": 11,
+      "coverage": "没做：大班成功异步任务及官方备注回读，缺好友/原备注。",
+      "caseId": "QW-B03-001",
+      "reproducibility": "信息仍缺失",
+      "condition": "候选关系27分表查询均无行，无法据此得到联系员工/好友/本地原备注；仍需已有成功好友的真实TEST老师身份、该对象原备注及默认页模板基准。"
+    },
+    {
+      "nodeId": "1775e43999594473",
+      "title": "QW-B03-002 小班批量备注修改与默认花名册一致",
+      "card": 11,
+      "coverage": "没做：小班成功异步任务及官方备注回读，不能以好友false证明。",
+      "caseId": "QW-B03-002",
+      "reproducibility": "信息仍缺失",
+      "condition": "候选关系27分表均无行，另缺小班页面适用对象；订单不证明好友，原备注不能填空串。"
+    },
+    {
+      "nodeId": "da48bbe455394f5a",
+      "title": "QW-B04-001 2026年已创建的大小班显示原有标签",
+      "card": 0,
+      "coverage": "没做：历史回溯与ES/页面全链路；原例“创建时间”由owner改为min(begin_time)。",
+      "caseId": "QW-B04-001",
+      "reproducibility": "信息仍缺失",
+      "condition": "缺最早课节阈值前/当天/之后的真实大小班对象、圈班结果及ES目标记录。MR按createTime不合本口径。"
+    },
+    {
+      "nodeId": "a3f0d910988349e4",
+      "title": "QW-B05-001 默认花名册私聊和群聊均替换为说明文档链接",
+      "card": 12,
+      "coverage": "已验证：目标规范全文可读；没做：默认页私聊/群聊点击。",
+      "caseId": "QW-B05-001",
+      "reproducibility": "信息仍缺失",
+      "condition": "默认页候选有班/学员，仍缺全部指定入口实际页面适用身份/路由及加载版本，无法仅凭chunk固定复现。"
+    },
+    {
+      "nodeId": "23bebdb98448400b",
+      "title": "QW-B05-002 联系学员弹窗的企微官方两种发送类型均更新",
+      "card": 12,
+      "coverage": "没做：reach-widget两发送类型入口；新包已升级不等于内容已验。",
+      "caseId": "QW-B05-002",
+      "reproducibility": "信息仍缺失",
+      "condition": "reach-widget内部及各入口真实页面/角色/线索ID未固定，不能以学员ID替代CRM线索。"
+    }
+  ],
+  "original30_counts": {
+    "信息仍缺失": 18,
+    "前置准备后可执行": 10,
+    "完整可复现": 2
+  },
+  "merged12": [
+    {
+      "card": "P0-01",
+      "reproducibility": "完整可复现"
+    },
+    {
+      "card": "P0-02",
+      "reproducibility": "前置准备后可执行"
+    },
+    {
+      "card": "P0-03",
+      "reproducibility": "信息仍缺失"
+    },
+    {
+      "card": "P0-04",
+      "reproducibility": "信息仍缺失"
+    },
+    {
+      "card": "P0-05",
+      "reproducibility": "信息仍缺失"
+    },
+    {
+      "card": "P0-06",
+      "reproducibility": "信息仍缺失"
+    },
+    {
+      "card": "P0-07",
+      "reproducibility": "信息仍缺失"
+    },
+    {
+      "card": "P0-08",
+      "reproducibility": "信息仍缺失"
+    },
+    {
+      "card": "P0-09",
+      "reproducibility": "信息仍缺失"
+    },
+    {
+      "card": "P0-10",
+      "reproducibility": "信息仍缺失"
+    },
+    {
+      "card": "P0-11",
+      "reproducibility": "信息仍缺失"
+    },
+    {
+      "card": "P0-12",
+      "reproducibility": "信息仍缺失"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"range\" requested-end=\"doxcnyPfjduHoRRZu6yBFyF3UDh\" requested-start=\"doxcnyPfjduHoRRZu6yBFyF3UDh\"><figure id=\"doxcnyPfjduHoRRZu6yBFyF3UDh\" view-type=\"Card\"><source id=\"doxcnMenuLXjbn68JW14KrvsDjf\" name=\"p0-information-evidence-243aa61a-round3.zip\" mime=\"application/zip\" size=\"51194\" token=\"XC6bbz0xDonJWHxHPEscEkVin2d\"/></figure></fragment>",
+      "document_id": "ZQUXdlDxWoknJhxu914c2uVYnBr",
+      "revision_id": 158
+    }
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.70",
+      "latest": "1.0.99",
+      "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+    }
+  }
+}

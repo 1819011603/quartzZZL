@@ -1,0 +1,49 @@
+[
+  {
+    "run_id": "r-20261105171533-0f5b22cf",
+    "scenario": "renew_clone_plan",
+    "workflow": "renew_clone_plan",
+    "status": "ok",
+    "http_status": 200,
+    "duration_ms": 916,
+    "traffic": "test-gtbg-dev-3",
+    "created_at": "2026-11-05 17:15:33",
+    "params": {
+      "source": "585960797778243584",
+      "name": "W1-P0-243aa61a-EM独立主计划",
+      "keep_dept": true
+    },
+    "outputs": {
+      "action": "clone-plan",
+      "source": "585960797778243584",
+      "new_plan": "588858850300473344"
+    },
+    "error": null,
+    "extra": {}
+  },
+  {
+    "run_id": "r-20261105171613-61c22fcd",
+    "scenario": "renew_build",
+    "workflow": "renew_build",
+    "status": "runtime",
+    "http_status": 502,
+    "duration_ms": 73,
+    "traffic": "test-gtbg-dev-3",
+    "created_at": "2026-11-05 17:16:13",
+    "params": {
+      "source": "585960797778243584",
+      "target": "588858850300473344",
+      "subjects": "语文",
+      "posts_per_subject": 1,
+      "price": 100,
+      "no_protect": true,
+      "publish": true
+    },
+    "outputs": {},
+    "error": {
+      "type": "runtime_error",
+      "message": "renew_from_source.py: error: unrecognized arguments: --publish"
+    },
+    "extra": {}
+  }
+]

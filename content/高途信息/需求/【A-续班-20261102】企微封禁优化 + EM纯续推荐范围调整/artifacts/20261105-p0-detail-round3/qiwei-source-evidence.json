@@ -1,0 +1,47 @@
+{
+  "query_time_utc": "2026-11-05T09:00:41Z",
+  "environment": "test",
+  "mysql_query_tool": "/Users/gaotu/.local/mcp-servers/mcpcli.py via venv python",
+  "candidate_filter": {"user_ids":["7658127801","7658129872"],"clazz_numbers":["585960582537144320","586084334251927552"]},
+  "tag_query": {
+    "database": "ees_data",
+    "table": "user_clazz_mark_info",
+    "sql": "SELECT id,user_id,clazz_number,account_id,color,layer,tags,create_time,update_time FROM ees_data.user_clazz_mark_info WHERE user_id IN (7658127801,7658129872) AND clazz_number IN (585960582537144320,586084334251927552)",
+    "result": "0 rows",
+    "raw_result": "/tmp/w1-p0-243aa61a/round3/qiwei-mark-candidates.json",
+    "index_check_sql": "SHOW INDEX FROM ees_data.user_clazz_mark_info",
+    "index_check_result": "uq_user_clazz_id: user_id seq1, clazz_number seq2; PRIMARY id",
+    "index_raw": "mcpcli stdout captured in session output; query evidence summarized here"
+  },
+  "wechat_relation_query": {
+    "database": "dws_clazz_user",
+    "tables": "dws_fuwu_user_teacher_wechat_info_0 ... dws_fuwu_user_teacher_wechat_info_26",
+    "sql_template": "SELECT id,user_wechat_id,account_wechat_id,user_id,account_id,friend,intimate_nickname,wechat_remark,wechat_type,create_time,update_time FROM dws_clazz_user.dws_fuwu_user_teacher_wechat_info_<shard> WHERE user_id IN (7658127801,7658129872)",
+    "shards": 27,
+    "per_shard": "exit=0; response=[]; total_count=0",
+    "raw_result": "/tmp/w1-p0-243aa61a/round3/qiwei-wechat-shards.json",
+    "schema_check_table": "dws_clazz_user.dws_fuwu_user_teacher_wechat_info_0",
+    "schema_fields_used": ["user_id","account_id","friend","intimate_nickname","wechat_remark","wechat_type","create_time","update_time"],
+    "schema_check_result": "columns available; user_id/account_id indexed, friend 0=非好友/1=好友, wechat_type 2=企业微信"
+  },
+  "source_code_readonly": {
+    "repo": "/Users/gaotu/IdeaProjects/JavaProject/wt-20261001/student-center",
+    "branch": "feature-xuban-20261001",
+    "head": "889354d6715f7ab31be44533313232233c3fea99",
+    "warning": "local HEAD is older than MR1528 fixed head 7f9bca38; source snippets are not claimed as MR online code",
+    "files": [
+      {"path":"student-center-infrastructure/src/main/java/com/gaotu/yunying/student/center/infrastructure/dao/mapper/UserClazzMarkInfoMapper.java","lines":"34-37","fact":"pair query documented as userId+clazzNumber"},
+      {"path":"student-center-infrastructure/src/main/resources/mapper/UserClazzMarkInfoMapper.xml","lines":"42-70","fact":"tag upsert inserts user_id/clazz_number/account_id and duplicate updates tags; pair select uses user_id AND clazz_number"},
+      {"path":"student-center-infrastructure/src/main/java/com/gaotu/yunying/student/center/infrastructure/dao/service/impl/UserClazzMarkInfoDaoImpl.java","lines":"46-82","fact":"tag write delegates and pair read delegates"},
+      {"path":"student-center-service/src/main/java/com/gaotu/yunying/student/center/domain/service/impl/WechatRelationServiceImpl.java","lines":"47-75","fact":"friend/remark task filters current login accountId + userIds + friend=1 + business-wechat type"},
+      {"path":"student-center-infrastructure/src/main/java/com/gaotu/yunying/student/center/infrastructure/dao/entity/DwsFuwuUserTeacherWechatInfo.java","lines":"34-68","fact":"relation entity fields user/account/friend/remark/type"},
+      {"path":"student-center-infrastructure/src/main/java/com/gaotu/yunying/student/center/infrastructure/dao/service/impl/DwsFuwuUserTeacherWechatInfoDaoImpl.java","lines":"29-37","fact":"DAO filters account_id,user_id,friend,wechat_type"}
+    ]
+  },
+  "interpretation_limits": [
+    "0 tag rows means no source tag record for the exact candidate user/class pairs at query time; it does not prove ES or page displays empty tags.",
+    "0 relation rows across these 27 shards means no matching source relation rows for the two candidate users under this query; it does not prove the system has no other friend relationship/account or current login context.",
+    "No row/result does not imply original remark is empty; original remark remains unknown.",
+    "No candidate row does not prove absence was historical; it is only the current read snapshot."
+  ]
+}

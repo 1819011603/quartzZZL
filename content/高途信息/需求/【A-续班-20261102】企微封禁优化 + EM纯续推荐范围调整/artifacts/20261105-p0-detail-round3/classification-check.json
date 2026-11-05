@@ -1,0 +1,11 @@
+{
+  "checks": {
+    "original_cases": true,
+    "unique_node_ids": true,
+    "categories_sum": true,
+    "merged_cards": true,
+    "each_original_maps_existing_card_or_backfill": true,
+    "only_three_categories": true
+  },
+  "note": "最终分类计数及映射一致；业务是否执行和通过另见每卡逐步证据。两候选原标签及企微关系只读补证已合流。"
+}

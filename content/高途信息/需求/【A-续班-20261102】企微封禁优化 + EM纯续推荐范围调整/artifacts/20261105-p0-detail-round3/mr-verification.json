@@ -1,0 +1,25 @@
+{
+  "scope": "只读元数据和静态代码比较，未运行MR代码",
+  "checks": {
+    "mr_opened": true,
+    "source_branch": true,
+    "target_branch": true,
+    "head": true,
+    "target_equals_base": true,
+    "eight_files": true,
+    "all_diffs_downloaded": true
+  },
+  "head_sha": "7f9bca3872c10f4b6766f1b3a612404805e271fb",
+  "base_sha": "5dce9cdbb0f2398ff05b2d8ef866637f03a5630d",
+  "target_sha_at_read": "5dce9cdbb0f2398ff05b2d8ef866637f03a5630d",
+  "paths": [
+    "doc/renewal-student-tags/query-config.sql",
+    "doc/renewal-student-tags/上线配置.md",
+    "student-center-bundle/src/test/java/com/gaotu/yunying/student/center/domain/service/roster/RenewalStudentTagsRecallServiceTest.java",
+    "student-center-job/src/main/java/com/gaotu/yunying/student/center/job/handler/RecallRenewalStudentTagsHandler.java",
+    "student-center-service/src/main/java/com/gaotu/yunying/student/center/domain/model/roster/RenewalStudentTagsRecallRequest.java",
+    "student-center-service/src/main/java/com/gaotu/yunying/student/center/domain/service/roster/RenewalStudentTagsRecallService.java",
+    "student-center-service/src/main/java/com/gaotu/yunying/student/center/domain/service/sync/data/FieldsConvertDataQueryServiceImpl.java",
+    "student-center-service/src/main/java/com/gaotu/yunying/student/center/domain/service/sync/data/UserClazzMarkInfoDataQueryServiceImpl.java"
+  ]
+}

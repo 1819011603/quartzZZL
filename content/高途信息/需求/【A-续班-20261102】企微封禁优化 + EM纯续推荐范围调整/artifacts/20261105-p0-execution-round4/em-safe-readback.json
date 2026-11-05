@@ -1,0 +1,29 @@
+{
+  "environment": "TEST",
+  "captured_at": "2026-11-05T17:19:09.923505",
+  "read_only": true,
+  "queries": {
+    "created_plan": {
+      "sql": "SELECT CAST(number AS CHAR) number,name,type,status,isdel,is_test_data,create_time FROM renew_master WHERE number=588858850300473344",
+      "rows": [
+        {
+          "number": "588858850300473344",
+          "name": "W1-P0-243aa61a-EM独立主计划",
+          "type": 1,
+          "status": 0,
+          "isdel": 0,
+          "is_test_data": 1,
+          "create_time": "2026-11-05 17:15:33"
+        }
+      ]
+    },
+    "pre_relations": {
+      "sql": "SELECT * FROM renew_master_course_relation WHERE renew_master_number=588858850300473344",
+      "rows": []
+    },
+    "plan_relations": {
+      "sql": "SELECT * FROM renew_master_relation WHERE main_renew_master_number=588858850300473344 OR sub_renew_master_number=588858850300473344",
+      "rows": []
+    }
+  }
+}

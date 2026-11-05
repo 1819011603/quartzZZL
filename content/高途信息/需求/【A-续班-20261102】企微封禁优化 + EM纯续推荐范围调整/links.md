@@ -52,3 +52,5 @@
 | 调研 | B侧班名与同名不同班ID补证（本轮安全交接） | [verification.json](artifacts/20261105-p0-detail-round2/verification.json) | 2026-11-05 |
 
 - [他人企微MR1528静态比较（feature-weixin-opt，仅评估）](artifacts/20261105-p0-detail-round3/mr-comparison.md)：[远端MR](https://git.baijia.com/gaotu/yunying_workbench/student-center/-/merge_requests/1528/diffs)。
+
+- [P0信息分档与逐卡缺口](artifacts/20261105-p0-detail-round3/information-gaps.md)：[30条机器映射](artifacts/20261105-p0-detail-round3/reproducibility.json)，[只读查询manifest](artifacts/20261105-p0-detail-round3/qiwei-source-evidence.json)，[增量证据附件](https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr#doxcnyPfjduHoRRZu6yBFyF3UDh)。

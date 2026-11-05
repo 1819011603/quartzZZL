@@ -1,0 +1,17 @@
+{
+  "diagnosis": "已验证：API场景参数与部署脚本不一致，参数解析前置失败，无build业务写入",
+  "build_run_id": "r-20261105171613-61c22fcd",
+  "build_duration_ms": 73,
+  "reusable_plan": "588858850300473344",
+  "business_writes_this_diagnostic": false,
+  "p0_modified_this_diagnostic": false,
+  "trace_id": "日志及HTTP原件未提供，不编造",
+  "file_hashes_verified": 22,
+  "remaining_uncertainty": [
+    "外层openresty将应用错误响应呈现为HTML的具体配置未取证",
+    "续接后的课程可用/可售条件未执行验证",
+    "受控官方企微好友是否可从其他现存对象获得尚未穷尽"
+  ],
+  "child_report": "qiwei-minimum-help.md",
+  "child_terminal_receipt": "最后list仍running，报告已读回且声明无在途调用；未冒称终态完成"
+}
