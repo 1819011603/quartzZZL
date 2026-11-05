@@ -1,0 +1,291 @@
+{
+  "time": "2026-11-05T18:04:56.066312+08:00",
+  "environment": "TEST",
+  "url": "https://test-fuwu.baijia.com/bgwApi/student-center/subclazz/learnSituation/getAllStudentTags",
+  "request": {
+    "temporaryTags": false
+  },
+  "headers": {
+    "content-type": "application/json",
+    "traffic-env": "test",
+    "b_client": "EES"
+  },
+  "httpStatus": 200,
+  "trace": "3fda301c-3992-4894-b35a-ad3fabdef0f3.0.3",
+  "response": {
+    "code": 0,
+    "data": {
+      "title": {
+        "name": "学员标签"
+      },
+      "dataIndex": "studentTag",
+      "key": "studentTag",
+      "sorter": false,
+      "filterMultiple": true,
+      "filterDropdown": {
+        "type": 2,
+        "filters": [
+          {
+            "text": "关注程度",
+            "value": "1",
+            "children": [
+              {
+                "text": "需强关注",
+                "value": "1"
+              },
+              {
+                "text": "需中关注",
+                "value": "2"
+              },
+              {
+                "text": "需弱关注",
+                "value": "3"
+              }
+            ]
+          },
+          {
+            "text": "报名意向",
+            "value": "2",
+            "children": [
+              {
+                "text": "报名意向强",
+                "value": "4"
+              },
+              {
+                "text": "报名意向一般",
+                "value": "5"
+              },
+              {
+                "text": "不愿报名",
+                "value": "6"
+              }
+            ]
+          },
+          {
+            "text": "学习习惯",
+            "value": "3",
+            "children": [
+              {
+                "text": "自己主动学习",
+                "value": "7"
+              },
+              {
+                "text": "需家长陪同学习",
+                "value": "8"
+              },
+              {
+                "text": "需家长督促学习",
+                "value": "9"
+              },
+              {
+                "text": "需家长严看管学习",
+                "value": "10"
+              }
+            ]
+          },
+          {
+            "text": "学员性格",
+            "value": "4",
+            "children": [
+              {
+                "text": "性格内向",
+                "value": "11"
+              },
+              {
+                "text": "性格外向",
+                "value": "12"
+              }
+            ]
+          },
+          {
+            "text": "报名其他补习班",
+            "value": "5",
+            "children": [
+              {
+                "text": "已报线上",
+                "value": "13"
+              },
+              {
+                "text": "已报线下",
+                "value": "14"
+              },
+              {
+                "text": "未报班",
+                "value": "15"
+              }
+            ]
+          },
+          {
+            "text": "家长性格",
+            "value": "6",
+            "children": [
+              {
+                "text": "家长严厉",
+                "value": "16"
+              },
+              {
+                "text": "家长较真",
+                "value": "17"
+              },
+              {
+                "text": "家长温和",
+                "value": "18"
+              },
+              {
+                "text": "家长礼貌",
+                "value": "19"
+              },
+              {
+                "text": "家长急躁",
+                "value": "20"
+              }
+            ]
+          },
+          {
+            "text": "家长购买力",
+            "value": "7",
+            "children": [
+              {
+                "text": "购买力强",
+                "value": "21"
+              },
+              {
+                "text": "购买力适中",
+                "value": "22"
+              },
+              {
+                "text": "购买力弱",
+                "value": "23"
+              }
+            ]
+          },
+          {
+            "text": "学校进度与课程相符度",
+            "value": "8",
+            "children": [
+              {
+                "text": "与在校课程相符",
+                "value": "24"
+              },
+              {
+                "text": "与在校课程不符",
+                "value": "25"
+              }
+            ]
+          },
+          {
+            "text": "回放观看",
+            "value": "9",
+            "children": [
+              {
+                "text": "长期看回放",
+                "value": "26"
+              },
+              {
+                "text": "经常看回放",
+                "value": "27"
+              },
+              {
+                "text": "偶尔看回放",
+                "value": "28"
+              },
+              {
+                "text": "不看回放",
+                "value": "29"
+              }
+            ]
+          },
+          {
+            "text": "家长态度",
+            "value": "10",
+            "children": [
+              {
+                "text": "积极关心学员学习",
+                "value": "30"
+              },
+              {
+                "text": "不了解孩子学习",
+                "value": "31"
+              }
+            ]
+          },
+          {
+            "text": "学习意愿",
+            "value": "11",
+            "children": [
+              {
+                "text": "学习意愿较强",
+                "value": "32"
+              },
+              {
+                "text": "学习意愿一般",
+                "value": "33"
+              },
+              {
+                "text": "学习意愿弱",
+                "value": "34"
+              }
+            ]
+          },
+          {
+            "text": "在校使用手机",
+            "value": "12",
+            "children": [
+              {
+                "text": "在校允许用手机",
+                "value": "35"
+              },
+              {
+                "text": "在校不允许用手机",
+                "value": "36"
+              }
+            ]
+          },
+          {
+            "text": "高考模式",
+            "value": "13",
+            "children": [
+              {
+                "text": "文理分科",
+                "value": "37"
+              },
+              {
+                "text": "6选三",
+                "value": "38"
+              },
+              {
+                "text": "3+2+1",
+                "value": "39"
+              }
+            ]
+          },
+          {
+            "text": "学员放假时间",
+            "value": "14",
+            "children": [
+              {
+                "text": "单周放假",
+                "value": "40"
+              },
+              {
+                "text": "双周放假",
+                "value": "41"
+              },
+              {
+                "text": "三周放假",
+                "value": "42"
+              },
+              {
+                "text": "每月放假",
+                "value": "43"
+              }
+            ]
+          }
+        ]
+      },
+      "baseName": "关键信息",
+      "baseKey": "3"
+    },
+    "msg": ""
+  }
+}

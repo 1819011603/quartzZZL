@@ -1,0 +1,255 @@
+{
+  "time": "2026-11-05T18:15:11.636225+08:00",
+  "environment": "TEST",
+  "read_only": true,
+  "databases": {
+    "ees_data": {
+      "queries": {
+        "batch_columns": {
+          "sql": "SHOW COLUMNS FROM batch_operate_task",
+          "rows": [
+            {
+              "Field": "id",
+              "Type": "bigint(20)",
+              "Null": "NO",
+              "Key": "PRI",
+              "Default": null,
+              "Extra": "auto_increment"
+            },
+            {
+              "Field": "number",
+              "Type": "bigint(20)",
+              "Null": "NO",
+              "Key": "UNI",
+              "Default": "0",
+              "Extra": ""
+            },
+            {
+              "Field": "task_type",
+              "Type": "int(11)",
+              "Null": "NO",
+              "Key": "MUL",
+              "Default": "0",
+              "Extra": ""
+            },
+            {
+              "Field": "create_account_id",
+              "Type": "int(11)",
+              "Null": "NO",
+              "Key": "MUL",
+              "Default": "0",
+              "Extra": ""
+            },
+            {
+              "Field": "process_status",
+              "Type": "int(11)",
+              "Null": "NO",
+              "Key": "MUL",
+              "Default": "0",
+              "Extra": ""
+            },
+            {
+              "Field": "meta_data",
+              "Type": "json",
+              "Null": "YES",
+              "Key": "",
+              "Default": null,
+              "Extra": ""
+            },
+            {
+              "Field": "process_count",
+              "Type": "int(11)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "0",
+              "Extra": ""
+            },
+            {
+              "Field": "download_status",
+              "Type": "tinyint(2)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "0",
+              "Extra": ""
+            },
+            {
+              "Field": "task_result",
+              "Type": "json",
+              "Null": "YES",
+              "Key": "",
+              "Default": null,
+              "Extra": ""
+            },
+            {
+              "Field": "source_type",
+              "Type": "int(11)",
+              "Null": "NO",
+              "Key": "MUL",
+              "Default": "0",
+              "Extra": ""
+            },
+            {
+              "Field": "source_id",
+              "Type": "bigint(20)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "0",
+              "Extra": ""
+            },
+            {
+              "Field": "is_del",
+              "Type": "tinyint(1)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "0",
+              "Extra": ""
+            },
+            {
+              "Field": "create_time",
+              "Type": "datetime",
+              "Null": "NO",
+              "Key": "",
+              "Default": "CURRENT_TIMESTAMP",
+              "Extra": "DEFAULT_GENERATED"
+            },
+            {
+              "Field": "update_time",
+              "Type": "datetime",
+              "Null": "NO",
+              "Key": "",
+              "Default": "CURRENT_TIMESTAMP",
+              "Extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP"
+            }
+          ],
+          "exit": 0
+        },
+        "export_columns": {
+          "sql": "SHOW COLUMNS FROM export_job_task",
+          "rows": [
+            {
+              "Field": "id",
+              "Type": "bigint(20)",
+              "Null": "NO",
+              "Key": "PRI",
+              "Default": null,
+              "Extra": "auto_increment"
+            },
+            {
+              "Field": "number",
+              "Type": "bigint(20)",
+              "Null": "NO",
+              "Key": "MUL",
+              "Default": "0",
+              "Extra": ""
+            },
+            {
+              "Field": "job_number",
+              "Type": "bigint(20)",
+              "Null": "NO",
+              "Key": "MUL",
+              "Default": "0",
+              "Extra": ""
+            },
+            {
+              "Field": "biz_number",
+              "Type": "varchar(256)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "",
+              "Extra": ""
+            },
+            {
+              "Field": "params",
+              "Type": "json",
+              "Null": "YES",
+              "Key": "",
+              "Default": null,
+              "Extra": ""
+            },
+            {
+              "Field": "task_status",
+              "Type": "tinyint(2)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "0",
+              "Extra": ""
+            },
+            {
+              "Field": "retry_count",
+              "Type": "int(11)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "0",
+              "Extra": ""
+            },
+            {
+              "Field": "retry_time",
+              "Type": "datetime",
+              "Null": "NO",
+              "Key": "",
+              "Default": "CURRENT_TIMESTAMP",
+              "Extra": "DEFAULT_GENERATED"
+            },
+            {
+              "Field": "biz_deal_type",
+              "Type": "int(11)",
+              "Null": "NO",
+              "Key": "MUL",
+              "Default": "0",
+              "Extra": ""
+            },
+            {
+              "Field": "biz_deal_number",
+              "Type": "bigint(20)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "0",
+              "Extra": ""
+            },
+            {
+              "Field": "task_result",
+              "Type": "json",
+              "Null": "YES",
+              "Key": "",
+              "Default": null,
+              "Extra": ""
+            },
+            {
+              "Field": "extra_data",
+              "Type": "json",
+              "Null": "YES",
+              "Key": "",
+              "Default": null,
+              "Extra": ""
+            },
+            {
+              "Field": "is_del",
+              "Type": "tinyint(1)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "0",
+              "Extra": ""
+            },
+            {
+              "Field": "create_time",
+              "Type": "datetime",
+              "Null": "NO",
+              "Key": "",
+              "Default": "CURRENT_TIMESTAMP",
+              "Extra": "DEFAULT_GENERATED"
+            },
+            {
+              "Field": "update_time",
+              "Type": "datetime",
+              "Null": "NO",
+              "Key": "",
+              "Default": "CURRENT_TIMESTAMP",
+              "Extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP"
+            }
+          ],
+          "exit": 0
+        }
+      }
+    }
+  }
+}

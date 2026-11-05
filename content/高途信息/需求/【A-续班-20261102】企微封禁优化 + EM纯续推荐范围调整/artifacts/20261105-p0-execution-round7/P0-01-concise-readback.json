@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"section\" requested-start=\"doxcnC83we27MVCEfS7l10TFMVd\"><h1 id=\"doxcnC83we27MVCEfS7l10TFMVd\">P0-01｜关联查询与批量精确搜索</h1><p id=\"doxcnpNf3G67jMHnVA6os6lYCVe\">功能与优先级：P0。预期依据：EM管理核心入口；PRD“批量精确、状态/测试数据默认、管理员展示”。</p><h2 id=\"doxcniqgnHn8t5yZRPYW2ln912f\">现场过 case：照着做</h2><p id=\"doxcn9tqBwuZpY5L7W3hKJNHdzP\"><b>前置：</b>管理员gongxuemeng/177071在OES续班计划管理搜索A：dcg-扩科排除-大班计划-1020（585960797778243584）与B：dcg-小班扩科排除-计划（586116340522184704）；两者均进行中、测试数据。计划配置用例不选择班级/学员，班级bizId、班名、学员ID不适用。</p><p id=\"doxcn5MmWRRdbUnRNalXeATl6vd\"><b>操作：</b>打开A纯续关联；将“过滤测试数据”改为否，以名称片段及两个完整ID（英文/中文逗号、空格分隔）查询；再查询not-a-plan并清空条件。</p><p id=\"doxcnKZHW0VdaR8daKXj6HgKSde\"><b>预期：</b>纳入名称匹配或完整ID命中且待开始/进行中的计划，排除非法ID和其他状态；批量返回恰好A、B两条，非法串0条。18位ID保持完整，字段/已选项不串行；候选按创建时间倒序。</p><p id=\"doxcnn11FLQIpZeyBkW8B9paAh4\"><b>实际：</b>已验证：当前接口批量2条、非法0条、B字符串ID与管理员字段正确；复用同版本分隔符/名称/排序证据。页面默认项、空查询不清已选等仅有源码或历史证据，未算当前页面通过。</p><p id=\"doxcnXMSU4zQVhSmcEZnLJRT6uh\">证据：<a href=\"https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr#doxcnfBYeN6QgMrPRZErw9z8aQb\">P0-01集中原件、详细计算与历史记录</a>；本轮新增原件见文末TEST证据包。</p></fragment>",
+      "document_id": "ZQUXdlDxWoknJhxu914c2uVYnBr",
+      "revision_id": 170
+    }
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.70",
+      "latest": "1.0.99",
+      "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+    }
+  }
+}

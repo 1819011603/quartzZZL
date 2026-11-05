@@ -1,0 +1,39 @@
+{
+  "time": "2026-11-05T18:05:27.189648+08:00",
+  "environment": "TEST",
+  "url": "http://10.255.176.174:28688/test/acl/compare/service",
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.yunying.student.center.domain.service.roster.RenewalService#getStudentRenewalInfosByUserIds",
+    "params": [
+      "574882679202260992",
+      [
+        "7704846434",
+        "7704846439",
+        "7704846440"
+      ],
+      [
+        "userId",
+        "clazzNumber",
+        "clazzName",
+        "subclazzNumber",
+        "studentTags",
+        "studentTagNames"
+      ]
+    ]
+  },
+  "headers": {
+    "content-type": "application/json",
+    "traffic-env": "test",
+    "b_client": "EES",
+    "Host": "STUDENT-CENTER"
+  },
+  "httpStatus": 200,
+  "trace": "student-center.608.17938731272228117",
+  "response": {
+    "code": 0,
+    "data": {
+      "com.gaotu.yunying.student.center.domain.service.roster.RenewalService_error": "未找到方法 getStudentRenewalInfosByUserIds"
+    },
+    "msg": ""
+  }
+}

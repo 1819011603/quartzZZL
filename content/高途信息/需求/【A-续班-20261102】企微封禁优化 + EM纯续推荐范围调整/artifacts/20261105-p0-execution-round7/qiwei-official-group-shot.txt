@@ -1,0 +1,6 @@
+
+Update available: 1.11.0 -> 1.12.0
+Run `npm install -g chrome-devtools-mcp@latest` and `chrome-devtools start` to update and restart the daemon.
+
+Took a screenshot of the current page's viewport.
+Saved screenshot to /private/tmp/w1-p0-243aa61a/round7/qiwei-official-group.png.

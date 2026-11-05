@@ -1,0 +1,251 @@
+{
+  "time": "2026-11-05T17:49:26.077554+08:00",
+  "environment": "TEST",
+  "read_only": true,
+  "databases": {
+    "super_class": {
+      "queries": {
+        "controlled_candidates": {
+          "sql": "SELECT CAST(user_id AS CHAR) user_id,name,user_status,(mobile LIKE '12%') AS test_mobile_prefix,register_time,virtual_type FROM user WHERE user_id IN (7489648820,7634383357,7634383355,7489648821,7658127801,7658129872)",
+          "rows": [
+            {
+              "user_id": "7489648820",
+              "name": "",
+              "user_status": 0,
+              "test_mobile_prefix": 0,
+              "register_time": 1791769573,
+              "virtual_type": 0
+            },
+            {
+              "user_id": "7489648821",
+              "name": "",
+              "user_status": 0,
+              "test_mobile_prefix": 0,
+              "register_time": 1791769766,
+              "virtual_type": 0
+            },
+            {
+              "user_id": "7634383355",
+              "name": "",
+              "user_status": 0,
+              "test_mobile_prefix": 0,
+              "register_time": 1791628458,
+              "virtual_type": 0
+            },
+            {
+              "user_id": "7634383357",
+              "name": "",
+              "user_status": 0,
+              "test_mobile_prefix": 0,
+              "register_time": 1791629298,
+              "virtual_type": 0
+            },
+            {
+              "user_id": "7658127801",
+              "name": "",
+              "user_status": 0,
+              "test_mobile_prefix": 0,
+              "register_time": 1792487892,
+              "virtual_type": 0
+            },
+            {
+              "user_id": "7658129872",
+              "name": "续班扩科隔离测试",
+              "user_status": 0,
+              "test_mobile_prefix": 1,
+              "register_time": 1792661160,
+              "virtual_type": 0
+            }
+          ],
+          "exit": 0
+        }
+      }
+    },
+    "gaotu": {
+      "queries": {
+        "teacher_accounts": {
+          "sql": "SELECT account_id,email_prefix,status FROM employee WHERE account_id IN (109942,177071)",
+          "rows": [
+            {
+              "account_id": 109942,
+              "email_prefix": "zhangzeling",
+              "status": 1
+            },
+            {
+              "account_id": 109942,
+              "email_prefix": "zhangzeling",
+              "status": 1
+            },
+            {
+              "account_id": 109942,
+              "email_prefix": "zhangzeling",
+              "status": 1
+            },
+            {
+              "account_id": 109942,
+              "email_prefix": "zhangzeling",
+              "status": 1
+            },
+            {
+              "account_id": 109942,
+              "email_prefix": "zhangzeling",
+              "status": 1
+            },
+            {
+              "account_id": 109942,
+              "email_prefix": "zhangzeling",
+              "status": 1
+            },
+            {
+              "account_id": 109942,
+              "email_prefix": "zhangzeling",
+              "status": 1
+            },
+            {
+              "account_id": 109942,
+              "email_prefix": "zhangzeling",
+              "status": 1
+            },
+            {
+              "account_id": 109942,
+              "email_prefix": "zhangzeling",
+              "status": 2
+            },
+            {
+              "account_id": 109942,
+              "email_prefix": "zhangzeling",
+              "status": 2
+            },
+            {
+              "account_id": 109942,
+              "email_prefix": "zhangzeling",
+              "status": 2
+            },
+            {
+              "account_id": 177071,
+              "email_prefix": "gongxuemeng",
+              "status": 1
+            },
+            {
+              "account_id": 177071,
+              "email_prefix": "gongxuemeng",
+              "status": 1
+            },
+            {
+              "account_id": 177071,
+              "email_prefix": "gongxuemeng",
+              "status": 1
+            },
+            {
+              "account_id": 177071,
+              "email_prefix": "gongxuemeng",
+              "status": 1
+            },
+            {
+              "account_id": 177071,
+              "email_prefix": "gongxuemeng",
+              "status": 1
+            },
+            {
+              "account_id": 177071,
+              "email_prefix": "gongxuemeng",
+              "status": 1
+            },
+            {
+              "account_id": 177071,
+              "email_prefix": "gongxuemeng",
+              "status": 1
+            },
+            {
+              "account_id": 177071,
+              "email_prefix": "gongxuemeng",
+              "status": 1
+            },
+            {
+              "account_id": 177071,
+              "email_prefix": "gongxuemeng",
+              "status": 1
+            },
+            {
+              "account_id": 177071,
+              "email_prefix": "gongxuemeng",
+              "status": 1
+            },
+            {
+              "account_id": 177071,
+              "email_prefix": "gongxuemeng",
+              "status": 1
+            },
+            {
+              "account_id": 177071,
+              "email_prefix": "gongxuemeng",
+              "status": 1
+            },
+            {
+              "account_id": 177071,
+              "email_prefix": "gongxuemeng",
+              "status": 2
+            },
+            {
+              "account_id": 177071,
+              "email_prefix": "gongxuemeng",
+              "status": 2
+            }
+          ],
+          "exit": 0
+        },
+        "candidate_tag_relations": {
+          "sql": "SELECT id,CAST(user_id AS CHAR) user_id,CAST(clazz_number AS CHAR) clazz_number,CAST(subclazz_number AS CHAR) subclazz_number,status,isdel FROM subclazz_student WHERE user_id IN (7489648820,7634383357,7634383355) AND clazz_number=574882679202260992",
+          "rows": [
+            {
+              "id": 36528354833203328,
+              "user_id": "7489648820",
+              "clazz_number": "574882679202260992",
+              "subclazz_number": "35930167940088064",
+              "status": 1,
+              "isdel": 0
+            },
+            {
+              "id": 36509858315108481,
+              "user_id": "7634383355",
+              "clazz_number": "574882679202260992",
+              "subclazz_number": "35930167940088064",
+              "status": 1,
+              "isdel": 0
+            },
+            {
+              "id": 36509968886530177,
+              "user_id": "7634383357",
+              "clazz_number": "574882679202260992",
+              "subclazz_number": "35930167940088064",
+              "status": 1,
+              "isdel": 0
+            }
+          ],
+          "exit": 0
+        }
+      }
+    },
+    "ees_data": {
+      "queries": {
+        "candidate_tags": {
+          "sql": "SELECT id,CAST(user_id AS CHAR) user_id,CAST(clazz_number AS CHAR) clazz_number,account_id,tags,color,layer,create_time,update_time FROM user_clazz_mark_info WHERE user_id IN (7489648820,7634383357,7634383355) AND clazz_number=574882679202260992",
+          "rows": [
+            {
+              "id": 120539,
+              "user_id": "7489648820",
+              "clazz_number": "574882679202260992",
+              "account_id": 177071,
+              "tags": "",
+              "color": 0,
+              "layer": 0,
+              "create_time": "2026-11-04 18:10:49",
+              "update_time": "2026-11-05 09:48:19"
+            }
+          ],
+          "exit": 0
+        }
+      }
+    }
+  }
+}

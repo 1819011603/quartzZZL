@@ -1,0 +1,75 @@
+{
+  "time": "2026-11-05T18:17:43.818162+08:00",
+  "environment": "TEST",
+  "read_only": true,
+  "databases": {
+    "ees_data": {
+      "queries": {
+        "tags": {
+          "sql": "SELECT id,CAST(user_id AS CHAR) user_id,CAST(clazz_number AS CHAR) clazz_number,account_id,tags,color,layer,create_time,update_time FROM user_clazz_mark_info WHERE user_id IN (7704846434,7704846439,7704846440) AND clazz_number=574882679202260992",
+          "rows": [
+            {
+              "id": 120556,
+              "user_id": "7704846434",
+              "clazz_number": "574882679202260992",
+              "account_id": 177071,
+              "tags": "",
+              "color": 0,
+              "layer": 0,
+              "create_time": "2026-11-05 18:05:23",
+              "update_time": "2026-11-05 18:10:09"
+            },
+            {
+              "id": 120557,
+              "user_id": "7704846439",
+              "clazz_number": "574882679202260992",
+              "account_id": 177071,
+              "tags": "",
+              "color": 0,
+              "layer": 0,
+              "create_time": "2026-11-05 18:05:23",
+              "update_time": "2026-11-05 18:10:09"
+            }
+          ],
+          "exit": 0
+        }
+      }
+    },
+    "gaotu": {
+      "queries": {
+        "old_tags": {
+          "sql": "SELECT * FROM learning_student_info_ext WHERE user_id IN (7704846434,7704846439,7704846440) AND clazz_number=574882679202260992",
+          "rows": [
+            {
+              "id": 26592,
+              "clazz_number": 574882679202260992,
+              "subclazz_number": 35930167940088064,
+              "user_id": 7704846434,
+              "tags": "",
+              "renewal_reason": "",
+              "last_modify_teacher_number": 462009704724307968,
+              "isdel": 0,
+              "create_time": "2026-11-05 18:05:23",
+              "update_time": "2026-11-05 18:10:10",
+              "renewal_reason_manual": ""
+            },
+            {
+              "id": 26593,
+              "clazz_number": 574882679202260992,
+              "subclazz_number": 35930167940088064,
+              "user_id": 7704846439,
+              "tags": "",
+              "renewal_reason": "",
+              "last_modify_teacher_number": 462009704724307968,
+              "isdel": 0,
+              "create_time": "2026-11-05 18:05:23",
+              "update_time": "2026-11-05 18:10:10",
+              "renewal_reason_manual": ""
+            }
+          ],
+          "exit": 0
+        }
+      }
+    }
+  }
+}

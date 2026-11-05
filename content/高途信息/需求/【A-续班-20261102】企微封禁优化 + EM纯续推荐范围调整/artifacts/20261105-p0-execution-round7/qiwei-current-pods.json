@@ -1,0 +1,508 @@
+{
+  "time": "2026-11-05T18:06:32.834321+08:00",
+  "groups": [
+    {
+      "deployUser": "陈宇43",
+      "deployTime": 1793777153000,
+      "namespace": "test",
+      "kind": "Deployment",
+      "podList": [
+        {
+          "deploymentName": "student-center",
+          "podDeploymentName": "student-center",
+          "podName": "student-center-5d84df769-gxbql",
+          "podIP": "10.255.176.174",
+          "namespace": "test",
+          "envInfoId": 2,
+          "status": "Running",
+          "createTime": 1793777154000,
+          "restartCount": 0,
+          "prometheusUrl": "https://g.console.aliyun.com/d/8500548-k8s-pod/kubernetes-pod?orgId=876&refresh=60s&var-namespace=test&var-pod=student-center-5d84df769-gxbql",
+          "nodePrometheusUrl": "https://g.console.aliyun.com/d/8500548-k8s-node-overview/node-overview?orgId=876&refresh=60s&var-node=10.255.38.223",
+          "nodeIp": "10.255.38.223",
+          "terminalUrl": "http://container.baijia.com/api/v1/webterminal?cluster=al-bj-uqun-k8s-nonprod&namespace=test&env=test&podName=student-center-5d84df769-gxbql&container=student-center",
+          "imageName": "release-5dce9cdb-20261103201632",
+          "batchTest": false,
+          "grayTest": false,
+          "eurekaStatus": "UP",
+          "isEciCluster": false,
+          "eciPod": false,
+          "replayFlag": false,
+          "showEci": false,
+          "cluster": "k8sNonprod",
+          "containerBOList": [
+            {
+              "name": "goreplay",
+              "imageName": "acr.baijia.com/uqun/goreplay:1.0.4",
+              "status": "running",
+              "restartCount": 0
+            },
+            {
+              "name": "mesh",
+              "imageName": "acr.baijia.com/uqun/mesh:0.0.1-202604150000",
+              "status": "running",
+              "restartCount": 0
+            },
+            {
+              "name": "student-center",
+              "imageName": "acr.baijia.com/uqun/student-center:release-5dce9cdb-20261103201632",
+              "status": "running",
+              "restartCount": 0
+            },
+            {
+              "name": "multi-test-agent",
+              "imageName": "acr.baijia.com/uqun/multi-test-agent:v7.0.0_260129-test",
+              "status": "terminated",
+              "restartCount": 0,
+              "reason": "Completed"
+            },
+            {
+              "name": "scripts",
+              "imageName": "acr.baijia.com/uqun/scripts:2024080202-log",
+              "status": "terminated",
+              "restartCount": 0,
+              "reason": "Completed"
+            },
+            {
+              "name": "cat-client",
+              "imageName": "acr.baijia.com/uqun/cat-client-test:1.0.1",
+              "status": "terminated",
+              "restartCount": 0,
+              "reason": "Completed"
+            },
+            {
+              "name": "arms-agent",
+              "imageName": "acr.baijia.com/uqun/arms-agent:1.7.0",
+              "status": "terminated",
+              "restartCount": 0,
+              "reason": "Completed"
+            },
+            {
+              "name": "jacoco",
+              "imageName": "acr.baijia.com/uqun/jacoco-agent:v0.8.8.6",
+              "status": "terminated",
+              "restartCount": 0,
+              "reason": "Completed"
+            },
+            {
+              "name": "init-goreplay",
+              "imageName": "acr.baijia.com/uqun/init-goreplay:20220825001",
+              "status": "terminated",
+              "restartCount": 0,
+              "reason": "Completed"
+            }
+          ]
+        }
+      ],
+      "podsSum": 1,
+      "availablePods": 1,
+      "groupServiceFullName": "test-BJ-Ali1",
+      "envInfoId": 2
+    },
+    {
+      "deployUser": "李子柔",
+      "deployTime": 1793597823000,
+      "namespace": "test",
+      "kind": "Deployment",
+      "podList": [
+        {
+          "deploymentName": "student-center",
+          "podDeploymentName": "student-center",
+          "podName": "student-center-58b7cb4dc9-2855j",
+          "podIP": "10.218.238.176",
+          "namespace": "test",
+          "envInfoId": 247,
+          "status": "Running",
+          "createTime": 1793597824000,
+          "restartCount": 0,
+          "prometheusUrl": "https://hs-grafana.baijia.com/d/15185338-k8s-pod-nonprod/kubernetes-pod-noprod?orgId=1&refresh=60s&var-ClusterId=ccjs24mhg52uk3nqlqrag&var-namespace=test&var-pod=student-center-58b7cb4dc9-2855j",
+          "nodePrometheusUrl": "https://hs-grafana.baijia.com/d/15185338-k8s-node-overview-noprod/node-overview-noprod?orgId=1&refresh=60s&var-ClusterId=ccjs24mhg52uk3nqlqrag&var-node=10.218.10.227",
+          "nodeIp": "10.218.10.227",
+          "terminalUrl": "http://container.baijia.com/api/v1/webterminal?cluster=hs-bj-qingzhou-k8s-nonprod&namespace=test&env=test&podName=student-center-58b7cb4dc9-2855j&container=student-center",
+          "imageName": "feature-regular-course-query-df66fed8-20261102114739",
+          "batchTest": false,
+          "grayTest": false,
+          "eurekaStatus": "UP",
+          "isEciCluster": false,
+          "eciPod": false,
+          "replayFlag": false,
+          "showEci": false,
+          "cluster": "hs-bj-qingzhou-k8s-nonprod",
+          "containerBOList": [
+            {
+              "name": "mesh",
+              "imageName": "acr.baijia.com/uqun/mesh:0.0.1-202604150000",
+              "status": "running",
+              "restartCount": 0
+            },
+            {
+              "name": "student-center",
+              "imageName": "acr.baijia.com/uqun/student-center:feature-regular-course-query-df66fed8-20261102114739",
+              "status": "running",
+              "restartCount": 0
+            },
+            {
+              "name": "multi-test-agent",
+              "imageName": "acr.baijia.com/uqun/multi-test-agent:v7.0.0_260129-test",
+              "status": "terminated",
+              "restartCount": 0,
+              "reason": "Completed"
+            },
+            {
+              "name": "scripts",
+              "imageName": "acr.baijia.com/uqun/scripts:2024080202",
+              "status": "terminated",
+              "restartCount": 0,
+              "reason": "Completed"
+            },
+            {
+              "name": "cat-client",
+              "imageName": "acr.baijia.com/uqun/cat-client-test:1.0.1",
+              "status": "terminated",
+              "restartCount": 0,
+              "reason": "Completed"
+            },
+            {
+              "name": "arms-agent",
+              "imageName": "acr.baijia.com/uqun/arms-agent:1.7.0",
+              "status": "terminated",
+              "restartCount": 0,
+              "reason": "Completed"
+            },
+            {
+              "name": "jacoco",
+              "imageName": "acr.baijia.com/uqun/jacoco-agent:v0.8.8.6",
+              "status": "terminated",
+              "restartCount": 0,
+              "reason": "Completed"
+            }
+          ]
+        }
+      ],
+      "podsSum": 1,
+      "availablePods": 1,
+      "groupServiceFullName": "test-BJ-Ve1",
+      "envInfoId": 247
+    },
+    {
+      "deployUser": "唐稳01",
+      "deployTime": 1785116233000,
+      "namespace": "test-baihe",
+      "kind": "Deployment",
+      "podList": [],
+      "podsSum": 0,
+      "availablePods": 0,
+      "groupServiceFullName": "test-baihe-BJ-Ve1",
+      "envInfoId": 298
+    },
+    {
+      "deployUser": "张洪达01",
+      "deployTime": 1793849813000,
+      "namespace": "test-beijing",
+      "kind": "Deployment",
+      "podList": [
+        {
+          "deploymentName": "student-center",
+          "podDeploymentName": "student-center",
+          "podName": "student-center-5b4686cd58-q57c9",
+          "podIP": "10.218.250.116",
+          "namespace": "test-beijing",
+          "envInfoId": 245,
+          "status": "Removing",
+          "createTime": 1787622840000,
+          "restartCount": 4,
+          "prometheusUrl": "https://hs-grafana.baijia.com/d/15185338-k8s-pod-nonprod/kubernetes-pod-noprod?orgId=1&refresh=60s&var-ClusterId=ccjs24mhg52uk3nqlqrag&var-namespace=test-beijing&var-pod=student-center-5b4686cd58-q57c9",
+          "nodePrometheusUrl": "https://hs-grafana.baijia.com/d/15185338-k8s-node-overview-noprod/node-overview-noprod?orgId=1&refresh=60s&var-ClusterId=ccjs24mhg52uk3nqlqrag&var-node=10.218.1.237",
+          "nodeIp": "10.218.1.237",
+          "terminalUrl": "http://container.baijia.com/api/v1/webterminal?cluster=hs-bj-qingzhou-k8s-nonprod&namespace=test-beijing&env=test&podName=student-center-5b4686cd58-q57c9&container=student-center",
+          "imageName": "feature-after-lesson-48h-a856a221-20260825094131",
+          "batchTest": false,
+          "grayTest": false,
+          "eurekaStatus": "OUT_OF_SERVICE",
+          "isEciCluster": false,
+          "eciPod": false,
+          "replayFlag": false,
+          "showEci": false,
+          "cluster": "hs-bj-qingzhou-k8s-nonprod",
+          "containerBOList": [
+            {
+              "name": "mesh",
+              "imageName": "acr.baijia.com/uqun/mesh:0.0.1-202604150000",
+              "status": "running",
+              "restartCount": 0
+            },
+            {
+              "name": "student-center",
+              "imageName": "acr.baijia.com/uqun/student-center:feature-after-lesson-48h-a856a221-20260825094131",
+              "status": "running",
+              "restartCount": 4
+            },
+            {
+              "name": "multi-test-agent",
+              "imageName": "acr.baijia.com/uqun/multi-test-agent:v7.0.0_260129-test",
+              "status": "terminated",
+              "restartCount": 0,
+              "reason": "Completed"
+            },
+            {
+              "name": "scripts",
+              "imageName": "acr.baijia.com/uqun/scripts:2024080202",
+              "status": "terminated",
+              "restartCount": 0,
+              "reason": "Completed"
+            },
+            {
+              "name": "cat-client",
+              "imageName": "acr.baijia.com/uqun/cat-client-test:1.0.1",
+              "status": "terminated",
+              "restartCount": 0,
+              "reason": "Completed"
+            },
+            {
+              "name": "arms-agent",
+              "imageName": "acr.baijia.com/uqun/arms-agent:1.7.0",
+              "status": "terminated",
+              "restartCount": 0,
+              "reason": "Completed"
+            },
+            {
+              "name": "jacoco",
+              "imageName": "acr.baijia.com/uqun/jacoco-agent:v0.8.8.6",
+              "status": "terminated",
+              "restartCount": 0,
+              "reason": "Completed"
+            }
+          ]
+        },
+        {
+          "deploymentName": "student-center",
+          "podDeploymentName": "student-center",
+          "podName": "student-center-8444db59b-6k4ht",
+          "podIP": "10.218.237.14",
+          "namespace": "test-beijing",
+          "envInfoId": 245,
+          "status": "Running",
+          "createTime": 1793844443000,
+          "restartCount": 0,
+          "prometheusUrl": "https://hs-grafana.baijia.com/d/15185338-k8s-pod-nonprod/kubernetes-pod-noprod?orgId=1&refresh=60s&var-ClusterId=ccjs24mhg52uk3nqlqrag&var-namespace=test-beijing&var-pod=student-center-8444db59b-6k4ht",
+          "nodePrometheusUrl": "https://hs-grafana.baijia.com/d/15185338-k8s-node-overview-noprod/node-overview-noprod?orgId=1&refresh=60s&var-ClusterId=ccjs24mhg52uk3nqlqrag&var-node=10.218.8.10",
+          "nodeIp": "10.218.8.10",
+          "terminalUrl": "http://container.baijia.com/api/v1/webterminal?cluster=hs-bj-qingzhou-k8s-nonprod&namespace=test-beijing&env=test&podName=student-center-8444db59b-6k4ht&container=student-center",
+          "imageName": "feature-gps-customized-node-migrate-a4951bd1-20261104110757",
+          "batchTest": false,
+          "grayTest": false,
+          "eurekaStatus": "UP",
+          "isEciCluster": false,
+          "eciPod": false,
+          "replayFlag": false,
+          "showEci": false,
+          "cluster": "hs-bj-qingzhou-k8s-nonprod",
+          "containerBOList": [
+            {
+              "name": "mesh",
+              "imageName": "acr.baijia.com/uqun/mesh:0.0.1-202604150000",
+              "status": "running",
+              "restartCount": 0
+            },
+            {
+              "name": "student-center",
+              "imageName": "acr.baijia.com/uqun/student-center:feature-gps-customized-node-migrate-a4951bd1-20261104110757",
+              "status": "running",
+              "restartCount": 0
+            },
+            {
+              "name": "multi-test-agent",
+              "imageName": "acr.baijia.com/uqun/multi-test-agent:v7.0.0_260129-test",
+              "status": "terminated",
+              "restartCount": 0,
+              "reason": "Completed"
+            },
+            {
+              "name": "scripts",
+              "imageName": "acr.baijia.com/uqun/scripts:2024080202",
+              "status": "terminated",
+              "restartCount": 0,
+              "reason": "Completed"
+            },
+            {
+              "name": "cat-client",
+              "imageName": "acr.baijia.com/uqun/cat-client-test:1.0.1",
+              "status": "terminated",
+              "restartCount": 0,
+              "reason": "Completed"
+            },
+            {
+              "name": "arms-agent",
+              "imageName": "acr.baijia.com/uqun/arms-agent:1.7.0",
+              "status": "terminated",
+              "restartCount": 0,
+              "reason": "Completed"
+            },
+            {
+              "name": "jacoco",
+              "imageName": "acr.baijia.com/uqun/jacoco-agent:v0.8.8.6",
+              "status": "terminated",
+              "restartCount": 0,
+              "reason": "Completed"
+            }
+          ]
+        }
+      ],
+      "podsSum": 2,
+      "availablePods": 2,
+      "groupServiceFullName": "test-beijing-BJ-Ve1",
+      "envInfoId": 245
+    },
+    {
+      "deployUser": "张聪10",
+      "deployTime": 1767756199000,
+      "namespace": "test-crm-1",
+      "kind": "Deployment",
+      "podList": [],
+      "podsSum": 0,
+      "availablePods": 0,
+      "groupServiceFullName": "test-crm-1-BJ-Ve1",
+      "envInfoId": 334
+    },
+    {
+      "deployUser": "唐稳01",
+      "deployTime": 1775098794000,
+      "namespace": "test-crm-2",
+      "kind": "Deployment",
+      "podList": [],
+      "podsSum": 0,
+      "availablePods": 0,
+      "groupServiceFullName": "test-crm-2-BJ-Ve1",
+      "envInfoId": 343
+    },
+    {
+      "deployUser": "孙鹏云",
+      "deployTime": 1762137511000,
+      "namespace": "test-crm-3",
+      "kind": "Deployment",
+      "podList": [],
+      "podsSum": 0,
+      "availablePods": 0,
+      "groupServiceFullName": "test-crm-3-BJ-Ve1",
+      "envInfoId": 342
+    },
+    {
+      "deployUser": "qa-ac-strategy-sys",
+      "deployTime": 1782725852000,
+      "namespace": "test-meigui",
+      "kind": "Deployment",
+      "podList": [],
+      "podsSum": 0,
+      "availablePods": 0,
+      "groupServiceFullName": "test-meigui-BJ-Ve1",
+      "envInfoId": 374
+    },
+    {
+      "deployUser": "qa-ac-strategy-sys",
+      "deployTime": 1787715824000,
+      "namespace": "test-shanghai",
+      "kind": "Deployment",
+      "podList": [],
+      "podsSum": 0,
+      "availablePods": 0,
+      "groupServiceFullName": "test-shanghai-BJ-Ve1",
+      "envInfoId": 246
+    },
+    {
+      "deployUser": "唐稳01",
+      "deployTime": 1758075281000,
+      "namespace": "test-shenzhen",
+      "kind": "Deployment",
+      "podList": [],
+      "podsSum": 0,
+      "availablePods": 0,
+      "groupServiceFullName": "test-shenzhen-BJ-Ve1",
+      "envInfoId": 312
+    },
+    {
+      "deployUser": "张洪达01",
+      "deployTime": 1793591054000,
+      "namespace": "test-wuhan",
+      "kind": "Deployment",
+      "podList": [
+        {
+          "deploymentName": "student-center",
+          "podDeploymentName": "student-center",
+          "podName": "student-center-55c8448984-fggzp",
+          "podIP": "10.218.236.121",
+          "namespace": "test-wuhan",
+          "envInfoId": 244,
+          "status": "Running",
+          "createTime": 1793591055000,
+          "restartCount": 0,
+          "prometheusUrl": "https://hs-grafana.baijia.com/d/15185338-k8s-pod-nonprod/kubernetes-pod-noprod?orgId=1&refresh=60s&var-ClusterId=ccjs24mhg52uk3nqlqrag&var-namespace=test-wuhan&var-pod=student-center-55c8448984-fggzp",
+          "nodePrometheusUrl": "https://hs-grafana.baijia.com/d/15185338-k8s-node-overview-noprod/node-overview-noprod?orgId=1&refresh=60s&var-ClusterId=ccjs24mhg52uk3nqlqrag&var-node=10.218.10.221",
+          "nodeIp": "10.218.10.221",
+          "terminalUrl": "http://container.baijia.com/api/v1/webterminal?cluster=hs-bj-qingzhou-k8s-nonprod&namespace=test-wuhan&env=test&podName=student-center-55c8448984-fggzp&container=student-center",
+          "imageName": "feature-omo2.2-69aac9de-20261026153420",
+          "batchTest": false,
+          "grayTest": false,
+          "eurekaStatus": "UP",
+          "isEciCluster": false,
+          "eciPod": false,
+          "replayFlag": false,
+          "showEci": false,
+          "cluster": "hs-bj-qingzhou-k8s-nonprod",
+          "containerBOList": [
+            {
+              "name": "mesh",
+              "imageName": "acr.baijia.com/uqun/mesh:0.0.1-202604150000",
+              "status": "running",
+              "restartCount": 0
+            },
+            {
+              "name": "student-center",
+              "imageName": "acr.baijia.com/uqun/student-center:feature-omo2.2-69aac9de-20261026153420",
+              "status": "running",
+              "restartCount": 0
+            },
+            {
+              "name": "multi-test-agent",
+              "imageName": "acr.baijia.com/uqun/multi-test-agent:v7.0.0_260129-test",
+              "status": "terminated",
+              "restartCount": 0,
+              "reason": "Completed"
+            },
+            {
+              "name": "scripts",
+              "imageName": "acr.baijia.com/uqun/scripts:2024080202",
+              "status": "terminated",
+              "restartCount": 0,
+              "reason": "Completed"
+            },
+            {
+              "name": "cat-client",
+              "imageName": "acr.baijia.com/uqun/cat-client-test:1.0.1",
+              "status": "terminated",
+              "restartCount": 0,
+              "reason": "Completed"
+            },
+            {
+              "name": "arms-agent",
+              "imageName": "acr.baijia.com/uqun/arms-agent:1.7.0",
+              "status": "terminated",
+              "restartCount": 0,
+              "reason": "Completed"
+            },
+            {
+              "name": "jacoco",
+              "imageName": "acr.baijia.com/uqun/jacoco-agent:v0.8.8.6",
+              "status": "terminated",
+              "restartCount": 0,
+              "reason": "Completed"
+            }
+          ]
+        }
+      ],
+      "podsSum": 1,
+      "availablePods": 1,
+      "groupServiceFullName": "test-wuhan-BJ-Ve1",
+      "envInfoId": 244
+    }
+  ]
+}

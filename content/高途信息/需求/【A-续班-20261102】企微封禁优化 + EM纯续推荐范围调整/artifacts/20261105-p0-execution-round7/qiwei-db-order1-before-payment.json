@@ -1,0 +1,28 @@
+{
+  "time": "2026-11-05T17:57:33.909574+08:00",
+  "environment": "TEST",
+  "read_only": true,
+  "databases": {
+    "gaotu": {
+      "queries": {
+        "order1": {
+          "sql": "SELECT id,CAST(order_number AS CHAR) order_number,CAST(pay_number AS CHAR) pay_number,CAST(user_id AS CHAR) user_id,CAST(clazz_number AS CHAR) clazz_number,CAST(sub_clazz_number AS CHAR) sub_clazz_number,order_status,price,paid_time FROM order_info WHERE pay_number=433654889322643489",
+          "rows": [
+            {
+              "id": 433654889322644001,
+              "order_number": "433654889322644001",
+              "pay_number": "433654889322643489",
+              "user_id": "7704846434",
+              "clazz_number": "574882679202260992",
+              "sub_clazz_number": "35930169788203264",
+              "order_status": 1,
+              "price": 100,
+              "paid_time": "0000-00-00 00:00:00"
+            }
+          ],
+          "exit": 0
+        }
+      }
+    }
+  }
+}

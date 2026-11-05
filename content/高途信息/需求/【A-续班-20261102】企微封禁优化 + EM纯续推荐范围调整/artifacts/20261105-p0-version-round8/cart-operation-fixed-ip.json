@@ -1,0 +1,14 @@
+{
+  "time": "2026-11-05T19:02:11.286434",
+  "environment": "TEST",
+  "lane": "test-gtbg-dev-3",
+  "targetImage": "feature-xuban-pure-relation-20261102-a34016fd-20261105114326",
+  "url": "http://10.218.237.47:28688/web/renewal/operation/cart?renewalNumber=588858850300473344&userId=7658129872",
+  "http": 200,
+  "trace": "cart_gaotu100_com.298.17938765313420275",
+  "response": {
+    "status": 1,
+    "error_info": "未知错误"
+  },
+  "note": "gateway700 did not count as route healthy; fixed matching pod HTTP is separate verified path"
+}

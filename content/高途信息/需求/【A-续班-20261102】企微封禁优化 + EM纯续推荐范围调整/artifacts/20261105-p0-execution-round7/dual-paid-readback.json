@@ -1,0 +1,534 @@
+{
+  "time": "2026-11-05T18:16:03.102486",
+  "environment": "TEST",
+  "pay_number": "433655835275559341",
+  "large_order": {
+    "sql": "SELECT * FROM order_info WHERE pay_number=433655835275559341",
+    "rows": [
+      {
+        "id": 433655835275559853,
+        "user_id": 7707220467,
+        "sub_clazz_number": 36803942133662208,
+        "clazz_number": 588861402658267136,
+        "course_number": 588861400563212288,
+        "purchased_minutes": 5,
+        "follow_order": 0,
+        "order_status": 2,
+        "order_number": 433655835275559853,
+        "time_expire": "2026-11-06 04:11:09",
+        "purchase_info_id": "102611055742128472",
+        "paid_time": "2026-11-05 18:12:15",
+        "pay_channel": 6,
+        "create_time": "2026-11-05 18:11:09",
+        "original_price": 100,
+        "spike_price_id": 0,
+        "voucher_price": 0,
+        "user_voucher_id": 0,
+        "manual_price": 0,
+        "price": 100,
+        "refund_price": 0,
+        "refund_time": "0000-00-00 00:00:00",
+        "order_type": 0,
+        "parent_order_number": null,
+        "update_time": "2026-11-05 18:12:16",
+        "user_address_id": 0,
+        "pay_number": 433655835275559341,
+        "coupon_price": 0,
+        "activity_number": 0,
+        "course_original_price": 100,
+        "course_price": 100,
+        "activity_type": 0,
+        "activity_ext_info": "",
+        "activity_price": 0,
+        "business_type": 0,
+        "replay_limit": "2029-11-07 14:25:00",
+        "biz_line": 1,
+        "app_version": 0,
+        "app_id": 131074,
+        "service_period": 86400000,
+        "master_subject_id": null,
+        "mark": null
+      }
+    ]
+  },
+  "small_order": {
+    "sql": "SELECT * FROM order_item WHERE pay_number=433655835275559341",
+    "rows": [
+      {
+        "user_id": 7707220467,
+        "number": 433655835275560365,
+        "pay_number": 433655835275559341,
+        "order_status": 2,
+        "order_type": 6004,
+        "sku_number": 586097025945298944,
+        "sku_version": 1792565249996,
+        "spu_number": 18314034380997207,
+        "spu_version": 1792565249996,
+        "sku_type": 6004,
+        "quantity": 1,
+        "sku_price": 0,
+        "promotion_price": 0,
+        "manual_price": 0,
+        "price": 0,
+        "create_time": "2026-11-05 18:11:09",
+        "update_time": "2026-11-05 18:12:16",
+        "cancel_time": "0000-00-00 00:00:00",
+        "confirmed_time": "2026-11-05 18:12:15",
+        "finished_time": "0000-00-00 00:00:00",
+        "invoice": "75",
+        "address_id": 0,
+        "need_delivery": 0,
+        "app_id": 33554611,
+        "pay_account_type": "75",
+        "sales_price": 0,
+        "failed_time": "0000-00-00 00:00:00",
+        "biz_line": 0,
+        "mark": 0,
+        "refund_type": 0
+      }
+    ]
+  },
+  "payment_schema": {
+    "sql": "SHOW COLUMNS FROM pay_info",
+    "rows": [
+      {
+        "Field": "id",
+        "Type": "bigint(20)",
+        "Null": "NO",
+        "Key": "PRI",
+        "Default": null,
+        "Extra": "auto_increment"
+      },
+      {
+        "Field": "number",
+        "Type": "bigint(20)",
+        "Null": "NO",
+        "Key": "UNI",
+        "Default": null,
+        "Extra": ""
+      },
+      {
+        "Field": "user_id",
+        "Type": "bigint(20)",
+        "Null": "NO",
+        "Key": "MUL",
+        "Default": null,
+        "Extra": ""
+      },
+      {
+        "Field": "original_price",
+        "Type": "bigint(20)",
+        "Null": "YES",
+        "Key": "",
+        "Default": "0",
+        "Extra": ""
+      },
+      {
+        "Field": "coupon_price",
+        "Type": "bigint(20)",
+        "Null": "YES",
+        "Key": "",
+        "Default": "0",
+        "Extra": ""
+      },
+      {
+        "Field": "manual_price",
+        "Type": "bigint(20)",
+        "Null": "YES",
+        "Key": "",
+        "Default": "0",
+        "Extra": ""
+      },
+      {
+        "Field": "price",
+        "Type": "bigint(20)",
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": ""
+      },
+      {
+        "Field": "user_address_id",
+        "Type": "bigint(20)",
+        "Null": "YES",
+        "Key": "",
+        "Default": "0",
+        "Extra": ""
+      },
+      {
+        "Field": "create_time",
+        "Type": "datetime",
+        "Null": "NO",
+        "Key": "",
+        "Default": "CURRENT_TIMESTAMP",
+        "Extra": "DEFAULT_GENERATED"
+      },
+      {
+        "Field": "time_expire",
+        "Type": "datetime",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": ""
+      },
+      {
+        "Field": "paid_time",
+        "Type": "datetime",
+        "Null": "YES",
+        "Key": "MUL",
+        "Default": null,
+        "Extra": ""
+      },
+      {
+        "Field": "pay_status",
+        "Type": "tinyint(4)",
+        "Null": "YES",
+        "Key": "",
+        "Default": "0",
+        "Extra": ""
+      },
+      {
+        "Field": "pay_channel",
+        "Type": "tinyint(4)",
+        "Null": "NO",
+        "Key": "",
+        "Default": "0",
+        "Extra": ""
+      },
+      {
+        "Field": "pay_type",
+        "Type": "varchar(15)",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": ""
+      },
+      {
+        "Field": "discount_type",
+        "Type": "int(11)",
+        "Null": "NO",
+        "Key": "",
+        "Default": "0",
+        "Extra": ""
+      },
+      {
+        "Field": "pay_order_number",
+        "Type": "varchar(20)",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": ""
+      },
+      {
+        "Field": "refund_price",
+        "Type": "bigint(20)",
+        "Null": "YES",
+        "Key": "",
+        "Default": "0",
+        "Extra": ""
+      },
+      {
+        "Field": "refund_time",
+        "Type": "datetime",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": ""
+      },
+      {
+        "Field": "update_time",
+        "Type": "timestamp",
+        "Null": "NO",
+        "Key": "",
+        "Default": "CURRENT_TIMESTAMP",
+        "Extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP"
+      },
+      {
+        "Field": "isdel",
+        "Type": "tinyint(1)",
+        "Null": "NO",
+        "Key": "",
+        "Default": "0",
+        "Extra": ""
+      },
+      {
+        "Field": "activity_price",
+        "Type": "bigint(20)",
+        "Null": "NO",
+        "Key": "",
+        "Default": "0",
+        "Extra": ""
+      },
+      {
+        "Field": "real_price",
+        "Type": "bigint(20)",
+        "Null": "NO",
+        "Key": "",
+        "Default": "-1",
+        "Extra": ""
+      },
+      {
+        "Field": "pay_account_number",
+        "Type": "varchar(32)",
+        "Null": "NO",
+        "Key": "",
+        "Default": "",
+        "Extra": ""
+      },
+      {
+        "Field": "pay_account_name",
+        "Type": "varchar(100)",
+        "Null": "NO",
+        "Key": "",
+        "Default": "",
+        "Extra": ""
+      },
+      {
+        "Field": "app_id",
+        "Type": "bigint(20)",
+        "Null": "NO",
+        "Key": "",
+        "Default": "0",
+        "Extra": ""
+      },
+      {
+        "Field": "pay_source_app",
+        "Type": "bigint(20)",
+        "Null": "NO",
+        "Key": "",
+        "Default": "0",
+        "Extra": ""
+      },
+      {
+        "Field": "mark",
+        "Type": "bigint(20)",
+        "Null": "NO",
+        "Key": "",
+        "Default": "0",
+        "Extra": ""
+      },
+      {
+        "Field": "pay_plan_type",
+        "Type": "tinyint(4)",
+        "Null": "NO",
+        "Key": "",
+        "Default": "0",
+        "Extra": ""
+      },
+      {
+        "Field": "merge_pay",
+        "Type": "tinyint(1)",
+        "Null": "YES",
+        "Key": "",
+        "Default": "0",
+        "Extra": ""
+      }
+    ]
+  },
+  "classes": {
+    "sql": "SELECT * FROM clazz WHERE number IN (588861397654462464,588861402658267136)",
+    "rows": [
+      {
+        "id": 20505908,
+        "course_number": 588861395571990528,
+        "number": 588861397654462464,
+        "biz_number": "15YW26C6M111001",
+        "experience_video_url": "",
+        "status": 1,
+        "publish_time": "2026-11-05 17:48:47",
+        "off_time": null,
+        "isdel": 0,
+        "live_room_no": "",
+        "create_time": "2026-11-05 17:35:48",
+        "update_time": "2026-11-05 17:48:46",
+        "cover_storage_id": 0,
+        "name": "B测试-五年级语文春季前置B",
+        "time_desc": "2026年11月08日-2026年11月08日 每周日 14:10-14:15",
+        "clazz_date_desc": "2026年11月08日-2026年11月08日",
+        "clazz_time_desc": "14:10-14:15",
+        "clazz_week_desc": "每周日",
+        "end_sale_time": "2036-11-05 17:48:46",
+        "countdown_time": null,
+        "version": 179387212,
+        "property": "0",
+        "clazz_type": 0,
+        "clazz_type_alias": "",
+        "biz_type": 1,
+        "master_subject_id": 1420,
+        "slave_subject_ids": "",
+        "app": 2,
+        "price": 0,
+        "original_price": 0,
+        "capacity": -1,
+        "vertical_cover_storage_id": 0,
+        "audit_status": 30,
+        "publish_status": 40,
+        "down_time": null,
+        "teach_clazz_type": null
+      },
+      {
+        "id": 20505909,
+        "course_number": 588861400563212288,
+        "number": 588861402658267136,
+        "biz_number": "15YW26XTRO11001",
+        "experience_video_url": "",
+        "status": 1,
+        "publish_time": "2026-11-05 17:48:51",
+        "off_time": null,
+        "isdel": 0,
+        "live_room_no": "",
+        "create_time": "2026-11-05 17:35:50",
+        "update_time": "2026-11-05 17:48:50",
+        "cover_storage_id": 0,
+        "name": "B测试-五年级语文暑假后置1B",
+        "time_desc": "2026年11月08日-2026年11月08日 每周日 14:20-14:25",
+        "clazz_date_desc": "2026年11月08日-2026年11月08日",
+        "clazz_time_desc": "14:20-14:25",
+        "clazz_week_desc": "每周日",
+        "end_sale_time": "2026-11-08 14:20:00",
+        "countdown_time": null,
+        "version": 179387213,
+        "property": "0",
+        "clazz_type": 0,
+        "clazz_type_alias": "",
+        "biz_type": 1,
+        "master_subject_id": 1420,
+        "slave_subject_ids": "",
+        "app": 2,
+        "price": 100,
+        "original_price": 100,
+        "capacity": -1,
+        "vertical_cover_storage_id": 0,
+        "audit_status": 30,
+        "publish_status": 40,
+        "down_time": null,
+        "teach_clazz_type": null
+      }
+    ]
+  },
+  "main_relations": {
+    "sql": "SELECT * FROM renew_master_relation WHERE main_renew_master_number=588858850300473344",
+    "rows": [
+      {
+        "id": 15,
+        "number": 588864202138005504,
+        "main_renew_master_number": 588858850300473344,
+        "sub_renew_master_number": 585960797778243584,
+        "is_del": 0,
+        "create_account_id": 90247,
+        "create_time": "2026-11-05 17:58:05",
+        "update_time": "2026-11-05 17:59:59"
+      },
+      {
+        "id": 16,
+        "number": 588864202165268480,
+        "main_renew_master_number": 588858850300473344,
+        "sub_renew_master_number": 586116340522184704,
+        "is_del": 0,
+        "create_account_id": 90247,
+        "create_time": "2026-11-05 17:58:05",
+        "update_time": "2026-11-05 17:59:59"
+      },
+      {
+        "id": 17,
+        "number": 588864436289220608,
+        "main_renew_master_number": 588858850300473344,
+        "sub_renew_master_number": 588671894562123776,
+        "is_del": 1,
+        "create_account_id": 90247,
+        "create_time": "2026-11-05 17:59:56",
+        "update_time": "2026-11-05 17:59:59"
+      },
+      {
+        "id": 18,
+        "number": 588864436314386432,
+        "main_renew_master_number": 588858850300473344,
+        "sub_renew_master_number": 588506246722727936,
+        "is_del": 1,
+        "create_account_id": 90247,
+        "create_time": "2026-11-05 17:59:56",
+        "update_time": "2026-11-05 17:59:59"
+      },
+      {
+        "id": 19,
+        "number": 588864436339552256,
+        "main_renew_master_number": 588858850300473344,
+        "sub_renew_master_number": 588262775349012480,
+        "is_del": 1,
+        "create_account_id": 90247,
+        "create_time": "2026-11-05 17:59:56",
+        "update_time": "2026-11-05 17:59:59"
+      },
+      {
+        "id": 20,
+        "number": 588864436362620928,
+        "main_renew_master_number": 588858850300473344,
+        "sub_renew_master_number": 587730716914313216,
+        "is_del": 1,
+        "create_account_id": 90247,
+        "create_time": "2026-11-05 17:59:56",
+        "update_time": "2026-11-05 17:59:59"
+      },
+      {
+        "id": 21,
+        "number": 588864436398272512,
+        "main_renew_master_number": 588858850300473344,
+        "sub_renew_master_number": 587639188745316352,
+        "is_del": 1,
+        "create_account_id": 90247,
+        "create_time": "2026-11-05 17:59:56",
+        "update_time": "2026-11-05 17:59:59"
+      },
+      {
+        "id": 22,
+        "number": 588864436423438336,
+        "main_renew_master_number": 588858850300473344,
+        "sub_renew_master_number": 587588583146350592,
+        "is_del": 1,
+        "create_account_id": 90247,
+        "create_time": "2026-11-05 17:59:56",
+        "update_time": "2026-11-05 17:59:59"
+      },
+      {
+        "id": 23,
+        "number": 588864436448604160,
+        "main_renew_master_number": 588858850300473344,
+        "sub_renew_master_number": 587173458654291968,
+        "is_del": 1,
+        "create_account_id": 90247,
+        "create_time": "2026-11-05 17:59:56",
+        "update_time": "2026-11-05 17:59:59"
+      },
+      {
+        "id": 24,
+        "number": 588864436473769984,
+        "main_renew_master_number": 588858850300473344,
+        "sub_renew_master_number": 587173440509732864,
+        "is_del": 1,
+        "create_account_id": 90247,
+        "create_time": "2026-11-05 17:59:56",
+        "update_time": "2026-11-05 17:59:59"
+      },
+      {
+        "id": 25,
+        "number": 588864436496838656,
+        "main_renew_master_number": 588858850300473344,
+        "sub_renew_master_number": 587048390485895168,
+        "is_del": 1,
+        "create_account_id": 90247,
+        "create_time": "2026-11-05 17:59:56",
+        "update_time": "2026-11-05 17:59:59"
+      },
+      {
+        "id": 26,
+        "number": 588864436522004480,
+        "main_renew_master_number": 588858850300473344,
+        "sub_renew_master_number": 587044953574631424,
+        "is_del": 1,
+        "create_account_id": 90247,
+        "create_time": "2026-11-05 17:59:56",
+        "update_time": "2026-11-05 17:59:59"
+      }
+    ]
+  }
+}

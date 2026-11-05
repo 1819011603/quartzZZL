@@ -1,0 +1,49 @@
+{
+  "sampledAt": "2026-11-05T18:32:21.149420+08:00",
+  "environment": "TEST",
+  "database": "cluster153/course_center.clazz",
+  "classApi": "ClazzAclService#getAllClazzInfo (real response clazzAclServiceV1Impl/balanceClazzDiff)",
+  "classApiTrace": "student-center.899883.17938744996356322",
+  "classes": [
+    {
+      "dbId": "208807",
+      "number": "574882679202260992",
+      "bizNumber": "32YYTS25D6LS11002",
+      "name": "续班归因-正经前置班-0820",
+      "users": [
+        "7704846434",
+        "7704846439",
+        "7704846440"
+      ],
+      "relation": "新建3人均status1/isdel0，Gong组35930167940088064"
+    },
+    {
+      "dbId": "124836",
+      "number": "496625388833767424",
+      "bizNumber": "21YW25CY2A11001",
+      "name": "madman-续班-正价-11",
+      "users": [
+        "654489"
+      ],
+      "relation": "既有班学员status1/isdel0，subclazz31039307458937472"
+    },
+    {
+      "dbId": "124525",
+      "number": "495672366492309504",
+      "bizNumber": "19YW22C8DF11001",
+      "name": "续班计划-大班课-02【改1111】",
+      "users": [
+        "654500"
+      ],
+      "relation": "当前subclazz30979523514204416 status1/isdel0；另历史subclazz30994965567898240 status2"
+    }
+  ],
+  "apiMapping": {
+    "clazzStudents[].clazzNumber": "course_center.clazz.number (actual write request, new mark source readback and DB exact match)",
+    "classQueryResponse.number": "course_center.clazz.number (3 exact pairs)",
+    "classQueryResponse.bizNumber": "course_center.clazz.biz_number (3 exact pairs)",
+    "classQueryResponse.id": "0 in response for all3; NOT database primary key",
+    "bizId": "No field with this exact name in used tag/remark/class-detail contracts. Cannot equate bizId with id/number/bizNumber without the specific endpoint/field contract."
+  },
+  "remarkContract": "userIds+wkRemarkTemplate only; no class selector. The two verified enrolled classes are context, not parameters that isolate remark writes. No message sending authorized."
+}

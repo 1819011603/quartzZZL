@@ -1,0 +1,176 @@
+{
+  "time": "2026-11-05T18:02:47.656364+08:00",
+  "environment": "TEST",
+  "read_only": true,
+  "databases": {
+    "ees_data": {
+      "queries": {
+        "tags": {
+          "sql": "SELECT id,CAST(user_id AS CHAR) user_id,CAST(clazz_number AS CHAR) clazz_number,account_id,tags,color,layer,create_time,update_time FROM user_clazz_mark_info WHERE user_id IN (7704846434,7704846439,7704846440) AND clazz_number=574882679202260992",
+          "rows": [],
+          "exit": 0
+        }
+      }
+    },
+    "gaotu": {
+      "queries": {
+        "old_index": {
+          "sql": "SHOW INDEX FROM learning_student_info_ext",
+          "rows": [
+            {
+              "Table": "learning_student_info_ext",
+              "Non_unique": 0,
+              "Key_name": "PRIMARY",
+              "Seq_in_index": 1,
+              "Column_name": "id",
+              "Collation": "A",
+              "Cardinality": 6972,
+              "Sub_part": null,
+              "Packed": null,
+              "Null": "",
+              "Index_type": "BTREE",
+              "Comment": "",
+              "Index_comment": "",
+              "Visible": "YES",
+              "Expression": null
+            },
+            {
+              "Table": "learning_student_info_ext",
+              "Non_unique": 0,
+              "Key_name": "uq_clazz_user_id",
+              "Seq_in_index": 1,
+              "Column_name": "clazz_number",
+              "Collation": "A",
+              "Cardinality": 1366,
+              "Sub_part": null,
+              "Packed": null,
+              "Null": "",
+              "Index_type": "BTREE",
+              "Comment": "",
+              "Index_comment": "",
+              "Visible": "YES",
+              "Expression": null
+            },
+            {
+              "Table": "learning_student_info_ext",
+              "Non_unique": 0,
+              "Key_name": "uq_clazz_user_id",
+              "Seq_in_index": 2,
+              "Column_name": "user_id",
+              "Collation": "A",
+              "Cardinality": 6972,
+              "Sub_part": null,
+              "Packed": null,
+              "Null": "",
+              "Index_type": "BTREE",
+              "Comment": "",
+              "Index_comment": "",
+              "Visible": "YES",
+              "Expression": null
+            }
+          ],
+          "exit": 0
+        },
+        "old_columns": {
+          "sql": "SHOW COLUMNS FROM learning_student_info_ext",
+          "rows": [
+            {
+              "Field": "id",
+              "Type": "bigint(20)",
+              "Null": "NO",
+              "Key": "PRI",
+              "Default": null,
+              "Extra": "auto_increment"
+            },
+            {
+              "Field": "clazz_number",
+              "Type": "bigint(20)",
+              "Null": "NO",
+              "Key": "MUL",
+              "Default": null,
+              "Extra": ""
+            },
+            {
+              "Field": "subclazz_number",
+              "Type": "bigint(20)",
+              "Null": "NO",
+              "Key": "",
+              "Default": null,
+              "Extra": ""
+            },
+            {
+              "Field": "user_id",
+              "Type": "bigint(20)",
+              "Null": "NO",
+              "Key": "",
+              "Default": null,
+              "Extra": ""
+            },
+            {
+              "Field": "tags",
+              "Type": "varchar(64)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "",
+              "Extra": ""
+            },
+            {
+              "Field": "renewal_reason",
+              "Type": "varchar(64)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "",
+              "Extra": ""
+            },
+            {
+              "Field": "last_modify_teacher_number",
+              "Type": "bigint(20)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "0",
+              "Extra": ""
+            },
+            {
+              "Field": "isdel",
+              "Type": "tinyint(1)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "0",
+              "Extra": ""
+            },
+            {
+              "Field": "create_time",
+              "Type": "datetime",
+              "Null": "NO",
+              "Key": "",
+              "Default": "CURRENT_TIMESTAMP",
+              "Extra": "DEFAULT_GENERATED"
+            },
+            {
+              "Field": "update_time",
+              "Type": "datetime",
+              "Null": "NO",
+              "Key": "",
+              "Default": "CURRENT_TIMESTAMP",
+              "Extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP"
+            },
+            {
+              "Field": "renewal_reason_manual",
+              "Type": "varchar(255)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "",
+              "Extra": ""
+            }
+          ],
+          "exit": 0
+        },
+        "old_tags": {
+          "sql": "SELECT * FROM learning_student_info_ext WHERE user_id IN (7704846434,7704846439,7704846440) AND clazz_number=574882679202260992",
+          "rows": [],
+          "exit": 0
+        }
+      }
+    }
+  }
+}

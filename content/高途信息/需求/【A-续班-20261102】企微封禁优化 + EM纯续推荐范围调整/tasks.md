@@ -4,13 +4,13 @@
 
 | 编号 | 任务 | 状态 | 产物与边界 |
 |---|---|---|---|
-| T-9 | 需求归属与契约 | 已完成 | 同一主需求两个子项，PRD revision253/675，25项映射见本轮报告；覆盖此前后端只读限制，前端仍只读。 |
+| T-9 | 需求归属与契约 | 已完成 | 同一主需求两个子项，PRD revision253/675，25项映射见本轮报告；当前允许TEST样本与执行，不改业务代码，前端只读。 |
 | T-10 | 前端现状 | 已完成 | promotions ba1cf8f、cronus实际需求分支17ee81cc及生产iris静态产物已核，详见前端报告；页面未执行。 |
 | T-11 | cart既有交付核实 | 已完成 | a34016fd已推送且目标泳道UP；94例沿用程序测试记录，本轮固定IP纯续/扩科子集与正缓存命中已实证，隔离反例仍在T-15。 |
 | T-12 | order修复与本地验证 | 已完成 | 0cc8ef68b6已推送，修后17规则用例+9H2回归全绿；local=remote。 |
 | T-13 | product及当前接口验证 | 已完成 | product-b 07ba05df固定IP及网关：关联字段正常、批量2条、非法0条、B关联空；20例沿用程序测试记录。当前cart为a34016fd，见运行核验。 |
-| T-14 | P0文档与收尾核对 | 已完成 | 同一Wiki补证/分档至revision159；原30条信息完整2/准备10/缺失18，12卡1/1/10，逐项缺口与只读原件已附并下载核SHA一致。MR1528仅静态评估、不合并；见artifacts/20261105-p0-detail-round3/verification.json。信息缺口仍保留，不称全业务验收。 |
-| T-15 | 新版运行态联测 | 阻塞 | 两子项真实读取子集已验；企微缺独占样本与HTTP鉴权/好友；EM隔离反例、完整下单及页面/回溯未全验。详见verify首节及运行核验；不新部署。 |
+| T-14 | P0文档与收尾核对 | 已完成 | revision247简洁12卡、25契约/原30映射及集中证据保存回读；计算/标识规范同步skill，原30信息4/17/9；本轮证据附件下载SHA一致，见artifacts/20261105-p0-execution-round7/。不代表业务全验收。 |
+| T-15 | 新版运行态联测 | 阻塞 | 本轮真实排课/可售、三计划/碰撞/边界/同单支付、标签与官方备注子集已验并恢复；续班ES父熔断、目标企微版本未确认；异年学期、跨年级/第三件、缓存组合、优惠/异主体、小班/其余页面/回溯未全验。 |
 
 ### 外部依赖与保留边界
 
@@ -22,7 +22,7 @@
 
 ## 完成判据
 
-- T-15：落点=TEST独占对象及实际被测服务，无本轮代码改动。先确认真实HTTP身份、好友及原值快照，再完成标签写→同值重放→DB/ES/页面读回→恢复；EM按P0-05/06/08/09保留不同学年/重复来源/主体等结构并比较真实结果。当前固定IP与已有成功子集见verify，不重复写入；失败先核实际IP/版本/鉴权/对象前置，两次直连失败改入口或明确阻塞。前端/回溯需对应负责人就绪，不用源码/单测替代。
+- T-15：落点=TEST受控样本及实际环境，无业务代码改动。按verify对象顺序续接，不重放build和已付单；先解决ES父熔断及核目标企微版本，再补同班/大小班筛选与默认模板对照；其他独立EM反例按P0-03/05/06/07/08/09逐项准备、执行、原值恢复并回读。接口、任务、DB/ES、页面分别取证；失败先核版本/路由/资格，连续两次同法失败换入口；无部署授权不自行发布服务。
 
 > 以下为原归档的历史任务与验证锚点，不等于本轮执行结果。
 
@@ -64,7 +64,7 @@
 - [x] 边界（product-b HTTP，白名单 [125756]）：状态非可编辑 → `仅待开始/进行中的续班计划可关联`；超上限10 → `最多可纯续关联10个续班计划`；空白名单非管理员 → `仅续班计划管理员可操作`
 - [x] **端到端（Arthas 临时开关）**：① product-c 下发含 `related_renewMasterNumbers`（开关开）/无（关）；② cart 透传 `related_renew_master_numbers`；③ cart 合并日志 `EM pure relation merged courseNumbers ... size=2`（开）/无（关）；④ order 大班2+小班6004 同课程/同班级 → 放行，同模式2+2 同课程 → `SAME_COURSE` 拦，开关关 → 拦。**测后已复位**（product-c 两 pod / order pod 置 false 回读；cart 开关、product-b 白名单 Apollo 恢复并发布）
 - [x] **cart 实际报价（造数）**：学员 `7658127801`（主/从前置课均有 paid 订单）→ 初测小班从计划报价缺失；**A 方案修复后复测：开关开=主(大班)+从(小班 6004)两类纯续，开关关=回单计划**。测后 product-c/cart 开关复位
-- [x] **联测 cart 加购→下单（跨模式）**：补部署 **order-b**（`orderComponent`/`CartSameClazzOrCourseImpl` 校验入口，此前只部署 gaotu_order）；真机 `POST /bgwApi/orderComponent/b/cart/addCart`：大班班+小班班同车 → `code:0`（traceId `7c22f266-...`）；同模式真重复 → `SAME_CLAZZ`+`SAME_COURSE`（traceId `81c9bc97-...`）。**未覆盖**：跨模式放行真机（test 计划大小班后置班 clazz/course 均不同，无冲突；逻辑层已验）。测后开关复位、购物车清理
+- [x] **联测 cart 加购→下单（跨模式）**：补部署 **order-b**（`orderComponent`/`CartSameClazzOrCourseImpl` 校验入口，该记录补齐 order-b 的部署）；真机 `POST /bgwApi/orderComponent/b/cart/addCart`：大班班+小班班同车 → `code:0`（traceId `7c22f266-...`）；同模式真重复 → `SAME_CLAZZ`+`SAME_COURSE`（traceId `81c9bc97-...`）。**未覆盖**：跨模式放行真机（test 计划大小班后置班 clazz/course 均不同，无冲突；逻辑层已验）。测后开关复位、购物车清理
 - [x] **开关默认改 true（通用口径）**：product-server/cart/order 5 处 `@Value(...:true)`；push `ab120d4e5`/`4e126df5`/`e464fa98bd`；部署 product-b/product-c/cart/order/order-b 全 eureka UP。**验证**：不配开关即生效（product-c 下发含 related、cart 主+从）；cart Apollo `false` → 回单计划（回滚可用）
 - [x] **小班预热合并（owner 决定，2026-11-04）**：`RenewalDataService#mergeRelatedPreCourseNumbers` 下沉共享 + `SmallRenewalPreheatService` 预热前合并；push `f5abee98`，cart eureka UP；`preheatInternal(7658127801,586116340522184704,主小班+从大班造数)`→`preClassCount=2`（traceId `cart_gaotu100_com.296.17937554235820006`）
 - [x] **owner 澄清确认**：`relation/list` 不加管理员字段（现状无）；`save` 状态过滤（非{待开始/进行中}拒绝）+ 非管理员报错（traceId `8d3fa07a-...`）；去重口径=同年级同商品

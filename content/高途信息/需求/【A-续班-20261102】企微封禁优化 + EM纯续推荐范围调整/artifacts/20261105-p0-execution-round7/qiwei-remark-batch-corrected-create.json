@@ -1,0 +1,26 @@
+{
+  "time": "2026-11-05T18:30:06.813348+08:00",
+  "environment": "TEST",
+  "url": "https://test-fuwu.baijia.com/bgwApi/student-center/remark/creat/edit/task",
+  "request": {
+    "userIds": [
+      "654489",
+      "654500"
+    ],
+    "wkRemarkTemplate": "W1-${{wkRemark}}"
+  },
+  "headers": {
+    "content-type": "application/json",
+    "traffic-env": "test",
+    "b_client": "EES"
+  },
+  "httpStatus": 200,
+  "trace": "1fd51b3d-09af-4dd6-9d46-8b70832c7ece.0.3",
+  "response": {
+    "code": 0,
+    "data": {
+      "resultStatus": true
+    },
+    "msg": ""
+  }
+}

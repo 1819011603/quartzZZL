@@ -1,0 +1,35 @@
+{
+  "time": "2026-11-05T17:56:03.733881+08:00",
+  "environment": "TEST",
+  "read_only": true,
+  "databases": {
+    "super_class": {
+      "queries": {
+        "created_users": {
+          "sql": "SELECT CAST(user_id AS CHAR) user_id,name,(mobile LIKE '12%') AS test_mobile_prefix,user_status FROM user WHERE mobile IN ('12261105271','12261105272','12261105273')",
+          "rows": [
+            {
+              "user_id": "7704846434",
+              "name": "企微目标甲",
+              "test_mobile_prefix": 1,
+              "user_status": 0
+            },
+            {
+              "user_id": "7704846439",
+              "name": "企微目标乙",
+              "test_mobile_prefix": 1,
+              "user_status": 0
+            },
+            {
+              "user_id": "7704846440",
+              "name": "企微未选对照",
+              "test_mobile_prefix": 1,
+              "user_status": 0
+            }
+          ],
+          "exit": 0
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "SKILL.md": {
+    "paths": [
+      "/Users/gaotu/bridge/payload/skills-cold/banshan-case/SKILL.md",
+      "/Users/gaotu/.claude/skills-cold/banshan-case/SKILL.md"
+    ],
+    "sha256": "c55ed7e806899105a7a94e77f715dcdbcf1d9477c17ec0979637056c244987a2",
+    "identical": true
+  },
+  "references/doc-templates.md": {
+    "paths": [
+      "/Users/gaotu/bridge/payload/skills-cold/banshan-case/references/doc-templates.md",
+      "/Users/gaotu/.claude/skills-cold/banshan-case/references/doc-templates.md"
+    ],
+    "sha256": "85029e12624bf16182f5f3eb338975f62fc70a154bf031b2f734ecde65450cd7",
+    "identical": true
+  },
+  "semantic_walkthrough": {
+    "actual_P0_08": "100分×1＋0分×1－0分优惠＝100分，真实支付回读100分；通过表达要求，不代表全部业务通过",
+    "P0_06": "同年级16、相同SKU的2个有效来源去重为1；跨年级未验保持未验",
+    "P0_04": "纳入主与显式关联从计划有效在读对应后置，排除无资格和未关联；筛选不硬凑公式",
+    "missing_bizId": "实际接口无同名字段时列已核number/bizNumber；不能拿DB id冒充",
+    "failure_boundary": "保留误用变量的失败记录及未测项，精简不得改成通过"
+  },
+  "checks": {
+    "实际输入值": true,
+    "规则或公式": true,
+    "简短代入过程": true,
+    "单位": true,
+    "时间边界": true,
+    "去重": true,
+    "取整": true,
+    "纳入和排除依据": true,
+    "不强写数学公式": true,
+    "bizId 未核实": true,
+    "数据库主键": true,
+    "原始请求/响应": true,
+    "未执行": true,
+    "恢复": true
+  },
+  "structural_audit": "skill-concise-verify-utf8.log, verify_skills OK, 84/0"
+}

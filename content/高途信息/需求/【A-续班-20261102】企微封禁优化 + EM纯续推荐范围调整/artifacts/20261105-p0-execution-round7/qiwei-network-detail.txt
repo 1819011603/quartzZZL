@@ -1,0 +1,49 @@
+
+Update available: 1.11.0 -> 1.12.0
+Run `npm install -g chrome-devtools-mcp@latest` and `chrome-devtools start` to update and restart the daemon.
+
+## Request https://test-fuwu.baijia.com/bgwApi/component/student-center/roster/renewal/default/page
+Status: 200
+### Request Headers
+- sec-ch-ua-platform:"macOS"
+- referer:https://test-fuwu.baijia.com/crm/cronus/clazzRosterOL?tabKey=continuationService
+- sec-ch-ua:"Not:A-Brand";v="8", "Chromium";v="156", "Google Chrome";v="156"
+- sec-ch-ua-mobile:?0
+- baggage:sentry-environment=test,sentry-release=1eef02376ff8131288054043d6cc333394f8a6f9,sentry-public_key=341a68891d374a6801142248b263f4d1,sentry-trace_id=afc525588f1c4124ac010fbe89cd2b59,sentry-sampled=true,sentry-sample_rand=0.10852462996429324,sentry-sample_rate=1
+- sentry-trace:afc525588f1c4124ac010fbe89cd2b59-82a98a4a02c4ae6b-1
+- user-agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36
+- accept:application/json
+- b_client:EES
+- content-type:application/json;charset=UTF-8
+- sw8:1-OGE2YjgyMWQtODljMy00Mjc2LWJlY2EtOWUxMTI4ZjMxN2Fl-YjkxZGJiNGYtN2FjOS00Yjk1LWEwYjEtOTJiZTI0NjFiMzY1-0-ajQ3ZmlvOHI1aUA4OGMzNzIyYmUzNThlNmQ=-MS4wLjA=-L2NybS9jcm9udXMvY2xhenpSb3N0ZXJPTA==-dGVzdC1mdXd1LmJhaWppYS5jb20=
+- :authority:test-fuwu.baijia.com
+- :method:POST
+- :path:/bgwApi/component/student-center/roster/renewal/default/page
+- :scheme:https
+- accept-encoding:gzip, deflate, br, zstd
+- accept-language:zh-CN,zh;q=0.9
+- content-length:196
+[REDACTED AUTH HEADER]
+- ingress-traffic-env:test-gtbg-dev-3
+- origin:https://test-fuwu.baijia.com
+- priority:u=1, i
+- sec-fetch-dest:empty
+- sec-fetch-mode:cors
+- sec-fetch-site:same-origin
+- traffic-env:test-gtbg-dev-3
+### Request Body
+Saved to /private/tmp/w1-p0-243aa61a/round7/qiwei-renewal-request.network-request.
+### Response Headers
+- access-control-allow-origin:*
+- access-control-expose-headers:GAPM-TraceID
+- content-encoding:gzip
+- content-type:application/json
+- date:Thu, 05 Nov 2026 09:40:19 GMT
+- gapm-appid:student-center
+- gapm-traceid:8a6b821d-89c3-4276-beca-9e1128f317ae.0.0
+- server:nginx
+[REDACTED AUTH HEADER]
+- timing-allow-origin:*
+- vary:Accept-Encoding
+### Response Body
+Saved to /private/tmp/w1-p0-243aa61a/round7/qiwei-renewal-response.network-response.

@@ -1,0 +1,1 @@
+{"gaotu": {"tag_class_relations": "SELECT id,CAST(user_id AS CHAR) user_id,CAST(clazz_number AS CHAR) clazz_number,CAST(subclazz_number AS CHAR) subclazz_number,status,isdel FROM subclazz_student WHERE user_id IN (654489,654500) AND clazz_number IN (496625388833767424,495672366492309504) ORDER BY user_id,id LIMIT 30"}}

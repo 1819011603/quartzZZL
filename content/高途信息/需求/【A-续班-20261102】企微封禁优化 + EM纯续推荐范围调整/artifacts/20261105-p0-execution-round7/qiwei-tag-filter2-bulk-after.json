@@ -1,0 +1,50 @@
+{
+  "time": "2026-11-05T18:06:30.230372+08:00",
+  "environment": "TEST",
+  "url": "https://test-fuwu.baijia.com/bgwApi/student-center/roster/renewal/default/page",
+  "request": {
+    "filter": {
+      "studentSubStatus": [
+        0
+      ],
+      "leadTeacher": [
+        177071
+      ],
+      "clazzNumber": [
+        "574882679202260992"
+      ],
+      "studentTags": [
+        2
+      ]
+    },
+    "pager": {
+      "current": 1,
+      "pageSize": 500
+    },
+    "route": {
+      "sceneVersionNumber": "294310981744470016"
+    },
+    "identification": "continuationService"
+  },
+  "headers": {
+    "content-type": "application/json",
+    "traffic-env": "test",
+    "b_client": "EES"
+  },
+  "httpStatus": 200,
+  "trace": "73dc655a-18c9-41ab-8248-3b0c744884a3.0.3",
+  "response": {
+    "code": 0,
+    "data": {
+      "pager": {
+        "current": 1,
+        "pageSize": 500,
+        "total": 0,
+        "hasNext": false,
+        "approximateTotal": false
+      },
+      "list": []
+    },
+    "msg": ""
+  }
+}

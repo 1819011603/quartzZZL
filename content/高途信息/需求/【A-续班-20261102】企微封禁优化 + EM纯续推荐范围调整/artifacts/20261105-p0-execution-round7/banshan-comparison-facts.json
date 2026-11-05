@@ -1,0 +1,29 @@
+{
+  "functional_cases": 120,
+  "functional_nodes": 377,
+  "online_cases": 30,
+  "online_nodes": 107,
+  "smoke_cases": 30,
+  "smoke_nodes": 107,
+  "priority_counts": {
+    "1": 30,
+    "2": 75,
+    "3": 15
+  },
+  "online_same_codes_as_original30": true,
+  "online_same_steps_expected_as_functional_priority1": true,
+  "online_same_steps_expected_as_smoke": true,
+  "new_business_requirements": 0,
+  "adopted_step_clarifications": [
+    "REN-B06-003",
+    "REN-B08-006",
+    "REN-B07-003",
+    "QW-B02-004",
+    "QW-B02-006",
+    "QW-B03-007",
+    "QW-B05-005"
+  ],
+  "platform_records_all_executed_zero": true,
+  "platform_write_performed": false,
+  "runtime_evidence_reusable": false
+}

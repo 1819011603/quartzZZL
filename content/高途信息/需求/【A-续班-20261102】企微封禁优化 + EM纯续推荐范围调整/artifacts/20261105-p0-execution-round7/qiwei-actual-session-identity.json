@@ -1,0 +1,71 @@
+{
+  "time": "2026-11-05T17:52:39.439535+08:00",
+  "environment": "TEST",
+  "result": {
+    "httpStatus": 200,
+    "code": 0,
+    "msg": null,
+    "identity": {
+      "id": 109942,
+      "name": "zhangzeling",
+      "displayName": "张泽灵",
+      "currentRole": {
+        "name": "课程顾问",
+        "appId": 21,
+        "tag": "gaotu_boss_sales_",
+        "openRoleUid": 129806
+      },
+      "hasRoles": [
+        {
+          "name": "课程顾问",
+          "appId": 21,
+          "tag": "gaotu_boss_sales_",
+          "openRoleUid": 129806
+        },
+        {
+          "name": "中台教务-K12",
+          "appId": 21,
+          "tag": "gaotu_boss_jiaowu_",
+          "openRoleUid": 132473
+        },
+        {
+          "name": "短期班二讲老师-K12",
+          "appId": 21,
+          "tag": "gaotu_boss_criss_assistant_",
+          "openRoleUid": 131983
+        },
+        {
+          "name": "线下_课程顾问",
+          "appId": 21,
+          "tag": "ols_sale",
+          "openRoleUid": 130241
+        },
+        {
+          "name": "线下_市场",
+          "appId": 21,
+          "tag": "ols_marketing executive",
+          "openRoleUid": 130242
+        },
+        {
+          "name": "线下_主讲老师（与线上一致）",
+          "appId": 21,
+          "tag": "gaotu_ols_teacher_offline",
+          "openRoleUid": 130232
+        },
+        {
+          "name": "线下_学管师",
+          "appId": 21,
+          "tag": "gaotu_ols_school_administrator_offline",
+          "openRoleUid": 130240
+        },
+        {
+          "name": "线下_班主任",
+          "appId": 21,
+          "tag": "gaotu_ols_head_teacher",
+          "openRoleUid": 130239
+        }
+      ]
+    },
+    "trace": "c2e31b56-8d40-4455-b298-be289b0ff0c0.0.3"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "time": "2026-11-05T18:35:25.777529+08:00",
+  "checks": {
+    "referencedEvidenceExists": true,
+    "restoredRemarksMatch": true,
+    "unselectedOfficialContactUnchanged": true,
+    "successfulTaskAndJobTerminal": true,
+    "invalidTaskDeleted": true,
+    "selectedBrowserCountCleared": true,
+    "noOpenDialog": true
+  },
+  "taskCount": 3,
+  "jobCount": 5,
+  "missingEvidence": [],
+  "credentialFileExists": false
+}

@@ -1,0 +1,369 @@
+{
+  "time": "2026-11-05T19:01:57.022760",
+  "environment": "TEST",
+  "lane": "test-gtbg-dev-3",
+  "target": "product-b07ba05df",
+  "purpose": "REN-B01-002 status1管理员接口保存/回读；不冒充页面通过",
+  "created_objects": [
+    {
+      "type": "plan",
+      "number": "588872241920421888"
+    }
+  ],
+  "steps": [
+    {
+      "name": "existing_course_map",
+      "time": "2026-11-05T19:01:58.002567",
+      "path": "/product-b/b/renewMaster/listCoursesByPreCourseNumber",
+      "request": {
+        "preCourseNumber": "588861400563212288"
+      },
+      "http": 200,
+      "trace": "5af48b22-e5da-4ab9-bb20-af747ce743d2.0.3",
+      "response": {
+        "code": 0,
+        "data": [],
+        "errorTypeCode": 0
+      }
+    },
+    {
+      "name": "source_plan_detail",
+      "time": "2026-11-05T19:01:58.644996",
+      "path": "/product-b/b/renewMaster/detail",
+      "request": {
+        "number": "588858850300473344"
+      },
+      "http": 200,
+      "trace": "13848135-050a-45ca-ac73-51fd9d251a07.0.3",
+      "response": {
+        "code": 0,
+        "data": {
+          "number": "588858850300473344",
+          "name": "W1-P0-243aa61a-EM独立主计划",
+          "beginTime": "1793870400000",
+          "endTime": "1825406400000",
+          "status": 2,
+          "isTestData": 1,
+          "type": 1,
+          "creator": {
+            "id": "131951",
+            "name": ""
+          },
+          "adminList": [
+            {
+              "id": "177071",
+              "name": "弓雪萌"
+            },
+            {
+              "id": "90247",
+              "name": "唐稳01"
+            }
+          ],
+          "adminName": "弓雪萌，唐稳01",
+          "schoolYear": {
+            "id": "2026",
+            "name": "2026-2027"
+          },
+          "schoolTermList": [
+            {
+              "id": "C",
+              "name": "春季"
+            }
+          ],
+          "targetSchoolYearList": [
+            {
+              "id": "2026",
+              "name": "2026-2027"
+            }
+          ],
+          "targetSchoolTermList": [
+            {
+              "id": "X",
+              "name": "暑假"
+            }
+          ],
+          "departmentPathList": [
+            {
+              "id": "10007722",
+              "name": "测*_10007722"
+            }
+          ],
+          "courseGradeList": [
+            {
+              "id": "15",
+              "name": "五年级"
+            }
+          ],
+          "courseSubjectList": [
+            {
+              "id": "5",
+              "name": "语文"
+            }
+          ],
+          "canEditPreCourseRelation": 1
+        },
+        "errorTypeCode": 0
+      }
+    },
+    {
+      "name": "create_future_plan",
+      "time": "2026-11-05T19:01:58.778639",
+      "path": "/product-b/b/renewMaster/create",
+      "request": {
+        "adminIdList": [
+          90247,
+          177071
+        ],
+        "beginTime": "2026-11-06 19:01",
+        "endTime": "2027-02-04 19:01",
+        "isTestData": 1,
+        "name": "W1-P0-243aa61a-待开始状态正例",
+        "schoolYearId": "2026",
+        "targetSchoolYearIdList": [
+          "2026"
+        ],
+        "schoolTermIdList": [
+          "X"
+        ],
+        "targetSchoolTermIdList": [
+          "X",
+          "F"
+        ],
+        "courseGradeIdList": [
+          "15"
+        ],
+        "courseSubjectIdList": [
+          "5"
+        ],
+        "departmentIdPathList": [
+          "10007722"
+        ],
+        "creatorId": 131951
+      },
+      "http": 200,
+      "trace": "a3edbe36-0f67-4a9c-a7d4-80f812e6b9e4.0.3",
+      "response": {
+        "code": 0,
+        "data": "588872241920421888",
+        "errorTypeCode": 0
+      }
+    },
+    {
+      "name": "bind_existing_unique_pre",
+      "time": "2026-11-05T19:01:58.975355",
+      "path": "/product-b/b/renewMaster/bindPreCourse",
+      "request": {
+        "renewalMasterNumber": "588872241920421888",
+        "preCourseNumberList": [
+          "588861400563212288"
+        ]
+      },
+      "http": 200,
+      "trace": "a4e46e9f-86e2-4d19-85f1-e912776d8de1.0.3",
+      "response": {
+        "code": 0,
+        "data": "588872241920421888",
+        "errorTypeCode": 0
+      }
+    },
+    {
+      "name": "add_own_pre_mapping",
+      "time": "2026-11-05T19:01:59.125837",
+      "path": "/product-b/b/renewMaster/courseRelation/add",
+      "request": {
+        "relationCourseNumber": "588861400563212288",
+        "relationType": 1,
+        "courseNumberList": [
+          "585960751831836672"
+        ]
+      },
+      "http": 200,
+      "trace": "c6bbf235-27fe-43f0-a94d-dda299403796.0.3",
+      "response": {
+        "code": 0,
+        "msg": "success！"
+      }
+    },
+    {
+      "name": "publish_future_plan",
+      "time": "2026-11-05T19:01:59.441336",
+      "path": "/product-b/b/renewMaster/release",
+      "request": {
+        "number": "588872241920421888"
+      },
+      "http": 200,
+      "trace": "153bb676-6854-4b81-881d-d31fec511f80.0.3",
+      "response": {
+        "code": 0,
+        "data": "588872241920421888",
+        "errorTypeCode": 0
+      }
+    },
+    {
+      "name": "status1_admin_save",
+      "time": "2026-11-05T19:01:59.841308",
+      "path": "/product-b/b/renewMaster/relation/save",
+      "request": {
+        "mainRenewMasterNumber": "588872241920421888",
+        "subRenewMasterNumbers": [
+          "585960797778243584"
+        ]
+      },
+      "http": 200,
+      "trace": "554793cb-8220-41c8-86d7-8c2d148b48b1.0.3",
+      "response": {
+        "code": 0,
+        "msg": "success！"
+      }
+    },
+    {
+      "name": "status1_readback",
+      "time": "2026-11-05T19:02:00.275415",
+      "path": "/product-b/b/renewMaster/detail",
+      "request": {
+        "number": "588872241920421888"
+      },
+      "http": 200,
+      "trace": "1aa81d04-5bf1-48cf-bdd1-adae618425dc.0.3",
+      "response": {
+        "code": 0,
+        "data": {
+          "number": "588872241920421888",
+          "name": "W1-P0-243aa61a-待开始状态正例",
+          "beginTime": "1793962860000",
+          "endTime": "1801738860000",
+          "status": 1,
+          "isTestData": 1,
+          "type": 1,
+          "creator": {
+            "id": "131951",
+            "name": ""
+          },
+          "adminList": [
+            {
+              "id": "90247",
+              "name": "唐稳01"
+            },
+            {
+              "id": "177071",
+              "name": "弓雪萌"
+            }
+          ],
+          "adminName": "唐稳01，弓雪萌",
+          "schoolYear": {
+            "id": "2026",
+            "name": "2026-2027"
+          },
+          "schoolTermList": [
+            {
+              "id": "X",
+              "name": "暑假"
+            }
+          ],
+          "targetSchoolYearList": [
+            {
+              "id": "2026",
+              "name": "2026-2027"
+            }
+          ],
+          "targetSchoolTermList": [
+            {
+              "id": "X",
+              "name": "暑假"
+            },
+            {
+              "id": "F",
+              "name": ""
+            }
+          ],
+          "departmentPathList": [
+            {
+              "id": "10007722",
+              "name": "测*_10007722"
+            }
+          ],
+          "courseGradeList": [
+            {
+              "id": "15",
+              "name": "五年级"
+            }
+          ],
+          "courseSubjectList": [
+            {
+              "id": "5",
+              "name": "语文"
+            }
+          ],
+          "canEditPreCourseRelation": 1
+        },
+        "errorTypeCode": 0
+      }
+    },
+    {
+      "name": "clear_own_test_relation",
+      "time": "2026-11-05T19:02:00.436573",
+      "path": "/product-b/b/renewMaster/relation/save",
+      "request": {
+        "mainRenewMasterNumber": "588872241920421888",
+        "subRenewMasterNumbers": []
+      },
+      "http": 200,
+      "trace": "6ff75cb7-e78d-4073-8676-be39c2d91c07.0.3",
+      "response": {
+        "code": 0,
+        "msg": "success！"
+      }
+    }
+  ],
+  "restoration": {
+    "relation_response": {
+      "code": 0,
+      "msg": "success！"
+    },
+    "active_relations": [],
+    "cleared": true,
+    "retained": "own future plan/pre binding/new course map retained for required different-term fixture; no orders or new classes"
+  },
+  "existing_pre_bindings": [],
+  "course_inputs": [
+    {
+      "number": "585960751831836672",
+      "name": "dcg-扩科排除-后置-六年级语文",
+      "school_year_id": 2026,
+      "school_term_id": "X",
+      "subject_id": 5
+    },
+    {
+      "number": "588861400563212288",
+      "name": "B测试-五年级语文暑假后置1B",
+      "school_year_id": 2026,
+      "school_term_id": "X",
+      "subject_id": 5
+    }
+  ],
+  "plan": "588872241920421888",
+  "published_plan": [
+    {
+      "number": "588872241920421888",
+      "name": "W1-P0-243aa61a-待开始状态正例",
+      "status": 1,
+      "is_test_data": 1,
+      "begin_time": "2026-11-06 19:01:00",
+      "end_time": "2027-02-04 19:01:00"
+    }
+  ],
+  "saved_relation": [
+    {
+      "id": 27,
+      "number": 588872244141305856,
+      "main_renew_master_number": 588872241920421888,
+      "sub_renew_master_number": 585960797778243584,
+      "is_del": 0,
+      "create_account_id": 90247,
+      "create_time": "2026-11-05 19:01:59",
+      "update_time": "2026-11-05 19:01:59"
+    }
+  ],
+  "readback_code": 0,
+  "verified_status1_save": true
+}

@@ -1,0 +1,9 @@
+# cart.gaotu100.com / TEST / application / 3 个 key
+已查 namespace: application
+
+命中:
+- `renewal.query.cache.enabled` = `false`
+- `renewal.pure.relation.enabled` = `true`
+
+未命中(1): `renewal.query.local.cache.enabled`
+用 fallback_namespaces 补其它 namespace，或 apollo_list_namespaces 核对 namespace 名

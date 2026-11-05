@@ -1,0 +1,121 @@
+{
+  "time": "2026-11-05T18:33:22.036793+08:00",
+  "environment": "TEST",
+  "read_only": true,
+  "databases": {
+    "ees_data": {
+      "queries": {
+        "own_tasks": {
+          "sql": "SELECT * FROM batch_operate_task WHERE id IN (1963,1964,1965)",
+          "rows": [
+            {
+              "id": 1963,
+              "number": 294433185677210624,
+              "task_type": 2,
+              "create_account_id": 177071,
+              "process_status": 2,
+              "meta_data": null,
+              "process_count": 0,
+              "download_status": 0,
+              "task_result": null,
+              "source_type": 1,
+              "source_id": 294433185677210624,
+              "is_del": 0,
+              "create_time": "2026-11-05 18:15:19",
+              "update_time": "2026-11-05 18:15:30"
+            },
+            {
+              "id": 1964,
+              "number": 294433631114392576,
+              "task_type": 2,
+              "create_account_id": 177071,
+              "process_status": 0,
+              "meta_data": null,
+              "process_count": 0,
+              "download_status": 0,
+              "task_result": null,
+              "source_type": 1,
+              "source_id": 294433631114392576,
+              "is_del": 1,
+              "create_time": "2026-11-05 18:22:24",
+              "update_time": "2026-11-05 18:29:39"
+            },
+            {
+              "id": 1965,
+              "number": 294434116095472640,
+              "task_type": 2,
+              "create_account_id": 177071,
+              "process_status": 2,
+              "meta_data": null,
+              "process_count": 0,
+              "download_status": 0,
+              "task_result": null,
+              "source_type": 1,
+              "source_id": 294434116095472640,
+              "is_del": 0,
+              "create_time": "2026-11-05 18:30:06",
+              "update_time": "2026-11-05 18:30:20"
+            }
+          ],
+          "exit": 0
+        },
+        "own_jobs": {
+          "sql": "SELECT id,number,job_number,biz_number,task_status,is_del,task_result,update_time FROM export_job_task WHERE job_number IN (294433185677210624,294433631114392576,294434116095472640) ORDER BY id",
+          "rows": [
+            {
+              "id": 10299,
+              "number": 294433185684550656,
+              "job_number": 294433185677210624,
+              "biz_number": "654500",
+              "task_status": 2,
+              "is_del": 0,
+              "task_result": null,
+              "update_time": "2026-11-05 18:15:21"
+            },
+            {
+              "id": 10300,
+              "number": 294433631131169792,
+              "job_number": 294433631114392576,
+              "biz_number": "654489",
+              "task_status": 0,
+              "is_del": 1,
+              "task_result": null,
+              "update_time": "2026-11-05 18:29:39"
+            },
+            {
+              "id": 10301,
+              "number": 294433631131169793,
+              "job_number": 294433631114392576,
+              "biz_number": "654500",
+              "task_status": 0,
+              "is_del": 1,
+              "task_result": null,
+              "update_time": "2026-11-05 18:29:39"
+            },
+            {
+              "id": 10302,
+              "number": 294434116103861248,
+              "job_number": 294434116095472640,
+              "biz_number": "654489",
+              "task_status": 2,
+              "is_del": 0,
+              "task_result": null,
+              "update_time": "2026-11-05 18:30:12"
+            },
+            {
+              "id": 10303,
+              "number": 294434116103861249,
+              "job_number": 294434116095472640,
+              "biz_number": "654500",
+              "task_status": 2,
+              "is_del": 0,
+              "task_result": null,
+              "update_time": "2026-11-05 18:30:12"
+            }
+          ],
+          "exit": 0
+        }
+      }
+    }
+  }
+}

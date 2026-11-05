@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"section\" requested-start=\"doxcn14rRwPdjdNlBMgx7FaEvgg\"><h1 id=\"doxcn14rRwPdjdNlBMgx7FaEvgg\">P0-06｜同年级同商品只展示一次</h1><p id=\"doxcn1XJ8pKFCSHCpIEAUJmbh3b\">功能与优先级：P0。预期依据：EM核心去重；owner补充同年级去重、跨年级保留。</p><h2 id=\"doxcnQWdeLrCqYd0kEaVlY7zsLS\">现场过 case：照着做</h2><p id=\"doxcnryHC7MpiUjqTiAMwk7fe4c\"><b>前置：</b>学员7658129872有两笔有效前课订单。来源班：B测试-五年级语文春季前置B（number588861397654462464／bizNumber15YW26C6M111001）及dcg-扩科排除-前置-五年级语文（number585960582537144320／bizNumber15YW26CCRI11001）。共同后置dcg-扩科排除-后置-六年级语文：number585960755422160896／bizNumber16YW26X6IM11001，商品SKU同number。</p><p id=\"doxcnybtNWgrIrkQUISqvpURLMf\"><b>操作：</b>给专用主前课临时增加同一A后课映射并核calc=1；查看推荐；只删除新增映射，读回原映射。另测不同年级相同商品保留及纯续/扩科碰撞。</p><p id=\"doxcnHduEAIrgEgmRSgdCqfb6pb\"><b>预期：</b>两个有效前课均命中同年级16的同一SKU585960755422160896时，按“年级内商品ID去重”，2个来源→1个展示项；其他商品保留，跨年级不全局误去重。</p><p id=\"doxcnZv9WehWkUXHGXGWCqQR1e8\"><b>实际：</b>已验证：本轮两个来源均命中该SKU，grade16最终仅1项；新增映射已删除，主前课仅回原后课588861400563212288，后续实际推荐也确认恢复。跨年级保留、纯续/扩科碰撞及页面仍没做；相关程序测试不冒充真机全覆盖。</p><p id=\"doxcnuorsmVXFLpD6Jqm1lOU1uf\">证据：<a href=\"https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr#doxcnjFMEv8PkgizxWExDRB7hjW\">P0-06集中原件、详细计算与历史记录</a>；本轮新增原件见文末TEST证据包。</p></fragment>",
+      "document_id": "ZQUXdlDxWoknJhxu914c2uVYnBr",
+      "revision_id": 180
+    }
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.70",
+      "latest": "1.0.99",
+      "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+    }
+  }
+}

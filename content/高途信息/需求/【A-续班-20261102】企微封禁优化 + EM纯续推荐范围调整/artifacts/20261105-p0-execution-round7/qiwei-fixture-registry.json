@@ -1,0 +1,156 @@
+[
+  {
+    "id": "user:7704846434",
+    "exit": 0,
+    "response": {
+      "ok": true,
+      "action": "add",
+      "record": {
+        "id": "user:7704846434",
+        "kind": "user",
+        "env": "test",
+        "traffic_env": "test",
+        "owner": "W1-e4187e",
+        "status": "unknown",
+        "evidence": "/tmp/w1-p0-243aa61a/round7/qiwei-db-created-users-final.json",
+        "notes": "round7受控企微3人组；课程500775364606343168/班574882679202260992/Gong组35930167940088064；仅隔离本3人，不独占共享班",
+        "recover": "保留TEST fixture供续接；标签业务值已清空，新旧表空行保留；不擅自删除用户/退款或动共享班",
+        "created": "2026-11-05T18:20:12",
+        "updated": "2026-11-05T18:20:12"
+      },
+      "path": "/Users/gaotu/.local/share/gaotu-test-fixtures/registry.json"
+    }
+  },
+  {
+    "id": "user:7704846439",
+    "exit": 0,
+    "response": {
+      "ok": true,
+      "action": "add",
+      "record": {
+        "id": "user:7704846439",
+        "kind": "user",
+        "env": "test",
+        "traffic_env": "test",
+        "owner": "W1-e4187e",
+        "status": "unknown",
+        "evidence": "/tmp/w1-p0-243aa61a/round7/qiwei-db-created-users-final.json",
+        "notes": "round7受控企微3人组；课程500775364606343168/班574882679202260992/Gong组35930167940088064；仅隔离本3人，不独占共享班",
+        "recover": "保留TEST fixture供续接；标签业务值已清空，新旧表空行保留；不擅自删除用户/退款或动共享班",
+        "created": "2026-11-05T18:20:12",
+        "updated": "2026-11-05T18:20:12"
+      },
+      "path": "/Users/gaotu/.local/share/gaotu-test-fixtures/registry.json"
+    }
+  },
+  {
+    "id": "user:7704846440",
+    "exit": 0,
+    "response": {
+      "ok": true,
+      "action": "add",
+      "record": {
+        "id": "user:7704846440",
+        "kind": "user",
+        "env": "test",
+        "traffic_env": "test",
+        "owner": "W1-e4187e",
+        "status": "unknown",
+        "evidence": "/tmp/w1-p0-243aa61a/round7/qiwei-db-created-users-final.json",
+        "notes": "round7受控企微3人组；课程500775364606343168/班574882679202260992/Gong组35930167940088064；仅隔离本3人，不独占共享班",
+        "recover": "保留TEST fixture供续接；标签业务值已清空，新旧表空行保留；不擅自删除用户/退款或动共享班",
+        "created": "2026-11-05T18:20:12",
+        "updated": "2026-11-05T18:20:12"
+      },
+      "path": "/Users/gaotu/.local/share/gaotu-test-fixtures/registry.json"
+    }
+  },
+  {
+    "id": "order:433654889322644001",
+    "exit": 0,
+    "response": {
+      "ok": true,
+      "action": "add",
+      "record": {
+        "id": "order:433654889322644001",
+        "kind": "order",
+        "env": "test",
+        "traffic_env": "test",
+        "owner": "W1-e4187e",
+        "status": "unknown",
+        "evidence": "/tmp/w1-p0-243aa61a/round7/qiwei-db-three-paid.json",
+        "notes": "round7受控企微3人组；课程500775364606343168/班574882679202260992/Gong组35930167940088064；仅隔离本3人，不独占共享班",
+        "recover": "保留TEST fixture供续接；标签业务值已清空，新旧表空行保留；不擅自删除用户/退款或动共享班",
+        "created": "2026-11-05T18:20:12",
+        "updated": "2026-11-05T18:20:12"
+      },
+      "path": "/Users/gaotu/.local/share/gaotu-test-fixtures/registry.json"
+    }
+  },
+  {
+    "id": "order:433655061119763372",
+    "exit": 0,
+    "response": {
+      "ok": true,
+      "action": "add",
+      "record": {
+        "id": "order:433655061119763372",
+        "kind": "order",
+        "env": "test",
+        "traffic_env": "test",
+        "owner": "W1-e4187e",
+        "status": "unknown",
+        "evidence": "/tmp/w1-p0-243aa61a/round7/qiwei-db-three-paid.json",
+        "notes": "round7受控企微3人组；课程500775364606343168/班574882679202260992/Gong组35930167940088064；仅隔离本3人，不独占共享班",
+        "recover": "保留TEST fixture供续接；标签业务值已清空，新旧表空行保留；不擅自删除用户/退款或动共享班",
+        "created": "2026-11-05T18:20:12",
+        "updated": "2026-11-05T18:20:12"
+      },
+      "path": "/Users/gaotu/.local/share/gaotu-test-fixtures/registry.json"
+    }
+  },
+  {
+    "id": "order:433655095481074192",
+    "exit": 0,
+    "response": {
+      "ok": true,
+      "action": "add",
+      "record": {
+        "id": "order:433655095481074192",
+        "kind": "order",
+        "env": "test",
+        "traffic_env": "test",
+        "owner": "W1-e4187e",
+        "status": "unknown",
+        "evidence": "/tmp/w1-p0-243aa61a/round7/qiwei-db-three-paid.json",
+        "notes": "round7受控企微3人组；课程500775364606343168/班574882679202260992/Gong组35930167940088064；仅隔离本3人，不独占共享班",
+        "recover": "保留TEST fixture供续接；标签业务值已清空，新旧表空行保留；不擅自删除用户/退款或动共享班",
+        "created": "2026-11-05T18:20:12",
+        "updated": "2026-11-05T18:20:12"
+      },
+      "path": "/Users/gaotu/.local/share/gaotu-test-fixtures/registry.json"
+    }
+  },
+  {
+    "id": "other:qiwei-W1-e4187e-574882679202260992",
+    "exit": 0,
+    "response": {
+      "ok": true,
+      "action": "add",
+      "record": {
+        "id": "other:qiwei-W1-e4187e-574882679202260992",
+        "kind": "other",
+        "env": "test",
+        "traffic_env": "test",
+        "owner": "W1-e4187e",
+        "status": "unknown",
+        "evidence": "/tmp/w1-p0-243aa61a/round7/qiwei-db-tag-cancel-after.json",
+        "notes": "round7受控企微3人组；课程500775364606343168/班574882679202260992/Gong组35930167940088064；仅隔离本3人，不独占共享班",
+        "recover": "保留TEST fixture供续接；标签业务值已清空，新旧表空行保留；不擅自删除用户/退款或动共享班",
+        "created": "2026-11-05T18:20:12",
+        "updated": "2026-11-05T18:20:12"
+      },
+      "path": "/Users/gaotu/.local/share/gaotu-test-fixtures/registry.json"
+    }
+  }
+]

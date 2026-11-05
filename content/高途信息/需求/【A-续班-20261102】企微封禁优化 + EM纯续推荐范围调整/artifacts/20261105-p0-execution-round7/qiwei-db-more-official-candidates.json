@@ -1,0 +1,41 @@
+{
+  "time": "2026-11-05T18:08:22.517221+08:00",
+  "environment": "TEST",
+  "read_only": true,
+  "databases": {
+    "super_class": {
+      "queries": {
+        "more_official_candidates": {
+          "sql": "SELECT CAST(user_id AS CHAR) user_id,name,(mobile LIKE '12%') test_mobile_prefix,user_status FROM user WHERE user_id IN (654489,654499,654500,654502)",
+          "rows": [
+            {
+              "user_id": "654489",
+              "name": "",
+              "test_mobile_prefix": 1,
+              "user_status": 0
+            },
+            {
+              "user_id": "654499",
+              "name": "",
+              "test_mobile_prefix": 1,
+              "user_status": 0
+            },
+            {
+              "user_id": "654500",
+              "name": "",
+              "test_mobile_prefix": 1,
+              "user_status": 0
+            },
+            {
+              "user_id": "654502",
+              "name": "",
+              "test_mobile_prefix": 1,
+              "user_status": 0
+            }
+          ],
+          "exit": 0
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,333 @@
+{
+  "time": "2026-11-05T17:53:21.130688+08:00",
+  "environment": "TEST",
+  "read_only": true,
+  "databases": {
+    "super_class": {
+      "queries": {
+        "official_candidates": {
+          "sql": "SELECT CAST(user_id AS CHAR) user_id,name,user_status,(mobile LIKE '12%') AS test_mobile_prefix,LENGTH(mobile) AS mobile_length,register_product,virtual_type FROM user WHERE user_id IN (882,20004,132935)",
+          "rows": [
+            {
+              "user_id": "20004",
+              "name": "修改用户名",
+              "user_status": 0,
+              "test_mobile_prefix": 1,
+              "mobile_length": 11,
+              "register_product": "",
+              "virtual_type": 0
+            },
+            {
+              "user_id": "132935",
+              "name": "王余洁",
+              "user_status": 0,
+              "test_mobile_prefix": 0,
+              "mobile_length": 13,
+              "register_product": "gaotu:ketang:gaokao",
+              "virtual_type": 0
+            }
+          ],
+          "exit": 0
+        }
+      }
+    },
+    "gaotu": {
+      "queries": {
+        "class_schema": {
+          "sql": "SHOW COLUMNS FROM clazz",
+          "rows": [
+            {
+              "Field": "id",
+              "Type": "bigint(20)",
+              "Null": "NO",
+              "Key": "PRI",
+              "Default": null,
+              "Extra": "auto_increment"
+            },
+            {
+              "Field": "course_number",
+              "Type": "bigint(20)",
+              "Null": "NO",
+              "Key": "MUL",
+              "Default": "0",
+              "Extra": ""
+            },
+            {
+              "Field": "number",
+              "Type": "bigint(20)",
+              "Null": "NO",
+              "Key": "UNI",
+              "Default": "0",
+              "Extra": ""
+            },
+            {
+              "Field": "biz_number",
+              "Type": "varchar(20)",
+              "Null": "NO",
+              "Key": "UNI",
+              "Default": "",
+              "Extra": ""
+            },
+            {
+              "Field": "experience_video_url",
+              "Type": "varchar(256)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "",
+              "Extra": ""
+            },
+            {
+              "Field": "status",
+              "Type": "tinyint(4)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "1",
+              "Extra": ""
+            },
+            {
+              "Field": "publish_time",
+              "Type": "datetime",
+              "Null": "YES",
+              "Key": "",
+              "Default": null,
+              "Extra": ""
+            },
+            {
+              "Field": "off_time",
+              "Type": "datetime",
+              "Null": "YES",
+              "Key": "",
+              "Default": null,
+              "Extra": ""
+            },
+            {
+              "Field": "isdel",
+              "Type": "tinyint(1)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "0",
+              "Extra": ""
+            },
+            {
+              "Field": "live_room_no",
+              "Type": "varchar(20)",
+              "Null": "YES",
+              "Key": "",
+              "Default": "",
+              "Extra": ""
+            },
+            {
+              "Field": "create_time",
+              "Type": "datetime",
+              "Null": "YES",
+              "Key": "",
+              "Default": null,
+              "Extra": ""
+            },
+            {
+              "Field": "update_time",
+              "Type": "timestamp",
+              "Null": "YES",
+              "Key": "",
+              "Default": null,
+              "Extra": "on update CURRENT_TIMESTAMP"
+            },
+            {
+              "Field": "cover_storage_id",
+              "Type": "bigint(20)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "0",
+              "Extra": ""
+            },
+            {
+              "Field": "name",
+              "Type": "varchar(64)",
+              "Null": "YES",
+              "Key": "",
+              "Default": null,
+              "Extra": ""
+            },
+            {
+              "Field": "time_desc",
+              "Type": "varchar(64)",
+              "Null": "YES",
+              "Key": "",
+              "Default": null,
+              "Extra": ""
+            },
+            {
+              "Field": "clazz_date_desc",
+              "Type": "varchar(64)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "",
+              "Extra": ""
+            },
+            {
+              "Field": "clazz_time_desc",
+              "Type": "varchar(64)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "",
+              "Extra": ""
+            },
+            {
+              "Field": "clazz_week_desc",
+              "Type": "varchar(64)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "",
+              "Extra": ""
+            },
+            {
+              "Field": "end_sale_time",
+              "Type": "datetime",
+              "Null": "YES",
+              "Key": "",
+              "Default": "CURRENT_TIMESTAMP",
+              "Extra": "DEFAULT_GENERATED"
+            },
+            {
+              "Field": "countdown_time",
+              "Type": "datetime",
+              "Null": "YES",
+              "Key": "",
+              "Default": null,
+              "Extra": ""
+            },
+            {
+              "Field": "version",
+              "Type": "int(10)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "0",
+              "Extra": ""
+            },
+            {
+              "Field": "property",
+              "Type": "varchar(64)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "",
+              "Extra": ""
+            },
+            {
+              "Field": "clazz_type",
+              "Type": "tinyint(4)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "0",
+              "Extra": ""
+            },
+            {
+              "Field": "clazz_type_alias",
+              "Type": "varchar(20)",
+              "Null": "YES",
+              "Key": "",
+              "Default": "",
+              "Extra": ""
+            },
+            {
+              "Field": "biz_type",
+              "Type": "tinyint(4)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "1",
+              "Extra": ""
+            },
+            {
+              "Field": "master_subject_id",
+              "Type": "int(11)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "0",
+              "Extra": ""
+            },
+            {
+              "Field": "slave_subject_ids",
+              "Type": "varchar(1024)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "",
+              "Extra": ""
+            },
+            {
+              "Field": "app",
+              "Type": "bigint(20)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "0",
+              "Extra": ""
+            },
+            {
+              "Field": "price",
+              "Type": "bigint(20)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "0",
+              "Extra": ""
+            },
+            {
+              "Field": "original_price",
+              "Type": "bigint(20)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "0",
+              "Extra": ""
+            },
+            {
+              "Field": "capacity",
+              "Type": "int(11)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "0",
+              "Extra": ""
+            },
+            {
+              "Field": "vertical_cover_storage_id",
+              "Type": "bigint(20)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "0",
+              "Extra": ""
+            },
+            {
+              "Field": "audit_status",
+              "Type": "tinyint(4)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "30",
+              "Extra": ""
+            },
+            {
+              "Field": "publish_status",
+              "Type": "tinyint(4)",
+              "Null": "NO",
+              "Key": "",
+              "Default": "40",
+              "Extra": ""
+            },
+            {
+              "Field": "down_time",
+              "Type": "datetime",
+              "Null": "YES",
+              "Key": "",
+              "Default": null,
+              "Extra": ""
+            },
+            {
+              "Field": "teach_clazz_type",
+              "Type": "tinyint(4)",
+              "Null": "YES",
+              "Key": "",
+              "Default": null,
+              "Extra": ""
+            }
+          ],
+          "exit": 0
+        }
+      }
+    }
+  }
+}

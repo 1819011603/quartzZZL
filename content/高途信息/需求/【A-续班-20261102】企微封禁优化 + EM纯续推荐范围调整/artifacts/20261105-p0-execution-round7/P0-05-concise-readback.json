@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"section\" requested-start=\"doxcn2gKEVrg2sAs2Gh7CqiCj5c\"><h1 id=\"doxcn2gKEVrg2sAs2Gh7CqiCj5c\">P0-05｜扩科范围、年级和学年学期只来自主计划</h1><p id=\"doxcn76Izo5WUHZbDin70BvJ6xe\">功能与优先级：P0。预期依据：EM保留行为；PRD“A推A扩科，B推B扩科”。</p><h2 id=\"doxcnnrCik1julEVG9zJep3pYvb\">现场过 case：照着做</h2><p id=\"doxcncocuAmHNSpft3toT42OeBe\"><b>前置：</b>A585960797778243584→B586116340522184704，学员7658127801。A前班dcg-扩科排除-前置-五年级语文：number585960582537144320／bizNumber15YW26CCRI11001；B前班dcg-小班扩科排除-数学：number/bizNumber586084334251927552。真实主/从前课均2026/C；不同学年/学期反例对象尚缺，不用内存100/101冒充真实班。</p><p id=\"doxcnTnfrlYOBGx8JL2dqIeGCHg\"><b>操作：</b>查看A的纯续与扩科并按年级分组；再从B查看有值扩科集合；以主从学年/学期不同的真实关系复核排除条件，比较关联前后。</p><p id=\"doxcnznnyKhoqZV7ZkFg6kbBdYe\"><b>预期：</b>纯续可扩大到主从；扩科仅主计划自身配置。A扩科只保留六年级16的数学585963387758962688、英语585963404555053056，不由从年级11扩大；学年/学期也仅取主课。规则筛选不改成全平台学员课程。</p><p id=\"doxcnIqwgovrhBj9EhhO56Bnogh\"><b>实际：</b>已验证：当前A接口纯续2件、主grade16扩科2件；主课来源隔离程序测试复用。推断未验证：真实不同学年/学期与从候选污染反例。B当前扩科空，不能当有值隔离正例；该项仍没做。</p><p id=\"doxcnpj5KFjaOsMhXgrto7oSZNi\">证据：<a href=\"https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr#doxcnS9ew4d0Oe4SQt5hDEJ6AYq\">P0-05集中原件、详细计算与历史记录</a>；本轮新增原件见文末TEST证据包。</p></fragment>",
+      "document_id": "ZQUXdlDxWoknJhxu914c2uVYnBr",
+      "revision_id": 178
+    }
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.70",
+      "latest": "1.0.99",
+      "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+    }
+  }
+}

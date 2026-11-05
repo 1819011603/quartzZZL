@@ -1,0 +1,165 @@
+{
+  "time": "2026-11-05T17:52:38.278122+08:00",
+  "environment": "TEST",
+  "sql": "(SELECT 1 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_1 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 2 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_2 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 3 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_3 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 4 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_4 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 5 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_5 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 6 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_6 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 7 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_7 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 8 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_8 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 9 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_9 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 10 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_10 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 11 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_11 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 12 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_12 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 13 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_13 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 14 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_14 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 15 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_15 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 16 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_16 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 17 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_17 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 18 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_18 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 19 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_19 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 20 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_20 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 21 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_21 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 22 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_22 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 23 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_23 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 24 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_24 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 25 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_25 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 26 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_26 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5)",
+  "locate": [
+    {
+      "cluster_name": "gaotu-polar-test-02",
+      "cluster_id": 149,
+      "db_table": "dws_clazz_user.dws_fuwu_user_teacher_wechat_info_0",
+      "db_name": "dws_clazz_user",
+      "full_db_table": "dws_clazz_user.dws_fuwu_user_teacher_wechat_info_0",
+      "engine": "mysql"
+    }
+  ],
+  "response": {
+    "code": 200,
+    "data": {
+      "display_msg": false,
+      "has_db_priv": true,
+      "has_table_priv": true,
+      "has_column_priv": true,
+      "filename": "",
+      "results": [
+        {
+          "sql": "\n(SELECT 1 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_1 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 2 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_2 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 3 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_3 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 4 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_4 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 5 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_5 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 6 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_6 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 7 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_7 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 8 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_8 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 9 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_9 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 10 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_10 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 11 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_11 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 12 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_12 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 13 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_13 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 14 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_14 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 15 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_15 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 16 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_16 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 17 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_17 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 18 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_18 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 19 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_19 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 20 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_20 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 21 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_21 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 22 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_22 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 23 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_23 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 24 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_24 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 25 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_25 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5) UNION ALL (SELECT 26 shard,id,user_id,account_id,friend,wechat_type,wechat_remark,user_wechat_id,account_wechat_id FROM dws_fuwu_user_teacher_wechat_info_26 WHERE account_id IN (109942,177071) AND wechat_type=2 LIMIT 5)",
+          "has_G": false,
+          "values": [
+            [
+              "15",
+              "1868",
+              "882",
+              "177071",
+              "1",
+              "2",
+              "zhangkaiis",
+              "7881301368994397",
+              "1688855652617956"
+            ],
+            [
+              "15",
+              "35184",
+              "20004",
+              "177071",
+              "1",
+              "2",
+              "",
+              "7881300577985351",
+              "1688855652617956"
+            ],
+            [
+              "15",
+              "35187",
+              "20004",
+              "177071",
+              "1",
+              "2",
+              "转辅导班-2",
+              "7881300577985351",
+              "1688856528704656"
+            ],
+            [
+              "15",
+              "38908",
+              "20004",
+              "177071",
+              "1",
+              "2",
+              "",
+              "7881300577985351",
+              "1688856353639574"
+            ],
+            [
+              "15",
+              "1556",
+              "132935",
+              "177071",
+              "0",
+              "2",
+              "",
+              "7881301205909998",
+              "1688855341434093"
+            ],
+            [
+              "22",
+              "1998",
+              "654873",
+              "109942",
+              "0",
+              "2",
+              "",
+              "7881300346065757",
+              "1688854735464993"
+            ],
+            [
+              "22",
+              "2023",
+              "1437844",
+              "109942",
+              "0",
+              "2",
+              "",
+              "7881303397082896",
+              "1688850431703415"
+            ],
+            [
+              "22",
+              "2017",
+              "1437886",
+              "109942",
+              "0",
+              "2",
+              "",
+              "7881302293096209",
+              "1688850431703415"
+            ],
+            [
+              "22",
+              "2018",
+              "1437887",
+              "109942",
+              "0",
+              "2",
+              "",
+              "7881301938050834",
+              "1688850431703415"
+            ],
+            [
+              "22",
+              "2022",
+              "1437911",
+              "109942",
+              "0",
+              "2",
+              "",
+              "7881303411954800",
+              "1688850431703415"
+            ]
+          ],
+          "columns": [
+            "shard",
+            "id",
+            "user_id",
+            "account_id",
+            "friend",
+            "wechat_type",
+            "wechat_remark",
+            "user_wechat_id",
+            "account_wechat_id"
+          ],
+          "total_count": 10,
+          "time_cost": 0.006178801
+        }
+      ],
+      "msg": "",
+      "secret_columns": null,
+      "secret_level": "",
+      "query_id": 0,
+      "secret_db": "",
+      "has_secret_column": false,
+      "no_permission": null,
+      "secret_table": null
+    },
+    "msg": "ok"
+  }
+}

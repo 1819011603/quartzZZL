@@ -1,0 +1,53 @@
+{
+  "time": "2026-11-05T18:31:53.151794+08:00",
+  "environment": "TEST",
+  "read_only": true,
+  "databases": {
+    "ees_data": {
+      "queries": {
+        "task_max": {
+          "sql": "SELECT MAX(id) max_id FROM batch_operate_task",
+          "rows": [
+            {
+              "max_id": 1965
+            }
+          ],
+          "exit": 0
+        },
+        "tags": {
+          "sql": "SELECT id,CAST(user_id AS CHAR) user_id,CAST(clazz_number AS CHAR) clazz_number,account_id,tags,color,layer FROM user_clazz_mark_info WHERE user_id IN (654489,654500)",
+          "rows": [
+            {
+              "id": 70018,
+              "user_id": "654489",
+              "clazz_number": "496625388833767424",
+              "account_id": 177071,
+              "tags": "",
+              "color": 1,
+              "layer": 0
+            },
+            {
+              "id": 65070,
+              "user_id": "654500",
+              "clazz_number": "495672366492309504",
+              "account_id": 177071,
+              "tags": "",
+              "color": 5,
+              "layer": 4
+            }
+          ],
+          "exit": 0
+        }
+      }
+    },
+    "gaotu": {
+      "queries": {
+        "old_tags_renewal": {
+          "sql": "SELECT id,clazz_number,user_id,tags,renewal_reason,renewal_reason_manual FROM learning_student_info_ext WHERE user_id IN (654489,654500)",
+          "rows": [],
+          "exit": 0
+        }
+      }
+    }
+  }
+}

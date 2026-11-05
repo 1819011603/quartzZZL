@@ -1,0 +1,39 @@
+{
+  "time": "2026-11-05T18:12:15.130878",
+  "environment": "TEST",
+  "result": {
+    "tool": "mock_pay",
+    "method": "POST",
+    "url": "http://test-internal-zhifuapi.genshuixue.com/callback/mockpay",
+    "request": {
+      "pay_order_number": "433655835275559341",
+      "pay_type": null
+    },
+    "raw": {
+      "code": 0,
+      "msg": "success",
+      "data": {
+        "code": 0,
+        "msg": "成功",
+        "ts": 1793873535,
+        "rid": "eba48975ae3f253b4e9dd45a3939eefc",
+        "data": "OK",
+        "pay_order_number": "102611055742128472"
+      }
+    },
+    "output": {
+      "raw": {
+        "code": 0,
+        "msg": "success",
+        "data": {
+          "code": 0,
+          "msg": "成功",
+          "ts": 1793873535,
+          "rid": "eba48975ae3f253b4e9dd45a3939eefc",
+          "data": "OK",
+          "pay_order_number": "102611055742128472"
+        }
+      }
+    }
+  }
+}

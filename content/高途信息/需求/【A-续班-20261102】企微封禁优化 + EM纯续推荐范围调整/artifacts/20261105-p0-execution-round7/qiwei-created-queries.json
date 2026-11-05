@@ -1,0 +1,1 @@
+{"super_class":{"created_users":"SELECT CAST(user_id AS CHAR) user_id,name,(mobile LIKE '12%') AS test_mobile_prefix,user_status FROM user WHERE mobile IN ('12261105271','12261105272','12261105273')"}}

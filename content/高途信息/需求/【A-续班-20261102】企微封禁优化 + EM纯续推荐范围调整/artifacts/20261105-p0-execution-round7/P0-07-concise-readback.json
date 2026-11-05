@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"section\" requested-start=\"doxcntoIRsIt0TU0NzI9uHj2gwc\"><h1 id=\"doxcntoIRsIt0TU0NzI9uHj2gwc\">P0-07｜跨模式放行后第三件真重复仍拦截</h1><p id=\"doxcnNMx0ajwqV4mtCR5bZrSyvb\">功能与优先级：P0。预期依据：order本轮修复反例；合法跨模式保留，同模式重复不放行。</p><h2 id=\"doxcnK4fEeXliJ58NbDfdhdJyWg\">现场过 case：照着做</h2><p id=\"doxcnHyIqlpR0hbTFM9MY2W7GHd\"><b>前置：</b>TEST/order-b0cc8ef68。真实“同号跨模式放行后第三件真重复”所需完整购物车、未购学员及业务编号碰撞对象尚未固定；当前本卡选用班级bizId/班名/学员ID标缺，不拿101/102/103内存值充数。</p><p id=\"doxcnlwb9FaGJrZg1jjgaSACQAe\"><b>操作：</b>保存原购物车；在同一车内加入大班和小班，再加入其中同一商品并交换顺序；同课不同班商品另作合法对照；结束仅移除本次新增项并读回。</p><p id=\"doxcnug602WdSGmLarXWZG7w4Cf\"><b>预期：</b>合法跨模式允许；第三件真重复必须拦截，旧项不丢；同课程不同班级是不同商品，不能一并拦。ONCE_BY_LIMIT先拦不能替代本次重复校验路径。</p><p id=\"doxcnBGHUaKud3euHOvkjrG7qcf\"><b>实际：</b>已验证：已有同版本加购/重复接口子集与17条规则、9条H2回归证据；历史HTTP完整请求对象/车快照不足，第三件同号跨模式辨别性反例仍没做。P0-08两件同单不替代本卡。</p><p id=\"doxcnkJiyN6fOih2FPngRzogWRf\">证据：<a href=\"https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr#doxcnWLuRsDc83ZGwo3lEcHfPJf\">P0-07集中原件、详细计算与历史记录</a>；本轮新增原件见文末TEST证据包。</p></fragment>",
+      "document_id": "ZQUXdlDxWoknJhxu914c2uVYnBr",
+      "revision_id": 182
+    }
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.70",
+      "latest": "1.0.99",
+      "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+    }
+  }
+}

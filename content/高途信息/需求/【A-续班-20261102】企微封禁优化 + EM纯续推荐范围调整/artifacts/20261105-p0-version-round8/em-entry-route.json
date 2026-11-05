@@ -1,0 +1,175 @@
+{
+  "time": "2026-11-05T18:58:27.248257",
+  "environment": "TEST",
+  "lane": "test-gtbg-dev-3",
+  "version_proof": "em-versions-current.json",
+  "read_only": true,
+  "calls": {
+    "B_order_recommend": {
+      "url": "https://test-fuwu.baijia.com/bgwApi/cart/web/renewal/operation/cart?renewalNumber=588858850300473344&userId=7658129872",
+      "method": "GET",
+      "request": null,
+      "httpStatus": 200,
+      "traceId": "a4f5a1d5-0acb-4307-968e-854332db2800.0.3",
+      "response": {
+        "status": 700,
+        "code": 700,
+        "msg": "请重新登录！",
+        "location": "${cas.server}/cas/login?service=http%3A%2F%2F%24%7Bcas.app%7D%2Fcart%2Fweb%2Frenewal%2Foperation%2Fcart%3FrenewalNumber%3D588858850300473344%26userId%3D7658129872",
+        "data": null
+      }
+    },
+    "order_prepare": {
+      "url": "https://test-fuwu.baijia.com/bgwApi/intranet-rpc/order-b/web/order/batch/boss/prepare?userId=7658129872",
+      "method": "POST",
+      "request": {
+        "productList": [
+          {
+            "productNumber": "588861402658267136",
+            "productType": 2,
+            "quantity": 1
+          },
+          {
+            "productNumber": "586097025945298944",
+            "productType": 6004,
+            "quantity": 1
+          }
+        ]
+      },
+      "httpStatus": 200,
+      "traceId": "e279fb8c-6fab-4b7d-9384-6d1bd386e09b.0.3",
+      "response": {
+        "code": 0,
+        "msg": "",
+        "data": {
+          "courses": [
+            {
+              "price": 100,
+              "origPrice": 100,
+              "totalFee": 100,
+              "validityPeriod": "2026年11月08日-2029年11月08日",
+              "titleGrade": "五年级",
+              "gradeId": 5,
+              "season": "暑假",
+              "subjectFullName": "语文",
+              "teacherList": [
+                {
+                  "teacherIcon": "https://img.gsxservice.com/192423749_yi7ablp4.png",
+                  "teacherIntro": "",
+                  "teacherName": "唐稳01主讲",
+                  "teacherNumber": "11188041873297121",
+                  "teacherRole": "主讲老师"
+                }
+              ],
+              "needDelivery": true,
+              "businessType": 1,
+              "isPaidAddress": false,
+              "product": {
+                "amount": 1,
+                "grade": 0,
+                "quantity": 1,
+                "partSales": false,
+                "productType": 2,
+                "productNumber": "588861402658267136"
+              },
+              "title": "B测试-五年级语文暑假后置1B",
+              "introduction": "2026年11月08日-2026年11月08日 每周日 14:20-14:25",
+              "lectureDesc": "共1课节",
+              "teacherName": "唐稳01主讲",
+              "teacherRole": "主讲老师",
+              "teacherNumber": "11188041873297121"
+            }
+          ],
+          "combinedProducts": [],
+          "physicalProducts": [],
+          "productInfos": [
+            {
+              "clazzCount": 0,
+              "skuNorms": [
+                {
+                  "normAttrId": "9018866949889259",
+                  "normAttrName": "规格",
+                  "normAttrValue": "售卖规格一",
+                  "normAttrValueId": "293513876270616336"
+                },
+                {
+                  "normAttrId": "9018866949889293",
+                  "normAttrName": "规格测试-财商",
+                  "normAttrValue": "测试1",
+                  "normAttrValueId": "293513876270616971"
+                }
+              ],
+              "saleUnit": "课时",
+              "onceBuyLimit": -1,
+              "bizType": 0,
+              "isPaidAddress": 0,
+              "spuName": "dcg-小班扩科排除-数学-后置",
+              "skuName": "默认规格",
+              "skuNumber": "586097025945298944",
+              "skuQuantity": 1,
+              "skuImage": "",
+              "salePrice": "0",
+              "totalSalePrice": "0",
+              "productType": 6004,
+              "needDelivery": false,
+              "spuImage": ""
+            }
+          ],
+          "address": {
+            "isDefault": 0,
+            "addressId": "300238150",
+            "name": "我",
+            "mobile": "122****2120",
+            "province": "北京",
+            "city": "北京",
+            "area": "海淀区",
+            "regionCode": "+86",
+            "address": "B端 8 条推送完成。推送剩余 6 条 C端展示用例。\n\n  Called banshan\n\n32 条用例（组合商品加购",
+            "nationalMobile": "122****2120"
+          },
+          "totalPrice": 100,
+          "grouponTotalPrice": 0,
+          "whetherUnderExamine": false,
+          "channels": [
+            {
+              "platId": 5,
+              "platName": "支付宝支付",
+              "platDes": "推荐支付宝用户使用"
+            }
+          ],
+          "purchaseTip": {
+            "tip": "",
+            "tipLevel": 1
+          },
+          "needDelivery": true,
+          "productList": [
+            {
+              "amount": 1,
+              "grade": 0,
+              "quantity": 1,
+              "partSales": false,
+              "productType": 2,
+              "productNumber": "588861402658267136"
+            },
+            {
+              "amount": 1,
+              "grade": 0,
+              "quantity": 1,
+              "partSales": false,
+              "productType": 6004,
+              "productNumber": "586097025945298944"
+            }
+          ],
+          "needIgnoreCheckAddress": false,
+          "preSubmissionConfirmation": {
+            "title": "",
+            "preview": "",
+            "content": "",
+            "tip": "",
+            "status": 0
+          }
+        }
+      }
+    }
+  }
+}

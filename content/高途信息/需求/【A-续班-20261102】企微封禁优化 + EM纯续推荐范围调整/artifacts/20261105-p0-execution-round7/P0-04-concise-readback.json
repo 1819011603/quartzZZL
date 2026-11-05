@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"section\" requested-start=\"doxcnbiLwIGw5fuKRqohdJm4ZXg\"><h1 id=\"doxcnbiLwIGw5fuKRqohdJm4ZXg\">P0-04｜大小班双向纯续并集、从计划不反向扩展</h1><p id=\"doxcnEAtFHCUIiOUyDUPTjWE12d\">功能与优先级：P0。预期依据：EM推荐范围核心；A并A+B，B仍只B；两方向都需覆盖。</p><h2 id=\"doxcnAH4RDxW98jBuXSgfjVjJCg\">现场过 case：照着做</h2><p id=\"doxcnY6YOWqotCc9DS4xIIJ6oUe\"><b>前置：</b>专用主计划588858850300473344关联A585960797778243584和B586116340522184704。主前班B测试-五年级语文春季前置B：number588861397654462464／bizNumber15YW26C6M111001；A前班dcg-扩科排除-前置-五年级语文：number585960582537144320／bizNumber15YW26CCRI11001；B前班dcg-小班扩科排除-数学：number与bizNumber均586084334251927552。涉及班级bizId的接口实际字段及主键区别见统一标识说明。学员7658129872（三计划有效前课）；7707220467按“仅主→补B前课”顺序。</p><p id=\"doxcnQJuYteteSXmtdfPUbt9wLc\"><b>操作：</b>分别从主计划、B从计划看推荐；用7707220467先核仅主资格，再补B前课比较；同一通用/批量链接须按两名学员各自资格核对，另测小班作主的大班从方向及各入口。</p><p id=\"doxcntCaw3AYrnFWZQAPdmlhZ4g\"><b>预期：</b>只纳入主和显式关联从计划中该学员有效在读所对应后置商品，排除无从资格及未关联计划；从计划不自动反向扩大。7658129872应保留三个来源、三个不同商品，同为语文不按学科误去重；7707220467仅主时1件、补B资格后2件。</p><p id=\"doxcnytOS1iaoMML9JdObi86XDc\"><b>实际：</b>已验证：当前三计划/三商品、同科不同商品保留；仅主1件→主+B两件均sign_up0，以及历史同版本显式反向与恢复。7707220467已完成后置同单购买，现不可当未购反例；时间顺序见证据。小班主及C端/发链接/复制/下单推荐四类页面未全执行，新增跨学员链接步骤仍未验。</p><p id=\"doxcnXSWr8H2YMi4DJchIsnm1nh\">证据：<a href=\"https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr#doxcnsjgX42zlNpo9SQZUlCk0Nd\">P0-04集中原件、详细计算与历史记录</a>；本轮新增原件见文末TEST证据包。</p></fragment>",
+      "document_id": "ZQUXdlDxWoknJhxu914c2uVYnBr",
+      "revision_id": 176
+    }
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.70",
+      "latest": "1.0.99",
+      "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+    }
+  }
+}

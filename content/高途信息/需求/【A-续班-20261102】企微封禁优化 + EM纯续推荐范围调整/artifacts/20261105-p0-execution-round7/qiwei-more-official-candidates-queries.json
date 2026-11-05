@@ -1,0 +1,1 @@
+{"super_class": {"more_official_candidates": "SELECT CAST(user_id AS CHAR) user_id,name,(mobile LIKE '12%') test_mobile_prefix,user_status FROM user WHERE user_id IN (654489,654499,654500,654502)"}}

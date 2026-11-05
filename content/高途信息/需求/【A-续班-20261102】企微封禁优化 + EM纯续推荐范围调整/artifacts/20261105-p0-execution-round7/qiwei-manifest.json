@@ -1,0 +1,1493 @@
+{
+  "time": "2026-11-05T18:36:10.007391+08:00",
+  "environment": "TEST",
+  "owner": "W1-e4187e",
+  "scope": "only qiwei-*; excludes parent shared round7 files",
+  "files": [
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-account-relations.json",
+      "bytes": 15101,
+      "sha256": "f2dc41912d1a018a11d5220e5d75c2492e7cf57f2e011d96666bcb37619c547e"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-actual-session-identity.json",
+      "bytes": 1776,
+      "sha256": "c6d03455467699ad65aea6c582b2f78874b2b338e0341261387c2623b2c92790"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-advisor-doc-loaded.txt",
+      "bytes": 8883,
+      "sha256": "6a7856a5d9df6b0e41296304955ed6b6b23d7a04f41ca85c197cb2f5df30aa7b"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-after-contact-cancel.txt",
+      "bytes": 13039,
+      "sha256": "e5c764351c3b9cb7a74cb563e0cb1ec5bb40f7cae8e4ad10388d40f84851deea"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-after-draft-discard-network.txt",
+      "bytes": 33785,
+      "sha256": "facdee6539a15b50f28e501aaa82f252ca5d8e9e3a4fb127b2e6eebf75de92f8"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-after-draft-discard.txt",
+      "bytes": 5109,
+      "sha256": "a29a95938cb8c2300315f5d5130788866b940907e220a367e1f7590557dff50c"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-batch-task-error-sls.txt",
+      "bytes": 881,
+      "sha256": "6b6c5cedc47643c124027a11e9ad31870c994c020b566cf90b6ac253088e87c8"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-batch-task-log-sls.txt",
+      "bytes": 1263,
+      "sha256": "4902e488e37d26195e47193563fb2236593bca99e994724a9554b9e5f26dae45"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-batch-task-log-tls.txt",
+      "bytes": 6021,
+      "sha256": "fd9a44222bcfd57029ec2cdcc6e23ddb06b1ee0a3506954fc74cde6a083adc89"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-cancel-invalid-task.py",
+      "bytes": 2033,
+      "sha256": "e21424c8bcb749210ae0abb7db3b71a711d8524b142d2e9d61b139832cc7152b"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-candidates-queries.json",
+      "bytes": 936,
+      "sha256": "e19cb772b7b1e8479b1327da3d088b4459b6d47a49abce4d57772f751db36118"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-class-api-current.json",
+      "bytes": 11911,
+      "sha256": "d099e4d6765a0042490d1b1450d521fe8416d86625f4f69c185b74c10e7fbd78"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-class-api-input.json",
+      "bytes": 180,
+      "sha256": "66a9a5b301581f1d12244f50c0de04d18f1c854e0ee1193e4faf48c899c59ef8"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-class-identifier-mapping.json",
+      "bytes": 2017,
+      "sha256": "033165fc79f465d184aecbd53c9b301ffa43076d3f12647febcfc1c1a6fba632"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-clazz-id-mapping-dms.json",
+      "bytes": 598,
+      "sha256": "91cd946a62850b3cfa15ca168144fae7c6971d2ccf40e41443efe2202e660388"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-close-state.py",
+      "bytes": 1637,
+      "sha256": "a0ef269029485b17f22b763cc9244f473053ce15f7a142abb3b62ccd4009eb9c"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-contact-cancelled.txt",
+      "bytes": 13075,
+      "sha256": "d4cb5193a550c251aca21e9b106e9cd858f7a5eed8e46061f005a0be0580f372"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-contact-dialog.txt",
+      "bytes": 13020,
+      "sha256": "1239d2ec912b087d52c358950574f6ec121b0c8ec2333a3f78b969db93d7e397"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-contact-loaded.txt",
+      "bytes": 14485,
+      "sha256": "14e4905ce625084e68cf41019885f81243a2da5ce3ec19b9b5e2cce18b501f21"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-create-control.json",
+      "bytes": 770,
+      "sha256": "b27e7dd7408dcfccca782b96e430a6f0ad6f0df06b2e3f05b035069bfa329d77"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-create-control.log",
+      "bytes": 517,
+      "sha256": "59484c7a23bed7768e6b57cf8f1cb6a26e0c62d584707e6e01aac0c28ebec379"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-create-target1.json",
+      "bytes": 767,
+      "sha256": "c32263cf146139b3c5e29ded5003106e8586582e636e98a80866a41f3aeae88e"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-create-target1.log",
+      "bytes": 514,
+      "sha256": "69005867c8e6dba2c6b6e0942aafb821759d109334e32a6fd9e9a2da97499464"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-create-target2.json",
+      "bytes": 767,
+      "sha256": "208267c0d937f9f8e4b7b1d414399f250be0ebae720fa474c810770ecd4a1f82"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-create-target2.log",
+      "bytes": 514,
+      "sha256": "63f73b70a503b6fe69f04f75153c2fb07ef976d8d9c58dadacb19fcc2c8b289f"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-created-queries.json",
+      "bytes": 202,
+      "sha256": "9bfc6ae3b71fc4f5ef894e191a299e240bd7db06b76e0ea533759b687cdc9ff9"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-current-pods.json",
+      "bytes": 18982,
+      "sha256": "78f7e58eb714a1a247443a736d986a150f839a494ed55163d6dc6c614312cd1d"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-candidates.json",
+      "bytes": 7555,
+      "sha256": "91611cbb5279abaf32afa91615fca53314ce2a5c5436e6132c5af1e453632042"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-candidates.log",
+      "bytes": 17,
+      "sha256": "ac4bee21443316aec12eef97213e9fdaf6256ef99ea9703cc24fe4594967a8c0"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-created-users-12.json",
+      "bytes": 803,
+      "sha256": "c98aaa72339b76adf28d54c64508afc7dd2a01fb35064027e1d9ae8d732e8a2c"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-created-users-final.json",
+      "bytes": 985,
+      "sha256": "040d15bb0c6354a9649c3a953cb7a121693e9886e59ab7c63bb5b6cbec8514ec"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-invalid-task-cancel-readback.json",
+      "bytes": 2689,
+      "sha256": "0ffeb3a86d0933b8f107c9547346c5956e9cf1e53e518b0304057a2815473b84"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-more-official-candidates.json",
+      "bytes": 1080,
+      "sha256": "e7a95fc448dda92639cea342885ca99e6db71344e8eb91acf6c6eb1a839a653b"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-official-candidates.json",
+      "bytes": 8979,
+      "sha256": "c60db52e0c961e2822273743eae4162558ae3ac2d3efdc49218f762f95314197"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-official-class-relations.json",
+      "bytes": 1345,
+      "sha256": "67d45f09068196b400bea223254936b9e1112a7547b9e3efbac6b6ddd70cfaf5"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-order-snapshot-schema.json",
+      "bytes": 25990,
+      "sha256": "85d437a4bfd7c186580a1c973e53f825ede0550174a04d3768026cd9d333855a"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-order-snapshot-schema.log",
+      "bytes": 28,
+      "sha256": "5f7cfebad63de6a0be3e0c471c3c420f30bf4d09adec0690afcbe4358ded7ba1"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-order1-before-payment.json",
+      "bytes": 978,
+      "sha256": "7265eb3a354ff94b368da9a6e34d9e4beaebba9f99982e9ffe73145b95523d5e"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-order1-paid.json",
+      "bytes": 1650,
+      "sha256": "b0a70dce789729e0ebf1da5aeb153faf96890d6438bbe82ce437b74882ab0aaa"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-order2-before-payment.json",
+      "bytes": 2077,
+      "sha256": "80bc9b13701d263a1b869e2696a8e7b1833cb17477554eb9c890f4fd241571d1"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-order2-paid-control-unpaid.json",
+      "bytes": 2769,
+      "sha256": "76f1fa078ce6c94fca588bebfcb8f90d4a779ae1afbfb584777913ec1d09c31b"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-remark-batch-baseline.json",
+      "bytes": 1443,
+      "sha256": "c148a76a502c52894736c06255a9943d9374cd42d3ba05a08ead21978595bc6f"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-remark-batch-created.json",
+      "bytes": 894,
+      "sha256": "f80680b29d789d1ab5b735b55067c86bb78d1f42d955cb410516ab57aa6978e9"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-remark-batch-track.json",
+      "bytes": 2689,
+      "sha256": "95376c756b22d34db148a37fc460ce1416f74bf0cf8e9c08a4e277242d166f8a"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-remark-batch-track2.json",
+      "bytes": 2689,
+      "sha256": "9173aa002127adc721463bcf731c0c1c8e931b31e1999ef1086a2ea4098a2535"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-remark-batch-track3.json",
+      "bytes": 2689,
+      "sha256": "2bcacc3728b5e3ec98c646b3de39a67be31a92e3580062cf9a6d25a066a03c16"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-remark-batch-track4.json",
+      "bytes": 2689,
+      "sha256": "87191199747f3010e5a1572c9773c6f9e5a2ff39fe241922ad1b81041f616ffc"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-remark-corrected-created.json",
+      "bytes": 894,
+      "sha256": "545e5ebba8153a302fc9ba20f643b162d23f333b040893bccf443dbeed969de3"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-remark-corrected-track1.json",
+      "bytes": 2681,
+      "sha256": "d30be161fa53dd19d6fafa5f093812dfd72f77a534536cd2e8dab0e0cbdffc9f"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-remark-created.json",
+      "bytes": 893,
+      "sha256": "bde4099081b564e162f4beb91702791bb025dc68faabf33fddc4442ba46327ea"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-remark-crossfield-after.json",
+      "bytes": 1443,
+      "sha256": "af16b20383d86c6e386a13c9d0f3a94c2992b1b11d57f9deb8035e1d73a81bcc"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-remark-schema.json",
+      "bytes": 6805,
+      "sha256": "c8d38bf7a3ab76e063987803e1cba13a7768e291aedab493fd302c29d6bff785"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-remark-task-before.json",
+      "bytes": 8297,
+      "sha256": "8ab1ab9700b61e4f0a648ae2d7cef2a4af5f494f3d6568a3a840d46bd79df3ad"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-remark-track1.json",
+      "bytes": 1893,
+      "sha256": "2f42eb29f70355d2f00046249ca5656db449fad2b65e18545781af92920a19f1"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-schema.json",
+      "bytes": 27243,
+      "sha256": "a0a929342f9d918a3b5796c3ff04c7f61b3ddcc6a40e8645f0eb1491d99ab442"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-schema.log",
+      "bytes": 13,
+      "sha256": "f34e122b2f3169ebfa4309bca9663e278e2bd586449c2431b67a78a219e53143"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-small-prep.json",
+      "bytes": 4658,
+      "sha256": "b177193d684abcb8287c4fe972ee134bd11cd8397a7504298152f63a278a9332"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-small-prep.log",
+      "bytes": 17,
+      "sha256": "dec2d18d498239f88c4729420031e6e2243b1e9fa30798cf5624665608adfcc3"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-tag-baseline.json",
+      "bytes": 5175,
+      "sha256": "05c447f9a3c5ad8db884567295768207353eac202ccd5c99a8628e70a0e7d558"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-tag-bulk-after.json",
+      "bytes": 6915,
+      "sha256": "493a46070b46dc4dfd3ce06f74c2a6c661c82e0be643bb9bb6edad99459a87de"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-tag-cancel-after.json",
+      "bytes": 2510,
+      "sha256": "4e3c6e446a25da41fe36101d4cad10f0c3fb98b4f9c24445101f164fce57987c"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-tag-clear-restored.json",
+      "bytes": 6911,
+      "sha256": "d7c41da62e20dacc25f4b91e0776093917b754fcf0a04d69d799dc99451eed70"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-tag-single-after.json",
+      "bytes": 6915,
+      "sha256": "989059dddd99abc3c9854adb077ee9eb7a4113085bc18537ecc0d9303bbccb14"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-target2-transferred.json",
+      "bytes": 3299,
+      "sha256": "b0b5618d410a96411eceb109109df6b08657f71da3a80e755818786ab881d188"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-task-final.json",
+      "bytes": 3950,
+      "sha256": "3d57b916d6c205207f123bfd1616f9ecb934a36d0827048a20bf3c12a62c55ca"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-db-three-paid.json",
+      "bytes": 3034,
+      "sha256": "cc7e6cad596dd260b62ae55bc89fd0c5320eade4b7308ef9e43f99d33c7342bd"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-default-back.txt",
+      "bytes": 4799,
+      "sha256": "b65f268822d97222abc154ede1dfec63be04796f4b0569800d02e65181c84484"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-default-group-cancel-missing.txt",
+      "bytes": 5495,
+      "sha256": "8a56f7819c11fc39c39b99326864459c0ed301c15ce34bf16f93dbd782af7fb6"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-default-group-cancelled-final.txt",
+      "bytes": 5834,
+      "sha256": "c8af120f60a1d745c9590eabc623646192ad7b089ef7ef84a090cdb1d79b0028"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-default-group-loaded-final.txt",
+      "bytes": 11752,
+      "sha256": "980dd9e836aa817b4aff00838c1ed18473c9562fc2ba9cb9cb0f2b4fef75733b"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-default-group-menu-final.txt",
+      "bytes": 5496,
+      "sha256": "d8aeec59fcaca64c5ed53553aefd105b1405d2bf0728e4ac42de0512b67a70e1"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-default-group-menu.txt",
+      "bytes": 6073,
+      "sha256": "abddad92d0e8d08b8f85a993390441ae68e97fbc6f6a31d0cc9927fd06c94cba"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-default-group-open-final.txt",
+      "bytes": 5528,
+      "sha256": "a5027a6edf5ad901b7529413f3ef7b68e844d69bed9b8d8667a57de0b707090e"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-default-group-open-missing.txt",
+      "bytes": 5495,
+      "sha256": "8a56f7819c11fc39c39b99326864459c0ed301c15ce34bf16f93dbd782af7fb6"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-default-loaded.txt",
+      "bytes": 10871,
+      "sha256": "d0178d3f82c950477c9c00fb84ed135cc03f148130db837ab196023daf732078"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-default-menu-closed.txt",
+      "bytes": 11081,
+      "sha256": "7c785be7fa10bd986bf7a42384b2d03e8e3ebaf281537ca121517b13e7b2a2f9"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-default-official-menu.txt",
+      "bytes": 11094,
+      "sha256": "a0ba6fb46cf33af643514feee314d7ea9556542e8e6b50c8441104ec142c7fcc"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-default-official-own-menu.txt",
+      "bytes": 5499,
+      "sha256": "e1254bd2493b623ec36e19130a2f75d9855602c0b7671baf2d32ac8ecd83ca2d"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-default-official-private.txt",
+      "bytes": 5294,
+      "sha256": "2e03d8080272606c5c90146c05f66a834e88406e84630385a988aa111df07f9d"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-default-own-loaded.txt",
+      "bytes": 5260,
+      "sha256": "f5d183ee4784f3f6f1de77b0f25dcdd6c87da0ef1915e11fe2d884d638fdfaef"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-default-own-query.txt",
+      "bytes": 11019,
+      "sha256": "e2376ef13de650a00a581e26858b92d1b9a994e4df2f8c4ff81b38f5fda3d735"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-default-own-selected.txt",
+      "bytes": 5312,
+      "sha256": "d05adc20ba438da606c6539ccd45b19da222988c44702aae814c473abfa265bd"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-default-private-cancel.txt",
+      "bytes": 5320,
+      "sha256": "d05c0902e5da1e557e1fc5b9f1587fcf2e4443f9cde9a7e06489cb87d359e0bd"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-default-private-loaded.txt",
+      "bytes": 7295,
+      "sha256": "ae511b729377148f9a179dcab6dc7751b1739b6e9c11c11f2fcfe195ea6ec1b4"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-default-return-loaded.txt",
+      "bytes": 5077,
+      "sha256": "96802f82aa998fbdeb9c46748519ceb40eccc571cc4cad8cf7a2b61112f0eef7"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-default-roster.txt",
+      "bytes": 2887,
+      "sha256": "8d50e12fd593dfaa91e397d9a0a15322dc8c5e0ae7309854fc30d146339ceff9"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-default-search-own.txt",
+      "bytes": 10960,
+      "sha256": "dea36c7a896d8f41d1529979f063ecdc07801c739b2ce2b0a4a8c15561c14c18"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-evidence-audit.json",
+      "bytes": 163,
+      "sha256": "8130edcb908b555bc2d510a1d60b1965cae21ee88f0121e651d2f668cef43f23"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-final-browser.txt",
+      "bytes": 5085,
+      "sha256": "04480d3ed1d42b8d4fe93db2c228233161345a7b5d999ed2c4807569f40a9926"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-final-selection-cleared.txt",
+      "bytes": 4974,
+      "sha256": "ecd88a6cc1ad9a851993e2a17d65fcb6f2fa6abfe0b66195375fe43cbff28028"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-final-session-state.json",
+      "bytes": 408,
+      "sha256": "3854f40b635904fc73147b8acdac8cc26750f38eef9d7648fc7ac2e85e29b455"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-final-verification.json",
+      "bytes": 420,
+      "sha256": "7f9da7d53efff1428c842138f706a55f916000c661b5f9e2fc7a1a0a0ffa1fd4"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-find-friends.log",
+      "bytes": 59,
+      "sha256": "947f96541eb632c8ce1a24bf45098c2fe0d353a1ce2a53d77757d9462c708855"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-find-friends.py",
+      "bytes": 850,
+      "sha256": "7b065312e13127aeea2176c28588280978d4dd685530342ea84381b276f66675"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-find-relations.log",
+      "bytes": 59,
+      "sha256": "947f96541eb632c8ce1a24bf45098c2fe0d353a1ce2a53d77757d9462c708855"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-find-relations.py",
+      "bytes": 832,
+      "sha256": "5eb980de0d732603d8636a16725c256b7328d8147221d22e1cf0d69587e8f69a"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-fixture-registry.json",
+      "bytes": 6135,
+      "sha256": "f53e97c5c441e19f44ae4e37f6646ac288d545188496e91dc395467f2d039f5c"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-friend-check-input.json",
+      "bytes": 23,
+      "sha256": "e7e0615fdec320245f6e296502752f0d5d0e8ada02b589722717a22ed6f09efb"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-friend-check.log",
+      "bytes": 144,
+      "sha256": "53ae2da9160cb7ac04f66bfcd83e726811af0093adf47e513bba83fa41fd4a0e"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-friend-only-relations.json",
+      "bytes": 16359,
+      "sha256": "177a629a90412137e6f9d30d56e06573c4bd06887ae2be44cdd19b80929afa8a"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-guideline-advisor-click.txt",
+      "bytes": 6567,
+      "sha256": "5074f3c6c94d784c61b18709265276f9e6417884c42d095e3c69e92e949aa7d5"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-guideline-draft-after-edit.txt",
+      "bytes": 6459,
+      "sha256": "9f0b471ae1dfc70caa3e4c4638c0b469acd3d3b2f124d0d6896176ee7d8f3cf9"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-guideline-draft-before.txt",
+      "bytes": 6420,
+      "sha256": "28d521a0d77f2d6b89902b6ef6a13b9d8029e4b0bacc9182fb4d3a3176406a7f"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-guideline-draft-cancelled.txt",
+      "bytes": 610,
+      "sha256": "1ffe81026dd6493b62a1626943d8d45958f075fa67f95e8c432fa43bd5d4a7d9"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-guideline-draft-discarded.txt",
+      "bytes": 610,
+      "sha256": "1ffe81026dd6493b62a1626943d8d45958f075fa67f95e8c432fa43bd5d4a7d9"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-guideline-draft-return.txt",
+      "bytes": 6384,
+      "sha256": "489dcadf838cd35691e3f58d352cef1aaa3393a475801a76eaa9227ebe8b9d85"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-guideline-edit-dialog.txt",
+      "bytes": 11701,
+      "sha256": "f11c097c33eb280a9a5a4fe51f91ebe3e093d0307790cfa627cc5a78674a218c"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-guideline-loaded.txt",
+      "bytes": 9961,
+      "sha256": "989e8bff9daa2c4e98a41f76cd610b38cff0647279b38f0f5077f7804ff181d1"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-guideline-network-after.txt",
+      "bytes": 33107,
+      "sha256": "8d89076be6cd49b1ffdf288c939669ab4c81f994a6aae4c0571b368bc1ebdcee"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-guideline-network-before.txt",
+      "bytes": 31944,
+      "sha256": "f5be288375033d5b1dec0c80c544e07ed4cbe042de2a6df077e4dafa819c2388"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-guideline-network-delta.json",
+      "bytes": 1456,
+      "sha256": "d66c3dfbf4dd7f5a34022c3215a4c1ca40fb5ddfd505ac5d5abef05dece36e48"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-guideline-open.txt",
+      "bytes": 7499,
+      "sha256": "11f25c3c7bbb86708c442dae4b08c2100b1ffabf4f3fb2a6c9b4d1504f90a93c"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-guideline-pages.txt",
+      "bytes": 6399,
+      "sha256": "443cd9adb826bd9eda0556efe77ae2b34cacada7fa37bfb762f5f1b4320dcdc4"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-guideline-pre-edit.txt",
+      "bytes": 5345,
+      "sha256": "475a79d2844618c5c6682cb57df4f111433b5ee32cb575105ff8492bfe6aa523"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-guideline-return-menu.txt",
+      "bytes": 6071,
+      "sha256": "31d8d89a52c5ca7c051404f45cbae16412bb00c4d2d2ae29798bdc08546e77e1"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-guideline-return-open-loading.txt",
+      "bytes": 7102,
+      "sha256": "19fff78fdc6ebd78a1776df3a7688ec391b4efe104e6e1c518ffeefe743ccab6"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-guideline-return-open-missing.txt",
+      "bytes": 5492,
+      "sha256": "8bfc1faac9f880035053d184bff100657d0458b8d1638a0867476c86ea30ab88"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-guideline-return-open-ready-missing.txt",
+      "bytes": 5492,
+      "sha256": "8bfc1faac9f880035053d184bff100657d0458b8d1638a0867476c86ea30ab88"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-guideline-return-selected.txt",
+      "bytes": 6321,
+      "sha256": "5c9fd929ea3dcb0d5b0bb88a118d210fdccaf75ade64e8eac2500ed3fd2779d0"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-handoff.md",
+      "bytes": 2831,
+      "sha256": "34f359ff31a6ec081a7ec67b6b61b5294d29bd0a8639c31f58560966316e24dd"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-http.py",
+      "bytes": 1240,
+      "sha256": "6de5cdda5317500de1c4eb2fb545403448272805b50a01b9d3e0e594e0aee308"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-initial-network.txt",
+      "bytes": 8825,
+      "sha256": "ce12898f06ddc0745a148f4d18f832778a86dadce2e278326975276c1c9f2d3b"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-initial-page.txt",
+      "bytes": 12584,
+      "sha256": "222a23d5c6d0920aa3577794734b81e7066c0e5620134e791fd2cd300ba4406e"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-instruction.md",
+      "bytes": 1352,
+      "sha256": "e55eb5dffde199dc707f6a97d4557515aa969be4fecf355100c1d3bed28015e1"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-invalid-task-cancel.json",
+      "bytes": 2893,
+      "sha256": "8b55efc1f2cae3706e7304b97af9114dfd9ee4a90c00acb37bbcfe467bbc2a92"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-label-cancel-open.txt",
+      "bytes": 7032,
+      "sha256": "dc419bd4731593a8030db4a0606b65e72ed979d8ae4c276c88cfe8014fe48a6e"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-label-cancel-selected.txt",
+      "bytes": 7040,
+      "sha256": "cdde089219508515252039b5551178fa80209c751d779e1b87e800ac657df4b3"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-label-cancelled.txt",
+      "bytes": 5291,
+      "sha256": "6b8b3717fa5c8f95c40d1d138d9c700d953e52ad6da05f9db2ccb26f2d921797"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-list-subclazz-input.json",
+      "bytes": 54,
+      "sha256": "f4b1c66274e76938b8320124a7e12eea3efe1038c01cf4a269906dcde20586dd"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-list-subclazz.json",
+      "bytes": 12030,
+      "sha256": "84dd6250e27211b8f354ffeb48c35244f1056e1bc669a2a9a1b57a3f4508815e"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-list-subclazz.log",
+      "bytes": 1877,
+      "sha256": "6998d3feff1c3408b7d6fb90f7af6d969278555b0ca4eca2386a98d1b75df6c6"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-mockpay-control.json",
+      "bytes": 927,
+      "sha256": "146f72c6146a3a317bb9e98fa82aa36fe58a748678d34dd8d8e6713e7f7d6603"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-mockpay-control.log",
+      "bytes": 613,
+      "sha256": "f622dcd551d65a15ea47595d70aa9634f72044160859b76a0113603cc8ac3d4b"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-mockpay-target1.json",
+      "bytes": 927,
+      "sha256": "3c610b007ace66836767518b1c3c7b5a00d82e0dca9b8a9663850e454f0952f0"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-mockpay-target1.log",
+      "bytes": 613,
+      "sha256": "ba8babc98bda858a74cdc9b5e762442bfb04a3ffac679c79443295797ed88480"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-mockpay-target2.json",
+      "bytes": 927,
+      "sha256": "08c93cd1fbdcf98ccae96d197e60c6b0448743ad48b5ef3953398c9234134883"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-mockpay-target2.log",
+      "bytes": 613,
+      "sha256": "bcdac6cebc927c976f402c445141e66419077f6bd7041274c7f1e2efc7fd277c"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-mockpay1-input.json",
+      "bytes": 72,
+      "sha256": "4cede13122e94e9496210a0f35c71eec26deb5748d70a993352854a5cacf9532"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-mockpay2-input.json",
+      "bytes": 76,
+      "sha256": "29d47987c19c3d53b9205c969a12285d32eb9931b77638e3f65cad586975cff4"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-mockpay3-input.json",
+      "bytes": 76,
+      "sha256": "4eec14b00be2c013951281b3e51b44851b70243e93c622f9b74bef8b59672b17"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-more-official-candidates-queries.json",
+      "bytes": 198,
+      "sha256": "0298f70e3bb4a7f16812c91256905727a3fb44ea0cf6790318402a89ba8a752e"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-more-official-candidates.log",
+      "bytes": 31,
+      "sha256": "2ac078a37b9d547302f16f9bffefa94faf49ab8930742bc22e8b907f80645fcd"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-network-after-page-error.txt",
+      "bytes": 22382,
+      "sha256": "813f4a4edec111c9ab6dc78debea2bfcc59ce499f0fc8e00ee34a039225ea5a7"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-network-detail.txt",
+      "bytes": 2287,
+      "sha256": "41cd227991daa8ee83a143e9f95d815592706f25c614539dadb33226343fc5f2"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-nonfriend-network-detail.txt",
+      "bytes": 2268,
+      "sha256": "e78d493cd11062c7b6c7cd3d8836b280ef4704445bca1c1d26ca5d3e4334967d"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-nonfriend-request.network-request",
+      "bytes": 24,
+      "sha256": "7611dbda4dec983cde5ab992657630cb5cb9e84dea2eb3ccf537b075ef378136"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-nonfriend-response.network-response",
+      "bytes": 49,
+      "sha256": "6b8611b14fbcb176fa1d14f0c9eaef08bc53cc77d435d1ebce39c77bf4b9980f"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-observe-tools.txt",
+      "bytes": 1310,
+      "sha256": "1a2290c86c752d6b5449cd5ed5298eb164eb43600269bfb9c9a2486c0cc6d79d"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-after-test.json",
+      "bytes": 1851,
+      "sha256": "b28eea591a9dfca6d40fed763fd58e046a8a125cc9ff4bb6e4fa268a4e0d6586"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-batch-after.json",
+      "bytes": 4863,
+      "sha256": "164ae7e26c3cee58e96987a358c6c906030082c138313b95129a5a63fc79d571"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-batch-before-corrected.json",
+      "bytes": 4860,
+      "sha256": "3e1f3797708beca32ef6f6f5809ebee7aba3e92b124c76f49f63ca8293c0d2f2"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-batch-before.json",
+      "bytes": 4860,
+      "sha256": "d157edf2a50cf2abdf9b32b4be0fe88dd5e0f4f062a9fd6a4797202846c14ab7"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-batch-read-input.json",
+      "bytes": 156,
+      "sha256": "fa2cb527595f375e856e8cb7449634c8ab499f45719f22307591e1c8342e754b"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-batch-restored-later.json",
+      "bytes": 4860,
+      "sha256": "aaa70dfc4433a7570f757954bcc93cc64cf3fbe3c44f93b645a16d5f7bd7a3ed"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-batch-restored.json",
+      "bytes": 4866,
+      "sha256": "700e40c542d14ccd0a0afb10d342db4d0ce0b4daea0aa800398e26201e32b50f"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-candidate2-current.json",
+      "bytes": 1840,
+      "sha256": "2c6e773a7519cd31224ee98ea03b8d837b38135aa09c364c294d5f1e2bad10ae"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-candidate2-current.log",
+      "bytes": 838,
+      "sha256": "34d142a6e6844f7d689851ab82dc275e01ef90e1b3619957cb093efa7d0b1559"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-candidate2-read-input.json",
+      "bytes": 133,
+      "sha256": "e7f9e4ba2df60c1a8901a59152a164f6bf7d6d67e5f4a170cdbfd74219ee578e"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-candidates-queries.json",
+      "bytes": 297,
+      "sha256": "4012f4d7fc091e54171cd7f80a490f5a972d3f8dded9abd37183a70b767243cc"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-candidates.log",
+      "bytes": 26,
+      "sha256": "f467dc7f19064176b7827bd032f6f912f69d9bb62eeb102645dfadeb0fee1494"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-chat-dialog.txt",
+      "bytes": 15057,
+      "sha256": "bc5bc81bbb64fbc78a66aed98494eab3b2a420da79bd5d3c1b4292bae7b3b0a6"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-class-rel-queries.json",
+      "bytes": 320,
+      "sha256": "dd160d45235121670a2f3ece9f7bf1ff21287135a9310ba506c8740fd7753e64"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-corrected-after.json",
+      "bytes": 4866,
+      "sha256": "89d9f298ce7852b442dec94d95513a12027798959eb6de9406b754585b8840e1"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-external-mapping.json",
+      "bytes": 777,
+      "sha256": "95eb8613c0bf29a888a184cc9e702334da537eb2e73c02667311dbb7cc4c8914"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-external-mapping.log",
+      "bytes": 231,
+      "sha256": "9abba6b92b73db41b2ade7741018447349cc7badc621d850e81ec0024adfe875"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-external-read-input.json",
+      "bytes": 163,
+      "sha256": "31c3dd9634b46cf68a41b3f1fe3178e2f492aa44ce58dcbd32a70e492a71e1d1"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-friend-check.json",
+      "bytes": 500,
+      "sha256": "fe9492bf1a48178cc792f655da7c62417346bbba195f6dba61091713b64bdc7b"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-friend-controlled.json",
+      "bytes": 3481,
+      "sha256": "e3af7946c7fb340f2040234ba1dc5887b56e30cd00ad9595f626d2fd154b09ff"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-group-dialog.txt",
+      "bytes": 14916,
+      "sha256": "33d0c74af2ccf156fd30f8c8656e621b1f1c183e584f06c881387759b2b8fee7"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-group-shot.txt",
+      "bytes": 278,
+      "sha256": "e6a6f284fee6ad2ba171e8e70274fb409be13d63e1d7be7a83c20e2237433760"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-group.png",
+      "bytes": 679324,
+      "sha256": "f034af3ffd12896c9d7c4917ea6c231d2e08b317253f46e8286b32f8c87ba53f"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-probe.log",
+      "bytes": 2596,
+      "sha256": "b95cd281c0fce7de76827f5358014bdd691c82a8cb13a043a6bbe4ec6f60c6d2"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-probe.py",
+      "bytes": 986,
+      "sha256": "26fe7c0f113f3004f86d96d87a9597b80a6102751791f12ed991d043fbd85ae3"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-restored.json",
+      "bytes": 1840,
+      "sha256": "b9908601062d28f660b3eff463c767c9fd9ea5d6462bbd9f41cb3a8663eea348"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-robot-info.json",
+      "bytes": 2813,
+      "sha256": "4b6d2aa196680c0a60e2d4bad976fdcf4a21546069968f3d2640e87eb781b725"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-second-friend-input.json",
+      "bytes": 136,
+      "sha256": "5b865adceb99489249973b10705071ada95bc6e6d57e5804c7e89b36d1aac761"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-second-friend.json",
+      "bytes": 2511,
+      "sha256": "4cf4df091fa72e520ad7635f0396da7c31fd35c694700acd43751a4a22ed333b"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-teacher-gong.json",
+      "bytes": 2185,
+      "sha256": "1a353ab5a00f427141ba00189f505c2a9d0242ff02cd045f92b7e66a80ddd074"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-third-external-input.json",
+      "bytes": 166,
+      "sha256": "a46eaf80205a1d41d6f9aa0d7a6ab7494dd0eb777bd0974523533b499a5ffcaa"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-third-external.json",
+      "bytes": 777,
+      "sha256": "2625aa68c5d092b3c0ebb411af9d9057f5c8045190c419fc78430b700b4bae0c"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-third-friend-input.json",
+      "bytes": 136,
+      "sha256": "7024facc98bfbba8ae0cb861889605cb8a2d41b12412484034b88ae90cc32700"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-official-third-friend.json",
+      "bytes": 1822,
+      "sha256": "ed0fe47f8f3513794f25be7ad55cc787698bb32219d0750b8cc4377a7335886e"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-order-control-input.json",
+      "bytes": 190,
+      "sha256": "d2469bce1d4ee7f234b949f9b7a97b9f33ee1bd275b9cf5930451228de8f9845"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-order-control.json",
+      "bytes": 2279,
+      "sha256": "1134e1e36c544daaa9fdfbe0ce504be22e82d228b2357aaa08b31e79d47fb108"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-order-control.log",
+      "bytes": 1551,
+      "sha256": "d1197ce406fb917682623aa8f61aa35cc6013ecf649ca795349c212f06ad52b0"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-order-paid-readback-queries.json",
+      "bytes": 623,
+      "sha256": "bb43539de01afd1f8de8c3232dad9d28204cd9d6ff456d18ce3293436e551903"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-order-snapshot-queries.json",
+      "bytes": 372,
+      "sha256": "fbea0b5abcf5b3fe31fa44b23756f48d57a256037a3ff36595eb97c656a8d58b"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-order-target1-input.json",
+      "bytes": 190,
+      "sha256": "261b3e3b4e5e50049347cf2b927a702dbb3e5233234a8fee1e0bbf95e1f9653b"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-order-target1.json",
+      "bytes": 2279,
+      "sha256": "df00a8263c3c55638580270b3aa7804b8664840cc57c99882f3b9c29d5acedc7"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-order-target1.log",
+      "bytes": 1551,
+      "sha256": "3feeaf066f1a53024f302c11d46e679fcbd8b5bb62f0fbd029dd2d87e0a0b84f"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-order-target2-input.json",
+      "bytes": 190,
+      "sha256": "dd73a997bb64b1bed9f3fe89d50b1df0376c5e81be5aa68a3ad1437b98b46e1d"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-order-target2.json",
+      "bytes": 2279,
+      "sha256": "64c99beb3993a411be73ba800e6252d5a4f4461e6ff35e322616246958efdf38"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-order-target2.log",
+      "bytes": 1551,
+      "sha256": "01690e5e4ad9e4b537521a96548632d4ac638e28b3a0f87cd9569b0b42edb5d6"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-order1-before-payment.log",
+      "bytes": 28,
+      "sha256": "a4c086a060bfb6b6d528ecbe71f70a807226e9a0da6dc00fb886921b07806251"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-order1-paid.log",
+      "bytes": 18,
+      "sha256": "d7a8fe61ed2fb7821a3bb13b5a630fc5dca2a9c4abe9f7e84946eff400fd4ac8"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-order1-readback-queries.json",
+      "bytes": 308,
+      "sha256": "651c1159bd71aa93062a84106908fe794898d5f30f6c6119cf5c321a908da60d"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-order2-before-payment.log",
+      "bytes": 28,
+      "sha256": "c21fa17847e96652fb3d5accc6f356def69469e247571e297b0d0f4b3a786732"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-order2-paid-control-unpaid.log",
+      "bytes": 33,
+      "sha256": "624a4048852543203bbe66ccc77544fe7cd5fe63a1378e9062e818020a4f9e0e"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-own-tags-read-input.json",
+      "bytes": 292,
+      "sha256": "0113af76080bf1dca457b683b9110563121c5c41a5ca1fa5cc650dee3c8a57cc"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-page-error-log-sls-full.txt",
+      "bytes": 43171,
+      "sha256": "9a0baa47aa8b0d0e9289433e70d5c4b225149acc24640db3c5e07f2ddabeb1d0"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-page-error-log-sls.json",
+      "bytes": 4307,
+      "sha256": "097504755b5441c3bd006253105dc67397421e2cc658213328e4bccc433d3933"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-page-error-log-tls.json",
+      "bytes": 890,
+      "sha256": "23c2c60ff063193edf60b39e878388175eebd213913f19397e294848fee7412f"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-page-error-trace.json",
+      "bytes": 8554,
+      "sha256": "487640cb8f504a91acf0734cf45344bc4e3fa3fe4a0a9b76b7c1108f9f815c55"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-pages-private.txt",
+      "bytes": 6027,
+      "sha256": "d788523feb0749cf91700ecb7db29b2eb198460446ca609b07384bae1ae3f809"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-progress-history.md",
+      "bytes": 16472,
+      "sha256": "dc29995f99fafce79e7f53bbe61f726b7c3a2ccb4433018d069d8aa862d801c3"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-read-created-final.log",
+      "bytes": 26,
+      "sha256": "71d53187973316e623ddc2c591f4c5fbdd49c3dd19b0235692443a9b6e95188c"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-read-created12.log",
+      "bytes": 23,
+      "sha256": "006aac1594557f2c69d48532520c8966fb838bf31941a244e04a901e9192348b"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-read.py",
+      "bytes": 1219,
+      "sha256": "f2fd7919f52811480f1dbb831d1d684deca80a8cf3f26e60fa73e8e3a700d26f"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-relation-account-shard0.json",
+      "bytes": 22,
+      "sha256": "2e11efa8a334a39f15f44382faf404aff605b7e4914d93bd026b9f8b14327484"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-relation-index.json",
+      "bytes": 4416,
+      "sha256": "41f71bc0a5a069f837041410dcd6066550e1a0cc10a3311760b5d315d072d753"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-remark-batch-baseline-queries.json",
+      "bytes": 424,
+      "sha256": "f9f35a09d77a4c2a6ee03974c424ec92d4661f7607c11216d36ce529df0cee50"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-remark-batch-corrected-create.json",
+      "bytes": 560,
+      "sha256": "d86fc6890f5b6e93c733e2c08b603615dfd60498c15c33be44113177759208ab"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-remark-batch-corrected-input.json",
+      "bytes": 73,
+      "sha256": "fbd23515224c4b9618e8580791dd33bc02f37973c0a65bd7cfcde44348b9bd5e"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-remark-batch-create.json",
+      "bytes": 564,
+      "sha256": "c204af543512d51ad32ab2710de64bccd74602074a95ed1559a6ee363fcd4dc0"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-remark-batch-created-queries.json",
+      "bytes": 98,
+      "sha256": "0d765bcc035b5d9199e2fd25587ce1fbc893504f90165edec2ed8d26241a38b7"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-remark-batch-input.json",
+      "bytes": 77,
+      "sha256": "cd28e2d0b1278e8d77fd55142ea560cd9e252b5afe467e62d6e0c81eb397e057"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-remark-batch-track-queries.json",
+      "bytes": 179,
+      "sha256": "c02cd40c6875fe4c96e5d95bf97e5c38d48a76b34996292a5f66bcb119b5769a"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-remark-corrected-created-queries.json",
+      "bytes": 98,
+      "sha256": "239a423d4c8d49139eab74ba327000183229498b03f7fe8647acc7eed494049d"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-remark-corrected-track-queries.json",
+      "bytes": 179,
+      "sha256": "cef7221256f5b546085c2c728d34015d5f3a30e6d90612650555ff4c50048fb1"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-remark-create.json",
+      "bytes": 558,
+      "sha256": "d5cb8c53ac558871798a68aceaba8920a9c2dd346863ce48ada1848ee45ac974"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-remark-created-queries.json",
+      "bytes": 97,
+      "sha256": "d69a35d8be827643e99104911d4d4f441708effb5c99edc82c2137a4156ce4a1"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-remark-crossfield-compare.json",
+      "bytes": 1049,
+      "sha256": "8b3d2827a604995ba0ee6afa1424dcde41b49388a85d7347b3a12f2789b5152d"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-remark-nonfriend-network.txt",
+      "bytes": 34573,
+      "sha256": "6a8b14b00c6adbadcec916f888fb06dc37ab150eb92061eb43a3e99d4712a540"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-remark-nonfriend-ui-final.txt",
+      "bytes": 5310,
+      "sha256": "4261d10888457847ce8567486bd459129a4658b5667ea9cc87d343fc9440be73"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-remark-nonfriend-ui-loaded.txt",
+      "bytes": 5127,
+      "sha256": "598747216dac1639715b268a5d3cd91fbbf12743ccd3a36f3b359a261f5a68e6"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-remark-nonfriend-ui-missing.txt",
+      "bytes": 574,
+      "sha256": "c9d9556cb62f3ebd4e57678daedfe039609e55f8912722e08df8cd40fe5675ef"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-remark-restore-input.json",
+      "bytes": 140,
+      "sha256": "2514663f9e92de383ba9509ed11d650ec600c1eab561d503fceb7eb4650942d3"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-remark-restore-route.json",
+      "bytes": 318,
+      "sha256": "1ce7027fabe68febe34a510d9f23a3214afc647458475240a2481e45cb30e353"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-remark-restore.json",
+      "bytes": 600,
+      "sha256": "ea34401e48823de416defa50802940935511bcd7133c0cad7ad1951d82b827d5"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-remark-schema-queries.json",
+      "bytes": 126,
+      "sha256": "7d59f4ffd527f61ab57c77147c0a5368c2b1613a147fd7e155846eca81065cc5"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-remark-second-restored-batch.json",
+      "bytes": 600,
+      "sha256": "e1abd0ebbdfea5989e32bd2e236b80c1fade5c67a712ec971bb0d2131cdda17b"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-remark-test-input.json",
+      "bytes": 77,
+      "sha256": "62d43c6378cbf50b3b68b6f42f6c60cb2c1ddd41fb57ae16ab5598accfd1db8b"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-remark-third-restore-input.json",
+      "bytes": 128,
+      "sha256": "192fe1dc664d90c4c1803e1dbf2e17f5c49aec010c37e25b5655684a10715a73"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-remark-third-restored.json",
+      "bytes": 588,
+      "sha256": "de59f1ba06e8299a4d23a6c33c4b508cf59b3c0f539b168a987c083155d9be38"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-remark-track-queries.json",
+      "bytes": 179,
+      "sha256": "8b6958e70b014d2205d24beadc4b366f144771e928906124fd17b78366ae2f53"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-remark-xjob-schedule.json",
+      "bytes": 304,
+      "sha256": "35e2080fa9874016cc724709db13d1e12b4427b8c5ff84a41d372cb4813fe864"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-renewal-error-detail.txt",
+      "bytes": 2283,
+      "sha256": "b701d5da52e7ab2e40cb415a64f9087d6ebdbfcbb6077382a26191d875e9ec37"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-renewal-error-request.network-request",
+      "bytes": 313,
+      "sha256": "e23aa74e8593665f90b73f978c1475ec85de93f9bc611f6264ac3e26ec3fdb09"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-renewal-error-response.network-response",
+      "bytes": 86,
+      "sha256": "f9693addbeb301fc06080c3e177e1e199bcd13802561226e7ea4fc684b0aa52e"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-renewal-own-baseline.txt",
+      "bytes": 7050,
+      "sha256": "ab0928f24692fcddf16173e01cd32719be5a40b627dcc5fe91ff11da8041f34f"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-renewal-request.network-request",
+      "bytes": 196,
+      "sha256": "00bb75195b6f67e679efa4ef363cd20af59771f69c35f086c790a7dd79875460"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-renewal-response.network-response",
+      "bytes": 30285,
+      "sha256": "6d1b39d4f73533e07ff302078b225f9af23a433ac956daab9ecc647a435f9894"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-renewal-return.txt",
+      "bytes": 6237,
+      "sha256": "5518ba8f363ba39e8bd7ee4ba52da7412416f20e3c4246df61affbbbafb2fd57"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-report.md",
+      "bytes": 12575,
+      "sha256": "a771ff5fb5aa5ac297e902c9316b232903ab22d3c253eaf08b3ee46657ac6f11"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-results.json",
+      "bytes": 18864,
+      "sha256": "f44a24d3b18f153d5a4b583d4ed9c6d965c4343e61a544c5d82cca3cd2843878"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-robot-info.log",
+      "bytes": 88,
+      "sha256": "45422fc7fdfe68756266e31d584bf66aec08717a13f6dc2d57953c441975c15a"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-robot-read-input.json",
+      "bytes": 155,
+      "sha256": "1855a2537332582c8a19549bd483d9e993548d9a7a5181e7b1cb8ecede93a8df"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-schema-queries.json",
+      "bytes": 808,
+      "sha256": "2880a488ea8071b58cc2ddbc5ff88ffd4f1ab20da7f8b558304dd6c69c56af47"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-select-existing-readonly.txt",
+      "bytes": 12612,
+      "sha256": "fb8dd3470efdb1e72e4619763494528de57223582953b3e3624df7232b9259a5"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-selection-cleared.txt",
+      "bytes": 13069,
+      "sha256": "7df866398bd16cf54291238b4fc78b574a3d50a643f45ba4bbbc8c4c740d030e"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-selection-restored.txt",
+      "bytes": 195,
+      "sha256": "71ac4c0307b5cf41c68e99ac7c22fbbc2a6b67c69cb8c7bfb2654b19cbbdf0c8"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-session-boss.json",
+      "bytes": 181,
+      "sha256": "505d224a486092d22efedd304999d3904ba39008d9278d0a9249cdf8447dc247"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-session-fuwu.json",
+      "bytes": 181,
+      "sha256": "af4915c59dc7f1d0c3ad976c57068dce24f5c2b8ca2700832bc5e279335596bf"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-session-login.log",
+      "bytes": 346,
+      "sha256": "5a4279f08ae9d6beca64bac6bcb600d0bba672500015436ca03b4fada4646480"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-session-login2.log",
+      "bytes": 1226,
+      "sha256": "e6d2815dce33d0a0bc50ce45a2df2a4179881b195095707591d9df03d138b8fc"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-session-login3.log",
+      "bytes": 1326,
+      "sha256": "f3c1db52f75d5ec176e7e7b06acd66ebb54044f9e49b8442b18ba844e899bf0d"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-session.py",
+      "bytes": 2169,
+      "sha256": "3bcae88b2b9e45903e22fb0a65dd5aadf184c5c56f9db89d26afc82c457386f7"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-small-prep-queries.json",
+      "bytes": 782,
+      "sha256": "99c23503ca9c8c90aeec804bf49b235497edb21dd7d7901ef363944aa4d288ea"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-student-create-control.json",
+      "bytes": 94,
+      "sha256": "a5c0af523b03bb8be6f200c662649d9bcb89be714f4a47b5d3934004518383a4"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-student-create-target1.json",
+      "bytes": 91,
+      "sha256": "b1de804dd26deca84a754830ee1062897376884bc89089bd04fbac7dc3d3b2f0"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-student-create-target2.json",
+      "bytes": 91,
+      "sha256": "99e11e8457fce2dcebad313eb78511670af7fe481127e773d6580dbd15f4666c"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-tag-baseline-queries.json",
+      "bytes": 537,
+      "sha256": "6d412b2a91b07f1ce6a119bc64adc1bc79bc659a3c1bbd7c4f91c445bad10108"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-tag-baseline.log",
+      "bytes": 19,
+      "sha256": "7d3447bc74559e3bfb0abf3efca9b27eb309155fa9e4c021881d130b3a87040d"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-tag-bulk-db.log",
+      "bytes": 21,
+      "sha256": "b9c5cbf8b6f936db176bc4e445c5189fe6f230937a10f8dd3324695d78d42c51"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-tag-bulk-input.json",
+      "bytes": 233,
+      "sha256": "ffada595c85917d3f1129a09d635a2779678eed7e58b3dd17089fb4bb17f1946"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-tag-bulk-save.json",
+      "bytes": 793,
+      "sha256": "283e7a2e5b7b9d397f006bc147468d0d60fb1d047f642e57ea9b6695a4f82051"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-tag-bulk-save.log",
+      "bytes": 116,
+      "sha256": "8cd8e2d54946c87cbde520cdec35aff8c743c260bb18f0972399021f04dc64fe"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-tag-clear-db.log",
+      "bytes": 25,
+      "sha256": "1d2fe41add58f2c8dff19ab9deb4c2f3f530d1017482ea473f0d059bf12e9fba"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-tag-clear-input.json",
+      "bytes": 232,
+      "sha256": "be50980e8a1a01203d8ea4ac85e1b699c81b45e39179df551fb98bf769b85e1e"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-tag-clear-restore.json",
+      "bytes": 780,
+      "sha256": "ef0d037fee954550de2244ab46216c8129ef395f6a483da86e70f3407af1a075"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-tag-clear-restore.log",
+      "bytes": 120,
+      "sha256": "1bf63c4027ac88760e82e8819420029828e9e6399106da3350d8df7b26add41c"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-tag-filter2-bulk-after.json",
+      "bytes": 1008,
+      "sha256": "1e43bf52fe9f8fe9e0a6747c77fe3d3fe9598db76331d4d730310c568c142c49"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-tag-filter2-bulk-after.log",
+      "bytes": 234,
+      "sha256": "03c3328ea8fbcf750abad3096e330a7910757fdec6095cbc362f5a13540d9f1a"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-tag-filter2-input.json",
+      "bytes": 242,
+      "sha256": "2f4d3e4f354b004eca2327f2920eb5a42d6448d8e5d96b7bd6045524a99e955a"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-tag-final-queries.json",
+      "bytes": 425,
+      "sha256": "62978a05c1c39d1358bedc9f56841260c69056558285b086b264b347d0ecda47"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-tag-options.json",
+      "bytes": 7138,
+      "sha256": "657cc7867f6fe8edfdb1055459a02279cdc49cd038e4949ee58d523080db65c4"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-tag-single-db.log",
+      "bytes": 23,
+      "sha256": "5b7d25c010d5694fce4992c800958777c2b7382da3f074682c6520bf4acea331"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-tag-single-input.json",
+      "bytes": 161,
+      "sha256": "e21834210ef05193b1bae61244685060c4330b9e7e6297286bd50e4c4d86a8a8"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-tag-single-save.json",
+      "bytes": 680,
+      "sha256": "400a6d9eeaddb2ad5dc29bc2cd3d7cc551a7ef665f712c33df6c21e70aa35648"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-tag-single-save.log",
+      "bytes": 118,
+      "sha256": "c0a87ca45959527eff332b6d8b8cef637c7e7e61e21c2285c53006986e0197ce"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-tags-before.log",
+      "bytes": 1221,
+      "sha256": "fa3e11e8ae50925ab15618a2c77412083b80fa8488903609a22be2703a820e94"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-tags-bulk-after.log",
+      "bytes": 252,
+      "sha256": "10bbbf71316592cdbcfe9bbfc7876d77b96fce022202cbd918795499a88249f1"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-tags-interface-before.json",
+      "bytes": 2362,
+      "sha256": "17183b5f91c824ece0bed1252b8d534ec7d86ff7ce2886816b931f0436657795"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-tags-interface-bulk-after.json",
+      "bytes": 997,
+      "sha256": "61a46cbfea874c76571a047ebbc80cc2dc7301c8074f2c2bbf0ad9a4a071425a"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-tags-options-input.json",
+      "bytes": 24,
+      "sha256": "aeb71cde2fad2770c350c5e4c554fc4614bf305cd955a8b1d175eb06b87d5978"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-tags-options.log",
+      "bytes": 2747,
+      "sha256": "06bcbde09691a44bb06fed237ef4c46b510132b31d5ed469b791d05ac54e3a2d"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-target2-transferred.log",
+      "bytes": 26,
+      "sha256": "3a7ddf937181e9e465fdb65ba95ddd77b52455a3f6c4365d2deb53a8aca9c4a3"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-task-before-queries.json",
+      "bytes": 173,
+      "sha256": "093f3d3c911d8ab02d23177dcfa2bc043bbf8b04f4b657f9b81b3cc838f81799"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-task-before.log",
+      "bytes": 25,
+      "sha256": "fa2d2781df4fe82091d08a7c39cc6990b34411d07cb57f256955d5a7b96f0eba"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-task-final-queries.json",
+      "bytes": 301,
+      "sha256": "c19af17659535a00931dd52b7de2b2493f993865a0753b0f8067059192a8d286"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-three-paid.log",
+      "bytes": 17,
+      "sha256": "b8cc6a6997ee8fd8a7c9a506fe29f2f4155bad093b491dcf3e63d59437868b73"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-transfer-target2-input.json",
+      "bytes": 183,
+      "sha256": "2a2a9344c681055639e90edfd31114742404f3c5a340dc37d197605d9cb603cf"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-transfer-target2.json",
+      "bytes": 941,
+      "sha256": "d8c29cb1e1c23456af6f90708aff0531be1230dc3c6da3d7c3028dd36fedf907"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-transfer-target2.log",
+      "bytes": 670,
+      "sha256": "4563be9f26b8a780c84dc2e6d7990d8cd27e7f50a3d6a71024d2a8ac9fc207db"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-ui-current.txt",
+      "bytes": 6376,
+      "sha256": "bdca09ec58a393220e5d324a70d1e29422b7fe053391b37422fca1677eeccd70"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-ui.py",
+      "bytes": 724,
+      "sha256": "57c2ccbdb7f5610f0b011d1284cefa6f3336818ca89466b052fdc64264197ca1"
+    },
+    {
+      "path": "/tmp/w1-p0-243aa61a/round7/qiwei-write-results.py",
+      "bytes": 7285,
+      "sha256": "95ba14e9cf067de947de7d5734aba4581180eb0709d2f454ebb043533a2e8ba1"
+    }
+  ]
+}

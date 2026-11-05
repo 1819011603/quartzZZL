@@ -1,0 +1,33 @@
+{
+  "time": "2026-11-05T18:30:17.528544+08:00",
+  "environment": "TEST",
+  "read_only": true,
+  "databases": {
+    "ees_data": {
+      "queries": {
+        "new_tasks": {
+          "sql": "SELECT * FROM batch_operate_task WHERE id>1964 ORDER BY id LIMIT 10",
+          "rows": [
+            {
+              "id": 1965,
+              "number": 294434116095472640,
+              "task_type": 2,
+              "create_account_id": 177071,
+              "process_status": 0,
+              "meta_data": null,
+              "process_count": 0,
+              "download_status": 0,
+              "task_result": null,
+              "source_type": 1,
+              "source_id": 294434116095472640,
+              "is_del": 0,
+              "create_time": "2026-11-05 18:30:06",
+              "update_time": "2026-11-05 18:30:06"
+            }
+          ],
+          "exit": 0
+        }
+      }
+    }
+  }
+}

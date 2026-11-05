@@ -1,0 +1,36 @@
+{
+  "time": "2026-11-05T18:10:10.033909+08:00",
+  "environment": "TEST",
+  "url": "https://test-fuwu.baijia.com/bgwApi/student-center/batchOperate/tag/save",
+  "request": {
+    "scene": "continuationService",
+    "type": 1,
+    "clazzStudents": [
+      {
+        "clazzNumber": "574882679202260992",
+        "userId": "7704846434"
+      },
+      {
+        "clazzNumber": "574882679202260992",
+        "userId": "7704846439"
+      }
+    ],
+    "userIds": [
+      "7704846434",
+      "7704846439"
+    ],
+    "studentTags": []
+  },
+  "headers": {
+    "content-type": "application/json",
+    "traffic-env": "test",
+    "b_client": "EES"
+  },
+  "httpStatus": 200,
+  "trace": "f868a36f-547b-43fa-8bf7-25fae48adcf4.0.3",
+  "response": {
+    "code": 0,
+    "data": {},
+    "msg": ""
+  }
+}

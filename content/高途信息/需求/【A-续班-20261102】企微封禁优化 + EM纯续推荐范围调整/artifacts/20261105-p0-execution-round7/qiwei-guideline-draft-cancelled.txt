@@ -1,0 +1,14 @@
+
+Update available: 1.11.0 -> 1.12.0
+Run `npm install -g chrome-devtools-mcp@latest` and `chrome-devtools start` to update and restart the daemon.
+
+Successfully clicked on the element
+## Latest page snapshot
+uid=1_0 RootWebArea "客户关系管理-班级花名册" url="https://test-fuwu.baijia.com/crm/cronus/clazzRosterOL?tabKey=default"
+  uid=70_0 dialog modal
+    uid=70_1 image "exclamation-circle"
+    uid=70_2 "确认离开此页面？"
+    uid=70_3 "你所做的更改尚未保存，离开后将丢失当前编辑的内容"
+    uid=70_4 button "取 消"
+    uid=70_5 button "确 定" focusable focused
+

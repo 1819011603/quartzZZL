@@ -1,0 +1,31 @@
+{
+  "time": "2026-11-05T18:21:33.090895+08:00",
+  "environment": "TEST",
+  "url": "http://10.255.176.174:28688/test/acl/compare/service",
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.yunying.student.center.acl.IdQueryAclService#queryExternalUserIdByHook",
+    "params": [
+      [
+        "7881301368994397"
+      ],
+      "1970325001068435"
+    ]
+  },
+  "headers": {
+    "content-type": "application/json",
+    "traffic-env": "test",
+    "b_client": "EES",
+    "Host": "STUDENT-CENTER"
+  },
+  "httpStatus": 200,
+  "trace": "student-center.610.17938740932028446",
+  "response": {
+    "code": 0,
+    "data": {
+      "idQueryAclServiceImpl#queryExternalUserIdByHook": {
+        "7881301368994397": "wmk9_HCQAA2XVDfX4uVYpaz7AXvh9rzg"
+      }
+    },
+    "msg": ""
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "ok": true,
+  "url": "https://test-fuwu.baijia.com/bgwApi/linkup/wk/relation/editWkRemark",
+  "appId": "linkup.gaotu100.com",
+  "pathInfo": "/linkup",
+  "rewriteInfo": "--",
+  "statusInfo": "正常",
+  "fuwuBase": "https://test-fuwu.baijia.com/bgwApi/linkup",
+  "routeId": 184,
+  "env": "test",
+  "cached": false
+}

@@ -1,0 +1,54 @@
+
+Update available: 1.11.0 -> 1.12.0
+Run `npm install -g chrome-devtools-mcp@latest` and `chrome-devtools start` to update and restart the daemon.
+
+## Pages
+1: https://test-mi.gaotu100.com/ark/app-activity/task [selected]
+2: 手把手教你用飞书 Webhook 打造一个消息推送 Bot - 开发者广场 (https://open.feishu.cn/community/articles/7271149634339422210)
+3: code.claude.com (https://code.claude.com/docs/zh-CN/env-vars)
+4: 字段工单详情 (https://gaia.baijia.com/gaia/field/fieldWorkflow/detail?number=294409306587017216)
+5: 模型属性管理 (https://test-gaia.baijia.com/gaia/field/modelManager)
+6: Sub2API 用量分析 (https://seed.baijia.com/base/service/api/sub2api/usage_html?qingzhou_private_token=[REDACTED]
+7: https://www.zhihu.com/
+8: https://www.zhihu.com/
+9: 【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整（需求说明与技术方案） -... (https://gaotuedu.feishu.cn/wiki/MCUowPVhriDC3okHO0mcW49Unyf)
+10: ‌​‬⁢﻿​‬‬⁢​⁡‌​‍⁣‌⁢​⁢​‬‌⁡⁤​⁡‌​⁣⁤⁤⁤⁢⁡⁢‬﻿‌⁣​⁡‍‬⁤‬‌​... (https://gaotuedu.feishu.cn/wiki/ZODMwGgXEigangk04TAcAvPAnAc)
+11: EES 小班续班服务「大班预报名科目」取值异常排查与结论 - 灵犀云文档 (https://gaotuedu.feishu.cn/docx/VKWQdGR2Ao2tJlxvbcrcI1QDnHh)
+12: 【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整（需求说明与技术方案） -... (https://gaotuedu.feishu.cn/wiki/MCUowPVhriDC3okHO0mcW49Unyf)
+13: ‍‍﻿﻿‌‌​⁢‍⁢‬‍⁤‌​‍﻿⁣​​​⁢⁣⁣⁡​​‍⁢⁢‍⁤‬‍‌﻿‬﻿⁣‬​‍​⁤⁤‬​... (https://gaotuedu.feishu.cn/wiki/KeCZwdJTBiIJDJkX8lRcGb9gnCs)
+14: https://test-mi.gaotu100.com/ark/app-promotions/continuation-classes/list
+15: caseServer (https://qa.baijia.com/banshan/#/caseManager/171/50162/72343/3)
+16: https://test-mi.gaotu100.com/ark/app-promotions/continuation-classes/list
+17: caseServer (https://qa.baijia.com/banshan/#/caseManager/171/50162/72344/3)
+18: gaotuedu.feishu.cn (https://gaotuedu.feishu.cn/wiki/KeCZwdJTBiIJDJkX8lRcGb9gnCs)
+19: 缺陷-高途工单系统-TAPD平台 (https://www.tapd.cn/tapd_fe/31170363/bug/list?confId=1131170363001860151)
+20: gaotuedu.feishu.cn (https://gaotuedu.feishu.cn/docx/AIl0dFGnmoLE72xJHA8cstqDnIe)
+21: Sub2API 用量分析 (https://seed.baijia.com/base/service/api/sub2api/usage_html?qingzhou_private_token=[REDACTED]
+22: ‬⁢⁢⁡⁡⁢‬⁡﻿​⁡‌​‍​‌⁡‬‌⁤‌⁤⁡‬‍⁣﻿⁤‍​‬‍‍⁤‍⁤﻿‍‬​‬⁡⁣‌‌⁤‍... (https://gaotuedu.feishu.cn/wiki/ZODMwGgXEigangk04TAcAvPAnAc)
+23: 问题2：青藤预报名科目同时显示大小班——涉及课程关联清单 - 灵犀云文档 (https://gaotuedu.feishu.cn/docx/Jwjxd3lINobFwsxw08hcPGuVnSb)
+24: kvstore.console.aliyun.com (https://kvstore.console.aliyun.com/Redis/instance/cn-beijing/r-2zee635504fa2f54/Normal/VPC/redis.master.stand.default/keyinfo)
+25: qingzhou.baijia.com (https://qingzhou.baijia.com/#/myApp/buildPublish/rdRecord?appNid=baijia.gt.ecommerce.product.product-b&deployType=normal)
+26: Apifox (https://app.apifox.com/project/4899387)
+27: 问题-轻舟 (https://qingzhou.baijia.com/#/myWorkbench/todo/issue)
+28: test-gaia.baijia.com (https://test-gaia.baijia.com/gaia/publish-plan)
+29: 【大数据】ETL 实例流量分析 - 灵犀云文档 (https://gaotuedu.feishu.cn/wiki/BnZxwZr3xiMS1CkiDCAcoOcDnBd?sheet=aA0g61)
+30: 新标签页 (chrome://newtab/)
+31: WIP: feat: /feign/clazzSet/list/full 联报库存查询增加本地... (https://git.baijia.com/gaotu/course-setting/-/merge_requests/1351/diffs)
+32: gaotu / yunying_workbench / student-center · Gi... (https://git.baijia.com/gaotu/yunying_workbench/student-center/-/tree/feature-weixin-opt)
+33: gaotuedu.feishu.cn (https://gaotuedu.feishu.cn/docx/Jwjxd3lINobFwsxw08hcPGuVnSb)
+34: 客户关系管理-班级花名册 (https://test-fuwu.baijia.com/crm/cronus/clazzRosterOL?tabKey=default)
+35: ‍‌⁡​﻿⁣⁣​‬⁣﻿​﻿‍⁣﻿⁡​⁣​⁡⁤⁤​﻿﻿‬⁣⁢⁡​​⁣‍⁤⁤⁤⁡​⁣​‌​‬‌﻿⁣... (https://gaotuedu.feishu.cn/docx/BvtEdAokGoQ9W1x7Vp7clPb0nVB?dcuId=7455244830644961308)
+36: 应用告警-轻舟 (https://qingzhou.baijia.com/#/bigAlarm/appMonitor/alarm?activeName=alarmQuery&appNid=baijia.gt.dev-base.sre-monitor.sre-resource-alarm-dba&alarmLevel=highPriority&environment=prod&startTime=1793758020313&endTime=1793761620313)
+37: https://www.zhihu.com/
+38: 客户关系管理-首页 (https://test-fuwu.baijia.com/crm/cronus/pageIndex)
+39: Sub2API 用量分析 (https://seed.baijia.com/base/service/api/sub2api/usage_html?qingzhou_private_token=[REDACTED]
+40: 问题2：青藤预报名科目同时显示大小班——涉及课程关联清单 - 灵犀云文档 (https://gaotuedu.feishu.cn/docx/Jwjxd3lINobFwsxw08hcPGuVnSb)
+41: 【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整（需求说明与技术方案） -... (https://gaotuedu.feishu.cn/wiki/MCUowPVhriDC3okHO0mcW49Unyf)
+42: apifox - Google 搜索 (https://www.google.com.hk/search?q=apifox&oq=&gs_lcrp=EgZjaHJvbWUqCQgDECMYJxjqAjIJCAAQIxgnGOoCMgkIARAjGCcY6gIyCQgCECMYJxjqAjIJCAMQIxgnGOoCMgkIBBAjGCcY6gIyCQgFECMYJxjqAjIJCAYQIxgnGOoCMgkIBxAjGCcY6gLSAQkyNzU4MGowajeoAgiwAgE&sourceid=chrome&source=chrome.ob&ie=UTF-8)
+43: ‌‌​⁡​​‍​⁢‍‍‌​​⁢‬﻿​‬‌‌‬⁤﻿‌​﻿⁡⁢‍‬​‬⁣‍‬⁢‍﻿⁡﻿⁢﻿⁣​⁤﻿... (https://gaotuedu.feishu.cn/wiki/MCUowPVhriDC3okHO0mcW49Unyf)
+44: 发布计划详情-轻舟 (https://qingzhou.baijia.com/#/publishArrangement/subPublishArrangement/publishPlan/detail?storyId=&pageNum=1&id=24210&action=edit)
+45: gaotuedu.feishu.cn (https://gaotuedu.feishu.cn/wiki/UewqwsMWOiunOgk9Kloce1Jrn52)
+46: qingzhou.baijia.com (https://qingzhou.baijia.com/#/publishArrangement/subPublishArrangement/publishPlan/detail?storyId=&pageNum=1&id=24210&action=edit)
+47: https://www.zhihu.com/
+48: ‍‍‌‍​⁤⁢⁢​‌⁣⁣⁡⁤⁢​‌⁤‌⁤﻿​‌⁤​⁡‬​⁤⁡⁡⁡⁡⁤‌‍‬⁣‍‬﻿‍​‬⁤⁢⁤... (https://gaotuedu.feishu.cn/wiki/Af3VwjizwiKxDhkUFtEcvpZpn4P)
+49: ⁡⁤⁤‍﻿​⁣​⁢​​⁢⁡⁣​⁡​⁢⁡​⁡​‍‍⁢​⁡‬⁡‬﻿⁤⁢⁤​​‍﻿⁤‌‍⁡‬‍⁤⁡​... (https://gaotuedu.feishu.cn/docx/Ar7YdcPqsowMITxRBNacwjkpn3d)

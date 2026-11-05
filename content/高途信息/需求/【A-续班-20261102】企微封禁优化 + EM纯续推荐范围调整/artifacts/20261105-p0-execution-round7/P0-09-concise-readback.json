@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"section\" requested-start=\"doxcnxP2OIzcpqvEUvTcXjq3SEw\"><h1 id=\"doxcnxP2OIzcpqvEUvTcXjq3SEw\">P0-09｜计划缓存隔离、开关关闭与空值/故障降级</h1><p id=\"doxcnffrZSXSD9ysq9jyeXWP4SM\">功能与优先级：P0。预期依据：cart本轮修复关键保留行为；关联不能污染主计划缓存。</p><h2 id=\"doxcnYvlLYjLQXoaT40yy5nRbGe\">现场过 case：照着做</h2><p id=\"doxcnscEuqGgkIahLCW1BDR827c\"><b>前置：</b>专用主计划588858850300473344关联A/B，学员7658129872；主前班B测试-五年级语文春季前置B：number588861397654462464／bizNumber15YW26C6M111001。TEST/cart a34016fd。</p><p id=\"doxcnpBIpijKOeSzFUI9t3MQqhg\"><b>操作：</b>读取主计划课程集；发起合并推荐；再次读取主集。缓存开/关组合、正/空缓存、批量失败回退及总开关关闭分别比较，记录并恢复配置；不强清预热伪造立即生效。</p><p id=\"doxcnp8KaSZpkKERzdPc0o5TRQg\"><b>预期：</b>推荐请求可合并主从，但原主集仍只有588861395571990528；开关关闭回单计划，异常按原降级。正值300秒、空值60秒、预热最长26小时是不同边界，不用一次命中替代全部组合。</p><p id=\"doxcn6a4yqSXO9AaU4g9hqpzWVe\"><b>实际：</b>已验证：本轮推荐前后主集均仅1课，推荐实际3来源；已发布配置renewal.query.cache.enabled=false，不能声称本次走过本地缓存隔离分支。局部正缓存日志及94例程序测试复用；运行态本地缓存组合、负缓存/故障/关闭对照没做，未改Apollo。</p><p id=\"doxcniLTaTNTspHwcmksmVlWoDf\">证据：<a href=\"https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr#doxcnGHfUI84QWkxuz3fjNMjhGd\">P0-09集中原件、详细计算与历史记录</a>；本轮新增原件见文末TEST证据包。</p></fragment>",
+      "document_id": "ZQUXdlDxWoknJhxu914c2uVYnBr",
+      "revision_id": 186
+    }
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.70",
+      "latest": "1.0.99",
+      "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+    }
+  }
+}

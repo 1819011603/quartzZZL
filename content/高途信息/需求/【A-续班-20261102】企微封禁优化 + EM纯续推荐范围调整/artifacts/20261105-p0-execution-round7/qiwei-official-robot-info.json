@@ -1,0 +1,89 @@
+{
+  "time": "2026-11-05T18:04:56.933062+08:00",
+  "environment": "TEST",
+  "url": "http://10.255.176.174:28688/test/acl/compare/service",
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.yunying.student.center.acl.impl.SSRobotAclService#getRobotInfosByLogicIds",
+    "params": [
+      [
+        10085011,
+        10085017,
+        10094006
+      ]
+    ]
+  },
+  "headers": {
+    "content-type": "application/json",
+    "traffic-env": "test",
+    "b_client": "EES",
+    "Host": "STUDENT-CENTER"
+  },
+  "httpStatus": 200,
+  "trace": "student-center.2137.17938730968488027",
+  "response": {
+    "code": 0,
+    "data": {
+      "com.gaotu.yunying.student.center.acl.impl.SSRobotAclService#getRobotInfosByLogicIds": {
+        "10085017": {
+          "logicId": 10085017,
+          "clickId": "win2411538",
+          "username": "1688856528704656",
+          "alias": "",
+          "nickname": "弓雪萌",
+          "phone": "[REDACTED]",
+          "status": 100,
+          "specialized": 8,
+          "qrCode": "",
+          "cluster": 9998,
+          "picUrl": "https://wework.qpic.cn/wwpic3az/339358_fneS3H-qQNyUj8__1733365300/0",
+          "machineIsVirtual": 12,
+          "terminalBusinessSource": 2,
+          "subType": 0,
+          "acctId": "gongxuemeng",
+          "corpId": "1970324992993271",
+          "belongWorker": "gongxuemeng"
+        },
+        "10085011": {
+          "logicId": 10085011,
+          "clickId": "win2411537",
+          "username": "1688855652617956",
+          "alias": "",
+          "nickname": "弓雪萌11",
+          "phone": "[REDACTED]",
+          "status": 0,
+          "specialized": 8,
+          "qrCode": "",
+          "cluster": 9998,
+          "picUrl": "https://wework.qpic.cn/wwpic3az/600446_inPnUQCETiaYoGM_1733385075/0",
+          "machineIsVirtual": 12,
+          "terminalBusinessSource": 2,
+          "subType": 0,
+          "acctId": "BeShan",
+          "corpId": "1970325001068435",
+          "belongWorker": "gongxuemeng"
+        },
+        "10094006": {
+          "logicId": 10094006,
+          "clickId": "",
+          "username": "1688856353639574",
+          "alias": "",
+          "nickname": "天天开心老师",
+          "phone": "[REDACTED]",
+          "status": 100,
+          "specialized": 11,
+          "qrCode": "http://file.gsxservice.com/stormEarth/robotFiles/cw/qrCode/023bf959345d8eeb0cd50480ea94b6e8.jpg",
+          "qrCodeContent": "https://work.weixin.qq.com/u/vcdb9d101b50e16604?v=5.0.10.79131&bb=72bfce7f01",
+          "cluster": 10045,
+          "picUrl": "",
+          "machineIsVirtual": 8,
+          "terminalBusinessSource": 2,
+          "subType": 0,
+          "acctId": "[REDACTED NONTEST CONTACT]",
+          "corpId": "1970325001068435",
+          "belongWorker": "shiaipeng"
+        }
+      }
+    },
+    "msg": ""
+  }
+}

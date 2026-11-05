@@ -1,0 +1,77 @@
+{
+  "time": "2026-11-05T17:56:53.458003+08:00",
+  "environment": "TEST",
+  "url": "http://10.255.176.174:28688/test/acl/compare/service",
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.yunying.student.center.acl.FriendRelationService#getTeacherWechatInfos",
+    "params": [
+      "177071"
+    ]
+  },
+  "status": 200,
+  "trace": "student-center.899884.17938726134855665",
+  "response": {
+    "code": 0,
+    "data": {
+      "friendRelationServiceImpl#getTeacherWechatInfos": [
+        {
+          "tutorId": 177071,
+          "logicId": 10100037,
+          "wechatId": "1688855565650628",
+          "username": "gongxuemeng",
+          "nickname": "弓雪萌",
+          "wechatNickname": "弓雪萌"
+        },
+        {
+          "tutorId": 177071,
+          "logicId": 10085011,
+          "wechatId": "1688855652617956",
+          "username": "gongxuemeng",
+          "nickname": "弓雪萌",
+          "wechatNickname": "弓雪萌11"
+        },
+        {
+          "tutorId": 177071,
+          "logicId": 10095005,
+          "wechatId": "1688856064652300",
+          "username": "gongxuemeng",
+          "nickname": "弓雪萌",
+          "wechatNickname": "阎泳乐(yanyongle01)"
+        },
+        {
+          "tutorId": 177071,
+          "logicId": 10099026,
+          "wechatId": "1688856161715804",
+          "username": "gongxuemeng",
+          "nickname": "弓雪萌",
+          "wechatNickname": "石爱鹏"
+        },
+        {
+          "tutorId": 177071,
+          "logicId": 10094006,
+          "wechatId": "1688856353639574",
+          "username": "gongxuemeng",
+          "nickname": "弓雪萌",
+          "wechatNickname": "天天老师"
+        },
+        {
+          "tutorId": 177071,
+          "logicId": 10085017,
+          "wechatId": "1688856528704656",
+          "username": "gongxuemeng",
+          "nickname": "弓雪萌",
+          "wechatNickname": "弓雪萌"
+        },
+        {
+          "tutorId": 177071,
+          "logicId": 10085044,
+          "wechatId": "wxid_qr8pynqree9h22",
+          "username": "gongxuemeng",
+          "nickname": "弓雪萌",
+          "wechatNickname": "测测测"
+        }
+      ]
+    },
+    "msg": ""
+  }
+}

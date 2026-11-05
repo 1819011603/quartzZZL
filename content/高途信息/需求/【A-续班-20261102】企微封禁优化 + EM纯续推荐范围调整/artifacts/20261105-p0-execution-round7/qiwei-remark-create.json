@@ -1,0 +1,25 @@
+{
+  "time": "2026-11-05T18:15:19.534215+08:00",
+  "environment": "TEST",
+  "url": "https://test-fuwu.baijia.com/bgwApi/student-center/remark/creat/edit/task",
+  "request": {
+    "userIds": [
+      "654500"
+    ],
+    "wkRemarkTemplate": "W1-243aa61a-企微备注验证"
+  },
+  "headers": {
+    "content-type": "application/json",
+    "traffic-env": "test",
+    "b_client": "EES"
+  },
+  "httpStatus": 200,
+  "trace": "9d3dbd16-ebde-401b-a48d-e824b13f42c2.0.3",
+  "response": {
+    "code": 0,
+    "data": {
+      "resultStatus": true
+    },
+    "msg": ""
+  }
+}

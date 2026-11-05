@@ -1,0 +1,20 @@
+{
+  "scope": "page34 xhr/fetch between before-link and after-return/edit",
+  "new_requests": [
+    "reqid=1032 POST https://cov.baijia.com/open/fe/dataReport [200]",
+    "reqid=1033 POST https://cov.baijia.com/open/fe/dataReport [200]",
+    "reqid=1038 GET https://test-fuwu.baijia.com/bgwApi/reachPortal/scrm/wechat/task/checkWkBind [200]",
+    "reqid=1039 POST https://test-fuwu.baijia.com/bgwApi/reachPortal/scrm/wechat/task/groupChatConfirm [200]",
+    "reqid=1042 POST https://test-fuwu.baijia.com/bgwApi/crmApp/notification/message/importantLeadList [200]",
+    "reqid=1045 POST https://test-fuwu.baijia.com/bgwApi/reachPortal/sensitive/check [200]",
+    "reqid=1048 POST https://cov.baijia.com/open/fe/dataReport [200]",
+    "reqid=1049 POST https://cov.baijia.com/open/fe/dataReport [200]",
+    "reqid=1051 POST https://test-fuwu.baijia.com/bgwApi/component/student-center/studentClazz/largeClazzList/views/count [200]",
+    "reqid=1055 GET https://test-fuwu.baijia.com/bgwApi/apis/apollo/getItem?key=gaotu-fe-epic [200]",
+    "reqid=1058 POST https://test-fuwu.baijia.com/bgwApi/gaiaCenter/guide/get [200]",
+    "reqid=1060 POST https://cov.baijia.com/open/fe/dataReport [200]",
+    "reqid=1061 POST https://cov.baijia.com/open/fe/dataReport [200]",
+    "reqid=1065 POST https://test-fuwu.baijia.com/bgwApi/reachPortal/sensitive/check [pending]"
+  ],
+  "limit": "Only captured xhr/fetch on page34; not a universal audit of all transports/pages."
+}

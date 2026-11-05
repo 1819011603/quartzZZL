@@ -1,0 +1,1 @@
+{"ees_data":{"task_max":"SELECT MAX(id) max_id FROM batch_operate_task","task_index":"SHOW INDEX FROM batch_operate_task","export_index":"SHOW INDEX FROM export_job_task"}}

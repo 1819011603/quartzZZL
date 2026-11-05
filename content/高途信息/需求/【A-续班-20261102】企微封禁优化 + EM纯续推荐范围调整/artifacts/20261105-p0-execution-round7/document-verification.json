@@ -1,0 +1,186 @@
+{
+  "document": "https://gaotuedu.feishu.cn/wiki/KeCZwdJTBiIJDJkX8lRcGb9gnCs",
+  "revision": 247,
+  "contract_items": 25,
+  "original_P0": 30,
+  "cards": 12,
+  "card_checks": {
+    "P0-01": {
+      "body_paragraphs": 5,
+      "old_numbered_evidence_blocks_retained": 24,
+      "appendix_link": "#doxcnfBYeN6QgMrPRZErw9z8aQb"
+    },
+    "P0-02": {
+      "body_paragraphs": 5,
+      "old_numbered_evidence_blocks_retained": 24,
+      "appendix_link": "#doxcnBQv7THvR4wJVYUHtwxRHFD"
+    },
+    "P0-03": {
+      "body_paragraphs": 5,
+      "old_numbered_evidence_blocks_retained": 30,
+      "appendix_link": "#doxcnQUQz4Qo76wJEfziMeAemRb"
+    },
+    "P0-04": {
+      "body_paragraphs": 5,
+      "old_numbered_evidence_blocks_retained": 36,
+      "appendix_link": "#doxcnsjgX42zlNpo9SQZUlCk0Nd"
+    },
+    "P0-05": {
+      "body_paragraphs": 5,
+      "old_numbered_evidence_blocks_retained": 25,
+      "appendix_link": "#doxcnS9ew4d0Oe4SQt5hDEJ6AYq"
+    },
+    "P0-06": {
+      "body_paragraphs": 5,
+      "old_numbered_evidence_blocks_retained": 27,
+      "appendix_link": "#doxcnjFMEv8PkgizxWExDRB7hjW"
+    },
+    "P0-07": {
+      "body_paragraphs": 5,
+      "old_numbered_evidence_blocks_retained": 24,
+      "appendix_link": "#doxcnWLuRsDc83ZGwo3lEcHfPJf"
+    },
+    "P0-08": {
+      "body_paragraphs": 5,
+      "old_numbered_evidence_blocks_retained": 34,
+      "appendix_link": "#doxcnfMnoaXrdSpq8n4hs53e0Be"
+    },
+    "P0-09": {
+      "body_paragraphs": 5,
+      "old_numbered_evidence_blocks_retained": 24,
+      "appendix_link": "#doxcnGHfUI84QWkxuz3fjNMjhGd"
+    },
+    "P0-10": {
+      "body_paragraphs": 5,
+      "old_numbered_evidence_blocks_retained": 29,
+      "appendix_link": "#doxcnkfM3wshrMfbPF20vMnMM7I"
+    },
+    "P0-11": {
+      "body_paragraphs": 5,
+      "old_numbered_evidence_blocks_retained": 28,
+      "appendix_link": "#doxcnCL6pFczHkM4YODpaedQrOf"
+    },
+    "P0-12": {
+      "body_paragraphs": 5,
+      "old_numbered_evidence_blocks_retained": 24,
+      "appendix_link": "#doxcnzj8ZQqSu8R6wuIQ6kdXBgf"
+    }
+  },
+  "body_characters": {
+    "P0-01": 445,
+    "P0-02": 392,
+    "P0-03": 482,
+    "P0-04": 711,
+    "P0-05": 617,
+    "P0-06": 558,
+    "P0-07": 379,
+    "P0-08": 627,
+    "P0-09": 479,
+    "P0-10": 566,
+    "P0-11": 696,
+    "P0-12": 493
+  },
+  "old_numbered_body_blocks_retained": 329,
+  "candidate_list_11_items_retained": true,
+  "original_attachments_retained": 2,
+  "new_attachment_present": true,
+  "local_anchor_links_checked": 28,
+  "missing_links": [],
+  "unchanged_external_links": [
+    "https://gaotuedu.feishu.cn/wiki/ZiRZwGOJGi3CtnksQg1cJwZsn9b",
+    "https://gaotuedu.feishu.cn/wiki/UewqwsMWOiunOgk9Kloce1Jrn52",
+    "https://gaotuedu.feishu.cn/docx/AQEtdIeKzo7P5IxeQEzc7EpxnBe",
+    "https://qa.baijia.com/banshan/#/caseManager/171/50162/72343/3",
+    "https://git.baijia.com/gaotu/yunying_workbench/student-center/-/merge_requests/1528/diffs",
+    "https://git.baijia.com/gaotu/yunying_workbench/student-center/-/blob/7f9bca3872c10f4b6766f1b3a612404805e271fb/student-center-service/src/main/java/com/gaotu/yunying/student/center/domain/service/roster/RenewalStudentTagsRecallService.java#L148",
+    "https://qa.baijia.com/banshan/#/caseManager/171/50162/72344/3"
+  ],
+  "calculation_and_filter_semantic_review": "P0-08 actual100×1+0×1−0=100 cents;P0-06 grade16 sameSKU2sources→1;P0-04 inclusion/exclusion sentence, not forcedmath;P0-03 10/11dedup limit;P0-09 300s/60s/26h distinct;unknown expansion class identifiers explicit",
+  "information_completeness": {
+    "cards": {
+      "完整可复现": [
+        "P0-01"
+      ],
+      "前置准备后可执行": [
+        "P0-02"
+      ],
+      "信息仍缺失": [
+        "P0-03",
+        "P0-04",
+        "P0-05",
+        "P0-06",
+        "P0-07",
+        "P0-08",
+        "P0-09",
+        "P0-10",
+        "P0-11",
+        "P0-12"
+      ]
+    },
+    "original30": {
+      "完整可复现": [
+        "REN-B02-001",
+        "REN-B02-002",
+        "QW-B05-001",
+        "QW-B05-002"
+      ],
+      "前置准备后可执行": [
+        "TC-G001",
+        "TC-G002",
+        "REN-B01-001",
+        "REN-B03-001",
+        "REN-B03-002",
+        "REN-B04-001",
+        "REN-B04-002",
+        "REN-B05-001",
+        "REN-B05-002",
+        "REN-B06-001",
+        "REN-B07-001",
+        "REN-B08-001",
+        "REN-B08-002",
+        "REN-B09-001",
+        "QW-G001",
+        "QW-B01-001",
+        "QW-B02-001"
+      ],
+      "信息仍缺失": [
+        "REN-B01-002",
+        "REN-B06-002",
+        "REN-B07-002",
+        "REN-B09-002",
+        "QW-B01-002",
+        "QW-B02-002",
+        "QW-B03-001",
+        "QW-B03-002",
+        "QW-B04-001"
+      ]
+    },
+    "definition": "信息完整性，不是业务通过；整卡最弱子场景；页面环境准备与对象信息缺失分开。",
+    "gaps": {
+      "P0-03": "status1主计划独立正例",
+      "P0-04": "小班主页面适用性与全入口身份",
+      "P0-05": "真实不同学年/学期、有值从扩科反例",
+      "P0-06": "跨年级同商品/纯续扩科碰撞",
+      "P0-07": "同号跨模式后第三件真实重复购物车",
+      "P0-08": "异主体/优惠对照及消耗样本重新准备",
+      "P0-09": "本地缓存组合、负缓存/故障/关闭对照；当前query.cache=false",
+      "P0-10": "小班2+1；大班ES熔断阻塞筛选",
+      "P0-11": "同班大小班页面及默认姓名/手机/身份模板基准",
+      "P0-12": "课节管理/我的线索对象及角色/加载版本"
+    },
+    "scope": "QW-B05两条原节点仅默认/联系弹窗两发送类型；卡12包含额外入口，因此原节点完整不等于整卡完整。"
+  },
+  "download_check": {
+    "upload_file_token": "OUbvbWHeNo2Ch7xvxHBch3jGn9f",
+    "download_equal": true,
+    "sha256": "f21e810d477a2939c2b152aa3cadc8eaa67cebbfff1dd77f333ae239cbf5c0be",
+    "bytes": 475888
+  },
+  "test_status_not_upgraded_by_reformat": true,
+  "platform_original_set_writes": false,
+  "source_install_skill_hash_check": "skill-concise-final-check.json",
+  "remaining_business_scope": "see current verify.md, original30 and card actual paragraphs; no whole requirement pass",
+  "children_complete": true,
+  "local_export_note": "P0-case.md exported same revision247; heading levels normalized to one local H1 without content/status change",
+  "requirement_archive_audit": "requirement-audit.log: OK,0ERROR/0WARN"
+}

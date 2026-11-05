@@ -1,0 +1,39 @@
+{
+  "ok": true,
+  "caseId": "50162",
+  "records": [
+    {
+      "recordId": 72344,
+      "title": "线上回归任务",
+      "owner": "tangwen01",
+      "executed": 0,
+      "total": 30,
+      "pass": 0,
+      "block": 0,
+      "bug": 0,
+      "url": "http://qa.baijia.com/banshan/#/caseManager/171/50162/72344/3"
+    },
+    {
+      "recordId": 72343,
+      "title": "功能用例",
+      "owner": "tangwen01",
+      "executed": 0,
+      "total": 120,
+      "pass": 0,
+      "block": 0,
+      "bug": 0,
+      "url": "http://qa.baijia.com/banshan/#/caseManager/171/50162/72343/3"
+    },
+    {
+      "recordId": 72342,
+      "title": "冒烟执行任务",
+      "owner": "tangwen01",
+      "executed": 0,
+      "total": 30,
+      "pass": 0,
+      "block": 0,
+      "bug": 0,
+      "url": "http://qa.baijia.com/banshan/#/caseManager/171/50162/72342/3"
+    }
+  ]
+}

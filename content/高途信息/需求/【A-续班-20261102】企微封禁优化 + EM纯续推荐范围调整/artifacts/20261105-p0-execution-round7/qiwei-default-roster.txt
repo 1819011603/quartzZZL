@@ -1,0 +1,55 @@
+
+Update available: 1.11.0 -> 1.12.0
+Run `npm install -g chrome-devtools-mcp@latest` and `chrome-devtools start` to update and restart the daemon.
+
+Successfully clicked on the element
+Page navigated to https://test-fuwu.baijia.com/crm/cronus/clazzRosterOL?tabKey=default.
+## Latest page snapshot
+uid=1_0 RootWebArea "客户关系管理-班级花名册" url="https://test-fuwu.baijia.com/crm/cronus/clazzRosterOL?tabKey=default"
+  uid=13_0 navigation
+    uid=13_1 image "图标" url="https://i.gsxcdn.com/1950724809_pv08eolz.svg"
+    uid=13_2 link " 首页" url="https://test-fuwu.baijia.com/crm/cronus/pageIndex"
+    uid=13_5 link " 线索" url="https://test-fuwu.baijia.com/crm/uranus/myLeads"
+    uid=13_8 link " 学员" url="https://test-fuwu.baijia.com/crm/microFairy/tutoringClassManage"
+    uid=13_11 link " 交易" url="https://test-fuwu.baijia.com/crm/microGoods/"
+    uid=13_14 link " 转介绍" url="https://test-fuwu.baijia.com/crm/microFairy/activity/transferKanBan"
+    uid=13_17 link " 数据" url="https://test-fuwu.baijia.com/crm/iris/optimizeData"
+    uid=13_20 link " 运营" url="https://test-fuwu.baijia.com/crm/uranus/allLeads"
+  uid=13_23 navigation
+    uid=13_24 "学员"
+    uid=13_25 button "辅导班管理 班级花名册 课节管理 考试管理 一对一学员 学员花名册 一对一任务 我的任务 GPS班课管理  班级管理 班级花名册 班级课节"
+      uid=13_26 button "辅导班管理"
+      uid=13_27 button "班级花名册"
+      uid=13_28 button "课节管理"
+      uid=13_29 button "考试管理"
+      uid=13_30 button "一对一学员"
+      uid=13_31 button "学员花名册"
+      uid=13_32 button "一对一任务"
+      uid=13_33 button "我的任务"
+      uid=13_34 button "GPS班课管理 " description="GPS班课管理"
+      uid=13_35 button "班级管理"
+      uid=13_36 button "班级花名册"
+      uid=13_37 button "班级课节"
+    uid=13_38 button ""
+  uid=13_39 main
+    uid=13_40 image "通知" url="https://i.gsxcdn.com/2174899867_bqfl70kp.svg"
+    uid=13_41 "【产研系统满意度调研】您说，我们听！即刻点击参与，助力系统优化 >> https://gsx18.cn/13e2e2ab_3"
+    uid=13_42 "【产研系统满意度调研】您说，我们听！即刻点击参与，助力系统优化 >> https://gsx18.cn/13e2e2ab_3"
+    uid=13_43 "99+"
+    uid=13_44 ""
+    uid=13_45 ""
+    uid=13_46 ""
+    uid=13_47 ""
+    uid=13_48 ""
+    uid=13_49 ""
+    uid=13_50 textbox "搜索"
+    uid=13_51 image "search"
+    uid=13_52 image "z" url="https://p.gsxcdn.com/2032881270_7xb8bihp.jpg"
+    uid=13_53 tab "花名册" focusable focused selectable selected
+    uid=13_54 tab "阶段反馈" selectable
+    uid=13_55 tab "退费管控" selectable
+    uid=13_56 tab "续班服务" selectable
+    uid=16_0 tabpanel "花名册"
+  uid=13_401 ""
+  uid=13_402 "客服"
+

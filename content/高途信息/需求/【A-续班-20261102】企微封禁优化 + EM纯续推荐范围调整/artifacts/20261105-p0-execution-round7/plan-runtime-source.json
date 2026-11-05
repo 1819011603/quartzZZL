@@ -1,0 +1,57 @@
+{
+  "time": "2026-11-05T17:56:32.607275",
+  "environment": "TEST",
+  "lane": "test-gtbg-dev-3",
+  "cart_adapter": {
+    "request": {
+      "serviceNameAndMethodName": "com.gaotu.feignAdapter.product.impl.ProductFeignServiceAdapterImpl#listRenewalMasterByRenewalNumber",
+      "params": [
+        "588858850300473344"
+      ]
+    },
+    "httpStatus": 200,
+    "traceId": "cart_gaotu100_com.297.17938725927470235",
+    "response": {
+      "code": 0,
+      "data": {
+        "com.gaotu.feignAdapter.product.impl.ProductFeignServiceAdapterImpl#listRenewalMasterByRenewalNumber": {
+          "combine_product_sku_numbers": [],
+          "course_numbers": [
+            588861395571990528
+          ],
+          "effective": false,
+          "recommend_map_type": 1,
+          "related_renew_master_numbers": [],
+          "renewal_number": 588858850300473344,
+          "type": 1
+        }
+      },
+      "msg": ""
+    }
+  },
+  "product_b": {
+    "request": {
+      "serviceNameAndMethodName": "com.gaotu.product.service.renewal.RenewalServiceImpl#listRenewalMasterByRenewalNumber",
+      "params": [
+        "588858850300473344"
+      ]
+    },
+    "httpStatus": 200,
+    "traceId": "product-b.291.17938725927470021",
+    "response": {
+      "code": 0,
+      "data": {
+        "com.gaotu.product.service.renewal.RenewalServiceImpl#listRenewalMasterByRenewalNumber": {
+          "course_numbers": [
+            588861395571990528
+          ],
+          "process_configs": [],
+          "recommend_map_type": 1,
+          "renewal_number": 588858850300473344,
+          "type": 1
+        }
+      },
+      "msg": ""
+    }
+  }
+}

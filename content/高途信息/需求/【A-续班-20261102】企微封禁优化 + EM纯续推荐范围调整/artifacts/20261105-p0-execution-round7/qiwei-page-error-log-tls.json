@@ -1,0 +1,7 @@
+[窗口 2026-10-29 18:09:28 ~ 2026-11-05 18:09:28 | 查询 {"env": "test", "queryStr": "\"ab2ed085-38a9-4d94-ae7c-d8119fd1fc54.0.0\"", "logType": "error", "limit": 20}]
+命中 0 条。按顺序排查：
+1. 时间窗：日志时间在 2026-10-29 18:09:28 ~ 2026-11-05 18:09:28 之外？(默认已是近 7 天，还要更早就显式给 from/to)
+2. token：queryStr 必须是完整 token，`.` 不分词（`NullPointerException` 空、`java.lang.NullPointerException` 中）；含 `-` 要加双引号。
+3. 组合：serviceName 和 queryStr 不能一起用。要「某服务含某词」改成 serviceName + grep；按词筛/排噪音用 queryStr 里的 `messages:` / `AND NOT messages:`（注意是复数，单数 message: 会 400）。
+4. logType：默认 error 只查 error.log，业务日志在 app。
+5. 环境：prod 只有 SLS；test 两边都要查（另一个工具再查一次）。

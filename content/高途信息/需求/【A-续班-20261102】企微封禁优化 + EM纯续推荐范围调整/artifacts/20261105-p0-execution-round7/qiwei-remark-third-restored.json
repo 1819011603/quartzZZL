@@ -1,0 +1,24 @@
+{
+  "time": "2026-11-05T18:31:40.976138+08:00",
+  "environment": "TEST",
+  "url": "https://test-fuwu.baijia.com/bgwApi/linkup/wk/relation/editWkRemark",
+  "request": {
+    "externalUserId": "wmk9_HCQAA2XVDfX4uVYpaz7AXvh9rzg",
+    "userId": "BeShan",
+    "corpId": "1970325001068435",
+    "remark": "zhangkaiis"
+  },
+  "headers": {
+    "content-type": "application/json",
+    "traffic-env": "test",
+    "b_client": "EES"
+  },
+  "httpStatus": 200,
+  "trace": "32a6ff01-b7ee-4776-be39-19784dbee5da.0.3",
+  "response": {
+    "data": true,
+    "code": 0,
+    "msg": "",
+    "pager": null
+  }
+}

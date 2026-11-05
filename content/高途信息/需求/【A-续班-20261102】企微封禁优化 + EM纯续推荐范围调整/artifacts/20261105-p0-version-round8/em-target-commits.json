@@ -1,0 +1,83 @@
+{
+  "product-server": {
+    "branch": {
+      "exit": 0,
+      "output": "feature-xuban-pure-relation-20261102",
+      "error": ""
+    },
+    "head": {
+      "exit": 0,
+      "output": "07ba05df6cfabcf0472e1ad27e26ff95cff98467",
+      "error": ""
+    },
+    "remote_target": {
+      "exit": 0,
+      "output": "07ba05df6cfabcf0472e1ad27e26ff95cff98467\trefs/heads/feature-xuban-pure-relation-20261102",
+      "error": "failed to store: -61\nwarning: redirecting to http://git.baijia.com/gaotu/product-server.git/"
+    },
+    "latest": {
+      "exit": 0,
+      "output": "07ba05df6cfabcf0472e1ad27e26ff95cff98467 fix(续班计划): B端保存后短窗口读主库(规避主从延迟,仅B端;C端不变)",
+      "error": ""
+    },
+    "state": {
+      "exit": 0,
+      "output": "",
+      "error": ""
+    }
+  },
+  "cart": {
+    "branch": {
+      "exit": 0,
+      "output": "feature-xuban-pure-relation-20261102",
+      "error": ""
+    },
+    "head": {
+      "exit": 0,
+      "output": "a34016fdf206d0163b1dd473c67ac10674ecb4b5",
+      "error": ""
+    },
+    "remote_target": {
+      "exit": 0,
+      "output": "a34016fdf206d0163b1dd473c67ac10674ecb4b5\trefs/heads/feature-xuban-pure-relation-20261102",
+      "error": "failed to store: -61\nwarning: redirecting to http://git.baijia.com/gaotu/cart.git/"
+    },
+    "latest": {
+      "exit": 0,
+      "output": "a34016fdf206d0163b1dd473c67ac10674ecb4b5 fix(续班): 隔离主计划缓存并收口扩科课程来源",
+      "error": ""
+    },
+    "state": {
+      "exit": 0,
+      "output": "",
+      "error": ""
+    }
+  },
+  "order": {
+    "branch": {
+      "exit": 0,
+      "output": "feature-xuban-pure-relation-20261102",
+      "error": ""
+    },
+    "head": {
+      "exit": 0,
+      "output": "0cc8ef68b6c29f1d3101f5fa08ea7ec634050bf9",
+      "error": ""
+    },
+    "remote_target": {
+      "exit": 0,
+      "output": "0cc8ef68b6c29f1d3101f5fa08ea7ec634050bf9\trefs/heads/feature-xuban-pure-relation-20261102",
+      "error": "failed to store: -61"
+    },
+    "latest": {
+      "exit": 0,
+      "output": "0cc8ef68b6c29f1d3101f5fa08ea7ec634050bf9 fix(cart): 跨模式放行后仍拦截同模式重复商品",
+      "error": ""
+    },
+    "state": {
+      "exit": 0,
+      "output": "",
+      "error": ""
+    }
+  }
+}

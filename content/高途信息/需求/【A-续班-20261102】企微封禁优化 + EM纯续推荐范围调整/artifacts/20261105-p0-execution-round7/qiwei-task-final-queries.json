@@ -1,0 +1,1 @@
+{"ees_data": {"own_tasks": "SELECT * FROM batch_operate_task WHERE id IN (1963,1964,1965)", "own_jobs": "SELECT id,number,job_number,biz_number,task_status,is_del,task_result,update_time FROM export_job_task WHERE job_number IN (294433185677210624,294433631114392576,294434116095472640) ORDER BY id"}}

@@ -1,0 +1,39 @@
+{
+  "time": "2026-11-05T18:07:03.205935",
+  "environment": "TEST",
+  "request": {
+    "relations": [
+      {
+        "relationCourseNumber": "588861395571990528",
+        "courseNumber": "585960751831836672",
+        "relationType": 1
+      }
+    ]
+  },
+  "delete_response": {
+    "code": 0,
+    "source": "COURSE-CENTER.GAOTU100.COM"
+  },
+  "relation_readback": {
+    "code": 0,
+    "data": [
+      {
+        "courseName": "B测试-五年级语文暑假后置1B",
+        "courseNumber": "588861400563212288",
+        "courseBizNumber": "15YW26XTRO1",
+        "gradeIds": [
+          15
+        ],
+        "subjectIds": [
+          5
+        ],
+        "schoolTermId": "X",
+        "schoolYearId": 2026,
+        "clazzTotal": 1,
+        "calculateRenewalType": 1
+      }
+    ],
+    "errorTypeCode": 0
+  },
+  "restored_to_original": true
+}

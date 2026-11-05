@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"section\" requested-start=\"doxcnH9jkz17AOK7e3rF6bGCBgd\"><h1 id=\"doxcnH9jkz17AOK7e3rF6bGCBgd\">P0-11｜大小班批量修改企微备注</h1><p id=\"doxcnBK70PwkOc0bJawgnNmvEec\">功能与优先级：P0。预期依据：企微子项核心；复用默认花名册规则。</p><h2 id=\"doxcnxYgs6171kNaSolYW0w1muf\">现场过 case：照着做</h2><p id=\"doxcnUsNEVaf4Otk5xFMF3EqhN9\"><b>前置：</b>账号gongxuemeng/177071；受控官方好友654489（姓名空），班madman-续班-正价-11：number496625388833767424／bizNumber21YW25CY2A11001；654500（姓名空），班续班计划-大班课-02【改1111】：number495672366492309504／bizNumber19YW22C8DF11001。两人分别属不同班，备注任务按userIds，不假称同班；真实在线官方关系已核。</p><p id=\"doxcnw9SKTgqBXX5Wt5nHYkmjRb\"><b>操作：</b>保存两人原备注；按既有模板提交，查父/子任务终态并读真实官方备注；仅恢复原值后再读。另核默认页同模板、未加好友、取消及标签/续班信息不变。</p><p id=\"doxcnZYzYSXechNY48s8Px8Yn4c\"><b>预期：</b>仅所选真实好友按模板逐人修改，未选人及标签/续班字段不变；受理不等于成功，成功/失败明细须逐目标可追踪；恢复值与快照完全一致。654500原备注“1105修改企微备注”，654489原备注“zhangkaiis”。</p><p id=\"doxcnatN3uhUxbGTPFiRNWLQC3b\"><b>实际：</b>已验证：654500固定模板任务294433185677210624及子任务成功，官方备注实际变更后已精确恢复。双人按实际变量wkRemark任务294434116095472640及两子任务成功，真实官方备注分别为W1-zhangkaiis、W1-1105修改企微备注；随后独立延迟回读确认两人原备注均恢复，未选人不变，标签/颜色/分层落值不变；曾误用展示名作变量导致错误任务，已保存失败证据并仅软删本轮错误任务，未改成成功。大小班页面提交、默认模板全部边界及无关字段对照未全验。</p><p id=\"doxcnvTSIH47FDeo4ec63amuN2g\">证据：<a href=\"https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr#doxcnCL6pFczHkM4YODpaedQrOf\">P0-11集中原件、详细计算与历史记录</a>；本轮新增原件见文末TEST证据包。</p></fragment>",
+      "document_id": "ZQUXdlDxWoknJhxu914c2uVYnBr",
+      "revision_id": 190
+    }
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.70",
+      "latest": "1.0.99",
+      "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+    }
+  }
+}

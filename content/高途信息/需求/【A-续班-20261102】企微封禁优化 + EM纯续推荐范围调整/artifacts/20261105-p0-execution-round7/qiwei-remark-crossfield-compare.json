@@ -1,0 +1,54 @@
+[
+  {
+    "database": "ees_data",
+    "query": "tags",
+    "equal": true,
+    "before": [
+      {
+        "id": 70018,
+        "user_id": "654489",
+        "clazz_number": "496625388833767424",
+        "account_id": 177071,
+        "tags": "",
+        "color": 1,
+        "layer": 0
+      },
+      {
+        "id": 65070,
+        "user_id": "654500",
+        "clazz_number": "495672366492309504",
+        "account_id": 177071,
+        "tags": "",
+        "color": 5,
+        "layer": 4
+      }
+    ],
+    "after": [
+      {
+        "id": 70018,
+        "user_id": "654489",
+        "clazz_number": "496625388833767424",
+        "account_id": 177071,
+        "tags": "",
+        "color": 1,
+        "layer": 0
+      },
+      {
+        "id": 65070,
+        "user_id": "654500",
+        "clazz_number": "495672366492309504",
+        "account_id": 177071,
+        "tags": "",
+        "color": 5,
+        "layer": 4
+      }
+    ]
+  },
+  {
+    "database": "gaotu",
+    "query": "old_tags_renewal",
+    "equal": true,
+    "before": [],
+    "after": []
+  }
+]

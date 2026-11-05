@@ -1,0 +1,150 @@
+{
+  "time": "2026-11-05T17:52:11.950644",
+  "environment": "TEST",
+  "subclazz": {
+    "sql": "SELECT * FROM subclazz WHERE clazz_number IN (588861397654462464,588861402658267136)",
+    "rows": [
+      {
+        "id": 7654827736765939,
+        "course_number": 588861395571990528,
+        "clazz_number": 588861397654462464,
+        "number": 36803939628614144,
+        "biz_number": "15YW26C6M1110011001",
+        "assistant_number": 7185167689581312,
+        "sales_number": 0,
+        "student_count": 50000,
+        "name": "刘永肖YW151001",
+        "status": 0,
+        "isdel": 0,
+        "create_time": "2026-11-05 17:48:48",
+        "update_time": "2026-11-05 17:48:48",
+        "area": 0,
+        "auto_extend": 0,
+        "extended_student_count": null,
+        "subclazz_type": 0,
+        "subclazz_usage": 0
+      },
+      {
+        "id": 7654827736765941,
+        "course_number": 588861395571990528,
+        "clazz_number": 588861397654462464,
+        "number": 36803941611078144,
+        "biz_number": "15YW26C6M1110011002",
+        "assistant_number": 0,
+        "sales_number": 0,
+        "student_count": 50000,
+        "name": "辅导班YW151002",
+        "status": 0,
+        "isdel": 0,
+        "create_time": "2026-11-05 17:49:03",
+        "update_time": "2026-11-05 17:49:03",
+        "area": 0,
+        "auto_extend": 0,
+        "extended_student_count": 0,
+        "subclazz_type": 1,
+        "subclazz_usage": 1
+      },
+      {
+        "id": 7654827736765943,
+        "course_number": 588861395571990528,
+        "clazz_number": 588861397654462464,
+        "number": 36803949969408512,
+        "biz_number": "15YW26C6M1110011003",
+        "assistant_number": 11188041873297121,
+        "sales_number": 0,
+        "student_count": 10,
+        "name": "唐稳01YW151003",
+        "status": 0,
+        "isdel": 0,
+        "create_time": "2026-11-05 17:50:07",
+        "update_time": "2026-11-05 17:50:07",
+        "area": 0,
+        "auto_extend": 0,
+        "extended_student_count": null,
+        "subclazz_type": 0,
+        "subclazz_usage": 0
+      },
+      {
+        "id": 7654827736765940,
+        "course_number": 588861400563212288,
+        "clazz_number": 588861402658267136,
+        "number": 36803940198384128,
+        "biz_number": "15YW26XTRO110011001",
+        "assistant_number": 7185167689581312,
+        "sales_number": 0,
+        "student_count": 50000,
+        "name": "刘永肖YW151001",
+        "status": 0,
+        "isdel": 0,
+        "create_time": "2026-11-05 17:48:52",
+        "update_time": "2026-11-05 17:48:52",
+        "area": 0,
+        "auto_extend": 0,
+        "extended_student_count": null,
+        "subclazz_type": 0,
+        "subclazz_usage": 0
+      },
+      {
+        "id": 7654827736765942,
+        "course_number": 588861400563212288,
+        "clazz_number": 588861402658267136,
+        "number": 36803942133662208,
+        "biz_number": "15YW26XTRO110011002",
+        "assistant_number": 0,
+        "sales_number": 0,
+        "student_count": 50000,
+        "name": "辅导班YW151002",
+        "status": 0,
+        "isdel": 0,
+        "create_time": "2026-11-05 17:49:07",
+        "update_time": "2026-11-05 17:49:07",
+        "area": 0,
+        "auto_extend": 0,
+        "extended_student_count": 0,
+        "subclazz_type": 1,
+        "subclazz_usage": 1
+      },
+      {
+        "id": 7654827736765944,
+        "course_number": 588861400563212288,
+        "clazz_number": 588861402658267136,
+        "number": 36803950157890048,
+        "biz_number": "15YW26XTRO110011003",
+        "assistant_number": 11188041873297121,
+        "sales_number": 0,
+        "student_count": 10,
+        "name": "唐稳01YW151003",
+        "status": 0,
+        "isdel": 0,
+        "create_time": "2026-11-05 17:50:08",
+        "update_time": "2026-11-05 17:50:08",
+        "area": 0,
+        "auto_extend": 0,
+        "extended_student_count": null,
+        "subclazz_type": 0,
+        "subclazz_usage": 0
+      }
+    ]
+  },
+  "users": {
+    "sql": "SELECT user_id,name FROM super_class.user WHERE user_id IN (7489648821,7658129872)",
+    "rows": [
+      {
+        "user_id": 7489648821,
+        "name": ""
+      },
+      {
+        "user_id": 7658129872,
+        "name": "续班扩科隔离测试"
+      }
+    ]
+  },
+  "relations": {
+    "sql": "SELECT * FROM renew_master_relation WHERE main_renew_master_number=588858850300473344",
+    "rows": []
+  },
+  "sign_schema": {
+    "sql": "SHOW COLUMNS FROM sign_0",
+    "error": "(1146, \"Table 'gaotu.sign_0' doesn't exist\")"
+  }
+}

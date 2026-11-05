@@ -1,0 +1,79 @@
+{
+  "time": "2026-11-05T18:04:01.609871+08:00",
+  "environment": "TEST",
+  "url": "http://10.255.176.174:28688/test/acl/compare/service",
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.yunying.student.center.domain.service.roster.RenewalService#getStudentRenewalInfosByUserIds",
+    "params": [
+      "574882679202260992",
+      [
+        "7704846434",
+        "7704846439",
+        "7704846440"
+      ],
+      [
+        "userId",
+        "clazzNumber",
+        "clazzName",
+        "subclazzNumber",
+        "studentTags",
+        "studentTagNames"
+      ]
+    ]
+  },
+  "headers": {
+    "content-type": "application/json",
+    "traffic-env": "test",
+    "b_client": "EES",
+    "Host": "STUDENT-CENTER"
+  },
+  "httpStatus": 200,
+  "trace": "student-center.610.17938730415818039",
+  "response": {
+    "code": 0,
+    "data": {
+      "com.gaotu.yunying.student.center.domain.service.roster.RenewalService#getStudentRenewalInfosByUserIds": [
+        {
+          "smallStudyingSubject": [],
+          "id": "35930167940088064-7704846440",
+          "presaleStatus": 0,
+          "protectStu": 0,
+          "smallStudyingSubjectCnt": 0.0,
+          "mobile": "[REDACTED]",
+          "userId": 7704846440,
+          "clazzNumber": "574882679202260992",
+          "clazzName": "续班归因-正经前置班-0820",
+          "subclazzNumber": "35930167940088064",
+          "keepReportStatus": 0
+        },
+        {
+          "smallStudyingSubject": [],
+          "userId": 7704846439,
+          "presaleStatus": 0,
+          "protectStu": 0,
+          "smallStudyingSubjectCnt": 0.0,
+          "mobile": "[REDACTED]",
+          "clazzNumber": "574882679202260992",
+          "clazzName": "续班归因-正经前置班-0820",
+          "subclazzNumber": "35930167940088064",
+          "id": "35930167940088064-7704846439",
+          "keepReportStatus": 0
+        },
+        {
+          "smallStudyingSubject": [],
+          "userId": 7704846434,
+          "id": "35930167940088064-7704846434",
+          "presaleStatus": 0,
+          "protectStu": 0,
+          "smallStudyingSubjectCnt": 0.0,
+          "mobile": "[REDACTED]",
+          "clazzNumber": "574882679202260992",
+          "clazzName": "续班归因-正经前置班-0820",
+          "subclazzNumber": "35930167940088064",
+          "keepReportStatus": 0
+        }
+      ]
+    },
+    "msg": ""
+  }
+}

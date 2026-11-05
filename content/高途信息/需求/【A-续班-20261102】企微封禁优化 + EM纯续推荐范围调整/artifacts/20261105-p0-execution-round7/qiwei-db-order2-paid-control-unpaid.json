@@ -1,0 +1,72 @@
+{
+  "time": "2026-11-05T18:00:24.744094+08:00",
+  "environment": "TEST",
+  "read_only": true,
+  "databases": {
+    "gaotu": {
+      "queries": {
+        "orders": {
+          "sql": "SELECT id,CAST(order_number AS CHAR) order_number,CAST(pay_number AS CHAR) pay_number,CAST(user_id AS CHAR) user_id,CAST(clazz_number AS CHAR) clazz_number,CAST(sub_clazz_number AS CHAR) sub_clazz_number,order_status,price,paid_time FROM order_info WHERE user_id IN (7704846434,7704846439,7704846440) AND clazz_number=574882679202260992",
+          "rows": [
+            {
+              "id": 433654889322644001,
+              "order_number": "433654889322644001",
+              "pay_number": "433654889322643489",
+              "user_id": "7704846434",
+              "clazz_number": "574882679202260992",
+              "sub_clazz_number": "35930169788203264",
+              "order_status": 2,
+              "price": 100,
+              "paid_time": "2026-11-05 17:57:55"
+            },
+            {
+              "id": 433655061119763372,
+              "order_number": "433655061119763372",
+              "pay_number": "433655061119762860",
+              "user_id": "7704846439",
+              "clazz_number": "574882679202260992",
+              "sub_clazz_number": "35930169788203264",
+              "order_status": 2,
+              "price": 100,
+              "paid_time": "2026-11-05 17:59:40"
+            },
+            {
+              "id": 433655095481074192,
+              "order_number": "433655095481074192",
+              "pay_number": "433655095481073680",
+              "user_id": "7704846440",
+              "clazz_number": "574882679202260992",
+              "sub_clazz_number": "35930169788203264",
+              "order_status": 1,
+              "price": 100,
+              "paid_time": "0000-00-00 00:00:00"
+            }
+          ],
+          "exit": 0
+        },
+        "relations": {
+          "sql": "SELECT id,CAST(user_id AS CHAR) user_id,CAST(clazz_number AS CHAR) clazz_number,CAST(subclazz_number AS CHAR) subclazz_number,status,isdel FROM subclazz_student WHERE user_id IN (7704846434,7704846439,7704846440) AND clazz_number=574882679202260992",
+          "rows": [
+            {
+              "id": 36804011404427777,
+              "user_id": "7704846434",
+              "clazz_number": "574882679202260992",
+              "subclazz_number": "35930167940088064",
+              "status": 1,
+              "isdel": 0
+            },
+            {
+              "id": 36804025069601281,
+              "user_id": "7704846439",
+              "clazz_number": "574882679202260992",
+              "subclazz_number": "35930168009949440",
+              "status": 1,
+              "isdel": 0
+            }
+          ],
+          "exit": 0
+        }
+      }
+    }
+  }
+}

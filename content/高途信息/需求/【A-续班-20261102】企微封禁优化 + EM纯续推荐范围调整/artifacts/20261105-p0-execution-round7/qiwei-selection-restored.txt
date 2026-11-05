@@ -1,0 +1,5 @@
+
+Update available: 1.11.0 -> 1.12.0
+Run `npm install -g chrome-devtools-mcp@latest` and `chrome-devtools start` to update and restart the daemon.
+
+Error: Element uid "4_93" not found on page 34.

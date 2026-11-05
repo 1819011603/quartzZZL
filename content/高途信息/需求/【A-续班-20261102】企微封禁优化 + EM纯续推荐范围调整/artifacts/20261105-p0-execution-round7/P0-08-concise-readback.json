@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"section\" requested-start=\"doxcneUMEdM1IOqQlKrI1R1f92M\"><h1 id=\"doxcneUMEdM1IOqQlKrI1R1f92M\">P0-08｜主从商品同单与收款主体约束</h1><p id=\"doxcnmWKNVaV4MwayO38iEvPyIx\">功能与优先级：P0。预期依据：EM购买核心；PRD只按主体限制，优惠保持。</p><h2 id=\"doxcnuew2teeCZzkJNhX7ZDK7Eb\">现场过 case：照着做</h2><p id=\"doxcnNh6Uyfpqzhesf7VxJf6cdH\"><b>前置：</b>tangwen01/90247，学员纯续隔离测试7707220467，主及B前课已购、两后置在下单前均sign_up0。主后班B测试-五年级语文暑假后置1B：number588861402658267136／bizNumber15YW26XTRO11001、SKU同number/type2；B后班dcg-小班扩科排除-数学-后置：number/bizNumber/SKU586097025945298944、type6004。</p><p id=\"doxcn6Laybrt0gGv7Xggnp4gh9f\"><b>操作：</b>按该学员预览两件各1；不选优惠/赠品创建订单并mock支付；独立查询支付及两订单，核商品、学员、金额。异主体、优惠基线及C端报名另验。</p><p id=\"doxcn6JVILNoTM3RBOCeTric1Sc\"><b>预期：</b>原价100分×1＋0分×1－0分优惠＝应付100分；整数分，无额外取整。同一支付单准确包含所选两件，不能串班/串学员或自动加未选商品；收款主体限制沿用原规则。</p><p id=\"doxcnB7ClCdDDTfJkAYMa6AQfBd\"><b>实际：</b>已验证：预览两件合计100分；支付433655835275559341下大班订单433655835275559853（100分）、小班433655835275560365（0分），均归7707220467、status2；支付pay_status1、real_price100、收款账号12/gaotu。18:12:15支付已独立落值；现两后课已购，订单保留。异主体拒绝、有优惠活动对照及C端页面没做，无优惠不能推出所有优惠通过。</p><p id=\"doxcnnxgfZu658pVqaJoPugQlGb\">证据：<a href=\"https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr#doxcnfMnoaXrdSpq8n4hs53e0Be\">P0-08集中原件、详细计算与历史记录</a>；本轮新增原件见文末TEST证据包。</p></fragment>",
+      "document_id": "ZQUXdlDxWoknJhxu914c2uVYnBr",
+      "revision_id": 184
+    }
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.70",
+      "latest": "1.0.99",
+      "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+    }
+  }
+}

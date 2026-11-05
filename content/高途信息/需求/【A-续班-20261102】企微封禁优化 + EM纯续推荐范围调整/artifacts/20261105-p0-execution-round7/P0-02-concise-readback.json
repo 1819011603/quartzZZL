@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"section\" requested-start=\"doxcnVOPsR5GjrMwQ1nMIhMapSd\"><h1 id=\"doxcnVOPsR5GjrMwQ1nMIhMapSd\">P0-02｜最终确认、移除与重复保存</h1><p id=\"doxcn5xIOzyrFbYDCNLA3LTix1c\">功能与优先级：P0。预期依据：EM关系核心状态变化；全量集合差分，单向关联。</p><h2 id=\"doxcnbre79OX2Yauezziyl1iurg\">现场过 case：照着做</h2><p id=\"doxcnn2RgXNxWsNJt3m4egtJOEh\"><b>前置：</b>A585960797778243584原关联B586116340522184704，另备C：kk3-大班计划D-例3（587173440509732864）；计划管理员操作。此卡不选择班级/学员，班级bizId、班名、学员ID不适用。</p><p id=\"doxcnZT9ZvMYRJRYcxjFcp1MDwe\"><b>操作：</b>先选C后取消；再最终保存{B,C}并重开，重复保存；移除C后恢复{B}，另核取消移除。</p><p id=\"doxcn4tcZU6qR4BINCxnnJr2HKe\"><b>预期：</b>取消不写入；{B}→{B,C}仅新增C且保留B，重复保存新增/删除均0，恢复仅移除C；B不反向获得A。移除后的已预热用户允许最长26小时旧推荐，不能因新链接要求立即刷新。</p><p id=\"doxcnVEP545R0B1seTTRJPrObVg\"><b>实际：</b>已验证：同版本历史保存/读回/重复与恢复子集，当前A→B、B无反向；本轮专用主计划的10项重复保存及恢复另见P0-03。页面取消和移除确认时机未执行；指定前端分支的确认时机与PRD差异保留。</p><p id=\"doxcnA4iNKfNPpljKfxxJ4SaiMd\">证据：<a href=\"https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr#doxcnBQv7THvR4wJVYUHtwxRHFD\">P0-02集中原件、详细计算与历史记录</a>；本轮新增原件见文末TEST证据包。</p></fragment>",
+      "document_id": "ZQUXdlDxWoknJhxu914c2uVYnBr",
+      "revision_id": 172
+    }
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.70",
+      "latest": "1.0.99",
+      "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+    }
+  }
+}

@@ -1,0 +1,578 @@
+{
+  "environment": "TEST",
+  "lane": "test-gtbg-dev-3",
+  "time": "2026-11-05T17:49:21.751096",
+  "pre_course": {
+    "arrangeModeType": 1,
+    "auditCourse": 0,
+    "autoCostSwitch": false,
+    "bizNumber": "15YW26C6M11",
+    "bizType": 1,
+    "canFollowCourse": 1,
+    "categoryIdPaths": [
+      "5/140/1420"
+    ],
+    "clazzRoomType": 1,
+    "courseAttrRelationDtoList": [
+      {
+        "attrPoolId": "32",
+        "attrPoolValueId": "141",
+        "courseNumber": "588861395571990528"
+      },
+      {
+        "attrPoolId": "34",
+        "attrPoolValueId": "153",
+        "courseNumber": "588861395571990528"
+      },
+      {
+        "attrPoolId": "43",
+        "attrPoolValueId": "181",
+        "courseNumber": "588861395571990528"
+      },
+      {
+        "attrPoolId": "50",
+        "attrPoolValueId": "202",
+        "courseNumber": "588861395571990528"
+      },
+      {
+        "attrPoolId": "110",
+        "attrPoolValueId": "234",
+        "courseNumber": "588861395571990528"
+      },
+      {
+        "attrPoolId": "111",
+        "attrPoolValueId": "236",
+        "courseNumber": "588861395571990528"
+      },
+      {
+        "attrPoolId": "112",
+        "attrPoolValueId": "238",
+        "courseNumber": "588861395571990528"
+      },
+      {
+        "attrPoolId": "113",
+        "attrPoolValueId": "240",
+        "courseNumber": "588861395571990528"
+      },
+      {
+        "attrPoolId": "114",
+        "attrPoolValueId": "242",
+        "courseNumber": "588861395571990528"
+      },
+      {
+        "attrPoolId": "115",
+        "attrPoolValueId": "244",
+        "courseNumber": "588861395571990528"
+      },
+      {
+        "attrPoolId": "116",
+        "attrPoolValueId": "246",
+        "courseNumber": "588861395571990528"
+      },
+      {
+        "attrPoolId": "117",
+        "attrPoolValueId": "248",
+        "courseNumber": "588861395571990528"
+      }
+    ],
+    "courseName": "B测试-五年级语文春季前置B",
+    "courseNumber": "588861395571990528",
+    "courseSceneType": 1,
+    "courseServer": 61447,
+    "courseTags": [
+      "1003/4"
+    ],
+    "courseType": 40,
+    "departmentIdPaths": [
+      "10007722"
+    ],
+    "difficultyLevel": 0,
+    "draftCourse": 0,
+    "examYear": 2023,
+    "grades": [
+      15
+    ],
+    "hasClazz": 1,
+    "hasConfigFollowCourse": 1,
+    "hasStudentEnter": 0,
+    "hasTextbook": 1,
+    "isPaidAddress": 0,
+    "learningStageList": [
+      10
+    ],
+    "leastMemberCount": -1,
+    "liveRoomType": 1,
+    "maxMemberCount": -1,
+    "operationMode": 1,
+    "outlinePattern": 1,
+    "paymentTypePath": "",
+    "playbackDeadlineSeconds": "94608000",
+    "productLinePath": [
+      "293513876270614822/293513876270614825"
+    ],
+    "publishStatus": 1,
+    "schoolDepartment": 10,
+    "schoolTermId": "C",
+    "schoolYearId": 2026,
+    "secondTeacherDelivery": 0,
+    "serveDeadlineSeconds": "86400000",
+    "subjects": [
+      5
+    ],
+    "textbookVersion": 0
+  },
+  "post_course": {
+    "arrangeModeType": 1,
+    "auditCourse": 0,
+    "autoCostSwitch": false,
+    "bizNumber": "15YW26XTRO1",
+    "bizType": 1,
+    "canFollowCourse": 1,
+    "categoryIdPaths": [
+      "5/140/1420"
+    ],
+    "clazzRoomType": 1,
+    "courseAttrRelationDtoList": [
+      {
+        "attrPoolId": "32",
+        "attrPoolValueId": "141",
+        "courseNumber": "588861400563212288"
+      },
+      {
+        "attrPoolId": "34",
+        "attrPoolValueId": "153",
+        "courseNumber": "588861400563212288"
+      },
+      {
+        "attrPoolId": "43",
+        "attrPoolValueId": "181",
+        "courseNumber": "588861400563212288"
+      },
+      {
+        "attrPoolId": "50",
+        "attrPoolValueId": "202",
+        "courseNumber": "588861400563212288"
+      },
+      {
+        "attrPoolId": "110",
+        "attrPoolValueId": "234",
+        "courseNumber": "588861400563212288"
+      },
+      {
+        "attrPoolId": "111",
+        "attrPoolValueId": "236",
+        "courseNumber": "588861400563212288"
+      },
+      {
+        "attrPoolId": "112",
+        "attrPoolValueId": "238",
+        "courseNumber": "588861400563212288"
+      },
+      {
+        "attrPoolId": "113",
+        "attrPoolValueId": "240",
+        "courseNumber": "588861400563212288"
+      },
+      {
+        "attrPoolId": "114",
+        "attrPoolValueId": "242",
+        "courseNumber": "588861400563212288"
+      },
+      {
+        "attrPoolId": "115",
+        "attrPoolValueId": "244",
+        "courseNumber": "588861400563212288"
+      },
+      {
+        "attrPoolId": "116",
+        "attrPoolValueId": "246",
+        "courseNumber": "588861400563212288"
+      },
+      {
+        "attrPoolId": "117",
+        "attrPoolValueId": "248",
+        "courseNumber": "588861400563212288"
+      }
+    ],
+    "courseName": "B测试-五年级语文暑假后置1B",
+    "courseNumber": "588861400563212288",
+    "courseSceneType": 1,
+    "courseServer": 61447,
+    "courseTags": [
+      "1003/4"
+    ],
+    "courseType": 40,
+    "departmentIdPaths": [
+      "10007722"
+    ],
+    "difficultyLevel": 0,
+    "draftCourse": 0,
+    "examYear": 2023,
+    "grades": [
+      15
+    ],
+    "hasClazz": 1,
+    "hasConfigFollowCourse": 0,
+    "hasStudentEnter": 0,
+    "hasTextbook": 1,
+    "isPaidAddress": 0,
+    "learningStageList": [
+      10
+    ],
+    "leastMemberCount": -1,
+    "liveRoomType": 1,
+    "maxMemberCount": -1,
+    "operationMode": 1,
+    "outlinePattern": 1,
+    "paymentTypePath": "",
+    "playbackDeadlineSeconds": "94608000",
+    "productLinePath": [
+      "293513876270614822/293513876270614825"
+    ],
+    "publishStatus": 1,
+    "schoolDepartment": 10,
+    "schoolTermId": "X",
+    "schoolYearId": 2026,
+    "secondTeacherDelivery": 0,
+    "serveDeadlineSeconds": "86400000",
+    "subjects": [
+      5
+    ],
+    "textbookVersion": 0
+  },
+  "pre_clazz": {
+    "afterSaleRule": [
+      {
+        "code": 1,
+        "name": "firstFree",
+        "value": [
+          1
+        ]
+      },
+      {
+        "code": 2,
+        "name": "transferForUser",
+        "value": [
+          0
+        ]
+      }
+    ],
+    "autoArrangeLessonSwitch": 1,
+    "campusClazzVOList": [],
+    "capacity": -1,
+    "clazzAreas": [
+      "0"
+    ],
+    "clazzBizNumber": "15YW26C6M111001",
+    "clazzDateDesc": "2026年11月08日-2026年11月08日",
+    "clazzHourCount": 0.0,
+    "clazzHourDesc": "",
+    "clazzHourMinutes": 0,
+    "clazzHourShowStatus": 0,
+    "clazzName": "B测试-五年级语文春季前置B",
+    "clazzNumber": "588861397654462464",
+    "clazzTagIdPaths": [],
+    "clazzTimeDesc": "14:10-14:15",
+    "clazzType": 0,
+    "clazzTypeAlias": "",
+    "clazzWeekDesc": "每周日",
+    "commentShowStatus": 0,
+    "course": {
+      "arrangeModeType": 1,
+      "autoCostSwitch": false,
+      "bizType": 1,
+      "campusList": [],
+      "categoryIdPaths": [
+        "5/140/1420"
+      ],
+      "categoryIds": [
+        1420
+      ],
+      "clazzRoomType": 1,
+      "courseBizNumber": "15YW26C6M11",
+      "courseName": "B测试-五年级语文春季前置B",
+      "courseNumber": "588861395571990528",
+      "courseProductLine": [
+        "293513876270614822/293513876270614825"
+      ],
+      "courseTagIdPaths": [
+        "1003/4"
+      ],
+      "courseTagIds": [
+        4
+      ],
+      "courseType": 40,
+      "createTime": 1793871347000,
+      "departmentIdPath": "10007722",
+      "difficultyLevel": 0,
+      "examYear": "2023",
+      "gradeIds": [
+        15
+      ],
+      "hasTextbook": 1,
+      "isPaidAddress": 0,
+      "leastMemberCount": -1,
+      "liveRoomType": 1,
+      "maxMemberCount": -1,
+      "operationMode": 1,
+      "outlinePattern": 1,
+      "playbackDeadlineSeconds": "94608000",
+      "schoolDepartment": 10,
+      "schoolTermId": "C",
+      "schoolYearId": 2026,
+      "serveDeadlineSeconds": "86400000",
+      "subjectIds": [
+        5
+      ],
+      "textbookDesc": "支付前填写",
+      "textbookVersion": 0
+    },
+    "courseServer": "61447",
+    "coverAnimation": [],
+    "coverAnimationStaticImg": [],
+    "coverImageList": [],
+    "detailType": 1,
+    "difficultyLevel": 0,
+    "effectiveStatus": 1,
+    "experienceVideoList": [],
+    "giveOutCoinSwitch": 1,
+    "guide": 0,
+    "homeCoverImageList": [],
+    "infoStorageList": [],
+    "internalDiscount": false,
+    "mockClazz": false,
+    "onceArrangeHourCountLimit": -1,
+    "onceBuyLimit": 1,
+    "pointTagList": [],
+    "preClassPreparationVideo": [],
+    "price": "0",
+    "productShowApp": [
+      {
+        "appCode": 2,
+        "appName": "途途课堂",
+        "businessCode": "tutu"
+      }
+    ],
+    "publishStatus": 40,
+    "recommendClazzCoverImageList": [],
+    "recommendShowStatus": 0,
+    "ruleType": 0,
+    "saleRules": {
+      "infoStorageExtra": 0
+    },
+    "saleStatus": 40,
+    "shareDescType": 0,
+    "shareImageType": 0,
+    "shareTitleType": 0,
+    "shortVideoImageList": [],
+    "shortVideoList": [],
+    "signUpCount": 0,
+    "supplyDepartmentList": [],
+    "teacherList": [
+      {
+        "displayName": "唐稳01主讲",
+        "name": "唐稳01",
+        "teacherNumber": "11188041873297121"
+      }
+    ],
+    "upStatus": 0,
+    "userTotalBuyLimit": -1,
+    "version": "1793872125867",
+    "verticalCoverImageList": []
+  },
+  "post_clazz": {
+    "afterSaleRule": [
+      {
+        "code": 1,
+        "name": "firstFree",
+        "value": [
+          1
+        ]
+      },
+      {
+        "code": 2,
+        "name": "transferForUser",
+        "value": [
+          0
+        ]
+      }
+    ],
+    "autoArrangeLessonSwitch": 1,
+    "campusClazzVOList": [],
+    "capacity": -1,
+    "clazzAreas": [
+      "0"
+    ],
+    "clazzBizNumber": "15YW26XTRO11001",
+    "clazzDateDesc": "2026年11月08日-2026年11月08日",
+    "clazzHourCount": 0.0,
+    "clazzHourDesc": "",
+    "clazzHourMinutes": 0,
+    "clazzHourShowStatus": 0,
+    "clazzName": "B测试-五年级语文暑假后置1B",
+    "clazzNumber": "588861402658267136",
+    "clazzTagIdPaths": [],
+    "clazzTimeDesc": "14:20-14:25",
+    "clazzType": 0,
+    "clazzTypeAlias": "",
+    "clazzWeekDesc": "每周日",
+    "commentShowStatus": 0,
+    "course": {
+      "arrangeModeType": 1,
+      "autoCostSwitch": false,
+      "bizType": 1,
+      "campusList": [],
+      "categoryIdPaths": [
+        "5/140/1420"
+      ],
+      "categoryIds": [
+        1420
+      ],
+      "clazzRoomType": 1,
+      "courseBizNumber": "15YW26XTRO1",
+      "courseName": "B测试-五年级语文暑假后置1B",
+      "courseNumber": "588861400563212288",
+      "courseProductLine": [
+        "293513876270614822/293513876270614825"
+      ],
+      "courseTagIdPaths": [
+        "1003/4"
+      ],
+      "courseTagIds": [
+        4
+      ],
+      "courseType": 40,
+      "createTime": 1793871349000,
+      "departmentIdPath": "10007722",
+      "difficultyLevel": 0,
+      "examYear": "2023",
+      "gradeIds": [
+        15
+      ],
+      "hasTextbook": 1,
+      "isPaidAddress": 0,
+      "leastMemberCount": -1,
+      "liveRoomType": 1,
+      "maxMemberCount": -1,
+      "operationMode": 1,
+      "outlinePattern": 1,
+      "playbackDeadlineSeconds": "94608000",
+      "schoolDepartment": 10,
+      "schoolTermId": "X",
+      "schoolYearId": 2026,
+      "serveDeadlineSeconds": "86400000",
+      "subjectIds": [
+        5
+      ],
+      "textbookDesc": "支付前填写",
+      "textbookVersion": 0
+    },
+    "courseServer": "61447",
+    "coverAnimation": [],
+    "coverAnimationStaticImg": [],
+    "coverImageList": [],
+    "detailType": 1,
+    "difficultyLevel": 0,
+    "effectiveStatus": 1,
+    "experienceVideoList": [],
+    "giveOutCoinSwitch": 1,
+    "guide": 0,
+    "homeCoverImageList": [],
+    "infoStorageList": [],
+    "internalDiscount": false,
+    "mockClazz": false,
+    "onceArrangeHourCountLimit": -1,
+    "onceBuyLimit": 1,
+    "pointTagList": [],
+    "preClassPreparationVideo": [],
+    "price": "100",
+    "productShowApp": [
+      {
+        "appCode": 2,
+        "appName": "途途课堂",
+        "businessCode": "tutu"
+      }
+    ],
+    "publishStatus": 40,
+    "recommendClazzCoverImageList": [],
+    "recommendShowStatus": 0,
+    "ruleType": 0,
+    "saleRules": {
+      "infoStorageExtra": 0
+    },
+    "saleStatus": 40,
+    "shareDescType": 0,
+    "shareImageType": 0,
+    "shareTitleType": 0,
+    "shortVideoImageList": [],
+    "shortVideoList": [],
+    "signUpCount": 0,
+    "supplyDepartmentList": [],
+    "teacherList": [
+      {
+        "displayName": "唐稳01主讲",
+        "name": "唐稳01",
+        "teacherNumber": "11188041873297121"
+      }
+    ],
+    "upStatus": 0,
+    "userTotalBuyLimit": -1,
+    "version": "1793872130244",
+    "verticalCoverImageList": []
+  },
+  "pre_subclazz": [],
+  "post_subclazz": [],
+  "plan_courses": [
+    {
+      "number": "588861395571990528",
+      "bizNumber": "15YW26C6M11",
+      "courseName": "B测试-五年级语文春季前置B",
+      "courseTypes": 40,
+      "schoolDepartment": 10,
+      "courseCategoryDtoList": [
+        {
+          "firstNum": "5",
+          "firstName": "小学",
+          "secondNum": "140",
+          "secondName": "五年级",
+          "thirdNum": "1420",
+          "thirdName": "数学",
+          "master": true
+        }
+      ],
+      "grades": [
+        15
+      ],
+      "subjects": [
+        5
+      ],
+      "courseTags": [
+        4
+      ],
+      "courseTagVOList": [
+        {
+          "tagId": 4,
+          "tagIdPath": "1003/4"
+        }
+      ],
+      "schoolTermId": "C",
+      "schoolYearId": 2026,
+      "hasTextbook": true,
+      "bizType": 1,
+      "clazzRoomType": 1,
+      "departmentIdPaths": [
+        "10007722"
+      ],
+      "serveDeadlineSeconds": "86400000",
+      "playbackDeadlineSeconds": "94608000",
+      "textbookVersion": 0,
+      "examYear": 2023,
+      "soloConsultant": 0,
+      "productLinePath": [
+        "293513876270614822/293513876270614825"
+      ],
+      "postCourseCount": 1,
+      "arrangeModeType": 1
+    }
+  ]
+}

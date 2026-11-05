@@ -1,0 +1,470 @@
+{
+  "environment": "TEST/default",
+  "deployed_backend": "student-center release-5dce9cdb-20261103201632, 10.255.176.174:28688; another default TEST instance feature-regular-course-query-df66fed8-20261102114739; target feature/MR version not claimed",
+  "local_source_head": "396d84f076d066c652a49ce39e68b9b917c242e0",
+  "browser_identity": {
+    "accountId": "177071",
+    "accountName": "gongxuemeng",
+    "role": "课程顾问; 班级带班权限已用原请求证明",
+    "changed_in_round7": false
+  },
+  "independent_seed_session": {
+    "accountId": "109942",
+    "accountName": "zhangzeling",
+    "role": "课程顾问",
+    "credential_in_artifacts": false
+  },
+  "objects": {
+    "clazzId": "574882679202260992",
+    "clazzName": "续班归因-正经前置班-0820",
+    "courseId": "500775364606343168",
+    "subclazzId": "35930167940088064",
+    "selected": [
+      {
+        "userId": "7704846434",
+        "name": "企微目标甲",
+        "orderId": "433654889322644001"
+      },
+      {
+        "userId": "7704846439",
+        "name": "企微目标乙",
+        "orderId": "433655061119763372"
+      }
+    ],
+    "unselected": {
+      "userId": "7704846440",
+      "name": "企微未选对照",
+      "orderId": "433655095481074192"
+    },
+    "remark_users": [
+      {
+        "userId": "654489",
+        "name": "",
+        "originalRemark": "zhangkaiis"
+      },
+      {
+        "userId": "654500",
+        "name": "",
+        "originalRemark": "1105修改企微备注"
+      }
+    ]
+  },
+  "steps": [
+    {
+      "id": "tag-bulk",
+      "expected": "两目标需中关注2，未选无变化",
+      "actual": "真实HTTP code0，新旧源表两目标tags2，对照无行",
+      "trace": "2490b2bb-d793-4568-b2fc-4900f59a7e4f.0.3",
+      "evidence": [
+        "/tmp/w1-p0-243aa61a/round7/qiwei-tag-bulk-save.json",
+        "/tmp/w1-p0-243aa61a/round7/qiwei-db-tag-bulk-after.json"
+      ],
+      "verdict": "已验证接口及DB子集"
+    },
+    {
+      "id": "tag-single",
+      "expected": "甲改3需弱关注，乙保留2，对照不变",
+      "actual": "新旧表甲3乙2，对照无行",
+      "trace": "7df78fce-b798-49da-ad2a-98813493e9b8.0.3",
+      "evidence": [
+        "/tmp/w1-p0-243aa61a/round7/qiwei-tag-single-save.json",
+        "/tmp/w1-p0-243aa61a/round7/qiwei-db-tag-single-after.json"
+      ],
+      "verdict": "已验证接口及DB子集"
+    },
+    {
+      "id": "tag-filter",
+      "expected": "按2只筛乙；ID/名称集合一致",
+      "actual": "续班页30172且SLS证明ES父熔断；default/page吞错返0不算筛选通过",
+      "trace": "ab2ed085-38a9-4d94-ae7c-d8119fd1fc54.0.0",
+      "evidence": [
+        "/tmp/w1-p0-243aa61a/round7/qiwei-page-error-log-sls-full.txt",
+        "/tmp/w1-p0-243aa61a/round7/qiwei-tag-filter2-bulk-after.json"
+      ],
+      "verdict": "失败/环境阻塞，未证明过滤正确"
+    },
+    {
+      "id": "tag-clear-restore",
+      "expected": "两目标清空，原标签筛选不命中，未选不变",
+      "actual": "源新旧表两目标tags空，对照无行；ES ID/名称及不命中未验证",
+      "trace": "f868a36f-547b-43fa-8bf7-25fae48adcf4.0.3",
+      "evidence": [
+        "/tmp/w1-p0-243aa61a/round7/qiwei-tag-clear-restore.json",
+        "/tmp/w1-p0-243aa61a/round7/qiwei-db-tag-clear-restored.json"
+      ],
+      "verdict": "已验证DB空集合；页面边界未验证"
+    },
+    {
+      "id": "tag-cancel",
+      "expected": "选标签后取消不保存",
+      "actual": "默认页面选甲需中关注后取消，源新旧表值和update_time仍为恢复后快照",
+      "evidence": [
+        "/tmp/w1-p0-243aa61a/round7/qiwei-label-cancel-selected.txt",
+        "/tmp/w1-p0-243aa61a/round7/qiwei-label-cancelled.txt",
+        "/tmp/w1-p0-243aa61a/round7/qiwei-db-tag-cancel-after.json"
+      ],
+      "verdict": "已验证默认页取消子集"
+    },
+    {
+      "id": "remark-single",
+      "expected": "受控真实好友官方备注变更，任务成功，再恢复原值",
+      "actual": "任务294433185677210624及job294433185684550656状态2；实时关系临时备注正确；恢复后实时回读原值一致",
+      "trace": "9d3dbd16-ebde-401b-a48d-e824b13f42c2.0.3",
+      "evidence": [
+        "/tmp/w1-p0-243aa61a/round7/qiwei-db-remark-track1.json",
+        "/tmp/w1-p0-243aa61a/round7/qiwei-official-after-test.json",
+        "/tmp/w1-p0-243aa61a/round7/qiwei-remark-restore.json",
+        "/tmp/w1-p0-243aa61a/round7/qiwei-official-restored.json"
+      ],
+      "verdict": "已验证单人固定模板及恢复"
+    },
+    {
+      "id": "remark-nonfriend",
+      "expected": "无官方好友不进入修改提交",
+      "actual": "新建甲默认页检查code0/resultStatus=false，无该人的备注任务；未捕获toast文字",
+      "trace": "3d67a99f-4967-4d36-b2cf-b94bf8e446f4.0.0",
+      "evidence": [
+        "/tmp/w1-p0-243aa61a/round7/qiwei-nonfriend-request.network-request",
+        "/tmp/w1-p0-243aa61a/round7/qiwei-nonfriend-response.network-response"
+      ],
+      "verdict": "已验证门槛子集，不证明封禁"
+    },
+    {
+      "id": "links",
+      "expected": "默认/联系学员两入口，各私聊群聊均为二讲/顾问规范链接",
+      "actual": "4组合已实际打开弹窗并显示精确URL，两个文档分别实际加载；无发送",
+      "evidence": [
+        "/tmp/w1-p0-243aa61a/round7/qiwei-default-private-loaded.txt",
+        "/tmp/w1-p0-243aa61a/round7/qiwei-default-group-loaded-final.txt",
+        "/tmp/w1-p0-243aa61a/round7/qiwei-official-chat-dialog.txt",
+        "/tmp/w1-p0-243aa61a/round7/qiwei-official-group-dialog.txt",
+        "/tmp/w1-p0-243aa61a/round7/qiwei-guideline-loaded.txt",
+        "/tmp/w1-p0-243aa61a/round7/qiwei-advisor-doc-loaded.txt"
+      ],
+      "verdict": "已验证当前TEST页面链接"
+    },
+    {
+      "id": "link-return-edit",
+      "expected": "点击规范后返回仍可编辑且不触发发送",
+      "actual": "本地草稿保留，继续输入成功，取消并确认丢弃；page34 xhr/fetch窗口无发送提交，仅敏感检查等",
+      "evidence": [
+        "/tmp/w1-p0-243aa61a/round7/qiwei-guideline-draft-return.txt",
+        "/tmp/w1-p0-243aa61a/round7/qiwei-guideline-draft-after-edit.txt",
+        "/tmp/w1-p0-243aa61a/round7/qiwei-after-draft-discard.txt",
+        "/tmp/w1-p0-243aa61a/round7/qiwei-guideline-network-delta.json"
+      ],
+      "verdict": "已验证所述页面/网络窗口"
+    },
+    {
+      "id": "remark-batch-corrected",
+      "expected": {
+        "654489": "W1-zhangkaiis",
+        "654500": "W1-1105修改企微备注",
+        "unselected654499": "all original friend remarks unchanged"
+      },
+      "actual": "normal HTTP task294434116095472640 +2 jobs all2; live relation matches both values; unselected relation unchanged; restored both original remarks with independent delayed readback",
+      "template": "W1-${{wkRemark}}",
+      "trace": "1fd51b3d-09af-4dd6-9d46-8b70832c7ece.0.3",
+      "evidence": [
+        "/tmp/w1-p0-243aa61a/round7/qiwei-db-remark-corrected-track1.json",
+        "/tmp/w1-p0-243aa61a/round7/qiwei-official-corrected-after.json",
+        "/tmp/w1-p0-243aa61a/round7/qiwei-remark-third-restored.json",
+        "/tmp/w1-p0-243aa61a/round7/qiwei-remark-second-restored-batch.json",
+        "/tmp/w1-p0-243aa61a/round7/qiwei-official-batch-restored-later.json"
+      ],
+      "verdict": "已验证服务批量、原备注占位符、未选保持及恢复；不是同班大/小班页面通过"
+    },
+    {
+      "id": "invalid-template-attempt",
+      "expected": "rejected or fail honestly",
+      "actual": "Agent incorrectly used display label instead of contract key; templateW1-${{企微备注}} produced ExportExecuteHandler NPE in TLS, task/jobs stayed0; soft-deleted only own parent1964/jobs10300+10301 after snapshots, statuses not changed to success",
+      "responsibility": "Agent input mistake; not a requirement defect",
+      "evidence": [
+        "/tmp/w1-p0-243aa61a/round7/qiwei-batch-task-log-tls.txt",
+        "/tmp/w1-p0-243aa61a/round7/qiwei-invalid-task-cancel.json",
+        "/tmp/w1-p0-243aa61a/round7/qiwei-db-invalid-task-cancel-readback.json"
+      ],
+      "verdict": "失败保留，已安全撤销；正确输入另记录"
+    }
+  ],
+  "coverage": [
+    {
+      "original": "QW-G001",
+      "card": "P0-10",
+      "status": "没做完整链路",
+      "known": "标签接口/DB子集已验，筛选受ES熔断；实际发消息不属链接替换必验"
+    },
+    {
+      "original": "QW-B01-001",
+      "card": "P0-10",
+      "status": "已验证接口/DB子集，整条页面未验证",
+      "known": "真实大班2选+1对照批量写/读回/恢复"
+    },
+    {
+      "original": "QW-B01-002",
+      "card": "P0-10",
+      "status": "没做",
+      "known": "没有准备新的小班3人样本或执行小班页面，不借大班代替"
+    },
+    {
+      "original": "QW-B02-001",
+      "card": "P0-10",
+      "status": "已验证改写子集；筛选未验证",
+      "known": "甲3乙2及未选保持，筛选与ES名称/ID集合受阻"
+    },
+    {
+      "original": "QW-B02-002",
+      "card": "P0-10",
+      "status": "没做",
+      "known": "小班编辑/筛选未执行"
+    },
+    {
+      "original": "QW-B03-001",
+      "card": "P0-11",
+      "status": "已验证官方服务子集；整卡未验证",
+      "known": "单人固定模板、双人wkRemark模板服务任务及实时读回/恢复成功；大班页面默认模板一致性未验证"
+    },
+    {
+      "original": "QW-B03-002",
+      "card": "P0-11",
+      "status": "没做小班页面；服务共用仅静态推断",
+      "known": "不把共用接口当小班UI通过"
+    },
+    {
+      "original": "QW-B04-001",
+      "card": "历史回溯",
+      "status": "没做",
+      "known": "仍以min(begin_time)为规则；本轮无回溯写入"
+    },
+    {
+      "original": "QW-B05-001",
+      "card": "P0-12",
+      "status": "已验证当前TEST页面4组合中的默认两组合",
+      "known": "真实私聊群聊弹窗链接，两个规范文档加载"
+    },
+    {
+      "original": "QW-B05-002",
+      "card": "P0-12",
+      "status": "已验证当前TEST页面联系学员两组合",
+      "known": "官方私聊群聊均显示新链接；未发送任何消息"
+    }
+  ],
+  "additional_case_mapping": {
+    "QW-B02-004": "源DB甲从2切3未残留2；页面上一组残留未验证",
+    "QW-B02-006": "带班老师与标签同时约束未验证，ES熔断不重试",
+    "QW-B03-007": "双目标源tags/color/layer逐字段一致；旧learning_student_info_ext两人均无行，前后未新增。仅此子集；不证明全续班字段/ES/页面不变。",
+    "QW-B05-005": "所述返回编辑及未发送窗口已验证"
+  },
+  "limits": [
+    "原30条非本企微10条不评估，原12卡非P0-10/11/12九卡不触碰",
+    "没有目标feature部署映射，不把默认TEST成功当指定分支验收",
+    "没有伪造官方好友/external_userid，未触发发送",
+    "不把历史、子集、接口或DB落值冒充当前整卡/页面通过"
+  ],
+  "classIdentifiers": {
+    "sampledAt": "2026-11-05T18:32:21.149420+08:00",
+    "environment": "TEST",
+    "database": "cluster153/course_center.clazz",
+    "classApi": "ClazzAclService#getAllClazzInfo (real response clazzAclServiceV1Impl/balanceClazzDiff)",
+    "classApiTrace": "student-center.899883.17938744996356322",
+    "classes": [
+      {
+        "dbId": "208807",
+        "number": "574882679202260992",
+        "bizNumber": "32YYTS25D6LS11002",
+        "name": "续班归因-正经前置班-0820",
+        "users": [
+          "7704846434",
+          "7704846439",
+          "7704846440"
+        ],
+        "relation": "新建3人均status1/isdel0，Gong组35930167940088064"
+      },
+      {
+        "dbId": "124836",
+        "number": "496625388833767424",
+        "bizNumber": "21YW25CY2A11001",
+        "name": "madman-续班-正价-11",
+        "users": [
+          "654489"
+        ],
+        "relation": "既有班学员status1/isdel0，subclazz31039307458937472"
+      },
+      {
+        "dbId": "124525",
+        "number": "495672366492309504",
+        "bizNumber": "19YW22C8DF11001",
+        "name": "续班计划-大班课-02【改1111】",
+        "users": [
+          "654500"
+        ],
+        "relation": "当前subclazz30979523514204416 status1/isdel0；另历史subclazz30994965567898240 status2"
+      }
+    ],
+    "apiMapping": {
+      "clazzStudents[].clazzNumber": "course_center.clazz.number (actual write request, new mark source readback and DB exact match)",
+      "classQueryResponse.number": "course_center.clazz.number (3 exact pairs)",
+      "classQueryResponse.bizNumber": "course_center.clazz.biz_number (3 exact pairs)",
+      "classQueryResponse.id": "0 in response for all3; NOT database primary key",
+      "bizId": "No field with this exact name in used tag/remark/class-detail contracts. Cannot equate bizId with id/number/bizNumber without the specific endpoint/field contract."
+    },
+    "remarkContract": "userIds+wkRemarkTemplate only; no class selector. The two verified enrolled classes are context, not parameters that isolate remark writes. No message sending authorized."
+  },
+  "restoration": {
+    "tags": "two targets new/old source empty tags; empty fixture rows retained; control absent",
+    "remarks": "654489=zhangkaiis,654500=1105修改企微备注, independently read at18:32:33; initial immediate read was stale and was not called restored",
+    "invalidTask": "294433631114392576 parent+2 children is_del1,status0 retained; own cancellation not success",
+    "retainedFixtures": "3 controlled users+3 paid test orders+group relations+2 new/old empty tag rows; registry7 items unknown",
+    "cosplay": "no new cosplay applications in round7; browserGong baseline preserved; independent secret file deleted by final cleanup"
+  },
+  "blocking": [
+    "TEST renewal ES parent circuit breaker (5.8GB >5.7GB) prevents reliable list/filter readbacks; do not retry same failed page",
+    "deployed target branch not established; observed actual release and second default image are recorded; no deployment authorized"
+  ],
+  "remaining": [
+    "Restore usable intended TEST index/environment/version, then large-class filter, ES ID/name sets and combined teacher constraint UI",
+    "Small-class controlled 2+1 preparation and actual UI execution were not done; not a proven permission blocker",
+    "Default template name/mobile/role, same-class large/small remark page consistency not covered",
+    "min(begin_time) historical backfill boundary not executed; no new history write"
+  ],
+  "executedPlatformResultsReused": false,
+  "finalSession": {
+    "clearSelectionExit": 0,
+    "closedOwnDocPage48": 0,
+    "closedOwnDocPage49": 0,
+    "identity": {
+      "code": 0,
+      "id": 177071,
+      "name": "gongxuemeng",
+      "displayName": "弓雪萌",
+      "trace": "ad241b1e-7136-42a4-b5db-bda35125981a.0.3"
+    },
+    "time": "2026-11-05T18:33:21.496582+08:00",
+    "newCosplayApplicationsInRound7": 0,
+    "browserBaselineWasGong": true,
+    "privateSessionFileRemoved": true
+  },
+  "taskFinal": {
+    "own_tasks": {
+      "sql": "SELECT * FROM batch_operate_task WHERE id IN (1963,1964,1965)",
+      "rows": [
+        {
+          "id": 1963,
+          "number": 294433185677210624,
+          "task_type": 2,
+          "create_account_id": 177071,
+          "process_status": 2,
+          "meta_data": null,
+          "process_count": 0,
+          "download_status": 0,
+          "task_result": null,
+          "source_type": 1,
+          "source_id": 294433185677210624,
+          "is_del": 0,
+          "create_time": "2026-11-05 18:15:19",
+          "update_time": "2026-11-05 18:15:30"
+        },
+        {
+          "id": 1964,
+          "number": 294433631114392576,
+          "task_type": 2,
+          "create_account_id": 177071,
+          "process_status": 0,
+          "meta_data": null,
+          "process_count": 0,
+          "download_status": 0,
+          "task_result": null,
+          "source_type": 1,
+          "source_id": 294433631114392576,
+          "is_del": 1,
+          "create_time": "2026-11-05 18:22:24",
+          "update_time": "2026-11-05 18:29:39"
+        },
+        {
+          "id": 1965,
+          "number": 294434116095472640,
+          "task_type": 2,
+          "create_account_id": 177071,
+          "process_status": 2,
+          "meta_data": null,
+          "process_count": 0,
+          "download_status": 0,
+          "task_result": null,
+          "source_type": 1,
+          "source_id": 294434116095472640,
+          "is_del": 0,
+          "create_time": "2026-11-05 18:30:06",
+          "update_time": "2026-11-05 18:30:20"
+        }
+      ],
+      "exit": 0
+    },
+    "own_jobs": {
+      "sql": "SELECT id,number,job_number,biz_number,task_status,is_del,task_result,update_time FROM export_job_task WHERE job_number IN (294433185677210624,294433631114392576,294434116095472640) ORDER BY id",
+      "rows": [
+        {
+          "id": 10299,
+          "number": 294433185684550656,
+          "job_number": 294433185677210624,
+          "biz_number": "654500",
+          "task_status": 2,
+          "is_del": 0,
+          "task_result": null,
+          "update_time": "2026-11-05 18:15:21"
+        },
+        {
+          "id": 10300,
+          "number": 294433631131169792,
+          "job_number": 294433631114392576,
+          "biz_number": "654489",
+          "task_status": 0,
+          "is_del": 1,
+          "task_result": null,
+          "update_time": "2026-11-05 18:29:39"
+        },
+        {
+          "id": 10301,
+          "number": 294433631131169793,
+          "job_number": 294433631114392576,
+          "biz_number": "654500",
+          "task_status": 0,
+          "is_del": 1,
+          "task_result": null,
+          "update_time": "2026-11-05 18:29:39"
+        },
+        {
+          "id": 10302,
+          "number": 294434116103861248,
+          "job_number": 294434116095472640,
+          "biz_number": "654489",
+          "task_status": 2,
+          "is_del": 0,
+          "task_result": null,
+          "update_time": "2026-11-05 18:30:12"
+        },
+        {
+          "id": 10303,
+          "number": 294434116103861249,
+          "job_number": 294434116095472640,
+          "biz_number": "654500",
+          "task_status": 2,
+          "is_del": 0,
+          "task_result": null,
+          "update_time": "2026-11-05 18:30:12"
+        }
+      ],
+      "exit": 0
+    }
+  },
+  "remainingInFlight": [],
+  "businessOverallComplete": false,
+  "artifactChecks": {
+    "referencedEvidenceExists": true,
+    "restoredRemarksMatch": true,
+    "unselectedOfficialContactUnchanged": true,
+    "successfulTaskAndJobTerminal": true,
+    "invalidTaskDeleted": true,
+    "selectedBrowserCountCleared": true,
+    "noOpenDialog": true
+  }
+}

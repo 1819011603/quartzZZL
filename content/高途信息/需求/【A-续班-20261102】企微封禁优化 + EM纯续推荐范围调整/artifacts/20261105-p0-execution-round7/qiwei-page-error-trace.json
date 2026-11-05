@@ -1,0 +1,301 @@
+{
+  "ok": true,
+  "traceId": "ab2ed085-38a9-4d94-ae7c-d8119fd1fc54.0.0",
+  "env": "test",
+  "host": "https://test-qingzhou.baijia.com",
+  "spanCount": 27,
+  "errorSpanCount": 1,
+  "mode": "flat",
+  "returned": 26,
+  "spans": [
+    {
+      "service": "epic",
+      "env": "test",
+      "type": "api_call",
+      "operation": "https://test-fuwu.baijia.com/bgwApi/component/student-center/roster/renewal/page",
+      "cost": 543,
+      "error": false,
+      "statusCode": 200,
+      "count": 1
+    },
+    {
+      "service": "ngapi_test-fuwu.baijia.com",
+      "env": "default",
+      "type": "nginx_api",
+      "operation": "/component/student-center/roster/renewal/page",
+      "cost": 451,
+      "error": false,
+      "trafficMarker": "default",
+      "statusCode": 200,
+      "count": 1
+    },
+    {
+      "service": "ngapi_test-fuwu.baijia.com",
+      "env": "default",
+      "type": "nginx_call",
+      "operation": "/component/student-center/roster/renewal/page",
+      "cost": 450,
+      "error": false,
+      "trafficMarker": "default",
+      "statusCode": 200,
+      "count": 1
+    },
+    {
+      "service": "arch-general-apisix",
+      "env": "default",
+      "type": "apisix_api",
+      "operation": "/component/student-center/roster/renewal/page",
+      "cost": 446,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-3",
+      "statusCode": 200,
+      "count": 1
+    },
+    {
+      "service": "arch-general-apisix",
+      "env": "default",
+      "type": "apisix_call",
+      "operation": "/component/student-center/roster/renewal/page",
+      "cost": 405,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-3",
+      "statusCode": 200,
+      "count": 1
+    },
+    {
+      "service": "student-center",
+      "env": "test",
+      "type": "http_api",
+      "operation": "/roster/renewal/page",
+      "cost": 399,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-3",
+      "statusCode": 200,
+      "count": 1
+    },
+    {
+      "service": "gaia-center",
+      "env": "test",
+      "type": "http_api",
+      "operation": "/feign/scene/user/visible/field/get",
+      "cost": 301,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-3",
+      "statusCode": 200,
+      "count": 1
+    },
+    {
+      "service": "gaia-center",
+      "env": "test",
+      "type": "spring_bean",
+      "operation": "spring/PersonalSceneConfigServiceImpl/queryPersonalSceneConfig/Long;String;String;Long [PersonalSceneConfigServiceImpl#queryPersonalSceneConfig]",
+      "cost": 262,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-3",
+      "statusCode": 0,
+      "count": 1
+    },
+    {
+      "service": "gaia-center",
+      "env": "test",
+      "type": "spring_bean",
+      "operation": "spring/SceneServiceImpl/getSceneIdentification/String;Long;String;String [SceneServiceImpl#getSceneIdentification]",
+      "cost": 204,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-3",
+      "statusCode": 0,
+      "count": 1
+    },
+    {
+      "service": "gaia-center",
+      "env": "test",
+      "type": "spring_bean",
+      "operation": "spring/SceneServiceImpl/getRoleTag/Long [SceneServiceImpl#getRoleTag]",
+      "cost": 74,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-3",
+      "statusCode": 0,
+      "count": 1
+    },
+    {
+      "service": "gaia-center",
+      "env": "test",
+      "type": "spring_bean",
+      "operation": "spring/StaffClientServiceImpl/listByAccountId/Long [StaffClientServiceImpl#listByAccountId]",
+      "cost": 74,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-3",
+      "statusCode": 0,
+      "count": 1
+    },
+    {
+      "service": "gaia-center",
+      "env": "test",
+      "type": "spring_bean",
+      "operation": "spring/StaffClientServiceImpl/listByAccountIds/List [StaffClientServiceImpl#listByAccountIds]",
+      "cost": 74,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-3",
+      "statusCode": 0,
+      "count": 1
+    },
+    {
+      "service": "gaia-center",
+      "env": "test",
+      "type": "spring_bean",
+      "operation": "spring/DefaultStaffClientImpl/listByAccountIds/List [DefaultStaffClientImpl#listByAccountIds]",
+      "cost": 74,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-3",
+      "statusCode": 0,
+      "count": 1
+    },
+    {
+      "service": "gaia-center",
+      "env": "test",
+      "type": "spring_bean",
+      "operation": "spring/StaffLocalCacheUtils/getListCache/Function;Function;Object;Function;Function;Function [StaffLocalCacheUtils#getListCache]",
+      "cost": 74,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-3",
+      "statusCode": 0,
+      "count": 2
+    },
+    {
+      "service": "gaia-center",
+      "env": "test",
+      "type": "http_call",
+      "operation": "/staff/listByAccountIds",
+      "cost": 72,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-3",
+      "statusCode": 200,
+      "count": 1
+    },
+    {
+      "service": "staff.gaotu100.com",
+      "env": "test",
+      "type": "http_api",
+      "operation": "/staff/listByAccountIds",
+      "cost": 67,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-3",
+      "statusCode": 200,
+      "count": 1
+    },
+    {
+      "service": "staff.gaotu100.com",
+      "env": "test",
+      "type": "spring_bean",
+      "operation": "spring/StaffServiceImpl/listByAccountIds/List [StaffServiceImpl#listByAccountIds]",
+      "cost": 63,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-3",
+      "statusCode": 0,
+      "count": 1
+    },
+    {
+      "service": "staff.gaotu100.com",
+      "env": "test",
+      "type": "spring_bean",
+      "operation": "spring/StaffServiceImpl/listByAccountIdsCommon/List;List [StaffServiceImpl#listByAccountIdsCommon]",
+      "cost": 63,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-3",
+      "statusCode": 0,
+      "count": 1
+    },
+    {
+      "service": "gaia-center",
+      "env": "test",
+      "type": "spring_bean",
+      "operation": "spring/SceneServiceImpl/getStaffDto/Long;String [SceneServiceImpl#getStaffDto]",
+      "cost": 93,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-3",
+      "statusCode": 0,
+      "count": 1
+    },
+    {
+      "service": "gaia-center",
+      "env": "test",
+      "type": "spring_bean",
+      "operation": "spring/StaffClientServiceImpl/listMainPostStaffByAccountIds/List;String [StaffClientServiceImpl#listMainPostStaffByAccountIds]",
+      "cost": 85,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-3",
+      "statusCode": 0,
+      "count": 1
+    },
+    {
+      "service": "gaia-center",
+      "env": "test",
+      "type": "spring_bean",
+      "operation": "spring/DefaultStaffClientImpl/listMainPostStaffByAccountIds/ListStaffRequest [DefaultStaffClientImpl#listMainPostStaffByAccountIds]",
+      "cost": 83,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-3",
+      "statusCode": 0,
+      "count": 1
+    },
+    {
+      "service": "gaia-center",
+      "env": "test",
+      "type": "http_call",
+      "operation": "/staff/listMainPostStaffByAccountIds",
+      "cost": 81,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-3",
+      "statusCode": 200,
+      "count": 1
+    },
+    {
+      "service": "student-center",
+      "env": "test",
+      "type": "spring_bean",
+      "operation": "spring/RenewalService/page/RenewalRosterListReq [RenewalService#page]",
+      "cost": 397,
+      "error": true,
+      "trafficMarker": "test-gtbg-dev-3",
+      "statusCode": 0,
+      "errorKind": "BusinessException",
+      "count": 1,
+      "errorMsgs": [
+        "es查询异常，当前系统繁忙，请稍后再试"
+      ]
+    },
+    {
+      "service": "student-center",
+      "env": "test",
+      "type": "spring_bean",
+      "operation": "spring/EsFilterHelper/buildFilter/QuickFilter;Map [EsFilterHelper#buildFilter]",
+      "cost": 54,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-3",
+      "statusCode": 0,
+      "count": 1
+    },
+    {
+      "service": "student-center",
+      "env": "test",
+      "type": "spring_bean",
+      "operation": "spring/EsFilterHelper/buildFilter/Map [EsFilterHelper#buildFilter]",
+      "cost": 54,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-3",
+      "statusCode": 0,
+      "count": 1
+    },
+    {
+      "service": "student-center",
+      "env": "test",
+      "type": "spring_bean",
+      "operation": "spring/EsFilterHelper/build/Map [EsFilterHelper#build]",
+      "cost": 54,
+      "error": false,
+      "trafficMarker": "test-gtbg-dev-3",
+      "statusCode": 0,
+      "count": 1
+    }
+  ]
+}

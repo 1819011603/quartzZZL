@@ -1,0 +1,146 @@
+{
+  "time": "2026-11-05T17:55:02.446590+08:00",
+  "environment": "TEST",
+  "read_only": true,
+  "databases": {
+    "super_class": {
+      "queries": {
+        "existing_test_mobiles": {
+          "sql": "SELECT CAST(user_id AS CHAR) user_id,name FROM user WHERE mobile IN ('12261105271','12261105272','12261105273')",
+          "rows": [],
+          "exit": 0
+        },
+        "visible_test_suffixes": {
+          "sql": "SELECT CAST(user_id AS CHAR) user_id,name,(RIGHT(mobile,11) LIKE '12%') AS test_mobile_normalized,LENGTH(mobile) mobile_length FROM user WHERE user_id IN (7489648820,7634383357,7634383355)",
+          "rows": [
+            {
+              "user_id": "7489648820",
+              "name": "",
+              "test_mobile_normalized": 0,
+              "mobile_length": 11
+            },
+            {
+              "user_id": "7634383355",
+              "name": "",
+              "test_mobile_normalized": 0,
+              "mobile_length": 11
+            },
+            {
+              "user_id": "7634383357",
+              "name": "",
+              "test_mobile_normalized": 0,
+              "mobile_length": 11
+            }
+          ],
+          "exit": 0
+        }
+      }
+    },
+    "gaotu": {
+      "queries": {
+        "class_availability": {
+          "sql": "SELECT CAST(number AS CHAR) number,name,status,publish_status,price,original_price,end_sale_time,isdel FROM clazz WHERE number=574882679202260992",
+          "rows": [
+            {
+              "number": "574882679202260992",
+              "name": "续班归因-正经前置班-0820",
+              "status": 1,
+              "publish_status": 40,
+              "price": 100,
+              "original_price": 100,
+              "end_sale_time": "2027-09-15 10:00:00",
+              "isdel": 0
+            }
+          ],
+          "exit": 0
+        },
+        "controlled_friend_classes": {
+          "sql": "SELECT id,CAST(user_id AS CHAR) user_id,CAST(clazz_number AS CHAR) clazz_number,CAST(subclazz_number AS CHAR) subclazz_number,status,isdel FROM subclazz_student WHERE user_id=20004 AND isdel=0 LIMIT 10",
+          "rows": [
+            {
+              "id": 3680,
+              "user_id": "20004",
+              "clazz_number": "3226750190950400",
+              "subclazz_number": "3226750191147008",
+              "status": 1,
+              "isdel": 0
+            },
+            {
+              "id": 5196,
+              "user_id": "20004",
+              "clazz_number": "3227271287740416",
+              "subclazz_number": "3227271287937024",
+              "status": 2,
+              "isdel": 0
+            },
+            {
+              "id": 4809,
+              "user_id": "20004",
+              "clazz_number": "3231653302934528",
+              "subclazz_number": "3231653303131136",
+              "status": 1,
+              "isdel": 0
+            },
+            {
+              "id": 5152,
+              "user_id": "20004",
+              "clazz_number": "3233218130889216",
+              "subclazz_number": "3233411560864768",
+              "status": 2,
+              "isdel": 0
+            },
+            {
+              "id": 6776,
+              "user_id": "20004",
+              "clazz_number": "3270905976324096",
+              "subclazz_number": "3270905976651776",
+              "status": 1,
+              "isdel": 0
+            },
+            {
+              "id": 19181677754083328,
+              "user_id": "20004",
+              "clazz_number": "4279690443384832",
+              "subclazz_number": "18462758950297344",
+              "status": 1,
+              "isdel": 0
+            },
+            {
+              "id": 9260281530941958,
+              "user_id": "20004",
+              "clazz_number": "5287436965469184",
+              "subclazz_number": "5287436965862400",
+              "status": 1,
+              "isdel": 0
+            },
+            {
+              "id": 2143834,
+              "user_id": "20004",
+              "clazz_number": "5430353470832128",
+              "subclazz_number": "5430353476468224",
+              "status": 1,
+              "isdel": 0
+            },
+            {
+              "id": 2718580,
+              "user_id": "20004",
+              "clazz_number": "5904397783174144",
+              "subclazz_number": "5904462592183296",
+              "status": 1,
+              "isdel": 0
+            },
+            {
+              "id": 1180370,
+              "user_id": "20004",
+              "clazz_number": "6103234590145024",
+              "subclazz_number": "6103234590800384",
+              "status": 1,
+              "isdel": 0
+            }
+          ],
+          "exit": 0
+        }
+      }
+    }
+  }
+}

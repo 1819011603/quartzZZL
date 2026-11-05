@@ -1,0 +1,1 @@
+{"gaotu":{"order_index":"SHOW INDEX FROM order_info","order_columns":"SHOW COLUMNS FROM order_info","target_relations":"SELECT id,CAST(user_id AS CHAR) user_id,CAST(clazz_number AS CHAR) clazz_number,CAST(subclazz_number AS CHAR) subclazz_number,status,isdel FROM subclazz_student WHERE user_id IN (7704846434,7704846439,7704846440) AND clazz_number=574882679202260992"}}

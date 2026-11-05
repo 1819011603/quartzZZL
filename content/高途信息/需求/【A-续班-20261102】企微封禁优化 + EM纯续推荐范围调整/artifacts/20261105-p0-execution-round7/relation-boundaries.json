@@ -1,0 +1,749 @@
+{
+  "time": "2026-11-05T17:59:55.472403",
+  "environment": "TEST",
+  "lane": "test-gtbg-dev-3",
+  "main": "588858850300473344",
+  "restore_to": [
+    "585960797778243584",
+    "586116340522184704"
+  ],
+  "steps": [
+    {
+      "time": "2026-11-05T17:59:57.236615",
+      "name": "exactly10",
+      "request": {
+        "mainRenewMasterNumber": "588858850300473344",
+        "subRenewMasterNumbers": [
+          "588671894562123776",
+          "588506246722727936",
+          "588262775349012480",
+          "587730716914313216",
+          "587639188745316352",
+          "587588583146350592",
+          "587173458654291968",
+          "587173440509732864",
+          "587048390485895168",
+          "587044953574631424"
+        ]
+      },
+      "response": {
+        "code": 0,
+        "msg": "success！"
+      },
+      "active_readback": [
+        {
+          "id": 26,
+          "number": 588864436522004480,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587044953574631424,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 25,
+          "number": 588864436496838656,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587048390485895168,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 24,
+          "number": 588864436473769984,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587173440509732864,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 23,
+          "number": 588864436448604160,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587173458654291968,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 22,
+          "number": 588864436423438336,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587588583146350592,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 21,
+          "number": 588864436398272512,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587639188745316352,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 20,
+          "number": 588864436362620928,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587730716914313216,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 19,
+          "number": 588864436339552256,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 588262775349012480,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 18,
+          "number": 588864436314386432,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 588506246722727936,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 17,
+          "number": 588864436289220608,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 588671894562123776,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        }
+      ]
+    },
+    {
+      "time": "2026-11-05T17:59:57.913042",
+      "name": "repeat10_idempotent",
+      "request": {
+        "mainRenewMasterNumber": "588858850300473344",
+        "subRenewMasterNumbers": [
+          "588671894562123776",
+          "588506246722727936",
+          "588262775349012480",
+          "587730716914313216",
+          "587639188745316352",
+          "587588583146350592",
+          "587173458654291968",
+          "587173440509732864",
+          "587048390485895168",
+          "587044953574631424"
+        ]
+      },
+      "response": {
+        "code": 0,
+        "msg": "success！"
+      },
+      "active_readback": [
+        {
+          "id": 26,
+          "number": 588864436522004480,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587044953574631424,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 25,
+          "number": 588864436496838656,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587048390485895168,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 24,
+          "number": 588864436473769984,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587173440509732864,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 23,
+          "number": 588864436448604160,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587173458654291968,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 22,
+          "number": 588864436423438336,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587588583146350592,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 21,
+          "number": 588864436398272512,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587639188745316352,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 20,
+          "number": 588864436362620928,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587730716914313216,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 19,
+          "number": 588864436339552256,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 588262775349012480,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 18,
+          "number": 588864436314386432,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 588506246722727936,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 17,
+          "number": 588864436289220608,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 588671894562123776,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        }
+      ]
+    },
+    {
+      "time": "2026-11-05T17:59:58.416485",
+      "name": "eleven_rejected",
+      "request": {
+        "mainRenewMasterNumber": "588858850300473344",
+        "subRenewMasterNumbers": [
+          "588671894562123776",
+          "588506246722727936",
+          "588262775349012480",
+          "587730716914313216",
+          "587639188745316352",
+          "587588583146350592",
+          "587173458654291968",
+          "587173440509732864",
+          "587048390485895168",
+          "587044953574631424",
+          "586478827253954560"
+        ]
+      },
+      "response": {
+        "code": 1,
+        "msg": "最多可纯续关联10个续班计划"
+      },
+      "active_readback": [
+        {
+          "id": 26,
+          "number": 588864436522004480,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587044953574631424,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 25,
+          "number": 588864436496838656,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587048390485895168,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 24,
+          "number": 588864436473769984,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587173440509732864,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 23,
+          "number": 588864436448604160,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587173458654291968,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 22,
+          "number": 588864436423438336,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587588583146350592,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 21,
+          "number": 588864436398272512,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587639188745316352,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 20,
+          "number": 588864436362620928,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587730716914313216,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 19,
+          "number": 588864436339552256,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 588262775349012480,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 18,
+          "number": 588864436314386432,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 588506246722727936,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 17,
+          "number": 588864436289220608,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 588671894562123776,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        }
+      ]
+    },
+    {
+      "time": "2026-11-05T17:59:58.919996",
+      "name": "self_rejected",
+      "request": {
+        "mainRenewMasterNumber": "588858850300473344",
+        "subRenewMasterNumbers": [
+          "588858850300473344"
+        ]
+      },
+      "response": {
+        "code": 1,
+        "msg": "续班计划不能关联自身"
+      },
+      "active_readback": [
+        {
+          "id": 26,
+          "number": 588864436522004480,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587044953574631424,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 25,
+          "number": 588864436496838656,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587048390485895168,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 24,
+          "number": 588864436473769984,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587173440509732864,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 23,
+          "number": 588864436448604160,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587173458654291968,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 22,
+          "number": 588864436423438336,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587588583146350592,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 21,
+          "number": 588864436398272512,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587639188745316352,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 20,
+          "number": 588864436362620928,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587730716914313216,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 19,
+          "number": 588864436339552256,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 588262775349012480,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 18,
+          "number": 588864436314386432,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 588506246722727936,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 17,
+          "number": 588864436289220608,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 588671894562123776,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        }
+      ]
+    },
+    {
+      "time": "2026-11-05T17:59:59.391323",
+      "name": "draft_sub_rejected",
+      "request": {
+        "mainRenewMasterNumber": "588858850300473344",
+        "subRenewMasterNumbers": [
+          "588696758756945920"
+        ]
+      },
+      "response": {
+        "code": 1,
+        "msg": "仅待开始/进行中的续班计划可关联"
+      },
+      "active_readback": [
+        {
+          "id": 26,
+          "number": 588864436522004480,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587044953574631424,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 25,
+          "number": 588864436496838656,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587048390485895168,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 24,
+          "number": 588864436473769984,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587173440509732864,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 23,
+          "number": 588864436448604160,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587173458654291968,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 22,
+          "number": 588864436423438336,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587588583146350592,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 21,
+          "number": 588864436398272512,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587639188745316352,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 20,
+          "number": 588864436362620928,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 587730716914313216,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 19,
+          "number": 588864436339552256,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 588262775349012480,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 18,
+          "number": 588864436314386432,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 588506246722727936,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        },
+        {
+          "id": 17,
+          "number": 588864436289220608,
+          "main_renew_master_number": 588858850300473344,
+          "sub_renew_master_number": 588671894562123776,
+          "is_del": 0,
+          "create_account_id": 90247,
+          "create_time": "2026-11-05 17:59:56",
+          "update_time": "2026-11-05 17:59:56"
+        }
+      ]
+    }
+  ],
+  "candidates": [
+    {
+      "number": "586478827253954560",
+      "name": "dcg-TC-G001-干净验证计划",
+      "type": 1,
+      "status": 2,
+      "isdel": 0
+    },
+    {
+      "number": "587044953574631424",
+      "name": "test-初中数学三年级共用预报名班-1026-1659",
+      "type": 1,
+      "status": 2,
+      "isdel": 0
+    },
+    {
+      "number": "587048390485895168",
+      "name": "dcg-kk2-扩科排除-大班计划-1026",
+      "type": 1,
+      "status": 2,
+      "isdel": 0
+    },
+    {
+      "number": "587173440509732864",
+      "name": "kk3-大班计划D-例3",
+      "type": 1,
+      "status": 2,
+      "isdel": 0
+    },
+    {
+      "number": "587173458654291968",
+      "name": "kk3-大班计划E-例1例2",
+      "type": 1,
+      "status": 2,
+      "isdel": 0
+    },
+    {
+      "number": "587588583146350592",
+      "name": "P0膨胀券验证-重建1029v2",
+      "type": 1,
+      "status": 2,
+      "isdel": 0
+    },
+    {
+      "number": "587639188745316352",
+      "name": "verify-split-rebind-qa",
+      "type": 1,
+      "status": 2,
+      "isdel": 0
+    },
+    {
+      "number": "587730716914313216",
+      "name": "去重优先级验证-1030-v3",
+      "type": 1,
+      "status": 2,
+      "isdel": 0
+    },
+    {
+      "number": "588262775349012480",
+      "name": "B测试-跨年级结算残留完整场景-1102B",
+      "type": 1,
+      "status": 2,
+      "isdel": 0
+    },
+    {
+      "number": "588506246722727936",
+      "name": "【造数】GPS小班续班-小学数学-1103-1833",
+      "type": 2,
+      "status": 2,
+      "isdel": 0
+    },
+    {
+      "number": "588671894562123776",
+      "name": "B测试GPS小班续班1104AB",
+      "type": 2,
+      "status": 2,
+      "isdel": 0
+    }
+  ],
+  "before": [
+    {
+      "id": 15,
+      "number": 588864202138005504,
+      "main_renew_master_number": 588858850300473344,
+      "sub_renew_master_number": 585960797778243584,
+      "is_del": 0,
+      "create_account_id": 90247,
+      "create_time": "2026-11-05 17:58:05",
+      "update_time": "2026-11-05 17:58:05"
+    },
+    {
+      "id": 16,
+      "number": 588864202165268480,
+      "main_renew_master_number": 588858850300473344,
+      "sub_renew_master_number": 586116340522184704,
+      "is_del": 0,
+      "create_account_id": 90247,
+      "create_time": "2026-11-05 17:58:05",
+      "update_time": "2026-11-05 17:58:05"
+    }
+  ],
+  "status": "completed",
+  "restore_response": {
+    "code": 0,
+    "msg": "success！"
+  },
+  "restored_active": [
+    {
+      "id": 15,
+      "number": 588864202138005504,
+      "main_renew_master_number": 588858850300473344,
+      "sub_renew_master_number": 585960797778243584,
+      "is_del": 0,
+      "create_account_id": 90247,
+      "create_time": "2026-11-05 17:58:05",
+      "update_time": "2026-11-05 17:59:59"
+    },
+    {
+      "id": 16,
+      "number": 588864202165268480,
+      "main_renew_master_number": 588858850300473344,
+      "sub_renew_master_number": 586116340522184704,
+      "is_del": 0,
+      "create_account_id": 90247,
+      "create_time": "2026-11-05 17:58:05",
+      "update_time": "2026-11-05 17:59:59"
+    }
+  ],
+  "restored": true
+}

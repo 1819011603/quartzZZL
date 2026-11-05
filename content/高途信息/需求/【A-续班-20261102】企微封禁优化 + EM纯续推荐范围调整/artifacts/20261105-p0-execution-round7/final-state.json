@@ -1,0 +1,12 @@
+{
+  "parent_payment": "433655835275559341 paid; no parent business call in flight",
+  "child": "W1-e4187e completed result9; no retry/pending restoration",
+  "shared_relation": "A→B unchanged; ownmain→A/B intentionally retained; temporarycollision mapping removed/readback",
+  "tags": "business empty restored; new empty source rows retained, control absent",
+  "official_remarks": "654489=zhangkaiis,654500=1105修改企微备注; independent delayed readback18:32:33; control unchanged",
+  "identity": "browser177071/Gong baseline, no new cosplay; temporary private session deleted; localdraft/selectioncleared",
+  "fixtures": "ownplan588858850300473344 and2publishedclasses/lessons/teachers/extratutorgroups/users/paidorders retained; no claim deleted/refunded",
+  "service_deployments": [],
+  "sent_messages": [],
+  "remaining": "verify.md and reproducibility-current.json"
+}

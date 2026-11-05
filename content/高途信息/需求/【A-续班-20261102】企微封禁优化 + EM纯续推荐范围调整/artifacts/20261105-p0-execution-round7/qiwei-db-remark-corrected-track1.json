@@ -1,0 +1,73 @@
+{
+  "time": "2026-11-05T18:31:09.731250+08:00",
+  "environment": "TEST",
+  "read_only": true,
+  "databases": {
+    "ees_data": {
+      "queries": {
+        "task": {
+          "sql": "SELECT * FROM batch_operate_task WHERE number=294434116095472640",
+          "rows": [
+            {
+              "id": 1965,
+              "number": 294434116095472640,
+              "task_type": 2,
+              "create_account_id": 177071,
+              "process_status": 2,
+              "meta_data": null,
+              "process_count": 0,
+              "download_status": 0,
+              "task_result": null,
+              "source_type": 1,
+              "source_id": 294434116095472640,
+              "is_del": 0,
+              "create_time": "2026-11-05 18:30:06",
+              "update_time": "2026-11-05 18:30:20"
+            }
+          ],
+          "exit": 0
+        },
+        "jobs": {
+          "sql": "SELECT * FROM export_job_task WHERE job_number=294434116095472640 ORDER BY id",
+          "rows": [
+            {
+              "id": 10302,
+              "number": 294434116103861248,
+              "job_number": 294434116095472640,
+              "biz_number": "654489",
+              "params": "{\"userId\": 654489, \"accountId\": 177071, \"userWechatId\": \"7881301368994397\", \"wechatRemark\": \"zhangkaiis\", \"accountWechatId\": \"1688855652617956\", \"wkRemarkTemplate\": \"W1-${{wkRemark}}\"}",
+              "task_status": 2,
+              "retry_count": 0,
+              "retry_time": "2026-11-05 18:30:06",
+              "biz_deal_type": 2,
+              "biz_deal_number": 0,
+              "task_result": null,
+              "extra_data": null,
+              "is_del": 0,
+              "create_time": "2026-11-05 18:30:06",
+              "update_time": "2026-11-05 18:30:12"
+            },
+            {
+              "id": 10303,
+              "number": 294434116103861249,
+              "job_number": 294434116095472640,
+              "biz_number": "654500",
+              "params": "{\"userId\": 654500, \"accountId\": 177071, \"userWechatId\": \"7881303094115854\", \"wechatRemark\": \"1105修改企微备注\", \"accountWechatId\": \"1688855652617956\", \"wkRemarkTemplate\": \"W1-${{wkRemark}}\"}",
+              "task_status": 2,
+              "retry_count": 0,
+              "retry_time": "2026-11-05 18:30:06",
+              "biz_deal_type": 2,
+              "biz_deal_number": 0,
+              "task_result": null,
+              "extra_data": null,
+              "is_del": 0,
+              "create_time": "2026-11-05 18:30:06",
+              "update_time": "2026-11-05 18:30:12"
+            }
+          ],
+          "exit": 0
+        }
+      }
+    }
+  }
+}
