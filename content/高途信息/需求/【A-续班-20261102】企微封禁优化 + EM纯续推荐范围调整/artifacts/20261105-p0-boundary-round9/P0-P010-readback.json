@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"section\" requested-start=\"doxcnSaxxueXcUtFcFxAuT6Iioc\"><h1 id=\"doxcnSaxxueXcUtFcFxAuT6Iioc\">P0-10｜大小班续班批量标签、单人编辑与筛选</h1><p id=\"doxcnr0uQEr0jYaHdhb2vXb6zEz\">功能与优先级：P0。预期依据：企微子项核心；与默认花名册行为一致。</p><h2 id=\"doxcns0lgBRzbsnkhLbuwAuGIGg\">现场过 case：照着做</h2><p id=\"doxcns5Bqd3n7upyiDHCgO8CVk8\">前置：实际gongxuemeng/177071。大班“续班归因-正经前置班-0820”：clazzNumber574882679202260992／bizNumber32YYTS25D6LS11002，目标7704846434、7704846439，对照7704846440。新增小班“【造数】小班续班前置-小学数学-1103-1831”：clazzNumber／bizNumber588506026511294464，计划588506246722727936／一轮；目标7707218286原标签7、7707218285原无行，两人均在实际续班列表。所用接口无同名bizId，不以DB主键替代；小班同次第三名未选对照未准备。</p><p id=\"doxcnlOHkyDV59SVHkODzce5uCe\"><b>操作：</b>只选甲乙批量保存“需中关注”2；单改甲为“需弱关注”3；筛2→筛3并叠加带班老师条件；清空两目标。打开标签弹窗选值后取消，回读原值与未选人。</p><p id=\"doxcn7fD8IeAzxObo9uDOAUcURe\"><b>预期：</b>批量后甲=2、乙=2、对照不变；单改后甲=3、乙=2；筛选只纳入保存值匹配且满足原老师条件的人，切换不残留上一组。清空后标签为空，取消不保存；新旧标签源/ES/列表应一致。</p><p id=\"doxcnT7eklEZGlBOl9z5hJRu5Hg\">实际：大班批量2/2→单人3/2→空/空及未选不变，延迟标签/老师筛选、页面单甲保存与恢复已验。新增小班真实页面双人保存2成功，新旧源表均2/2（trace d8691d38-5f18-4505-a204-5603ce3149cd.0.0）；按原值恢复7/空后，DB及列表一致，筛7仅7707218286且名称“自己主动学习”，筛2/3为0。单改3仅确认受理，首次查询漏续班计划/轮次，未计3落值通过。小班同次第三未选对照、单人编辑完整页面仍未全验；空标签行保留。</p><p id=\"doxcnppBPBBfemWG9ULA42ivJne\">证据：<a href=\"https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr#doxcnkfM3wshrMfbPF20vMnMM7I\">P0-10集中原件、详细计算与历史记录</a>；本轮新增原件见文末TEST证据包。</p></fragment>",
+      "document_id": "ZQUXdlDxWoknJhxu914c2uVYnBr",
+      "revision_id": 287
+    }
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.70",
+      "latest": "1.0.99",
+      "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+    }
+  }
+}

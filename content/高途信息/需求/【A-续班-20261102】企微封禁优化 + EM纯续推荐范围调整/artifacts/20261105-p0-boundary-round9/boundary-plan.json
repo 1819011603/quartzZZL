@@ -1,0 +1,7 @@
+{
+  "task_type": "requirement",
+  "success": "逐项必需/建议/外部后续分类；现有可用对象最小补验；仅新结果变更P0并回读；保留未测及恢复证据",
+  "no_new_subagents": true,
+  "prior_revision": 273,
+  "boundary_rows": 12
+}

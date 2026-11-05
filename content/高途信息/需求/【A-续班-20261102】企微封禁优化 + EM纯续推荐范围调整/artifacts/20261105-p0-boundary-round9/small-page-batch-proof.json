@@ -1,0 +1,25 @@
+{
+  "request": {
+    "clazzStudents": [
+      {
+        "clazzNumber": "588506026511294464",
+        "userId": 7707218286
+      },
+      {
+        "clazzNumber": "588506026511294464",
+        "userId": 7707218285
+      }
+    ],
+    "studentTags": [
+      "2"
+    ],
+    "type": 1,
+    "userIds": [
+      7707218286,
+      7707218285
+    ],
+    "scene": "microContinuationService"
+  },
+  "trace": "d8691d38-5f18-4505-a204-5603ce3149cd.0.0",
+  "http": 200
+}

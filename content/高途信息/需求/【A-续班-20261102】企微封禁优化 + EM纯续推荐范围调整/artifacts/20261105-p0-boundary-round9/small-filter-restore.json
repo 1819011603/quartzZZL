@@ -1,0 +1,341 @@
+{
+  "environment": "TEST",
+  "lane": "test-gtbg-dev-3",
+  "identity": "gongxuemeng/177071",
+  "classNumber": "588506026511294464",
+  "targets": [
+    "7707218286",
+    "7707218285"
+  ],
+  "error": null,
+  "steps": [
+    {
+      "name": "single_A_three",
+      "request": {
+        "scene": "microContinuationService",
+        "type": 1,
+        "clazzStudents": [
+          {
+            "clazzNumber": "588506026511294464",
+            "userId": "7707218286"
+          }
+        ],
+        "userIds": [
+          "7707218286"
+        ],
+        "studentTags": [
+          3
+        ]
+      },
+      "http": 200,
+      "trace": "6b582a06-d9dd-491c-bdc7-29a47d5c9a6c.0.0",
+      "ms": 215,
+      "code": 0,
+      "msg": "",
+      "data": {}
+    },
+    {
+      "name": "filter_three",
+      "request": {
+        "filter": {
+          "clazzStudentStatus": [
+            "1",
+            "3"
+          ],
+          "clazzNumber": [
+            "588506026511294464"
+          ],
+          "studentTags": [
+            3
+          ]
+        },
+        "clazzNumbers": [
+          "588506026511294464"
+        ],
+        "pager": {
+          "current": 1,
+          "pageSize": 100
+        },
+        "route": {
+          "sceneVersionNumber": "294312775746856960"
+        },
+        "identification": "microContinuationService"
+      },
+      "http": 200,
+      "trace": "793d2954-e5a4-49fd-b2e2-46cbc1678362.0.0",
+      "ms": 282,
+      "code": 0,
+      "msg": "",
+      "data": {
+        "pager": {
+          "current": 1,
+          "pageSize": 100,
+          "total": 0,
+          "hasNext": false,
+          "approximateTotal": false
+        },
+        "list": []
+      }
+    },
+    {
+      "name": "filter_two",
+      "request": {
+        "filter": {
+          "clazzStudentStatus": [
+            "1",
+            "3"
+          ],
+          "clazzNumber": [
+            "588506026511294464"
+          ],
+          "studentTags": [
+            2
+          ]
+        },
+        "clazzNumbers": [
+          "588506026511294464"
+        ],
+        "pager": {
+          "current": 1,
+          "pageSize": 100
+        },
+        "route": {
+          "sceneVersionNumber": "294312775746856960"
+        },
+        "identification": "microContinuationService"
+      },
+      "http": 200,
+      "trace": "6b0f22af-07f8-4c3b-912d-b8ff8ed04a95.0.0",
+      "ms": 205,
+      "code": 0,
+      "msg": "",
+      "data": {
+        "pager": {
+          "current": 1,
+          "pageSize": 100,
+          "total": 0,
+          "hasNext": false,
+          "approximateTotal": false
+        },
+        "list": []
+      }
+    },
+    {
+      "name": "restore_A_seven",
+      "request": {
+        "scene": "microContinuationService",
+        "type": 1,
+        "clazzStudents": [
+          {
+            "clazzNumber": "588506026511294464",
+            "userId": "7707218286"
+          }
+        ],
+        "userIds": [
+          "7707218286"
+        ],
+        "studentTags": [
+          7
+        ]
+      },
+      "http": 200,
+      "trace": "6cf8980f-e889-436c-8907-3c2568abc225.0.0",
+      "ms": 173,
+      "code": 0,
+      "msg": "",
+      "data": {}
+    },
+    {
+      "name": "restore_B_empty",
+      "request": {
+        "scene": "microContinuationService",
+        "type": 1,
+        "clazzStudents": [
+          {
+            "clazzNumber": "588506026511294464",
+            "userId": "7707218285"
+          }
+        ],
+        "userIds": [
+          "7707218285"
+        ],
+        "studentTags": []
+      },
+      "http": 200,
+      "trace": "59abaebd-99ec-4526-8ff5-a2582bc852e0.0.0",
+      "ms": 188,
+      "code": 0,
+      "msg": "",
+      "data": {}
+    },
+    {
+      "name": "restored_filter_seven",
+      "request": {
+        "filter": {
+          "clazzStudentStatus": [
+            "1",
+            "3"
+          ],
+          "clazzNumber": [
+            "588506026511294464"
+          ],
+          "studentTags": [
+            7
+          ]
+        },
+        "clazzNumbers": [
+          "588506026511294464"
+        ],
+        "pager": {
+          "current": 1,
+          "pageSize": 100
+        },
+        "route": {
+          "sceneVersionNumber": "294312775746856960"
+        },
+        "identification": "microContinuationService"
+      },
+      "http": 200,
+      "trace": "583beca7-836d-4e8b-8301-725b67c47e90.0.0",
+      "ms": 371,
+      "code": 0,
+      "msg": "",
+      "data": {
+        "pager": {
+          "current": 1,
+          "pageSize": 100,
+          "total": 0,
+          "hasNext": false,
+          "approximateTotal": false
+        },
+        "list": []
+      }
+    },
+    {
+      "name": "restored_filter_two",
+      "request": {
+        "filter": {
+          "clazzStudentStatus": [
+            "1",
+            "3"
+          ],
+          "clazzNumber": [
+            "588506026511294464"
+          ],
+          "studentTags": [
+            2
+          ]
+        },
+        "clazzNumbers": [
+          "588506026511294464"
+        ],
+        "pager": {
+          "current": 1,
+          "pageSize": 100
+        },
+        "route": {
+          "sceneVersionNumber": "294312775746856960"
+        },
+        "identification": "microContinuationService"
+      },
+      "http": 200,
+      "trace": "c8c86558-0388-4e23-9939-dd2fc90b4c0f.0.0",
+      "ms": 244,
+      "code": 0,
+      "msg": "",
+      "data": {
+        "pager": {
+          "current": 1,
+          "pageSize": 100,
+          "total": 0,
+          "hasNext": false,
+          "approximateTotal": false
+        },
+        "list": []
+      }
+    },
+    {
+      "name": "restored_filter_three",
+      "request": {
+        "filter": {
+          "clazzStudentStatus": [
+            "1",
+            "3"
+          ],
+          "clazzNumber": [
+            "588506026511294464"
+          ],
+          "studentTags": [
+            3
+          ]
+        },
+        "clazzNumbers": [
+          "588506026511294464"
+        ],
+        "pager": {
+          "current": 1,
+          "pageSize": 100
+        },
+        "route": {
+          "sceneVersionNumber": "294312775746856960"
+        },
+        "identification": "microContinuationService"
+      },
+      "http": 200,
+      "trace": "23e19e3e-abf5-43df-9e43-872464e9bff7.0.0",
+      "ms": 193,
+      "code": 0,
+      "msg": "",
+      "data": {
+        "pager": {
+          "current": 1,
+          "pageSize": 100,
+          "total": 0,
+          "hasNext": false,
+          "approximateTotal": false
+        },
+        "list": []
+      }
+    },
+    {
+      "name": "restored_full",
+      "request": {
+        "filter": {
+          "clazzStudentStatus": [
+            "1",
+            "3"
+          ],
+          "clazzNumber": [
+            "588506026511294464"
+          ]
+        },
+        "clazzNumbers": [
+          "588506026511294464"
+        ],
+        "pager": {
+          "current": 1,
+          "pageSize": 100
+        },
+        "route": {
+          "sceneVersionNumber": "294312775746856960"
+        },
+        "identification": "microContinuationService"
+      },
+      "http": 200,
+      "trace": "725f7617-e383-4f5b-ac8e-e131f6c1415e.0.0",
+      "ms": 165,
+      "code": 0,
+      "msg": "",
+      "data": {
+        "pager": {
+          "current": 1,
+          "pageSize": 100,
+          "total": 0,
+          "hasNext": false,
+          "approximateTotal": false
+        },
+        "list": []
+      }
+    }
+  ]
+}

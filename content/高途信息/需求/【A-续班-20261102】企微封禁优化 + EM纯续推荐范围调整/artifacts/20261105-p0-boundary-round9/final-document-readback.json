@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"section\" requested-start=\"doxcnBNswuYrBFglNDgpaoZPENg\"><h1 id=\"doxcnBNswuYrBFglNDgpaoZPENg\">2026-11-05 round9 最终边界收敛与最小补验</h1><p id=\"doxcnaUsgnrEPNrlXDMo4pT7dGf\">本节为当前统计，替代round8的旧数字，历史原件不改。信息完整性：12卡完整1／准备2／缺失9；原30完整4／准备19／缺失7。业务证据：原30中2条仅在所述入口范围已验证、21条仅子集、7条没做；12卡整卡通过仍0，不计23条或12卡通过。25契约逐点映射、12项边界分类及原30逐条状态见文末round9附件。</p><p id=\"doxcniDruQ9XkvTcljN4IcSZcAA\">新增小班：实际Gong177071，需求前端17ee81cc/test-gtbg-dev-3，班“【造数】小班续班前置-小学数学-1103-1831”（clazzNumber／bizNumber588506026511294464），计划588506246722727936／一轮，学员7707218286原标签7、7707218285原无行。真实页面双人保存2后，新旧源表均2/2；trace d8691d38-5f18-4505-a204-5603ce3149cd.0.0命中release5dce9cdb/10.255.176.174，72ms。按原值恢复7/空，DB和列表一致，筛7仅前者且名称“自己主动学习”，筛2/3均0；筛7 trace41985fcc-9d60-4dc1-8b2a-9186c97d00bc.0.0命中df66fed8/10.218.238.176，207ms。单改3仅受理，首次手工查询漏续班计划及轮次导致空，未计3落值或筛选成功；改用页面实际参数后才计恢复筛选结果。小班同次第三未选对照、完整单人编辑页面仍没做。</p><p id=\"doxcnbQTHVbUg1wQ8u6DK9XWIcc\">新增EM有值从候选对照：学员7658129872，专用主588858850300473344已关联A585960797778243584。A自身含扩科推荐有“dcg-扩科排除-后置-英语”（number585963404555053056／bizNumber16YY26X7IK11001）1件，recommend_type2；专用主同参数返回3件纯续、扩科0，未混入该从候选。主／从trace cart_gaotu100_com.296.17938822210960339／.305.17938822210950335，固定cart10.218.237.47/a34016fd。调用两个true分别为getContext、fromBCart，不是扩科开关；无新改关系/配置。仅证明该有值从候选未污染，不替代真实不同主从学年学期组合。</p><p id=\"doxcn6iCDQlFBZt4JwUUT8JNB0b\">新增页面反例：大班bizNumber32YYTS25D6LS11002／“续班归因-正经前置班-0820”，选7704846434点击修改备注，实际提示“仅企微好友可以修改备注”，未提交任务。已有官方好友成功任务/恢复继续复用；本班非好友拒绝不替代同班好友及默认姓名/手机/身份模板一致性。</p><p id=\"doxcn1M8EbnSZPyLPF44wk0KNkh\">必需未完成：大小班默认备注模板/同班好友页面，小班同次2+1及完整单人页面；真实不同主从学年学期、B有值扩科及跨年级保留/第三件真重复；各纯续入口与C端；缓存必要回退、优惠保持/异主体最小对照。它们仍保留在25契约与原卡，不因材料压缩删除，也不将已有程序/接口子集升级为页面通过。现有C端根页面无计划/学员参数且显示网络失败/重新登录，仅说明该现有页不能直接复用，未据此断言目标路由或账号权限失败。</p><p id=\"doxcnDEYWM5eXrlQ9xf2hZ2JE8g\">可选建议：优惠和主体全矩阵、26小时强制等待、全部缓存故障排列、独立加购推荐范围、其他联系渠道、真实群发或制造封禁；不扩大本轮门槛。跨模式已购显示差异仅列独立修复建议：数据源分歧已验证、是否本次引入未验证，不修改代码、不阻塞P0文档交付。历史min(begin_time)≥2026-01-01含小班是必需规则，但全量执行按既定大数据侧lichenhao02／闫旭及窗口作为外部后续，我方只出方案、不改不跑任务；本轮没做不伪造。</p><p id=\"doxcnGSAnMGgrCMj6NIylR9VA2b\">收尾：新增小班原7／空已独立回读恢复，新空行保留并登记为仅标签可用、可售未知的既有fixture；不删班/删单/退款。新测试页已关闭、选中0；原大班标签业务空值、官方备注原值及Gong身份沿用已恢复证据，无新cosplay或消息。既有计划/班/课节/已付单继续保留，无在途业务写入。当前P0表达与证据更新可交付，完整业务验收仍未完成；无必须owner补账号/好友/部署的已确认阻塞，不泛问是否继续。</p><figure id=\"doxcnioEb2k2cUF5pHRCqdmt6pe\" view-type=\"Card\"><source id=\"doxcnBnz4P8VH1REnBpXJM5Zndg\" name=\"p0-boundary-evidence-243aa61a-round9.zip\" mime=\"application/zip\" size=\"58195\" token=\"W9bebCVrioV57Ix5s6ZcAwf0nMb\"/></figure></fragment>",
+      "document_id": "ZQUXdlDxWoknJhxu914c2uVYnBr",
+      "revision_id": 289
+    }
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.70",
+      "latest": "1.0.99",
+      "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+    }
+  }
+}

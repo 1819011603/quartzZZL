@@ -1,0 +1,18 @@
+{
+  "ok": true,
+  "action": "add",
+  "record": {
+    "id": "clazz:588506026511294464",
+    "kind": "clazz",
+    "env": "test",
+    "traffic_env": "test-gtbg-dev-3",
+    "owner": "W1-243aa61a",
+    "status": "unknown",
+    "evidence": "/tmp/w1-p0-243aa61a/round9/small-case-state.json",
+    "notes": "复用已有小班续班标签界面样本；7707218286原7已恢复，7707218285业务空值已恢复；未核可售，不用于下单验收",
+    "recover": "保留原班和学员；原标签7/空，新增空行保留；不删班、不删单、不退款",
+    "created": "2026-11-05T20:45:34",
+    "updated": "2026-11-05T20:45:34"
+  },
+  "path": "/Users/gaotu/.local/share/gaotu-test-fixtures/registry.json"
+}

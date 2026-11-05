@@ -1,0 +1,33 @@
+{
+  "request": {
+    "pager": {
+      "current": 1,
+      "pageSize": 300,
+      "total": 2
+    },
+    "route": {
+      "sceneVersionNumber": "294312775746856960"
+    },
+    "identification": "microContinuationService",
+    "clazzNumber": [
+      "588506026511294464"
+    ],
+    "quickFilter": {},
+    "filter": {
+      "clazzStudentStatus": [
+        "1",
+        "3"
+      ],
+      "clazzNumber": [
+        "588506026511294464"
+      ],
+      "smallRenewalRoundFilter": [
+        1
+      ],
+      "smallRenewalNumber": [
+        "588506246722727936"
+      ]
+    }
+  },
+  "trace": "9351c3e4-92a2-4463-b1b5-32da12b9ab18.0.0"
+}

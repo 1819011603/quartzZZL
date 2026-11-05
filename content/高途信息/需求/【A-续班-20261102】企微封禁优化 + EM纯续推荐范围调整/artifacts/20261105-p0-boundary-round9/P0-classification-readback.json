@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"section\" requested-start=\"doxcndnsk1qCsiBNlggf5ASb00d\"><h2 id=\"doxcndnsk1qCsiBNlggf5ASb00d\">可复现程度分档与逐条信息缺口</h2><p id=\"doxcnk03bQs3bCM07gz1Ztpu5ng\">信息完整性单独统计：完整=对象/步骤/判断信息充分；准备=对象已明确、需登录/关系快照/环境或重建消耗样本；缺失=必要对象/关系/基准尚未固定。整卡按最弱子场景，绝不是业务通过数。</p><p id=\"doxcnthXw1TFO95O3N2FECLfWse\">12张卡—完整可复现1：P0-01。</p><p id=\"doxcnAuz38NWkVcHGLhWPm3IQKc\">12张卡—前置准备后可执行2：P0-02、P0-03。P0-03状态1对象已固定，但需重核时间状态及页面登录。</p><p id=\"doxcnl0fPjyAcDzJjiPaPLL0MSe\">12张卡—信息仍缺失9：P0-04、P0-05、P0-06、P0-07、P0-08、P0-09、P0-10、P0-11、P0-12。</p><p id=\"doxcnoKqcCuucjcrv83WTiWXMyh\">原30条—完整可复现4：REN-B02-001、REN-B02-002、QW-B05-001、QW-B05-002。</p><p id=\"doxcnugGZ5wSqneTbRt9yahPW0A\">原30条—前置准备后可执行19：TC-G001、TC-G002、REN-B01-001、REN-B01-002、REN-B03-001、REN-B03-002、REN-B04-001、REN-B04-002、REN-B05-001、REN-B05-002、REN-B06-001、REN-B07-001、REN-B08-001、REN-B08-002、REN-B09-001、QW-G001、QW-B01-001、QW-B02-001、QW-B02-002。小班单人/筛选对象已固定，执行前重核原值及页面选择。</p><p id=\"doxcnezN38tTVCx8j8VdUHJhexh\">原30条—信息仍缺失7：REN-B06-002、REN-B07-002、REN-B09-002、QW-B01-002、QW-B03-001、QW-B03-002、QW-B04-001。</p><p id=\"doxcn6It3mH3fJh3eK8ft5Zic3J\">原30条的QW-B05-001/002已具备当前默认/联系弹窗两发送类型的信息；P0-12仍包含未固定课节/线索入口，不能把两节点覆盖扩大到整卡。原30条实际结果逐项见上表；已验证均按接口/DB/任务/页面具体子集说明，未按“有一次成功”统计整条通过。</p><p id=\"doxcnV9vnbFEHPBZ1GrfDijbZSe\">必需未完成：小班同次2+1、同班好友页面及默认备注模板；不同主从学年学期、B有值扩科及跨年级/第三件真重复；C端/各纯续入口；缓存必要回退和优惠/异主体最小对照；历史min(begin_time)规则外部回溯后续。小班批量2人、恢复/筛7和有值从候选不污染已补子集。优惠全矩阵、真实群发、26小时强制等待与故障全排列不作为新增门槛；未做不改成通过。</p><p id=\"doxcnWv94fYndjs9VVyGdfRFule\">老师身份、同班未选对照及现成官方好友均已取得，无已确认必须人工提供账号/好友的阻塞。企微前端17ee81cc已确认在test-gtbg-dev-3；本轮两后端实例均成功处理受控ES筛选，不再将历史熔断或“feature未确认”列为当前统一阻塞。小班、其他页面和历史回溯仍没做；不将局部健康外推为ES全局健康。</p></fragment>",
+      "document_id": "ZQUXdlDxWoknJhxu914c2uVYnBr",
+      "revision_id": 287
+    }
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.70",
+      "latest": "1.0.99",
+      "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+    }
+  }
+}

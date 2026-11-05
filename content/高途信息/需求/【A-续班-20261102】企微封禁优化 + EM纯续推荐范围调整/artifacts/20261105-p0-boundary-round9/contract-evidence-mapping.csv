@@ -1,0 +1,26 @@
+contract,rule,card,grade,actual,evidence,remaining
+Q1,大小班续班服务有批量添加标签,P0-10,已验证,大班接口批量2+1/页面单人保存/DB恢复；round9小班两人页面批量/新旧源落值与7/空恢复、筛7正例及筛2/3排除,qiwei-page-save-restore.json;qiwei-filter-three-case.json;round9/small-case-state.json;round9/small-restored-query.json,小班同次第三未选对照及完整单人编辑页面未验；单改3只受理未计落值
+Q2,批量企微备注与默认花名册一致，任务结果可核对,P0-11,已验证,官方单/双任务及备注读回恢复，round7子集；round9大班实际非好友页面拒绝未提交,../20261105-p0-execution-round7/qiwei-results.json;round9/remark-dialog.txt,同班大小班页面/默认模板/非好友对照未全验
+Q3,学员标签显示并可单人编辑,P0-10,已验证,大班单改2→3、实际页面保存2、DB/列表ID名称；round9小班两人页面批量/新旧源落值与7/空恢复、筛7正例及筛2/3排除,qiwei-filter-three-case.json;qiwei-page-save-restore.json;round9/small-case-state.json;round9/small-restored-query.json,小班同次第三未选对照及完整单人编辑页面未验；单改3只受理未计落值
+Q4,学员标签可筛选，发送studentTags,P0-10,已验证,标签3正例、标签2排除、其他老师排除、清空两筛选0；round9小班两人页面批量/新旧源落值与7/空恢复、筛7正例及筛2/3排除,qiwei-filter-three-case.json;qiwei-cart-actual-route-proofs.json;round9/small-case-state.json;round9/small-restored-query.json,小班同次第三未选对照及完整单人编辑页面未验；单改3只受理未计落值
+Q5,按班级min(begin_time)≥2026-01-01圈班，再回溯班下学员；不补clazzRoomType,回溯验收,没做,已确认规则min(begin_time)>=2026-01-01，非创建时间,agent-b-report.md,真实阈值组/历史回溯未执行；大数据任务按既定只出方案边界
+Q6,官方群发私聊/群聊各共享入口替换为规范链接,P0-12,已验证,round7默认页两官方群发类型规范链接/打开返回子集,../20261105-p0-execution-round7/qiwei-report.md,课节管理/其他受影响入口未全验，不发送消息
+Q7,EES联系学员弹窗同样有规范链接,P0-12,已验证,round7联系学员两类型及返回编辑子集,../20261105-p0-execution-round7/qiwei-report.md,全部角色/页面未全验
+Q8,阶段反馈、退费管控新增按钮本期取消,明确不做,已验证,需求材料确认阶段反馈/退费管控新增按钮本期取消,integration-contracts-before.json,无实现或运行通过主张
+Q9,运营规则按引用说明执行；不新增产品限流或自动发送,P0-12,已验证,规范说明及禁止实际发送的范围核对,agent-b-report.md,未执行真实群发，非需求必验
+E1,主计划纯续覆盖主从在读前置课；关联单向，规则取主,P0-04,已验证,A并A+B及B仅自身，目标cart真实调用子集,agent-a-readback.json;cart-bound-host-read.json,小班主及逐页面完整闭环未验
+E2,原大小班推荐规则保留，同科不同商品不互斥,P0-04,已验证,同科不同SKU保留；小班已购signUp0差异已核,agent-a-order-route-confirm.json;agent-a-order-rule-source.json,现象来源已定位，是否本次回归未判；未改代码
+E3,同年级同商品去重，跨年级保留，纯续优先,P0-06,已验证,同年级同商品碰撞去重5→4及原映射恢复,../20261105-p0-execution-round7/collision-observe.json,跨年级保留、纯续/扩科碰撞仍没做
+E4,扩科只取主计划，年级/学年/学期不被从计划污染,P0-05,已验证,A扩科只自身年级2件，B纯续不反向扩展；round9有值从A英语扩科1件，专用主含扩科推荐0扩科/3纯续，未污染,agent-a-readback.json;round9/expansion-nonempty-child.json,不同主从学年学期组合及B有值扩科完整反例未验
+E5,仅管理员可操作；可编辑状态为待开始/进行中,P0-03,已验证,管理员状态1/2保存及空集恢复、status0拒绝,status1-main-case.json;../20261105-p0-execution-round7/relation-boundaries.json,管理员页面/非管理员完整矩阵未全验
+E6,当前计划状态、名称、字符串ID、管理员完整,P0-01,已验证,原批量ID接口字段结果子集,../20261105-p0-execution-round7/document-verification.json,页面完整显示未验
+E7,名称模糊/ID批量精确；默认状态1、2，过滤测试数据=是,P0-01,已验证,原完整ID接口精确2条，保留模糊/默认过滤预期,agent-b-report.md,名称模糊、默认条件页面反例没做
+E8,搜索结果字段完整，按创建时间倒序,P0-01,已验证,原接口结果字段及顺序子集,../20261105-p0-execution-round7/document-verification.json,页面显示未验
+E9,上限默认10且可配置，11项明确拒绝,P0-03,已验证,10保存、重复仍10、11拒绝、DB不变及恢复,../20261105-p0-execution-round7/relation-boundaries.json,页面/改共享上限配置没做；不因参考case设3改Apollo
+E10,同主不可重复绑定，已有绑定正确回显,P0-02,已验证,重复保存及接口/DB回读,../20261105-p0-execution-round7/relation-boundaries.json,页面重开完整回显没做
+E11,已选计划字段完整、创建时间倒序,P0-02,没做,保留已选计划字段及倒序预期,agent-b-report.md,未保存集合页面未执行
+E12,移除二次确认；最终确认保存全集，取消不落库,P0-02,已验证,接口保存/仅移目标及清空DB子集,status1-main-case.json,页面取消不落库及确认时机未全验
+E13,关联结果仅操作弹窗显示，未绑定为空,P0-01/P0-02,已验证,接口空集及关联集合子集,status1-main-case.json,仅弹窗显示的页面约束没做
+E14,单项/批量推荐、下单推荐、通用推荐、C端纯续入口一致,P0-04,已验证,真实cart operation网关与内部推荐入口,cart-bound-host-route-proof.json;agent-a-readback.json,C端、单项/批量/通用及下单页面未全验
+E15,主从商品可同单，只按收款主体限制；优惠保持,P0-07/P0-08,已验证,100×1+0×1−0=100分，实际同pay两订单status2,../20261105-p0-execution-round7/dual-paid-readback.json;agent-a-report.md,优惠/异主体、第三件真重复运行反例未全验
+E16,保留owner接受的最长26小时预热旧结果窗口,P0-09,已验证,需求接受26小时窗口及既有程序/配置关闭子集,agent-b-report.md;../20261105-p0-execution-round7/cache-published-config.json,未跑自然26小时/全开关负缓存故障矩阵，不清缓存伪造即时

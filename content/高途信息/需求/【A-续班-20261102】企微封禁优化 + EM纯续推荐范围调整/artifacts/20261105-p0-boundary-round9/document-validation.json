@@ -1,0 +1,16 @@
+{
+  "revision": 287,
+  "boundary_heading": "doxcnBNswuYrBFglNDgpaoZPENg",
+  "sections_read": [
+    "P005",
+    "P010",
+    "P011",
+    "classification",
+    "original30",
+    "boundary"
+  ],
+  "original30_rows": 30,
+  "original25_contracts": "preserved; updated local mapping25 rows",
+  "split_statistics_verified": true,
+  "old84_checks": "not rerun"
+}

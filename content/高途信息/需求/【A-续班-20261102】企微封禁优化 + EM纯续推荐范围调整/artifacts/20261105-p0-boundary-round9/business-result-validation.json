@@ -1,0 +1,53 @@
+{
+  "small_batch": "independent new/old source2/2 after actual page write",
+  "small_restored": "independent DB7/empty; list7/name match, 2/3 excluded",
+  "small_filters_expected_actual_counts": [
+    2,
+    1,
+    0,
+    0
+  ],
+  "same_batch_third_control": "没做",
+  "single_three_landing": "没做；only request accepted, early query missing plan/round invalid",
+  "em_child_expansion": [
+    [
+      "585963404555053056",
+      2
+    ],
+    [
+      "585960755422160896",
+      1
+    ],
+    [
+      "586097025945298944",
+      1
+    ]
+  ],
+  "em_main_with_child": [
+    [
+      "585960755422160896",
+      1
+    ],
+    [
+      "586097025945298944",
+      1
+    ],
+    [
+      "588861402658267136",
+      1
+    ]
+  ],
+  "em_scope": "有值从候选不污染；未推广不同学年学期全组合",
+  "counts": {
+    "original30": {
+      "verified_whole_scoped": 2,
+      "verified_subset": 21,
+      "not_executed": 7
+    },
+    "cards": {
+      "verified_whole": 0,
+      "verified_subset": 12
+    }
+  },
+  "fixture_registered": true
+}

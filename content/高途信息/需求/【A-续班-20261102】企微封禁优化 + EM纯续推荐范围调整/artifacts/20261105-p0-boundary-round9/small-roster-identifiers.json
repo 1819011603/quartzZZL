@@ -1,0 +1,34 @@
+{
+  "code": 0,
+  "rows": [
+    {
+      "clazzBizNumber": "588506026511294464",
+      "studentTags": [
+        7
+      ],
+      "clazzNumber": "588506026511294464",
+      "clazzName": "【造数】小班续班前置-小学数学-1103-1831",
+      "userId": 7707218286,
+      "leadTeacher": "弓雪萌",
+      "studentTagNames": [
+        "自己主动学习"
+      ],
+      "id": "588506026511294464-7707218286"
+    },
+    {
+      "clazzBizNumber": "588506026511294464",
+      "clazzNumber": "588506026511294464",
+      "clazzName": "【造数】小班续班前置-小学数学-1103-1831",
+      "userId": 7707218285,
+      "leadTeacher": "弓雪萌",
+      "id": "588506026511294464-7707218285"
+    }
+  ],
+  "pager": {
+    "current": 1,
+    "pageSize": 300,
+    "total": 2,
+    "hasNext": false,
+    "approximateTotal": false
+  }
+}

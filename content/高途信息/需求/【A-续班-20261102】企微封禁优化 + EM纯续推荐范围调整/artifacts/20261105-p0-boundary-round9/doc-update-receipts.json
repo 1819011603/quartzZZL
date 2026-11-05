@@ -1,0 +1,266 @@
+[
+  {
+    "block": "doxcnRd4cUwaNiIW1m0tdfzXOSd",
+    "text": "前置：实际gongxuemeng/177071。大班“续班归因-正经前置班-0820”：clazzNumber574882679202260992／bizNumber32YYTS25D6LS11002，目标7704846434、7704846439，对照7704846440。新增小班“【造数】小班续班前置-小学数学-1103-1831”：clazzNumber／bizNumber588506026511294464，计划588506246722727936／一轮；目标7707218286原标签7、7707218285原无行，两人均在实际续班列表。所用接口无同名bizId，不以DB主键替代；小班同次第三名未选对照未准备。",
+    "response": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 274,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      },
+      "_notice": {
+        "update": {
+          "command": "lark-cli update",
+          "current": "1.0.70",
+          "latest": "1.0.99",
+          "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+        }
+      }
+    }
+  },
+  {
+    "block": "doxcnMWppaY7V9qwKsMuXTwf19g",
+    "text": "实际：大班批量2/2→单人3/2→空/空及未选不变，延迟标签/老师筛选、页面单甲保存与恢复已验。新增小班真实页面双人保存2成功，新旧源表均2/2（trace d8691d38-5f18-4505-a204-5603ce3149cd.0.0）；按原值恢复7/空后，DB及列表一致，筛7仅7707218286且名称“自己主动学习”，筛2/3为0。单改3仅确认受理，首次查询漏续班计划/轮次，未计3落值通过。小班同次第三未选对照、单人编辑完整页面仍未全验；空标签行保留。",
+    "response": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 275,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      },
+      "_notice": {
+        "update": {
+          "command": "lark-cli update",
+          "current": "1.0.70",
+          "latest": "1.0.99",
+          "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+        }
+      }
+    }
+  },
+  {
+    "block": "doxcntMinFpSeSayAVhK89KVxgc",
+    "text": "前置：A585960797778243584→B586116340522184704，原学员7658127801；新增对照学员7658129872，从专用主588858850300473344及其已关联A分别取扩科。主前班“B测试-五年级语文春季前置B”：number588861397654462464／bizNumber15YW26C6M111001；A前班“dcg-扩科排除-前置-五年级语文”：number585960582537144320／bizNumber15YW26CCRI11001。A英语扩科班“dcg-扩科排除-后置-英语”：number585963404555053056／bizNumber16YY26X7IK11001。本例接口无同名bizId；真实不同主从学年/学期组合仍未固定，不以字段编码替代课程关系核实。",
+    "response": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 276,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      },
+      "_notice": {
+        "update": {
+          "command": "lark-cli update",
+          "current": "1.0.70",
+          "latest": "1.0.99",
+          "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+        }
+      }
+    }
+  },
+  {
+    "block": "doxcnIqwgovrhBj9EhhO56Bnogh",
+    "text": "实际：原A自身grade16扩科2件为7658127801的既有子集。新增7658129872对照：A自身返回英语扩科585963404555053056（recommend_type2），专用主588858850300473344开启扩科查询后仅保留3件纯续、扩科0；有值从候选未混入主计划。trace cart_gaotu100_com.305.17938822210950335／.296.17938822210960339。没有新改关联或配置；不同主从学年学期及B有值扩科的完整反例仍没做。",
+    "response": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 277,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      },
+      "_notice": {
+        "update": {
+          "command": "lark-cli update",
+          "current": "1.0.70",
+          "latest": "1.0.99",
+          "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+        }
+      }
+    }
+  },
+  {
+    "block": "doxcnatN3uhUxbGTPFiRNWLQC3b",
+    "text": "实际：官方单/双人任务成功、两原备注独立延迟回读恢复、未选及标签/颜色/分层不变，沿用原证据。新增实际大班页面反例：选7704846434（班bizNumber32YYTS25D6LS11002／续班归因-正经前置班-0820）点击修改备注，页面提示“仅企微好友可以修改备注”，未提交任务；不把非好友拒绝替代好友成功。大小班同班好友页面、默认姓名/手机/身份模板一致性仍没做；不再重复写备注。",
+    "response": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 278,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      },
+      "_notice": {
+        "update": {
+          "command": "lark-cli update",
+          "current": "1.0.70",
+          "latest": "1.0.99",
+          "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+        }
+      }
+    }
+  },
+  {
+    "block": "doxcneap7K3H5mcxOFo5j2Pvtwf",
+    "text": "原30条—前置准备后可执行19：TC-G001、TC-G002、REN-B01-001、REN-B01-002、REN-B03-001、REN-B03-002、REN-B04-001、REN-B04-002、REN-B05-001、REN-B05-002、REN-B06-001、REN-B07-001、REN-B08-001、REN-B08-002、REN-B09-001、QW-G001、QW-B01-001、QW-B02-001、QW-B02-002。小班单人/筛选对象已固定，执行前重核原值及页面选择。",
+    "response": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 279,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      },
+      "_notice": {
+        "update": {
+          "command": "lark-cli update",
+          "current": "1.0.70",
+          "latest": "1.0.99",
+          "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+        }
+      }
+    }
+  },
+  {
+    "block": "doxcnd1R9VWI9x0kCrH3H71ad9f",
+    "text": "原30条—信息仍缺失7：REN-B06-002、REN-B07-002、REN-B09-002、QW-B01-002、QW-B03-001、QW-B03-002、QW-B04-001。",
+    "response": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 280,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      },
+      "_notice": {
+        "update": {
+          "command": "lark-cli update",
+          "current": "1.0.70",
+          "latest": "1.0.99",
+          "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+        }
+      }
+    }
+  },
+  {
+    "block": "doxcnXEvl4MvbwYslB5S8l8YGfh",
+    "text": "必需未完成：小班同次2+1、同班好友页面及默认备注模板；不同主从学年学期、B有值扩科及跨年级/第三件真重复；C端/各纯续入口；缓存必要回退和优惠/异主体最小对照；历史min(begin_time)规则外部回溯后续。小班批量2人、恢复/筛7和有值从候选不污染已补子集。优惠全矩阵、真实群发、26小时强制等待与故障全排列不作为新增门槛；未做不改成通过。",
+    "response": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 281,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      },
+      "_notice": {
+        "update": {
+          "command": "lark-cli update",
+          "current": "1.0.70",
+          "latest": "1.0.99",
+          "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+        }
+      }
+    }
+  },
+  {
+    "block": "doxcnBrR0PsHDlDhgyXXoCKhXrh",
+    "text": "已验证：既有A自身扩科子集；新增专用主关联A时，学员7658129872在A有英语扩科候选，但主开启扩科仍0扩科、仅3件纯续，未污染。不同主从学年/学期组合仍没做。",
+    "response": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 282,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      },
+      "_notice": {
+        "update": {
+          "command": "lark-cli update",
+          "current": "1.0.70",
+          "latest": "1.0.99",
+          "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+        }
+      }
+    }
+  },
+  {
+    "block": "doxcnXZxIUYOSBsvZF7YFOTsJOg",
+    "text": "已验证小班子集：真实续班页两目标保存标签2，新旧表2/2，恢复原7/空并独立回读；班588506026511294464、学员7707218286/7707218285。缺同次第三名未选对照，非整条通过。",
+    "response": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 283,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      },
+      "_notice": {
+        "update": {
+          "command": "lark-cli update",
+          "current": "1.0.70",
+          "latest": "1.0.99",
+          "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+        }
+      }
+    }
+  },
+  {
+    "block": "doxcnbAM4otH5pE94Fiax214ehh",
+    "text": "已验证小班子集：正常单人恢复7及另一人清空后DB/列表一致，筛7仅原学员且名称正确、筛2/3为0。单改3仅受理，首次查询参数不全未计落值；完整单人编辑页面未验。",
+    "response": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 284,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      },
+      "_notice": {
+        "update": {
+          "command": "lark-cli update",
+          "current": "1.0.70",
+          "latest": "1.0.99",
+          "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+        }
+      }
+    }
+  }
+]

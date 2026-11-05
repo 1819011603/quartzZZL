@@ -1,0 +1,38 @@
+[
+  {
+    "trace": "d8691d38-5f18-4505-a204-5603ce3149cd.0.0",
+    "exit": 0,
+    "matches": 1,
+    "routes": [
+      {
+        "upstream": "10.255.176.174:28688",
+        "upstream_latency": 72,
+        "route_id": "student-center_170",
+        "config_path": "/component/student-center/*",
+        "method": "POST",
+        "uri": "/component/student-center/batchOperate/tag/save",
+        "traffic-env": "test-gtbg-dev-3",
+        "ingress-traffic-env": "test-gtbg-dev-3",
+        "status": 200
+      }
+    ]
+  },
+  {
+    "trace": "41985fcc-9d60-4dc1-8b2a-9186c97d00bc.0.0",
+    "exit": 0,
+    "matches": 1,
+    "routes": [
+      {
+        "upstream": "10.218.238.176:28688",
+        "upstream_latency": 207,
+        "route_id": "student-center_170",
+        "config_path": "/component/student-center/*",
+        "method": "POST",
+        "uri": "/component/student-center/roster/small/renewal/page",
+        "traffic-env": "test-gtbg-dev-3",
+        "ingress-traffic-env": "test-gtbg-dev-3",
+        "status": 200
+      }
+    ]
+  }
+]

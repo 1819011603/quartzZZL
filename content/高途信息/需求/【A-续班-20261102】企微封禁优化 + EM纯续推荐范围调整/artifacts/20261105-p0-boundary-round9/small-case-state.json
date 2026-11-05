@@ -1,0 +1,32 @@
+{
+  "state": "restored_and_readback",
+  "class_number": "588506026511294464",
+  "bizNumber": "588506026511294464",
+  "name": "【造数】小班续班前置-小学数学-1103-1831",
+  "identity": "gongxuemeng/177071",
+  "targets": [
+    "7707218286",
+    "7707218285"
+  ],
+  "restore_tags": {
+    "7707218286": [
+      7
+    ],
+    "7707218285": []
+  },
+  "physical_empty_row_may_remain": true,
+  "scope": "small batch2 + single2->3/filter/cancel/restoration subset; no third unselected sameclass",
+  "restored_business_values": {
+    "7707218286": "7",
+    "7707218285": ""
+  },
+  "empty_rows_retained": [
+    "7707218285"
+  ],
+  "correct_filter_query": "small-restored-query.json",
+  "limitations": [
+    "同次批量第三名未选对照未准备",
+    "首次手工小班查询缺续班计划/轮次导致空，不作为筛选证据",
+    "单改3被受理但未独立确认3落值；不称完整单人编辑3通过"
+  ]
+}
