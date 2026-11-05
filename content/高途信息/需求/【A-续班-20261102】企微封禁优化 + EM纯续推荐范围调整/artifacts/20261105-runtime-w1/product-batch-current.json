@@ -1,0 +1,186 @@
+{
+  "ok": true,
+  "url": "https://test-fuwu.baijia.com/bgwApi/product-b/b/renewMaster/list",
+  "trafficEnv": "test-gtbg-dev-3",
+  "httpStatus": 200,
+  "resolvedRoute": {
+    "appId": "product-b",
+    "pathInfo": "/product-b/b",
+    "rewriteInfo": "StripPrefix = 1",
+    "statusInfo": "正常",
+    "routeId": 189
+  },
+  "request": {
+    "number": "585960797778243584，586116340522184704",
+    "pager": {
+      "current": 1,
+      "pageSize": 10
+    }
+  },
+  "traceId": "e919e0e0-88b0-456f-90b5-77bc1a8186f9.0.3",
+  "gapmApp": "product-b",
+  "response": {
+    "code": 0,
+    "data": {
+      "renewalMasterDTOList": [
+        {
+          "number": "586116340522184704",
+          "name": "dcg-小班扩科排除-计划",
+          "beginTime": "1792476001000",
+          "endTime": "1795154401000",
+          "status": 2,
+          "isTestData": 1,
+          "type": 2,
+          "creator": {
+            "id": "49311",
+            "name": "张梦26"
+          },
+          "adminList": [
+            {
+              "id": "177071",
+              "name": "弓雪萌"
+            },
+            {
+              "id": "90247",
+              "name": "唐稳01"
+            }
+          ],
+          "adminName": "弓雪萌，唐稳01",
+          "administrators": [
+            177071,
+            90247,
+            177071,
+            90247,
+            177071,
+            90247
+          ],
+          "schoolYear": {
+            "id": "2026",
+            "name": "2026-2027"
+          },
+          "schoolTermList": [
+            {
+              "id": "C",
+              "name": "春季"
+            }
+          ],
+          "targetSchoolYearList": [
+            {
+              "id": "2027",
+              "name": "2027-2028"
+            }
+          ],
+          "targetSchoolTermList": [
+            {
+              "id": "X",
+              "name": "暑假"
+            }
+          ],
+          "departmentPathList": [
+            {
+              "id": "10000329/10000339/10000380",
+              "name": "分公司/福州分公司/平台事业部"
+            }
+          ],
+          "courseGradeList": [
+            {
+              "id": "11",
+              "name": "一年级"
+            }
+          ],
+          "courseSubjectList": [
+            {
+              "id": "1",
+              "name": "数学"
+            }
+          ]
+        },
+        {
+          "number": "585960797778243584",
+          "name": "dcg-扩科排除-大班计划-1020",
+          "beginTime": "1791561600000",
+          "endTime": "1798732799000",
+          "status": 2,
+          "isTestData": 1,
+          "type": 1,
+          "creator": {
+            "id": "49311",
+            "name": "张梦26"
+          },
+          "adminList": [
+            {
+              "id": "177071",
+              "name": "弓雪萌"
+            },
+            {
+              "id": "90247",
+              "name": "唐稳01"
+            }
+          ],
+          "adminName": "弓雪萌，唐稳01",
+          "administrators": [
+            177071,
+            177071,
+            177071
+          ],
+          "schoolYear": {
+            "id": "2026",
+            "name": "2026-2027"
+          },
+          "schoolTermList": [
+            {
+              "id": "C",
+              "name": "春季"
+            }
+          ],
+          "targetSchoolYearList": [
+            {
+              "id": "2026",
+              "name": "2026-2027"
+            }
+          ],
+          "targetSchoolTermList": [
+            {
+              "id": "X",
+              "name": "暑假"
+            }
+          ],
+          "departmentPathList": [
+            {
+              "id": "10007722",
+              "name": "测*_10007722"
+            }
+          ],
+          "courseGradeList": [
+            {
+              "id": "15",
+              "name": "五年级"
+            }
+          ],
+          "courseSubjectList": [
+            {
+              "id": "5",
+              "name": "语文"
+            }
+          ]
+        }
+      ],
+      "pager": {
+        "current": 1,
+        "pageSize": 10,
+        "total": "2"
+      }
+    },
+    "errorTypeCode": 0
+  }
+}
+
+---- 复现本次调用(可直接粘终端) ----
+curl -sk \
+  -x "${AGENT_PROXY_URL:-http://127.0.0.1:8888}" \
+  'https://test-fuwu.baijia.com/bgwApi/product-b/b/renewMaster/list' \
+  -H 'content-type: application/json' \
+  -H 'traffic-env: test-gtbg-dev-3' \
+  -H 'b_client: EES' \
+  --data-raw '{"number": "585960797778243584，586116340522184704", "pager": {"current": 1, "pageSize": 10}}'
+

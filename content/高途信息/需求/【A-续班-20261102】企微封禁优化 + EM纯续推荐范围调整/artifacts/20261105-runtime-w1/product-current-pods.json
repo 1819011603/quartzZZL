@@ -1,0 +1,81 @@
+{
+  "checkedAt": "2026-11-05T14:46:03.920212",
+  "serviceCode": "baijia.gt.ecommerce.product.product-b",
+  "namespace": "test-gtbg-dev-3",
+  "environment": "dev",
+  "pods": [
+    {
+      "deploymentName": "product-b",
+      "podDeploymentName": "product-b",
+      "podName": "product-b-7d48b8fb74-lxqvg",
+      "podIP": "10.218.248.248",
+      "namespace": "test-gtbg-dev-3",
+      "envInfoId": 314,
+      "status": "Running",
+      "createTime": 1793845497000,
+      "restartCount": 0,
+      "prometheusUrl": "https://hs-grafana.baijia.com/d/15185338-k8s-pod-nonprod/kubernetes-pod-noprod?orgId=1&refresh=60s&var-ClusterId=ccjs24mhg52uk3nqlqrag&var-namespace=test-gtbg-dev-3&var-pod=product-b-7d48b8fb74-lxqvg",
+      "nodePrometheusUrl": "https://hs-grafana.baijia.com/d/15185338-k8s-node-overview-noprod/node-overview-noprod?orgId=1&refresh=60s&var-ClusterId=ccjs24mhg52uk3nqlqrag&var-node=10.218.1.237",
+      "nodeIp": "10.218.1.237",
+      "terminalUrl": "http://container.baijia.com/api/v1/webterminal?cluster=hs-bj-qingzhou-k8s-nonprod&namespace=test-gtbg-dev-3&env=dev&podName=product-b-7d48b8fb74-lxqvg&container=product-b",
+      "imageName": "feature-xuban-pure-relation-20261102-07ba05df-20261105102154",
+      "batchTest": false,
+      "grayTest": false,
+      "eurekaStatus": "UP",
+      "isEciCluster": false,
+      "eciPod": false,
+      "replayFlag": false,
+      "showEci": false,
+      "cluster": "hs-bj-qingzhou-k8s-nonprod",
+      "containerBOList": [
+        {
+          "name": "mesh",
+          "imageName": "acr.baijia.com/uqun/mesh:0.0.1-202604150000",
+          "status": "running",
+          "restartCount": 0
+        },
+        {
+          "name": "product-b",
+          "imageName": "acr.baijia.com/uqun/product-b:feature-xuban-pure-relation-20261102-07ba05df-20261105102154",
+          "status": "running",
+          "restartCount": 0
+        },
+        {
+          "name": "multi-test-agent",
+          "imageName": "acr.baijia.com/uqun/multi-test-agent:v7.0.0_260129-test",
+          "status": "terminated",
+          "restartCount": 0,
+          "reason": "Completed"
+        },
+        {
+          "name": "scripts",
+          "imageName": "acr.baijia.com/uqun/scripts:2024080202",
+          "status": "terminated",
+          "restartCount": 0,
+          "reason": "Completed"
+        },
+        {
+          "name": "cat-client",
+          "imageName": "acr.baijia.com/uqun/cat-client-test:1.0.1",
+          "status": "terminated",
+          "restartCount": 0,
+          "reason": "Completed"
+        },
+        {
+          "name": "arms-agent",
+          "imageName": "acr.baijia.com/uqun/arms-agent:1.7.0",
+          "status": "terminated",
+          "restartCount": 0,
+          "reason": "Completed"
+        },
+        {
+          "name": "jacoco",
+          "imageName": "acr.baijia.com/uqun/jacoco-agent:v0.8.8.6",
+          "status": "terminated",
+          "restartCount": 0,
+          "reason": "Completed"
+        }
+      ]
+    }
+  ]
+}

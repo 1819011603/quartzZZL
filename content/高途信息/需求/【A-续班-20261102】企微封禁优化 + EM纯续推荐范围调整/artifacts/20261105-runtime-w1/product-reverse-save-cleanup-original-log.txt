@@ -1,0 +1,7 @@
+grep -E '458e4e7b|094a3ee4' /apps/srv/instance/app/log/app.log | grep -E 'request log|response log'
+[root@product-b-7d48b8fb74-lxqvg instance]# grep -E '458e4e7b|094a3ee4' /apps/srv/instance/app/log/app.log | grep -E 'request log|response log'
+2026-11-05 14:33:12.721 INFO  [SelectiveLogFilter:207][http-nio-28688-exec-29] 138f7d8a1e8e39eb4d4b428c07ce9795 - [TID: 458e4e7b-7243-45a7-a4d1-a0c62806eeae.0.3] [DEBUG] request log path[/b/renewMaster/relation/save], head[{b_client=EES, identity_headers=REDACTED}], ip[10.22.3.160], params[{}], json[{"subRenewMasterNumbers":["585960797778243584"],"mainRenewMasterNumber":"586116340522184704"}]
+2026-11-05 14:33:12.817 INFO  [SelectiveLogFilter:233][http-nio-28688-exec-29] 138f7d8a1e8e39eb4d4b428c07ce9795 - [TID: 458e4e7b-7243-45a7-a4d1-a0c62806eeae.0.3] [DEBUG] response log for path /b/renewMaster/relation/save return[{"msg":"success！","code":0}]
+2026-11-05 14:33:45.423 INFO  [SelectiveLogFilter:207][http-nio-28688-exec-34] 322fd624ba0036e6bd522cbd58b4e15a - [TID: 094a3ee4-c692-4e79-bb3c-f47ae7e81852.0.3] [DEBUG] request log path[/b/renewMaster/relation/save], head[{b_client=EES, identity_headers=REDACTED}], ip[10.22.3.160], params[{}], json[{"subRenewMasterNumbers":[],"mainRenewMasterNumber":"586116340522184704"}]
+2026-11-05 14:33:45.506 INFO  [SelectiveLogFilter:233][http-nio-28688-exec-34] 322fd624ba0036e6bd522cbd58b4e15a - [TID: 094a3ee4-c692-4e79-bb3c-f47ae7e81852.0.3] [DEBUG] response log for path /b/renewMaster/relation/save return[{"msg":"success！","code":0}]
+[root@product-b-7d48b8fb74-lxqvg instance]# 

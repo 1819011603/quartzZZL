@@ -1,0 +1,9 @@
+HTTP/1.1 200 
+GAPM-TraceID: product-b.261.17938612536690012
+Access-Control-Expose-Headers: GAPM-TraceID
+Timing-Allow-Origin: *
+X-Application-Context: product-b:test,nohup:28688
+Content-Type: application/json;charset=UTF-8
+Content-Length: 237
+Date: Thu, 05 Nov 2026 06:47:33 GMT
+

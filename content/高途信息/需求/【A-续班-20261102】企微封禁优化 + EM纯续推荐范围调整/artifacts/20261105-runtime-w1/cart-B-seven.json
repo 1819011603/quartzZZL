@@ -1,0 +1,84 @@
+{
+  "time": "2026-11-05 14:47:24",
+  "url": "http://10.218.237.47:28688/test/acl/compare/service",
+  "headers": {
+    "Content-Type": "application/json",
+    "traffic-env": "test-gtbg-dev-3",
+    "Host": "CART.GAOTU100.COM"
+  },
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+    "params": [
+      "7658127801",
+      "586116340522184704",
+      true,
+      false,
+      null,
+      null,
+      false
+    ]
+  },
+  "status": 200,
+  "responseHeaders": {
+    "GAPM-TraceID": "cart_gaotu100_com.299.17938612431590122",
+    "Access-Control-Expose-Headers": "GAPM-TraceID",
+    "Timing-Allow-Origin": "*",
+    "X-Application-Context": "cart.gaotu100.com:test,nohup:28688",
+    "Content-Type": "application/json;charset=UTF-8",
+    "Content-Length": "953",
+    "Date": "Thu, 05 Nov 2026 06:47:24 GMT"
+  },
+  "response": {
+    "code": 0,
+    "data": {
+      "com.gaotu.renewal.RenewalService#getRenewalDetail": {
+        "all_sign_up": 0,
+        "expand_force_buy": false,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 18314034380997186,
+                "before_course_number": 18314034380997173,
+                "can_change_course": true,
+                "force_buy": false,
+                "norm_desc_list": [
+                  "售卖规格一",
+                  "测试1"
+                ],
+                "price": 0,
+                "product_sku_name": "默认规格",
+                "product_sku_number": 586090628920764416,
+                "product_type": 6004,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg",
+                    "name": "王碧云-外显主讲",
+                    "teacher_number": 7932284591800384,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 12,
+            "grade_name": "二年级"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "renewal_end_time": 1798732799000,
+        "renewal_force_buy": false,
+        "renewal_number": 586116340522184704,
+        "renewal_start_time": 1791561600000,
+        "status": 0
+      }
+    },
+    "msg": ""
+  }
+}

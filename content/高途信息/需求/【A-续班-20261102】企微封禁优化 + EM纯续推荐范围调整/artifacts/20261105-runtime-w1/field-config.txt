@@ -1,0 +1,44 @@
+[
+  {
+    "id": "1834",
+    "field_number": "193322071548238848",
+    "field_name": "studentTagNames",
+    "field_type": "8",
+    "identification": "continuationService",
+    "editable": "1",
+    "filter": "1",
+    "is_del": "0"
+  },
+  {
+    "id": "1835",
+    "field_number": "238628096341720064",
+    "field_name": "wechatRemark",
+    "field_type": "1",
+    "identification": "continuationService",
+    "editable": "1",
+    "filter": "1",
+    "is_del": "0"
+  },
+  {
+    "id": "1836",
+    "field_number": "193322071548238848",
+    "field_name": "studentTagNames",
+    "field_type": "8",
+    "identification": "microContinuationService",
+    "editable": "1",
+    "filter": "1",
+    "is_del": "0"
+  },
+  {
+    "id": "1837",
+    "field_number": "238628096341720064",
+    "field_name": "wechatRemark",
+    "field_type": "1",
+    "identification": "microContinuationService",
+    "editable": "1",
+    "filter": "1",
+    "is_del": "0"
+  }
+]
+
+-- total_count: 4

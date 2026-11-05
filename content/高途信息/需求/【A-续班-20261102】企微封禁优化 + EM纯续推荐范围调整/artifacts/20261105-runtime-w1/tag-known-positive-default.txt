@@ -1,0 +1,61 @@
+{
+  "ok": true,
+  "url": "http://10.255.176.174:28688/test/acl/compare/service",
+  "trafficEnv": "test",
+  "httpStatus": 200,
+  "directIp": true,
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.yunying.student.center.domain.service.roster.RenewalService#getStudentRenewalInfosByUserIds",
+    "params": [
+      "574882679202260992",
+      [
+        "7489648821"
+      ],
+      [
+        "userId",
+        "clazzNumber",
+        "subclazzNumber",
+        "joinClazzTime",
+        "studentTags",
+        "studentTagNames",
+        "wechatRemark"
+      ]
+    ]
+  },
+  "traceId": "student-center.900338.17938614686501583",
+  "rvoCode": 0,
+  "result": [
+    {
+      "studentTags": [
+        2
+      ],
+      "subclazzNumber": "35930168009949440",
+      "studentTagNames": [
+        "需中关注"
+      ],
+      "presaleStatus": 0,
+      "clazzName": "续班归因-正经前置班-0820",
+      "smallStudyingSubject": [],
+      "userId": 7489648821,
+      "id": "35930168009949440-7489648821",
+      "protectStu": 0,
+      "smallStudyingSubjectCnt": 0.0,
+      "mobile": "*null",
+      "joinClazzTime": 1791769779000,
+      "clazzNumber": "574882679202260992",
+      "keepReportStatus": 0
+    }
+  ],
+  "eurekaService": "STUDENT-CENTER",
+  "instanceId": "student-center-5d84df769-gxbql:student-center:28688:@default",
+  "instanceCount": 14
+}
+
+---- 复现本次调用(可直接粘终端) ----
+curl -sk \
+  'http://10.255.176.174:28688/test/acl/compare/service' \
+  -H 'content-type: application/json' \
+  -H 'traffic-env: test' \
+  -H 'host: STUDENT-CENTER' \
+  --data-raw '{"serviceNameAndMethodName": "com.gaotu.yunying.student.center.domain.service.roster.RenewalService#getStudentRenewalInfosByUserIds", "params": ["574882679202260992", ["7489648821"], ["userId", "clazzNumber", "subclazzNumber", "joinClazzTime", "studentTags", "studentTagNames", "wechatRemark"]]}'
+

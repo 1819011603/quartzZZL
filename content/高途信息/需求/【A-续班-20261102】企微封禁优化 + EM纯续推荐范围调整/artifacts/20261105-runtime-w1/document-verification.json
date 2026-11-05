@@ -1,0 +1,13 @@
+{
+  "ok": true,
+  "revision": 99,
+  "12_cards": true,
+  "25_contract_rows": true,
+  "three_fixed_ips": true,
+  "runtime_traces": true,
+  "no_old_undeployed_sentence": true,
+  "explicit_incomplete": true,
+  "recovery_and_dependencies": true,
+  "markdown_revision": 99,
+  "same_revision": true
+}

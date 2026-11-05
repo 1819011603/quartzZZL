@@ -1,0 +1,30 @@
+{
+  "ok": true,
+  "url": "https://test-fuwu.baijia.com/bgwApi/product-b/b/renewMaster/relation/list?renewMasterNumber=586116340522184704",
+  "trafficEnv": "test-gtbg-dev-3",
+  "httpStatus": 200,
+  "resolvedRoute": {
+    "appId": "product-b",
+    "pathInfo": "/product-b/b",
+    "rewriteInfo": "StripPrefix = 1",
+    "statusInfo": "正常",
+    "routeId": 189
+  },
+  "request": null,
+  "traceId": "4899b6bb-2078-4636-b8fe-99d790601036.0.3",
+  "gapmApp": "product-b",
+  "response": {
+    "code": 0,
+    "data": [],
+    "msg": "success！"
+  }
+}
+
+---- 复现本次调用(可直接粘终端) ----
+curl -sk \
+  -x "${AGENT_PROXY_URL:-http://127.0.0.1:8888}" \
+  'https://test-fuwu.baijia.com/bgwApi/product-b/b/renewMaster/relation/list?renewMasterNumber=586116340522184704' \
+  -H 'content-type: application/json' \
+  -H 'traffic-env: test-gtbg-dev-3' \
+  -H 'b_client: EES'
+

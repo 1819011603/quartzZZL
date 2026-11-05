@@ -1,0 +1,48 @@
+{
+  "productPod": "product-b-7d48b8fb74-lxqvg",
+  "productImage": "07ba05df",
+  "cartPod": "cart-gaotu100-com-79789ddcf4-vqnpj",
+  "cartImage": "a34016fd",
+  "productSaveAndCleanup": [
+    {
+      "time": "2026-11-05 14:33:12.721",
+      "traceId": "458e4e7b-7243-45a7-a4d1-a0c62806eeae.0.3",
+      "path": "/b/renewMaster/relation/save",
+      "b_client": "EES",
+      "request": {
+        "subRenewMasterNumbers": [
+          "585960797778243584"
+        ],
+        "mainRenewMasterNumber": "586116340522184704"
+      }
+    },
+    {
+      "time": "2026-11-05 14:33:12.817",
+      "traceId": "458e4e7b-7243-45a7-a4d1-a0c62806eeae.0.3",
+      "response": {
+        "msg": "success！",
+        "code": 0
+      }
+    },
+    {
+      "time": "2026-11-05 14:33:45.423",
+      "traceId": "094a3ee4-c692-4e79-bb3c-f47ae7e81852.0.3",
+      "path": "/b/renewMaster/relation/save",
+      "b_client": "EES",
+      "request": {
+        "subRenewMasterNumbers": [],
+        "mainRenewMasterNumber": "586116340522184704"
+      }
+    },
+    {
+      "time": "2026-11-05 14:33:45.506",
+      "traceId": "094a3ee4-c692-4e79-bb3c-f47ae7e81852.0.3",
+      "response": {
+        "msg": "success！",
+        "code": 0
+      }
+    }
+  ],
+  "cartOriginalLog": "cart-reverse-original-log.txt",
+  "note": "从已发生服务日志提取；身份头脱敏，不曾重放业务"
+}

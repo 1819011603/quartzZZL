@@ -1,0 +1,183 @@
+{
+  "time": "2026-11-05 14:47:24",
+  "url": "http://10.218.237.47:28688/test/acl/compare/service",
+  "headers": {
+    "Content-Type": "application/json",
+    "traffic-env": "test-gtbg-dev-3",
+    "Host": "CART.GAOTU100.COM"
+  },
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+    "params": [
+      "7658127801",
+      "585960797778243584",
+      true,
+      false,
+      null,
+      null,
+      false
+    ]
+  },
+  "status": 200,
+  "responseHeaders": {
+    "GAPM-TraceID": "cart_gaotu100_com.301.17938612443150115",
+    "Access-Control-Expose-Headers": "GAPM-TraceID",
+    "Timing-Allow-Origin": "*",
+    "X-Application-Context": "cart.gaotu100.com:test,nohup:28688",
+    "Content-Type": "application/json;charset=UTF-8",
+    "Content-Length": "4265",
+    "Date": "Thu, 05 Nov 2026 06:47:24 GMT"
+  },
+  "response": {
+    "code": 0,
+    "data": {
+      "com.gaotu.renewal.RenewalService#getRenewalDetail": {
+        "all_sign_up": 0,
+        "expand_force_buy": false,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "before_course_number": 585960577856301056,
+                "can_change_course": true,
+                "clazz_number": 585960755422160896,
+                "force_buy": false,
+                "product_sku_number": 585960755422160896,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 1,
+                "subject_names": []
+              },
+              {
+                "after_course_number": 585963384338507776,
+                "can_change_course": false,
+                "clazz_date_desc": "2026年10月22日-2026年10月22日",
+                "clazz_number": 585963387758962688,
+                "clazz_time_desc": "17:45-17:50",
+                "clazz_week_desc": "每周四",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "dcg-扩科排除-后置-数学",
+                "product_sku_number": 585963387758962688,
+                "product_type": 2,
+                "recommend_type": 2,
+                "select": 0,
+                "sign_up": 1,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "name": "唐稳01主讲",
+                    "teacher_number": 11188041873297121,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              },
+              {
+                "after_course_number": 585963400792762368,
+                "can_change_course": false,
+                "clazz_date_desc": "2026年10月22日-2026年10月22日",
+                "clazz_number": 585963404555053056,
+                "clazz_time_desc": "17:45-17:50",
+                "clazz_week_desc": "每周四",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "dcg-扩科排除-后置-英语",
+                "product_sku_number": 585963404555053056,
+                "product_type": 2,
+                "recommend_type": 2,
+                "select": 0,
+                "sign_up": 1,
+                "subject_names": [
+                  "英语"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "grade": 16,
+            "grade_name": "六年级"
+          },
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 18314034380997207,
+                "before_course_number": 18314034380997173,
+                "can_change_course": true,
+                "clazz_date_desc": "",
+                "clazz_time_desc": "",
+                "clazz_week_desc": "",
+                "force_buy": false,
+                "lesson_count": 2,
+                "price": -1,
+                "product_sku_name": "dcg-小班扩科排除-数学-后置",
+                "product_sku_number": 586097025945298944,
+                "product_type": 6004,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  },
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 11,
+            "grade_name": "一年级"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [
+          [
+            "1-续班计划 585960797778243584, 前后置课程关系集合 {585960577856301056=[585960751831836672], 18314034380997173=[18314034380997207, 18314034380997186]}",
+            "2-续班计划 585960797778243584, 前置课程存在订单过滤完成, 前置课程集合courseNumbers is [585960577856301056,18314034380997173]",
+            "3-续班计划 585960797778243584, 后置课程信息过滤完成, 过滤前后置课程集合courseNumbers is [585960751831836672,18314034380997207,18314034380997186], 过滤后后置课程集合courseNumbers is [18314034380997186,18314034380997207,585960751831836672]",
+            "4-续班计划 585960797778243584, 后置班级信息课程标签过滤完成, 过滤前班级集合clazzNumbers is [585960755422160896, 586090628920764416, 586097025945298944], 过滤后班级集合clazzNumbers is [585960755422160896, 586090628920764416, 586097025945298944]",
+            "4-1 续班计划 585960797778243584, 非联报续班计划，过滤班级售卖状态，后置班级信息库存与售卖状态过滤完成, 过滤前班级集合clazzNumbers is [585960755422160896, 586090628920764416, 586097025945298944], 过滤后班级集合clazzNumbers is [585960755422160896, 586097025945298944]"
+          ],
+          [
+            "前置课程 is 585960577856301056, 前置班级信息 is 585960582537144320",
+            "待匹配后置班级集合 is [585960755422160896]",
+            "存在有效订单的后置班级，优先展示. 班级 is 585960755422160896 "
+          ],
+          [
+            "前置课程 is 18314034380997173, 前置班级信息 is 586084334251927552",
+            "待匹配后置班级集合 is [586097025945298944]",
+            "待匹配班级只有一个，直接返回，待匹配班级 is",
+            "最终命中班级 is 586097025945298944, "
+          ]
+        ],
+        "renewal_end_time": 1798732799000,
+        "renewal_force_buy": false,
+        "renewal_number": 585960797778243584,
+        "renewal_start_time": 1791561600000,
+        "status": 0
+      }
+    },
+    "msg": ""
+  }
+}

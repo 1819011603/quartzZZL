@@ -1,0 +1,104 @@
+[
+  {
+    "id": "183",
+    "identification": "continuationService",
+    "field_name": "wechatRemark",
+    "type": "4",
+    "command": "fuzzy",
+    "is_del": "0",
+    "create_time": "2025-06-03 17:28:23",
+    "update_time": "2025-06-03 17:28:23"
+  },
+  {
+    "id": "562",
+    "identification": "microContinuationService",
+    "field_name": "studentTags",
+    "type": "2",
+    "command": "basic",
+    "is_del": "0",
+    "create_time": "2025-12-02 11:18:11",
+    "update_time": "2025-12-02 11:18:11"
+  },
+  {
+    "id": "590",
+    "identification": "microContinuationService",
+    "field_name": "wechatRemark",
+    "type": "4",
+    "command": "fuzzy",
+    "is_del": "1",
+    "create_time": "2025-12-02 11:18:22",
+    "update_time": "2025-12-02 11:18:22"
+  },
+  {
+    "id": "598",
+    "identification": "microContinuationService",
+    "field_name": "wechatRemark",
+    "type": "6",
+    "command": "extra",
+    "is_del": "0",
+    "create_time": "2025-12-02 11:18:25",
+    "update_time": "2025-12-02 11:18:25"
+  },
+  {
+    "id": "599",
+    "identification": "microContinuationService",
+    "field_name": "studentTagNames",
+    "type": "6",
+    "command": "extra",
+    "is_del": "0",
+    "create_time": "2025-12-02 11:18:26",
+    "update_time": "2025-12-02 11:18:26"
+  },
+  {
+    "id": "613",
+    "identification": "microContinuationService",
+    "field_name": "wechatRemark",
+    "type": "6",
+    "command": "necessary",
+    "is_del": "0",
+    "create_time": "2025-12-02 11:18:31",
+    "update_time": "2025-12-02 11:18:31"
+  },
+  {
+    "id": "621",
+    "identification": "microContinuationService",
+    "field_name": "studentTags",
+    "type": "6",
+    "command": "necessary",
+    "is_del": "0",
+    "create_time": "2025-12-02 11:18:34",
+    "update_time": "2025-12-02 11:18:34"
+  },
+  {
+    "id": "872",
+    "identification": "continuationService",
+    "field_name": "studentTags",
+    "type": "6",
+    "command": "necessary",
+    "is_del": "0",
+    "create_time": "2026-11-04 18:53:00",
+    "update_time": "2026-11-04 18:53:00"
+  },
+  {
+    "id": "873",
+    "identification": "continuationService",
+    "field_name": "studentTagNames",
+    "type": "6",
+    "command": "extra",
+    "is_del": "0",
+    "create_time": "2026-11-04 18:53:00",
+    "update_time": "2026-11-04 18:53:00"
+  },
+  {
+    "id": "874",
+    "identification": "continuationService",
+    "field_name": "studentTags",
+    "type": "2",
+    "command": "basic",
+    "is_del": "0",
+    "create_time": "2026-11-04 18:53:00",
+    "update_time": "2026-11-04 18:53:00"
+  }
+]
+
+-- total_count: 10

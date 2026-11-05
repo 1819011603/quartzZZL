@@ -1,0 +1,43 @@
+{
+  "evidence_type": "extracted from this task tool responses",
+  "env": "TEST",
+  "table": "ees_data.user_clazz_mark_info",
+  "cluster_id": 149,
+  "initial_observed_row": {
+    "id": "120554",
+    "user_id": "7658127801",
+    "clazz_number": "585960582537144300",
+    "account_id": "109942",
+    "color": "0",
+    "layer": "0",
+    "tags": "1,2",
+    "create_time": "2026-11-05 14:22:33",
+    "update_time": "2026-11-05 14:22:33",
+    "hex_clazz": "821C00B9681E7EC"
+  },
+  "initial_correct_clazz_query": {
+    "sql": "SELECT id,user_id,clazz_number,account_id,color,layer,tags,create_time,update_time FROM ees_data.user_clazz_mark_info WHERE clazz_number=585960582537144320 ORDER BY update_time DESC",
+    "rows": []
+  },
+  "friend_http": {
+    "url": "https://test-fuwu.baijia.com/bgwApi/student-center/remark/check/wk/friend",
+    "headers": {
+      "traffic-env": "test-gtbg-dev-3",
+      "b_client": "EES"
+    },
+    "request": {
+      "userIds": [
+        "7658127801"
+      ]
+    },
+    "httpStatus": 200,
+    "response": {
+      "code": 0,
+      "data": {
+        "resultStatus": false
+      },
+      "msg": ""
+    },
+    "traceId": "6aa83947-e018-4df1-86e1-ff5b8efa5091.0.3"
+  }
+}

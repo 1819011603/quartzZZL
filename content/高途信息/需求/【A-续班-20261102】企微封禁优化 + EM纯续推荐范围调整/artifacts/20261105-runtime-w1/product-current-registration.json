@@ -1,0 +1,18 @@
+{
+  "checkedAt": "2026-11-05T14:46:32.836033",
+  "serviceName": "PRODUCT-B",
+  "matched": [
+    {
+      "instanceId": "product-b-7d48b8fb74-lxqvg:product-b:28688:@test-gtbg-dev-3",
+      "ipAddr": "10.218.248.248",
+      "port": {
+        "$": 28688,
+        "@enabled": "true"
+      },
+      "status": "UP",
+      "metadata": {
+        "trafficEnv": "test-gtbg-dev-3"
+      }
+    }
+  ]
+}

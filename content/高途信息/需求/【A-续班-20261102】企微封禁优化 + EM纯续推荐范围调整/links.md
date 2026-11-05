@@ -31,3 +31,5 @@
 | 调研 | 当前前端PRD及25项契约 | [frontend-review.md](artifacts/20261105-diff-p0/frontend-review.md) | 2026-11-05 |
 | 调研 | cart修复、测试与边界 | [cart-review.md](artifacts/20261105-diff-p0/cart-review.md) | 2026-11-05 |
 | case | P0对象补全版（飞书，revision19回读） | [在线文档](https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr) | 2026-11-05 |
+
+| 需求wiki节点 | 当前P0执行文档（同一对象） | https://gaotuedu.feishu.cn/wiki/KeCZwdJTBiIJDJkX8lRcGb9gnCs | 2026-11-05 |

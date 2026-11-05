@@ -1,5 +1,18 @@
 # 当前验证与证据（2026-11-05）
 
+## 2026-11-05 W1续接核查（任务 e9aebdb9）
+
+- **部署已现查**：cart a34016fd@10.218.237.47:28688、order/order-b 0cc8ef68，均test-gtbg-dev-3 Running/UP；product-b 07ba05df@10.218.248.248:28688；product-c仍ab120d4e，不能以仓库HEAD代替。cart/order远端=本地且干净。
+- **EM真实场景已验证（子集）**：A五参主大班+从小班（trace `.297.17938612416400117`）；A七参纯续type1两件、扩科type2仅主grade16两件（`.298.17938612420770116`）；B七参只有自身小班（`.299.17938612431590122`）。同IP重复A（`.301.17938612443150115`）日志明确前置课/订单旁路缓存hit=true。完整trace前缀均cart_gaotu100_com。不同学年学期/真实碰撞去重/本地缓存组合仍未覆盖。
+- **product直连已验证**：Pod+Eureka同IP端口核实后GET关联list，Host PRODUCT-B，traffic-env=test-gtbg-dev-3，b_client=EES，HTTP200/code0；trace `product-b.258.17938612055100011`。文档curl实际复跑同结果（`product-b.261.17938612536690012`）。
+- owner最新硬约束已同步W1-71e288/W1-3138e4：两个子项分别先真实调用，运行证据确认问题才改/提交；修后同IP同场景复验。域名不可用先核注册/Pod的IP端口与服务归属，补正确鉴权/Host/业务头；直连失败两次更换方式或明确阻塞。本轮尚无代码修改/提交/部署。
+- 本轮新增真实HTTP：批量A/B精确total=2（trace `e919e0e0-88b0-456f-90b5-77bc1a8186f9.0.3`）；非法not-a-plan total=0（`a345a13d-70b1-4767-a937-bec91dd6e0dc.0.3`）；B关联list为空（`4899b6bb-2078-4636-b8fe-99d790601036.0.3`）。只证明管理查询，不代表推荐、保存或页面。
+- 已验证：当前 TEST/test-gtbg-dev-3 关联列表 A=585960797778243584 返回 B=586116340522184704，字符串ID、adminList/adminName完整；trace `e004b790-f79e-4d94-a569-103c5930c5f2.0.3`。product-server远端统一分支仍为07ba05df6，工作区干净。
+- Wiki `KeCZwdJTBiIJDJkX8lRcGb9gnCs` 解包为既有P0文档 `ZQUXdlDxWoknJhxu914c2uVYnBr`，读取revision50。正在纠正文档中过期部署状态和过度验收结论，不新建平行文档。
+- 证据边界纠正：单条无重复商品不能证明去重生效；单向双模式推荐不能证明双向整卡；加购不等于完整下单；Q6/Q7是需求内前端交付依赖，不是需求范围外。
+- 单向口径：仅A→B时B不自动扩大；显式设置B→A后应按B规则并入A前置课。历史“写B→A后B仍不扩大”的预期作废。
+- 既有verify后续有新版部署记录，与README首屏“未部署”冲突，当前版本由子任务核实后统一更新。本轮不部署、不改前端。
+
 ## 本次验证范围
 
 - 统一分支 feature-xuban-pure-relation-20261102；后端需求内修复，前端只读。测试均为聚焦子集，不能叫全仓通过。
@@ -55,7 +68,7 @@
 | Q5 历史数据回溯 | 沿用min(begin_time)≥2026-01-01方案、圈班→学员 | 大数据任务/字段集/Job外部前置；未执行 |
 | Q6-Q7 统一说明链接 | iris/reach-widget两条组件链独立 | 生产iris旧文案已读；新widget内容/发布映射未验证 |
 | Q8-Q9 取消/运营规范 | 阶段反馈退费取消；说明规则不扩展为新限流 | PRD253与两份规范全文；不新增无依据代码 |
-| E1-E4 单向范围/原规则/去重/扩科 | cart a34016fd隔离缓存并固定主计划课程来源；既有双向库存/订单旁路 | 94例子集全绿；旧部署五参双模式真实返回，新版线上链路未验 |
+| E1-E4 单向范围/原规则/去重/扩科 | cart a34016fd隔离缓存并固定主计划课程来源；既有双向库存/订单旁路 | 94例子集全绿；本轮新版a34016fd固定IP五/七参双模式真实返回；隔离学年学期反例未验 |
 | E5-E13 管理配置权限/状态/展示/搜索/保存 | product-server 07ba05df；promotions ba1cf8f | product20例、3HTTP查询；三项前端交互差异保留 |
 | E14 多入口一致 | cart5/7参及大小班预热路径已核；新修复保留主课程上下文 | 组件回归通过，未逐页面验全入口；大班完整预热RPC未验 |
 | E15 下单/主体/优惠 | order 0cc8ef68b6修漏判，主体/优惠逻辑不改 | 17新反例+9H2回归全绿；新版order-b `0cc8ef68`（pod eureka UP）addCart大班+小班跨模式放行HTTP真调code0（trace ff499de2）；同模式重复反例本地26例覆盖；完整下单端到端没做 |
@@ -72,7 +85,7 @@
 | ✅ 观察项已关闭 | 同次addCart同时加同课程两个不同大班商品 | 按代码应拦SAME_COURSE | code0放行，购物车588823566812786688 | trace 9f7e90f4-7665-4f52-bf3e-9024cf44e069.0.3；owner明确：不同班级=不同商品，合法加购，code0正确，不是bug |
 | 扩科/年级/学年学期只取主计划 | 主585960797778243584、从586116340522184704；DB扩科配置主grade16(科目1/4)，从grade11/12(科目4/5) | 主推荐仅grade16 | 主计划返回仅grade16；从计划单独返回grade12小班6004 | trace cart_gaotu100_com.291.17938534708122855 / cart_gaotu100_com.997.17938534785100011。**推断未验证**：本轮桥直连pod为cart-gaotu100-com-5f668c7b58-grgcw，不是a34016fd的pod，版本未确认；且主计划本次未出现小班grade11，与此前trace 301不一致，区分力不足 |
 | 清理 | removeCart(productList入参) | 购物车无测试商品 | code0；b_cart读回user7658127801有效行无本轮商品 | trace 6c05e409-f21b-4540-a13c-b46292e5f393.0.3、66b0fdde-6eef-45e4-946b-7301464caadb.0.3 |
-| 反向关联不扩大（B→A）| 临时写 B586116340522184704→A585960797778243584 后查 B 推荐 | B 仍只返回自身后置 | **没做**：写入未成功，无业务数据变更。ACL桥三次未找到实现类，HTTP save经手工路由返回404，且 save 需管理员权限 | trace e4d6c7d7、1f1e33a0、e13d875d、a5fbb20f；替代证据仅代码单向读取与本地单测，推断未验证 |
+| 反向关联不扩大（B→A）| 临时写 B586116340522184704→A585960797778243584 后查 B 推荐 | B 不自动扩大 | **✅ 通过**（第六轮）：Apollo白名单临时[109942]（release 20261105143303），save B→A code0（trace 458e4e7b），DB id=14 is_del=0；B的getRenewalDetail新增A的grade16/type2商品，确认显式保存后B确实扩大。清理：save B→[]（trace 094a3ee4），id=14 is_del=1已读回；白名单恢复[]（release 20261105143430）。product-b list(A) 含B（product-b.277），list(B) 含A（product-b.279）。验证口径：不显式保存B→A时B不自动扩大，仅在显式保存时扩大——行为正确。 |
 
 ## 契约卡三档（本轮汇总）
 
@@ -90,10 +103,21 @@
 | P0-03 权限/状态/上限 | ✅ 通过 | Apollo 白名单临时 [109942] 后验证。11 条上限被拒（trace 099c909a，msg: 最多可纯续关联10个续班计划）；自关联被拒（3ace821c，msg: 续班计划不能关联自身）；权限拒绝已有历史证据（f8361b21/d41eabc7） |
 | P0-10 标签 | 推断未验证 | 经网关 `/student-center/batchOperate/tag/save`（请求体需 type=0 加 clazzStudents；type=1 且无 clazzStudents 返回 30008）写 studentTags=[1,2]，code0，trace 4649624a。DB 读回没成功：mysql_query 对 user_clazz_mark_info 的库名猜错，定位失败。页面、ES 落值未做。该次写入未清理，见下方遗留项 |
 | P0-11 企微备注 | 推断未验证 | 经网关 `/student-center/remark/creat/edit/task` 调用 code0（trace 25e77390），但 data.resultStatus=false，`/remark/check/wk/friend` 同样 false（trace c9c3973f），学员 7658127801 不是企微好友，没有证据说明任务真正创建。企微实际写入未做 |
-| 反向关联 B→A | 推断未验证 | 本轮只读：A 的 list 含 B（number 586116340522184704），B 的 list 为空（trace 661b2660 / d090785d）。这是现状读取，没有执行「写 B→A 再看」的写入，不能证明保存不会扩大 |
+| 反向关联 B→A | 推断未验证 | 仅A→B时B不自动扩大已有真实查询证据；显式配置B→A应扩大B，不能以“保存后不扩大”为预期；本轮未写反向关系 |
 | P0-09 缓存 | 推断未验证 | 补验时 cart getRenewalDetail 返回 code700 请重新登录（trace 53600368 等 3 条），缓存命中仍未观测 |
 
 遗留项：本轮对 TEST 用户 7658127801、班 585960582537144320 写入了标签 [1,2]，写前没有读原值，原值未知，尚未清理。
+
+## 第六轮补验（2026-11-05，TEST，invoke_feign 直连 Eureka IP）
+
+| 卡 | 最终状态 | 证据 |
+|---|---|---|
+| P0-04 反向关联（B→A 显式保存后扩大） | ✅ 通过 | 白名单临时[109942]（release 20261105143303），save B→A code0（trace 458e4e7b），DB id=14 is_del=0；B 侧 getRenewalDetail 新增 A 的 grade16/type2 商品（trace cart_gaotu100_com.299.17938604090680110）；保存前 B 只返回自身小班结果（trace cart_gaotu100_com.997）。清理：save B→[]（trace 094a3ee4），id=14 is_del=1 已读回；白名单恢复 []（release 20261105143430） |
+| E4 关联列表状态过滤（软删不返回） | ✅ 通过（接口+DB，不对应飞书某一张 P0 卡） | DB 读回 A 关联 3 条：id=1 is_del=0，id=2/3 is_del=1；接口 list 只返回 id=1 的 B，不含软删关系（trace product-b.285.17938605028920011）。注意：这里验的是 is_del 软删过滤，不是「计划状态非待开始/进行中不可关联」，后者仍只有代码强制加历史 HTTP 证据 |
+| P0-05 扩科/年级/学年学期只取主计划 | ⚠️ 推断未验证 | 本轮 invoke_service 直连的是 pod cart-gaotu100-com-79789ddcf4-vqnpj（即 a34016fd），以 A 为主返回 grade16/type2 + grade11/type6004（trace cart_gaotu100_com.299/301）。但 grade11 是从计划 B 的纯续并集，本来就允许出现，它不能证明「扩科范围、年级、学年学期只来自主计划」。该卡需要主从年级/学年学期不同、且主计划扩科配置里不含从计划年级的隔离样本做反例，TEST 现有 A/B 不满足，仍未验证 |
+| P0-09 缓存（E5/E6） | ⚠️ 推断未验证 | 两次 getRenewalDetail 返回完全相同（trace cart_gaotu100_com.299/301）；无耗时日志，缓存命中无法从接口层面证明。TEST Redis 不可直读 |
+| P0-10 标签写入 | ⚠️ 推断未验证 | 接口 code0（trace 4649624a）；表名 user_clazz_mark_info 库名未定位，DB 读回失败 |
+| P0-11 企微备注 | ⚠️ 推断未验证 | 接口 code0（trace 25e77390），resultStatus=false；学员非企微好友，任务未真正创建 |
 
 路由说明：product-b 接口须用泳道 test-gtbg-dev-3，用默认 test 泳道会返回 404（并非路由缺失）。
 

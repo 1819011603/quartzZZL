@@ -1,0 +1,29 @@
+{
+  "ok": true,
+  "target": "http://10.255.176.174:28688/remark/check/wk/friend",
+  "trafficEnv": "test",
+  "instanceId": "student-center-5d84df769-gxbql:student-center:28688:@default",
+  "httpStatus": 200,
+  "instanceCount": 14,
+  "request": {
+    "userIds": [
+      "7658127801"
+    ]
+  },
+  "traceId": "student-center.900339.17938614405711575",
+  "response": {
+    "code": 3,
+    "data": {},
+    "msg": "登陆信息获取异常"
+  }
+}
+
+---- 复现本次调用(可直接粘终端) ----
+curl -sk \
+  'http://10.255.176.174:28688/remark/check/wk/friend' \
+  -H 'content-type: application/json' \
+  -H 'traffic-env: test' \
+  -H 'host: STUDENT-CENTER' \
+  -H 'b_client: EES' \
+  --data-raw '{"userIds": ["7658127801"]}'
+

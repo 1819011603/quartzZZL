@@ -1,0 +1,7 @@
+grep 'cart_gaotu100_com.301.17938612443150115' /apps/srv/instance/app/log/app.log | grep -E 'renewal relation precourse cache read|renewal cross-mode order cache read|EM pure relation merged|扩科推荐完成'
+[root@cart-gaotu100-com-79789ddcf4-vqnpj instance]# grep 'cart_gaotu100_com.301.17938612443150115' /apps/srv/instance/app/log/app.log | grep -E 'renewal relation precourse cache read|renewal cross-mode order cache read|EM pure relation merged|扩科推荐完成'
+2026-11-05 14:47:24.494 INFO  [RenewalDataService:406][http-nio-28688-exec-6] 0a2b70dae491caa34baf4554a16d856a - [TID: cart_gaotu100_com.301.17938612443150115] renewal relation precourse cache read, key=renewal:relation:precourse:586116340522184704, hit=true, empty=false
+2026-11-05 14:47:24.494 INFO  [RenewalDataService:343][http-nio-28688-exec-6] 0a2b70dae491caa34baf4554a16d856a - [TID: cart_gaotu100_com.301.17938612443150115] EM pure relation merged courseNumbers, renewalNumber=585960797778243584, size=2
+2026-11-05 14:47:24.516 INFO  [RenewalCrossModeOrderService:218][http-nio-28688-exec-6] 0a2b70dae491caa34baf4554a16d856a - [TID: cart_gaotu100_com.301.17938612443150115] renewal cross-mode order cache read, key=renewal:relation:order:7658127801:i2i:90bd4dd855c5eaf74fcb223d3b5db57b, hit=true, empty=false
+2026-11-05 14:47:24.638 INFO  [ExpandSubjectRecommendService:160][http-nio-28688-exec-6] 0a2b70dae491caa34baf4554a16d856a - [TID: cart_gaotu100_com.301.17938612443150115] 扩科推荐完成(大班课), matchCount=2
+[root@cart-gaotu100-com-79789ddcf4-vqnpj instance]# 

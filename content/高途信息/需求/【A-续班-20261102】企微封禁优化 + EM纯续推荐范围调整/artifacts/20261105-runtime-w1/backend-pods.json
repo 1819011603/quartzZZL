@@ -1,0 +1,66 @@
+[
+  {
+    "serviceCode": "gaotu_cart",
+    "logicEnv": "dev",
+    "pods": [
+      {
+        "podName": "cart-gaotu100-com-79789ddcf4-vqnpj",
+        "podIP": "10.218.237.47",
+        "namespace": "test-gtbg-dev-3",
+        "status": "Running",
+        "eurekaStatus": "UP",
+        "imageName": "feature-xuban-pure-relation-20261102-a34016fd-20261105114326"
+      }
+    ]
+  },
+  {
+    "serviceCode": "gaotu_order",
+    "logicEnv": "dev",
+    "pods": [
+      {
+        "podName": "order-gaotu100-com-756b5754fd-jzk6p",
+        "podIP": "10.218.236.236",
+        "namespace": "test-gtbg-dev-3",
+        "status": "Running",
+        "eurekaStatus": "UP",
+        "imageName": "feature-xuban-pure-relation-20261102-0cc8ef68-20261105114818"
+      }
+    ]
+  },
+  {
+    "serviceCode": "baijia.gaotu.tech.trade.order-b",
+    "logicEnv": "dev",
+    "pods": [
+      {
+        "podName": "order-b-gaotu100-com-555655ff-kxfxv",
+        "podIP": "10.218.237.111",
+        "namespace": "test-gtbg-dev-3",
+        "status": "Running",
+        "eurekaStatus": "UP",
+        "imageName": "feature-xuban-pure-relation-20261102-0cc8ef68-20261105114404"
+      }
+    ]
+  },
+  {
+    "serviceCode": "baijia.gt.ecommerce.product.product",
+    "logicEnv": "dev",
+    "pods": [
+      {
+        "podName": "product-gaotu100-com-5fbb74bd96-fxxng",
+        "podIP": "10.218.251.115",
+        "namespace": "test-gtbg-dev-3",
+        "status": "Running",
+        "eurekaStatus": "UP",
+        "imageName": "feature-xuban-pure-relation-20261102-ab120d4e-20261103232835"
+      },
+      {
+        "podName": "product-gaotu100-com-5fbb74bd96-2h6n9",
+        "podIP": "10.218.238.47",
+        "namespace": "test-gtbg-dev-3",
+        "status": "Running",
+        "eurekaStatus": "UP",
+        "imageName": "feature-xuban-pure-relation-20261102-ab120d4e-20261103232835"
+      }
+    ]
+  }
+]
