@@ -1,0 +1,98 @@
+{
+  "time": "2026-11-05T20:11:14.348519",
+  "environment": "TEST",
+  "lane": "test-gtbg-dev-3",
+  "cart_ip": "10.218.237.47",
+  "cart_pod": "cart-gaotu100-com-79789ddcf4-vqnpj",
+  "cart_sha": "a34016fdf206d0163b1dd473c67ac10674ecb4b5",
+  "calls": [
+    {
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.feignclient.order.impl.OrderInfoAdapterFeignServiceImpl#ListByClazzNumbersAndUserIds",
+        "params": [
+          [
+            "586097025945298944"
+          ],
+          "7658129872"
+        ]
+      },
+      "http": 200,
+      "trace": "cart_gaotu100_com.301.17938806745880326",
+      "response": {
+        "code": 0,
+        "data": {
+          "com.gaotu.feignclient.order.impl.OrderInfoAdapterFeignServiceImpl#ListByClazzNumbersAndUserIds": []
+        },
+        "msg": ""
+      }
+    },
+    {
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.feignclient.order.impl.OrderInfoAdapterFeignServiceImpl#listBySkuNumbersAndUserIdNoRefund",
+        "params": [
+          [
+            "586097025945298944"
+          ],
+          "7658129872"
+        ]
+      },
+      "http": 200,
+      "trace": "cart_gaotu100_com.303.17938806746400323",
+      "response": {
+        "code": 0,
+        "data": {
+          "com.gaotu.feignclient.order.impl.OrderInfoAdapterFeignServiceImpl#listBySkuNumbersAndUserIdNoRefund": [
+            {
+              "address_id": 0,
+              "app_id": 33554611,
+              "biz_line": 0,
+              "confirmed_time": "2026-11-04T10:50:47",
+              "create_time": "2026-11-04T10:50:45",
+              "gift_flag": false,
+              "id": 433534690352694278,
+              "invoice": "75",
+              "manual_price": 0,
+              "mark": 0,
+              "need_delivery": false,
+              "number": 433534690352694278,
+              "order_status": 2,
+              "order_type": 6004,
+              "pay_account_type": "75",
+              "pay_number": 433534690352693254,
+              "price": 0,
+              "promotion_price": 0,
+              "quantity": 1,
+              "refund_type": 0,
+              "sales_price": 0,
+              "sku_number": 586097025945298944,
+              "sku_price": 0,
+              "sku_type": 6004,
+              "sku_version": 1792565249996,
+              "spu_number": 18314034380997207,
+              "spu_version": 1792565249996,
+              "update_time": "2026-11-04T10:50:46",
+              "user_id": 7658129872
+            }
+          ]
+        },
+        "msg": ""
+      }
+    }
+  ],
+  "sql": [
+    {
+      "sql": "SELECT CAST(order_number AS CHAR) order_number,CAST(user_id AS CHAR) user_id,CAST(clazz_number AS CHAR) clazz_number,order_status FROM order_info WHERE user_id=7658129872 AND clazz_number=586097025945298944",
+      "rows": []
+    },
+    {
+      "sql": "SELECT CAST(number AS CHAR) order_item_number,CAST(sku_version AS CHAR) sku_version,CAST(spu_version AS CHAR) spu_version FROM order_item WHERE number=433534690352694278",
+      "rows": [
+        {
+          "order_item_number": "433534690352694278",
+          "sku_version": "1792565249996",
+          "spu_version": "1792565249996"
+        }
+      ]
+    }
+  ]
+}

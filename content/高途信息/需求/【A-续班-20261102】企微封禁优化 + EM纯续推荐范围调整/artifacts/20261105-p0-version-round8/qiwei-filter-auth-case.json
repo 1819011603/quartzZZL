@@ -1,0 +1,609 @@
+{
+  "time": "2026-11-05T19:57:14.087315+08:00",
+  "environment": "TEST",
+  "actual_identity": "gongxuemeng/177071",
+  "frontend": "cronus17ee81cc/test-gtbg-dev-3",
+  "backend_candidates": [
+    "release5dce9cdb@10.255.176.174",
+    "df66fed8@10.218.238.176"
+  ],
+  "source_equivalence": "git diff396d84f..df66fed8 empty for UserClazzMark/RenewalService/EsFilterHelper; release mark source separately equal",
+  "class": {
+    "number": "574882679202260992",
+    "bizNumber": "32YYTS25D6LS11002",
+    "name": "续班归因-正经前置班-0820"
+  },
+  "targets": [
+    "7704846434",
+    "7704846439"
+  ],
+  "control": "7704846440",
+  "steps": [
+    {
+      "name": "baseline_read",
+      "time": "2026-11-05T19:57:18.134427+08:00",
+      "request": {
+        "pager": {
+          "current": 1,
+          "pageSize": 100
+        },
+        "route": {
+          "sceneVersionNumber": "294310981744470016"
+        },
+        "identification": "continuationService",
+        "clazzNumbers": [
+          "574882679202260992"
+        ],
+        "quickFilter": {},
+        "filter": {
+          "studentSubStatus": [
+            0
+          ],
+          "leadTeacher": [
+            177071
+          ],
+          "clazzNumber": [
+            "574882679202260992"
+          ],
+          "renewalRoundFilter": [
+            0
+          ]
+        }
+      },
+      "http": 200,
+      "trace": "e108a3e4-d6d8-44dd-8326-58a132e57459.0.3",
+      "elapsed_ms": 367,
+      "response": {
+        "code": 0,
+        "msg": "",
+        "pager": {
+          "current": 1,
+          "pageSize": 100,
+          "total": 19,
+          "hasNext": false,
+          "approximateTotal": false
+        },
+        "selected_rows": [
+          {
+            "clazzBizNumber": "32YYTS25D6LS11002",
+            "id": "35930167940088064-7704846439",
+            "studentTags": [],
+            "userId": 7704846439,
+            "clazzNumber": "574882679202260992",
+            "clazzName": "续班归因-正经前置班-0820",
+            "leadTeacher": "弓雪萌"
+          },
+          {
+            "clazzName": "续班归因-正经前置班-0820",
+            "clazzBizNumber": "32YYTS25D6LS11002",
+            "id": "35930167940088064-7704846440",
+            "leadTeacher": "弓雪萌",
+            "userId": 7704846440,
+            "clazzNumber": "574882679202260992"
+          },
+          {
+            "id": "35930167940088064-7704846434",
+            "clazzName": "续班归因-正经前置班-0820",
+            "clazzBizNumber": "32YYTS25D6LS11002",
+            "studentTags": [],
+            "leadTeacher": "弓雪萌",
+            "userId": 7704846434,
+            "clazzNumber": "574882679202260992"
+          }
+        ]
+      }
+    },
+    {
+      "name": "prepare_two_tags",
+      "time": "2026-11-05T19:57:18.348579+08:00",
+      "request": {
+        "scene": "continuationService",
+        "type": 1,
+        "clazzStudents": [
+          {
+            "clazzNumber": "574882679202260992",
+            "userId": "7704846434"
+          },
+          {
+            "clazzNumber": "574882679202260992",
+            "userId": "7704846439"
+          }
+        ],
+        "userIds": [
+          "7704846434",
+          "7704846439"
+        ],
+        "studentTags": [
+          2
+        ]
+      },
+      "http": 200,
+      "trace": "f5f2fdeb-77f1-4560-9879-6a1c35b40079.0.3",
+      "elapsed_ms": 212,
+      "response": {
+        "code": 0,
+        "data": {},
+        "msg": ""
+      }
+    },
+    {
+      "name": "prepare_single_three",
+      "time": "2026-11-05T19:57:18.528963+08:00",
+      "request": {
+        "scene": "continuationService",
+        "type": 1,
+        "clazzStudents": [
+          {
+            "clazzNumber": "574882679202260992",
+            "userId": "7704846434"
+          }
+        ],
+        "userIds": [
+          "7704846434"
+        ],
+        "studentTags": [
+          3
+        ]
+      },
+      "http": 200,
+      "trace": "73185876-7e74-4598-88ac-7c343ce02cad.0.3",
+      "elapsed_ms": 178,
+      "response": {
+        "code": 0,
+        "data": {},
+        "msg": ""
+      }
+    },
+    {
+      "name": "filter_two",
+      "time": "2026-11-05T19:57:19.451429+08:00",
+      "request": {
+        "pager": {
+          "current": 1,
+          "pageSize": 100
+        },
+        "route": {
+          "sceneVersionNumber": "294310981744470016"
+        },
+        "identification": "continuationService",
+        "clazzNumbers": [
+          "574882679202260992"
+        ],
+        "quickFilter": {},
+        "filter": {
+          "studentSubStatus": [
+            0
+          ],
+          "leadTeacher": [
+            177071
+          ],
+          "clazzNumber": [
+            "574882679202260992"
+          ],
+          "renewalRoundFilter": [
+            0
+          ],
+          "studentTags": [
+            2
+          ]
+        }
+      },
+      "http": 200,
+      "trace": "d5c7b606-6ac1-4c10-9c0f-e46ff88c7adf.0.3",
+      "elapsed_ms": 481,
+      "response": {
+        "code": 0,
+        "msg": "",
+        "pager": {
+          "current": 1,
+          "pageSize": 100,
+          "total": 2,
+          "hasNext": false,
+          "approximateTotal": false
+        },
+        "selected_rows": [
+          {
+            "studentTags": [
+              2
+            ],
+            "clazzBizNumber": "32YYTS25D6LS11002",
+            "id": "35930167940088064-7704846439",
+            "userId": 7704846439,
+            "clazzNumber": "574882679202260992",
+            "clazzName": "续班归因-正经前置班-0820",
+            "studentTagNames": [
+              "需中关注"
+            ],
+            "leadTeacher": "弓雪萌"
+          },
+          {
+            "studentTags": [
+              2
+            ],
+            "id": "35930167940088064-7704846434",
+            "clazzBizNumber": "32YYTS25D6LS11002",
+            "userId": 7704846434,
+            "clazzNumber": "574882679202260992",
+            "clazzName": "续班归因-正经前置班-0820",
+            "studentTagNames": [
+              "需中关注"
+            ],
+            "leadTeacher": "弓雪萌"
+          }
+        ]
+      }
+    },
+    {
+      "name": "filter_three",
+      "time": "2026-11-05T19:57:19.647847+08:00",
+      "request": {
+        "pager": {
+          "current": 1,
+          "pageSize": 100
+        },
+        "route": {
+          "sceneVersionNumber": "294310981744470016"
+        },
+        "identification": "continuationService",
+        "clazzNumbers": [
+          "574882679202260992"
+        ],
+        "quickFilter": {},
+        "filter": {
+          "studentSubStatus": [
+            0
+          ],
+          "leadTeacher": [
+            177071
+          ],
+          "clazzNumber": [
+            "574882679202260992"
+          ],
+          "renewalRoundFilter": [
+            0
+          ],
+          "studentTags": [
+            3
+          ]
+        }
+      },
+      "http": 200,
+      "trace": "b8a6a4cb-1418-4338-b5aa-b1bbe8832ec4.0.3",
+      "elapsed_ms": 196,
+      "response": {
+        "code": 0,
+        "msg": "",
+        "pager": {
+          "current": 1,
+          "pageSize": 100,
+          "total": 0,
+          "hasNext": false,
+          "approximateTotal": false
+        },
+        "selected_rows": []
+      }
+    },
+    {
+      "name": "filter_three_other_teacher",
+      "time": "2026-11-05T19:57:19.869247+08:00",
+      "request": {
+        "pager": {
+          "current": 1,
+          "pageSize": 100
+        },
+        "route": {
+          "sceneVersionNumber": "294310981744470016"
+        },
+        "identification": "continuationService",
+        "clazzNumbers": [
+          "574882679202260992"
+        ],
+        "quickFilter": {},
+        "filter": {
+          "studentSubStatus": [
+            0
+          ],
+          "leadTeacher": [
+            90247
+          ],
+          "clazzNumber": [
+            "574882679202260992"
+          ],
+          "renewalRoundFilter": [
+            0
+          ],
+          "studentTags": [
+            3
+          ]
+        }
+      },
+      "http": 200,
+      "trace": "dea9264f-4e70-416a-9494-340301cb6391.0.3",
+      "elapsed_ms": 221,
+      "response": {
+        "code": 0,
+        "msg": "",
+        "pager": {
+          "current": 1,
+          "pageSize": 100,
+          "total": 0,
+          "hasNext": false,
+          "approximateTotal": false
+        },
+        "selected_rows": []
+      }
+    },
+    {
+      "name": "restore_empty",
+      "time": "2026-11-05T19:57:20.045605+08:00",
+      "request": {
+        "scene": "continuationService",
+        "type": 1,
+        "clazzStudents": [
+          {
+            "clazzNumber": "574882679202260992",
+            "userId": "7704846434"
+          },
+          {
+            "clazzNumber": "574882679202260992",
+            "userId": "7704846439"
+          }
+        ],
+        "userIds": [
+          "7704846434",
+          "7704846439"
+        ],
+        "studentTags": []
+      },
+      "http": 200,
+      "trace": "6eb8eaa1-2c46-45f4-993c-647a79005d14.0.3",
+      "elapsed_ms": 175,
+      "response": {
+        "code": 0,
+        "data": {},
+        "msg": ""
+      }
+    },
+    {
+      "name": "clear_filter_three",
+      "time": "2026-11-05T19:57:20.772624+08:00",
+      "request": {
+        "pager": {
+          "current": 1,
+          "pageSize": 100
+        },
+        "route": {
+          "sceneVersionNumber": "294310981744470016"
+        },
+        "identification": "continuationService",
+        "clazzNumbers": [
+          "574882679202260992"
+        ],
+        "quickFilter": {},
+        "filter": {
+          "studentSubStatus": [
+            0
+          ],
+          "leadTeacher": [
+            177071
+          ],
+          "clazzNumber": [
+            "574882679202260992"
+          ],
+          "renewalRoundFilter": [
+            0
+          ],
+          "studentTags": [
+            3
+          ]
+        }
+      },
+      "http": 200,
+      "trace": "7b0b41c4-8660-4f19-8988-fde9eb8aad45.0.3",
+      "elapsed_ms": 258,
+      "response": {
+        "code": 0,
+        "msg": "",
+        "pager": {
+          "current": 1,
+          "pageSize": 100,
+          "total": 1,
+          "hasNext": false,
+          "approximateTotal": false
+        },
+        "selected_rows": [
+          {
+            "studentTags": [
+              3
+            ],
+            "id": "35930167940088064-7704846434",
+            "clazzBizNumber": "32YYTS25D6LS11002",
+            "studentTagNames": [
+              "需弱关注"
+            ],
+            "userId": 7704846434,
+            "clazzNumber": "574882679202260992",
+            "clazzName": "续班归因-正经前置班-0820",
+            "leadTeacher": "弓雪萌"
+          }
+        ]
+      }
+    },
+    {
+      "name": "clear_list",
+      "time": "2026-11-05T19:57:21.069006+08:00",
+      "request": {
+        "pager": {
+          "current": 1,
+          "pageSize": 100
+        },
+        "route": {
+          "sceneVersionNumber": "294310981744470016"
+        },
+        "identification": "continuationService",
+        "clazzNumbers": [
+          "574882679202260992"
+        ],
+        "quickFilter": {},
+        "filter": {
+          "studentSubStatus": [
+            0
+          ],
+          "leadTeacher": [
+            177071
+          ],
+          "clazzNumber": [
+            "574882679202260992"
+          ],
+          "renewalRoundFilter": [
+            0
+          ]
+        }
+      },
+      "http": 200,
+      "trace": "a36ac96d-e0b9-4ade-990d-bcd984dcaf6c.0.3",
+      "elapsed_ms": 296,
+      "response": {
+        "code": 0,
+        "msg": "",
+        "pager": {
+          "current": 1,
+          "pageSize": 100,
+          "total": 19,
+          "hasNext": false,
+          "approximateTotal": false
+        },
+        "selected_rows": [
+          {
+            "clazzBizNumber": "32YYTS25D6LS11002",
+            "id": "35930167940088064-7704846439",
+            "studentTags": [],
+            "userId": 7704846439,
+            "clazzNumber": "574882679202260992",
+            "clazzName": "续班归因-正经前置班-0820",
+            "leadTeacher": "弓雪萌"
+          },
+          {
+            "clazzName": "续班归因-正经前置班-0820",
+            "clazzBizNumber": "32YYTS25D6LS11002",
+            "id": "35930167940088064-7704846440",
+            "leadTeacher": "弓雪萌",
+            "userId": 7704846440,
+            "clazzNumber": "574882679202260992"
+          },
+          {
+            "id": "35930167940088064-7704846434",
+            "clazzName": "续班归因-正经前置班-0820",
+            "clazzBizNumber": "32YYTS25D6LS11002",
+            "studentTags": [],
+            "leadTeacher": "弓雪萌",
+            "userId": 7704846434,
+            "clazzNumber": "574882679202260992"
+          }
+        ]
+      }
+    }
+  ],
+  "before": {
+    "ees_data": [
+      {
+        "id": 120556,
+        "user_id": "7704846434",
+        "clazz_number": "574882679202260992",
+        "tags": ""
+      },
+      {
+        "id": 120557,
+        "user_id": "7704846439",
+        "clazz_number": "574882679202260992",
+        "tags": ""
+      }
+    ],
+    "gaotu": [
+      {
+        "id": 26592,
+        "user_id": "7704846434",
+        "clazz_number": "574882679202260992",
+        "tags": ""
+      },
+      {
+        "id": 26593,
+        "user_id": "7704846439",
+        "clazz_number": "574882679202260992",
+        "tags": ""
+      }
+    ]
+  },
+  "identity": {
+    "code": 0,
+    "id": 177071,
+    "name": "gongxuemeng",
+    "trace": "462aabb2-6a09-456f-b391-fd93e3359af6.0.3"
+  },
+  "prepared_db": {
+    "ees_data": [
+      {
+        "id": 120556,
+        "user_id": "7704846434",
+        "clazz_number": "574882679202260992",
+        "tags": "3"
+      },
+      {
+        "id": 120557,
+        "user_id": "7704846439",
+        "clazz_number": "574882679202260992",
+        "tags": "2"
+      }
+    ],
+    "gaotu": [
+      {
+        "id": 26592,
+        "user_id": "7704846434",
+        "clazz_number": "574882679202260992",
+        "tags": "3"
+      },
+      {
+        "id": 26593,
+        "user_id": "7704846439",
+        "clazz_number": "574882679202260992",
+        "tags": "2"
+      }
+    ]
+  },
+  "restore_response": {
+    "code": 0,
+    "data": {},
+    "msg": ""
+  },
+  "restored_db": {
+    "ees_data": [
+      {
+        "id": 120556,
+        "user_id": "7704846434",
+        "clazz_number": "574882679202260992",
+        "tags": ""
+      },
+      {
+        "id": 120557,
+        "user_id": "7704846439",
+        "clazz_number": "574882679202260992",
+        "tags": ""
+      }
+    ],
+    "gaotu": [
+      {
+        "id": 26592,
+        "user_id": "7704846434",
+        "clazz_number": "574882679202260992",
+        "tags": ""
+      },
+      {
+        "id": 26593,
+        "user_id": "7704846439",
+        "clazz_number": "574882679202260992",
+        "tags": ""
+      }
+    ]
+  },
+  "restored": true
+}

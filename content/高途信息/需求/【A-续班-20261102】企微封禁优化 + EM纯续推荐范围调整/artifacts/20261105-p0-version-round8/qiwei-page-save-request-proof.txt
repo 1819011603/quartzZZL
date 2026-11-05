@@ -1,0 +1,11 @@
+## Request https://test-fuwu.baijia.com/bgwApi/component/student-center/batchOperate/tag/save
+### Request Headers
+- ingress-traffic-env:test-gtbg-dev-3
+- traffic-env:test-gtbg-dev-3
+### Request Body
+{"clazzStudents":[{"clazzNumber":"574882679202260992","userId":7704846434}],"studentTags":["2"],"type":1,"userIds":[7704846434],"scene":"continuationService"}
+### Response Headers
+- access-control-expose-headers:GAPM-TraceID
+- gapm-traceid:b4fa4a42-4b8f-4265-adb3-1724d678703b.0.0
+### Response Body
+Saved to /private/tmp/w1-p0-243aa61a/round8/qiwei-page-save-response.network-response.

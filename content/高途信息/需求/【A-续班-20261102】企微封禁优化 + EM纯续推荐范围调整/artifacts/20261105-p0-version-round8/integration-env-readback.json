@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"keyword\" keyword=\"实际版本：EM\"><p id=\"doxcn95SniGXAhrrh7foJlea9Bg\">实际版本：EM在TEST/test-gtbg-dev-3，product-b07ba05df、cart a34016fd、order/order-b0cc8ef68均Running/UP；product-C为ab120d4e，C端完整链未验。企微前端cronus17ee81cc已在该泳道，资源umi.7054cbb2与浏览器一致；后端复用TEST存量API池release5dce9cdb/10.255.176.174及df66fed8/10.218.238.176。本轮两实例受控ES筛选均成功，trace及边界见round8集中证据，不外推全ES健康。既有证据绑定实际版本/对象；无业务代码修改、服务部署、生产写入或对外消息。</p></fragment>",
+      "document_id": "ZQUXdlDxWoknJhxu914c2uVYnBr",
+      "revision_id": 271
+    }
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.70",
+      "latest": "1.0.99",
+      "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+    }
+  }
+}

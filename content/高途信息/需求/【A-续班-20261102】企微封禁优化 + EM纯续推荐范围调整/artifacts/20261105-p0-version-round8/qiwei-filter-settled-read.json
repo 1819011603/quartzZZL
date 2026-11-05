@@ -1,0 +1,82 @@
+{
+  "time": "2026-11-05T19:57:54.717561+08:00",
+  "environment": "TEST",
+  "identity": "gongxuemeng177071 confirmed462aabb2",
+  "read_only": true,
+  "after_restore": "6eb8eaa1-2c46-45f4-993c-647a79005d14.0.3",
+  "results": [
+    {
+      "filterTags": [
+        2
+      ],
+      "http": 200,
+      "code": 0,
+      "msg": "",
+      "trace": "7ebf4e56-bf00-44b5-a224-cd2c73728444.0.3",
+      "pager": {
+        "current": 1,
+        "pageSize": 100,
+        "total": 0,
+        "hasNext": false,
+        "approximateTotal": false
+      },
+      "controlled_rows": []
+    },
+    {
+      "filterTags": [
+        3
+      ],
+      "http": 200,
+      "code": 0,
+      "msg": "",
+      "trace": "1171d347-4c09-4897-9a50-d784150bbce3.0.3",
+      "pager": {
+        "current": 1,
+        "pageSize": 100,
+        "total": 0,
+        "hasNext": false,
+        "approximateTotal": false
+      },
+      "controlled_rows": []
+    },
+    {
+      "filterTags": null,
+      "http": 200,
+      "code": 0,
+      "msg": "",
+      "trace": "911d6a1e-7906-483b-8158-b44472ee56f9.0.3",
+      "pager": {
+        "current": 1,
+        "pageSize": 100,
+        "total": 19,
+        "hasNext": false,
+        "approximateTotal": false
+      },
+      "controlled_rows": [
+        {
+          "clazzBizNumber": "32YYTS25D6LS11002",
+          "studentTags": [],
+          "userId": 7704846439,
+          "clazzNumber": "574882679202260992",
+          "clazzName": "续班归因-正经前置班-0820",
+          "leadTeacher": "弓雪萌"
+        },
+        {
+          "clazzName": "续班归因-正经前置班-0820",
+          "clazzBizNumber": "32YYTS25D6LS11002",
+          "leadTeacher": "弓雪萌",
+          "userId": 7704846440,
+          "clazzNumber": "574882679202260992"
+        },
+        {
+          "clazzName": "续班归因-正经前置班-0820",
+          "clazzBizNumber": "32YYTS25D6LS11002",
+          "studentTags": [],
+          "leadTeacher": "弓雪萌",
+          "userId": 7704846434,
+          "clazzNumber": "574882679202260992"
+        }
+      ]
+    }
+  ]
+}

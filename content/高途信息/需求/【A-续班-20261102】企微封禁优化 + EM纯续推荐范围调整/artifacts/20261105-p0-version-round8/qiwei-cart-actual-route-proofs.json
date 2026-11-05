@@ -1,0 +1,74 @@
+[
+  {
+    "trace": "32a90a82-a154-48d3-bfc3-199caab4352a.0.3",
+    "exit": 0,
+    "matches": 1,
+    "routes": [
+      {
+        "upstream": "10.255.176.174:28688",
+        "upstream_latency": 220,
+        "route_id": "student-center_170",
+        "config_path": "/component/student-center/*",
+        "method": "POST",
+        "uri": "/component/student-center/roster/renewal/page",
+        "traffic-env": "test",
+        "ingress-traffic-env": null,
+        "status": 200
+      }
+    ]
+  },
+  {
+    "trace": "6ea8c083-56ce-47f8-bd46-38464ed343b4.0.3",
+    "exit": 0,
+    "matches": 1,
+    "routes": [
+      {
+        "upstream": "10.218.238.176:28688",
+        "upstream_latency": 127,
+        "route_id": "student-center_170",
+        "config_path": "/component/student-center/*",
+        "method": "POST",
+        "uri": "/component/student-center/roster/renewal/page",
+        "traffic-env": "test",
+        "ingress-traffic-env": null,
+        "status": 200
+      }
+    ]
+  },
+  {
+    "trace": "b4fa4a42-4b8f-4265-adb3-1724d678703b.0.0",
+    "exit": 0,
+    "matches": 1,
+    "routes": [
+      {
+        "upstream": "10.218.238.176:28688",
+        "upstream_latency": 82,
+        "route_id": "student-center_170",
+        "config_path": "/component/student-center/*",
+        "method": "POST",
+        "uri": "/component/student-center/batchOperate/tag/save",
+        "traffic-env": "test-gtbg-dev-3",
+        "ingress-traffic-env": "test-gtbg-dev-3",
+        "status": 200
+      }
+    ]
+  },
+  {
+    "trace": "4ad0493a-414a-417a-8fa5-0a713bc6aa4f.0.3",
+    "exit": 0,
+    "matches": 1,
+    "routes": [
+      {
+        "upstream": "10.255.180.137:28688",
+        "upstream_latency": 510,
+        "route_id": "mi-gaotu100-com_383",
+        "config_path": "/*",
+        "method": "GET",
+        "uri": "/cart/web/renewal/operation/cart?renewalNumber=588858850300473344&userId=7658129872&fromC=0",
+        "traffic-env": "test-gtbg-dev-3",
+        "ingress-traffic-env": null,
+        "status": 200
+      }
+    ]
+  }
+]

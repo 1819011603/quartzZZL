@@ -1,0 +1,377 @@
+[
+  {
+    "block": "doxcnr96lh4sfkKYL6mQ8wQRKhh",
+    "exit": 0,
+    "response": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 254,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      },
+      "_notice": {
+        "update": {
+          "command": "lark-cli update",
+          "current": "1.0.70",
+          "latest": "1.0.99",
+          "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+        }
+      }
+    },
+    "text": "已验证：待开始计划588872241920421888（开始2026-11-06 19:01+08:00、status1）由管理员90247正常保存从A并独立回读，随后保存空集、DB确认恢复。页面保存没做；未来执行须重核状态1。"
+  },
+  {
+    "block": "doxcnYu6TRVGqQFaz29106RS5Bh",
+    "exit": 0,
+    "response": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 255,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      },
+      "_notice": {
+        "update": {
+          "command": "lark-cli update",
+          "current": "1.0.70",
+          "latest": "1.0.99",
+          "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+        }
+      }
+    },
+    "text": "已验证接口子集：真实cart网关test-api.gaotu100.com/cart返回主从三商品，命中目标a34016fd/10.218.237.47，trace5b7e496d-e6c4-4ebd-a8c5-4d0230140811.0.3；实际下单推荐页面没做，不将接口当页面通过。"
+  },
+  {
+    "block": "doxcnsUVO7vxXbI0CYhobTfB9uf",
+    "exit": 0,
+    "response": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 256,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      },
+      "_notice": {
+        "update": {
+          "command": "lark-cli update",
+          "current": "1.0.70",
+          "latest": "1.0.99",
+          "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+        }
+      }
+    },
+    "text": "已验证大班子集：实际身份177071、同班2+1、页面单人保存/源表回读、标签3及老师联合筛选、清空后筛2/3为0；历史ES熔断未在本轮这组请求复现。筛选后联系未操作、无发送，页面完整筛选未全验。"
+  },
+  {
+    "block": "doxcnZppOmacFx522MVifnHGWRb",
+    "exit": 0,
+    "response": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 257,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      },
+      "_notice": {
+        "update": {
+          "command": "lark-cli update",
+          "current": "1.0.70",
+          "latest": "1.0.99",
+          "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+        }
+      }
+    },
+    "text": "已验证大班子集：两目标批量2、新旧源表一致、未选不变、清空及取消；本轮实际续班页单甲保存2并恢复，列表标签ID/名称及清空筛选已核。页面多选保存及完整回显未全验，非整条页面通过。"
+  },
+  {
+    "block": "doxcnfeL1gO5iP8xjT1fEUvvOQc",
+    "exit": 0,
+    "response": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 258,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      },
+      "_notice": {
+        "update": {
+          "command": "lark-cli update",
+          "current": "1.0.70",
+          "latest": "1.0.99",
+          "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+        }
+      }
+    },
+    "text": "已验证大班子集：甲3/乙2及恢复业务空值；延迟筛3仅甲、筛2无残留，叠加其他老师为0；清空后两筛选均0。仅接口列表/DB和页面单人保存，ES原文档及完整页面筛选没做。"
+  },
+  {
+    "block": "doxcn6FXTJbdf8fPJU6NTk63dPg",
+    "exit": 0,
+    "response": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 259,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      },
+      "_notice": {
+        "update": {
+          "command": "lark-cli update",
+          "current": "1.0.70",
+          "latest": "1.0.99",
+          "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+        }
+      }
+    },
+    "text": "12张卡—前置准备后可执行2：P0-02、P0-03。P0-03状态1对象已固定，但需重核时间状态及页面登录。"
+  },
+  {
+    "block": "doxcnpnD0FaqY6nuYWHmQFwSMrc",
+    "exit": 0,
+    "response": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 260,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      },
+      "_notice": {
+        "update": {
+          "command": "lark-cli update",
+          "current": "1.0.70",
+          "latest": "1.0.99",
+          "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+        }
+      }
+    },
+    "text": "12张卡—信息仍缺失9：P0-04、P0-05、P0-06、P0-07、P0-08、P0-09、P0-10、P0-11、P0-12。"
+  },
+  {
+    "block": "doxcnaxaNhpVRAoS2g2NomFuqUc",
+    "exit": 0,
+    "response": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 261,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      },
+      "_notice": {
+        "update": {
+          "command": "lark-cli update",
+          "current": "1.0.70",
+          "latest": "1.0.99",
+          "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+        }
+      }
+    },
+    "text": "原30条—前置准备后可执行18：TC-G001、TC-G002、REN-B01-001、REN-B01-002、REN-B03-001、REN-B03-002、REN-B04-001、REN-B04-002、REN-B05-001、REN-B05-002、REN-B06-001、REN-B07-001、REN-B08-001、REN-B08-002、REN-B09-001、QW-G001、QW-B01-001、QW-B02-001。"
+  },
+  {
+    "block": "doxcnH6r04mWHKMh9O18QTNKQDe",
+    "exit": 0,
+    "response": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 262,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      },
+      "_notice": {
+        "update": {
+          "command": "lark-cli update",
+          "current": "1.0.70",
+          "latest": "1.0.99",
+          "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+        }
+      }
+    },
+    "text": "原30条—信息仍缺失8：REN-B06-002、REN-B07-002、REN-B09-002、QW-B01-002、QW-B02-002、QW-B03-001、QW-B03-002、QW-B04-001。"
+  },
+  {
+    "block": "doxcnq6fhqd4XBFv3e5yQBMXuxb",
+    "exit": 0,
+    "response": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 263,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      },
+      "_notice": {
+        "update": {
+          "command": "lark-cli update",
+          "current": "1.0.70",
+          "latest": "1.0.99",
+          "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+        }
+      }
+    },
+    "text": "剩余必要信息：小班主页面与全入口身份；不同学年/学期及有值从扩科反例；跨年级同商品/纯续扩科碰撞；同号跨模式后第三件真实重复购物车；优惠/异主体对照；本地缓存组合、负缓存/故障/关闭（当前query.cache=false）；小班2+1及同班备注页面、默认姓名/手机/身份模板；课节管理/我的线索对象及角色/加载版本；历史min(begin_time)阈值。待开始接口正例已完成，不再列缺样本。"
+  },
+  {
+    "block": "doxcnPvO7kKPnhAQeloIGxHAfkf",
+    "exit": 0,
+    "response": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 264,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      },
+      "_notice": {
+        "update": {
+          "command": "lark-cli update",
+          "current": "1.0.70",
+          "latest": "1.0.99",
+          "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+        }
+      }
+    },
+    "text": "老师身份、同班未选对照及现成官方好友均已取得，无已确认必须人工提供账号/好友的阻塞。企微前端17ee81cc已确认在test-gtbg-dev-3；本轮两后端实例均成功处理受控ES筛选，不再将历史熔断或“feature未确认”列为当前统一阻塞。小班、其他页面和历史回溯仍没做；不将局部健康外推为ES全局健康。"
+  },
+  {
+    "block": "doxcnsAya3nyYzW5L4xwYgTgd2v",
+    "exit": 0,
+    "response": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 265,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      },
+      "_notice": {
+        "update": {
+          "command": "lark-cli update",
+          "current": "1.0.70",
+          "latest": "1.0.99",
+          "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+        }
+      }
+    },
+    "text": "当前仍未完成：不同学年/学期及有值从扩科隔离、跨年级/第三件重复、缓存组合与异常回退、优惠/异主体及C端/其余页面、小班标签备注和默认模板、历史min(begin_time)回溯。已完成status1接口保存清空、真实网关、受控大班筛选与页面单人保存，均按版本/对象/观察层复用；不再列为环境阻塞。"
+  },
+  {
+    "block": "doxcnVzpUw83gkafcdVSHQaPIzf",
+    "exit": 0,
+    "response": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 266,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      },
+      "_notice": {
+        "update": {
+          "command": "lark-cli update",
+          "current": "1.0.70",
+          "latest": "1.0.99",
+          "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+        }
+      }
+    },
+    "text": "仍需闭环：EM真实跨学年学期/有值从扩科隔离、跨年级保留、缓存组合与故障、优惠/异主体及未执行页面；企微小班、默认备注模板和历史回溯。大班标签保存/筛选/清空、官方备注成功/恢复已有子集证据。小班有效已购订单被大班入口标记signUp0的现象已定位订单来源分歧；是否构成本次回归及另行修复尚未决定，本单未改代码。"
+  },
+  {
+    "block": "doxcnFUUA04mDvSicSeY40tQCpc",
+    "exit": 0,
+    "response": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 267,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      },
+      "_notice": {
+        "update": {
+          "command": "lark-cli update",
+          "current": "1.0.70",
+          "latest": "1.0.99",
+          "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+        }
+      }
+    },
+    "text": "实际：已验证三计划三商品、同科保留、仅主1件→补B资格后2件及从计划不反向扩大。真实网关命中cart a34016fd/10.218.237.47，trace5b7e496d-e6c4-4ebd-a8c5-4d0230140811.0.3；先前fuwu地址误落mi路由，非已证实登录失效。固定Pod漏fromC触发空值错误，补0正常。7658129872的大班后课“B测试-五年级语文暑假后置1B”（bizNumber15YW26XTRO11001、SKU588861402658267136）可售未购；小班后课“dcg-小班扩科排除-数学-后置”（bizNumber/SKU586097025945298944）有效订单433534690352694278为status2/refund0，推荐仍signUp0。运行时证实大班入口取order_info为空，小班权益取order_item有单，不能称双后置均未购；C端及各页面未全验。"
+  },
+  {
+    "block": "doxcn7higoCMvN04mNm6FdXVQrc",
+    "exit": 0,
+    "response": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 268,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      },
+      "_notice": {
+        "update": {
+          "command": "lark-cli update",
+          "current": "1.0.70",
+          "latest": "1.0.99",
+          "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+        }
+      }
+    },
+    "text": "历史样本结论以执行时点为准：旧查询小班价格-1不代表当前不可售。17:48正常补排课后两自建大班可售；7707220467已购两后置，不再作未购样本。当前7658129872仅自建大班后置已证可售未购，小班存在有效已购订单而推荐signUp0；正常prepare两商品100+0=100分仅证明所测预览计算，不证明双商品未购或完整页面通过。"
+  }
+]

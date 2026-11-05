@@ -1,0 +1,470 @@
+{
+  "information_completeness": {
+    "cards": {
+      "complete": 1,
+      "prepare": 2,
+      "missing": 9
+    },
+    "original30": {
+      "complete": 4,
+      "prepare": 18,
+      "missing": 8
+    }
+  },
+  "business_verification": {
+    "original30": {
+      "verified_whole_scoped": 2,
+      "verified_subset": 19,
+      "not_executed": 9
+    },
+    "cards": {
+      "verified_whole": 0,
+      "verified_subset": 12
+    }
+  },
+  "banshan50191_platform_execution": {
+    "functional": 0,
+    "online": 0,
+    "smoke": 0
+  },
+  "note": "信息完整≠业务通过；子集含原版本程序/接口/DB/任务/页面不同层级，逐项绑定，不以21或12宣称通过。",
+  "original30": [
+    {
+      "code": "TC-G001",
+      "title": "TC-G001 关联大小班计划后从一个纯续链接选择对应续班课9aa61dfa9800456f",
+      "card": "P0-04",
+      "grade": "已验证",
+      "scope": "子集，不能计整条通过"
+    },
+    {
+      "code": "TC-G002",
+      "title": "TC-G002 从关联的从计划发起推荐不反向扩大6e657d08dceb4b00",
+      "card": "P0-04",
+      "grade": "已验证",
+      "scope": "子集，不能计整条通过"
+    },
+    {
+      "code": "REN-B01-001",
+      "title": "REN-B01-001 计划管理员可为进行中计划操作纯续关联d331e4ed922d4200",
+      "card": "P0-03",
+      "grade": "已验证",
+      "scope": "子集，不能计整条通过"
+    },
+    {
+      "code": "REN-B01-002",
+      "title": "REN-B01-002 计划管理员可为待开始计划操作纯续关联ce1e9e53620a4a4f",
+      "card": "P0-03",
+      "grade": "已验证",
+      "scope": "子集，不能计整条通过"
+    },
+    {
+      "code": "REN-B02-001",
+      "title": "REN-B02-001 按计划名称模糊搜索可关联计划dfe0db0339b04c28",
+      "card": "P0-01",
+      "grade": "没做",
+      "scope": "无运行执行"
+    },
+    {
+      "code": "REN-B02-002",
+      "title": "REN-B02-002 批量输入完整计划ID精确搜索507460fceea24ee7",
+      "card": "P0-01",
+      "grade": "已验证",
+      "scope": "子集，不能计整条通过"
+    },
+    {
+      "code": "REN-B03-001",
+      "title": "REN-B03-001 可一次选择多个计划关联4f86c091171e4bb3",
+      "card": "P0-02",
+      "grade": "已验证",
+      "scope": "子集，不能计整条通过"
+    },
+    {
+      "code": "REN-B03-002",
+      "title": "REN-B03-002 恰好关联10个计划允许保存5fe9a9d76ec94294",
+      "card": "P0-03",
+      "grade": "已验证",
+      "scope": "子集，不能计整条通过"
+    },
+    {
+      "code": "REN-B04-001",
+      "title": "REN-B04-001 保存后重新打开可回看已绑定计划b530d1d7cb3d4ff4",
+      "card": "P0-02",
+      "grade": "已验证",
+      "scope": "子集，不能计整条通过"
+    },
+    {
+      "code": "REN-B04-002",
+      "title": "REN-B04-002 确认移除仅删除目标关联039f0f1298ff4e70",
+      "card": "P0-02",
+      "grade": "已验证",
+      "scope": "子集，不能计整条通过"
+    },
+    {
+      "code": "REN-B05-001",
+      "title": "REN-B05-001 主计划推荐学员在三个计划内全部有效后置商品d07b8802624b49cf",
+      "card": "P0-04",
+      "grade": "已验证",
+      "scope": "子集，不能计整条通过"
+    },
+    {
+      "code": "REN-B05-002",
+      "title": "REN-B05-002 学员没有从计划在读班级时不推从计划商品197742b79dfc4851",
+      "card": "P0-04",
+      "grade": "已验证",
+      "scope": "子集，不能计整条通过"
+    },
+    {
+      "code": "REN-B06-001",
+      "title": "REN-B06-001 大班单项发链接包含主从有效商品2303d04efe494a38",
+      "card": "P0-04",
+      "grade": "没做",
+      "scope": "无运行执行"
+    },
+    {
+      "code": "REN-B06-002",
+      "title": "REN-B06-002 小班作为主计划单项发链接支持关联范围eb407aa4f2ed4701",
+      "card": "P0-04",
+      "grade": "已验证",
+      "scope": "子集，不能计整条通过"
+    },
+    {
+      "code": "REN-B07-001",
+      "title": "REN-B07-001 大班下单推荐页展示关联后的纯续商品d1d1e00113094be9",
+      "card": "P0-04",
+      "grade": "已验证",
+      "scope": "子集，不能计整条通过"
+    },
+    {
+      "code": "REN-B07-002",
+      "title": "REN-B07-002 小班作主时下单推荐页也扩大范围54303bd27ef445fa",
+      "card": "P0-04",
+      "grade": "没做",
+      "scope": "无运行执行"
+    },
+    {
+      "code": "REN-B08-001",
+      "title": "REN-B08-001 主计划链接展示大小班全部符合资格续班课77cb01759f1c47a2",
+      "card": "P0-04",
+      "grade": "没做",
+      "scope": "无运行执行"
+    },
+    {
+      "code": "REN-B08-002",
+      "title": "REN-B08-002 选择从计划续班课进入原报名流程6d48abf6ab9a4523",
+      "card": "P0-08",
+      "grade": "已验证",
+      "scope": "子集，不能计整条通过"
+    },
+    {
+      "code": "REN-B09-001",
+      "title": "REN-B09-001 主计划扩科仍只推荐自己配置的扩科课760cf8a420db4d7c",
+      "card": "P0-05",
+      "grade": "已验证",
+      "scope": "子集，不能计整条通过"
+    },
+    {
+      "code": "REN-B09-002",
+      "title": "REN-B09-002 从计划扩科仍只推荐从计划自己配置的课a2cef71762f44a0c",
+      "card": "P0-05",
+      "grade": "没做",
+      "scope": "无运行执行"
+    },
+    {
+      "code": "QW-G001",
+      "title": "QW-G001 大班续班服务按标签筛出待回访学员并联系59638fda0b804b24",
+      "card": "P0-10",
+      "grade": "已验证",
+      "scope": "子集，不能计整条通过"
+    },
+    {
+      "code": "QW-B01-001",
+      "title": "QW-B01-001 大班可给多个选中学员批量添加标签5196c5bb8be84d54",
+      "card": "P0-10",
+      "grade": "已验证",
+      "scope": "子集，不能计整条通过"
+    },
+    {
+      "code": "QW-B01-002",
+      "title": "QW-B01-002 小班可给多个选中学员批量添加标签bf3cb8e5e56240a4",
+      "card": "P0-10",
+      "grade": "没做",
+      "scope": "无运行执行"
+    },
+    {
+      "code": "QW-B02-001",
+      "title": "QW-B02-001 大班单个学员编辑后可按新标签筛出ec888e28ae7b4e9c",
+      "card": "P0-10",
+      "grade": "已验证",
+      "scope": "子集，不能计整条通过"
+    },
+    {
+      "code": "QW-B02-002",
+      "title": "QW-B02-002 小班学员标签支持单人编辑和筛选ec7f3c87e1d64e4e",
+      "card": "P0-10",
+      "grade": "没做",
+      "scope": "无运行执行"
+    },
+    {
+      "code": "QW-B03-001",
+      "title": "QW-B03-001 大班批量备注修改与默认花名册一致b8cfbe7420674fb5",
+      "card": "P0-11",
+      "grade": "已验证",
+      "scope": "子集，不能计整条通过"
+    },
+    {
+      "code": "QW-B03-002",
+      "title": "QW-B03-002 小班批量备注修改与默认花名册一致1775e43999594473",
+      "card": "P0-11",
+      "grade": "没做",
+      "scope": "无运行执行"
+    },
+    {
+      "code": "QW-B04-001",
+      "title": "QW-B04-001 2026年已创建的大小班显示原有标签da48bbe455394f5a",
+      "card": "回溯验收",
+      "grade": "没做",
+      "scope": "无运行执行"
+    },
+    {
+      "code": "QW-B05-001",
+      "title": "QW-B05-001 默认花名册私聊和群聊均替换为说明文档链接a3f0d910988349e4",
+      "card": "P0-12",
+      "grade": "已验证",
+      "scope": "整条所述入口"
+    },
+    {
+      "code": "QW-B05-002",
+      "title": "QW-B05-002 联系学员弹窗的企微官方两种发送类型均更新23bebdb98448400b",
+      "card": "P0-12",
+      "grade": "已验证",
+      "scope": "整条所述入口"
+    }
+  ],
+  "contracts": [
+    {
+      "contract": "Q1",
+      "rule": "大小班续班服务有批量添加标签",
+      "card": "P0-10",
+      "grade": "已验证",
+      "actual": "大班接口批量2+1/页面单人保存/DB恢复",
+      "evidence": "qiwei-page-save-restore.json;qiwei-filter-three-case.json",
+      "remaining": "小班及页面批量未全验"
+    },
+    {
+      "contract": "Q2",
+      "rule": "批量企微备注与默认花名册一致，任务结果可核对",
+      "card": "P0-11",
+      "grade": "已验证",
+      "actual": "官方单/双任务及备注读回恢复，round7子集",
+      "evidence": "../20261105-p0-execution-round7/qiwei-results.json",
+      "remaining": "同班大小班页面/默认模板/非好友对照未全验"
+    },
+    {
+      "contract": "Q3",
+      "rule": "学员标签显示并可单人编辑",
+      "card": "P0-10",
+      "grade": "已验证",
+      "actual": "大班单改2→3、实际页面保存2、DB/列表ID名称",
+      "evidence": "qiwei-filter-three-case.json;qiwei-page-save-restore.json",
+      "remaining": "小班/ES物理原文档未验"
+    },
+    {
+      "contract": "Q4",
+      "rule": "学员标签可筛选，发送studentTags",
+      "card": "P0-10",
+      "grade": "已验证",
+      "actual": "标签3正例、标签2排除、其他老师排除、清空两筛选0",
+      "evidence": "qiwei-filter-three-case.json;qiwei-cart-actual-route-proofs.json",
+      "remaining": "完整页面筛选及小班未验；不承诺即时一致"
+    },
+    {
+      "contract": "Q5",
+      "rule": "按班级min(begin_time)≥2026-01-01圈班，再回溯班下学员；不补clazzRoomType",
+      "card": "回溯验收",
+      "grade": "没做",
+      "actual": "已确认规则min(begin_time)>=2026-01-01，非创建时间",
+      "evidence": "agent-b-report.md",
+      "remaining": "真实阈值组/历史回溯未执行；大数据任务按既定只出方案边界"
+    },
+    {
+      "contract": "Q6",
+      "rule": "官方群发私聊/群聊各共享入口替换为规范链接",
+      "card": "P0-12",
+      "grade": "已验证",
+      "actual": "round7默认页两官方群发类型规范链接/打开返回子集",
+      "evidence": "../20261105-p0-execution-round7/qiwei-report.md",
+      "remaining": "课节管理/其他受影响入口未全验，不发送消息"
+    },
+    {
+      "contract": "Q7",
+      "rule": "EES联系学员弹窗同样有规范链接",
+      "card": "P0-12",
+      "grade": "已验证",
+      "actual": "round7联系学员两类型及返回编辑子集",
+      "evidence": "../20261105-p0-execution-round7/qiwei-report.md",
+      "remaining": "全部角色/页面未全验"
+    },
+    {
+      "contract": "Q8",
+      "rule": "阶段反馈、退费管控新增按钮本期取消",
+      "card": "明确不做",
+      "grade": "已验证",
+      "actual": "需求材料确认阶段反馈/退费管控新增按钮本期取消",
+      "evidence": "integration-contracts-before.json",
+      "remaining": "无实现或运行通过主张"
+    },
+    {
+      "contract": "Q9",
+      "rule": "运营规则按引用说明执行；不新增产品限流或自动发送",
+      "card": "P0-12",
+      "grade": "已验证",
+      "actual": "规范说明及禁止实际发送的范围核对",
+      "evidence": "agent-b-report.md",
+      "remaining": "未执行真实群发，非需求必验"
+    },
+    {
+      "contract": "E1",
+      "rule": "主计划纯续覆盖主从在读前置课；关联单向，规则取主",
+      "card": "P0-04",
+      "grade": "已验证",
+      "actual": "A并A+B及B仅自身，目标cart真实调用子集",
+      "evidence": "agent-a-readback.json;cart-bound-host-read.json",
+      "remaining": "小班主及逐页面完整闭环未验"
+    },
+    {
+      "contract": "E2",
+      "rule": "原大小班推荐规则保留，同科不同商品不互斥",
+      "card": "P0-04",
+      "grade": "已验证",
+      "actual": "同科不同SKU保留；小班已购signUp0差异已核",
+      "evidence": "agent-a-order-route-confirm.json;agent-a-order-rule-source.json",
+      "remaining": "现象来源已定位，是否本次回归未判；未改代码"
+    },
+    {
+      "contract": "E3",
+      "rule": "同年级同商品去重，跨年级保留，纯续优先",
+      "card": "P0-06",
+      "grade": "已验证",
+      "actual": "同年级同商品碰撞去重5→4及原映射恢复",
+      "evidence": "../20261105-p0-execution-round7/collision-observe.json",
+      "remaining": "跨年级保留、纯续/扩科碰撞仍没做"
+    },
+    {
+      "contract": "E4",
+      "rule": "扩科只取主计划，年级/学年/学期不被从计划污染",
+      "card": "P0-05",
+      "grade": "已验证",
+      "actual": "A扩科只自身年级2件，B纯续不反向扩展",
+      "evidence": "agent-a-readback.json",
+      "remaining": "B有值扩科、真实不同学年/学期反例未验"
+    },
+    {
+      "contract": "E5",
+      "rule": "仅管理员可操作；可编辑状态为待开始/进行中",
+      "card": "P0-03",
+      "grade": "已验证",
+      "actual": "管理员状态1/2保存及空集恢复、status0拒绝",
+      "evidence": "status1-main-case.json;../20261105-p0-execution-round7/relation-boundaries.json",
+      "remaining": "管理员页面/非管理员完整矩阵未全验"
+    },
+    {
+      "contract": "E6",
+      "rule": "当前计划状态、名称、字符串ID、管理员完整",
+      "card": "P0-01",
+      "grade": "已验证",
+      "actual": "原批量ID接口字段结果子集",
+      "evidence": "../20261105-p0-execution-round7/document-verification.json",
+      "remaining": "页面完整显示未验"
+    },
+    {
+      "contract": "E7",
+      "rule": "名称模糊/ID批量精确；默认状态1、2，过滤测试数据=是",
+      "card": "P0-01",
+      "grade": "已验证",
+      "actual": "原完整ID接口精确2条，保留模糊/默认过滤预期",
+      "evidence": "agent-b-report.md",
+      "remaining": "名称模糊、默认条件页面反例没做"
+    },
+    {
+      "contract": "E8",
+      "rule": "搜索结果字段完整，按创建时间倒序",
+      "card": "P0-01",
+      "grade": "已验证",
+      "actual": "原接口结果字段及顺序子集",
+      "evidence": "../20261105-p0-execution-round7/document-verification.json",
+      "remaining": "页面显示未验"
+    },
+    {
+      "contract": "E9",
+      "rule": "上限默认10且可配置，11项明确拒绝",
+      "card": "P0-03",
+      "grade": "已验证",
+      "actual": "10保存、重复仍10、11拒绝、DB不变及恢复",
+      "evidence": "../20261105-p0-execution-round7/relation-boundaries.json",
+      "remaining": "页面/改共享上限配置没做；不因参考case设3改Apollo"
+    },
+    {
+      "contract": "E10",
+      "rule": "同主不可重复绑定，已有绑定正确回显",
+      "card": "P0-02",
+      "grade": "已验证",
+      "actual": "重复保存及接口/DB回读",
+      "evidence": "../20261105-p0-execution-round7/relation-boundaries.json",
+      "remaining": "页面重开完整回显没做"
+    },
+    {
+      "contract": "E11",
+      "rule": "已选计划字段完整、创建时间倒序",
+      "card": "P0-02",
+      "grade": "没做",
+      "actual": "保留已选计划字段及倒序预期",
+      "evidence": "agent-b-report.md",
+      "remaining": "未保存集合页面未执行"
+    },
+    {
+      "contract": "E12",
+      "rule": "移除二次确认；最终确认保存全集，取消不落库",
+      "card": "P0-02",
+      "grade": "已验证",
+      "actual": "接口保存/仅移目标及清空DB子集",
+      "evidence": "status1-main-case.json",
+      "remaining": "页面取消不落库及确认时机未全验"
+    },
+    {
+      "contract": "E13",
+      "rule": "关联结果仅操作弹窗显示，未绑定为空",
+      "card": "P0-01/P0-02",
+      "grade": "已验证",
+      "actual": "接口空集及关联集合子集",
+      "evidence": "status1-main-case.json",
+      "remaining": "仅弹窗显示的页面约束没做"
+    },
+    {
+      "contract": "E14",
+      "rule": "单项/批量推荐、下单推荐、通用推荐、C端纯续入口一致",
+      "card": "P0-04",
+      "grade": "已验证",
+      "actual": "真实cart operation网关与内部推荐入口",
+      "evidence": "cart-bound-host-route-proof.json;agent-a-readback.json",
+      "remaining": "C端、单项/批量/通用及下单页面未全验"
+    },
+    {
+      "contract": "E15",
+      "rule": "主从商品可同单，只按收款主体限制；优惠保持",
+      "card": "P0-07/P0-08",
+      "grade": "已验证",
+      "actual": "100×1+0×1−0=100分，实际同pay两订单status2",
+      "evidence": "../20261105-p0-execution-round7/dual-paid-readback.json;agent-a-report.md",
+      "remaining": "优惠/异主体、第三件真重复运行反例未全验"
+    },
+    {
+      "contract": "E16",
+      "rule": "保留owner接受的最长26小时预热旧结果窗口",
+      "card": "P0-09",
+      "grade": "已验证",
+      "actual": "需求接受26小时窗口及既有程序/配置关闭子集",
+      "evidence": "agent-b-report.md;../20261105-p0-execution-round7/cache-published-config.json",
+      "remaining": "未跑自然26小时/全开关负缓存故障矩阵，不清缓存伪造即时"
+    }
+  ]
+}

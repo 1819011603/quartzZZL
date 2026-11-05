@@ -1,0 +1,223 @@
+{
+  "time": "2026-11-05T18:59:13.005916+08:00",
+  "environment": "TEST",
+  "url": "https://test-fuwu.baijia.com/bgwApi/component/student-center/roster/renewal/page",
+  "request": {
+    "pager": {
+      "current": 1,
+      "pageSize": 3
+    },
+    "route": {
+      "sceneVersionNumber": "294310981744470016"
+    },
+    "identification": "continuationService",
+    "clazzNumbers": [
+      "574882679202260992"
+    ],
+    "quickFilter": {},
+    "filter": {
+      "studentSubStatus": [
+        0
+      ],
+      "leadTeacher": [
+        177071
+      ],
+      "clazzNumber": [
+        "574882679202260992"
+      ],
+      "renewalRoundFilter": [
+        0
+      ]
+    }
+  },
+  "headers": {
+    "content-type": "application/json",
+    "traffic-env": "test",
+    "b_client": "EES"
+  },
+  "httpStatus": 200,
+  "trace": "f2104764-35eb-4741-b305-4cdb7aea65bf.0.3",
+  "response": {
+    "code": 0,
+    "data": {
+      "pager": {
+        "current": 1,
+        "pageSize": 3,
+        "total": 19,
+        "hasNext": true,
+        "approximateTotal": false
+      },
+      "list": [
+        {
+          "salesAccountId": 0,
+          "canRenewalStatus": 2,
+          "clazzStudentStatus": 1,
+          "studyingSubjectName": [
+            "英语规划系统"
+          ],
+          "clazzBizNumber": "32YYTS25D6LS11002",
+          "id": "35930167940088064-7704846439",
+          "courseCompletion": 0,
+          "preRegistrationIntentKey": 0,
+          "preRegistrationIntent": {
+            "value": 0
+          },
+          "renewalStateStatus": 2,
+          "renewalReachCount": 0,
+          "preRegistrationSubject": [],
+          "mobileSuffix": "[REDACTED]",
+          "studentTags": [],
+          "renewalRound": 0,
+          "serviceIntimacy": 0,
+          "subclazzStudentStatus": 1,
+          "roundIdx": 0,
+          "presaleOrderTime": null,
+          "userId": 7704846439,
+          "clazzNumber": "574882679202260992",
+          "smallRenewalExpansionSubjectName": [],
+          "studentType": 0,
+          "renewalQuestionnaireStatus": 0,
+          "studyingSubject": [
+            37
+          ],
+          "intimacyRange": 0,
+          "assistantAccountId": 177071,
+          "renewalShopSubject": [],
+          "clazzName": "续班归因-正经前置班-0820",
+          "gradePresaleSubject": [],
+          "studentTypeWithSubject": 0,
+          "smallStudyingSubject": [],
+          "intimacy": 0,
+          "smallRenewalSubjectName": [],
+          "studentSubStatus": 0,
+          "smallStudyingSubjectCnt": 0.0,
+          "renewalReportStatus": 4,
+          "subclazzNumber": "35930167940088064",
+          "mobile": "[REDACTED]",
+          "canRenewal": 0,
+          "leadTeacher": "弓雪萌",
+          "presaleStatus": 0,
+          "overallIntimacy": 0,
+          "renewalSubject": [],
+          "renewalExpansionSubject": [],
+          "largeRenewalSubjectName": [],
+          "protectStu": 0,
+          "presaleSubject": [],
+          "keepReportStatus": 0
+        },
+        {
+          "smallRenewalExpansionSubjectName": [],
+          "studentType": 0,
+          "salesAccountId": 0,
+          "canRenewalStatus": 2,
+          "renewalQuestionnaireStatus": 0,
+          "studyingSubject": [
+            37
+          ],
+          "intimacyRange": 0,
+          "assistantAccountId": 177071,
+          "clazzStudentStatus": 1,
+          "renewalShopSubject": [],
+          "studyingSubjectName": [
+            "英语规划系统"
+          ],
+          "gradePresaleSubject": [],
+          "clazzName": "续班归因-正经前置班-0820",
+          "clazzBizNumber": "32YYTS25D6LS11002",
+          "courseCompletion": 0,
+          "studentTypeWithSubject": 0,
+          "smallStudyingSubject": [],
+          "intimacy": 0,
+          "smallRenewalSubjectName": [],
+          "preRegistrationIntentKey": 0,
+          "studentSubStatus": 0,
+          "smallStudyingSubjectCnt": 0.0,
+          "renewalReportStatus": 4,
+          "preRegistrationIntent": {
+            "value": 0
+          },
+          "subclazzNumber": "35930167940088064",
+          "renewalReachCount": 0,
+          "preRegistrationSubject": [],
+          "mobileSuffix": "[REDACTED]",
+          "id": "35930167940088064-7704846440",
+          "mobile": "[REDACTED]",
+          "canRenewal": 0,
+          "renewalRound": 0,
+          "leadTeacher": "弓雪萌",
+          "presaleStatus": 0,
+          "serviceIntimacy": 0,
+          "overallIntimacy": 0,
+          "subclazzStudentStatus": 1,
+          "renewalSubject": [],
+          "renewalExpansionSubject": [],
+          "largeRenewalSubjectName": [],
+          "roundIdx": 0,
+          "presaleOrderTime": null,
+          "protectStu": 0,
+          "userId": 7704846440,
+          "clazzNumber": "574882679202260992",
+          "presaleSubject": [],
+          "keepReportStatus": 0
+        },
+        {
+          "salesAccountId": 0,
+          "smallRenewalExpansionSubjectName": [],
+          "studentType": 0,
+          "canRenewalStatus": 2,
+          "renewalQuestionnaireStatus": 0,
+          "studyingSubject": [
+            37
+          ],
+          "intimacyRange": 0,
+          "assistantAccountId": 177071,
+          "clazzStudentStatus": 1,
+          "id": "35930167940088064-7704846434",
+          "studyingSubjectName": [
+            "英语规划系统"
+          ],
+          "renewalShopSubject": [],
+          "clazzName": "续班归因-正经前置班-0820",
+          "gradePresaleSubject": [],
+          "clazzBizNumber": "32YYTS25D6LS11002",
+          "courseCompletion": 0,
+          "studentTypeWithSubject": 0,
+          "smallStudyingSubject": [],
+          "intimacy": 0,
+          "smallRenewalSubjectName": [],
+          "preRegistrationIntentKey": 0,
+          "studentSubStatus": 0,
+          "smallStudyingSubjectCnt": 0.0,
+          "renewalReportStatus": 4,
+          "preRegistrationIntent": {
+            "value": 0
+          },
+          "subclazzNumber": "35930167940088064",
+          "renewalReachCount": 0,
+          "preRegistrationSubject": [],
+          "studentTags": [],
+          "mobile": "[REDACTED]",
+          "canRenewal": 0,
+          "renewalRound": 0,
+          "leadTeacher": "弓雪萌",
+          "presaleStatus": 0,
+          "serviceIntimacy": 0,
+          "overallIntimacy": 0,
+          "subclazzStudentStatus": 1,
+          "renewalSubject": [],
+          "renewalExpansionSubject": [],
+          "mobileSuffix": "[REDACTED]",
+          "userId": 7704846434,
+          "largeRenewalSubjectName": [],
+          "roundIdx": 0,
+          "presaleOrderTime": null,
+          "protectStu": 0,
+          "clazzNumber": "574882679202260992",
+          "presaleSubject": [],
+          "keepReportStatus": 0
+        }
+      ]
+    },
+    "msg": ""
+  }
+}

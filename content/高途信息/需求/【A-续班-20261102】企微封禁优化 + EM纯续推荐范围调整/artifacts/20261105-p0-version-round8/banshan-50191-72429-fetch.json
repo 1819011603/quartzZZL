@@ -1,0 +1,188 @@
+{
+  "ok": true,
+  "url": "https://qa.baijia.com/banshan/#/caseManager/171/50191/72429/3",
+  "caseId": "50191",
+  "recordId": "72429",
+  "fetchedAt": "2026-11-05 20:02:53",
+  "title": "纯续关联推荐与企微优化-最终业务矩阵版",
+  "file": "/tmp/banshan_case_50191_72429.md",
+  "format": "md",
+  "nodes": 67,
+  "caseCount": 17,
+  "record": {
+    "id": 72429,
+    "caseId": 50191,
+    "title": "冒烟执行任务",
+    "requirementIds": "0",
+    "passCount": 0,
+    "totalCount": 17,
+    "successCount": 0,
+    "bugNum": 0,
+    "blockCount": 0,
+    "ignoreCount": 0,
+    "passRate": 0.0,
+    "creator": "tangwen01"
+  },
+  "index": [
+    {
+      "module": "全局业务链路",
+      "cases": [
+        {
+          "id": "07ec6f2de7fe44ef",
+          "title": "TC-G001 关联计划后用一个纯续链接看到三门续班课",
+          "status": null
+        }
+      ]
+    },
+    {
+      "module": "续班计划—操作权限与弹窗",
+      "cases": [
+        {
+          "id": "6a0728f0ca5d4f89",
+          "title": "TC0001 管理员可打开进行中计划的纯续关联",
+          "status": null
+        }
+      ]
+    },
+    {
+      "module": "续班计划—搜索待关联计划",
+      "cases": [
+        {
+          "id": "b8fd83dd67044b6b",
+          "title": "TC0001 按名称关键词找到可关联计划",
+          "status": null
+        }
+      ]
+    },
+    {
+      "module": "续班计划—多选与数量限制",
+      "cases": [
+        {
+          "id": "dcf31e0455f041af",
+          "title": "TC0001 一次选择多个计划并保存",
+          "status": null
+        }
+      ]
+    },
+    {
+      "module": "续班计划—保存回显与移除",
+      "cases": [
+        {
+          "id": "0629fd650fdc4aee",
+          "title": "TC0001 保存后重新进入能看到关联计划",
+          "status": null
+        }
+      ]
+    },
+    {
+      "module": "纯续推荐—学员范围与商品去重",
+      "cases": [
+        {
+          "id": "f1897ab329a1416e",
+          "title": "TC0001 大班链接推荐已关联计划内的有效续班课",
+          "status": null
+        }
+      ]
+    },
+    {
+      "module": "续班服务与C端—各推荐入口",
+      "cases": [
+        {
+          "id": "e4df92715a1e42d8",
+          "title": "TC0001 大班单人发送纯续链接",
+          "status": null
+        }
+      ]
+    },
+    {
+      "module": "纯续与扩科推荐范围矩阵",
+      "cases": [
+        {
+          "id": "a931bb3e5ad24b2b",
+          "title": "TC0001 A未绑定时纯续和扩科均只取A计划",
+          "status": null
+        },
+        {
+          "id": "e648a25629f640b9",
+          "title": "TC0002 A绑定B和C后纯续扩展为ABC",
+          "status": null
+        }
+      ]
+    },
+    {
+      "module": "推荐下单—扩科与原规则回归",
+      "cases": [
+        {
+          "id": "6392c80b838b4c6a",
+          "title": "TC0001 大班下单推荐页展示关联课程",
+          "status": null
+        },
+        {
+          "id": "0c8320b996d84e76",
+          "title": "TC0007 未绑定时纯续和扩科都只取A计划",
+          "status": null
+        }
+      ]
+    },
+    {
+      "module": "企微优化—批量添加学员标签",
+      "cases": [
+        {
+          "id": "0309fd97375e451e",
+          "title": "TC0001 大班批量给选中学员加标签",
+          "status": null
+        }
+      ]
+    },
+    {
+      "module": "企微优化—单人编辑和标签筛选",
+      "cases": [
+        {
+          "id": "c950d5bc3e844401",
+          "title": "TC0001 编辑一个学员后按新标签筛出",
+          "status": null
+        }
+      ]
+    },
+    {
+      "module": "企微优化—批量修改备注",
+      "cases": [
+        {
+          "id": "c35a76f984b74b49",
+          "title": "TC0001 大班批量改备注后逐人核对",
+          "status": null
+        }
+      ]
+    },
+    {
+      "module": "企微优化—历史班级标签",
+      "cases": [
+        {
+          "id": "cc8595bf73874b8c",
+          "title": "TC0001 历史大小班原标签在续班服务可见",
+          "status": null
+        }
+      ]
+    },
+    {
+      "module": "企微优化—群发使用说明",
+      "cases": [
+        {
+          "id": "0147c5d4874d4047",
+          "title": "TC0001 默认花名册私聊和群聊都显示说明链接",
+          "status": null
+        }
+      ]
+    },
+    {
+      "module": "加购推荐范围",
+      "cases": [
+        {
+          "id": "13583cdfabc64ea9",
+          "title": "TC0001 A未绑定时加购只取A计划",
+          "status": null
+        }
+      ]
+    }
+  ]
+}

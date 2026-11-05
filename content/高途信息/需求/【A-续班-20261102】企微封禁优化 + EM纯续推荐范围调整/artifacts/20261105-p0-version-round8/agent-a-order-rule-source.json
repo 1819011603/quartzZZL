@@ -1,0 +1,55 @@
+{
+  "cart_sha": "a34016fdf206d0163b1dd473c67ac10674ecb4b5",
+  "order_sha": "0cc8ef68b6c29f1d3101f5fa08ea7ec634050bf9",
+  "snippets": [
+    {
+      "repo": "/Users/gaotu/IdeaProjects/JavaProject/cart",
+      "sha": "a34016fdf206d0163b1dd473c67ac10674ecb4b5",
+      "file": "cart-app/src/main/java/com/gaotu/renewal/RenewalService.java",
+      "lines": "540-558",
+      "source": "540:         }\n541: \n542:         Map<Long, OrderInfoDTO> orderInfosMap;\n543:         if (Objects.equals(renewalPreCourseDTO.getProductType(), 23)) {\n544:             List<Long> activityNumbers = preCourseWithClazzFinal.values().stream()\n545:                     .map(ClazzDetailDTO::getActivityNumber).collect(Collectors.toList());\n546:             orderInfosMap = orderInfoAdapterFeignService.listActivityNumberOrderInfo(activityNumbers, userId).stream()\n547:                     .collect(Collectors.toMap(OrderInfoDTO::getActivityNumber, Function.identity(), (a, b) -> a));\n548:         } else {\n549:             List<Long> clazzNumbers = preCourseWithClazzFinal.values().stream()\n550:                     .map(ClazzDetailDTO::getProductSkuNumber).collect(Collectors.toList());\n551:             orderInfosMap = orderInfoAdapterFeignService.ListByClazzNumbersAndUserIds(clazzNumbers, userId).stream()\n552:                     .filter(x -> (x.getOrderStatus() == 2 || x.getOrderStatus() == 7))\n553:                     .collect(Collectors.toMap(OrderInfoDTO::getClazzNumber, Function.identity(), (a, b) -> a));\n554:         }\n555: \n556:         Map<String, CourseCenterDictionaryDTO> subjectMap = renewalDataService.getCourseCenterDictionarySubjectCache().stream()\n557:                 .collect(Collectors.toMap(CourseCenterDictionaryDTO::getCode, Function.identity()));\n558: "
+    },
+    {
+      "repo": "/Users/gaotu/IdeaProjects/JavaProject/cart",
+      "sha": "a34016fdf206d0163b1dd473c67ac10674ecb4b5",
+      "file": "cart-app/src/main/java/com/gaotu/renewal/RenewalService.java",
+      "lines": "1944-1958",
+      "source": "1944:             }\n1945: \n1946:             ClazzDTO clazzDTO = recommendContext.getClazzDTO(clazzDetailDTO.getProductSkuNumber());\n1947:             clazzDetailDTO.setBeforeCourseNumber(preCourseNumber);\n1948:             clazzDetailDTO.setProductSkuNumber(clazzDTO.getNumber());\n1949: \n1950:             OrderInfoDTO orderInfoDTO = orderInfosMap.get(clazzDTO.getNumber());\n1951: \n1952:             if (orderInfoDTO != null && (orderInfoDTO.getOrderStatus() == 2 || orderInfoDTO.getOrderStatus() == 7)) {\n1953:                 clazzDetailDTO.setSignUp(1);\n1954:             } else {\n1955:                 allSignUp = 0;\n1956:             }\n1957: \n1958:             CourseDTO courseDTO = recommendContext.getCourseDTO(clazzDTO.getCourseNumber());"
+    },
+    {
+      "repo": "/Users/gaotu/IdeaProjects/JavaProject/cart",
+      "sha": "a34016fdf206d0163b1dd473c67ac10674ecb4b5",
+      "file": "cart-client/src/main/java/com/gaotu/feignclient/order/impl/OrderInfoAdapterFeignServiceImpl.java",
+      "lines": "80-100",
+      "source": "80:         }\n81:         return convertVoListToDtoList(result);\n82:     }\n83: \n84:     public List<OrderInfoDTO> ListByClazzNumbersAndUserIds(List<Long> clazzNumbers, Long userId){\n85:         List<OrderInfoVO> result = new ArrayList<>();\n86:         for (List<Long> sub : com.google.common.collect.Lists.partition(clazzNumbers, clazzLimitSize)) {\n87:             ListByClazzNumbersAndUserIdsRequest request = new ListByClazzNumbersAndUserIdsRequest();\n88:             request.setClazzNumbers(sub);\n89:             request.setUserIds(Lists.newArrayList(userId));\n90:             try {\n91:                 List<OrderInfoVO> orderInfoVOS = orderInfoQueryApi.ListByClazzNumbersAndUserIds(request);\n92:                 result.addAll(orderInfoVOS);\n93:             }catch (Exception e){\n94:                 log.error(\"ListByClazzNumbersAndUserIds error\", e);\n95:             }\n96: \n97:         }\n98:         return convertVoListToDtoList(result);\n99:     }\n100: "
+    },
+    {
+      "repo": "/Users/gaotu/IdeaProjects/JavaProject/cart",
+      "sha": "a34016fdf206d0163b1dd473c67ac10674ecb4b5",
+      "file": "cart-client/src/main/java/com/gaotu/feignclient/order/impl/OrderInfoAdapterFeignServiceImpl.java",
+      "lines": "186-204",
+      "source": "186:     public List<OrderItemDTO> listBySkuNumbersAndUserIdNoRefund(List<Long> skuNumbers, Long userId){\n187:         List<OrderItemVO> orderInfoVOS = new ArrayList<>();\n188:         for (List<Long> sub : com.google.common.collect.Lists.partition(skuNumbers, spuLimitSize)) {\n189:             ListOrderItemsByUserIdAndSkuNumbersRequest request = new ListOrderItemsByUserIdAndSkuNumbersRequest();\n190:             request.setSkuNumbers(sub);\n191:             request.setUserId(userId);\n192:             try {\n193:                 List<OrderItemVO> orderItemVOS = orderInfoFeignService.listByUserIdAndSkuNumbers(request);\n194:                 orderInfoVOS.addAll(orderItemVOS);\n195:             }catch (Exception e){\n196:                 log.error(\"ListByClazzNumbersAndUserIds error\", e);\n197:             }\n198: \n199:         }\n200:         return orderInfoVOS.stream().filter(orderItemVO -> orderItemVO != null && !Objects.equals(orderItemVO.getRefundType(), OrderItemRefundTypeEnum.ALL_REFUND.getRefundType()))\n201:                 .map(this::convertVoToDto).collect(Collectors.toList());\n202:     }\n203: \n204:     @Override"
+    },
+    {
+      "repo": "/Users/gaotu/IdeaProjects/JavaProject/cart",
+      "sha": "a34016fdf206d0163b1dd473c67ac10674ecb4b5",
+      "file": "cart-app/src/main/java/com/gaotu/renewal/small/builder/sub/UserPostClassOrderSubBuilder.java",
+      "lines": "75-96",
+      "source": "75:         try {\n76:             orderItems = orderInfoAdapterFeignService.listBySkuNumbersAndUserIdNoRefundBatch(\n77:                     new ArrayList<>(skuNumbers), userId);\n78:         } catch (Exception e) {\n79:             log.error(\"查询用户后置班级订单失败, userId={}, skuCount={}\", userId, skuNumbers.size(), e);\n80:             context.setPurchasedPostClazzSkuNumbers(new HashSet<>());\n81:             return;\n82:         }\n83: \n84:         Set<Long> purchased = new HashSet<>();\n85:         if (orderItems != null) {\n86:             purchased = orderItems.stream()\n87:                     .filter(item -> OrderItemBizStatus.PAID_AND_HAVE_RIGHT_STATUS.getValues()\n88:                             .contains(item.getOrderStatus()))\n89:                     .map(OrderItemDTO::getSkuNumber)\n90:                     .collect(Collectors.toSet());\n91:         }\n92: \n93:         context.setPurchasedPostClazzSkuNumbers(purchased);\n94:         context.addDebugLog(\"用户已购后置班级查询完成, purchasedCount={}\", purchased.size());\n95: \n96:         log.debug(\"用户后置班级订单查询完成, userId={}, purchasedCount={}\", userId, purchased.size());"
+    },
+    {
+      "repo": "/Users/gaotu/IdeaProjects/JavaProject/order",
+      "sha": "0cc8ef68b6c29f1d3101f5fa08ea7ec634050bf9",
+      "file": "order-api/src/main/java/com/gaotu/order/orderitem/enums/OrderItemBizStatus.java",
+      "lines": "14-36",
+      "source": "14: public enum OrderItemBizStatus implements ValueContainer<Integer> {\n15: \n16:     CREATED(\"订单已创建\", 1),\n17: \n18:     CONFIRMED(\"订单已确认\", 2),\n19: \n20:     CANCELED(\"订单已取消\", 3),\n21: \n22:     FINISHED(\"订单已完成\" ,4),\n23: \n24:     FAILED(\"订单已终止\", 5),\n25: \n26:     /**\n27:      * 全部\n28:      */\n29:     ALL(\"全部\", 1, 2, 3, 4, 5),\n30: \n31:     /**\n32:      * 有权益\n33:      */\n34:     PAID_AND_HAVE_RIGHT_STATUS(\"有权益\", 2,4),\n35: \n36: "
+    },
+    {
+      "repo": "/Users/gaotu/IdeaProjects/JavaProject/order",
+      "sha": "0cc8ef68b6c29f1d3101f5fa08ea7ec634050bf9",
+      "file": "order-api/src/main/java/com/gaotu/order/orderitem/enums/OrderItemRefundTypeEnum.java",
+      "lines": "1-28",
+      "source": "1: package com.gaotu.order.orderitem.enums;\n2: \n3: import lombok.AllArgsConstructor;\n4: import lombok.Getter;\n5: \n6: /**\n7:  * OrderItemRefundTypeEnum\n8:  *\n9:  * @author 张朝阳\n10:  * @date 2023/7/11 5:42 下午\n11:  */\n12: @Getter\n13: @AllArgsConstructor\n14: public enum OrderItemRefundTypeEnum {\n15:     NORMAL(0, \"未退款\"),\n16:     PART_REFUND(1, \"部分退款\"),\n17:     ALL_REFUND(2, \"全部退款\"),\n18:     ;\n19: \n20:     private final Integer refundType;\n21: \n22:     private final String desc;\n23: \n24:     public static boolean isPartRefundByType(Integer refundType) {\n25:         return PART_REFUND.refundType.equals(refundType);\n26:     }\n27: }"
+    }
+  ]
+}

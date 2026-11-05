@@ -1,0 +1,79 @@
+{
+  "time": "2026-11-05T20:04:14.128498+08:00",
+  "environment": "TEST",
+  "identity": "browserGong177071",
+  "target": "7704846434",
+  "class_number": "574882679202260992",
+  "bizNumber": "32YYTS25D6LS11002",
+  "class_name": "续班归因-正经前置班-0820",
+  "after_page_save": {
+    "ees_data": [
+      {
+        "id": 120556,
+        "user_id": "7704846434",
+        "clazz_number": "574882679202260992",
+        "tags": "2"
+      },
+      {
+        "id": 120557,
+        "user_id": "7704846439",
+        "clazz_number": "574882679202260992",
+        "tags": ""
+      }
+    ],
+    "gaotu": [
+      {
+        "id": 26592,
+        "user_id": "7704846434",
+        "clazz_number": "574882679202260992",
+        "tags": "2"
+      },
+      {
+        "id": 26593,
+        "user_id": "7704846439",
+        "clazz_number": "574882679202260992",
+        "tags": ""
+      }
+    ]
+  },
+  "restore": {
+    "http": 200,
+    "trace": "9bf09671-37e2-4f36-9d96-fa1d08d72f81.0.3",
+    "response": {
+      "code": 0,
+      "data": {},
+      "msg": ""
+    }
+  },
+  "restored_db": {
+    "ees_data": [
+      {
+        "id": 120556,
+        "user_id": "7704846434",
+        "clazz_number": "574882679202260992",
+        "tags": ""
+      },
+      {
+        "id": 120557,
+        "user_id": "7704846439",
+        "clazz_number": "574882679202260992",
+        "tags": ""
+      }
+    ],
+    "gaotu": [
+      {
+        "id": 26592,
+        "user_id": "7704846434",
+        "clazz_number": "574882679202260992",
+        "tags": ""
+      },
+      {
+        "id": 26593,
+        "user_id": "7704846439",
+        "clazz_number": "574882679202260992",
+        "tags": ""
+      }
+    ]
+  },
+  "empty": true
+}

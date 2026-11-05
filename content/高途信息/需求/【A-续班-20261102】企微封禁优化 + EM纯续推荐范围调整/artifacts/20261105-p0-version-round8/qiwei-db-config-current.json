@@ -1,0 +1,191 @@
+{
+  "time": "2026-11-05T19:00:58.508134+08:00",
+  "environment": "TEST",
+  "read_only": true,
+  "databases": {
+    "ees_data": {
+      "queries": {
+        "es_tag_config": {
+          "sql": "SELECT * FROM es_query_config WHERE identification IN ('continuationService','microContinuationService','smallClazzRoster') AND (field_name IN ('studentTags','studentTagNames','wechatRemark') OR command IN ('studentTags','studentTagNames','wechatRemark')) AND is_del=0 ORDER BY identification,type,id",
+          "rows": [
+            {
+              "id": 874,
+              "identification": "continuationService",
+              "field_name": "studentTags",
+              "type": 2,
+              "command": "basic",
+              "is_del": 0,
+              "create_time": "2026-11-04 18:53:00",
+              "update_time": "2026-11-04 18:53:00"
+            },
+            {
+              "id": 183,
+              "identification": "continuationService",
+              "field_name": "wechatRemark",
+              "type": 4,
+              "command": "fuzzy",
+              "is_del": 0,
+              "create_time": "2025-06-03 17:28:23",
+              "update_time": "2025-06-03 17:28:23"
+            },
+            {
+              "id": 872,
+              "identification": "continuationService",
+              "field_name": "studentTags",
+              "type": 6,
+              "command": "necessary",
+              "is_del": 0,
+              "create_time": "2026-11-04 18:53:00",
+              "update_time": "2026-11-04 18:53:00"
+            },
+            {
+              "id": 873,
+              "identification": "continuationService",
+              "field_name": "studentTagNames",
+              "type": 6,
+              "command": "extra",
+              "is_del": 0,
+              "create_time": "2026-11-04 18:53:00",
+              "update_time": "2026-11-04 18:53:00"
+            },
+            {
+              "id": 562,
+              "identification": "microContinuationService",
+              "field_name": "studentTags",
+              "type": 2,
+              "command": "basic",
+              "is_del": 0,
+              "create_time": "2025-12-02 11:18:11",
+              "update_time": "2025-12-02 11:18:11"
+            },
+            {
+              "id": 598,
+              "identification": "microContinuationService",
+              "field_name": "wechatRemark",
+              "type": 6,
+              "command": "extra",
+              "is_del": 0,
+              "create_time": "2025-12-02 11:18:25",
+              "update_time": "2025-12-02 11:18:25"
+            },
+            {
+              "id": 599,
+              "identification": "microContinuationService",
+              "field_name": "studentTagNames",
+              "type": 6,
+              "command": "extra",
+              "is_del": 0,
+              "create_time": "2025-12-02 11:18:26",
+              "update_time": "2025-12-02 11:18:26"
+            },
+            {
+              "id": 613,
+              "identification": "microContinuationService",
+              "field_name": "wechatRemark",
+              "type": 6,
+              "command": "necessary",
+              "is_del": 0,
+              "create_time": "2025-12-02 11:18:31",
+              "update_time": "2025-12-02 11:18:31"
+            },
+            {
+              "id": 621,
+              "identification": "microContinuationService",
+              "field_name": "studentTags",
+              "type": 6,
+              "command": "necessary",
+              "is_del": 0,
+              "create_time": "2025-12-02 11:18:34",
+              "update_time": "2025-12-02 11:18:34"
+            },
+            {
+              "id": 248,
+              "identification": "smallClazzRoster",
+              "field_name": "studentTags",
+              "type": 2,
+              "command": "basic",
+              "is_del": 0,
+              "create_time": "2025-06-12 10:41:48",
+              "update_time": "2025-06-12 10:41:48"
+            },
+            {
+              "id": 266,
+              "identification": "smallClazzRoster",
+              "field_name": "studentTagNames",
+              "type": 6,
+              "command": "extra",
+              "is_del": 0,
+              "create_time": "2025-06-12 10:41:48",
+              "update_time": "2025-06-12 10:41:48"
+            },
+            {
+              "id": 331,
+              "identification": "smallClazzRoster",
+              "field_name": "studentTags",
+              "type": 6,
+              "command": "necessary",
+              "is_del": 0,
+              "create_time": "2025-06-17 10:32:43",
+              "update_time": "2025-06-17 10:32:43"
+            }
+          ],
+          "exit": 0
+        },
+        "display_field_config": {
+          "sql": "SELECT id,field_number,field_name,field_type,identification,editable,filter,advanced_filter,sorter,is_del FROM student_field_config WHERE identification IN ('continuationService','microContinuationService') AND field_name IN ('studentTagNames','wechatRemark') AND is_del=0 ORDER BY identification,id",
+          "rows": [
+            {
+              "id": 1834,
+              "field_number": 193322071548238848,
+              "field_name": "studentTagNames",
+              "field_type": 8,
+              "identification": "continuationService",
+              "editable": 1,
+              "filter": 1,
+              "advanced_filter": 1,
+              "sorter": 1,
+              "is_del": 0
+            },
+            {
+              "id": 1835,
+              "field_number": 238628096341720064,
+              "field_name": "wechatRemark",
+              "field_type": 1,
+              "identification": "continuationService",
+              "editable": 1,
+              "filter": 1,
+              "advanced_filter": 1,
+              "sorter": 1,
+              "is_del": 0
+            },
+            {
+              "id": 1836,
+              "field_number": 193322071548238848,
+              "field_name": "studentTagNames",
+              "field_type": 8,
+              "identification": "microContinuationService",
+              "editable": 1,
+              "filter": 1,
+              "advanced_filter": 1,
+              "sorter": 1,
+              "is_del": 0
+            },
+            {
+              "id": 1837,
+              "field_number": 238628096341720064,
+              "field_name": "wechatRemark",
+              "field_type": 1,
+              "identification": "microContinuationService",
+              "editable": 1,
+              "filter": 1,
+              "advanced_filter": 1,
+              "sorter": 1,
+              "is_del": 0
+            }
+          ],
+          "exit": 0
+        }
+      }
+    }
+  }
+}

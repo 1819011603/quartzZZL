@@ -1,0 +1,43 @@
+[
+  {
+    "agent": "W1-94f1e3",
+    "ok": true,
+    "run_id": "01a1ab87-6849-7173-8f1f-2b01568c9465",
+    "summary": {
+      "summary": "已核实小班订单项433534690352694278确属7658129872/SKU586097025945298944：status2、refund_type0，无取消/终止时间，精确退款项查询0行。cart a34016fd运行时order_item查询返回该订单，order_info查询为空；大班主计划signUp读取order_info，解释了signUp0，不能据此认定未购或退款失效。报告及JSON已修正，保留首次失败SQL回执。",
+      "complete": true,
+      "remaining": [],
+      "blocker": "",
+      "artifacts": [
+        "/tmp/w1-p0-243aa61a/round8/agent-a-report.md",
+        "/tmp/w1-p0-243aa61a/round8/agent-a-results.json",
+        "/tmp/w1-p0-243aa61a/round8/agent-a-order-validity2.json",
+        "/tmp/w1-p0-243aa61a/round8/agent-a-order-route-confirm.json",
+        "/tmp/w1-p0-243aa61a/round8/agent-a-order-rule-source.json"
+      ],
+      "verification": "TEST/test-gtbg-dev-3；有效订单查询trace cart_gaotu100_com.303.17938806746400323；order_info空结果trace cart_gaotu100_com.301.17938806745880326。精确提交规则为order_item状态[2,4]且排除全退类型2，本订单满足。5份JSON通过解析回读，无业务写入。是否修正跨模式已购展示由主Worker决定。"
+    },
+    "evidence_entries": 80,
+    "source": "/Users/gaotu/.local/feishu-bot/logs/managed/subagents/W1-94f1e3/result-1.json"
+  },
+  {
+    "agent": "W1-8a15e8",
+    "ok": true,
+    "run_id": "01a1ab87-68a8-7851-b3af-f6319f90b824",
+    "summary": {
+      "summary": "已完成50191完整只读对照及88行映射。三任务均0执行，不计业务通过；已保留创建日期与min(begin_time)、新链接与26小时缓存口径冲突，并修正小班为“没做/对象待准备”。未改平台、P0或业务数据。",
+      "complete": true,
+      "remaining": [],
+      "blocker": "",
+      "artifacts": [
+        "/tmp/w1-p0-243aa61a/round8/agent-b-report.md",
+        "/tmp/w1-p0-243aa61a/round8/agent-b-results.json",
+        "/tmp/w1-p0-243aa61a/round8/agent-b-case-mapping.csv",
+        "/tmp/w1-p0-243aa61a/round8/agent-b-map-validation.json"
+      ],
+      "verification": "CSV回读88行、唯一nodeID88、漏0/多0/重0；原30代码全部有语义对应；JSON有效且包含25契约对照。已核主线新增大班保存恢复及筛选证据，仅复用实际覆盖子集。"
+    },
+    "evidence_entries": 45,
+    "source": "/Users/gaotu/.local/feishu-bot/logs/managed/subagents/W1-8a15e8/result-1.json"
+  }
+]

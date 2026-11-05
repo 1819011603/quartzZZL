@@ -1,0 +1,14 @@
+[
+  {
+    "start_time": 1793876352466,
+    "upstream": "10.218.238.176:28688",
+    "route_id": "student-center_170",
+    "upstream_latency": 498,
+    "config_path": "/component/student-center/*",
+    "request": {
+      "method": "POST",
+      "uri": "/component/student-center/roster/renewal/page"
+    },
+    "responseStatus": 200
+  }
+]

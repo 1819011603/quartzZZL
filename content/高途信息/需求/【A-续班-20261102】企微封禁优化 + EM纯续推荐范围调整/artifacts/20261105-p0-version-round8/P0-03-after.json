@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"section\" requested-start=\"doxcnE2uigKAj4hEusmDufyaFle\"><h1 id=\"doxcnE2uigKAj4hEusmDufyaFle\">P0-03｜权限、状态、上限不允许绕过</h1><p id=\"doxcngjHthabziA8rVUiqpermpc\">功能与优先级：P0。预期依据：EM关键安全边界；PRD管理员、待开始/进行中、上限10。</p><h2 id=\"doxcn07BJkr0sJcZvUDFqsmSc2e\">现场过 case：照着做</h2><p id=\"doxcnZtgmfv3n3jBE4Xv1tM7Ieb\"><b>前置：</b>TEST管理员tangwen01/90247操作主计划588858850300473344（status2），原关联A585960797778243584、B586116340522184704；status0反例588696758756945920。待开始正例588872241920421888“W1-P0-243aa61a-待开始状态正例”，开始2026-11-06 19:01（+08:00）、isTestData1；本卡不选择班级或学员。11个真实候选见附录。</p><p id=\"doxcn6eoa8IiTzk7ulfFQ8BZkJe\"><b>操作：</b>保存10个候选并读回；相同集合再保存；依次提交第11项、自关联及status0从计划；恢复原A/B集合。另用非管理员及待开始主计划检查对应权限/状态。</p><p id=\"doxcnUnWfphPmRbQfvNychf0jZg\"><b>预期：</b>默认上限10按最终不同从计划总数判断：10允许，11拒绝；重复保存仍10条；自关联/status0拒绝且原10条不变。仅管理员能修改待开始/进行中的主计划。</p><p id=\"doxcnLooMU2784f6fk2WVTH747g\"><b>实际：</b>已验证接口及DB：10保存、重复仍10、11/自关联/status0拒绝且原集合不变，最终恢复{A,B}。待开始计划status1由管理员保存从A成功，独立回读1条，再保存空集并确认0条；trace554793cb-8220-41c8-86d7-8c2d148b48b1.0.3／6ff75cb7-e78d-4073-8676-be39c2d91c07.0.3。非管理员拒绝接口证据复用；按钮、非管理员与待开始页面未验，不称整卡通过。新计划和课程绑定保留，状态1仅在开始前成立。</p><p id=\"doxcnJOlAKlGphVukgEDBDybJqf\">证据：<a href=\"https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr#doxcnQUQz4Qo76wJEfziMeAemRb\">P0-03集中原件、详细计算与历史记录</a>；本轮新增原件见文末TEST证据包。</p></fragment>",
+      "document_id": "ZQUXdlDxWoknJhxu914c2uVYnBr",
+      "revision_id": 250
+    }
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.70",
+      "latest": "1.0.99",
+      "message": "lark-cli 1.0.99 available, current 1.0.70, run: lark-cli update"
+    }
+  }
+}

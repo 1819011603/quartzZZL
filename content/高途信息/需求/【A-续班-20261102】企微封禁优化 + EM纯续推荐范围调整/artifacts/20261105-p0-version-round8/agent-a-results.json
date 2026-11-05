@@ -1,0 +1,120 @@
+{
+  "agent": "A",
+  "time": "2026-11-05",
+  "environment": "TEST",
+  "lane": "test-gtbg-dev-3",
+  "versions": {
+    "product-b": "07ba05df6cfabcf0472e1ad27e26ff95cff98467",
+    "cart": "a34016fdf206d0163b1dd473c67ac10674ecb4b5",
+    "order/order-b": "0cc8ef68b6c29f1d3101f5fa08ea7ec634050bf9"
+  },
+  "completed": {
+    "pure_relation_union": true,
+    "sub_plan_pure_isolation": true,
+    "collision_deduplication": true,
+    "real_calculation": {
+      "formula": "100 + 0 = 100",
+      "pay_number": "433655835275559341",
+      "db_order_status": [
+        2,
+        2
+      ]
+    },
+    "status1_save_and_empty_restore": "reused status1-main-case.json"
+  },
+  "blocked_or_not_passed": {
+    "sellable_unpurchased": {
+      "reason": "大班后置588861402658267136可售且未购已确认；小班后置存在归属正确、未全退且满足status[2,4]规则的订单项。大班主计划signUp0读取order_info来源，不能用作小班未购前置；不计双商品未购通过。",
+      "cart_trace": "cart_gaotu100_com.296.17938766689070280",
+      "prepare_trace": "e279fb8c-6fab-4b7d-9384-6d1bd386e09b.0.3"
+    },
+    "cross_grade_retention": "未执行。正常商品SKU为全局身份且课程年级固定；当前受控关系不能单靠临时关联把同SKU变为另一年级，无业务数据改动，不把程序规则/测试层覆盖计作真实跨年级验收。"
+  },
+  "artifacts": [
+    "/tmp/w1-p0-243aa61a/round8/agent-a-report.md",
+    "/tmp/w1-p0-243aa61a/round8/agent-a-readback.json",
+    "/tmp/w1-p0-243aa61a/round7/collision-confirm.json",
+    "/tmp/w1-p0-243aa61a/round7/collision-restore.json",
+    "/tmp/w1-p0-243aa61a/round7/dual-order-readback.json",
+    "/tmp/w1-p0-243aa61a/round7/dual-paid-readback.json",
+    "/tmp/w1-p0-243aa61a/round8/agent-a-corrective-read.json",
+    "/tmp/w1-p0-243aa61a/round8/agent-a-order-validity.json",
+    "/tmp/w1-p0-243aa61a/round8/agent-a-order-validity2.json",
+    "/tmp/w1-p0-243aa61a/round8/agent-a-order-route-confirm.json",
+    "/tmp/w1-p0-243aa61a/round8/agent-a-order-rule-source.json"
+  ],
+  "complete": true,
+  "remaining": [
+    "主Worker决定是否补修大班主计划跨模式后置signUp读取来源",
+    "跨年级同SKU保留仍限规则/测试层边界，当前受控数据未做真实验证"
+  ],
+  "verification": "已定向精确SQL确认用户/SKU/退款字段，运行时分别查询order_item与order_info来源；JSON均已回读校验。无业务写入、支付、部署或P0修改。",
+  "sellable_candidate_correction": {
+    "user_id": "7658129872",
+    "self_built_pre": {
+      "clazz_number": "588861397654462464",
+      "biz_number": "15YW26C6M111001",
+      "name": "B测试-五年级语文春季前置B",
+      "course": "588861395571990528",
+      "lesson": "2026-11-08 14:10-14:15"
+    },
+    "self_built_post": {
+      "clazz_number": "588861402658267136",
+      "biz_number": "15YW26XTRO11001",
+      "name": "B测试-五年级语文暑假后置1B",
+      "course": "588861400563212288",
+      "lesson": "2026-11-08 14:20-14:25"
+    },
+    "pre_order": {
+      "order_number": "433655258676199942",
+      "pay_number": "433655258676199430",
+      "status": 2,
+      "price": 0
+    },
+    "cart_trace": "cart_gaotu100_com.296.17938766689070280",
+    "cart_sign_up": {
+      "588861402658267136": 0,
+      "586097025945298944": 0
+    },
+    "prepare_trace": "e279fb8c-6fab-4b7d-9384-6d1bd386e09b.0.3",
+    "prepare": {
+      "code": 0,
+      "products": [
+        "588861402658267136/type2",
+        "586097025945298944/type6004"
+      ],
+      "large_price": 100,
+      "small_sale_price": 0,
+      "total_price": 100,
+      "large_lesson_count": 1,
+      "teacher": "唐稳01主讲"
+    },
+    "db_conflict": {
+      "small_post_order_item": "433534690352694278",
+      "pay_number": "433534690352693254",
+      "status": 2,
+      "price": 0
+    },
+    "classification": "大班后置可售/未购已确认；小班有效订单存在，signUp0由大班入口order_info来源解释，不能按未购计数。"
+  },
+  "order_validity_diagnosis": {
+    "target_order_item": "433534690352694278",
+    "pay_number": "433534690352693254",
+    "user_id": "7658129872",
+    "sku_number": "586097025945298944",
+    "spu_number": "18314034380997207",
+    "sku_type": 6004,
+    "status": 2,
+    "refund_type": 0,
+    "refund_items_count": 0,
+    "cancel_finished_failed_time": "all zero",
+    "sku_spu_version": "1792565249996",
+    "valid_item_rule": "order_item status in [2,4], refund_type != 2",
+    "runtime_item_query_trace": "cart_gaotu100_com.303.17938806746400323",
+    "runtime_legacy_info_query_trace": "cart_gaotu100_com.301.17938806745880326",
+    "runtime_item_count": 1,
+    "runtime_legacy_info_count": 0,
+    "interpretation": "有效已确认小班订单项；大班主计划signUp使用order_info路径而非order_item，signUp0不能证明未购；本轮不判退款/失效，也不自行修代码",
+    "requires_owner_decision": "是否补修跨模式后置商品已购展示"
+  }
+}

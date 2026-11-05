@@ -1,0 +1,324 @@
+{
+  "time": "2026-11-05T20:07:59.445329",
+  "environment": "TEST",
+  "lane": "test-gtbg-dev-3",
+  "target": {
+    "order_item": "433534690352694278",
+    "pay_number": "433534690352693254",
+    "user_id": "7658129872",
+    "sku_number": "586097025945298944"
+  },
+  "queries": {
+    "order_item_exact": {
+      "db": "gaotu",
+      "sql": "SELECT CAST(number AS CHAR) order_item_number,CAST(pay_number AS CHAR) pay_number,CAST(user_id AS CHAR) user_id,CAST(sku_number AS CHAR) sku_number,CAST(spu_number AS CHAR) spu_number,sku_type,order_type,quantity,order_status,sku_price,promotion_price,manual_price,price,sales_price,create_time,update_time,cancel_time,confirmed_time,finished_time,failed_time,refund_type,invoice,address_id,app_id,pay_account_type,mark,isdel FROM order_item WHERE number=433534690352694278 AND pay_number=433534690352693254 AND user_id=7658129872 AND sku_number=586097025945298944",
+      "rows": [],
+      "error": "(1054, \"Unknown column 'isdel' in 'field list'\")"
+    },
+    "all_same_pay_items": {
+      "db": "gaotu",
+      "sql": "SELECT CAST(number AS CHAR) order_item_number,CAST(pay_number AS CHAR) pay_number,CAST(user_id AS CHAR) user_id,CAST(sku_number AS CHAR) sku_number,sku_type,quantity,order_status,price,cancel_time,confirmed_time,finished_time,failed_time,refund_type,isdel FROM order_item WHERE pay_number=433534690352693254 ORDER BY number",
+      "rows": [],
+      "error": "(1054, \"Unknown column 'isdel' in 'field list'\")"
+    },
+    "same_user_sku_items": {
+      "db": "gaotu",
+      "sql": "SELECT CAST(number AS CHAR) order_item_number,CAST(pay_number AS CHAR) pay_number,CAST(user_id AS CHAR) user_id,CAST(sku_number AS CHAR) sku_number,sku_type,quantity,order_status,price,cancel_time,confirmed_time,finished_time,failed_time,refund_type,isdel FROM order_item WHERE user_id=7658129872 AND sku_number=586097025945298944 ORDER BY number",
+      "rows": [],
+      "error": "(1054, \"Unknown column 'isdel' in 'field list'\")"
+    },
+    "order_item_schema": {
+      "db": "gaotu",
+      "sql": "SHOW COLUMNS FROM order_item",
+      "rows": [
+        {
+          "Field": "user_id",
+          "Type": "bigint(20)",
+          "Null": "NO",
+          "Key": "MUL",
+          "Default": null,
+          "Extra": ""
+        },
+        {
+          "Field": "number",
+          "Type": "bigint(20)",
+          "Null": "NO",
+          "Key": "PRI",
+          "Default": null,
+          "Extra": ""
+        },
+        {
+          "Field": "pay_number",
+          "Type": "bigint(20)",
+          "Null": "NO",
+          "Key": "MUL",
+          "Default": "0",
+          "Extra": ""
+        },
+        {
+          "Field": "order_status",
+          "Type": "tinyint(4)",
+          "Null": "NO",
+          "Key": "",
+          "Default": "0",
+          "Extra": ""
+        },
+        {
+          "Field": "order_type",
+          "Type": "int(10)",
+          "Null": "NO",
+          "Key": "",
+          "Default": "0",
+          "Extra": ""
+        },
+        {
+          "Field": "sku_number",
+          "Type": "bigint(20) unsigned",
+          "Null": "NO",
+          "Key": "MUL",
+          "Default": "0",
+          "Extra": ""
+        },
+        {
+          "Field": "sku_version",
+          "Type": "bigint(20) unsigned",
+          "Null": "NO",
+          "Key": "",
+          "Default": "0",
+          "Extra": ""
+        },
+        {
+          "Field": "spu_number",
+          "Type": "bigint(20) unsigned",
+          "Null": "NO",
+          "Key": "",
+          "Default": "0",
+          "Extra": ""
+        },
+        {
+          "Field": "spu_version",
+          "Type": "bigint(20) unsigned",
+          "Null": "NO",
+          "Key": "",
+          "Default": "0",
+          "Extra": ""
+        },
+        {
+          "Field": "sku_type",
+          "Type": "int(10)",
+          "Null": "NO",
+          "Key": "",
+          "Default": "0",
+          "Extra": ""
+        },
+        {
+          "Field": "quantity",
+          "Type": "int(11)",
+          "Null": "NO",
+          "Key": "",
+          "Default": "1",
+          "Extra": ""
+        },
+        {
+          "Field": "sku_price",
+          "Type": "bigint(20)",
+          "Null": "NO",
+          "Key": "",
+          "Default": null,
+          "Extra": ""
+        },
+        {
+          "Field": "promotion_price",
+          "Type": "bigint(20)",
+          "Null": "YES",
+          "Key": "",
+          "Default": "0",
+          "Extra": ""
+        },
+        {
+          "Field": "manual_price",
+          "Type": "bigint(20)",
+          "Null": "YES",
+          "Key": "",
+          "Default": "0",
+          "Extra": ""
+        },
+        {
+          "Field": "price",
+          "Type": "bigint(20)",
+          "Null": "NO",
+          "Key": "",
+          "Default": null,
+          "Extra": ""
+        },
+        {
+          "Field": "create_time",
+          "Type": "datetime",
+          "Null": "NO",
+          "Key": "",
+          "Default": "CURRENT_TIMESTAMP",
+          "Extra": "DEFAULT_GENERATED"
+        },
+        {
+          "Field": "update_time",
+          "Type": "datetime",
+          "Null": "NO",
+          "Key": "MUL",
+          "Default": "CURRENT_TIMESTAMP",
+          "Extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP"
+        },
+        {
+          "Field": "cancel_time",
+          "Type": "datetime",
+          "Null": "YES",
+          "Key": "",
+          "Default": "0000-00-00 00:00:00",
+          "Extra": ""
+        },
+        {
+          "Field": "confirmed_time",
+          "Type": "datetime",
+          "Null": "YES",
+          "Key": "",
+          "Default": "0000-00-00 00:00:00",
+          "Extra": ""
+        },
+        {
+          "Field": "finished_time",
+          "Type": "datetime",
+          "Null": "YES",
+          "Key": "",
+          "Default": "0000-00-00 00:00:00",
+          "Extra": ""
+        },
+        {
+          "Field": "invoice",
+          "Type": "varchar(32)",
+          "Null": "NO",
+          "Key": "",
+          "Default": "1",
+          "Extra": ""
+        },
+        {
+          "Field": "address_id",
+          "Type": "bigint(20)",
+          "Null": "NO",
+          "Key": "",
+          "Default": "0",
+          "Extra": ""
+        },
+        {
+          "Field": "need_delivery",
+          "Type": "tinyint(1)",
+          "Null": "NO",
+          "Key": "",
+          "Default": "0",
+          "Extra": ""
+        },
+        {
+          "Field": "app_id",
+          "Type": "bigint(20)",
+          "Null": "NO",
+          "Key": "",
+          "Default": "0",
+          "Extra": ""
+        },
+        {
+          "Field": "pay_account_type",
+          "Type": "varchar(32)",
+          "Null": "NO",
+          "Key": "",
+          "Default": "12",
+          "Extra": ""
+        },
+        {
+          "Field": "sales_price",
+          "Type": "bigint(20)",
+          "Null": "NO",
+          "Key": "",
+          "Default": null,
+          "Extra": ""
+        },
+        {
+          "Field": "failed_time",
+          "Type": "datetime",
+          "Null": "YES",
+          "Key": "",
+          "Default": "0000-00-00 00:00:00",
+          "Extra": ""
+        },
+        {
+          "Field": "biz_line",
+          "Type": "tinyint(4)",
+          "Null": "NO",
+          "Key": "",
+          "Default": "0",
+          "Extra": ""
+        },
+        {
+          "Field": "mark",
+          "Type": "bigint(20)",
+          "Null": "NO",
+          "Key": "",
+          "Default": "0",
+          "Extra": ""
+        },
+        {
+          "Field": "refund_type",
+          "Type": "int(4)",
+          "Null": "NO",
+          "Key": "",
+          "Default": "0",
+          "Extra": ""
+        }
+      ],
+      "error": null
+    },
+    "refund_tables": {
+      "db": "order_refund",
+      "sql": "SHOW TABLES LIKE '%refund%'",
+      "rows": [
+        {
+          "Tables_in_order_refund (%refund%)": "pay_only_refund"
+        },
+        {
+          "Tables_in_order_refund (%refund%)": "pay_plan_refund"
+        },
+        {
+          "Tables_in_order_refund (%refund%)": "pay_plan_refund_manual"
+        },
+        {
+          "Tables_in_order_refund (%refund%)": "refund_block_record"
+        },
+        {
+          "Tables_in_order_refund (%refund%)": "refund_info"
+        },
+        {
+          "Tables_in_order_refund (%refund%)": "refund_item"
+        },
+        {
+          "Tables_in_order_refund (%refund%)": "refund_record_detail"
+        },
+        {
+          "Tables_in_order_refund (%refund%)": "refund_record_manual"
+        },
+        {
+          "Tables_in_order_refund (%refund%)": "refund_record_normal"
+        }
+      ],
+      "error": null
+    },
+    "refund_item_exact": {
+      "db": "order_refund",
+      "sql": "SELECT * FROM refund_item WHERE order_item_number=433534690352694278",
+      "rows": [],
+      "error": null
+    },
+    "refund_order_pay": {
+      "db": "order_refund",
+      "sql": "SELECT * FROM refund_order WHERE pay_number=433534690352693254",
+      "rows": [],
+      "error": "(1146, \"Table 'order_refund.refund_order' doesn't exist\")"
+    }
+  }
+}

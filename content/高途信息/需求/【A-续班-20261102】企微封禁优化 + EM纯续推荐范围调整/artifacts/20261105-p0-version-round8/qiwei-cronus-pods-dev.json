@@ -1,0 +1,163 @@
+{
+  "time": "2026-11-05T19:05:09.723358+08:00",
+  "request": {
+    "serviceCode": "baijia.gaotu.Business.fe.gaotu-fe-cronus",
+    "environment": "dev"
+  },
+  "response": {
+    "data": [
+      {
+        "deployUser": "test-dev-ci",
+        "deployTime": 1792720245000,
+        "namespace": "dev",
+        "kind": "Deployment",
+        "podList": [
+          {
+            "deploymentName": "cronus",
+            "podDeploymentName": "cronus",
+            "podName": "cronus-5c7c545f4c-6lpwb",
+            "podIP": "10.255.176.170",
+            "namespace": "dev",
+            "envInfoId": 1,
+            "status": "Running",
+            "createTime": 1792720247000,
+            "restartCount": 0,
+            "prometheusUrl": "https://g.console.aliyun.com/d/8500548-k8s-pod/kubernetes-pod?orgId=876&refresh=60s&var-namespace=dev&var-pod=cronus-5c7c545f4c-6lpwb",
+            "nodePrometheusUrl": "https://g.console.aliyun.com/d/8500548-k8s-node-overview/node-overview?orgId=876&refresh=60s&var-node=10.255.38.220",
+            "nodeIp": "10.255.38.220",
+            "terminalUrl": "http://container.baijia.com/api/v1/webterminal?cluster=al-bj-uqun-k8s-nonprod&namespace=dev&env=dev&podName=cronus-5c7c545f4c-6lpwb&container=fe-nginx",
+            "imageName": "feature-20261008-em-stage-report-50eff94c-20261023094314",
+            "batchTest": false,
+            "grayTest": false,
+            "isEciCluster": false,
+            "eciPod": false,
+            "replayFlag": false,
+            "showEci": false,
+            "cluster": "k8sNonprod",
+            "containerBOList": [
+              {
+                "name": "fe-nginx",
+                "imageName": "acr.baijia.com/uqun/nginx:1.18-latest",
+                "status": "running",
+                "restartCount": 0
+              },
+              {
+                "name": "cronus",
+                "imageName": "acr.baijia.com/uqun/cronus:feature-20261008-em-stage-report-50eff94c-20261023094314",
+                "status": "terminated",
+                "restartCount": 0,
+                "reason": "Completed"
+              }
+            ]
+          }
+        ],
+        "podsSum": 1,
+        "availablePods": 1,
+        "groupServiceFullName": "dev-BJ-Ali1",
+        "envInfoId": 1
+      },
+      {
+        "deployUser": "王魏53",
+        "deployTime": 1793782356000,
+        "namespace": "test-eco-8",
+        "kind": "Deployment",
+        "podList": [
+          {
+            "deploymentName": "cronus",
+            "podDeploymentName": "cronus",
+            "podName": "cronus-6578646df8-2c2rs",
+            "podIP": "10.218.248.121",
+            "namespace": "test-eco-8",
+            "envInfoId": 348,
+            "status": "Running",
+            "createTime": 1793782357000,
+            "restartCount": 0,
+            "prometheusUrl": "https://hs-grafana.baijia.com/d/15185338-k8s-pod-nonprod/kubernetes-pod-noprod?orgId=1&refresh=60s&var-ClusterId=ccjs24mhg52uk3nqlqrag&var-namespace=test-eco-8&var-pod=cronus-6578646df8-2c2rs",
+            "nodePrometheusUrl": "https://hs-grafana.baijia.com/d/15185338-k8s-node-overview-noprod/node-overview-noprod?orgId=1&refresh=60s&var-ClusterId=ccjs24mhg52uk3nqlqrag&var-node=10.218.0.3",
+            "nodeIp": "10.218.0.3",
+            "terminalUrl": "http://container.baijia.com/api/v1/webterminal?cluster=hs-bj-qingzhou-k8s-nonprod&namespace=test-eco-8&env=dev&podName=cronus-6578646df8-2c2rs&container=fe-nginx",
+            "imageName": "feature-tiered-homework-compat-85137901-20261104164458",
+            "batchTest": false,
+            "grayTest": false,
+            "isEciCluster": false,
+            "eciPod": false,
+            "replayFlag": false,
+            "showEci": false,
+            "cluster": "hs-bj-qingzhou-k8s-nonprod",
+            "containerBOList": [
+              {
+                "name": "fe-nginx",
+                "imageName": "acr.baijia.com/uqun/nginx:1.18-imagename",
+                "status": "running",
+                "restartCount": 0
+              },
+              {
+                "name": "cronus",
+                "imageName": "acr.baijia.com/uqun/cronus:feature-tiered-homework-compat-85137901-20261104164458",
+                "status": "terminated",
+                "restartCount": 0,
+                "reason": "Completed"
+              }
+            ]
+          }
+        ],
+        "podsSum": 1,
+        "availablePods": 1,
+        "groupServiceFullName": "test-eco-8-BJ-Ve1",
+        "envInfoId": 348
+      },
+      {
+        "deployUser": "金瑞琳",
+        "deployTime": 1793789296000,
+        "namespace": "test-gtbg-dev-3",
+        "kind": "Deployment",
+        "podList": [
+          {
+            "deploymentName": "cronus",
+            "podDeploymentName": "cronus",
+            "podName": "cronus-767886fb8-6sbgp",
+            "podIP": "10.218.250.210",
+            "namespace": "test-gtbg-dev-3",
+            "envInfoId": 314,
+            "status": "Running",
+            "createTime": 1793789297000,
+            "restartCount": 0,
+            "prometheusUrl": "https://hs-grafana.baijia.com/d/15185338-k8s-pod-nonprod/kubernetes-pod-noprod?orgId=1&refresh=60s&var-ClusterId=ccjs24mhg52uk3nqlqrag&var-namespace=test-gtbg-dev-3&var-pod=cronus-767886fb8-6sbgp",
+            "nodePrometheusUrl": "https://hs-grafana.baijia.com/d/15185338-k8s-node-overview-noprod/node-overview-noprod?orgId=1&refresh=60s&var-ClusterId=ccjs24mhg52uk3nqlqrag&var-node=10.218.0.32",
+            "nodeIp": "10.218.0.32",
+            "terminalUrl": "http://container.baijia.com/api/v1/webterminal?cluster=hs-bj-qingzhou-k8s-nonprod&namespace=test-gtbg-dev-3&env=dev&podName=cronus-767886fb8-6sbgp&container=fe-nginx",
+            "imageName": "feature-wecom-ban-optimization-17ee81cc-20261104184104",
+            "batchTest": false,
+            "grayTest": false,
+            "isEciCluster": false,
+            "eciPod": false,
+            "replayFlag": false,
+            "showEci": false,
+            "cluster": "hs-bj-qingzhou-k8s-nonprod",
+            "containerBOList": [
+              {
+                "name": "fe-nginx",
+                "imageName": "acr.baijia.com/uqun/nginx:1.18-imagename",
+                "status": "running",
+                "restartCount": 0
+              },
+              {
+                "name": "cronus",
+                "imageName": "acr.baijia.com/uqun/cronus:feature-wecom-ban-optimization-17ee81cc-20261104184104",
+                "status": "terminated",
+                "restartCount": 0,
+                "reason": "Completed"
+              }
+            ]
+          }
+        ],
+        "podsSum": 1,
+        "availablePods": 1,
+        "groupServiceFullName": "test-gtbg-dev-3-BJ-Ve1",
+        "envInfoId": 314
+      }
+    ],
+    "code": 200,
+    "msg": "success"
+  }
+}

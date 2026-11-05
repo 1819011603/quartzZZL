@@ -1,0 +1,31 @@
+{
+  "time": "2026-11-05T19:48:25.453259",
+  "environment": "TEST",
+  "lane": "test-gtbg-dev-3",
+  "route": "cart-route-current.json",
+  "read_only": true,
+  "cached_session_used": false,
+  "request": {
+    "method": "GET",
+    "url": "https://test-fuwu.baijia.com/bgwApi/cart/web/renewal/operation/cart",
+    "query": {
+      "renewalNumber": "588858850300473344",
+      "userId": "7658129872",
+      "fromC": "0"
+    },
+    "headers": [
+      "Content-Type",
+      "traffic-env",
+      "b_client"
+    ]
+  },
+  "http": 200,
+  "trace": "ef29c2f3-fdc6-4cef-bff5-6e3a82136e46.0.3",
+  "response": {
+    "status": 700,
+    "code": 700,
+    "msg": "请重新登录！",
+    "location": "${cas.server}/cas/login?service=http%3A%2F%2F%24%7Bcas.app%7D%2Fcart%2Fweb%2Frenewal%2Foperation%2Fcart%3FrenewalNumber%3D588858850300473344%26userId%3D7658129872%26fromC%3D0",
+    "data": null
+  }
+}

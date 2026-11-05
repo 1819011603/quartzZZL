@@ -1,0 +1,20 @@
+[
+  {
+    "trace": "5b7e496d-e6c4-4ebd-a8c5-4d0230140811.0.3",
+    "exit": 0,
+    "matches": 1,
+    "routes": [
+      {
+        "upstream": "10.218.237.47:28688",
+        "upstream_latency": 962,
+        "route_id": "cart-gaotu100-com_745",
+        "config_path": "/cart/*",
+        "method": "GET",
+        "uri": "/cart/web/renewal/operation/cart?renewalNumber=588858850300473344&userId=7658129872&fromC=0",
+        "traffic-env": "test-gtbg-dev-3",
+        "ingress-traffic-env": "test-gtbg-dev-3",
+        "status": 200
+      }
+    ]
+  }
+]
