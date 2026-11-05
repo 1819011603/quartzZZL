@@ -1,0 +1,11 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"section\" requested-start=\"doxcnH9jkz17AOK7e3rF6bGCBgd\"><h1 id=\"doxcnH9jkz17AOK7e3rF6bGCBgd\">P0-11｜大小班批量修改企微备注</h1><p id=\"doxcnBK70PwkOc0bJawgnNmvEec\">功能与优先级：P0。预期依据：企微子项核心；复用默认花名册规则。</p><h2 id=\"doxcnxYgs6171kNaSolYW0w1muf\">现场过 case：照着做</h2><p id=\"doxcnAeOLCo2jEhjaZFynJfSEWc\"><b>前置：</b>gongxuemeng/177071；班“madman-续班-正价-11”：clazzNumber496625388833767424／bizNumber21YW25CY2A11001。目标654489（页面姓名轩昂）与未选654499真实同班，好友检查通过；目标原官方备注“zhangkaiis”，未选三关系原备注“转辅导班-2／空／空”。页面选该班、轮次“不可续”0，再搜654489；一轮会把该样本排除。</p><p id=\"doxcnxj2gonruR54YQJ5mDqzxIh\"><b>操作：</b>默认花名册与续班页分别定位同一好友；同样原备注下输入“【姓名】-【身份】-【企微备注】”确认；查父/子任务终态、读官方备注及同班未选人，再提交原备注恢复。逐页都核恢复后再作下一次对照。两页初始框均为空，没有自动填好的固定模板。</p><p id=\"doxcn7Zd3h2XmYhfOM1jNrx2vJg\"><b>预期与代入：</b>姓名＝轩昂；身份绑定接口未返回role，按原规则取空（不能套用好友展示“其他”）；原备注＝zhangkaiis。展开“轩昂”＋“-”＋空＋“-”＋“zhangkaiis”＝<b>轩昂--zhangkaiis</b>，14字≤20，不截断；成功1＋失败0＝选中1。未选三关系备注与两人标签/颜色/分层不变；恢复为zhangkaiis。</p><p id=\"doxcn1CIvuF2jXHEPvgC8QnejRe\"><b>实际：</b>默认页与续班页同一好友、相同三变量模板实际保存均得“轩昂--zhangkaiis”，逐页父子任务成功并恢复“zhangkaiis”；同班未选654499三条备注不变。默认页任务294446870464328704、恢复任务294446926025213952；续班页任务294445942532240384、恢复任务294446000285709312，四父子任务均成功。手机号展开、非空身份、截断边界、小班好友成功和同班多人批量仍未全验，不称整卡通过。</p><p id=\"doxcnvTSIH47FDeo4ec63amuN2g\">证据：<a href=\"https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr#doxcnCL6pFczHkM4YODpaedQrOf\">P0-11集中原件、详细计算与历史记录</a>；本轮新增原件见文末TEST证据包。</p></fragment>",
+      "document_id": "ZQUXdlDxWoknJhxu914c2uVYnBr",
+      "revision_id": 319
+    }
+  }
+}

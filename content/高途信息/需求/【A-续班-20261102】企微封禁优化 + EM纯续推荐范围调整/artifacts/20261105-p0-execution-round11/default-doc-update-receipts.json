@@ -1,0 +1,104 @@
+[
+  {
+    "command": "block_replace",
+    "id": "doxcnFdM8aSRyYmvbcw3dSKvWie",
+    "exit": 0,
+    "receipt": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 312,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      }
+    }
+  },
+  {
+    "command": "block_replace",
+    "id": "doxcnJ1QxGLhP5LtduShTNxuXOT",
+    "exit": 0,
+    "receipt": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 313,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      }
+    }
+  },
+  {
+    "command": "block_replace",
+    "id": "doxcnsK6HfOlSMvVsZjqXBMUQPp",
+    "exit": 0,
+    "receipt": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 314,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      }
+    }
+  },
+  {
+    "command": "block_replace",
+    "id": "doxcnFxhPG4FXVmuXp4GhGf1I6j",
+    "exit": 0,
+    "receipt": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 315,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      }
+    }
+  },
+  {
+    "command": "block_replace",
+    "id": "doxcnFP6dqgmeNlSyxuJNlCVHN5",
+    "exit": 0,
+    "receipt": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 316,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      }
+    }
+  },
+  {
+    "command": "append",
+    "id": null,
+    "exit": 0,
+    "receipt": {
+      "ok": true,
+      "identity": "user",
+      "data": {
+        "document": {
+          "revision_id": 317,
+          "url": "https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr"
+        },
+        "result": "success",
+        "warnings": []
+      }
+    }
+  }
+]

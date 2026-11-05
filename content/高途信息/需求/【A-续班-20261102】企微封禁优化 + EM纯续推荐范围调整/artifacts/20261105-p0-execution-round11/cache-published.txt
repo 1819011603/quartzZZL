@@ -1,0 +1,6 @@
+# cart.gaotu100.com / TEST / application / 2 个 key
+已查 namespace: application
+
+命中:
+- `renewal.query.cache.enabled` = `false`
+- `renewal.pure.relation.enabled` = `true`

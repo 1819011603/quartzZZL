@@ -1,0 +1,122 @@
+{
+  "time": "2026-11-05T21:52:50.575496+08:00",
+  "environment": "TEST",
+  "read_only": true,
+  "databases": {
+    "ees_data": {
+      "queries": {
+        "task": {
+          "sql": "SELECT * FROM batch_operate_task WHERE id>1965 ORDER BY id",
+          "rows": [
+            {
+              "id": 1966,
+              "number": 294445942532240384,
+              "task_type": 2,
+              "create_account_id": 177071,
+              "process_status": 2,
+              "meta_data": null,
+              "process_count": 0,
+              "download_status": 0,
+              "task_result": null,
+              "source_type": 1,
+              "source_id": 294445942532240384,
+              "is_del": 0,
+              "create_time": "2026-11-05 21:38:05",
+              "update_time": "2026-11-05 21:38:20"
+            },
+            {
+              "id": 1967,
+              "number": 294446000285709312,
+              "task_type": 2,
+              "create_account_id": 177071,
+              "process_status": 2,
+              "meta_data": null,
+              "process_count": 0,
+              "download_status": 0,
+              "task_result": null,
+              "source_type": 1,
+              "source_id": 294446000285709312,
+              "is_del": 0,
+              "create_time": "2026-11-05 21:39:00",
+              "update_time": "2026-11-05 21:39:20"
+            },
+            {
+              "id": 1968,
+              "number": 294446870464328704,
+              "task_type": 2,
+              "create_account_id": 177071,
+              "process_status": 0,
+              "meta_data": null,
+              "process_count": 0,
+              "download_status": 0,
+              "task_result": null,
+              "source_type": 1,
+              "source_id": 294446870464328704,
+              "is_del": 0,
+              "create_time": "2026-11-05 21:52:50",
+              "update_time": "2026-11-05 21:52:50"
+            }
+          ],
+          "exit": 0
+        },
+        "jobs": {
+          "sql": "SELECT * FROM export_job_task WHERE job_number IN (SELECT number FROM batch_operate_task WHERE id>1965) ORDER BY id",
+          "rows": [
+            {
+              "id": 10304,
+              "number": 294445942540628992,
+              "job_number": 294445942532240384,
+              "biz_number": "654489",
+              "params": "{\"userId\": 654489, \"accountId\": 177071, \"userWechatId\": \"7881301368994397\", \"wechatRemark\": \"zhangkaiis\", \"accountWechatId\": \"1688855652617956\", \"wkRemarkTemplate\": \"${{name}}-${{role}}-${{wkRemark}}\"}",
+              "task_status": 2,
+              "retry_count": 0,
+              "retry_time": "2026-11-05 21:38:05",
+              "biz_deal_type": 2,
+              "biz_deal_number": 0,
+              "task_result": null,
+              "extra_data": null,
+              "is_del": 0,
+              "create_time": "2026-11-05 21:38:05",
+              "update_time": "2026-11-05 21:38:10"
+            },
+            {
+              "id": 10305,
+              "number": 294446000289903616,
+              "job_number": 294446000285709312,
+              "biz_number": "654489",
+              "params": "{\"userId\": 654489, \"accountId\": 177071, \"userWechatId\": \"7881301368994397\", \"wechatRemark\": \"轩昂--zhangkaiis\", \"accountWechatId\": \"1688855652617956\", \"wkRemarkTemplate\": \"zhangkaiis\"}",
+              "task_status": 2,
+              "retry_count": 0,
+              "retry_time": "2026-11-05 21:39:00",
+              "biz_deal_type": 2,
+              "biz_deal_number": 0,
+              "task_result": null,
+              "extra_data": null,
+              "is_del": 0,
+              "create_time": "2026-11-05 21:39:00",
+              "update_time": "2026-11-05 21:39:10"
+            },
+            {
+              "id": 10306,
+              "number": 294446870467474432,
+              "job_number": 294446870464328704,
+              "biz_number": "654489",
+              "params": "{\"userId\": 654489, \"accountId\": 177071, \"userWechatId\": \"7881301368994397\", \"wechatRemark\": \"zhangkaiis\", \"accountWechatId\": \"1688855652617956\", \"wkRemarkTemplate\": \"${{name}}-${{role}}-${{wkRemark}}\"}",
+              "task_status": 0,
+              "retry_count": 0,
+              "retry_time": "2026-11-05 21:52:50",
+              "biz_deal_type": 2,
+              "biz_deal_number": 0,
+              "task_result": null,
+              "extra_data": null,
+              "is_del": 0,
+              "create_time": "2026-11-05 21:52:50",
+              "update_time": "2026-11-05 21:52:50"
+            }
+          ],
+          "exit": 0
+        }
+      }
+    }
+  }
+}

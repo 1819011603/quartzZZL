@@ -1,0 +1,86 @@
+{
+  "qiwei-page-save-restore.json": [
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-version-round8/qiwei-page-save-restore.json"
+  ],
+  "qiwei-filter-three-case.json": [
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-version-round8/qiwei-filter-three-case.json"
+  ],
+  "round9/small-case-state.json": [
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-boundary-round9/small-case-state.json"
+  ],
+  "round9/small-restored-query.json": [
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-boundary-round9/small-restored-query.json"
+  ],
+  "../20261105-p0-execution-round7/qiwei-results.json": [
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-execution-round7/qiwei-results.json",
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-execution-round6/qiwei-results.json"
+  ],
+  "round9/remark-dialog.txt": [
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-boundary-round9/remark-dialog.txt"
+  ],
+  "round11/business-validation.json": [
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-execution-round11/business-validation.json"
+  ],
+  "round11/default-comparison.json": [
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-execution-round11/default-comparison.json"
+  ],
+  "round11/network-evidence.json": [
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-execution-round11/network-evidence.json"
+  ],
+  "qiwei-cart-actual-route-proofs.json": [
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-version-round8/qiwei-cart-actual-route-proofs.json"
+  ],
+  "agent-b-report.md": [
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-version-round8/agent-b-report.md"
+  ],
+  "../20261105-p0-execution-round7/qiwei-report.md": [
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-execution-round7/qiwei-report.md",
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-runtime-w1/qiwei-report.md",
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-detail-round3/qiwei-report.md"
+  ],
+  "integration-contracts-before.json": [
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-execution-round11/integration-contracts-before.json"
+  ],
+  "agent-a-readback.json": [
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-version-round8/agent-a-readback.json"
+  ],
+  "cart-bound-host-read.json": [
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-version-round8/cart-bound-host-read.json"
+  ],
+  "agent-a-order-route-confirm.json": [
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-version-round8/agent-a-order-route-confirm.json"
+  ],
+  "agent-a-order-rule-source.json": [
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-version-round8/agent-a-order-rule-source.json"
+  ],
+  "../20261105-p0-execution-round7/collision-observe.json": [
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-execution-round7/collision-observe.json"
+  ],
+  "round9/expansion-nonempty-child.json": [
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-boundary-round9/expansion-nonempty-child.json"
+  ],
+  "status1-main-case.json": [
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-version-round8/status1-main-case.json"
+  ],
+  "../20261105-p0-execution-round7/relation-boundaries.json": [
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-execution-round7/relation-boundaries.json"
+  ],
+  "../20261105-p0-execution-round7/document-verification.json": [
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-detail/document-verification.json",
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-execution-round7/document-verification.json",
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-runtime-w1/document-verification.json",
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-objects/document-verification.json"
+  ],
+  "cart-bound-host-route-proof.json": [
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-version-round8/cart-bound-host-route-proof.json"
+  ],
+  "../20261105-p0-execution-round7/dual-paid-readback.json": [
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-execution-round7/dual-paid-readback.json"
+  ],
+  "agent-a-report.md": [
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-version-round8/agent-a-report.md"
+  ],
+  "../20261105-p0-execution-round7/cache-published-config.json": [
+    "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整/artifacts/20261105-p0-execution-round7/cache-published-config.json"
+  ]
+}

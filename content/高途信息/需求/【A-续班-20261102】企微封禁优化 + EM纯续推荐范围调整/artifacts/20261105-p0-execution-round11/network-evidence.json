@@ -1,0 +1,671 @@
+[
+  {
+    "page": 56,
+    "reqid": 434,
+    "trace": "de9f9a44-86ab-490a-924c-8cfbb422cbeb.0.0",
+    "request": {
+      "scene": "microContinuationService",
+      "clazzStudents": [
+        {
+          "clazzNumber": "588506026511294464",
+          "userId": 7707218286
+        }
+      ],
+      "type": 1,
+      "userIds": [
+        7707218286
+      ],
+      "studentTags": [
+        "3"
+      ]
+    },
+    "code": 0,
+    "data": {}
+  },
+  {
+    "page": 56,
+    "reqid": 469,
+    "trace": "9d0e7970-f263-438b-b3ae-f003df57e856.0.0",
+    "request": {
+      "scene": "microContinuationService",
+      "clazzStudents": [
+        {
+          "clazzNumber": "588506026511294464",
+          "userId": 7707218286
+        }
+      ],
+      "type": 1,
+      "userIds": [
+        7707218286
+      ],
+      "studentTags": [
+        "7"
+      ]
+    },
+    "code": 0,
+    "data": {}
+  },
+  {
+    "page": 56,
+    "reqid": 630,
+    "trace": "276669e4-3a4f-4b65-a7e1-f50a92d35ca1.0.0",
+    "request": {
+      "pager": {
+        "current": 1,
+        "pageSize": 300,
+        "total": 2
+      },
+      "route": {
+        "sceneVersionNumber": "294312775746856960"
+      },
+      "identification": "microContinuationService",
+      "clazzNumber": [
+        "588506026511294464"
+      ],
+      "quickFilter": {},
+      "filter": {
+        "clazzStudentStatus": [
+          "1",
+          "3"
+        ],
+        "studentTags": [
+          "7"
+        ],
+        "clazzNumber": [
+          "588506026511294464"
+        ],
+        "smallRenewalRoundFilter": [
+          1
+        ],
+        "smallRenewalNumber": [
+          "588506246722727936"
+        ]
+      }
+    },
+    "code": 0,
+    "pager": {
+      "current": 1,
+      "pageSize": 300,
+      "total": 1,
+      "hasNext": false,
+      "approximateTotal": false
+    },
+    "rows": [
+      {
+        "clazzBizNumber": "588506026511294464",
+        "studentTags": [
+          7
+        ],
+        "clazzNumber": "588506026511294464",
+        "clazzName": "【造数】小班续班前置-小学数学-1103-1831",
+        "userId": 7707218286,
+        "leadTeacher": "弓雪萌",
+        "studentTagNames": [
+          "自己主动学习"
+        ]
+      }
+    ]
+  },
+  {
+    "page": 56,
+    "reqid": 634,
+    "trace": "03e41ba0-6a7c-44aa-b922-c1ee0da03172.0.0",
+    "request": {
+      "pager": {
+        "current": 1,
+        "pageSize": 300,
+        "total": 1
+      },
+      "route": {
+        "sceneVersionNumber": "294312775746856960"
+      },
+      "identification": "microContinuationService",
+      "clazzNumber": [
+        "588506026511294464"
+      ],
+      "quickFilter": {},
+      "filter": {
+        "clazzStudentStatus": [
+          "1",
+          "3"
+        ],
+        "studentTags": [
+          "7"
+        ],
+        "clazzNumber": [
+          "588506026511294464"
+        ],
+        "smallRenewalRoundFilter": [
+          1
+        ],
+        "smallRenewalNumber": [
+          "588506246722727936"
+        ]
+      }
+    },
+    "code": 0,
+    "pager": {
+      "current": 1,
+      "pageSize": 300,
+      "total": 1,
+      "hasNext": false,
+      "approximateTotal": false
+    },
+    "rows": [
+      {
+        "clazzBizNumber": "588506026511294464",
+        "studentTags": [
+          7
+        ],
+        "clazzNumber": "588506026511294464",
+        "clazzName": "【造数】小班续班前置-小学数学-1103-1831",
+        "userId": 7707218286,
+        "leadTeacher": "弓雪萌",
+        "studentTagNames": [
+          "自己主动学习"
+        ]
+      }
+    ]
+  },
+  {
+    "page": 56,
+    "reqid": 651,
+    "trace": "b7149475-f453-4786-af7e-8154ece54e7e.0.0",
+    "request": {
+      "pager": {
+        "current": 1,
+        "pageSize": 300,
+        "total": 2
+      },
+      "route": {
+        "sceneVersionNumber": "294312775746856960"
+      },
+      "identification": "microContinuationService",
+      "clazzNumber": [
+        "588506026511294464"
+      ],
+      "quickFilter": {},
+      "filter": {
+        "clazzStudentStatus": [
+          "1",
+          "3"
+        ],
+        "studentTags": [
+          "3"
+        ],
+        "clazzNumber": [
+          "588506026511294464"
+        ],
+        "smallRenewalRoundFilter": [
+          1
+        ],
+        "smallRenewalNumber": [
+          "588506246722727936"
+        ]
+      }
+    },
+    "code": 0,
+    "pager": {
+      "current": 1,
+      "pageSize": 300,
+      "total": 0,
+      "hasNext": false,
+      "approximateTotal": false
+    },
+    "rows": []
+  },
+  {
+    "page": 56,
+    "reqid": 655,
+    "trace": "6622a70d-3cd8-461c-9685-1b4a3d75c6bd.0.0",
+    "request": {
+      "pager": {
+        "current": 1,
+        "pageSize": 300,
+        "total": 0
+      },
+      "route": {
+        "sceneVersionNumber": "294312775746856960"
+      },
+      "identification": "microContinuationService",
+      "clazzNumber": [
+        "588506026511294464"
+      ],
+      "quickFilter": {},
+      "filter": {
+        "clazzStudentStatus": [
+          "1",
+          "3"
+        ],
+        "studentTags": [
+          "3"
+        ],
+        "clazzNumber": [
+          "588506026511294464"
+        ],
+        "smallRenewalRoundFilter": [
+          1
+        ],
+        "smallRenewalNumber": [
+          "588506246722727936"
+        ]
+      }
+    },
+    "code": 0,
+    "pager": {
+      "current": 1,
+      "pageSize": 300,
+      "total": 0,
+      "hasNext": false,
+      "approximateTotal": false
+    },
+    "rows": []
+  },
+  {
+    "page": 56,
+    "reqid": 716,
+    "trace": "e62074d4-1ecc-4ac3-8bdd-4e906bcfd817.0.0",
+    "request": {
+      "scene": "microContinuationService",
+      "clazzStudents": [
+        {
+          "clazzNumber": "588506026511294464",
+          "userId": 7707218285
+        }
+      ],
+      "type": 1,
+      "userIds": [
+        7707218285
+      ],
+      "studentTags": [
+        "3"
+      ]
+    },
+    "code": 0,
+    "data": {}
+  },
+  {
+    "page": 56,
+    "reqid": 738,
+    "trace": "1213981a-d015-4949-8dc7-ea9f4b031701.0.0",
+    "request": {
+      "pager": {
+        "current": 1,
+        "pageSize": 300,
+        "total": 1
+      },
+      "route": {
+        "sceneVersionNumber": "294312775746856960"
+      },
+      "identification": "microContinuationService",
+      "clazzNumber": [
+        "588506026511294464"
+      ],
+      "quickFilter": {},
+      "filter": {
+        "clazzStudentStatus": [
+          "1",
+          "3"
+        ],
+        "studentTags": [
+          "3"
+        ],
+        "clazzNumber": [
+          "588506026511294464"
+        ],
+        "smallRenewalRoundFilter": [
+          1
+        ],
+        "smallRenewalNumber": [
+          "588506246722727936"
+        ]
+      }
+    },
+    "code": 0,
+    "pager": {
+      "current": 1,
+      "pageSize": 300,
+      "total": 1,
+      "hasNext": false,
+      "approximateTotal": false
+    },
+    "rows": [
+      {
+        "clazzBizNumber": "588506026511294464",
+        "studentTags": [
+          3
+        ],
+        "studentTagNames": [
+          "需弱关注"
+        ],
+        "clazzNumber": "588506026511294464",
+        "clazzName": "【造数】小班续班前置-小学数学-1103-1831",
+        "userId": 7707218285,
+        "leadTeacher": "弓雪萌"
+      }
+    ]
+  },
+  {
+    "page": 56,
+    "reqid": 743,
+    "trace": "1766f8da-1c30-472a-8401-2bb399e5fe80.0.0",
+    "request": {
+      "pager": {
+        "current": 1,
+        "pageSize": 300,
+        "total": 1
+      },
+      "route": {
+        "sceneVersionNumber": "294312775746856960"
+      },
+      "identification": "microContinuationService",
+      "clazzNumber": [
+        "588506026511294464"
+      ],
+      "quickFilter": {},
+      "filter": {
+        "clazzStudentStatus": [
+          "1",
+          "3"
+        ],
+        "studentTags": [
+          "3"
+        ],
+        "clazzNumber": [
+          "588506026511294464"
+        ],
+        "smallRenewalRoundFilter": [
+          1
+        ],
+        "smallRenewalNumber": [
+          "588506246722727936"
+        ]
+      }
+    },
+    "code": 0,
+    "pager": {
+      "current": 1,
+      "pageSize": 300,
+      "total": 1,
+      "hasNext": false,
+      "approximateTotal": false
+    },
+    "rows": [
+      {
+        "clazzBizNumber": "588506026511294464",
+        "studentTags": [
+          3
+        ],
+        "studentTagNames": [
+          "需弱关注"
+        ],
+        "clazzNumber": "588506026511294464",
+        "clazzName": "【造数】小班续班前置-小学数学-1103-1831",
+        "userId": 7707218285,
+        "leadTeacher": "弓雪萌"
+      }
+    ]
+  },
+  {
+    "page": 56,
+    "reqid": 755,
+    "trace": "851ee85a-7815-4d4c-9844-894ea8a6965f.0.0",
+    "request": {
+      "scene": "microContinuationService",
+      "clazzStudents": [
+        {
+          "clazzNumber": "588506026511294464",
+          "userId": 7707218285
+        }
+      ],
+      "type": 1,
+      "userIds": [
+        7707218285
+      ],
+      "studentTags": []
+    },
+    "code": 0,
+    "data": {}
+  },
+  {
+    "page": 56,
+    "reqid": 763,
+    "trace": "1681b263-38c3-4b7c-b48c-16baeb22c5cb.0.0",
+    "request": {
+      "pager": {
+        "current": 1,
+        "pageSize": 300,
+        "total": 1
+      },
+      "route": {
+        "sceneVersionNumber": "294312775746856960"
+      },
+      "identification": "microContinuationService",
+      "clazzNumber": [
+        "588506026511294464"
+      ],
+      "quickFilter": {},
+      "filter": {
+        "clazzStudentStatus": [
+          "1",
+          "3"
+        ],
+        "studentTags": [
+          "3"
+        ],
+        "clazzNumber": [
+          "588506026511294464"
+        ],
+        "smallRenewalRoundFilter": [
+          1
+        ],
+        "smallRenewalNumber": [
+          "588506246722727936"
+        ]
+      }
+    },
+    "code": 0,
+    "pager": {
+      "current": 1,
+      "pageSize": 300,
+      "total": 0,
+      "hasNext": false,
+      "approximateTotal": false
+    },
+    "rows": []
+  },
+  {
+    "page": 56,
+    "reqid": 792,
+    "trace": "0a7d1fa0-5527-4cf1-8d3d-8f35685e8ac8.0.0",
+    "request": {
+      "pager": {
+        "current": 1,
+        "pageSize": 300,
+        "total": 0
+      },
+      "route": {
+        "sceneVersionNumber": "294312775746856960"
+      },
+      "identification": "microContinuationService",
+      "clazzNumber": [
+        "588506026511294464"
+      ],
+      "quickFilter": {},
+      "filter": {
+        "clazzStudentStatus": [
+          "1",
+          "3"
+        ],
+        "studentTags": [],
+        "clazzNumber": [
+          "588506026511294464"
+        ],
+        "smallRenewalRoundFilter": [
+          1
+        ],
+        "smallRenewalNumber": [
+          "588506246722727936"
+        ]
+      }
+    },
+    "code": 0,
+    "pager": {
+      "current": 1,
+      "pageSize": 300,
+      "total": 2,
+      "hasNext": false,
+      "approximateTotal": false
+    },
+    "rows": [
+      {
+        "clazzBizNumber": "588506026511294464",
+        "studentTags": [
+          7
+        ],
+        "clazzNumber": "588506026511294464",
+        "clazzName": "【造数】小班续班前置-小学数学-1103-1831",
+        "userId": 7707218286,
+        "leadTeacher": "弓雪萌",
+        "studentTagNames": [
+          "自己主动学习"
+        ]
+      },
+      {
+        "clazzBizNumber": "588506026511294464",
+        "studentTags": [],
+        "clazzNumber": "588506026511294464",
+        "clazzName": "【造数】小班续班前置-小学数学-1103-1831",
+        "userId": 7707218285,
+        "leadTeacher": "弓雪萌"
+      }
+    ]
+  },
+  {
+    "page": 56,
+    "reqid": 796,
+    "trace": "4fc28592-4831-4bc5-b1d4-28a686649a47.0.0",
+    "request": {
+      "pager": {
+        "current": 1,
+        "pageSize": 300,
+        "total": 2
+      },
+      "route": {
+        "sceneVersionNumber": "294312775746856960"
+      },
+      "identification": "microContinuationService",
+      "clazzNumber": [
+        "588506026511294464"
+      ],
+      "quickFilter": {},
+      "filter": {
+        "clazzStudentStatus": [
+          "1",
+          "3"
+        ],
+        "studentTags": [],
+        "clazzNumber": [
+          "588506026511294464"
+        ],
+        "smallRenewalRoundFilter": [
+          1
+        ],
+        "smallRenewalNumber": [
+          "588506246722727936"
+        ]
+      }
+    },
+    "code": 0,
+    "pager": {
+      "current": 1,
+      "pageSize": 300,
+      "total": 2,
+      "hasNext": false,
+      "approximateTotal": false
+    },
+    "rows": [
+      {
+        "clazzBizNumber": "588506026511294464",
+        "studentTags": [
+          7
+        ],
+        "clazzNumber": "588506026511294464",
+        "clazzName": "【造数】小班续班前置-小学数学-1103-1831",
+        "userId": 7707218286,
+        "leadTeacher": "弓雪萌",
+        "studentTagNames": [
+          "自己主动学习"
+        ]
+      },
+      {
+        "clazzBizNumber": "588506026511294464",
+        "studentTags": [],
+        "clazzNumber": "588506026511294464",
+        "clazzName": "【造数】小班续班前置-小学数学-1103-1831",
+        "userId": 7707218285,
+        "leadTeacher": "弓雪萌"
+      }
+    ]
+  },
+  {
+    "page": 57,
+    "reqid": 682,
+    "trace": "45f3f78d-ada4-4cf5-aa7e-eb0183590627.0.0",
+    "request": {
+      "userIds": [
+        654489
+      ],
+      "wkRemarkTemplate": "${{name}}-${{role}}-${{wkRemark}}"
+    },
+    "code": 0,
+    "data": {
+      "resultStatus": true
+    }
+  },
+  {
+    "page": 57,
+    "reqid": 699,
+    "trace": "3504f611-a64b-4f5e-a561-b399abca4b56.0.0",
+    "request": {
+      "userIds": [
+        654489
+      ],
+      "wkRemarkTemplate": "zhangkaiis"
+    },
+    "code": 0,
+    "data": {
+      "resultStatus": true
+    }
+  },
+  {
+    "page": 57,
+    "reqid": 1017,
+    "trace": "ed567588-f3fd-4cf3-9966-dd9b75ba8ac7.0.0",
+    "request": {
+      "userIds": [
+        654489
+      ],
+      "wkRemarkTemplate": "${{name}}-${{role}}-${{wkRemark}}"
+    },
+    "code": 0,
+    "data": {
+      "resultStatus": true
+    }
+  },
+  {
+    "page": 57,
+    "reqid": 1045,
+    "trace": "9e42b95c-88ad-4034-8387-283bf9b29c36.0.0",
+    "request": {
+      "userIds": [
+        654489
+      ],
+      "wkRemarkTemplate": "zhangkaiis"
+    },
+    "code": 0,
+    "data": {
+      "resultStatus": true
+    }
+  }
+]

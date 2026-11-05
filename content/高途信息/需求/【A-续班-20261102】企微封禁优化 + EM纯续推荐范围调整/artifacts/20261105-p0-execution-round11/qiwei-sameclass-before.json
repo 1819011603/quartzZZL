@@ -1,0 +1,117 @@
+{
+  "time": "2026-11-05T21:34:42.079701+08:00",
+  "environment": "TEST",
+  "url": "http://10.255.176.174:28688/test/acl/compare/service",
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.yunying.student.center.acl.FriendRelationService#getRelation",
+    "params": [
+      "177071",
+      [
+        "654489",
+        "654499"
+      ]
+    ]
+  },
+  "headers": {
+    "content-type": "application/json",
+    "traffic-env": "test",
+    "b_client": "EES",
+    "Host": "STUDENT-CENTER"
+  },
+  "httpStatus": 200,
+  "trace": "student-center.899885.17938856819779640",
+  "response": {
+    "code": 0,
+    "data": {
+      "friendRelationServiceImpl#getRelation": [
+        {
+          "userId": 654489,
+          "wechatRelationContacts": [
+            {
+              "wechatType": "WK",
+              "wechatId": "7881301368994397",
+              "wechatAlias": "",
+              "wechatNickname": "张凯斯",
+              "picUrl": "http://wx.qlogo.cn/mmhead/Q3auHgzwzM6yWkCVu02viadjt83tO1FqtaZm2xC6xmPSCpwukayISuA/0",
+              "wechatArea": {
+                "city": "",
+                "province": ""
+              },
+              "createTime": "2026-11-05 21:34:42",
+              "role": "",
+              "receiveStatus": true,
+              "friendRelations": [
+                {
+                  "accountId": 177071,
+                  "teacherWechatId": "1688855652617956",
+                  "remark": "zhangkaiis",
+                  "role": "其他",
+                  "isOnline": true,
+                  "teacherNickName": "弓雪萌11",
+                  "addTimestamp": 1735121061000
+                }
+              ],
+              "ableToSend": true,
+              "ableToSendNow": true,
+              "friend": true,
+              "systemBind": false
+            }
+          ]
+        },
+        {
+          "userId": 654499,
+          "wechatRelationContacts": [
+            {
+              "wechatType": "WK",
+              "wechatId": "7881300577985351",
+              "wechatAlias": "",
+              "wechatNickname": "萡山",
+              "picUrl": "http://wx.qlogo.cn/mmhead/Q3auHgzwzM4ib3cEzic5qanbDf85yDo6QJR7Fa3j1EOiczndicDcYKicn6Q/0",
+              "wechatArea": {
+                "city": "",
+                "province": ""
+              },
+              "createTime": "2025-07-03 19:06:28",
+              "role": "",
+              "receiveStatus": true,
+              "friendRelations": [
+                {
+                  "accountId": 177071,
+                  "teacherWechatId": "1688856528704656",
+                  "remark": "转辅导班-2",
+                  "role": "其他",
+                  "isOnline": false,
+                  "teacherNickName": "弓雪萌",
+                  "addTimestamp": 1751569588000
+                },
+                {
+                  "accountId": 177071,
+                  "teacherWechatId": "1688855652617956",
+                  "remark": "",
+                  "role": "其他",
+                  "isOnline": true,
+                  "teacherNickName": "弓雪萌11",
+                  "addTimestamp": 1792144232000
+                },
+                {
+                  "accountId": 177071,
+                  "teacherWechatId": "1688856353639574",
+                  "remark": "",
+                  "role": "其他",
+                  "isOnline": false,
+                  "teacherNickName": "天天开心老师",
+                  "addTimestamp": 1792144553000
+                }
+              ],
+              "ableToSend": true,
+              "ableToSendNow": true,
+              "friend": true,
+              "systemBind": false
+            }
+          ]
+        }
+      ]
+    },
+    "msg": ""
+  }
+}

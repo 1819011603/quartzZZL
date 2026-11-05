@@ -1,0 +1,18 @@
+{
+  "document_revision": 319,
+  "attachment_token": "X8JjbCbieoWavGxPJ0AcqYSCn6d",
+  "attachment_readback": true,
+  "download_bytes_equal": true,
+  "sha256": "bedf4bf32568501b85978ebdd6b2406485c27ada799234812b032e7555a76400",
+  "manifest_files_verified": 35,
+  "sections_read_back": [
+    "P0-10",
+    "P0-11"
+  ],
+  "business_pending": false,
+  "restoration_pending": false,
+  "browser_new_tabs_closed": [
+    56,
+    57
+  ]
+}

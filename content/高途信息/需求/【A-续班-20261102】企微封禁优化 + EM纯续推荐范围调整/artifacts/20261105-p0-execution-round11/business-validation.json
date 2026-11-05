@@ -1,0 +1,234 @@
+{
+  "task_type": "requirement",
+  "environment": "TEST",
+  "lane": "test-gtbg-dev-3",
+  "prior_doc_revision": 295,
+  "small": {
+    "classNumber": "588506026511294464",
+    "bizNumber": "588506026511294464",
+    "name": "【造数】小班续班前置-小学数学-1103-1831",
+    "plan": "588506246722727936",
+    "round": 1,
+    "identity": "gongxuemeng/177071",
+    "target": "7707218285",
+    "unselected": "7707218286",
+    "selected_count": 1,
+    "expected_filter_count": 1,
+    "rule": "保存标签3且满足同班/计划/一轮/在班筛选",
+    "actual_page_filter_count": 1,
+    "refresh_page_filter_count": 1,
+    "states": {
+      "small-baseline.json": {
+        "ees_data": {
+          "7707218285": "",
+          "7707218286": "7"
+        },
+        "gaotu": {
+          "7707218285": "",
+          "7707218286": "7"
+        }
+      },
+      "small-after-single.json": {
+        "ees_data": {
+          "7707218285": "",
+          "7707218286": "3"
+        },
+        "gaotu": {
+          "7707218285": "",
+          "7707218286": "3"
+        }
+      },
+      "small-restored.json": {
+        "ees_data": {
+          "7707218285": "",
+          "7707218286": "7"
+        },
+        "gaotu": {
+          "7707218285": "",
+          "7707218286": "7"
+        }
+      },
+      "small-empty-after-save.json": {
+        "ees_data": {
+          "7707218285": "3",
+          "7707218286": "7"
+        },
+        "gaotu": {
+          "7707218285": "3",
+          "7707218286": "7"
+        }
+      },
+      "small-empty-restored.json": {
+        "ees_data": {
+          "7707218285": "",
+          "7707218286": "7"
+        },
+        "gaotu": {
+          "7707218285": "",
+          "7707218286": "7"
+        }
+      }
+    },
+    "single_case_verified": "QW-B02-002：无标签→页面单改3→筛3并刷新仍仅目标→恢复空→筛3为0；同时原7→3→7变更子集已验",
+    "batch_third": "没做；现有受控同班2人，不能当2选1未选；不新增入班关系"
+  },
+  "remark": {
+    "classNumber": "496625388833767424",
+    "bizNumber": "21YW25CY2A11001",
+    "name": "madman-续班-正价-11",
+    "target": "654489",
+    "target_page_name": "轩昂",
+    "unselected": "654499",
+    "identity": "gongxuemeng/177071",
+    "before": {
+      "654489": {
+        "WK|7881301368994397|177071|1688855652617956": "zhangkaiis"
+      },
+      "654499": {
+        "WK|7881300577985351|177071|1688856528704656": "转辅导班-2",
+        "WK|7881300577985351|177071|1688855652617956": "",
+        "WK|7881300577985351|177071|1688856353639574": ""
+      }
+    },
+    "after": {
+      "654489": {
+        "WK|7881301368994397|177071|1688855652617956": "轩昂--zhangkaiis"
+      },
+      "654499": {
+        "WK|7881300577985351|177071|1688856528704656": "转辅导班-2",
+        "WK|7881300577985351|177071|1688855652617956": "",
+        "WK|7881300577985351|177071|1688856353639574": ""
+      }
+    },
+    "restored": {
+      "654489": {
+        "WK|7881301368994397|177071|1688855652617956": "zhangkaiis"
+      },
+      "654499": {
+        "WK|7881300577985351|177071|1688856528704656": "转辅导班-2",
+        "WK|7881300577985351|177071|1688855652617956": "",
+        "WK|7881300577985351|177071|1688856353639574": ""
+      }
+    },
+    "template": "${{name}}-${{role}}-${{wkRemark}}",
+    "actual_inputs": {
+      "name": "轩昂",
+      "role": "",
+      "wkRemark": "zhangkaiis"
+    },
+    "role_source": "IdQueryAclService#listUserInfoResults(...,[4])当前返回关联号但无role；不套用好友关系展示其他",
+    "calculation": {
+      "substitution": "轩昂--zhangkaiis",
+      "length": 14,
+      "max_length": 20,
+      "truncation": false,
+      "success": 1,
+      "failed": 0,
+      "selected": 1
+    },
+    "task": "294445942532240384",
+    "job": "294445942540628992",
+    "restore_task": "294446000285709312",
+    "restore_job": "294446000289903616",
+    "final_status": 2,
+    "default_baseline": "默认/续班同一好友、相同原备注和同三变量模板逐页实际保存；两页官方展开值均轩昂--zhangkaiis，任务均成功且分别恢复原值；手机号和20字截断边界未跑",
+    "fields_preserved": [
+      "同班未选654499的三条官方备注",
+      "同班两人的标签/颜色/分层",
+      "learning_student_info_ext"
+    ],
+    "small_friend": "没做成功；两小班受控学生真实friend0，复用round10拒绝前置，不改好友关系",
+    "default_comparison": {
+      "default_task": "294446870464328704",
+      "default_job": "294446870467474432",
+      "restore_task": "294446926025213952",
+      "restore_job": "294446926033602560",
+      "all_tasks_terminal": true,
+      "template": "${{name}}-${{role}}-${{wkRemark}}",
+      "equal_actual": "轩昂--zhangkaiis",
+      "restore_equal": true,
+      "source_files": [
+        "qiwei-sameclass-before.json",
+        "qiwei-sameclass-after.json",
+        "qiwei-default-sameclass-after.json",
+        "qiwei-default-sameclass-restored.json"
+      ],
+      "states": {
+        "qiwei-sameclass-before.json": {
+          "654489": {
+            "1688855652617956|7881301368994397": "zhangkaiis"
+          },
+          "654499": {
+            "1688856528704656|7881300577985351": "转辅导班-2",
+            "1688855652617956|7881300577985351": "",
+            "1688856353639574|7881300577985351": ""
+          }
+        },
+        "qiwei-sameclass-after.json": {
+          "654489": {
+            "1688855652617956|7881301368994397": "轩昂--zhangkaiis"
+          },
+          "654499": {
+            "1688856528704656|7881300577985351": "转辅导班-2",
+            "1688855652617956|7881300577985351": "",
+            "1688856353639574|7881300577985351": ""
+          }
+        },
+        "qiwei-default-sameclass-after.json": {
+          "654489": {
+            "1688855652617956|7881301368994397": "轩昂--zhangkaiis"
+          },
+          "654499": {
+            "1688856528704656|7881300577985351": "转辅导班-2",
+            "1688855652617956|7881300577985351": "",
+            "1688856353639574|7881300577985351": ""
+          }
+        },
+        "qiwei-default-sameclass-restored.json": {
+          "654489": {
+            "1688855652617956|7881301368994397": "zhangkaiis"
+          },
+          "654499": {
+            "1688856528704656|7881300577985351": "转辅导班-2",
+            "1688855652617956|7881300577985351": "",
+            "1688856353639574|7881300577985351": ""
+          }
+        }
+      },
+      "mobile_expansion_and_20char_truncation": "没做"
+    }
+  },
+  "restoration": {
+    "small_business_tags_restored": true,
+    "physical_empty_rows_retained": true,
+    "official_remark_restored": true,
+    "unselected_preserved": true,
+    "no_cosplay": true,
+    "business_tasks_terminal": true
+  },
+  "skill": {
+    "SKILL.md": {
+      "paths": [
+        "/Users/gaotu/bridge/payload/skills-cold/banshan-case/SKILL.md",
+        "/Users/gaotu/.claude/skills-cold/banshan-case/SKILL.md"
+      ],
+      "sha256": "c55ed7e806899105a7a94e77f715dcdbcf1d9477c17ec0979637056c244987a2",
+      "identical": true
+    },
+    "references/doc-templates.md": {
+      "paths": [
+        "/Users/gaotu/bridge/payload/skills-cold/banshan-case/references/doc-templates.md",
+        "/Users/gaotu/.claude/skills-cold/banshan-case/references/doc-templates.md"
+      ],
+      "sha256": "85029e12624bf16182f5f3eb338975f62fc70a154bf031b2f734ecde65450cd7",
+      "identical": true
+    }
+  },
+  "limitations": [
+    "C端现有根页无计划/指定学员参数，暂无绑定该受控学员的有效C端会话与可用落地链接，不把B接口或既有根页报错当C端验收",
+    "cart已发布renewal.query.cache.enabled=false；未临时启用共享开关、清缓存或新开26小时窗口，本地缓存分支未覆盖",
+    "既有同单两SKU收款账号12/gaotu、优惠0，无已核异主体SKU和可用优惠基准；同主体100+0=100历史证据复用，优惠/异主体反例没做",
+    "历史min(begin_time)回溯保持外部后续，不启动新窗口",
+    "默认/续班的姓名＋空身份＋原备注模板一致已验证子集；手机号、非空身份、20字截断和小班成功仍未覆盖"
+  ]
+}

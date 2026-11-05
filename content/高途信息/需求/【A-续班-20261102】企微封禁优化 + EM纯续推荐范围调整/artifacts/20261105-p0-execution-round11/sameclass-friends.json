@@ -1,0 +1,10 @@
+{
+  "serviceNameAndMethodName": "com.gaotu.yunying.student.center.acl.FriendRelationService#getRelation",
+  "params": [
+    "177071",
+    [
+      "654489",
+      "654499"
+    ]
+  ]
+}

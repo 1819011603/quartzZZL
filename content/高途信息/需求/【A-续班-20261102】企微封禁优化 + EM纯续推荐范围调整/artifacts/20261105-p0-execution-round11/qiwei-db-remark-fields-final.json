@@ -1,0 +1,53 @@
+{
+  "time": "2026-11-05T21:41:25.118961+08:00",
+  "environment": "TEST",
+  "read_only": true,
+  "databases": {
+    "ees_data": {
+      "queries": {
+        "task_max": {
+          "sql": "SELECT MAX(id) max_id FROM batch_operate_task",
+          "rows": [
+            {
+              "max_id": 1967
+            }
+          ],
+          "exit": 0
+        },
+        "tags": {
+          "sql": "SELECT id,CAST(user_id AS CHAR) user_id,CAST(clazz_number AS CHAR) clazz_number,account_id,tags,color,layer FROM user_clazz_mark_info WHERE clazz_number=496625388833767424 AND user_id IN (654489,654499)",
+          "rows": [
+            {
+              "id": 70018,
+              "user_id": "654489",
+              "clazz_number": "496625388833767424",
+              "account_id": 177071,
+              "tags": "",
+              "color": 1,
+              "layer": 0
+            },
+            {
+              "id": 70010,
+              "user_id": "654499",
+              "clazz_number": "496625388833767424",
+              "account_id": 177071,
+              "tags": "",
+              "color": 1,
+              "layer": 0
+            }
+          ],
+          "exit": 0
+        }
+      }
+    },
+    "gaotu": {
+      "queries": {
+        "old_tags": {
+          "sql": "SELECT id,CAST(user_id AS CHAR) user_id,CAST(clazz_number AS CHAR) clazz_number,tags FROM learning_student_info_ext WHERE clazz_number=496625388833767424 AND user_id IN (654489,654499)",
+          "rows": [],
+          "exit": 0
+        }
+      }
+    }
+  }
+}

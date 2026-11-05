@@ -1,0 +1,76 @@
+{
+  "time": "2026-11-05T21:39:10.131109+08:00",
+  "environment": "TEST",
+  "url": "http://10.255.176.174:28688/test/acl/compare/service",
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.yunying.student.center.acl.IdQueryAclService#listUserInfoResults",
+    "params": [
+      [
+        "654489"
+      ],
+      [
+        4
+      ]
+    ]
+  },
+  "headers": {
+    "content-type": "application/json",
+    "traffic-env": "test",
+    "b_client": "EES",
+    "Host": "STUDENT-CENTER"
+  },
+  "httpStatus": 200,
+  "trace": "student-center.900337.17938859502009808",
+  "response": {
+    "code": 0,
+    "data": {
+      "idQueryAclServiceImpl#listUserInfoResults": [
+        {
+          "userId": "654489",
+          "relatedIdInfoList": [
+            {
+              "relatedId": "7881301368994397",
+              "idType": 4
+            }
+          ],
+          "bind": false,
+          "createTimestamp": 1793885950212
+        },
+        {
+          "userId": "654489",
+          "relatedIdInfoList": [
+            {
+              "relatedId": "7881301368994397",
+              "idType": 4
+            }
+          ],
+          "bind": false,
+          "createTimestamp": 1793885950212
+        },
+        {
+          "userId": "654489",
+          "relatedIdInfoList": [
+            {
+              "relatedId": "7881301368994397",
+              "idType": 4
+            }
+          ],
+          "bind": false,
+          "createTimestamp": 1793885950212
+        },
+        {
+          "userId": "654489",
+          "relatedIdInfoList": [
+            {
+              "relatedId": "7881301368994397",
+              "idType": 4
+            }
+          ],
+          "bind": false,
+          "createTimestamp": 1793885950212
+        }
+      ]
+    },
+    "msg": ""
+  }
+}

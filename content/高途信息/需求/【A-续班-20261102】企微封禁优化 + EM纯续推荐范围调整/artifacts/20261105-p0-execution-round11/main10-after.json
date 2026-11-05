@@ -1,0 +1,11 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"section\" requested-start=\"doxcnSaxxueXcUtFcFxAuT6Iioc\"><h1 id=\"doxcnSaxxueXcUtFcFxAuT6Iioc\">P0-10｜大小班续班批量标签、单人编辑与筛选</h1><p id=\"doxcnr0uQEr0jYaHdhb2vXb6zEz\">功能与优先级：P0。预期依据：企微子项核心；与默认花名册行为一致。</p><h2 id=\"doxcns0lgBRzbsnkhLbuwAuGIGg\">现场过 case：照着做</h2><p id=\"doxcnWZmAYMuTh50E5Ctlj77I8c\"><b>前置：</b>TEST/test-gtbg-dev-3，gongxuemeng/177071。大班“续班归因-正经前置班-0820”：clazzNumber574882679202260992／bizNumber32YYTS25D6LS11002，目标7704846434/7704846439，对照7704846440。小班“【造数】小班续班前置-小学数学-1103-1831”：clazzNumber／bizNumber588506026511294464，计划588506246722727936／一轮；7707218285原空标签，7707218286原7“自己主动学习”。接口无同名bizId，不以DB主键替代；小班现有受控同班仅2人，未补第三人入班。</p><p id=\"doxcnwVWBDjMN1oZUMcxLl0Ky5b\"><b>操作：</b>大班沿原批量/单改/取消步骤。小班点7707218285的空标签，勾“需弱关注”3并确认；在学员标签列筛3，查询后再查询；点该人的标签取消勾选3并确认恢复空，筛3后清空筛选。另对7707218286执行7→3→7，用于有原标签变更对照；两次均只改一人。</p><p id=\"doxcnXdwDEkNarYDJ7ENxThUpgH\"><b>预期：</b>小班7707218285保存后标签3/名称“需弱关注”，另一人仍7；筛3仅纳入保存值匹配、同班/同计划/一轮/在班条件均满足的人：1名目标＋0名对照＝1名，刷新仍1。恢复空后筛3为0，清空筛选回2人。大班批量与未选对照、取消预期不变。</p><p id=\"doxcnraoQKTfEpkdjRzKtFpIFKg\"><b>实际：</b>小班原“无标签→单人保存3→页面筛3并刷新→恢复空”已验证，原30条QW-B02-002所述入口完成；新旧源为3/7，页面筛3两次均仅7707218285，恢复后源为“空/7”、页面筛3为0。另7→3→7保存、源/列表及筛选通过。旧大班与小班双人批量证据沿用。小班2选＋第三未选、默认/续班全部对称组合、ES原文档仍未全验，不能称P0-10整卡通过。</p><p id=\"doxcnppBPBBfemWG9ULA42ivJne\">证据：<a href=\"https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr#doxcnkfM3wshrMfbPF20vMnMM7I\">P0-10集中原件、详细计算与历史记录</a>；本轮新增原件见文末TEST证据包。</p></fragment>",
+      "document_id": "ZQUXdlDxWoknJhxu914c2uVYnBr",
+      "revision_id": 319
+    }
+  }
+}

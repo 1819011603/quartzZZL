@@ -1,0 +1,26 @@
+{
+  "task_type": "requirement",
+  "current_revision": 319,
+  "local_readback": {
+    "README.md": {
+      "revision319": true,
+      "round11": true
+    },
+    "verify.md": {
+      "revision319": true,
+      "round11": true
+    },
+    "tasks.md": {
+      "revision319": true,
+      "round11": true
+    }
+  },
+  "original30_count": 30,
+  "contracts_count": 25,
+  "skill_source_installed_hash_match": true,
+  "evidence_unresolved_original_references": [],
+  "attachment_sha256": "bedf4bf32568501b85978ebdd6b2406485c27ada799234812b032e7555a76400",
+  "business_scope": "3 scoped entries /20 subsets /7 not executed; whole-card0",
+  "pending_operations": [],
+  "historical_reference_restored": "round8真实原件integration-contracts-before.json，已回读需求取消项；非新业务验证"
+}

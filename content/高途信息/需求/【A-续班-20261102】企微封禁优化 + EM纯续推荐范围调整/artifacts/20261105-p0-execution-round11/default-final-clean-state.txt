@@ -1,0 +1,4 @@
+Script ran on page and returned:
+```json
+{"selected":["B续班madman-测试后置d-2B","500 条/页"],"fuzzy":[""],"selectedRows":0}
+```
