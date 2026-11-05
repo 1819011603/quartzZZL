@@ -21,17 +21,20 @@
 | product-b save，自关联（main=sub=A） | code1「仅续班计划管理员可操作」（当前登录态非管理员）；本地单测确认自关联报错 | trace f8361b21-2bfd-43c7-b75d-151863046025.0.3；RenewalMasterRelationServiceSaveTest |
 | cart ACL桥 getRenewalDetail(7658127801, A, false, false, null) | 大班grade16/type2/SKU585960755422160896/sign_up=1 + 小班grade11/type6004/SKU586097025945298944/sign_up=0；pod a34016fd | trace cart_gaotu100_com.301.17938509900560010；instanceId cart-gaotu100-com-79789ddcf4-vqnpj |
 
+| order-b addCart 跨模式放行，大班type2+小班type6004同车 | code0，购物车创建成功；pod 0cc8ef68 eureka UP | trace ff499de2-ed11-424f-9f95-c6ff2b458b6e.0.3；cartNumber=588821422806163456 |
+| order-b addCart 同模式重复反例，大班type2再加同一件 | code1 拦截（ONCE_BY_LIMIT，该用户已购）；本地17反例确认同模式SAME_CLAZZ拦截 | trace 529de273-51f3-4aa8-9ae2-8765cfdd2a1f.0.3；CartSameClazzOrCourseImplTest 26例全绿 |
+
 管理员字段契约：前端读 `adminName`（单值）或 `adminList`（数组），后端实际同时返回两者且 ID 为字符串，前后端一致，**无需改后端**。此前 `admin_list` 为旧版本表现，当前 product-b `07ba05df` 已不存在此问题。
 
 关联list是GET query参数renewMasterNumber，分页current。稳定证据见 [artifacts/20261105-diff-p0](artifacts/20261105-diff-p0/)。
 
 ## 已验证、推断未验证、没做
 
-**已验证**：上列本地聚焦测试和固定版本接口；PRD全文/原图、前端固定分支diff和原函数执行、生产iris静态资源读取。本轮（第二轮）新增：cart `a34016fd` 部署后 ACL 桥五参推荐确认双模式；product-b `07ba05df` 关联列表/批量搜索/非法ID/反向关系/save 权限 6 项 HTTP 真调；管理员字段前后端一致性已接口确认。
+**已验证**：上列本地聚焦测试和固定版本接口；PRD全文/原图、前端固定分支diff和原函数执行、生产iris静态资源读取。本轮（第二轮）新增：cart `a34016fd` 部署后 ACL 桥五参推荐确认双模式；product-b `07ba05df` 关联列表/批量搜索/非法ID/反向关系/save 权限 6 项 HTTP 真调；管理员字段前后端一致性已接口确认；order-b `0cc8ef68` 部署后跨模式放行 addCart HTTP 真调确认大班+小班同车 code0。
 
-**推断未验证**：新cart修复在线多入口整体效果；当前本地缓存组合是否在生产启用；仅静态资源不能证明每个页面实际加载它，前端分支不等于线上版本。order `0cc8ef68` 镜像已 redeploy，pod 滚动中，新版接口待验。
+**推断未验证**：新cart修复在线多入口整体效果；当前本地缓存组合是否在生产启用；仅静态资源不能证明每个页面实际加载它，前端分支不等于线上版本。order 同模式重复反例 HTTP 因测试用户已购被 ONCE_BY_LIMIT 先行拦截，SAME_CLAZZ 路径由本地 26 例单测覆盖。
 
-**没做**：order新版接口/完整下单；页面实际渲染与标签备注写入；生产DDL/GAIA/ES配置变更与历史全量回溯；全仓测试/并发压测。旧版本历史trace仅作补充，不冒充新版运行结果。部分P0现场账号/样本未准备，文档逐条标明。
+**没做**：order 新版完整下单端到端；页面实际渲染与标签备注写入；生产DDL/GAIA/ES配置变更与历史全量回溯；全仓测试/并发压测。旧版本历史trace仅作补充，不冒充新版运行结果。部分P0现场账号/样本未准备，文档逐条标明。
 
 ## 数据与资源
 
@@ -55,14 +58,30 @@
 | E1-E4 单向范围/原规则/去重/扩科 | cart a34016fd隔离缓存并固定主计划课程来源；既有双向库存/订单旁路 | 94例子集全绿；旧部署五参双模式真实返回，新版线上链路未验 |
 | E5-E13 管理配置权限/状态/展示/搜索/保存 | product-server 07ba05df；promotions ba1cf8f | product20例、3HTTP查询；三项前端交互差异保留 |
 | E14 多入口一致 | cart5/7参及大小班预热路径已核；新修复保留主课程上下文 | 组件回归通过，未逐页面验全入口；大班完整预热RPC未验 |
-| E15 下单/主体/优惠 | order 0cc8ef68b6修漏判，主体/优惠逻辑不改 | 17新反例+9H2回归全绿；新版HTTP下单没做，不称端到端通过 |
+| E15 下单/主体/优惠 | order 0cc8ef68b6修漏判，主体/优惠逻辑不改 | 17新反例+9H2回归全绿；新版order-b `0cc8ef68`（pod eureka UP）addCart大班+小班跨模式放行HTTP真调code0（trace ff499de2）；同模式重复反例本地26例覆盖；完整下单端到端没做 |
 | E16 B8 | 明确保留26h旧预热窗口 | owner既定决定，未擅自修复或清缓存规避 |
 
 140例=cart94+product20+order26，均0失败/错误/跳过。新增27例（cart10、order17）；不是全仓测试。程序测试不等于12张P0现场卡全部执行。
 
+## 第三轮补验（2026-11-05，TEST，order-b 0cc8ef68）
+
+| 项 | 输入 | 预期 | 实际 | 证据 |
+|---|---|---|---|---|
+| 跨模式放行 | 用户7658127801，大班585960755422160896(type2)+小班586097025945298944(type6004)同车 | code0 | code0，购物车588822622182119424 | trace 075b6713-5905-47b5-ad4b-208d9434bcc7.0.3，已验证 |
+| 同模式重复 SAME_CLAZZ/SAME_COURSE | 购物车已有大班587571298255841280与587571308498331648（同课程587571291903567872），再加587571298255841280 | code1 SAME_CLAZZ | code1，data含SAME_CLAZZ与SAME_COURSE；ONCE_BY_LIMIT未先拦 | trace 961693ca-b5a0-4542-948d-0b11fe9eafd9.0.3，已验证 |
+| 观察项（待核，未改代码） | 同次addCart同时加同课程两个不同大班商品 | 按代码应拦SAME_COURSE | code0放行，购物车588823566812786688 | trace 9f7e90f4-7665-4f52-bf3e-9024cf44e069.0.3；怀疑新增商品路径未带courseNumber，已存在购物车时才按课程拦；是否为原有行为未查，需owner/后续决定 |
+| 扩科/年级/学年学期只取主计划 | 主585960797778243584、从586116340522184704；DB扩科配置主grade16(科目1/4)，从grade11/12(科目4/5) | 主推荐仅grade16 | 主计划返回仅grade16；从计划单独返回grade12小班6004 | trace cart_gaotu100_com.291.17938534708122855 / cart_gaotu100_com.997.17938534785100011。**推断未验证**：本轮桥直连pod为cart-gaotu100-com-5f668c7b58-grgcw，不是a34016fd的pod，版本未确认；且主计划本次未出现小班grade11，与此前trace 301不一致，区分力不足 |
+| 清理 | removeCart(productList入参) | 购物车无测试商品 | code0；b_cart读回user7658127801有效行无本轮商品 | trace 6c05e409-f21b-4540-a13c-b46292e5f393.0.3、66b0fdde-6eef-45e4-946b-7301464caadb.0.3 |
+
+## 契约卡三档（本轮汇总）
+
+- 已验证：E1-E3、E7相关去重、E8跨模式放行与同模式拦截、E9-E14、student-center字段配置、GAIA两场景（仅test）。
+- 推断未验证：E4状态、E5/E6缓存与旁路、E15排序、扩科只取主计划新版运行态、Q1-Q4页面效果、Q8-Q9。
+- 没做：E16 B8（owner不修）、Q5回溯、Q6 iris、Q7 reach-widget、页面级验证、order完整下单、前端三项差异。
+
 ## 文档回读
 
-P0-case.md 12卡逐条检查均包含现场步骤、通过判据、恢复和实际结果；README/tasks当前进度T6/7一致。归档审计0 ERROR；3 WARN来自既有长README和历史措辞，本轮保留已有成果、以首屏当前快照及本文件为准，不扩大为归档迁移。
+P0-case.md 12卡逐条检查均包含现场步骤、通过判据、恢复和实际结果；README/tasks当前进度T6/7一致。归档审计0 ERROR；3 WARN来自既有长README和历史措辞，本轮保留已有成果、以首屏当前快照及本文件为准，不扩大为归档迁移。飞书文档第二轮补验已追加，revision_id=23。
 
 ## P0对象补全与飞书交付（2026-11-05增量）
 
