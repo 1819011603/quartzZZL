@@ -203,6 +203,17 @@ $M $C baijia_invoke cosplay_logout
 - 修复：`DELETE FROM ees_data.student_field_config WHERE identification IN ('microContinuationService','continuationService') AND field_name='wechatRemark'`（保留 `studentTagNames`）。
 - 对比：`studentTagNames` **可以**登记——它登记的字段名与 ES 原始字段名不同（原始是 `studentTags`），原始字段仍会从 ES 取，`FieldsConvert` 再转成 `studentTagNames`。换言之：**注册名 == ES 原始字段名 的字段不要写进 field_config**。
 
+### 取值维度：`(班级班主任, 学员)`
+
+`wechatRemark` 的**取值维度是「该班班主任(ES `assistantAccountId`) × 学员」**，不是「登录查看人」维度，也不是全班汇总：
+
+- 实测（2026-11-06）：`ads_small_clazz_user`/`ads_large_subclazz_user` 里某 doc 的 `wechatRemark` == linkup `(该 doc 的 assistantAccountId, 该学员)` 的企微备注。
+  - 大班 doc(`clazz 514875469101879296`, assistant 74995) = `["0915王斌"]` ↔ `getFriendRelations([学员5228086014], 74995).remark="0915王斌"`。
+  - 小班 doc(`clazz 586332114459420672`, assistant 177071) = `["测试"]` ↔ `getFriendRelations([学员7658127801], 177071).remark="测试"`。
+  - 大班 doc(`clazz 585960582537144320`, assistant 90247) = `[]` ↔ 90247 与该学员无备注（即使同一学员与另一老师 177071 有备注"测试"，也不进这条 doc）。
+- **大班/小班同源**：`ads_large_subclazz_user`(大班续班) 与 `ads_small_clazz_user`(小班) 的 `wechatRemark` 都按上面的规则同步（源=`dws_fuwu_user_teacher_wechat_info`/linkup 的 (老师,学员) 关系）→ 同一位老师(班主任)带的大小班，备注一致。
+- 所以「某学员备注不显示」的常见原因不是 bug，而是**当前班级的班主任与设置备注的老师不是同一人**（或该班主任没设备注）。
+
 ## 关键字段口径（续班状态）
 
 | 展示/筛选 | 来源 |

@@ -21,6 +21,14 @@
 
 > 列表 / 总数 / 指标均直接查同一 ES 索引，**无独立 MySQL 表**。
 
+## 微信备注（`wechatRemark`）字段口径
+
+列表列「微信备注」直接取 ES `ads_large_subclazz_user.wechatRemark`（keyword，值是 list，`FieldsConvertDataQueryServiceImpl` 拼成逗号串）。
+
+- **取值维度 =「该班班主任(ES `assistantAccountId`) × 学员」**，不是登录查看人维度。实测：doc(`clazz 514875469101879296`, assistant 74995) 的 `wechatRemark=["0915王斌"]` == linkup `getFriendRelations([学员5228086014], 74995).remark`；测试班(`clazz 585960582537144320`, assistant 90247) 的 `=[]` == 90247 与该学员无备注。
+- 与**小班** `ads_small_clazz_user.wechatRemark` **同源同规则**（源=`dws_fuwu_user_teacher_wechat_info`/linkup 的 (老师,学员) 关系）→ 同一班主任带的大小班备注一致。
+- **⚠️ 不要把 `wechatRemark` 登记进 `ees_data.student_field_config`**：它是 ES 原生字段，登记后会被 `GaiaEsMappingService#getNeedFromEsFields` 从 ES fetch 中剔除又无 DataQueryServiceV2 补值 → 列恒空（2026-11-06 已在 test 删除 `continuationService`/`microContinuationService` 的该行并回读修复）。详见 [小班页对应口径](../microClazzRoster/continuationService.md)。
+
 ## 接口清单
 
 ### 1. 列表数据（进页面 + 筛选 / 翻页 / 排序）
