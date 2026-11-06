@@ -1,5 +1,7 @@
 # 决策摘要
 
+- 2026-11-06 **发布编排 24210 准入复核**：按当前实时结果重新执行质量门禁（策略37，泳道 `test-gtbg-dev-3`）。两条新告警 `285676`（cart 调 student-data 失败）和 `285653`（order 监控日志）已按发布规范清为非 bug，回读 `alarmStatus=0`；告警卡 `ALARM=100%`、`ALARM_CHECK=100%`，后端覆盖率 `62%`、前端覆盖率 `85%`、ESAI-CR `100%`，均达到门槛。**唯一强卡仍是 `USER_CASE=0%`（阈值100，QA功能用例未执行），计划仍为“规划中”，尚未提测到 tangwen01；不能绕过该卡点强行推进。**
+
 - 2026-11-06 **小班续班花名册「微信备注」空白定位与修复（test）**：改备注任务成功、linkup 与 ES `ads_small_clazz_user` 的 `wechatRemark` 都有值，但 `/roster/small/renewal/page`(`microContinuationService`) 不返回该字段。根因=`student_field_config` 给 `microContinuationService`/`continuationService` 登记了 `wechatRemark` → `GaiaEsMappingService#getNeedFromEsFields` 将其从 ES fetchSource 剔除、又无 DataQueryServiceV2 补值 → 列恒空。**口径更正**：`wechatRemark` 是 ES 原生字段，不登记 field_config（与默认花名册 `smallClazzRoster` 一致）；已删除 test 两条该行并回读页面返回备注值。PROD 上线 diff 同步去掉 wechatRemark INSERT（`studentTagNames` 保留）。详见 [tasks T-16](tasks.md)。
 
 
