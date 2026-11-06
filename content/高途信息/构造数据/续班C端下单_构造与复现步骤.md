@@ -104,6 +104,7 @@ RenewalService#getRenewalDetail("7658129872", "588858850300473344", true, false,
 | 造数返回成功但下单报无商品 | 未过可售门槛：查 `saleStatus`、课节数、老师、`order/prepare` |
 | 用小班链接选不到大班 | 口径：主计划 `renewalNumber` + 关联并集，不是用从计划号 |
 | 发链接报「暂无续班报名流程」 | 计划没配 type=2 续班报名流程；按 8.8 给计划补 `process/edit`，与学员/班级无关 |
+| 换课列表「已报名」跑到中间（应在最下面） | cart `RenewalService#productList` 未做展示排序；已修复（加 `sortClazzDetailDTOsForDisplay`，已报名沉底），见 8.10 |
 
 ## 7. 纯续并集口径（先搞清数量）
 
@@ -204,6 +205,13 @@ RenewalService#getRenewalDetail("7658129872", "588858850300473344", true, false,
   - validate(type=1) trace `92a5e823-8b10-48b9-87a1-07ca5489dc55.0.0`；validate(type=2) trace `60531775-d482-4792-987a-c9a578bcb246.0.0`；config trace `b0d10bc5-9657-45f8-a7e9-789c77750468.0.0`；appInfo trace `9f72dadd-523f-433b-963a-aeaeb86100aa.0.0`。
   - H5 预览实时渲染成功；短链 302 落地页 200。**未点「发送」**（会真发企微/短信），发送后下游未验。
 - **注意**：链接里 `pt` 是带 userId 的 JWT，`appointUserId`=学员 uid，`renewalNumber`=行内计划号。本学员 `7658129872` 的续班服务行是班级 `588861402658267136` / 计划 `588872241920421888`（**不是** `574882679202260992`，该学员不在那个班）。
+
+### 8.10 换课列表「已报名」跑到中间（应在最下面）
+
+- **现象**：C 端换课/选品列表里带「已报名」徽标的商品出现在中间，后面还跟着未报名商品；期望**已报名沉底**。
+- **原因**：cart `RenewalService#productList`（接口 `POST /cart/web/renewal/productList`，trace `f785a1d4-085b-435b-b311-b6a2d1fb46df.0.3`）把各 `productType` 分组查询的结果**按前端传入的原始顺序**合并返回，**没做展示排序**；而续班序列列表（`gradeClazzList`）走的是 `sortClazzDetailDTOsForDisplay`（未购买在前→强制购买在前→纯续>扩科>加购），换课列表漏了这一步。
+- **正确做法 / 修复**：在 `productList` 组装 `result` 后调用 `sortClazzDetailDTOsForDisplay(result)`——稳定排序，未购买在前、已报名沉底，其余保持原序（该路径 DTO 未设 `forceBuy`/`recommendType`，实际等价于按 `signUp` 升序）。commit `d5729426`，已 push 到 `feature-xuban-pure-relation-20261102`，并入 cart MR **!284**。
+- **验证方式**：部署 cart 到 `test-gtbg-dev-3` 后调 `POST /cart/web/renewal/productList`，已报名项应排在末尾。
 
 ## 9. 证据与未验证项
 
