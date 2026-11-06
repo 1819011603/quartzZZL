@@ -103,6 +103,7 @@ RenewalService#getRenewalDetail("7658129872", "588858850300473344", true, false,
 | 其它站点登录态被清 | 只清 `test-m.gaotu.cn`，不要清整浏览器 |
 | 造数返回成功但下单报无商品 | 未过可售门槛：查 `saleStatus`、课节数、老师、`order/prepare` |
 | 用小班链接选不到大班 | 口径：主计划 `renewalNumber` + 关联并集，不是用从计划号 |
+| 发链接报「暂无续班报名流程」 | 计划没配 type=2 续班报名流程；按 8.8 给计划补 `process/edit`，与学员/班级无关 |
 
 ## 7. 纯续并集口径（先搞清数量）
 
@@ -169,6 +170,41 @@ RenewalService#getRenewalDetail("7658129872", "588858850300473344", true, false,
 - **正确做法**：只连现有已登录实例，直接操作既有页面；不新开、不重连。
 - **验证方式**：`list_pages` 能看到既有页面且仍是登录态。
 
+### 8.8 计划无「续班报名流程」→ 发链接报「暂无续班报名流程」
+
+- **现象/卡点**：EES 续班服务行内点「发链接 → 推荐链接」不弹窗，Toast「暂无续班报名流程」；接口 `POST /bgwApi/component/student-center/roster/renewal/renewalOrder/validate`，body `{"clazzNumbersStr":"588861402658267136","renewalPlanId":"588872241920421888","type":1}` → `{"code":1,"msg":"暂无续班报名流程"}`（trace `b0c414aa-f7f5-4eea-a05f-9d4164047607.0.0`）。
+- **原因**：student-center `RenewalService#renewalOrderValidate`（源码 line 2066-2099）先按 `renewalPlanId` 查续班流程（`processFeignAdapter.listByRenewalNumber`），**查不到 `type=2`（续班报名流程）就直接返回该错，与学员/班级无关**。计划 `588872241920421888` 在 `gaotu.process_config`（cluster 142 `gaotu_polar_test_03`）里 **0 行**（是 clone 出来的草稿骨架，没配流程）；主计划 `588858850300473344` 有 `type=2`（number `588864200919560192`）+ `type=3`（`588993307433054208`），所以主计划同接口返回「跳过校验」。
+- **正确做法（造数：给计划补 `type=2` 续班报名流程 + `type=3` CART 节点）**：
+  - 调 product-b `POST /b/renewal/process/edit`（源码 `ProcessService#editProcess`）。test 环境可用 acl 桥直调：`com.gaotu.product.service.renewal.process.ProcessService#editProcess`（`project=product-server`、`service_name=PRODUCT.GAOTU100.COM`、`traffic_env=test-gtbg-dev-3`）。
+  - 请求体（`ProcessEditReq` + `NodeEditReq`）：
+    ```json
+    {"renewalNumber":"588872241920421888","type":2,"configType":1,
+     "administrators":[90247,177071],
+     "beginTime":1793962860000,"endTime":1801738860000,
+     "nodeConfigs":[{"type":3,"administrators":[90247,177071],
+        "beginTime":1793962860000,"endTime":1801738860000,"recommendProductType":2}]}
+    ```
+    说明：`type=2`=续班报名流程；节点 `type=3`=续班购物车(CART)；`recommendProductType=2`=大班课；毫秒用计划自己的 begin/end（示例即 `588872241920421888` 的 2026-11-06 19:01 ~ 2027-02-04 19:01）。
+  - 回读：`gaotu.process_config`（type=2）、`gaotu.node_config`（type=3）、`gaotu.renewal_link`（product_type=2）各 1 行。本次新增 number：process `589010207351453696`、node `589010207357745152`、renewal_link `589010207364036608`；edit 调用 trace `product_gaotu100_com.274.17939423059270585`。
+- **验证方式**：重调 `renewalOrder/validate`（同 body，`type=1`）→ `{"code":0,"msg":"跳过校验"}`（trace `b8765cbe-a85d-4b39-b9ac-0fdf36dfcea5.0.3`）；桥 `RenewalService#renewalOrderValidate` 返回 `{true:"跳过校验"}`（trace `student-center.21791960.17939423331180465`）。
+- **注意**：`type=1`（预览）会跳过时间窗校验，所以补流程后即便不在报名时间窗也返回「跳过校验」；`type=3`（发送）才校验流程时间窗。补流程只解决「流程不存在」这一类拦截，不代表链接生成/发送全链路都过。补流程后的完整生成链路见 8.9。
+
+### 8.9 EES 单人「发链接 → 推荐链接」完整链路（生成侧）
+
+- **入口**：EES 续班服务 → 选中学员行 → 行内「发链接」→「推荐链接」→ 弹窗「发推荐链接」→ 选 H5「推荐下单链接」+ 售卖主体「高途」→ 左侧 H5 预览 → 「复制通用链接」（或「发送」）。
+- **接口链**（host `test-fuwu.baijia.com`，实测均 200；缺前置见 8.8）：
+  1. `POST /bgwApi/component/student-center/roster/renewal/renewalOrder/validate`，body `{clazzNumbersStr, renewalPlanId, type}`（生成预览 type=1 / 复制·发送 type=2）→ 需该计划有 type=2 续班报名流程。
+  2. `POST /bgwApi/component/student-center/roster/renewal/config`，body `{reportCode:"suggest_order_link", planClazzList:[{clazzNumber,renewalPlanId}]}` → 返回 reportType/h5 模板。
+  3. `POST /bgwApi/component/student-center/roster/renewal/recommend/appInfo` → 返回售卖主体列表（高途 / 途途课堂）。
+  4. `POST /bgwApi/component/student-center/roster/renewal/recommend/url`，body `{type, appInfo, userIdList:[<uid>], ...}` → 返回 `{ "<计划号>_<班级号>_<uid>": {url:"https://dwz.cn/xxx", name:"发推荐下单链接"} }`。
+  - 预览 H5 另会打 `GET test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=<计划号>&appointUserId=<uid>&...`。
+- **落地页**：`https://dwz.cn/xxx` 302 → `https://test-m.gaotu.cn/suggestShoppingCart?renewalNumber=<计划号>&seller_id=7682&p_client=1&pt=<带uid的JWT>&includeBCart=false&appointUserId=<uid>`。
+- **本次实测（2026-11-06，学员 `7658129872` / 计划 `588872241920421888`）**：
+  - 生成短链 `https://dwz.cn/ojzBCOlq`（type=1，trace `826a1da8-b6db-4ac2-9ee5-3a2e7e016b1f.0.0`）；「复制通用链接」`https://dwz.cn/Oh1DQuHg`（type=2，trace `52781009-640d-49c8-a448-de81d03fc758.0.0`）。
+  - validate(type=1) trace `92a5e823-8b10-48b9-87a1-07ca5489dc55.0.0`；validate(type=2) trace `60531775-d482-4792-987a-c9a578bcb246.0.0`；config trace `b0d10bc5-9657-45f8-a7e9-789c77750468.0.0`；appInfo trace `9f72dadd-523f-433b-963a-aeaeb86100aa.0.0`。
+  - H5 预览实时渲染成功；短链 302 落地页 200。**未点「发送」**（会真发企微/短信），发送后下游未验。
+- **注意**：链接里 `pt` 是带 userId 的 JWT，`appointUserId`=学员 uid，`renewalNumber`=行内计划号。本学员 `7658129872` 的续班服务行是班级 `588861402658267136` / 计划 `588872241920421888`（**不是** `574882679202260992`，该学员不在那个班）。
+
 ## 9. 证据与未验证项
 
 **已验证**
@@ -179,6 +215,8 @@ RenewalService#getRenewalDetail("7658129872", "588858850300473344", true, false,
 - 接口层跨模式同单 + mock 支付（支付 `433655835275559341`，两订单 `status=2`）。
 - 接口层 data-agent `mock_pay`（按批次单号）：run `r-20261106100523-08edf28b`，批次单号 `433715450493796358`，`pay_info.pay_status=1`、`pay_channel=6`、`paid_time 2026-11-06 10:05:23`，页面「已报名」。
 - C 端入口/选品/价格页面（小班 0 元样本）：入口 trace `b3084f50`、选品 `90ba9ce9`、价格 `07822e8e`。
+- 计划(588872241920421888) 补 `type=2` 续班报名流程后，`renewalOrder/validate` 由「暂无续班报名流程」→「跳过校验」（见 8.8）。
+- EES 单人「发链接 → 推荐链接」完整生成链路已跑通：H5 预览渲染成功、生成短链 `https://dwz.cn/ojzBCOlq`（type1）/ 复制通用链接 `https://dwz.cn/Oh1DQuHg`（type2）、短链 302 落地页 200（见 8.9）；未点「发送」。截图在 `.../opencode/03_dialog.png`、`04_dialog_preview.png`、`05_after_copy.png`。
 
 **待查项**
 
