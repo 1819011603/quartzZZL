@@ -1,0 +1,65 @@
+{
+  "url": "http://10.218.250.231:28688/test/acl/compare/service",
+  "trafficEnv": "test-gtbg-dev-3",
+  "httpStatus": 200,
+  "directIp": true,
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#productSelect",
+    "params": [
+      {
+        "renewalNumber": "586116340522184704",
+        "beforeCourseNumber": "18314034380997173",
+        "productNumber": "586097025945298944",
+        "productCourseNumber": "18314034380997207"
+      },
+      "7707220467"
+    ]
+  },
+  "curl": "curl -sk \\\n  'http://10.218.250.231:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#productSelect\", \"params\": [{\"renewalNumber\": \"586116340522184704\", \"beforeCourseNumber\": \"18314034380997173\", \"productNumber\": \"586097025945298944\", \"productCourseNumber\": \"18314034380997207\"}, \"7707220467\"]}'",
+  "traceId": "cart_gaotu100_com.291.17939606193550007",
+  "rvoCode": 0,
+  "result": {
+    "clazzDetailVOList": [
+      {
+        "after_course_number": 18314034380997207,
+        "before_course_number": 18314034380997173,
+        "clazz_date_desc": "",
+        "clazz_number": 586097025945298944,
+        "clazz_time_desc": "",
+        "clazz_week_desc": "",
+        "lesson_count": 2,
+        "norm_desc_list": [
+          "售卖规格一",
+          "测试1"
+        ],
+        "price": 0,
+        "product_sku_name": "默认规格",
+        "product_sku_number": 586097025945298944,
+        "product_type": 6004,
+        "select": 0,
+        "sign_up": 1,
+        "subject_names": [
+          "数学"
+        ],
+        "teacher_list": [
+          {
+            "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+            "name": "陈陈",
+            "teacher_number": 346261373801482240,
+            "teacher_role": "主讲老师"
+          }
+        ]
+      }
+    ],
+    "pager": {
+      "current": 1,
+      "offset": 0,
+      "pageSize": 20,
+      "total": 1
+    }
+  },
+  "eurekaService": "CART.GAOTU100.COM",
+  "instanceId": "cart-gaotu100-com-db4558cc5-v58fw:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+  "instanceCount": 4,
+  "elapsed": 1.058
+}

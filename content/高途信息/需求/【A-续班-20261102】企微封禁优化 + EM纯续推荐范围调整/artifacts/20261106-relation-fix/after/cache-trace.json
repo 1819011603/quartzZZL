@@ -1,0 +1,20 @@
+{
+  "ok": true,
+  "traceId": "product_gaotu100_com.270.17939609122510002",
+  "env": "test",
+  "host": "https://test-qingzhou.baijia.com",
+  "spanCount": 0,
+  "errorSpanCount": 0,
+  "mode": "flat",
+  "raw": {
+    "traceInfo": {
+      "spanId": 0,
+      "traceSegmentId": "mock_root_segment_id",
+      "startTime": 1793960912251,
+      "isSpan": false,
+      "sumDuration": 32,
+      "colorType": 1
+    },
+    "child": []
+  }
+}

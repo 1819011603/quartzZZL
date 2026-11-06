@@ -1,0 +1,14 @@
+{
+  "product-server": {
+    "head": "07ba05df6cfabcf0472e1ad27e26ff95cff98467",
+    "status": ""
+  },
+  "cart": {
+    "head": "d572942668fc5566c7421005efa8f9a7ae22a21c",
+    "status": ""
+  },
+  "order": {
+    "head": "0cc8ef68b6c29f1d3101f5fa08ea7ec634050bf9",
+    "status": ""
+  }
+}

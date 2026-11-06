@@ -8,13 +8,21 @@ branches:
   - student-center:feature-xuban-pure-relation-20261102
   - cart:feature-xuban-pure-relation-20261102
   - order:feature-xuban-pure-relation-20261102
-updated: 2026-11-05
+updated: 2026-11-06
 tags: [需求]
 ---
 
 # 【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整
 
 > 飞书方案（含表结构+接口协议）：https://gaotuedu.feishu.cn/docx/AQEtdIeKzo7P5IxeQEzc7EpxnBe
+
+## 当前修复（2026-11-06）
+
+T-18进行中：已获授权修复跨模式换班、后置已购、库存兜底范围、关联缓存；明确排除全集保存并发。改前运行原件固定于 `artifacts/20261106-relation-fix/before/`，同输入改后验证；cart首批运行已修复推荐已购和换班报错；补齐换班列表已购字段的1ebd315d已推送待部署。product2593dae78缓存11项通过、B/C镜像构建成功待UP。详见[修复与对照](artifacts/20261106-relation-fix/README.md)。
+
+## 当前代码审查（2026-11-06）
+
+三个 MR 最新 head 的静态审查记录见 [MR diff 审查](artifacts/20261106-mr-diff-review.md)：跨模式换班库存类型、后置已购识别、关联保存并发、事务内缓存失效共 4 项建议修复；另列库存缺失放行、order 全局放行、client 字段类型 3 项兼容性变化。后续已用现存造数在当前cart d5729426复现跨模式换班报错、同SKU已购识别不一致，见[当前运行验证](verify.md)；其余仍按条件性风险分级。未改业务代码，不覆盖企微前后端实现，也不替代原 P0 验收。
 
 ## 当前核对与 P0 验证（2026-11-05）
 
@@ -51,7 +59,7 @@ tags: [需求]
 
 ## 现在什么情况
 
-- 当前工作单 T 6/7 · R 0/0 · C 0/0：T-9至T-14交付；T-15包含已验子集及必需未执行/外部回溯后续，未标整需求完成。
+- 当前工作单 T 6/8 · R 0/0 · C 0/0：T-9至T-14交付；T-15包含已验子集及必需未执行/外部回溯后续，未标整需求完成。
 - 本轮TEST采样与保留对象/恢复结论见verify；前端不改、不新部署，不把默认TEST企微结果归给目标feature。
 - 下一步按P0剩余缺口推进；已补受控大班筛选，剩余EM/小班/页面场景按已授权TEST范围执行，不重放build或已付单。
 

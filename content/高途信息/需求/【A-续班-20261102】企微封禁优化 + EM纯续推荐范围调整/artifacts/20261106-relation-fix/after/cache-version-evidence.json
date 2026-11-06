@@ -1,0 +1,37 @@
+[
+  {
+    "timestamp": "2026-11-06 18:28:31.087",
+    "trace_id": "product_gaotu100_com.268.17939609109660002",
+    "message": "2026-11-06 18:28:31.087 INFO  [RenewalMasterRelationService:120][http-nio-28688-exec-21] fcec1654ab6b3a998927c0e485289093 - [TID: product_gaotu100_com.268.17939609109660002] renewal relation cache read, key=renewal:relation:v2:588858850300473344:0, hit=false, empty=false",
+    "image_name": "acr.baijia.com/uqun/product-gaotu100-com:feature-xuban-pure-relation-20261102-2593dae7-20261106182109",
+    "container_ip": "10.218.250.0"
+  },
+  {
+    "timestamp": "2026-11-06 18:28:31.098",
+    "trace_id": "product_gaotu100_com.268.17939609109660002",
+    "message": "2026-11-06 18:28:31.098 INFO  [RenewalMasterRelationService:134][http-nio-28688-exec-21] fcec1654ab6b3a998927c0e485289093 - [TID: product_gaotu100_com.268.17939609109660002] renewal relation cache set, key=renewal:relation:v2:588858850300473344:0, empty=false",
+    "image_name": "acr.baijia.com/uqun/product-gaotu100-com:feature-xuban-pure-relation-20261102-2593dae7-20261106182109",
+    "container_ip": "10.218.250.0"
+  },
+  {
+    "timestamp": "2026-11-06 18:28:32.265",
+    "trace_id": "product_gaotu100_com.270.17939609122510002",
+    "message": "2026-11-06 18:28:32.265 INFO  [RenewalMasterRelationService:120][http-nio-28688-exec-23] 27e67d7ebbc72d2a8365042eadeda79e - [TID: product_gaotu100_com.270.17939609122510002] renewal relation cache read, key=renewal:relation:v2:588858850300473344:c3eeef72-51e0-42f1-939f-f54b400715d2, hit=false, empty=false",
+    "image_name": "acr.baijia.com/uqun/product-gaotu100-com:feature-xuban-pure-relation-20261102-2593dae7-20261106182109",
+    "container_ip": "10.218.250.0"
+  },
+  {
+    "timestamp": "2026-11-06 18:28:32.276",
+    "trace_id": "product_gaotu100_com.270.17939609122510002",
+    "message": "2026-11-06 18:28:32.276 INFO  [RenewalMasterRelationService:134][http-nio-28688-exec-23] 27e67d7ebbc72d2a8365042eadeda79e - [TID: product_gaotu100_com.270.17939609122510002] renewal relation cache set, key=renewal:relation:v2:588858850300473344:c3eeef72-51e0-42f1-939f-f54b400715d2, empty=false",
+    "image_name": "acr.baijia.com/uqun/product-gaotu100-com:feature-xuban-pure-relation-20261102-2593dae7-20261106182109",
+    "container_ip": "10.218.250.0"
+  },
+  {
+    "timestamp": "2026-11-06 18:28:32.362",
+    "trace_id": "product_gaotu100_com.272.17939609123480002",
+    "message": "2026-11-06 18:28:32.362 INFO  [RenewalMasterRelationService:120][http-nio-28688-exec-25] 637f229a444cc5c453a0cf57a3677b25 - [TID: product_gaotu100_com.272.17939609123480002] renewal relation cache read, key=renewal:relation:v2:588858850300473344:c3eeef72-51e0-42f1-939f-f54b400715d2, hit=true, empty=false",
+    "image_name": "acr.baijia.com/uqun/product-gaotu100-com:feature-xuban-pure-relation-20261102-2593dae7-20261106182109",
+    "container_ip": "10.218.250.0"
+  }
+]

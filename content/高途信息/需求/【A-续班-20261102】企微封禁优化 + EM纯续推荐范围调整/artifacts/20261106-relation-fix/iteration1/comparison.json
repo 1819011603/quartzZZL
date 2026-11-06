@@ -1,0 +1,157 @@
+[
+  {
+    "case": "recommend-7707220467",
+    "traceId": "cart_gaotu100_com.295.17939606152620006",
+    "elapsed": 4.2,
+    "items": [
+      {
+        "product_sku_number": 586097025945298944,
+        "product_type": 6004,
+        "sign_up": 1,
+        "price": 0
+      },
+      {
+        "product_sku_number": 588861402658267136,
+        "product_type": 2,
+        "sign_up": 1,
+        "price": null
+      }
+    ],
+    "all_sign_up": 1
+  },
+  {
+    "case": "recommend-7658129872",
+    "traceId": "cart_gaotu100_com.292.17939606152620006",
+    "elapsed": 4.2,
+    "items": [
+      {
+        "product_sku_number": 585960755422160896,
+        "product_type": 2,
+        "sign_up": 1,
+        "price": null
+      },
+      {
+        "product_sku_number": 586097025945298944,
+        "product_type": 6004,
+        "sign_up": 1,
+        "price": 0
+      },
+      {
+        "product_sku_number": 588861402658267136,
+        "product_type": 2,
+        "sign_up": 1,
+        "price": null
+      }
+    ],
+    "all_sign_up": 1
+  },
+  {
+    "case": "recommend-web-main",
+    "traceId": "cart_gaotu100_com.294.17939606152620006",
+    "elapsed": 4.197,
+    "items": [
+      {
+        "product_sku_number": 586097025945298944,
+        "product_type": 6004,
+        "sign_up": 1,
+        "price": 0
+      },
+      {
+        "product_sku_number": 588861402658267136,
+        "product_type": 2,
+        "sign_up": 1,
+        "price": null
+      }
+    ],
+    "all_sign_up": 1
+  },
+  {
+    "case": "recommend-web-small",
+    "traceId": "cart_gaotu100_com.290.17939606193370006",
+    "elapsed": 1.225,
+    "items": [
+      {
+        "product_sku_number": 585963404555053056,
+        "product_type": 2,
+        "sign_up": 0,
+        "price": 0
+      },
+      {
+        "product_sku_number": 586097025945298944,
+        "product_type": 6004,
+        "sign_up": 1,
+        "price": 0
+      },
+      {
+        "product_sku_number": 579971527131324416,
+        "product_type": 2,
+        "sign_up": 0,
+        "price": 0
+      }
+    ],
+    "all_sign_up": 0
+  },
+  {
+    "case": "select-cross",
+    "traceId": "cart_gaotu100_com.293.17939606193550007",
+    "elapsed": 0.523,
+    "items": [
+      {
+        "product_sku_number": 586097025945298944,
+        "product_type": 6004,
+        "sign_up": 0,
+        "price": 0
+      }
+    ]
+  },
+  {
+    "case": "select-small-own",
+    "traceId": "cart_gaotu100_com.291.17939606193550007",
+    "elapsed": 1.058,
+    "items": [
+      {
+        "product_sku_number": 586097025945298944,
+        "product_type": 6004,
+        "sign_up": 1,
+        "price": 0
+      }
+    ]
+  },
+  {
+    "case": "recommend-small-own",
+    "traceId": "cart_gaotu100_com.294.17939606198610008",
+    "elapsed": 0.586,
+    "items": [
+      {
+        "product_sku_number": 586097025945298944,
+        "product_type": 6004,
+        "sign_up": 1,
+        "price": 0
+      }
+    ],
+    "all_sign_up": 1
+  },
+  {
+    "case": "reverse-engine-before",
+    "traceId": "cart_gaotu100_com.289.17939606204770007",
+    "elapsed": 0.929,
+    "items": [
+      {
+        "product_id": 586097025945298944,
+        "sign_up": 1
+      },
+      {
+        "product_id": 588861402658267136,
+        "sign_up": 1
+      }
+    ]
+  },
+  {
+    "case": "plan-main",
+    "traceId": "cart_gaotu100_com.297.17939606205290006",
+    "elapsed": 0.342,
+    "course_numbers": [
+      588861395571990528
+    ]
+  }
+]

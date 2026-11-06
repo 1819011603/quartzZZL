@@ -1,0 +1,2318 @@
+{
+  "url": "http://10.218.250.231:28688/test/acl/compare/service",
+  "trafficEnv": "test-gtbg-dev-3",
+  "httpStatus": 200,
+  "directIp": true,
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.renewal.small.service.SmallRenewalCoreService#recommendAll",
+    "params": [
+      "7707220467",
+      "586116340522184704",
+      {
+        "courseNumbers": [
+          "18314034380997173",
+          "588861395571990528"
+        ],
+        "renewalNumber": "586116340522184704",
+        "relatedRenewMasterNumbers": [
+          "588858850300473344"
+        ],
+        "type": 2,
+        "productType": 6004,
+        "beginTime": 1791561600000,
+        "endTime": 1798732799000,
+        "recommendMapType": 1,
+        "renewalRecommendMap": {}
+      }
+    ]
+  },
+  "curl": "curl -sk \\\n  'http://10.218.250.231:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.small.service.SmallRenewalCoreService#recommendAll\", \"params\": [\"7707220467\", \"586116340522184704\", {\"courseNumbers\": [\"18314034380997173\", \"588861395571990528\"], \"renewalNumber\": \"586116340522184704\", \"relatedRenewMasterNumbers\": [\"588858850300473344\"], \"type\": 2, \"productType\": 6004, \"beginTime\": 1791561600000, \"endTime\": 1798732799000, \"recommendMapType\": 1, \"renewalRecommendMap\": {}}]}'",
+  "traceId": "cart_gaotu100_com.289.17939606204770007",
+  "rvoCode": 0,
+  "result": {
+    "context": {
+      "clazz_latest_lesson_teacher_map": {
+        "586097025945298944": 346261373801482240,
+        "586090628920764416": 7932284591800384,
+        "586084334251927552": 7932284591800384,
+        "588861397654462464": 11188041873297121,
+        "588861402658267136": 11188041873297121
+      },
+      "clazz_map": {
+        "586097025945298944": {
+          "begin_time": 1793589900000,
+          "bizNumber": "586097025945298944",
+          "capacity": 20,
+          "clazzDateDesc": "",
+          "clazzName": "dcg-小班扩科排除-数学-后置",
+          "clazzTimeDesc": "",
+          "clazzType": 0,
+          "clazzWeekDesc": "",
+          "clazz_tags": [],
+          "courseNumber": 18314034380997207,
+          "course_tag_ids": [],
+          "endTime": 1794371400000,
+          "normal_clazz_lesson_num": 2,
+          "number": 586097025945298944,
+          "price": -1,
+          "product_type": 6004,
+          "saleStatus": 40,
+          "sku_page_show_clazz_lesson_num": 2,
+          "teacherNumbers": [
+            346261373801482240,
+            346261373801482240
+          ],
+          "time_desc": ""
+        },
+        "586090628920764416": {
+          "begin_time": 1792895700000,
+          "bizNumber": "586090628920764416",
+          "capacity": 20,
+          "clazzDateDesc": "",
+          "clazzName": "dcg-小班扩科排除-数学-后置",
+          "clazzTimeDesc": "",
+          "clazzType": 0,
+          "clazzWeekDesc": "",
+          "clazz_tags": [],
+          "courseNumber": 18314034380997186,
+          "course_tag_ids": [],
+          "endTime": 1792985700000,
+          "normal_clazz_lesson_num": 2,
+          "number": 586090628920764416,
+          "price": -1,
+          "product_type": 6004,
+          "saleStatus": 50,
+          "sku_page_show_clazz_lesson_num": 2,
+          "teacherNumbers": [
+            7932284591800384,
+            7932284591800384
+          ],
+          "time_desc": ""
+        },
+        "586084334251927552": {
+          "begin_time": 1793497500000,
+          "bizNumber": "586084334251927552",
+          "capacity": 20,
+          "clazzDateDesc": "",
+          "clazzName": "dcg-小班扩科排除-数学",
+          "clazzTimeDesc": "",
+          "clazzType": 0,
+          "clazzWeekDesc": "",
+          "clazz_tags": [],
+          "courseNumber": 18314034380997173,
+          "course_tag_ids": [],
+          "endTime": 1793587500000,
+          "normal_clazz_lesson_num": 2,
+          "number": 586084334251927552,
+          "price": -1,
+          "product_type": 6004,
+          "saleStatus": 50,
+          "sku_page_show_clazz_lesson_num": 2,
+          "teacherNumbers": [
+            346261373801482240,
+            7932284591800384
+          ],
+          "time_desc": ""
+        },
+        "588861397654462464": {
+          "begin_time": 1794118200000,
+          "bizNumber": "15YW26C6M111001",
+          "capacity": -1,
+          "clazzDateDesc": "2026年11月08日-2026年11月08日",
+          "clazzName": "B测试-五年级语文春季前置B",
+          "clazzTimeDesc": "14:10-14:15",
+          "clazzType": 0,
+          "clazzWeekDesc": "每周日",
+          "clazz_tags": [],
+          "courseNumber": 588861395571990528,
+          "course_tag_ids": [
+            4
+          ],
+          "endTime": 1794118500000,
+          "normal_clazz_lesson_num": 1,
+          "number": 588861397654462464,
+          "price": 0,
+          "product_type": 2,
+          "saleStatus": 40,
+          "sku_page_show_clazz_lesson_num": 1,
+          "teacherNumbers": [
+            11188041873297121
+          ],
+          "time_desc": "2026年11月08日-2026年11月08日 每周日 14:10-14:15"
+        },
+        "588861402658267136": {
+          "begin_time": 1794118800000,
+          "bizNumber": "15YW26XTRO11001",
+          "capacity": -1,
+          "clazzDateDesc": "2026年11月08日-2026年11月08日",
+          "clazzName": "B测试-五年级语文暑假后置1B",
+          "clazzTimeDesc": "14:20-14:25",
+          "clazzType": 0,
+          "clazzWeekDesc": "每周日",
+          "clazz_tags": [],
+          "courseNumber": 588861400563212288,
+          "course_tag_ids": [
+            4
+          ],
+          "endTime": 1794119100000,
+          "normal_clazz_lesson_num": 1,
+          "number": 588861402658267136,
+          "price": 100,
+          "product_type": 2,
+          "saleStatus": 40,
+          "sku_page_show_clazz_lesson_num": 1,
+          "teacherNumbers": [
+            11188041873297121
+          ],
+          "time_desc": "2026年11月08日-2026年11月08日 每周日 14:20-14:25"
+        }
+      },
+      "clazz_type_base_map": {
+        "18314034380997186": {
+          "external_name": "dcg-小班扩科排除-数学-后置无版本系列课",
+          "name": "无版本系列课",
+          "number": 18314034380997186,
+          "target_user": "适用学员",
+          "teach_goal": "教学目标",
+          "teach_product_name": "dcg-小班扩科排除-数学-后置",
+          "teach_product_number": 18314034380997185,
+          "textbook_version_ids": "0"
+        },
+        "18314034380997207": {
+          "external_name": "【造数】线上小班课-小学数学-0917-OP12027暑",
+          "name": "2027暑",
+          "number": 18314034380997207,
+          "target_user": "适用学员",
+          "teach_goal": "教学目标",
+          "teach_product_name": "【造数】线上小班课-小学数学-0917-OP1",
+          "teach_product_number": 18124091080180293,
+          "textbook_version_ids": "0"
+        }
+      },
+      "course_map": {
+        "18314034380997186": {
+          "biz_number": "18314034380997186",
+          "course_name": "dcg-小班扩科排除-数学-后置-无版本系列课",
+          "course_scene_type": 3,
+          "course_types": 40,
+          "department_id_paths": [
+            "10000329/10000339/10000380"
+          ],
+          "difficulty_level": 0,
+          "grades": [
+            12
+          ],
+          "number": 18314034380997186,
+          "school_term_id": "C",
+          "school_year_id": 2026,
+          "subjects": [
+            1
+          ],
+          "textbook_version": 0
+        },
+        "588861400563212288": {
+          "biz_number": "15YW26XTRO1",
+          "course_name": "B测试-五年级语文暑假后置1B",
+          "course_scene_type": 1,
+          "course_types": 40,
+          "department_id_paths": [
+            "10007722"
+          ],
+          "difficulty_level": 0,
+          "grades": [
+            15
+          ],
+          "number": 588861400563212288,
+          "school_term_id": "X",
+          "school_year_id": 2026,
+          "subjects": [
+            5
+          ],
+          "textbook_version": 0
+        },
+        "18314034380997207": {
+          "biz_number": "18314034380997207",
+          "course_name": "【造数】线上小班课-小学数学-0917-OP1-2027暑",
+          "course_scene_type": 3,
+          "course_types": 40,
+          "department_id_paths": [
+            "10000329/10000339/10000380"
+          ],
+          "difficulty_level": 0,
+          "grades": [
+            11
+          ],
+          "number": 18314034380997207,
+          "school_term_id": "X",
+          "school_year_id": 2027,
+          "subjects": [
+            1
+          ],
+          "textbook_version": 0
+        },
+        "588861395571990528": {
+          "biz_number": "15YW26C6M11",
+          "course_name": "B测试-五年级语文春季前置B",
+          "course_scene_type": 1,
+          "course_types": 40,
+          "department_id_paths": [
+            "10007722"
+          ],
+          "difficulty_level": 0,
+          "grades": [
+            15
+          ],
+          "number": 588861395571990528,
+          "school_term_id": "C",
+          "school_year_id": 2026,
+          "subjects": [
+            5
+          ],
+          "textbook_version": 0
+        },
+        "18314034380997173": {
+          "biz_number": "18314034380997173",
+          "course_name": "【造数】线上小班课-小学数学-0917-OP1-2026-2027春",
+          "course_scene_type": 3,
+          "course_types": 40,
+          "department_id_paths": [
+            "10000329/10000339/10000380"
+          ],
+          "difficulty_level": 0,
+          "grades": [
+            11
+          ],
+          "number": 18314034380997173,
+          "school_term_id": "C",
+          "school_year_id": 2026,
+          "subjects": [
+            1
+          ],
+          "textbook_version": 0
+        }
+      },
+      "debug_enabled": true,
+      "debug_info": {
+        "logs": [
+          "开始执行SubBuilder: RenewalConfigQuerySubBuilder",
+          "SubBuilder执行完成: RenewalConfigQuerySubBuilder, duration=0ms",
+          "开始执行SubBuilder: ExpandSubjectConfigSubBuilder",
+          "SubBuilder执行完成: ExpandSubjectConfigSubBuilder, duration=0ms",
+          "开始执行SubBuilder: UserOrderQuerySubBuilder",
+          "查询用户有效订单成功, orderCount=2",
+          "SubBuilder执行完成: UserOrderQuerySubBuilder, duration=49ms",
+          "开始执行SubBuilder: PreClassInfoBuildSubBuilder",
+          "构建前置班级信息列表成功, preClassCount=2",
+          "SubBuilder执行完成: PreClassInfoBuildSubBuilder, duration=1ms",
+          "开始执行SubBuilder: RenewalRelationMapBuildSubBuilder",
+          "构建续班关系映射成功, preCourseCount=2, relationCount=2",
+          "SubBuilder执行完成: RenewalRelationMapBuildSubBuilder, duration=11ms",
+          "开始执行SubBuilder: CourseInfoQuerySubBuilder",
+          "批量查询课程信息成功, courseCount=5, postCourseCount=3",
+          "SubBuilder执行完成: CourseInfoQuerySubBuilder, duration=46ms",
+          "开始执行SubBuilder: ClazzTypeBaseInfoSubBuilder",
+          "班型基础信息构建完成, count=2",
+          "SubBuilder执行完成: ClazzTypeBaseInfoSubBuilder, duration=21ms",
+          "开始执行SubBuilder: ClazzInfoQuerySubBuilder",
+          "批量查询班级信息成功, totalClazzCount=5, postClazzCount=3",
+          "SubBuilder执行完成: ClazzInfoQuerySubBuilder, duration=1ms",
+          "开始执行SubBuilder: ClazzLessonInfoQuerySubBuilder",
+          "SubBuilder执行完成: ClazzLessonInfoQuerySubBuilder, duration=28ms",
+          "开始执行SubBuilder: ProductSkuInfoQuerySubBuilder",
+          "批量查询商品SKU信息成功, productSkuCount=5",
+          "SubBuilder执行完成: ProductSkuInfoQuerySubBuilder, duration=179ms",
+          "开始执行SubBuilder: StockInfoQuerySubBuilder",
+          "开始执行SubBuilder: TeacherInfoQuerySubBuilder",
+          "批量查询教师信息成功, teacherCount=3",
+          "SubBuilder执行完成: TeacherInfoQuerySubBuilder, duration=1ms",
+          "批量查询库存信息成功, stockCount=3",
+          "SubBuilder执行完成: StockInfoQuerySubBuilder, duration=31ms",
+          "开始执行SubBuilder: PreClassInfoEnrichSubBuilder",
+          "SubBuilder执行完成: PreClassInfoEnrichSubBuilder, duration=0ms",
+          "开始执行SubBuilder: TeacherOpAccountSubBuilder",
+          "SubBuilder执行完成: TeacherOpAccountSubBuilder, duration=37ms",
+          "开始执行SubBuilder: PostClassInfoBuildSubBuilder",
+          "构建后置班级信息列表成功, postClassCount=3",
+          "后置班级按前置课程分组完成, preClassCount=2, groupedPostClassCount=3",
+          "SubBuilder执行完成: PostClassInfoBuildSubBuilder, duration=0ms",
+          "开始执行SubBuilder: UserPostClassOrderSubBuilder",
+          "用户已购后置班级查询完成, purchasedCount=2",
+          "SubBuilder执行完成: UserPostClassOrderSubBuilder, duration=34ms",
+          "开始执行SubBuilder: BCartQuerySubBuilder",
+          "SubBuilder执行完成: BCartQuerySubBuilder, duration=0ms",
+          "开始执行SubBuilder: WhitelistBuildSubBuilder",
+          "构建白名单配置映射成功, whitelistSize=0",
+          "SubBuilder执行完成: WhitelistBuildSubBuilder, duration=0ms",
+          "开始执行SubBuilder: UserRenewalClazzSubBuilder",
+          "SubBuilder执行完成: UserRenewalClazzSubBuilder, duration=18ms",
+          "开始执行SubBuilder: SubjectMapBuildSubBuilder",
+          "构建学科Map成功, subjectCount=183",
+          "SubBuilder执行完成: SubjectMapBuildSubBuilder, duration=24ms",
+          "开始执行SubBuilder: DataConsistencyValidateSubBuilder",
+          "数据一致性校验完成",
+          "SubBuilder执行完成: DataConsistencyValidateSubBuilder, duration=0ms",
+          "开始执行SubBuilder: PreConditionValidateSubBuilder",
+          "前置条件校验通过",
+          "SubBuilder执行完成: PreConditionValidateSubBuilder, duration=0ms",
+          "构建候选列表完成, preClassNumber=586084334251927552, candidateCount=2",
+          "已购商品优先命中, count=1, keys=[ProductKey(productType=6004, productId=586097025945298944)]",
+          "过滤插件执行完成, pluginName=PurchasedProductMatchPlugin, executeResult=INTERRUPT, candidateCount=1, duration=1ms",
+          "构建候选列表完成, preClassNumber=588861397654462464, candidateCount=1",
+          "已购商品优先命中, count=1, keys=[ProductKey(productType=6004, productId=588861402658267136)]",
+          "过滤插件执行完成, pluginName=PurchasedProductMatchPlugin, executeResult=INTERRUPT, candidateCount=1, duration=0ms"
+        ]
+      },
+      "debug_logs": [
+        "开始执行SubBuilder: RenewalConfigQuerySubBuilder",
+        "SubBuilder执行完成: RenewalConfigQuerySubBuilder, duration=0ms",
+        "开始执行SubBuilder: ExpandSubjectConfigSubBuilder",
+        "SubBuilder执行完成: ExpandSubjectConfigSubBuilder, duration=0ms",
+        "开始执行SubBuilder: UserOrderQuerySubBuilder",
+        "查询用户有效订单成功, orderCount=2",
+        "SubBuilder执行完成: UserOrderQuerySubBuilder, duration=49ms",
+        "开始执行SubBuilder: PreClassInfoBuildSubBuilder",
+        "构建前置班级信息列表成功, preClassCount=2",
+        "SubBuilder执行完成: PreClassInfoBuildSubBuilder, duration=1ms",
+        "开始执行SubBuilder: RenewalRelationMapBuildSubBuilder",
+        "构建续班关系映射成功, preCourseCount=2, relationCount=2",
+        "SubBuilder执行完成: RenewalRelationMapBuildSubBuilder, duration=11ms",
+        "开始执行SubBuilder: CourseInfoQuerySubBuilder",
+        "批量查询课程信息成功, courseCount=5, postCourseCount=3",
+        "SubBuilder执行完成: CourseInfoQuerySubBuilder, duration=46ms",
+        "开始执行SubBuilder: ClazzTypeBaseInfoSubBuilder",
+        "班型基础信息构建完成, count=2",
+        "SubBuilder执行完成: ClazzTypeBaseInfoSubBuilder, duration=21ms",
+        "开始执行SubBuilder: ClazzInfoQuerySubBuilder",
+        "批量查询班级信息成功, totalClazzCount=5, postClazzCount=3",
+        "SubBuilder执行完成: ClazzInfoQuerySubBuilder, duration=1ms",
+        "开始执行SubBuilder: ClazzLessonInfoQuerySubBuilder",
+        "SubBuilder执行完成: ClazzLessonInfoQuerySubBuilder, duration=28ms",
+        "开始执行SubBuilder: ProductSkuInfoQuerySubBuilder",
+        "批量查询商品SKU信息成功, productSkuCount=5",
+        "SubBuilder执行完成: ProductSkuInfoQuerySubBuilder, duration=179ms",
+        "开始执行SubBuilder: StockInfoQuerySubBuilder",
+        "开始执行SubBuilder: TeacherInfoQuerySubBuilder",
+        "批量查询教师信息成功, teacherCount=3",
+        "SubBuilder执行完成: TeacherInfoQuerySubBuilder, duration=1ms",
+        "批量查询库存信息成功, stockCount=3",
+        "SubBuilder执行完成: StockInfoQuerySubBuilder, duration=31ms",
+        "开始执行SubBuilder: PreClassInfoEnrichSubBuilder",
+        "SubBuilder执行完成: PreClassInfoEnrichSubBuilder, duration=0ms",
+        "开始执行SubBuilder: TeacherOpAccountSubBuilder",
+        "SubBuilder执行完成: TeacherOpAccountSubBuilder, duration=37ms",
+        "开始执行SubBuilder: PostClassInfoBuildSubBuilder",
+        "构建后置班级信息列表成功, postClassCount=3",
+        "后置班级按前置课程分组完成, preClassCount=2, groupedPostClassCount=3",
+        "SubBuilder执行完成: PostClassInfoBuildSubBuilder, duration=0ms",
+        "开始执行SubBuilder: UserPostClassOrderSubBuilder",
+        "用户已购后置班级查询完成, purchasedCount=2",
+        "SubBuilder执行完成: UserPostClassOrderSubBuilder, duration=34ms",
+        "开始执行SubBuilder: BCartQuerySubBuilder",
+        "SubBuilder执行完成: BCartQuerySubBuilder, duration=0ms",
+        "开始执行SubBuilder: WhitelistBuildSubBuilder",
+        "构建白名单配置映射成功, whitelistSize=0",
+        "SubBuilder执行完成: WhitelistBuildSubBuilder, duration=0ms",
+        "开始执行SubBuilder: UserRenewalClazzSubBuilder",
+        "SubBuilder执行完成: UserRenewalClazzSubBuilder, duration=18ms",
+        "开始执行SubBuilder: SubjectMapBuildSubBuilder",
+        "构建学科Map成功, subjectCount=183",
+        "SubBuilder执行完成: SubjectMapBuildSubBuilder, duration=24ms",
+        "开始执行SubBuilder: DataConsistencyValidateSubBuilder",
+        "数据一致性校验完成",
+        "SubBuilder执行完成: DataConsistencyValidateSubBuilder, duration=0ms",
+        "开始执行SubBuilder: PreConditionValidateSubBuilder",
+        "前置条件校验通过",
+        "SubBuilder执行完成: PreConditionValidateSubBuilder, duration=0ms",
+        "构建候选列表完成, preClassNumber=586084334251927552, candidateCount=2",
+        "已购商品优先命中, count=1, keys=[ProductKey(productType=6004, productId=586097025945298944)]",
+        "过滤插件执行完成, pluginName=PurchasedProductMatchPlugin, executeResult=INTERRUPT, candidateCount=1, duration=1ms",
+        "构建候选列表完成, preClassNumber=588861397654462464, candidateCount=1",
+        "已购商品优先命中, count=1, keys=[ProductKey(productType=6004, productId=588861402658267136)]",
+        "过滤插件执行完成, pluginName=PurchasedProductMatchPlugin, executeResult=INTERRUPT, candidateCount=1, duration=0ms"
+      ],
+      "include_b_cart": false,
+      "order_items": [
+        {
+          "address_id": 0,
+          "app_id": 33554611,
+          "biz_line": 0,
+          "confirmed_time": "2026-11-05T18:08:41",
+          "create_time": "2026-11-05T18:08:40",
+          "gift_flag": false,
+          "id": 433655675288028077,
+          "invoice": "75",
+          "manual_price": 0,
+          "mark": 0,
+          "need_delivery": false,
+          "number": 433655675288028077,
+          "order_status": 2,
+          "order_type": 6004,
+          "pay_account_type": "75",
+          "pay_number": 433655675288027565,
+          "price": 0,
+          "promotion_price": 0,
+          "quantity": 1,
+          "refund_type": 0,
+          "sales_price": 0,
+          "sku_number": 586084334251927552,
+          "sku_price": 0,
+          "sku_type": 6004,
+          "sku_version": 1792548302916,
+          "spu_number": 18314034380997173,
+          "spu_version": 1792548302916,
+          "update_time": "2026-11-05T18:08:41",
+          "user_id": 7707220467
+        },
+        {
+          "gift_flag": false,
+          "id": 433654730395222957,
+          "number": 433654730395222957,
+          "order_status": 2,
+          "sku_number": 588861397654462464,
+          "spu_number": 588861395571990528,
+          "user_id": 7707220467
+        }
+      ],
+      "post_class_info_list": [
+        {
+          "allow_missing_stock": true,
+          "clazz_number": 586097025945298944,
+          "clazz_status": 40,
+          "course_number": 18314034380997207,
+          "main_teacher_id": 346261373801482240,
+          "main_teacher_name": "陈陈",
+          "open_class_time": 1793589900000,
+          "product_key": {
+            "product_id": 586097025945298944,
+            "product_type": 6004
+          },
+          "salable": true,
+          "stock_quantity": 18,
+          "subject_ids": [
+            1
+          ]
+        },
+        {
+          "allow_missing_stock": true,
+          "clazz_number": 586090628920764416,
+          "clazz_status": 40,
+          "course_number": 18314034380997186,
+          "main_teacher_id": 7932284591800384,
+          "main_teacher_name": "王碧云-外显主讲",
+          "open_class_time": 1792895700000,
+          "product_key": {
+            "product_id": 586090628920764416,
+            "product_type": 6004
+          },
+          "salable": true,
+          "stock_quantity": 20,
+          "subject_ids": [
+            1
+          ]
+        },
+        {
+          "allow_missing_stock": true,
+          "clazz_number": 588861402658267136,
+          "clazz_status": 40,
+          "course_number": 588861400563212288,
+          "main_teacher_id": 11188041873297121,
+          "main_teacher_name": "唐稳01主讲",
+          "open_class_time": 1794118800000,
+          "product_key": {
+            "product_id": 588861402658267136,
+            "product_type": 6004
+          },
+          "salable": true,
+          "stock_quantity": 9999997,
+          "subject_ids": [
+            5
+          ]
+        }
+      ],
+      "post_clazz_number_set": [
+        586097025945298944,
+        586090628920764416,
+        588861402658267136
+      ],
+      "post_course_number_set": [
+        18314034380997186,
+        588861400563212288,
+        18314034380997207
+      ],
+      "pre_class_info_list": [
+        {
+          "clazz_number": 586084334251927552,
+          "course_number": 18314034380997173,
+          "main_teacher_id": 7932284591800384,
+          "main_teacher_name": "王碧云-外显主讲",
+          "main_teacher_operational_account_ids": [
+            7938497517899008,
+            8311225782829184,
+            7932284591800384,
+            7937140242285184,
+            7932763303346816
+          ],
+          "post_class_info_list": [
+            {
+              "allow_missing_stock": true,
+              "clazz_number": 586097025945298944,
+              "clazz_status": 40,
+              "course_number": 18314034380997207,
+              "main_teacher_id": 346261373801482240,
+              "main_teacher_name": "陈陈",
+              "open_class_time": 1793589900000,
+              "product_key": {
+                "product_id": 586097025945298944,
+                "product_type": 6004
+              },
+              "salable": true,
+              "stock_quantity": 18,
+              "subject_ids": [
+                1
+              ]
+            },
+            {
+              "allow_missing_stock": true,
+              "clazz_number": 586090628920764416,
+              "clazz_status": 40,
+              "course_number": 18314034380997186,
+              "main_teacher_id": 7932284591800384,
+              "main_teacher_name": "王碧云-外显主讲",
+              "open_class_time": 1792895700000,
+              "product_key": {
+                "product_id": 586090628920764416,
+                "product_type": 6004
+              },
+              "salable": true,
+              "stock_quantity": 20,
+              "subject_ids": [
+                1
+              ]
+            }
+          ],
+          "product_key": {
+            "product_id": 586084334251927552,
+            "product_type": 6004
+          },
+          "product_type": 6004,
+          "subject_ids": [
+            1
+          ]
+        },
+        {
+          "clazz_number": 588861397654462464,
+          "course_number": 588861395571990528,
+          "main_teacher_id": 11188041873297121,
+          "main_teacher_name": "唐稳01主讲",
+          "post_class_info_list": [
+            {
+              "allow_missing_stock": true,
+              "clazz_number": 588861402658267136,
+              "clazz_status": 40,
+              "course_number": 588861400563212288,
+              "main_teacher_id": 11188041873297121,
+              "main_teacher_name": "唐稳01主讲",
+              "open_class_time": 1794118800000,
+              "product_key": {
+                "product_id": 588861402658267136,
+                "product_type": 6004
+              },
+              "salable": true,
+              "stock_quantity": 9999997,
+              "subject_ids": [
+                5
+              ]
+            }
+          ],
+          "product_key": {
+            "product_id": 588861397654462464,
+            "product_type": 6004
+          },
+          "product_type": 6004,
+          "subject_ids": [
+            5
+          ]
+        }
+      ],
+      "product_sku_map": {
+        "586097025945298944": {
+          "product_sku_dto": {
+            "app": 34603187,
+            "biz_type": 0,
+            "can_be_sold": true,
+            "capacity": 20,
+            "clazz_count": 0,
+            "clazz_hour_unit": 0,
+            "image": "",
+            "image_url": "",
+            "need_delivery": 0,
+            "product_sku_name": "默认规格",
+            "product_sku_number": 586097025945298944,
+            "product_sku_version": 1792565249996,
+            "product_spu_number": 18314034380997207,
+            "product_type": 6004,
+            "sale_price": 0,
+            "sale_status": 40,
+            "up_status": 0
+          },
+          "product_sku_norm_detail_dto_list": [
+            {
+              "norm_attr_id": "9018866949889259",
+              "norm_attr_name": "规格",
+              "norm_attr_order": 0,
+              "norm_attr_value": "售卖规格一",
+              "norm_attr_value_id": "293513876270616336"
+            },
+            {
+              "norm_attr_id": "9018866949889293",
+              "norm_attr_name": "规格测试-财商",
+              "norm_attr_order": 0,
+              "norm_attr_value": "测试1",
+              "norm_attr_value_id": "293513876270616971"
+            }
+          ],
+          "product_spu_dto": {
+            "app": 34603187,
+            "can_be_sold": true,
+            "category_id": 810651,
+            "category_path": "5/810650/810651",
+            "master_image": "",
+            "master_image_url": "",
+            "product_spu_name": "dcg-小班扩科排除-数学-后置",
+            "product_spu_number": 18314034380997207,
+            "product_spu_version": 1792565249996,
+            "product_type": 6004,
+            "sale_status": 40
+          },
+          "sku_payment_dto": {
+            "collection_account_name": "gaotuJP",
+            "collection_account_number": "75",
+            "refund_account_name": "gaotuJP",
+            "refund_account_number": "75",
+            "sku_number": 586097025945298944,
+            "tax_subject_name": "gaotuJP",
+            "tax_subject_number": "75"
+          }
+        },
+        "586090628920764416": {
+          "product_sku_dto": {
+            "app": 34603187,
+            "biz_type": 0,
+            "can_be_sold": true,
+            "capacity": 20,
+            "clazz_count": 0,
+            "clazz_hour_unit": 0,
+            "image": "",
+            "image_url": "",
+            "need_delivery": 0,
+            "product_sku_name": "默认规格",
+            "product_sku_number": 586090628920764416,
+            "product_sku_version": 1792550204356,
+            "product_spu_number": 18314034380997186,
+            "product_type": 6004,
+            "sale_price": 0,
+            "sale_status": 40,
+            "up_status": 0
+          },
+          "product_sku_norm_detail_dto_list": [
+            {
+              "norm_attr_id": "9018866949889259",
+              "norm_attr_name": "规格",
+              "norm_attr_order": 0,
+              "norm_attr_value": "售卖规格一",
+              "norm_attr_value_id": "293513876270616336"
+            },
+            {
+              "norm_attr_id": "9018866949889293",
+              "norm_attr_name": "规格测试-财商",
+              "norm_attr_order": 0,
+              "norm_attr_value": "测试1",
+              "norm_attr_value_id": "293513876270616971"
+            }
+          ],
+          "product_spu_dto": {
+            "app": 34603187,
+            "can_be_sold": true,
+            "category_id": 1010,
+            "category_path": "5/100/1010",
+            "master_image": "",
+            "master_image_url": "",
+            "product_spu_name": "dcg-小班扩科排除-数学-后置",
+            "product_spu_number": 18314034380997186,
+            "product_spu_version": 1792550204356,
+            "product_type": 6004,
+            "sale_status": 40
+          },
+          "sku_payment_dto": {
+            "collection_account_name": "gaotuJP",
+            "collection_account_number": "75",
+            "refund_account_name": "gaotuJP",
+            "refund_account_number": "75",
+            "sku_number": 586090628920764416,
+            "tax_subject_name": "gaotuJP",
+            "tax_subject_number": "75"
+          }
+        },
+        "586084334251927552": {
+          "product_sku_dto": {
+            "app": 34603187,
+            "biz_type": 0,
+            "can_be_sold": true,
+            "capacity": 20,
+            "clazz_count": 0,
+            "clazz_hour_unit": 0,
+            "image": "",
+            "image_url": "",
+            "need_delivery": 0,
+            "product_sku_name": "默认规格",
+            "product_sku_number": 586084334251927552,
+            "product_sku_version": 1792548302916,
+            "product_spu_number": 18314034380997173,
+            "product_type": 6004,
+            "sale_price": 0,
+            "sale_status": 40,
+            "up_status": 0
+          },
+          "product_sku_norm_detail_dto_list": [
+            {
+              "norm_attr_id": "9018866949889259",
+              "norm_attr_name": "规格",
+              "norm_attr_order": 0,
+              "norm_attr_value": "售卖规格一",
+              "norm_attr_value_id": "293513876270616336"
+            },
+            {
+              "norm_attr_id": "9018866949889293",
+              "norm_attr_name": "规格测试-财商",
+              "norm_attr_order": 0,
+              "norm_attr_value": "测试1",
+              "norm_attr_value_id": "293513876270616971"
+            }
+          ],
+          "product_spu_dto": {
+            "app": 34603187,
+            "can_be_sold": true,
+            "category_id": 1010,
+            "category_path": "5/100/1010",
+            "master_image": "",
+            "master_image_url": "",
+            "product_spu_name": "dcg-小班扩科排除-数学",
+            "product_spu_number": 18314034380997173,
+            "product_spu_version": 1792548302916,
+            "product_type": 6004,
+            "sale_status": 40
+          },
+          "sku_payment_dto": {
+            "collection_account_name": "gaotuJP",
+            "collection_account_number": "75",
+            "refund_account_name": "gaotuJP",
+            "refund_account_number": "75",
+            "sku_number": 586084334251927552,
+            "tax_subject_name": "gaotuJP",
+            "tax_subject_number": "75"
+          }
+        },
+        "588861397654462464": {
+          "product_sku_dto": {
+            "app": 2,
+            "biz_type": 1,
+            "can_be_sold": true,
+            "capacity": -1,
+            "clazz_count": 0,
+            "clazz_hour_unit": 0,
+            "image": "",
+            "image_url": "",
+            "need_delivery": 1,
+            "product_sku_name": "B测试-五年级语文春季前置B",
+            "product_sku_number": 588861397654462464,
+            "product_sku_version": 1793872127003,
+            "product_spu_number": 588861395571990528,
+            "product_type": 2,
+            "sale_price": 0,
+            "sale_status": 40,
+            "up_status": 0
+          },
+          "product_sku_norm_detail_dto_list": [],
+          "product_spu_dto": {
+            "app": 2,
+            "can_be_sold": true,
+            "category_id": 1420,
+            "category_path": "5/140/1420",
+            "master_image": "",
+            "master_image_url": "",
+            "product_spu_name": "B测试-五年级语文春季前置B",
+            "product_spu_number": 588861395571990528,
+            "product_spu_version": 1793872127003,
+            "product_type": 2,
+            "sale_status": 40
+          },
+          "sku_payment_dto": {
+            "collection_account_name": "gaotuketangk9",
+            "collection_account_number": "66",
+            "refund_account_name": "gaotuketangk9",
+            "refund_account_number": "66",
+            "sku_number": 588861397654462464,
+            "tax_subject_name": "gaotuketangk9",
+            "tax_subject_number": "66"
+          }
+        },
+        "588861402658267136": {
+          "product_sku_dto": {
+            "app": 2,
+            "biz_type": 1,
+            "can_be_sold": true,
+            "capacity": -1,
+            "clazz_count": 0,
+            "clazz_hour_unit": 0,
+            "image": "",
+            "image_url": "",
+            "need_delivery": 1,
+            "product_sku_name": "B测试-五年级语文暑假后置1B",
+            "product_sku_number": 588861402658267136,
+            "product_sku_version": 1793872131393,
+            "product_spu_number": 588861400563212288,
+            "product_type": 2,
+            "sale_price": 100,
+            "sale_status": 40,
+            "up_status": 0
+          },
+          "product_sku_norm_detail_dto_list": [],
+          "product_spu_dto": {
+            "app": 2,
+            "can_be_sold": true,
+            "category_id": 1420,
+            "category_path": "5/140/1420",
+            "master_image": "",
+            "master_image_url": "",
+            "product_spu_name": "B测试-五年级语文暑假后置1B",
+            "product_spu_number": 588861400563212288,
+            "product_spu_version": 1793872131393,
+            "product_type": 2,
+            "sale_status": 40
+          },
+          "sku_payment_dto": {
+            "collection_account_name": "gaotuketangk9",
+            "collection_account_number": "66",
+            "refund_account_name": "gaotuketangk9",
+            "refund_account_number": "66",
+            "sku_number": 588861402658267136,
+            "tax_subject_name": "gaotuketangk9",
+            "tax_subject_number": "66"
+          }
+        }
+      },
+      "purchased_post_clazz_sku_numbers": [
+        586097025945298944,
+        588861402658267136
+      ],
+      "renewal_config": {
+        "beginTime": 1791561600000,
+        "combine_product_sku_numbers": [],
+        "course_numbers": [
+          18314034380997173,
+          588861395571990528
+        ],
+        "effective": true,
+        "endTime": 1798732799000,
+        "productType": 6004,
+        "recommend_map_type": 1,
+        "related_renew_master_numbers": [
+          588858850300473344
+        ],
+        "renewal_number": 586116340522184704,
+        "renewal_recommend_map": {},
+        "type": 2
+      },
+      "renewal_number": 586116340522184704,
+      "renewal_relation_map": {
+        "588861395571990528": [
+          588861400563212288
+        ],
+        "18314034380997173": [
+          18314034380997207,
+          18314034380997186
+        ]
+      },
+      "stock_map": {
+        "586097025945298944": {
+          "number": 586122316562317312,
+          "sku_number": 586097025945298944,
+          "sku_type": 6004,
+          "stock_capacity": 20,
+          "stock_left": 18,
+          "stock_lock": 0,
+          "stock_used": 2
+        },
+        "586090628920764416": {
+          "number": 586090763148869632,
+          "sku_number": 586090628920764416,
+          "sku_type": 6004,
+          "stock_capacity": 20,
+          "stock_left": 20,
+          "stock_lock": 0,
+          "stock_used": 0
+        },
+        "588861402658267136": {
+          "number": 588863040812761088,
+          "sku_number": 588861402658267136,
+          "sku_type": 2,
+          "stock_capacity": 9999999,
+          "stock_left": 9999997,
+          "stock_lock": 0,
+          "stock_used": 2
+        }
+      },
+      "subject_map": {
+        "88": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "88",
+          "name": "文学素养"
+        },
+        "89": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "89",
+          "name": "语言拓展"
+        },
+        "110": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "110",
+          "name": "星火营"
+        },
+        "111": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "111",
+          "name": "美好护航1V1"
+        },
+        "112": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "112",
+          "name": "青少护航1V1"
+        },
+        "113": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "113",
+          "name": "GZ少儿编程"
+        },
+        "114": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "114",
+          "name": "博文创作"
+        },
+        "115": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "115",
+          "name": "国际视野"
+        },
+        "116": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "116",
+          "name": "语文护航"
+        },
+        "117": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "117",
+          "name": "数学护航"
+        },
+        "90": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "90",
+          "name": "逻辑思维"
+        },
+        "118": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "118",
+          "name": "英语护航"
+        },
+        "91": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "91",
+          "name": "自然与科学"
+        },
+        "119": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "119",
+          "name": "物理护航"
+        },
+        "92": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "92",
+          "name": "实验与科学"
+        },
+        "10": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "10",
+          "name": "艺考"
+        },
+        "11": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "11",
+          "name": "地理"
+        },
+        "12": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "12",
+          "name": "历史"
+        },
+        "13": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "13",
+          "name": "学习力"
+        },
+        "14": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "14",
+          "name": "家庭教育"
+        },
+        "15": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "15",
+          "name": "编程"
+        },
+        "16": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "16",
+          "name": "科学"
+        },
+        "17": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "17",
+          "name": "学习分享"
+        },
+        "18": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "18",
+          "name": "家风素养"
+        },
+        "19": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "19",
+          "name": "科学思维"
+        },
+        "120": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "120",
+          "name": "化学护航"
+        },
+        "121": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "121",
+          "name": "生物护航"
+        },
+        "122": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "122",
+          "name": "政治护航"
+        },
+        "1": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "1",
+          "name": "数学"
+        },
+        "123": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "123",
+          "name": "地理护航"
+        },
+        "2": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "2",
+          "name": "化学"
+        },
+        "124": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "124",
+          "name": "历史护航"
+        },
+        "3": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "3",
+          "name": "生物"
+        },
+        "125": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "125",
+          "name": "大阅读"
+        },
+        "4": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "4",
+          "name": "英语"
+        },
+        "126": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "126",
+          "name": "科学探究"
+        },
+        "5": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "5",
+          "name": "语文"
+        },
+        "127": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "127",
+          "name": "科学元素"
+        },
+        "6": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "6",
+          "name": "物理"
+        },
+        "128": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "128",
+          "name": "全球胜任力"
+        },
+        "7": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "7",
+          "name": "政治"
+        },
+        "129": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "129",
+          "name": "文学读写"
+        },
+        "8": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "8",
+          "name": "选科志愿"
+        },
+        "21": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "21",
+          "name": "双语"
+        },
+        "22": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "22",
+          "name": "演讲与口才"
+        },
+        "23": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "23",
+          "name": "双语演说"
+        },
+        "24": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "24",
+          "name": "悦读"
+        },
+        "25": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "25",
+          "name": "中国文学素养"
+        },
+        "26": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "26",
+          "name": "博物美育"
+        },
+        "27": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "27",
+          "name": "大科学"
+        },
+        "28": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "28",
+          "name": "围棋"
+        },
+        "130": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "130",
+          "name": "家风素养语言"
+        },
+        "131": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "131",
+          "name": "家风素养数理"
+        },
+        "132": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "132",
+          "name": "家风素养读写"
+        },
+        "133": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "133",
+          "name": "语言文化"
+        },
+        "134": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "134",
+          "name": "数理文化"
+        },
+        "135": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "135",
+          "name": "自然科学"
+        },
+        "136": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "136",
+          "name": "实验探究"
+        },
+        "137": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "137",
+          "name": "生命物质"
+        },
+        "138": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "138",
+          "name": "地球环境"
+        },
+        "139": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "139",
+          "name": "史学文化"
+        },
+        "31": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "31",
+          "name": "中国象棋"
+        },
+        "32": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "32",
+          "name": "日语"
+        },
+        "33": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "33",
+          "name": "定制方案"
+        },
+        "34": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "34",
+          "name": "图书"
+        },
+        "35": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "35",
+          "name": "学习硬件"
+        },
+        "36": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "36",
+          "name": "文创"
+        },
+        "37": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "37",
+          "name": "英语规划系统"
+        },
+        "38": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "38",
+          "name": "语文规划系统"
+        },
+        "39": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "39",
+          "name": "数学规划系统"
+        },
+        "140": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "140",
+          "name": "社会文化"
+        },
+        "141": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "141",
+          "name": "语"
+        },
+        "142": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "142",
+          "name": "数"
+        },
+        "143": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "143",
+          "name": "英"
+        },
+        "144": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "144",
+          "name": "物"
+        },
+        "145": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "145",
+          "name": "化"
+        },
+        "146": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "146",
+          "name": "生"
+        },
+        "147": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "147",
+          "name": "地"
+        },
+        "148": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "148",
+          "name": "历"
+        },
+        "149": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "149",
+          "name": "政"
+        },
+        "40": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "40",
+          "name": "物理规划系统"
+        },
+        "41": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "41",
+          "name": "化学规划系统"
+        },
+        "42": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "42",
+          "name": "生物规划系统"
+        },
+        "43": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "43",
+          "name": "地理规划系统"
+        },
+        "44": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "44",
+          "name": "政治规划系统"
+        },
+        "45": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "45",
+          "name": "历史规划系统"
+        },
+        "47": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "47",
+          "name": "心理咨询"
+        },
+        "150": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "150",
+          "name": "全科"
+        },
+        "151": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "151",
+          "name": "运动健康"
+        },
+        "152": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "152",
+          "name": "双语阅读"
+        },
+        "153": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "153",
+          "name": "语文学习分享"
+        },
+        "154": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "154",
+          "name": "数学学习分享"
+        },
+        "155": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "155",
+          "name": "英语学习分享"
+        },
+        "156": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "156",
+          "name": "物理学习分享"
+        },
+        "157": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "157",
+          "name": "化学学习分享"
+        },
+        "158": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "158",
+          "name": "政治学习分享"
+        },
+        "159": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "159",
+          "name": "地理学习分享"
+        },
+        "51": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "51",
+          "name": "日语规划系统"
+        },
+        "52": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "52",
+          "name": "科学学科"
+        },
+        "53": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "53",
+          "name": "少儿编程"
+        },
+        "54": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "54",
+          "name": "途途讲座"
+        },
+        "55": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "55",
+          "name": "人文"
+        },
+        "56": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "56",
+          "name": "创新思维"
+        },
+        "57": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "57",
+          "name": "演说"
+        },
+        "58": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "58",
+          "name": "自然"
+        },
+        "59": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "59",
+          "name": "元素"
+        },
+        "160": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "160",
+          "name": "生物学习分享"
+        },
+        "161": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "161",
+          "name": "历史学习分享"
+        },
+        "162": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "162",
+          "name": "心理辅导"
+        },
+        "163": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "163",
+          "name": "篮球"
+        },
+        "164": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "164",
+          "name": "体测"
+        },
+        "165": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "165",
+          "name": "体适能"
+        },
+        "166": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "166",
+          "name": "羽毛球"
+        },
+        "200": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "200",
+          "name": "体育"
+        },
+        "167": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "167",
+          "name": "美术"
+        },
+        "201": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "201",
+          "name": "KB"
+        },
+        "168": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "168",
+          "name": "硬笔书法"
+        },
+        "202": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "202",
+          "name": "语言创新"
+        },
+        "169": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "169",
+          "name": "研学"
+        },
+        "203": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "203",
+          "name": "逻辑创新"
+        },
+        "204": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "204",
+          "name": "双语创新"
+        },
+        "205": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "205",
+          "name": "科学创新"
+        },
+        "206": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "206",
+          "name": "语文创新"
+        },
+        "207": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "207",
+          "name": "数学创新"
+        },
+        "208": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "208",
+          "name": "英语创新"
+        },
+        "209": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "209",
+          "name": "物理创新"
+        },
+        "61": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "61",
+          "name": "实验"
+        },
+        "62": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "62",
+          "name": "全科复读"
+        },
+        "63": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "63",
+          "name": "思维"
+        },
+        "64": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "64",
+          "name": "出国留学"
+        },
+        "65": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "65",
+          "name": "教师培训"
+        },
+        "66": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "66",
+          "name": "XA双语演说"
+        },
+        "67": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "67",
+          "name": "XA创新思维"
+        },
+        "68": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "68",
+          "name": "XA人文素养"
+        },
+        "69": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "69",
+          "name": "XA史学文化"
+        },
+        "170": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "170",
+          "name": "超级记忆"
+        },
+        "171": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "171",
+          "name": "思维导图"
+        },
+        "172": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "172",
+          "name": "托管自习室"
+        },
+        "173": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "173",
+          "name": "五大领域"
+        },
+        "174": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "174",
+          "name": "专注力"
+        },
+        "175": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "175",
+          "name": "快速阅读"
+        },
+        "176": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "176",
+          "name": "记忆单词"
+        },
+        "210": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "210",
+          "name": "素养全科"
+        },
+        "177": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "177",
+          "name": "人文素养"
+        },
+        "211": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "211",
+          "name": "老生【亲友同价】"
+        },
+        "178": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "178",
+          "name": "数理思维"
+        },
+        "212": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "212",
+          "name": "其他"
+        },
+        "179": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "179",
+          "name": "英文素养"
+        },
+        "213": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "213",
+          "name": "物理探究"
+        },
+        "214": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "214",
+          "name": "化学元素"
+        },
+        "70": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "70",
+          "name": "XA社会文化"
+        },
+        "71": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "71",
+          "name": "XA自然科学"
+        },
+        "72": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "72",
+          "name": "XA实验探究"
+        },
+        "73": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "73",
+          "name": "XA生命物质"
+        },
+        "74": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "74",
+          "name": "XA地球环境"
+        },
+        "75": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "75",
+          "name": "XA少儿篮球"
+        },
+        "76": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "76",
+          "name": "GZ双语演说"
+        },
+        "77": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "77",
+          "name": "GZ创新思维"
+        },
+        "78": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "78",
+          "name": "GZ人文素养"
+        },
+        "79": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "79",
+          "name": "GZ史学文化"
+        },
+        "180": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "180",
+          "name": "实验素养"
+        },
+        "181": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "181",
+          "name": "科学素养"
+        },
+        "182": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "182",
+          "name": "元素素养"
+        },
+        "183": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "183",
+          "name": "元素创新"
+        },
+        "184": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "184",
+          "name": "化学创新"
+        },
+        "100": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "100",
+          "name": "成人"
+        },
+        "101": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "101",
+          "name": "言语之艺"
+        },
+        "102": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "102",
+          "name": "思维拓展"
+        },
+        "103": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "103",
+          "name": "语言表达"
+        },
+        "104": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "104",
+          "name": "史学素养"
+        },
+        "105": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "105",
+          "name": "公共意识"
+        },
+        "106": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "106",
+          "name": "环境科学"
+        },
+        "107": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "107",
+          "name": "生命科学"
+        },
+        "80": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "80",
+          "name": "GZ社会文化"
+        },
+        "108": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "108",
+          "name": "成长游学"
+        },
+        "81": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "81",
+          "name": "GZ自然科学"
+        },
+        "109": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "109",
+          "name": "AI英语"
+        },
+        "82": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "82",
+          "name": "GZ实验探究"
+        },
+        "83": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "83",
+          "name": "GZ生命物质"
+        },
+        "84": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "84",
+          "name": "GZ地球环境"
+        },
+        "85": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "85",
+          "name": "GZ少儿篮球"
+        },
+        "86": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "86",
+          "name": "外国文学素养"
+        },
+        "87": {
+          "can_create": 1,
+          "can_show": 1,
+          "code": "87",
+          "name": "研学营地"
+        }
+      },
+      "teacher_map": {
+        "7932284591800384": {
+          "avatar_url": "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg",
+          "name": "王碧云-外显主讲",
+          "status": 1,
+          "teacher_id": 9204,
+          "teacher_number": 7932284591800384,
+          "teacher_real_name": "王碧云",
+          "teacher_role": "主讲老师",
+          "teacher_type": 1
+        },
+        "346261373801482240": {
+          "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+          "name": "陈陈",
+          "status": 1,
+          "teacher_id": 18340,
+          "teacher_number": 346261373801482240,
+          "teacher_real_name": "陈世宇",
+          "teacher_role": "主讲老师",
+          "teacher_type": 1
+        },
+        "11188041873297121": {
+          "name": "唐稳01主讲",
+          "status": 1,
+          "teacher_id": 18459,
+          "teacher_number": 11188041873297121,
+          "teacher_real_name": "唐稳01",
+          "teacher_role": "主讲老师",
+          "teacher_type": 1
+        }
+      },
+      "teacher_operational_account_map": {
+        "7932284591800384": [
+          7932284591800384,
+          7932763303346816,
+          7937140242285184,
+          7938497517899008,
+          8311225782829184
+        ],
+        "11188041873297121": []
+      },
+      "user_id": 7707220467,
+      "user_selected_product_map": {},
+      "whitelist_map": {}
+    },
+    "results": [
+      {
+        "clazz_number": 586084334251927552,
+        "course_number": 18314034380997173,
+        "debug_info": {
+          "logs": [
+            "开始执行SubBuilder: RenewalConfigQuerySubBuilder",
+            "SubBuilder执行完成: RenewalConfigQuerySubBuilder, duration=0ms",
+            "开始执行SubBuilder: ExpandSubjectConfigSubBuilder",
+            "SubBuilder执行完成: ExpandSubjectConfigSubBuilder, duration=0ms",
+            "开始执行SubBuilder: UserOrderQuerySubBuilder",
+            "查询用户有效订单成功, orderCount=2",
+            "SubBuilder执行完成: UserOrderQuerySubBuilder, duration=49ms",
+            "开始执行SubBuilder: PreClassInfoBuildSubBuilder",
+            "构建前置班级信息列表成功, preClassCount=2",
+            "SubBuilder执行完成: PreClassInfoBuildSubBuilder, duration=1ms",
+            "开始执行SubBuilder: RenewalRelationMapBuildSubBuilder",
+            "构建续班关系映射成功, preCourseCount=2, relationCount=2",
+            "SubBuilder执行完成: RenewalRelationMapBuildSubBuilder, duration=11ms",
+            "开始执行SubBuilder: CourseInfoQuerySubBuilder",
+            "批量查询课程信息成功, courseCount=5, postCourseCount=3",
+            "SubBuilder执行完成: CourseInfoQuerySubBuilder, duration=46ms",
+            "开始执行SubBuilder: ClazzTypeBaseInfoSubBuilder",
+            "班型基础信息构建完成, count=2",
+            "SubBuilder执行完成: ClazzTypeBaseInfoSubBuilder, duration=21ms",
+            "开始执行SubBuilder: ClazzInfoQuerySubBuilder",
+            "批量查询班级信息成功, totalClazzCount=5, postClazzCount=3",
+            "SubBuilder执行完成: ClazzInfoQuerySubBuilder, duration=1ms",
+            "开始执行SubBuilder: ClazzLessonInfoQuerySubBuilder",
+            "SubBuilder执行完成: ClazzLessonInfoQuerySubBuilder, duration=28ms",
+            "开始执行SubBuilder: ProductSkuInfoQuerySubBuilder",
+            "批量查询商品SKU信息成功, productSkuCount=5",
+            "SubBuilder执行完成: ProductSkuInfoQuerySubBuilder, duration=179ms",
+            "开始执行SubBuilder: StockInfoQuerySubBuilder",
+            "开始执行SubBuilder: TeacherInfoQuerySubBuilder",
+            "批量查询教师信息成功, teacherCount=3",
+            "SubBuilder执行完成: TeacherInfoQuerySubBuilder, duration=1ms",
+            "批量查询库存信息成功, stockCount=3",
+            "SubBuilder执行完成: StockInfoQuerySubBuilder, duration=31ms",
+            "开始执行SubBuilder: PreClassInfoEnrichSubBuilder",
+            "SubBuilder执行完成: PreClassInfoEnrichSubBuilder, duration=0ms",
+            "开始执行SubBuilder: TeacherOpAccountSubBuilder",
+            "SubBuilder执行完成: TeacherOpAccountSubBuilder, duration=37ms",
+            "开始执行SubBuilder: PostClassInfoBuildSubBuilder",
+            "构建后置班级信息列表成功, postClassCount=3",
+            "后置班级按前置课程分组完成, preClassCount=2, groupedPostClassCount=3",
+            "SubBuilder执行完成: PostClassInfoBuildSubBuilder, duration=0ms",
+            "开始执行SubBuilder: UserPostClassOrderSubBuilder",
+            "用户已购后置班级查询完成, purchasedCount=2",
+            "SubBuilder执行完成: UserPostClassOrderSubBuilder, duration=34ms",
+            "开始执行SubBuilder: BCartQuerySubBuilder",
+            "SubBuilder执行完成: BCartQuerySubBuilder, duration=0ms",
+            "开始执行SubBuilder: WhitelistBuildSubBuilder",
+            "构建白名单配置映射成功, whitelistSize=0",
+            "SubBuilder执行完成: WhitelistBuildSubBuilder, duration=0ms",
+            "开始执行SubBuilder: UserRenewalClazzSubBuilder",
+            "SubBuilder执行完成: UserRenewalClazzSubBuilder, duration=18ms",
+            "开始执行SubBuilder: SubjectMapBuildSubBuilder",
+            "构建学科Map成功, subjectCount=183",
+            "SubBuilder执行完成: SubjectMapBuildSubBuilder, duration=24ms",
+            "开始执行SubBuilder: DataConsistencyValidateSubBuilder",
+            "数据一致性校验完成",
+            "SubBuilder执行完成: DataConsistencyValidateSubBuilder, duration=0ms",
+            "开始执行SubBuilder: PreConditionValidateSubBuilder",
+            "前置条件校验通过",
+            "SubBuilder执行完成: PreConditionValidateSubBuilder, duration=0ms",
+            "构建候选列表完成, preClassNumber=586084334251927552, candidateCount=2",
+            "已购商品优先命中, count=1, keys=[ProductKey(productType=6004, productId=586097025945298944)]",
+            "过滤插件执行完成, pluginName=PurchasedProductMatchPlugin, executeResult=INTERRUPT, candidateCount=1, duration=1ms"
+          ]
+        },
+        "force_buy": false,
+        "from_whitelist": false,
+        "post_class_info": {
+          "allow_missing_stock": true,
+          "clazz_number": 586097025945298944,
+          "clazz_status": 40,
+          "course_number": 18314034380997207,
+          "main_teacher_id": 346261373801482240,
+          "main_teacher_name": "陈陈",
+          "open_class_time": 1793589900000,
+          "product_key": {
+            "product_id": 586097025945298944,
+            "product_type": 6004
+          },
+          "salable": true,
+          "stock_quantity": 18,
+          "subject_ids": [
+            1
+          ]
+        },
+        "product_id": 586097025945298944,
+        "product_key": {
+          "product_id": 586097025945298944,
+          "product_type": 6004
+        },
+        "product_type": 6004,
+        "recommend_source": "AUTO",
+        "sign_up": 1
+      },
+      {
+        "clazz_number": 588861397654462464,
+        "course_number": 588861395571990528,
+        "debug_info": {
+          "logs": [
+            "开始执行SubBuilder: RenewalConfigQuerySubBuilder",
+            "SubBuilder执行完成: RenewalConfigQuerySubBuilder, duration=0ms",
+            "开始执行SubBuilder: ExpandSubjectConfigSubBuilder",
+            "SubBuilder执行完成: ExpandSubjectConfigSubBuilder, duration=0ms",
+            "开始执行SubBuilder: UserOrderQuerySubBuilder",
+            "查询用户有效订单成功, orderCount=2",
+            "SubBuilder执行完成: UserOrderQuerySubBuilder, duration=49ms",
+            "开始执行SubBuilder: PreClassInfoBuildSubBuilder",
+            "构建前置班级信息列表成功, preClassCount=2",
+            "SubBuilder执行完成: PreClassInfoBuildSubBuilder, duration=1ms",
+            "开始执行SubBuilder: RenewalRelationMapBuildSubBuilder",
+            "构建续班关系映射成功, preCourseCount=2, relationCount=2",
+            "SubBuilder执行完成: RenewalRelationMapBuildSubBuilder, duration=11ms",
+            "开始执行SubBuilder: CourseInfoQuerySubBuilder",
+            "批量查询课程信息成功, courseCount=5, postCourseCount=3",
+            "SubBuilder执行完成: CourseInfoQuerySubBuilder, duration=46ms",
+            "开始执行SubBuilder: ClazzTypeBaseInfoSubBuilder",
+            "班型基础信息构建完成, count=2",
+            "SubBuilder执行完成: ClazzTypeBaseInfoSubBuilder, duration=21ms",
+            "开始执行SubBuilder: ClazzInfoQuerySubBuilder",
+            "批量查询班级信息成功, totalClazzCount=5, postClazzCount=3",
+            "SubBuilder执行完成: ClazzInfoQuerySubBuilder, duration=1ms",
+            "开始执行SubBuilder: ClazzLessonInfoQuerySubBuilder",
+            "SubBuilder执行完成: ClazzLessonInfoQuerySubBuilder, duration=28ms",
+            "开始执行SubBuilder: ProductSkuInfoQuerySubBuilder",
+            "批量查询商品SKU信息成功, productSkuCount=5",
+            "SubBuilder执行完成: ProductSkuInfoQuerySubBuilder, duration=179ms",
+            "开始执行SubBuilder: StockInfoQuerySubBuilder",
+            "开始执行SubBuilder: TeacherInfoQuerySubBuilder",
+            "批量查询教师信息成功, teacherCount=3",
+            "SubBuilder执行完成: TeacherInfoQuerySubBuilder, duration=1ms",
+            "批量查询库存信息成功, stockCount=3",
+            "SubBuilder执行完成: StockInfoQuerySubBuilder, duration=31ms",
+            "开始执行SubBuilder: PreClassInfoEnrichSubBuilder",
+            "SubBuilder执行完成: PreClassInfoEnrichSubBuilder, duration=0ms",
+            "开始执行SubBuilder: TeacherOpAccountSubBuilder",
+            "SubBuilder执行完成: TeacherOpAccountSubBuilder, duration=37ms",
+            "开始执行SubBuilder: PostClassInfoBuildSubBuilder",
+            "构建后置班级信息列表成功, postClassCount=3",
+            "后置班级按前置课程分组完成, preClassCount=2, groupedPostClassCount=3",
+            "SubBuilder执行完成: PostClassInfoBuildSubBuilder, duration=0ms",
+            "开始执行SubBuilder: UserPostClassOrderSubBuilder",
+            "用户已购后置班级查询完成, purchasedCount=2",
+            "SubBuilder执行完成: UserPostClassOrderSubBuilder, duration=34ms",
+            "开始执行SubBuilder: BCartQuerySubBuilder",
+            "SubBuilder执行完成: BCartQuerySubBuilder, duration=0ms",
+            "开始执行SubBuilder: WhitelistBuildSubBuilder",
+            "构建白名单配置映射成功, whitelistSize=0",
+            "SubBuilder执行完成: WhitelistBuildSubBuilder, duration=0ms",
+            "开始执行SubBuilder: UserRenewalClazzSubBuilder",
+            "SubBuilder执行完成: UserRenewalClazzSubBuilder, duration=18ms",
+            "开始执行SubBuilder: SubjectMapBuildSubBuilder",
+            "构建学科Map成功, subjectCount=183",
+            "SubBuilder执行完成: SubjectMapBuildSubBuilder, duration=24ms",
+            "开始执行SubBuilder: DataConsistencyValidateSubBuilder",
+            "数据一致性校验完成",
+            "SubBuilder执行完成: DataConsistencyValidateSubBuilder, duration=0ms",
+            "开始执行SubBuilder: PreConditionValidateSubBuilder",
+            "前置条件校验通过",
+            "SubBuilder执行完成: PreConditionValidateSubBuilder, duration=0ms",
+            "构建候选列表完成, preClassNumber=586084334251927552, candidateCount=2",
+            "已购商品优先命中, count=1, keys=[ProductKey(productType=6004, productId=586097025945298944)]",
+            "过滤插件执行完成, pluginName=PurchasedProductMatchPlugin, executeResult=INTERRUPT, candidateCount=1, duration=1ms",
+            "构建候选列表完成, preClassNumber=588861397654462464, candidateCount=1",
+            "已购商品优先命中, count=1, keys=[ProductKey(productType=6004, productId=588861402658267136)]",
+            "过滤插件执行完成, pluginName=PurchasedProductMatchPlugin, executeResult=INTERRUPT, candidateCount=1, duration=0ms"
+          ]
+        },
+        "force_buy": false,
+        "from_whitelist": false,
+        "post_class_info": {
+          "allow_missing_stock": true,
+          "clazz_number": 588861402658267136,
+          "clazz_status": 40,
+          "course_number": 588861400563212288,
+          "main_teacher_id": 11188041873297121,
+          "main_teacher_name": "唐稳01主讲",
+          "open_class_time": 1794118800000,
+          "product_key": {
+            "product_id": 588861402658267136,
+            "product_type": 6004
+          },
+          "salable": true,
+          "stock_quantity": 9999997,
+          "subject_ids": [
+            5
+          ]
+        },
+        "product_id": 588861402658267136,
+        "product_key": {
+          "product_id": 588861402658267136,
+          "product_type": 6004
+        },
+        "product_type": 6004,
+        "recommend_source": "AUTO",
+        "sign_up": 1
+      }
+    ]
+  },
+  "eurekaService": "CART.GAOTU100.COM",
+  "instanceId": "cart-gaotu100-com-db4558cc5-v58fw:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+  "instanceCount": 4,
+  "elapsed": 0.929
+}

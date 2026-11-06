@@ -1,0 +1,28 @@
+{
+  "url": "http://10.218.238.95:28688/test/acl/compare/service",
+  "trafficEnv": "test-gtbg-dev-3",
+  "httpStatus": 200,
+  "directIp": true,
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#productSelect",
+    "params": [
+      {
+        "renewalNumber": "588858850300473344",
+        "beforeCourseNumber": "18314034380997173",
+        "productNumber": "586097025945298944",
+        "productCourseNumber": "18314034380997207"
+      },
+      "7707220467"
+    ]
+  },
+  "curl": "curl -sk \\\n  'http://10.218.238.95:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#productSelect\", \"params\": [{\"renewalNumber\": \"588858850300473344\", \"beforeCourseNumber\": \"18314034380997173\", \"productNumber\": \"586097025945298944\", \"productCourseNumber\": \"18314034380997207\"}, \"7707220467\"]}'",
+  "traceId": "cart_gaotu100_com.297.17939593176870012",
+  "rvoCode": 0,
+  "errors": {
+    "com.gaotu.renewal.RenewalService_error": "java.lang.RuntimeException: 部分商品不存在"
+  },
+  "eurekaService": "CART.GAOTU100.COM",
+  "instanceId": "cart-gaotu100-com-778d6f564b-hhv8g:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+  "instanceCount": 3,
+  "elapsed": 0.501
+}

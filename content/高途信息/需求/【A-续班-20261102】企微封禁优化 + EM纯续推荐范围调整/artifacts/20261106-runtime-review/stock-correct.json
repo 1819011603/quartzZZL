@@ -1,0 +1,37 @@
+{
+  "url": "http://10.218.238.95:28688/test/acl/compare/service",
+  "trafficEnv": "test-gtbg-dev-3",
+  "httpStatus": 200,
+  "directIp": true,
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.domain.stock.service.StockService#listActualStockInfo",
+    "params": [
+      {
+        "skuInfoList": [
+          {
+            "skuNumber": "586097025945298944",
+            "skuType": 6004
+          }
+        ]
+      }
+    ]
+  },
+  "curl": "curl -sk \\\n  'http://10.218.238.95:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.domain.stock.service.StockService#listActualStockInfo\", \"params\": [{\"skuInfoList\": [{\"skuNumber\": \"586097025945298944\", \"skuType\": 6004}]}]}'",
+  "traceId": "cart_gaotu100_com.292.17939593801680017",
+  "rvoCode": 0,
+  "result": [
+    {
+      "number": 586122316562317312,
+      "sku_number": 586097025945298944,
+      "sku_type": 6004,
+      "stock_capacity": 20,
+      "stock_left": 18,
+      "stock_lock": 0,
+      "stock_used": 2
+    }
+  ],
+  "eurekaService": "CART.GAOTU100.COM",
+  "instanceId": "cart-gaotu100-com-778d6f564b-hhv8g:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+  "instanceCount": 3,
+  "elapsed": 0.314
+}

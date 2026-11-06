@@ -1,0 +1,2 @@
+before ordinary stock=null salable=true
+before ordinary stock=0 salable=false

@@ -1,0 +1,75 @@
+{
+  "url": "http://10.218.238.95:28688/test/acl/compare/service",
+  "trafficEnv": "test-gtbg-dev-3",
+  "httpStatus": 200,
+  "directIp": true,
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.renewal.RenewalDataService#getClazzByClazzNumbersWithCache",
+    "params": [
+      [
+        "586097025945298944",
+        "588861402658267136"
+      ]
+    ]
+  },
+  "curl": "curl -sk \\\n  'http://10.218.238.95:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalDataService#getClazzByClazzNumbersWithCache\", \"params\": [[\"586097025945298944\", \"588861402658267136\"]]}'",
+  "traceId": "cart_gaotu100_com.300.17939593180740012",
+  "rvoCode": 0,
+  "result": [
+    {
+      "begin_time": 1793589900000,
+      "bizNumber": "586097025945298944",
+      "capacity": 20,
+      "clazzDateDesc": "",
+      "clazzName": "dcg-小班扩科排除-数学-后置",
+      "clazzTimeDesc": "",
+      "clazzType": 0,
+      "clazzWeekDesc": "",
+      "clazz_tags": [],
+      "courseNumber": 18314034380997207,
+      "course_tag_ids": [],
+      "endTime": 1794371400000,
+      "normal_clazz_lesson_num": 2,
+      "number": 586097025945298944,
+      "price": -1,
+      "product_type": 6004,
+      "saleStatus": 40,
+      "sku_page_show_clazz_lesson_num": 2,
+      "teacherNumbers": [
+        346261373801482240,
+        346261373801482240
+      ],
+      "time_desc": ""
+    },
+    {
+      "begin_time": 1794118800000,
+      "bizNumber": "15YW26XTRO11001",
+      "capacity": -1,
+      "clazzDateDesc": "2026年11月08日-2026年11月08日",
+      "clazzName": "B测试-五年级语文暑假后置1B",
+      "clazzTimeDesc": "14:20-14:25",
+      "clazzType": 0,
+      "clazzWeekDesc": "每周日",
+      "clazz_tags": [],
+      "courseNumber": 588861400563212288,
+      "course_tag_ids": [
+        4
+      ],
+      "endTime": 1794119100000,
+      "normal_clazz_lesson_num": 1,
+      "number": 588861402658267136,
+      "price": 100,
+      "product_type": 2,
+      "saleStatus": 40,
+      "sku_page_show_clazz_lesson_num": 1,
+      "teacherNumbers": [
+        11188041873297121
+      ],
+      "time_desc": "2026年11月08日-2026年11月08日 每周日 14:20-14:25"
+    }
+  ],
+  "eurekaService": "CART.GAOTU100.COM",
+  "instanceId": "cart-gaotu100-com-778d6f564b-hhv8g:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+  "instanceCount": 3,
+  "elapsed": 0.279
+}

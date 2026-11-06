@@ -1,0 +1,29 @@
+{
+  "url": "http://10.218.238.95:28688/test/acl/compare/service",
+  "trafficEnv": "test-gtbg-dev-3",
+  "httpStatus": 200,
+  "directIp": true,
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.domain.stock.service.StockService#listActualStockInfo",
+    "params": [
+      {
+        "skuInfoList": [
+          {
+            "skuNumber": "586097025945298944",
+            "skuType": 2
+          }
+        ]
+      }
+    ]
+  },
+  "curl": "curl -sk \\\n  'http://10.218.238.95:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.domain.stock.service.StockService#listActualStockInfo\", \"params\": [{\"skuInfoList\": [{\"skuNumber\": \"586097025945298944\", \"skuType\": 2}]}]}'",
+  "traceId": "cart_gaotu100_com.295.17939593803870015",
+  "rvoCode": 0,
+  "errors": {
+    "com.gaotu.domain.stock.service.StockService_error": "java.lang.RuntimeException: 部分商品不存在"
+  },
+  "eurekaService": "CART.GAOTU100.COM",
+  "instanceId": "cart-gaotu100-com-778d6f564b-hhv8g:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+  "instanceCount": 3,
+  "elapsed": 0.216
+}

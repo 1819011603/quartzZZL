@@ -1,0 +1,83 @@
+[
+  {
+    "evidence": "clazz-current.json",
+    "traceId": "cart_gaotu100_com.300.17939593180740012",
+    "errors": null,
+    "elapsed": 0.279,
+    "instance": "cart-gaotu100-com-778d6f564b-hhv8g:cart.gaotu100.com:28688:@test-gtbg-dev-3"
+  },
+  {
+    "evidence": "plan-main.json",
+    "traceId": "cart_gaotu100_com.298.17939593806060014",
+    "errors": null,
+    "elapsed": 0.247,
+    "instance": "cart-gaotu100-com-778d6f564b-hhv8g:cart.gaotu100.com:28688:@test-gtbg-dev-3"
+  },
+  {
+    "evidence": "recommend-7658129872.json",
+    "traceId": "cart_gaotu100_com.292.17939592962910012",
+    "errors": null,
+    "elapsed": 2.1529152393341064,
+    "instance": "cart-gaotu100-com-778d6f564b-hhv8g:cart.gaotu100.com:28688:@test-gtbg-dev-3"
+  },
+  {
+    "evidence": "recommend-7707220467.json",
+    "traceId": "cart_gaotu100_com.293.17939592962910012",
+    "errors": null,
+    "elapsed": 2.151535749435425,
+    "instance": "cart-gaotu100-com-778d6f564b-hhv8g:cart.gaotu100.com:28688:@test-gtbg-dev-3"
+  },
+  {
+    "evidence": "recommend-small-own.json",
+    "traceId": "cart_gaotu100_com.293.17939593176710014",
+    "errors": null,
+    "elapsed": 0.986,
+    "instance": "cart-gaotu100-com-778d6f564b-hhv8g:cart.gaotu100.com:28688:@test-gtbg-dev-3"
+  },
+  {
+    "evidence": "recommend-web-main.json",
+    "traceId": "cart_gaotu100_com.301.17939593801720014",
+    "errors": null,
+    "elapsed": 1.274,
+    "instance": "cart-gaotu100-com-778d6f564b-hhv8g:cart.gaotu100.com:28688:@test-gtbg-dev-3"
+  },
+  {
+    "evidence": "recommend-web-small.json",
+    "traceId": "cart_gaotu100_com.293.17939593801680018",
+    "errors": null,
+    "elapsed": 1.456,
+    "instance": "cart-gaotu100-com-778d6f564b-hhv8g:cart.gaotu100.com:28688:@test-gtbg-dev-3"
+  },
+  {
+    "evidence": "select-cross.json",
+    "traceId": "cart_gaotu100_com.297.17939593176870012",
+    "errors": {
+      "com.gaotu.renewal.RenewalService_error": "java.lang.RuntimeException: 部分商品不存在"
+    },
+    "elapsed": 0.501,
+    "instance": "cart-gaotu100-com-778d6f564b-hhv8g:cart.gaotu100.com:28688:@test-gtbg-dev-3"
+  },
+  {
+    "evidence": "select-small-own.json",
+    "traceId": "cart_gaotu100_com.292.17939593176870014",
+    "errors": null,
+    "elapsed": 0.99,
+    "instance": "cart-gaotu100-com-778d6f564b-hhv8g:cart.gaotu100.com:28688:@test-gtbg-dev-3"
+  },
+  {
+    "evidence": "stock-correct.json",
+    "traceId": "cart_gaotu100_com.292.17939593801680017",
+    "errors": null,
+    "elapsed": 0.314,
+    "instance": "cart-gaotu100-com-778d6f564b-hhv8g:cart.gaotu100.com:28688:@test-gtbg-dev-3"
+  },
+  {
+    "evidence": "stock-wrong.json",
+    "traceId": "cart_gaotu100_com.295.17939593803870015",
+    "errors": {
+      "com.gaotu.domain.stock.service.StockService_error": "java.lang.RuntimeException: 部分商品不存在"
+    },
+    "elapsed": 0.216,
+    "instance": "cart-gaotu100-com-778d6f564b-hhv8g:cart.gaotu100.com:28688:@test-gtbg-dev-3"
+  }
+]
