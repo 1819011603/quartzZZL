@@ -1,0 +1,17 @@
+uid=195_0 RootWebArea "客户关系管理-班级花名册" url="https://test-fuwu.baijia.com/crm/cronus/microClazzRoster?tabKey=continuationService"
+  uid=198_0 dialog "修改企微备注" modal
+    uid=198_1 generic focusable focused
+    uid=198_2 button "Close"
+    uid=198_3 "修改企微备注"
+    uid=198_4 "可选变量"
+    uid=198_5 "姓名"
+    uid=198_6 "手机号"
+    uid=198_7 "身份"
+    uid=198_8 "企微备注"
+    uid=198_9 "*"
+    uid=198_10 "企微备注"
+    uid=198_11 textbox multiline
+    uid=198_12 "提示：企微备注上限20个字，超过则保留前20个字"
+    uid=198_13 button "取 消"
+    uid=198_14 button "确 定"
+    uid=198_15 generic

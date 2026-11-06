@@ -1,0 +1,129 @@
+# ES eesServe / TEST → GET /ads_small_clazz_user_index_v4/_doc/588506026511294464-7707218286
+集群: http://esclustercommon-test.baijia.com:9200
+状态码: 200
+
+```json
+{
+  "_index": "ads_small_clazz_user_index_v4",
+  "_type": "_doc",
+  "_id": "588506026511294464-7707218286",
+  "_version": 3517,
+  "_seq_no": 100039645,
+  "_primary_term": 8,
+  "found": true,
+  "_source": {
+    "largeRenewalSubject": [],
+    "smallRenewalSubject": [],
+    "largeStudyingSubjectCnt": 0,
+    "updateTime": 1793946624448,
+    "largeStudyingSubject": [],
+    "smallStudyingSubject": [
+      {
+        "smallStudyingSubjectId": "1",
+        "courseDepartmentNumber": [
+          "10000329",
+          "10000339",
+          "10000380"
+        ]
+      }
+    ],
+    "smallStudyingSubjectCnt": 1,
+    "shardingKey": "588506026511294464-7707218286",
+    "smallRenewalExpansionSubject": [],
+    "mobileSuffix": "1842",
+    "courseType": 40,
+    "payOrderTime": 1793702536000,
+    "subclazzBizNumber": "5885060265112944641001",
+    "orderNumber": 433472296302674640,
+    "mainTeacherMainPostTag": [
+      "12345_4959407036876800_6816343048455168"
+    ],
+    "mainTeacherNumbers": [
+      7932284591800384,
+      346261373801482240
+    ],
+    "workCallCount": 0,
+    "smallLargePresaleSubject": [],
+    "intimacyRange": 0,
+    "assistantNumber": 462009634289360896,
+    "renewalShopSubject": [],
+    "clazzStudentStatus": 1,
+    "clazzBizNumber": "588506026511294464",
+    "smallPresaleStatus": 0,
+    "smallClazzFirstLessonEndTime": 70200,
+    "smallPresaleSubject": [],
+    "courseBizNumber": "18390028220432911",
+    "wechatRemark": [
+      "QW02S-cc"
+    ],
+    "intimacy": 0,
+    "assistantMainPostTag": "12345_4959407036876800_6816343048455168_66707677944472576",
+    "renewalShopSubjectCnt": 0,
+    "mainTeacherAccountIds": [
+      40731,
+      0
+    ],
+    "orderPrice": 0,
+    "clazzNumber": 588506026511294464,
+    "recentExamScoreFlag": 4,
+    "subclazzNumber": 36781710355857792,
+    "salesMainPostTag": "-",
+    "courseNumber": 18390028220432911,
+    "clazzMode": 4,
+    "assistantAccountId": 177071,
+    "userId": 7707218286,
+    "smallRewardCoin": 0,
+    "joinClazzTime": 1793702537000,
+    "subclazzName": "弓雪萌SX111001",
+    "subclazzStatus": 0,
+    "courseName": "【造数】线上小班课-小学数学-0917-OP1-2026-2027春",
+    "changeClazzStatus": 0,
+    "wechatFriend": 3,
+    "smallClazzFirstLessonBeginTime": 66600,
+    "smallClazzBeginTime": 1794133800000,
+    "bothFriend": 0,
+    "studyProblem": 0,
+    "smallClazzEndTime": 1794223800000,
+    "clazzName": "【造数】小班续班前置-小学数学-1103-1831",
+    "mainTeacherStudentInfo": [
+      {
+        "mainTeacherWechatFriend": 0,
+        "mainTeacherAccountId": 40731
+      },
+      {
+        "mainTeacherWechatFriend": 0,
+        "mainTeacherAccountId": 0
+      }
+    ],
+    "smallRenewalNumber": 588506246722727936,
+    "smallRoundIdx": 3,
+    "smallCanRenewal": 1,
+    "exerciseSubmitRate": 0.0,
+    "exerciseAmendRate": 0.0,
+    "number": 294253688045713408,
+    "id": 11974,
+    "expectTime": "2026-11-03 18:42:19",
+    "studentType": 0,
+    "createTime": "2026-11-03 18:42:17",
+    "isDel": false,
+    "studentTags": [
+      10
+    ],
+    "tags": "10",
+    "smallPerLearnDuration": 0,
+    "smallLiveFinishCount": 0,
+    "smallPerLearnRate": 0,
+    "smallLiveAttendRate": 0,
+    "smallLiveFinishRate": 0,
+    "color": 0,
+    "smallEffectiveListenCount": 0,
+    "layer": 0,
+    "smallRenewalStateStatus": 2,
+    "smallShouldEffectiveListenCount": 0,
+    "smallShouldLiveAttendCount": 0,
+    "smallEffectiveListenRate": 0,
+    "smallLiveAttendCount": 0,
+    "smallTotalLearnDuration": 0
+  }
+}
+```

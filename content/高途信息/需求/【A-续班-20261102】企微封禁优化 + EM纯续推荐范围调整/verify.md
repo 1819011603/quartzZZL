@@ -1,3 +1,10 @@
+## 2026-11-06 P0 QW-02 小班续班服务页「批量修改企微备注」补验（test）
+
+- **结论（已验证，页面/任务）**：EES 小班续班服务页 `crm/cronus/microClazzRoster?tabKey=continuationService` 勾选 7707218286（班 588506026511294464，续班计划 588506246722727936；与账号 177071 为企微好友，`dws_fuwu_user_teacher_wechat_info` friend=1）→「修改企微备注」（变量＝`${{wkRemark}}`，模板值 `QW02S-${{wkRemark}}`）→ 父任务 `294509612913149952`/子任务 `294509612923635712` 均 status=2、retry=0，真实备注 `cc→QW02S-cc`；再按原值 `cc` 提交恢复 → 父 `294509682327843840`/子 `294509682335183872` 均 status=2、retry=0，延迟回读 ES `ads_small_clazz_user_index_v4`(`_id=588506026511294464-7707218286`, `wechatRemark=["cc"]`, version 3561, 14:36:48) 与 DWS `dws_fuwu_user_teacher_wechat_info`(177071, `wechat_remark=cc`, 14:31:22) 均精确恢复；未选 7707218285 保持空。
+- **trace/证据**：修改 `cc2f0432-d264-4c5e-8349-21205305aa8d.0.0`、恢复 `b4c5d366-bdb5-434b-84b6-2c1381402a83.0.0`、好友校验 `3c189276-536d-41f8-ad13-7071b856b217.0.0`；截图与 network 原件见 `artifacts/20261106-p0-qw02-small/`（`evidence.json`）。
+- **主样本限制（没在小班续班页走通）**：指定小班 `563487716417804288`（一键班课测试3-axy）无续班计划（`renew_master_course_relation` 无记录、ES `smallRenewalNumber` 空、`smallRoundIdx=0`），在小班续班页计划下拉不可选、搜索 1437223 返回暂无数据；仅按 `clazzNumber`+`smallRenewalRoundFilter=[0]` 直调 `/roster/small/renewal/page` 能返回该学员（trace `24516254-c9da-4d5a-870d-73b25ed86d40.0.3`）。改用同页真实好友备选样本 7707218286，未用大班结果冒充小班。
+- **P0 文档**：QW-02「实际/证据」块已写回并回读，block id `doxcnExvyrIA9MNK3Ll0xjIXMqd`（revision 449）。
+
 ## 2026-11-06 小班续班服务「微信备注」空白修复验证（test）
 
 - **现象**：改企微备注任务成功（`ees_data.batch_operate_task` 3 条 `process_status=2`、`export_job_task` `task_status=2`），linkup WK 备注与 ES `ads_small_clazz_user_index_v4`(`_id=563487716417804288-1437223`) `wechatRemark=["测试cs122****0001"]` 均有值，但 `/roster/small/renewal/page`(`microContinuationService`) 响应**无 `wechatRemark` 字段**。

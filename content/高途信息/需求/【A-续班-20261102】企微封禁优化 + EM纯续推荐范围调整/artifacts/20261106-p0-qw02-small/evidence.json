@@ -1,0 +1,72 @@
+{
+  "time": "2026-11-06T14:36:48+08:00",
+  "environment": "TEST/test-gtbg-dev-3",
+  "scene": "EES 小班续班服务页 microClazzRoster?tabKey=continuationService",
+  "operator": {"cas_user": "gongxuemeng", "accountId": 177071},
+  "frontend": "cronus.umi.7054cbb2",
+  "primary_sample": {
+    "clazzNumber": "563487716417804288",
+    "clazzName": "一键班课测试3-axy",
+    "clazz_room_type": 3,
+    "student": 1437223,
+    "studentName": "测试cs",
+    "friend_accounts": [90247, 177071],
+    "reachable_on_small_renewal_page": false,
+    "reason": "该班无续班计划(renew_master_course_relation 无记录, ES smallRenewalNumber/为空, smallRoundIdx=0 不可续); 小班续班页计划下拉(listRenewalPlanFilter)不含该班, 搜索 1437223 页面返回暂无数据; 但按 clazzNumber+smallRenewalRoundFilter=[0] 直调 /roster/small/renewal/page 可返回该学员(trace 24516254-c9da-4d5a-870d-73b25ed86d40.0.3)"
+  },
+  "used_sample": {
+    "clazzNumber": "588506026511294464",
+    "clazzName": "【造数】小班续班前置-小学数学-1103-1831",
+    "renewalPlan": "588506246722727936",
+    "student": 7707218286,
+    "studentName": "测试cs",
+    "friend_business_wechat": {"accountId": 177071, "userWechatId": "7881302120033192", "accountWechatId": "1688855652617956", "friend": 1},
+    "friend_check_trace": "3c189276-536d-41f8-ad13-7071b856b217.0.0",
+    "unselected_student": 7707218285
+  },
+  "steps": [
+    {
+      "action": "修改企微备注(页面勾选 7707218286, 模板 QW02S-【企微备注】 -> 提交)",
+      "http": "POST /bgwApi/component/student-center/remark/creat/edit/task",
+      "request_body": {"userIds": [7707218286], "wkRemarkTemplate": "QW02S-${{wkRemark}}"},
+      "response": {"code": 0, "data": {"resultStatus": true}},
+      "page_trace": "cc2f0432-d264-4c5e-8349-21205305aa8d.0.0",
+      "parent_task": "294509612913149952",
+      "parent_task_status": 2,
+      "child_job": "294509612923635712",
+      "child_job_status": 2,
+      "child_job_retry_count": 0,
+      "child_job_params_wechatRemark": "cc",
+      "before": "cc",
+      "after": "QW02S-cc"
+    },
+    {
+      "action": "恢复原备注(页面 7707218286, 模板 原文 cc -> 提交)",
+      "http": "POST /bgwApi/component/student-center/remark/creat/edit/task",
+      "request_body": {"userIds": [7707218286], "wkRemarkTemplate": "cc"},
+      "response": {"code": 0, "data": {"resultStatus": true}},
+      "page_trace": "b4c5d366-bdb5-434b-84b6-2c1381402a83.0.0",
+      "parent_task": "294509682327843840",
+      "parent_task_status": 2,
+      "child_job": "294509682335183872",
+      "child_job_status": 2,
+      "child_job_retry_count": 0,
+      "child_job_params_wechatRemark": "QW02S-cc",
+      "restored": "cc"
+    }
+  ],
+  "readback": {
+    "dws_dws_fuwu_user_teacher_wechat_info_15_7707218286_177071": {"wechat_remark_after_modify": "QW02S-cc", "wechat_remark_after_restore": "cc", "restore_update_time": "2026-11-06 14:31:22"},
+    "es_ads_small_clazz_user_index_v4_588506026511294464-7707218286": {"after_modify": ["QW02S-cc"], "after_restore": ["cc"], "restore_es_update_time": "2026-11-06 14:36:48", "restore_version": 3561},
+    "unselected_7707218285": {"es_wechatRemark": [], "dws_row": "unchanged(无 177071 业务微信好友行)"},
+    "untouched_primary_1437223": {"es_wechatRemark": ["cc"], "dws_wechat_remark": "cc"}
+  },
+  "conclusion": {
+    "path": "小班续班服务页 修改企微备注 走通(使用备选样本 7707218286)",
+    "task_terminal": "父任务/子任务均 status=2, retry=0",
+    "change_and_restore": "cc -> QW02S-cc -> cc(精确恢复), 延迟回读 ES/DWS 一致",
+    "unselected_untouched": true,
+    "primary_sample_limitation": "主样本班 563487716417804288 无续班计划, 在小班续班页计划下拉不可选, 页面搜索无数据; 未在小班续班页走通; 未用大班结果冒充"
+  },
+  "screenshots": ["qw02-small-baseline.png", "qw02-small-after-submit.png", "qw02-small-restored.png"]
+}
