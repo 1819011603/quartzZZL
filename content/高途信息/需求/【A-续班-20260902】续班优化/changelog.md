@@ -7,6 +7,10 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-11-06 确认天工老意向预测任务 `app_fuwu_renew_predict_snapshot_diff_di` 已随本优化无用
+
+马胜问「续班AI优化后 `app_fuwu_renew_predict_snapshot_diff_di` 还有用么」。核实=**旧续班意向预测链路的天工上游，已无用、可下线**。链路：天工任务 40057（节点 88971 / 项目 136「客服系统」，Kyuubi SQL，描述「续班预测结果增量表」）读 `u_strategy.dwd_service_renew_lift_result_df`（today vs yesterday）取变化行 → `INSERT OVERWRITE yunying_kefu.app_fuwu_renew_predict_diff_di`（tableId 30746，注释「用于同步」、天工上下游血缘均 0）→ 同步任务 `app_fuwu_renew_predict_change_sync`(38319，nezha 50233) 灌 MySQL `ees_data.dwd_service_renew_lift_snapshot`（PROD cluster336；最大 `record_dt=20260921`、最后更新 2026-09-22，已停更）→ 旧 xjob `SyncRenewalLiftSnapshotHandler`(10413，本优化已停用)。新链路是「算法真表 `dwd_user_service_renew_refund_reason_df` → `ai_predict_level_reason_detail` → `SyncPredictLevelReasonHandler`」，与本表无关。实据：任务仍每日调度但 **2026-10-01 起 37 次全 `cancelled`（最后一次成功 2026-09-30）**，成功率 5 月起持续下滑；上游算法任务 `renew_lift_pred_fpc_lgb_*` 近期 stage 失败。**建议**：无消费方，随老链路停用；孪生/历史任务 `app_fuwu_renew_predict_diff_di`(38314)、`..._snapshot_diff_back`(42759)、`..._migratetest`(50189) 清理前确认无人用。**未验证**：算法/BI 侧是否有人直接读 `yunying_kefu.app_fuwu_renew_predict_diff_di`（天工血缘未登记）。
+
 ## 2026-10-30 去掉 C 端膨胀券加购，仅保留组合商品
 
 按飞书结论（唐稳「膨胀劵加购的需求去掉」、王永诗「组合商品和膨胀券…拆开，先上组合商品的」）。cart `feature-xuban-c-cart-addons` `44e82e61`→**`8d9d1f6b`**：移除 C 端**膨胀券(8014)**加购/展示/算价/勾选代码——`RenewalService` 删 `buildCouponScopeMap`/`convertCouponResultToDTOs`/`buildCouponDetail`/`applyCouponSelections`/`setCouponVO`/`processCouponResult` 及调用点、`buildPurchaseGradeSubjectMap` 券跳过、`productSelectConfirm` 券校验与券分支；`RenewalPriceService` 删券去重与「券SKU混进 clazzNumbers」兼容；`RenewalDataService` 删 `couponSelectConfirm`；删 `RenewalCouponContractTest`。**保留组合(51)与勾选记忆**；C 端取加购时按 `preRegistrationCouponConfig.getCouponProductType()` 剔除券商品。相对 release 的 diff 由 1515 行降到约 1141 行；预报名（RegistrationService/Assembler）未动。验证：`mvn8` 全量编译通过 + 16 项组合/勾选测试通过；重发 `test-gtbg-dev-3`（流水线 1321159，新 pod `cart-gaotu100-com-76d5c4887d-vr8qh` UP），自验大班/小班 `getRenewalDetail` **膨胀券(8014)消失、组合(51)仍在、纯续/6004 保留**，`productList` 组合 51 正常。24038 cart 提测产物刷新为 `8d9d1f6b`。前端不动（后端不返券即不展示）；计划改名：青舟工具无改名参数，跳过。
