@@ -405,14 +405,24 @@
     "cache_abnormal": "不验（owner 明确）"
   },
   "c_end_login_attempt": {
-    "cleared_origin": "https://test-m.gaotu.cn",
-    "method": "localStorage.clear + sessionStorage.clear + document.cookie expire + reload",
-    "result": "登录页出现",
-    "phone": "12026102281",
-    "login_mode": "password 100",
-    "submit": "click 登录 via JS",
-    "login_request": "none (network no login API, no trace)",
-    "status": "仍停留登录页"
+    "status": "已验证",
+    "date": "2026-11-06",
+    "mobile": "12026102281",
+    "code_rule_fixed": "12 开头固定 1000（原 1001 结论作废）",
+    "code_source": {
+      "method": "POST https://sms-admin-api.baijia.com/admin/message/listTest → POST /admin/message/decryptTest",
+      "record_id": 5507775630,
+      "decrypted_content": "您收到的验证码为: 1000 ，请勿泄露给第三方！",
+      "note": "该条 status=5 预检测失败，但内容有效；maskedContent 不能当验证码"
+    },
+    "login_result": {
+      "success": true,
+      "uid": "7658129872",
+      "name": "续班扩科隔离测试",
+      "studentNumber": "7659160472",
+      "redirect": "https://test-m.gaotu.cn/suggestShoppingCart?renewalNumber=585960797778243584&seller_id=7682&p_client=1&isNewUser=false"
+    },
+    "evidence": "cookie user_info + uid=7658129872；page-evidence/w1-loginSms.network-request/response（旧 1001 失败 code=34 留档）"
   },
   "ownership_check": {
     "conclusion": "原 C 端入口用了错误计划 585960797778243584；该计划不推 ¥100 商品",
@@ -426,5 +436,51 @@
     "recommend_trace": "5c98a2ed-acfc-445d-9bdb-bb4c56dd711e.0.3",
     "student": "7658129872",
     "phone": "12026102281"
+  },
+  "c_end_order_attempt": {
+    "status": "阻塞",
+    "date": "2026-11-06",
+    "cart": {
+      "api": "POST https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=588858850300473344&sellerId=7682&p_client=1",
+      "code": 0,
+      "trace": "640c2083-7ae3-4093-b266-2035137352e0.0.3",
+      "groups": [
+        "六年级(585960755422160896)",
+        "一年级(586097025945298944,0元)",
+        "五年级(588861402658267136,100分=¥1.00)"
+      ]
+    },
+    "page_flow": {
+      "steps": [
+        "年级切到五年级",
+        "勾选商品(588861402658267136)",
+        "1门合计 ¥1.00",
+        "去结算 → /newApply 确认订单",
+        "勾选同意合同",
+        "立即购买"
+      ],
+      "confirm_page": "https://test-m.gaotu.cn/newApply?productList=[{productNumber:588861402658267136,productType:2}]&createSource=2&seller_id=7682"
+    },
+    "create_order": {
+      "api": "POST https://test-api.gaotu.cn/web/order/batch/createOrder?p_client=1&os=h5-m",
+      "attempt1": "net::ERR_ABORTED（服务端已生成订单）",
+      "attempt2": {
+        "code": 62014,
+        "msg": "存在待支付订单",
+        "orderNumber": "433715450493796358",
+        "payOrderNumber": "102611062520640856",
+        "realPrice": 100,
+        "payStatus": 0,
+        "createTime": "2026-11-06T09:36:30",
+        "trace": "ea9bfe40-8724-45fa-b4ed-90369b24b53c.0.3"
+      }
+    },
+    "readback": {
+      "payCardDetail": "POST /web/order/payCard/detail 传 433715450493796358 与 102611062520640856 均返回 code=1 订单号不存在",
+      "ordersList": "/orders 待支付为空；全部列表无该订单",
+      "ordersSearch": "POST /web/order/pay/shape/search (payStatusType=1, searchKey=订单号) totalCount=0"
+    },
+    "conclusion": "订单已生成但 C 端列表/详情/payCard 均查不到，页面无收银台入口，mock 支付未完成；需排查订单与支付单的可见性/归属（可能因首请求被 abort 造成半成品订单）",
+    "evidence_dir": "page-evidence/（w1-cart-588858.network-response、w1-createOrder-ok.*、w1-orderSearch.*、w1-orderDetail*.* ）"
   }
 }
