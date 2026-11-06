@@ -18,8 +18,8 @@
     "p0_is_self": true,
     "revision_before": 319,
     "chars_before": 131653,
-    "revision_after": 375,
-    "chars_after": 33050,
+    "revision_after": 395,
+    "chars_after": 33400,
     "archive_before": "artifacts/20261105-p0-concise/feishu-revision-before.xml",
     "old_attachments": 7,
     "old_attachments_note": "覆盖写入后旧附件块不再出现在新正文；全文与附件引用已本地存档，飞书版本历史可回滚"
@@ -390,5 +390,41 @@
     "supported": "EES/OS 老师账号 projectCode 3/4",
     "c_end_student": false,
     "note": "不能切 C 端学员会话"
+  },
+  "phone_lookup": {
+    "api": "student-center UserAclService#querySingleInfo(7658129872,\"ALL\") + decryptSingleMobileForServer(...,\"gaotu\")",
+    "traceids": [
+      "student-center.21310268.17939272751100211",
+      "student-center.21310270.17939273542010206"
+    ],
+    "mobile": "12026102281",
+    "note": "C 端页面仍为 uid 7658127801，无可见切换/退出入口，手机号登录未完成"
+  },
+  "terms": {
+    "cross_year": "跨学年/跨学季",
+    "cache_abnormal": "不验（owner 明确）"
+  },
+  "c_end_login_attempt": {
+    "cleared_origin": "https://test-m.gaotu.cn",
+    "method": "localStorage.clear + sessionStorage.clear + document.cookie expire + reload",
+    "result": "登录页出现",
+    "phone": "12026102281",
+    "login_mode": "password 100",
+    "submit": "click 登录 via JS",
+    "login_request": "none (network no login API, no trace)",
+    "status": "仍停留登录页"
+  },
+  "ownership_check": {
+    "conclusion": "原 C 端入口用了错误计划 585960797778243584；该计划不推 ¥100 商品",
+    "wrong_plan_trace": "cart_gaotu100_com.296.17939277510490802",
+    "wrong_plan_products": [
+      "585960755422160896",
+      "586097025945298944(0元小班)"
+    ],
+    "correct_plan": "588858850300473344",
+    "correct_url": "https://test-m.gaotu.cn/suggestShoppingCart?renewalNumber=588858850300473344&seller_id=7682&p_client=1",
+    "recommend_trace": "5c98a2ed-acfc-445d-9bdb-bb4c56dd711e.0.3",
+    "student": "7658129872",
+    "phone": "12026102281"
   }
 }

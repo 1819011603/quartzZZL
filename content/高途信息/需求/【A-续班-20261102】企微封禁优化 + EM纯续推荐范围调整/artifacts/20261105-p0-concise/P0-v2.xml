@@ -201,7 +201,7 @@
 <thead><tr><th>剩余项</th><th>是否属本次改动影响面</th><th>本轮结论</th></tr></thead>
 <tbody>
 <tr><td>status1 页面正例</td><td>属于（状态校验是本次 save 的直接规则）</td><td><b>页面已验证</b>：计划 588872241920421888「W1-P0-243aa61a-待开始状态正例」在 EM 列表显示「待开始」，点「纯续关联」弹窗正常打开并显示「已关联续班计划 (0)」；network <code>/renewMaster/relation/list</code> trace <code>2107bd48-80af-49bf-b274-07d5fd1d72c7.0.0</code>，code=0；截图 <code>page-evidence/w1-status1-modal.png</code>。接口 status1 保存沿用 round8 证据。</td></tr>
-<tr><td>跨学年/学期、有值从扩科</td><td>属于（扩科/年级来源取主计划是本需求规则）</td><td>接口子集已验证主扩科不被从计划污染（round10）；不同学期与有值从扩科页面未验 → <b>推断未验证</b>。</td></tr>
+<tr><td>跨学年/跨学季、有值从扩科</td><td>属于（扩科/年级来源取主计划是本需求规则）</td><td>接口子集已验证主扩科不被从计划污染（round10）；不同学期与有值从扩科页面未验 → <b>推断未验证</b>。</td></tr>
 <tr><td>缓存运行态（负值/故障/关闭）</td><td>属于（cart 新增关联前置课缓存、主计划缓存隔离）</td><td><b>本轮真开真关</b>：原值 false → 改 true 发布（release 20261106083609）→ cart getRenewalDetail 正常返回三门商品 trace <code>cart_gaotu100_com.301.17939253769250778</code> → 恢复 false 发布（release 20261106083631）并回读 false。仅验证开启后功能可用，未构造负值/故障/过期组合。</td></tr>
 <tr><td>优惠/异主体</td><td>不属于本次代码改动（order 只改跨模式重复校验，未改优惠/收款主体）</td><td><b>非本次改动、不在本次验证范围</b>；保留为下单回归建议，不能据本次接口推出优惠/异主体通过。</td></tr>
 <tr><td>C 端入口</td><td>属于推荐影响面（共用合并结果）</td><td><b>入口/选品/价格已验证</b>；完整下单需有 ¥100 资格学员会话。baijia-invoke cosplay 只支持 EES/OS 老师账号（projectCode 3/4），不支持 C 端学员 → 页面 ¥100 下单 <b>未验证</b>，接口层跨模式+支付复用 round7。</td></tr>
@@ -217,7 +217,7 @@
 <tr><td>缓存运行态</td><td><b>已真开真关</b>：原 false → true 发布（release 20261106083609）→ cart getRenewalDetail 返回三门商品 trace <code>cart_gaotu100_com.301.17939253769250778</code> → 恢复 false 发布（release 20261106083631）并 apollo_get_key 回读 false。未覆盖负值/故障/过期组合。</td></tr>
 <tr><td>C 端入口</td><td><b>入口/选品/价格已验证</b>：getRecommendAppInfo 返回高途链接并实际打开；页面登录 uid 7658127801，展示小班商品 586097025945298944，选品/价格接口 code=0（trace 见 6.6）。<b>完整下单未完成</b>：baijia-invoke cosplay 仅支持 EES/OS 老师账号（projectCode 3/4），不支持 C 端学员；当前 uid 无 ¥100 商品可选，页面下单/mock 支付未验，接口层复用 round7。</td></tr>
 <tr><td>小班批量第三人 / 小班备注</td><td><b>未验证</b>：实际执行 <code>select account_id,user_id,friend,wechat_type from gaotu_link.tutor_wechat_info where friend=1</code> 报 Unknown column account_id；<code>show columns</code> 该表 17 列无学员关系列；<code>gaotu_link.dws_fuwu_user_teacher_wechat_info</code>、<code>student_center.dws_fuwu_user_teacher_wechat_info</code> 均定位不到。未找到小班好友候选；大班标签弹窗已通过。</td></tr>
-<tr><td>跨学年/学期 + 有值从扩科</td><td><b>接口子集已验证</b>（round10：主扩科不被从计划污染、跨年级纯续保留）；页面无独立入口，未验 → 推断未验证。</td></tr>
+<tr><td>跨学年/跨学季 + 有值从扩科</td><td><b>接口子集已验证</b>（round10：主扩科不被从计划污染、跨年级纯续保留）；页面无独立入口，未验 → 推断未验证。</td></tr>
 </tbody>
 </table>
 <h2>6.6 C 端入口/下单验证（本轮）</h2>
@@ -235,10 +235,10 @@
 <table>
 <thead><tr><th>缺什么</th><th>当前证据</th><th>需要 owner 提供/怎么构建</th><th>补齐后的验证步骤</th></tr></thead>
 <tbody>
-<tr><td>C 端 ¥100 页面下单/mock 支付：缺有 ¥100 大班商品 588861402658267136 资格的 C 端学员登录态</td><td>当前页面 uid 7658127801 仅可选 0 元小班 586097025945298944；「更换课程」无满足条件课程；换大班班号 588861397654462464 仍同一 URL（trace 5096f3a3）；baijia-invoke cosplay 仅支持 EES/OS 老师账号（projectCode 3/4），不支持 C 端学员</td><td>请 owner 指定一个**有该商品资格的学员 userId**，并给出 C 端登录方式：账号/验证码自助入口、代登录接口或页面内切换方式（账号 2 开头用 100）</td><td>用该学员登录 C 端 → 打开 suggestShoppingCart 链接 → 勾选 588861402658267136 → 去结算 → 订单确认 → mock 支付 → 回读订单 status、金额、学员；记录截图/network/traceId</td></tr>
-<tr><td>小班好友备注/批量第三人：缺**小班在读且企微好友**的学员样本</td><td>已执行 <code>select account_id,user_id,friend,wechat_type from gaotu_link.tutor_wechat_info where friend=1</code> 报 Unknown column；<code>show columns</code> 该表 17 列无学员关系列；<code>gaotu_link.dws_fuwu_user_teacher_wechat_info</code>、<code>student_center.dws_fuwu_user_teacher_wechat_info</code> 均定位不到；小班 7707218285/7707218286 好友数为 0</td><td>请 owner 指出小班企微好友关系实际所在表/环境，或直接给一组「小班班级 + 3 名在读且好友的学员」；若要造数，请给可写的测试库/表与好友关系字段</td><td>续班服务选该小班 → 勾选 3 人 → 批量标签/修改企微备注 → 查看弹窗与任务结果；记录页面/network/traceId，验证第三未选人不变</td></tr>
-<tr><td>缓存负值/故障/过期组合：缺可构造的异常态</td><td>已真开真关：原 false → true 发布（release 20261106083609）→ cart getRenewalDetail 返回三门商品 trace <code>cart_gaotu100_com.301.17939253769250778</code> → 恢复 false 发布（release 20261106083631）回读 false；仅验证开启后功能可用</td><td>请 owner 确认是否要验负值/故障/过期；若验，给可注入的 Redis key/故障方式（或允许短 TTL 配置）</td><td>构造空值/异常/过期缓存 → 调 cart 推荐 → 验证回源与降级结果；结束后恢复配置并回读</td></tr>
-<tr><td>跨学年/学期：前端无独立页面入口</td><td>前端路由未见独立跨学年/学期验证页；接口子集 round10 已验证主扩科不被从计划污染、跨年级纯续保留</td><td>请 owner 指认页面入口位置；若确认没有，则只需接口层验证</td><td>有页面：按入口验证展示与操作；无页面：在文档标「无独立页面入口」，仅保留接口子集证据</td></tr>
+<tr><td>C 端 ¥100 页面下单/mock 支付：登录后完成 ¥100 选品→结算→mock 支付</td><td><b>归属已核对，原入口找错计划</b>：C 端旧 URL 用 <code>renewalNumber=585960797778243584</code>，该计划不推 ¥100 商品；<code>getRenewalDetail(7658129872,585960797778243584)</code> 只返回 585960755422160896 与 0 元小班 586097025945298944，trace <code>cart_gaotu100_com.296.17939277510490802</code>。<b>¥100 商品 588861402658267136 属于计划 588858850300473344</b>；该计划下 7658129872 确实推荐 ¥100 商品（cart getRenewalDetail 返回三门含该商品）。正确入口由 getRecommendAppInfo 重新获取：<code>renewalNumber=588858850300473344</code>，trace <code>5c98a2ed-acfc-445d-9bdb-bb4c56dd711e.0.3</code>。手机号已取到 <b>12026102281</b>（student-center trace 21310268/21310270）；清 test-m 后登录页已出现，但 12026102281 为 1 开头，不适用 100，填 100 点登录无请求；尚未取得验证码</td><td>用正确 URL <code>suggestShoppingCart?renewalNumber=588858850300473344&seller_id=7682&p_client=1</code>；登录方式需 12026102281 的验证码，或换手机号 2 开头且有该计划资格学员（用 100）</td><td>登录后打开正确 URL → 勾选 588861402658267136 → 去结算 → 订单确认 → mock 支付 → 回读订单 status、金额、学员；记录截图/network/traceId/订单号</td></tr>
+<tr><td>小班好友备注/批量第三人：缺**小班在读且企微好友**的学员样本</td><td>owner 明确：企微好友关系与大小班无关，用同一张表/同一套关系。大班已验证链路为 <code>remark/check/wk/friend</code> 对应的好友关系；小班 7707218285/7707218286 好友数为 0；此前误查 <code>gaotu_link.tutor_wechat_info</code>（17 列无学员关系列）</td><td>复用大班好友关系数据源，筛出「小班在读 + friend=1」的学员；若现有数据无候选，再按同一关系表造 3 名小班学员好友关系（测试库）</td><td>续班服务选该小班 → 勾选 3 人 → 批量标签/修改企微备注 → 查看弹窗与任务结果；记录页面/network/traceId，验证第三未选人不变</td></tr>
+<tr><td>缓存负值/故障/过期组合</td><td>owner 明确：<b>不用验异常态</b>。已真开真关：false → true 发布（release 20261106083609）→ cart 返回三门商品 trace <code>cart_gaotu100_com.301.17939253769250778</code> → 恢复 false 发布（release 20261106083631）回读 false</td><td>无需构建；本项按 owner 要求关闭</td><td>不验，文档记录关闭原因</td></tr>
+<tr><td>跨学年/跨学季：前端无独立页面入口，需自己造数构造场景</td><td>前端路由未见独立跨学年/跨学季验证页；接口子集 round10 已验证主扩科不被从计划污染、跨年级纯续保留</td><td><b>不询问 owner</b>：用造数构造「当前学年/学季 ≠ 目标学年/学季」的主从计划/班级各一组；缺的造数能力需写明（如缺少可写课程学年/学季字段或计划模板）</td><td>造出跨学年/跨学季计划与班级 → 配关联 → 分别查主/从推荐与扩科 → 核对年级/学年/学季来源；记录接口 traceId 与页面结果</td></tr>
 </tbody>
 </table>
 

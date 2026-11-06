@@ -32,4 +32,6 @@
 - 点「去结算」只触发 `productSelectConfirm` + `/renewal/price`，未跳订单确认；0 元商品可能不进入支付流程。
 - **cosplay 不支持 C 端学员**：baijia-invoke 的代课登录只支持 EES/OS 老师账号（projectCode 3/4），不能用来切 C 端学员会话；要验有价商品需 owner 提供学员 C 端登录态。
 - **缓存开关实测**：cart.gaotu100.com / TEST `renewal.query.cache.enabled` 原 false → 改 true 发布（release 20261106083609）→ cart getRenewalDetail 正常返回三门商品 trace `cart_gaotu100_com.301.17939253769250778` → 恢复 false 发布（release 20261106083631）并回读 false。
-- **小班好友 DB 实测**：`select account_id,user_id,friend,wechat_type from gaotu_link.tutor_wechat_info` 报 Unknown column；`show columns` 该表 17 列无学员关系列；`gaotu_link.dws_fuwu_user_teacher_wechat_info`、`student_center.dws_fuwu_user_teacher_wechat_info` 均定位不到，未找到小班好友候选。
+- **小班好友 DB 实测**：`select account_id,user_id,friend,wechat_type from gaotu_link.tutor_wechat_info` 报 Unknown column；`show columns` 该表 17 列无学员关系列；`gaotu_link.dws_fuwu_user_teacher_wechat_info`、`student_center.dws_fuwu_user_teacher_wechat_info` 均定位不到。owner 明确好友关系不分大小班，应复用大班 `remark/check/wk/friend` 同一套关系表。
+- **手机号查询**：已定位 `super_class.user`（cluster 142，gaotu_polar_test_03）共 41 列，含 `user_id/mobile`；`select user_id,mobile from super_class.user where user_id=7658129872` 被权限拦截，未拿到手机号。需允许该查询或直接提供手机号后，才能走 C 端手机号登录。
+- 术语统一为「跨学年/跨学季」；跨学年/跨学季场景由我们自己在测试环境造数构造，不再询问 owner。
