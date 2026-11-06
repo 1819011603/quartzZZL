@@ -1,0 +1,24 @@
+{
+  "ok": true,
+  "url": "https://test-fuwu.baijia.com/bgwApi/product-b/b/renewMaster/relation/save",
+  "trafficEnv": "test-gtbg-dev-3",
+  "httpStatus": 200,
+  "resolvedRoute": {
+    "appId": "product-b",
+    "pathInfo": "/product-b/b",
+    "rewriteInfo": "StripPrefix = 1",
+    "statusInfo": "正常",
+    "routeId": 189
+  },
+  "request": {
+    "mainRenewMasterNumber": "588858850300473344",
+    "subRenewMasterNumbers": []
+  },
+  "curl": "curl -sk \\\n  -x \"${AGENT_PROXY_URL:-http://127.0.0.1:8888}\" \\\n  'https://test-fuwu.baijia.com/bgwApi/product-b/b/renewMaster/relation/save' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'b_client: EES' \\\n  --data-raw '{\"mainRenewMasterNumber\": \"588858850300473344\", \"subRenewMasterNumbers\": []}'",
+  "traceId": "909ae3cd-2e58-425f-ba4a-5405005de40b.0.3",
+  "gapmApp": "product-b",
+  "response": {
+    "code": 0,
+    "msg": "success！"
+  }
+}

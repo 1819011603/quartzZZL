@@ -1,0 +1,35 @@
+{
+  "url": "http://10.218.251.197:28688/test/acl/compare/service",
+  "trafficEnv": "test-gtbg-dev-3",
+  "httpStatus": 200,
+  "directIp": true,
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#corePreheatCache",
+    "params": [
+      {
+        "renewalNumber": "588858850300473344",
+        "courseNumbers": [
+          588861395571990528
+        ],
+        "productType": 2,
+        "type": 1,
+        "relatedRenewMasterNumbers": [
+          585960797778243584,
+          586116340522184704
+        ],
+        "beginTime": 1793870400000,
+        "endTime": 1825406400000,
+        "relationCacheVersion": "4fac9b77-3357-4d66-8344-4253431516ba:on"
+      },
+      "7707220467"
+    ]
+  },
+  "curl": "curl -sk \\\n  'http://10.218.251.197:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#corePreheatCache\", \"params\": [{\"renewalNumber\": \"588858850300473344\", \"courseNumbers\": [588861395571990528], \"productType\": 2, \"type\": 1, \"relatedRenewMasterNumbers\": [585960797778243584, 586116340522184704], \"beginTime\": 1793870400000, \"endTime\": 1825406400000, \"relationCacheVersion\": \"4fac9b77-3357-4d66-8344-4253431516ba:on\"}, \"7707220467\"]}'",
+  "traceId": "cart_gaotu100_com.286.17939653422060013",
+  "rvoCode": 0,
+  "raw": {
+    "code": 0,
+    "data": {},
+    "msg": ""
+  }
+}

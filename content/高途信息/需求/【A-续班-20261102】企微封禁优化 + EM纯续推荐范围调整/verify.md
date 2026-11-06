@@ -7,9 +7,13 @@
 - **数据终态**：[独立DB回读](artifacts/20261106-relation-fix/after/db-current.json)与before完全一致，关系集合/两学员订单退款状态未变；无新增支付/退款/库存/Apollo修改，仅同集合save验证缓存。全部部署结束，无待恢复业务数据。
 - 本批仅完成T-18；全集保存并发明确不改，order/client不改；其余P0边界仍在T-15。详细改动与限制见[报告](artifacts/20261106-relation-fix/README.md)。
 
+## 关联修改与预热缓存联动（进行中）
+
+2026-11-06 TEST/test-gtbg-dev-3，cart 1ebd315d：真实单用户预热后清空主计划588858850300473344关联，配置已空（trace `cart_gaotu100_com.287.17939638972200038`），但 `corePreheatCache` 仍返回从计划小班586097025945298944（trace `.295.17939638975290037`）；B默认入口fromBCart=true已仅返回主计划。关联全集已恢复并回读，未动订单。原件[缓存基线](artifacts/20261106-cache-invalidation/before/before-cleared-cache.json)。拟增加默认true的Apollo缓存失效开关，让配置/预热键跟随关联提交版本；从未关联的计划保持原缓存键与规则，小班不引入整份推荐结果缓存。已完成实现与TEST验证：真实预热→清空关联→旧预热不命中→恢复→重新预热命中新版本，B端清空后只返回主计划；无关联老计划仍走原缓存键。证据见[缓存失效报告](artifacts/20261106-cache-invalidation/README.md)。Apollo key `renewal.pure.relation.cache.invalidate.enabled` 代码默认true，未配置即启用，false仅回滚。
+
 ## 原有排序与筛选兼容性补验（2026-11-06）
 
-当前 cart 1ebd315d 补跑 12 类、125 项聚焦测试，0 失败/错误/跳过，覆盖已购优先、白名单、同科目/同主讲/同时间评分、开课时间及 ID 排序、组合商品、筛选分页、扩科来源及普通计划库存语义。证据：[回归日志](artifacts/20261106-relation-fix/compatibility/regression.log)。当前发现 `productList` 展示排序对普通计划也生效，正在用 release 与当前代码同输入核对；不将测试通过等同于全部旧行为零差异。
+当前 cart 1ebd315d 补跑 12 类、125 项聚焦测试，0 失败/错误/跳过，覆盖已购优先、白名单、同科目/同主讲/同时间评分、开课时间及 ID 排序、组合商品、筛选分页、扩科来源及普通计划库存语义。证据：[回归日志](artifacts/20261106-relation-fix/compatibility/regression.log)。MR公共基线与当前类同输入运行确认：原C端展示比较器结果一致；`productList` 实测未购在前、已购沉底、同组保序。owner确认这是原有业务规则，接口排序调用与规则一致，不属于破坏旧逻辑，不应收窄到关联计划。方法级基线的返回顺序差异不等同于产品业务规则变更。方法、输入及原件见[补验结论](artifacts/20261106-relation-fix/README.md#排序与旧逻辑补验2026-11-06)。
 
 ## 改前定向运行基线（2026-11-06）
 

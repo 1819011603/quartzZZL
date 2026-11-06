@@ -1,0 +1,34 @@
+{
+  "environment": "test-gtbg-dev-3",
+  "cartCommit": "deea4c9e",
+  "cartPod": "10.218.251.197",
+  "productCommit": "84739aab8",
+  "productCPod": "10.218.251.99",
+  "productBPod": "10.218.248.209",
+  "pipelineIds": {
+    "cart": 1332476,
+    "productC": 1332478,
+    "productB": 1332479
+  },
+  "assertions": [
+    "关联版本预热命中",
+    "清空关联切换版本后旧预热不命中",
+    "B端清空后仅主计划推荐",
+    "恢复关联后新预热才命中新版本",
+    "无关联老计划配置仍无related列表",
+    "关联计划预热入口实际执行无异常",
+    "小班预热入口实际执行无异常（无整份结果Redis写入）"
+  ],
+  "traces": [
+    "cart_gaotu100_com.295.17939653385680011",
+    "cart_gaotu100_com.294.17939653387130011",
+    "cart_gaotu100_com.289.17939653405210013",
+    "cart_gaotu100_com.292.17939653407260013",
+    "cart_gaotu100_com.295.17939653407880013",
+    "cart_gaotu100_com.294.17939653420010013",
+    "cart_gaotu100_com.289.17939653422670015",
+    "cart_gaotu100_com.295.17939653429090015",
+    "cart_gaotu100_com.292.17939654974540018",
+    "cart_gaotu100_com.295.17939654980620018"
+  ]
+}

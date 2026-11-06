@@ -1,0 +1,10 @@
+{
+  "ok": false,
+  "reason": "no_match",
+  "env": "test",
+  "pathInfoList": [
+    "/cart",
+    "/cart/**"
+  ],
+  "hint": "接口路径不匹配任何 pathInfo，按 pathInfoList 前缀传 path，或传 route 覆盖"
+}
