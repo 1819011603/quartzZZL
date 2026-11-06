@@ -19,10 +19,31 @@
 
 cart65项（首批55+库存3+后置builder7）通过；补换班字段后重跑相关7项通过，重复运行不累加为新覆盖。product11项通过，包含提交前、回滚、旧读晚回填的可控时序。日志在local-tests/。
 
-## 运行验证
+## 最终运行验证（已通过）
 
-第一批cartcbf7a180已UP，iteration1/comparison.json：推荐正反向已购、all_sign_up修复，换班查询成功；换班列表sign_up0为本批新增修复的依据。最终版本运行验证尚在进行，不能把第一批当最终通过。
+TEST/test-gtbg-dev-3：cart **1ebd315d**、product-b/product-c **2593dae78**；所有Running/UP实例均命中目标版本，旧实例Removing/DOWN，见[最终版本](after/final-versions.json)。本地与远端HEAD相同，工作区干净，两个原MR已随推送更新；order0cc8ef68未修改。
 
-缓存运行验证已通过：product2593dae78，正常HTTP保存同一主从全集成功（trace8b5dd1e4-e2ab-4048-8cc2-888d0f1abf80.0.3），C端固定新实例立即读取、再次读取均返回原集合；日志确认cache版本0→c3eeef72-51e0-42f1-939f-f54b400715d2，首次miss/set、随后hit。见after/cache-version-evidence.json。事务时序竞争由本地受控测试覆盖，未对共享TEST做并发故障注入。
+| 场景 | 改前 | 改后及证据 |
+|---|---|---|
+| 大班主入口查询小班换班 | 部分商品不存在 | 返回同SKU，type6004/price0/sign_up1；trace cart_gaotu100_com.293.17939610356070007 |
+| 大班主5参/7参推荐已购小班 | sign_up0/all_sign_up0 | 两学员及C端使用的7参分支sign_up1；全部已购样本all_sign_up1 |
+| 小班主引擎包含大班前课 | 大班后课sign_up0 | 同内存关联配置与真实订单，sign_up1；trace cart_gaotu100_com.290.17939610366590007 |
+| 小班自身计划对照 | 已购sign_up1 | 保持1；未购扩科仍0 |
+| 普通计划库存缺失/异常 | 本MR原先统一放行 | 本地反例确认普通小班null不可售、普通大班异常继续抛出；关联场景保留兜底；关闭总开关走旧行为 |
+| 关系缓存保存 | 旧实现提交前删缓存，本地反例失败 | 提交/回滚/旧读晚回填11项测试通过；运行同集合save后新版本首次miss、随后hit |
+| 数据与主配置 | 主从原全集、原有效订单 | 独立DB回读关系、订单/退款状态与before完全相同；主course_numbers仍只有自身课 |
 
-样本保留原关系/订单；仅调用一次同集合save验证缓存，没有新下单、支付、退款、库存或Apollo配置修改。
+9组同输入运行断言全部通过，见[最终对照](after/comparison.json)。换班字段修复前的第一批结果保存在iteration1/，**不能替代最终版本结果**。接口查询通过不等于浏览器完整下单回归；本次没有新增支付。
+
+缓存运行验证：正常HTTP保存同一全集成功，trace `8b5dd1e4-e2ab-4048-8cc2-888d0f1abf80.0.3`；C端立即读取、再次读取均为原集合。TLS日志确认版本0→`c3eeef72-51e0-42f1-939f-f54b400715d2`，首次miss/set、随后hit，见[缓存日志证据](after/cache-version-evidence.json)。SLS查0条；trace树没有子span，不把它当DB强一致证据。提交/回滚/在途旧读竞争使用本地受控测试，未对共享TEST注入并发故障。
+
+无新增订单、支付、退款、库存、Apollo配置或关系集合变化；仅同集合save验证缓存。没有待恢复业务数据。product-b已发布总开关false，C端默认true；cart实际true/queryCachefalse/preheatfalse，未改配置。
+
+部署流水线：cart最终1332383（首批1332363），product-b1332368、product-c1332369，均完成并核对目标实例UP。日志与回执在deployment/。AICR两分支查询暂无任务，未声称AICR通过。
+
+## 留存边界
+
+- 本批T-18已完成，不代表整需求/P0全部验收。
+- 全集保存并发按用户要求保留，不增加锁或版本条件更新。
+- order全局放行、client类型兼容仍是范围/契约风险；本批无确定故障证据，未修改。
+- Redis外部故障下仍按现有降级语义记录告警，不承诺故障期间强一致；26小时预热旧结果窗口保留。

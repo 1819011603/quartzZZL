@@ -1,8 +1,17 @@
-## 修复验证进行中（2026-11-06）
+## 本批修复验证（2026-11-06，T-18已完成）
 
-cart cbf7a180/test-gtbg-dev-3/10.218.250.231已UP，第一批同输入实测：正反向后置已购0→1、主all_sign_up0→1；换班从报错变返回6004/price0，但主计划换班列表sign_up仍0，自身小班为1，继续补齐关联场景。原件见[第一批对照](artifacts/20261106-relation-fix/iteration1/comparison.json)。product2593dae78的B/C均UP，本地缓存11项通过，运行同集合save及C端新版本缓存miss→hit已取日志证据；全集保存并发不改。未新增订单，主从集合保持原值。
+- **最终版本**：TEST/test-gtbg-dev-3，cart1ebd315d（10.218.237.132）、product-b2593dae78（10.218.238.105）、product-c2593dae78（10.218.250.0/26），全部目标实例UP；原MR随推送更新。[版本回读](artifacts/20261106-relation-fix/after/final-versions.json)。
+- **改前后同输入**：[9组最终对照](artifacts/20261106-relation-fix/after/comparison.json)：换班报错→返回6004/price0/sign_up1；正反向已购0→1；两已购学员主all_sign_up1；自身小班保持1、未购扩科保持0；主course_numbers未污染。C分支为服务级实测，不称浏览器端到端。
+- **缓存**：本地提交/回滚/旧读回填反例11项通过；运行同集合save成功（8b5dd1e4-e2ab-4048-8cc2-888d0f1abf80.0.3），C端读取版本切换、miss→hit均有[日志证据](artifacts/20261106-relation-fix/after/cache-version-evidence.json)。TEST未注入并发故障。
+- **受影响旧行为**：本地普通计划null库存不可售/库存异常继续抛出、总开关关闭不补查；关联场景兜底保留。cart65项+product11项均通过，追加字段后相关7项重跑通过（不重复计覆盖）。
+- **数据终态**：[独立DB回读](artifacts/20261106-relation-fix/after/db-current.json)与before完全一致，关系集合/两学员订单退款状态未变；无新增支付/退款/库存/Apollo修改，仅同集合save验证缓存。全部部署结束，无待恢复业务数据。
+- 本批仅完成T-18；全集保存并发明确不改，order/client不改；其余P0边界仍在T-15。详细改动与限制见[报告](artifacts/20261106-relation-fix/README.md)。
 
-## 当前定向运行复核（2026-11-06）
+## 原有排序与筛选兼容性补验（2026-11-06）
+
+当前 cart 1ebd315d 补跑 12 类、125 项聚焦测试，0 失败/错误/跳过，覆盖已购优先、白名单、同科目/同主讲/同时间评分、开课时间及 ID 排序、组合商品、筛选分页、扩科来源及普通计划库存语义。证据：[回归日志](artifacts/20261106-relation-fix/compatibility/regression.log)。当前发现 `productList` 展示排序对普通计划也生效，正在用 release 与当前代码同输入核对；不将测试通过等同于全部旧行为零差异。
+
+## 改前定向运行基线（2026-11-06）
 
 - TEST/test-gtbg-dev-3 当前 cart 镜像 d5729426（IP 10.218.238.95），与 MR284 head 一致；product-b07ba05df、order-b0cc8ef68。证据 [版本](artifacts/20261106-runtime-review/versions.json)。
 - 复用主588858850300473344、小班从586116340522184704、学员7707220467和7658129872；DB确认主关联A/B有效，小班后SKU586097025945298944均有order_item/status2/refund0。两班sale40/课节>0/老师非空。没有新造数、订单、支付或修改关联。

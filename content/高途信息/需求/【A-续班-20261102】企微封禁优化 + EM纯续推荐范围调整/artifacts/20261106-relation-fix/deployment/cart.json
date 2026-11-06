@@ -1,0 +1,23 @@
+{
+  "data": 1332363,
+  "code": 200,
+  "msg": "success",
+  "resolution": {
+    "getEnvId": {
+      "found": true,
+      "subEnv": "test-gtbg-dev-3",
+      "envInfoId": 314,
+      "envName": "",
+      "logicEnv": "dev",
+      "cached": true
+    }
+  },
+  "serviceCode": "gaotu_cart",
+  "envInfoId": 314,
+  "pollCmd": "/Users/gaotu/.local/feishu-bot/venv/bin/python /Users/gaotu/.claude/skills/deploy-image/poll_pipeline.py --pipeline-id 1332363 --service-code gaotu_cart --sub-env test-gtbg-dev-3 --namespace test-gtbg-dev-3 --pod-environment dev",
+  "poll": {
+    "launched": false,
+    "reason": "auto_poll=false，未在 server 侧拉起",
+    "nextAction": "run_poll: 用当前环境支持的异步/可恢复进程会话运行 pollCmd；保存进程/日志入口，期间继续独立工作并跟踪终态；退出码 0=构建及接力检查通过(未接力时仅构建成功) 1=构建失败 2=构建/Pod轮询超时(流水线未找到重试后也返回2) 3=接力Pod/namespace未找到；超时或旧版本UP时继续跟踪原发布，Pod版本检查用poll_pods.py --expected-commit，不重复发布"
+  }
+}

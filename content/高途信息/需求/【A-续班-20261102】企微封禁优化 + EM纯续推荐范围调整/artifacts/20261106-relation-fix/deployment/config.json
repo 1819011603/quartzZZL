@@ -1,0 +1,11 @@
+{
+  "product-b": [
+    "# product-b / TEST / application / 4 个 key\n已查 namespace: application\n\n命中:\n- `renewal.pure.relation.enabled` = `false`\n\n未命中(3): `renewal.pure.relation.readmaster.enabled`, `renewal.query.cache.enabled`, `preheat.cache.enabled`\n用 fallback_namespaces 补其它 namespace，或 apollo_list_namespaces 核对 namespace 名"
+  ],
+  "product": [
+    "# product / TEST / application / 4 个 key\n已查 namespace: application\n\n\n未命中(4): `renewal.pure.relation.enabled`, `renewal.pure.relation.readmaster.enabled`, `renewal.query.cache.enabled`, `preheat.cache.enabled`\n用 fallback_namespaces 补其它 namespace，或 apollo_list_namespaces 核对 namespace 名"
+  ],
+  "cart": [
+    "# cart / TEST / application / 4 个 key\n已查 namespace: application\n\n\n未命中(4): `renewal.pure.relation.enabled`, `renewal.pure.relation.readmaster.enabled`, `renewal.query.cache.enabled`, `preheat.cache.enabled`\n用 fallback_namespaces 补其它 namespace，或 apollo_list_namespaces 核对 namespace 名"
+  ]
+}

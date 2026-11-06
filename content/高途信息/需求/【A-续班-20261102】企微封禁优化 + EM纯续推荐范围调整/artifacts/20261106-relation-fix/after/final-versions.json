@@ -1,0 +1,62 @@
+[
+  {
+    "service": "cart",
+    "expectedCommit": "1ebd315d",
+    "pods": [
+      {
+        "podName": "cart-gaotu100-com-db4558cc5-v58fw",
+        "podIP": "10.218.250.231",
+        "status": "Removing",
+        "eurekaStatus": "DOWN",
+        "imageName": "feature-xuban-pure-relation-20261102-cbf7a180-20261106181905"
+      },
+      {
+        "podName": "cart-gaotu100-com-6c5bcf5c44-lz7ns",
+        "podIP": "10.218.237.132",
+        "status": "Running",
+        "eurekaStatus": "UP",
+        "imageName": "feature-xuban-pure-relation-20261102-1ebd315d-20261106182544"
+      }
+    ]
+  },
+  {
+    "service": "product-b",
+    "expectedCommit": "2593dae7",
+    "pods": [
+      {
+        "podName": "product-b-db74fd5f7-96vss",
+        "podIP": "10.218.238.105",
+        "status": "Running",
+        "eurekaStatus": "UP",
+        "imageName": "feature-xuban-pure-relation-20261102-2593dae7-20261106182108"
+      }
+    ]
+  },
+  {
+    "service": "product-c",
+    "expectedCommit": "2593dae7",
+    "pods": [
+      {
+        "podName": "product-gaotu100-com-5fbb74bd96-2h6n9",
+        "podIP": "10.218.238.47",
+        "status": "Removing",
+        "eurekaStatus": "DOWN",
+        "imageName": "feature-xuban-pure-relation-20261102-ab120d4e-20261103232835"
+      },
+      {
+        "podName": "product-gaotu100-com-5bd9667b46-vkqjj",
+        "podIP": "10.218.250.0",
+        "status": "Running",
+        "eurekaStatus": "UP",
+        "imageName": "feature-xuban-pure-relation-20261102-2593dae7-20261106182109"
+      },
+      {
+        "podName": "product-gaotu100-com-5bd9667b46-9tprl",
+        "podIP": "10.218.250.26",
+        "status": "Running",
+        "eurekaStatus": "UP",
+        "imageName": "feature-xuban-pure-relation-20261102-2593dae7-20261106182109"
+      }
+    ]
+  }
+]
