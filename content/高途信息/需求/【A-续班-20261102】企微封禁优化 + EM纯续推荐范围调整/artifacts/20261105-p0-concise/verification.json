@@ -18,11 +18,28 @@
     "p0_is_self": true,
     "revision_before": 319,
     "chars_before": 131653,
-    "revision_after": 395,
-    "chars_after": 33400,
+    "revision_after": 416,
+    "chars_after": 19261,
     "archive_before": "artifacts/20261105-p0-concise/feishu-revision-before.xml",
     "old_attachments": 7,
-    "old_attachments_note": "覆盖写入后旧附件块不再出现在新正文；全文与附件引用已本地存档，飞书版本历史可回滚"
+    "old_attachments_note": "覆盖写入后旧附件块不再出现在新正文；全文与附件引用已本地存档，飞书版本历史可回滚",
+    "archive_after": "artifacts/20261105-p0-concise/P0-v3.xml",
+    "revision_json": "artifacts/20261105-p0-concise/feishu-revision-final20.json",
+    "restructure_20261106": {
+      "from_revision": 399,
+      "to_revision": 403,
+      "structure": [
+        "改了什么",
+        "关键上下文",
+        "主链路",
+        "原链路回归",
+        "影响范围与回滚",
+        "banshan 17 条映射",
+        "接口改动与验证",
+        "证据与版本"
+      ],
+      "case_mapping": "artifacts/20261105-p0-concise/case17-mapping.md"
+    }
   },
   "frontend_call_chain": [
     {
@@ -212,6 +229,22 @@
     {
       "file": "/Users/gaotu/bridge/payload/skills-cold/banshan-case/",
       "change": "同步 SKILL.md 与 doc-templates.md"
+    },
+    {
+      "file": "~/.claude/skills-cold/banshan-case/SKILL.md",
+      "change": "2026-11-06 新增「关键信息书写（硬性）」：名称(ID)、完整URL、真实步骤顺序（提交订单→立即支付→回读）、关键账号/环境；doc-templates 同步",
+      "synced": "~/bridge/payload/skills-cold/banshan-case/",
+      "verify": "verify_skills.sh ~/.agents/skills → verify_skills OK"
+    },
+    {
+      "file": "~/.claude/skills-cold/banshan-case/SKILL.md",
+      "change": "2026-11-06 再补两条：①生效类 case 必须写机制+数量对比+反向边界；②「学员在读」必须逐项列 计划(ID)/班级(ID)/状态，未核实标待核实",
+      "verify": "verify_skills.sh ~/.agents/skills → OK"
+    },
+    {
+      "file": "~/.claude/skills-cold/banshan-case/SKILL.md",
+      "change": "2026-11-06 班级字段统一写「名称(bizId)」（如 大班-六年级语文(574882679202260992)），查不到名称写「名称待核实(bizId)」",
+      "verify": "verify_skills.sh ~/.agents/skills → OK"
     }
   ],
   "audit": {
@@ -438,7 +471,7 @@
     "phone": "12026102281"
   },
   "c_end_order_attempt": {
-    "status": "阻塞",
+    "status": "支付已验证；订单中心可见性待查",
     "date": "2026-11-06",
     "cart": {
       "api": "POST https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=588858850300473344&sellerId=7682&p_client=1",
@@ -481,6 +514,38 @@
       "ordersSearch": "POST /web/order/pay/shape/search (payStatusType=1, searchKey=订单号) totalCount=0"
     },
     "conclusion": "订单已生成但 C 端列表/详情/payCard 均查不到，页面无收银台入口，mock 支付未完成；需排查订单与支付单的可见性/归属（可能因首请求被 abort 造成半成品订单）",
-    "evidence_dir": "page-evidence/（w1-cart-588858.network-response、w1-createOrder-ok.*、w1-orderSearch.*、w1-orderDetail*.* ）"
+    "evidence_dir": "page-evidence/（w1-cart-588858.network-response、w1-createOrder-ok.*、w1-orderSearch.*、w1-orderDetail*.* ）",
+    "mock_pay": {
+      "scenario": "mock_pay",
+      "run_id": "r-20261106100523-08edf28b",
+      "param": "pay_order_number=433715450493796358（createOrder 返回的订单号/批次单号）",
+      "returned_pay_order_number": "102611062520640856",
+      "pay_info": {
+        "cluster_id": 142,
+        "pay_status": "1",
+        "pay_channel": "6",
+        "paid_time": "2026-11-06 10:05:23",
+        "real_price": "100"
+      },
+      "fulfillment": "购物车页商品状态变为「已报名」",
+      "order_center_gap": "order_info/order_item 同簇查不到该单；/orders 待支付为空；payCard/detail 返回 code=1「订单号不存在」→ 待查项（owner 决定不阻塞、不结论为缺陷）"
+    },
+    "zero_order": {
+      "status": "阻塞",
+      "attempts": [
+        "createOrder(0元商品 586097025945298944) 返回 code=16「长时间未登录已被退出」",
+        "访问 /logout 后再访问 /login → 302 到 https://test-m.gaotu.cn/?seller_id=7682",
+        "访问 login-custom-bg → 同样跳首页，无法进入登录表单",
+        "接口层补登：sendPasscode 返回 code=130「请输入图片验证码」；短信平台最新记录 id 5507806888 解码=1000，但 loginSms 仍 code=34「验证码不正确」，未拿到 sid"
+      ],
+      "conclusion": "C 端会话过期且接口层补登失败（sendPasscode 需图片验证码、loginSms code=34）；0 元单本轮未验证",
+      "historical_evidence": "同用户 0 元订单 433534690352694278（price=0、order_status=2、已支付，2026-11-04）为历史证据，非本轮新验证",
+      "evidence_file": "/tmp/zero-order-step.txt"
+    }
+  },
+  "kb_updates_20261106": {
+    "sms_kb": "知识库/sms/message/_page.md：12 开头 1001→1000，补充 listTest 取 id → decryptTest 解码、maskedContent 不可当验证码",
+    "urls": "高途网址.md 同步 1000",
+    "construct_doc": "构造数据/续班C端下单_构造与复现步骤.md 同步 1000、名称(ID)、价格单位（100分=¥1.00）"
   }
 }
