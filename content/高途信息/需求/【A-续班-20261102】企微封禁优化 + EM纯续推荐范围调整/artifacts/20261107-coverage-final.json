@@ -1,0 +1,359 @@
+{
+  "capturedAt": "2026-11-07T00:17:33.376492+08:00",
+  "coverage": {
+    "found": true,
+    "releasePlanId": 24210,
+    "jobKey": "COVERAGE_BE",
+    "jobName": "后端代码覆盖率",
+    "stepInResult": "64.0%",
+    "stepInPassed": true,
+    "stepOutResult": "未执行",
+    "services": [
+      {
+        "serviceCode": "baijia.gt.ecommerce.product.product",
+        "lineCoverage": "72.57%(209/288)",
+        "branchCoverage": "61.94%(83/134)",
+        "reportUrl": "https://qa.baijia.com/workbench/code-coverage/ccmReports?id=40792",
+        "ccmId": 40792
+      },
+      {
+        "serviceCode": "baijia.gt.ecommerce.product.product-task",
+        "lineCoverage": "72.57%(209/288)",
+        "branchCoverage": "61.94%(83/134)",
+        "reportUrl": "https://qa.baijia.com/workbench/code-coverage/ccmReports?id=40792",
+        "ccmId": 40792
+      },
+      {
+        "serviceCode": "baijia.gt.ecommerce.product.product-b",
+        "lineCoverage": "72.57%(209/288)",
+        "branchCoverage": "61.94%(83/134)",
+        "reportUrl": "https://qa.baijia.com/workbench/code-coverage/ccmReports?id=40792",
+        "ccmId": 40792
+      },
+      {
+        "serviceCode": "gaotu_cart",
+        "lineCoverage": "64.42%(947/1470)",
+        "branchCoverage": "44.32%(398/898)",
+        "reportUrl": "https://qa.baijia.com/workbench/code-coverage/ccmReports?id=40793",
+        "ccmId": 40793
+      },
+      {
+        "serviceCode": "gaotu_order",
+        "lineCoverage": "65.38%(17/26)",
+        "branchCoverage": "11.54%(3/26)",
+        "reportUrl": "https://qa.baijia.com/workbench/code-coverage/ccmReports?id=40794",
+        "ccmId": 40794
+      },
+      {
+        "serviceCode": "gaotu_order_task",
+        "lineCoverage": "65.38%(17/26)",
+        "branchCoverage": "11.54%(3/26)",
+        "reportUrl": "https://qa.baijia.com/workbench/code-coverage/ccmReports?id=40794",
+        "ccmId": 40794
+      },
+      {
+        "serviceCode": "baijia.gaotu.tech.trade.order-ad",
+        "lineCoverage": "65.38%(17/26)",
+        "branchCoverage": "11.54%(3/26)",
+        "reportUrl": "https://qa.baijia.com/workbench/code-coverage/ccmReports?id=40794",
+        "ccmId": 40794
+      },
+      {
+        "serviceCode": "baijia.gaotu.tech.trade.order-b",
+        "lineCoverage": "65.38%(17/26)",
+        "branchCoverage": "11.54%(3/26)",
+        "reportUrl": "https://qa.baijia.com/workbench/code-coverage/ccmReports?id=40794",
+        "ccmId": 40794
+      }
+    ]
+  },
+  "gates": {
+    "found": true,
+    "releasePlanId": 24210,
+    "allBlockingPassed": false,
+    "blockingFailures": [
+      {
+        "jobKey": "USER_CASE",
+        "jobName": "功能用例",
+        "result": "0.0%",
+        "threshold": 100
+      }
+    ],
+    "jobs": [
+      {
+        "jobKey": "USER_CASE",
+        "jobName": "功能用例",
+        "blocking": true,
+        "卡点类型": "强卡",
+        "stage": "准入",
+        "threshold": 100,
+        "result": "0.0%",
+        "linePct": 0.0,
+        "passed": false,
+        "running": false,
+        "stepInResult": "0.0%",
+        "stepOutResult": "未执行"
+      },
+      {
+        "jobKey": "ALARM",
+        "jobName": "告警",
+        "blocking": true,
+        "卡点类型": "强卡",
+        "stage": "准入",
+        "threshold": 100,
+        "result": "100.0%",
+        "linePct": 100.0,
+        "passed": true,
+        "running": false,
+        "stepInResult": "100.0%",
+        "stepOutResult": "未执行"
+      },
+      {
+        "jobKey": "JAR_SCAN",
+        "jobName": "jar包扫描",
+        "blocking": false,
+        "卡点类型": "不卡",
+        "stage": "准入",
+        "threshold": 100,
+        "result": "100.0%",
+        "linePct": 100.0,
+        "passed": true,
+        "running": false,
+        "stepInResult": "100.0%",
+        "stepOutResult": "非准出job"
+      },
+      {
+        "jobKey": "ALARM_CHECK",
+        "jobName": "告警覆盖检查",
+        "blocking": true,
+        "卡点类型": "强卡",
+        "stage": "准入",
+        "threshold": 100,
+        "result": "100.0%",
+        "linePct": 100.0,
+        "passed": true,
+        "running": false,
+        "stepInResult": "100.0%",
+        "stepOutResult": "未执行"
+      },
+      {
+        "jobKey": "ACCURATE_CONFIRM",
+        "jobName": "影响范围精准分析",
+        "blocking": false,
+        "卡点类型": "不卡",
+        "stage": "准入",
+        "threshold": 100,
+        "result": "0.0%",
+        "linePct": 0.0,
+        "passed": false,
+        "running": false,
+        "stepInResult": "0.0%",
+        "stepOutResult": "未执行"
+      },
+      {
+        "jobKey": "PYTEST_JOB",
+        "jobName": "pytest自动化",
+        "blocking": true,
+        "卡点类型": "强卡",
+        "stage": "准入",
+        "threshold": 100,
+        "result": "100.0%",
+        "linePct": 100.0,
+        "passed": true,
+        "running": true,
+        "stepInResult": "100.0%",
+        "stepOutResult": "未执行"
+      },
+      {
+        "jobKey": "UNIT_TEST_COV",
+        "jobName": "单测覆盖率",
+        "blocking": false,
+        "卡点类型": "不卡",
+        "stage": "准入",
+        "threshold": 70,
+        "result": "0.0%",
+        "linePct": 0.0,
+        "passed": false,
+        "running": false,
+        "stepInResult": "0.0%",
+        "stepOutResult": "非准出job"
+      },
+      {
+        "jobKey": "COVERAGE_BE",
+        "jobName": "后端代码覆盖率",
+        "blocking": true,
+        "卡点类型": "强卡",
+        "stage": "准入",
+        "threshold": 60,
+        "result": "64.0%",
+        "linePct": 64.0,
+        "passed": true,
+        "running": false,
+        "stepInResult": "64.0%",
+        "stepOutResult": "未执行"
+      },
+      {
+        "jobKey": "COVERAGE_FE",
+        "jobName": "前端代码覆盖率",
+        "blocking": true,
+        "卡点类型": "强卡",
+        "stage": "准入",
+        "threshold": 40,
+        "result": "85.0%",
+        "linePct": 85.0,
+        "passed": true,
+        "running": false,
+        "stepInResult": "85.0%",
+        "stepOutResult": "未执行"
+      },
+      {
+        "jobKey": "DSCD",
+        "jobName": "pytest覆盖率",
+        "blocking": false,
+        "卡点类型": "不卡",
+        "stage": "准入",
+        "threshold": 40,
+        "result": "0.0%",
+        "linePct": 0.0,
+        "passed": false,
+        "running": false,
+        "stepInResult": "0.0%",
+        "stepOutResult": "未执行"
+      },
+      {
+        "jobKey": "PYTEST_INC_API",
+        "jobName": "pytest增量接口自动化覆盖",
+        "blocking": false,
+        "卡点类型": "不卡",
+        "stage": "准入",
+        "threshold": 60,
+        "result": "100.0%",
+        "linePct": 100.0,
+        "passed": true,
+        "running": true,
+        "stepInResult": "100.0%",
+        "stepOutResult": "未执行"
+      },
+      {
+        "jobKey": "ESAI_CR",
+        "jobName": "ESAI-CR",
+        "blocking": true,
+        "卡点类型": "强卡",
+        "stage": "准入",
+        "threshold": null,
+        "result": "100.0%",
+        "linePct": 100.0,
+        "passed": true,
+        "running": false,
+        "stepInResult": "100.0%",
+        "stepOutResult": "非准出job"
+      }
+    ],
+    "thresholdSource": "内置默认(策略 37 页面口径)，非接口返回；换策略请传 thresholds"
+  },
+  "responseAssertions": {
+    "planBatchExact": true,
+    "invalidPlanEmpty": true,
+    "unchangedRelations": true,
+    "noRelationPlanEmptyForThisStudent": true,
+    "smallOwnRecommendation": true,
+    "mainCrossModeRecommendation": true
+  },
+  "runtimeEvidence": [
+    {
+      "case": "save-idempotent",
+      "request": {
+        "mainRenewMasterNumber": "588858850300473344",
+        "subRenewMasterNumbers": [
+          "585960797778243584",
+          "586116340522184704"
+        ]
+      },
+      "traceId": "efe7586b-43c4-4d49-96ae-a99808253a03.0.3",
+      "code": 0
+    },
+    {
+      "case": "relations-after-save",
+      "request": null,
+      "traceId": "85d9e9ca-556c-4809-9d8e-8eca3407bed5.0.3",
+      "code": 0
+    },
+    {
+      "case": "plan-batch-list",
+      "request": {
+        "number": "585960797778243584,586116340522184704",
+        "filterTestData": 0,
+        "pager": {
+          "current": 1,
+          "pageSize": 10
+        }
+      },
+      "traceId": "c3c7e857-7c40-4bb4-8d61-33c3bdbb2ecf.0.3",
+      "code": 0
+    },
+    {
+      "case": "plan-invalid-list",
+      "request": {
+        "number": "not-a-plan",
+        "filterTestData": 0,
+        "pager": {
+          "current": 1,
+          "pageSize": 10
+        }
+      },
+      "traceId": "b9bd2af3-6015-4cbc-95cb-0a8157712c8b.0.3",
+      "code": 0
+    },
+    {
+      "case": "cart-seven-main",
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7658127801",
+          "588858850300473344",
+          true,
+          false,
+          null,
+          "7682",
+          false
+        ]
+      },
+      "traceId": "cart_gaotu100_com.289.17939812606640077",
+      "code": 0
+    },
+    {
+      "case": "cart-seven-small",
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7658127801",
+          "586116340522184704",
+          true,
+          false,
+          null,
+          "7682",
+          false
+        ]
+      },
+      "traceId": "cart_gaotu100_com.293.17939812626710073",
+      "code": 0
+    },
+    {
+      "case": "cart-seven-old",
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7658127801",
+          "588872241920421888",
+          true,
+          false,
+          null,
+          "7682",
+          false
+        ]
+      },
+      "traceId": "cart_gaotu100_com.290.17939812621670075",
+      "code": 0
+    }
+  ]
+}
