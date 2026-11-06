@@ -18,8 +18,8 @@
     "p0_is_self": true,
     "revision_before": 319,
     "chars_before": 131653,
-    "revision_after": 365,
-    "chars_after": 29757,
+    "revision_after": 375,
+    "chars_after": 33050,
     "archive_before": "artifacts/20261105-p0-concise/feishu-revision-before.xml",
     "old_attachments": 7,
     "old_attachments_note": "覆盖写入后旧附件块不再出现在新正文；全文与附件引用已本地存档，飞书版本历史可回滚"
@@ -366,5 +366,29 @@
       "big_class_trace": "5096f3a3-ab23-4337-8e5e-0c3fe09e6508.0.3",
       "note": "换大班班号仍同一 URL，当前登录只可选 0 元小班，¥100 大班不可选"
     }
+  },
+  "apollo_cache_test": {
+    "app": "cart.gaotu100.com",
+    "env": "TEST",
+    "key": "renewal.query.cache.enabled",
+    "original": false,
+    "set_true_release": "20261106083609-release",
+    "cart_trace": "cart_gaotu100_com.301.17939253769250778",
+    "restore_false_release": "20261106083631-release",
+    "readback": false
+  },
+  "small_friend_sql": {
+    "attempts": [
+      "select account_id,user_id,friend,wechat_type from gaotu_link.tutor_wechat_info where friend=1 -> Unknown column account_id",
+      "show columns from gaotu_link.tutor_wechat_info -> 17 cols, no student relation col",
+      "gaotu_link.dws_fuwu_user_teacher_wechat_info -> not found",
+      "student_center.dws_fuwu_user_teacher_wechat_info -> not found"
+    ],
+    "candidate": null
+  },
+  "cosplay": {
+    "supported": "EES/OS 老师账号 projectCode 3/4",
+    "c_end_student": false,
+    "note": "不能切 C 端学员会话"
   }
 }

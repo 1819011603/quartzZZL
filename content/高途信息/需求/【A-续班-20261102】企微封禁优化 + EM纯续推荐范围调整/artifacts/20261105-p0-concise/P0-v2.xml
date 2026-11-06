@@ -202,10 +202,10 @@
 <tbody>
 <tr><td>status1 页面正例</td><td>属于（状态校验是本次 save 的直接规则）</td><td><b>页面已验证</b>：计划 588872241920421888「W1-P0-243aa61a-待开始状态正例」在 EM 列表显示「待开始」，点「纯续关联」弹窗正常打开并显示「已关联续班计划 (0)」；network <code>/renewMaster/relation/list</code> trace <code>2107bd48-80af-49bf-b274-07d5fd1d72c7.0.0</code>，code=0；截图 <code>page-evidence/w1-status1-modal.png</code>。接口 status1 保存沿用 round8 证据。</td></tr>
 <tr><td>跨学年/学期、有值从扩科</td><td>属于（扩科/年级来源取主计划是本需求规则）</td><td>接口子集已验证主扩科不被从计划污染（round10）；不同学期与有值从扩科页面未验 → <b>推断未验证</b>。</td></tr>
-<tr><td>缓存运行态（负值/故障/关闭）</td><td>属于（cart 新增关联前置课缓存、主计划缓存隔离）</td><td>已发布 <code>renewal.query.cache.enabled=false</code>，本轮未改 Apollo；运行态组合未验 → <b>推断未验证</b>。</td></tr>
+<tr><td>缓存运行态（负值/故障/关闭）</td><td>属于（cart 新增关联前置课缓存、主计划缓存隔离）</td><td><b>本轮真开真关</b>：原值 false → 改 true 发布（release 20261106083609）→ cart getRenewalDetail 正常返回三门商品 trace <code>cart_gaotu100_com.301.17939253769250778</code> → 恢复 false 发布（release 20261106083631）并回读 false。仅验证开启后功能可用，未构造负值/故障/过期组合。</td></tr>
 <tr><td>优惠/异主体</td><td>不属于本次代码改动（order 只改跨模式重复校验，未改优惠/收款主体）</td><td><b>非本次改动、不在本次验证范围</b>；保留为下单回归建议，不能据本次接口推出优惠/异主体通过。</td></tr>
-<tr><td>C 端入口</td><td>属于推荐影响面（共用合并结果）</td><td>未固定带计划/学员参数的 C 端入口，页面未验 → <b>没做</b>；不用无参数根页代替。</td></tr>
-<tr><td>小班批量第三人未选/小班备注</td><td>属于子项1（小班续班服务）</td><td>大班页面标签弹窗本轮已验证；小班单人标签已验证（round9，空→3→筛选→恢复）；小班批量第三人/备注模板未验 → <b>子集已验证，剩余没做</b>。</td></tr>
+<tr><td>C 端入口</td><td>属于推荐影响面（共用合并结果）</td><td><b>入口/选品/价格已验证</b>；完整下单需有 ¥100 资格学员会话。baijia-invoke cosplay 只支持 EES/OS 老师账号（projectCode 3/4），不支持 C 端学员 → 页面 ¥100 下单 <b>未验证</b>，接口层跨模式+支付复用 round7。</td></tr>
+<tr><td>小班批量第三人未选/小班备注</td><td>属于子项1（小班续班服务）</td><td>大班页面标签弹窗已验证；小班单人标签已验证（round9）。小班好友样本：实际执行 <code>select account_id,user_id,friend,wechat_type from gaotu_link.tutor_wechat_info</code> 报 Unknown column account_id；<code>show columns</code> 显示该表 17 列（tutor_id/username/wechat_id 等，无学员关系列）；<code>gaotu_link.dws_fuwu_user_teacher_wechat_info</code>、<code>student_center.dws_fuwu_user_teacher_wechat_info</code> 均定位不到。未找到小班好友候选 → <b>小班批量第三人/备注未验</b>。</td></tr>
 <tr><td>历史 min(begin_time) 回溯</td><td>不属于本次代码改动（大数据/ES 外部后续）</td><td><b>非本次改动、不在本次验证范围</b>；按既定责任方另行交付，不从 TEST 推断生产。</td></tr>
 </tbody>
 </table>
@@ -214,9 +214,9 @@
 <thead><tr><th>项</th><th>本轮结论</th></tr></thead>
 <tbody>
 <tr><td>EM 页面保存</td><td><b>已验证（页面）</b>：确认弹窗后 POST /relation/save，A/B，code=0，trace <code>57d3d20f-b921-46ce-aeaa-507ffa6515f5.0.0</code>；保存后重开弹窗仍为「已关联 (2)」。截图 <code>w1-em-save-result.png</code>、<code>w1-em-relation-reopen.png</code>。</td></tr>
-<tr><td>缓存运行态</td><td><b>配置已核实</b>：cart.gaotu100.com / TEST / application 的 <code>renewal.query.cache.enabled=false</code>、<code>renewal.pure.relation.enabled=true</code>。关闭态可用；<b>开启态未验，需改 Apollo 后复验</b>。</td></tr>
-<tr><td>C 端入口</td><td><b>入口/选品/价格已验证</b>：getRecommendAppInfo 返回高途链接并实际打开；页面登录 uid 7658127801，展示小班商品 586097025945298944，选品/价格接口 code=0（trace 见 6.6）。<b>完整下单页面未完成</b>：点「去结算」未跳订单确认，需登录/签证码；跨商品/跨班型与 mock 支付复用 round7 接口证据。</td></tr>
-<tr><td>小班批量第三人 / 小班备注</td><td><b>未验证</b>：小班受控学员 7707218285/7707218286 好友数为 0（round10 friend 校验 notFriendCount=2），缺小班企微好友样本；大班页面标签弹窗已通过，备注弹窗本轮未打开。</td></tr>
+<tr><td>缓存运行态</td><td><b>已真开真关</b>：原 false → true 发布（release 20261106083609）→ cart getRenewalDetail 返回三门商品 trace <code>cart_gaotu100_com.301.17939253769250778</code> → 恢复 false 发布（release 20261106083631）并 apollo_get_key 回读 false。未覆盖负值/故障/过期组合。</td></tr>
+<tr><td>C 端入口</td><td><b>入口/选品/价格已验证</b>：getRecommendAppInfo 返回高途链接并实际打开；页面登录 uid 7658127801，展示小班商品 586097025945298944，选品/价格接口 code=0（trace 见 6.6）。<b>完整下单未完成</b>：baijia-invoke cosplay 仅支持 EES/OS 老师账号（projectCode 3/4），不支持 C 端学员；当前 uid 无 ¥100 商品可选，页面下单/mock 支付未验，接口层复用 round7。</td></tr>
+<tr><td>小班批量第三人 / 小班备注</td><td><b>未验证</b>：实际执行 <code>select account_id,user_id,friend,wechat_type from gaotu_link.tutor_wechat_info where friend=1</code> 报 Unknown column account_id；<code>show columns</code> 该表 17 列无学员关系列；<code>gaotu_link.dws_fuwu_user_teacher_wechat_info</code>、<code>student_center.dws_fuwu_user_teacher_wechat_info</code> 均定位不到。未找到小班好友候选；大班标签弹窗已通过。</td></tr>
 <tr><td>跨学年/学期 + 有值从扩科</td><td><b>接口子集已验证</b>（round10：主扩科不被从计划污染、跨年级纯续保留）；页面无独立入口，未验 → 推断未验证。</td></tr>
 </tbody>
 </table>
@@ -228,7 +228,17 @@
 <tr><td>页面/选品</td><td><b>已验证</b>：页面登录 uid 7658127801，展示小班商品 586097025945298944（¥0）；选品 <code>productSelectConfirm</code> trace <code>90ba9ce9-6a65-480b-8ec1-f5b2d28823f3.0.3</code> code=0。</td></tr>
 <tr><td>价格</td><td><b>已验证</b>：<code>/cart/web/renewal/price</code> trace <code>07822e8e-193a-46f7-b533-a69cfd3707ad.0.3</code>，totalPrice=0、totalDiscount=0，与页面合计 ¥0 一致。</td></tr>
 <tr><td>跨商品/跨班型 + mock 支付</td><td><b>接口层已验证（复用 round7）</b>：大班 588861402658267136（100 分）+ 小班 586097025945298944（0 分），应付 100×1+0×1−0=100 分；支付 433655835275559341，订单 433655835275559853/433655835275560365。C 端页面未完成下单/mock 支付。</td></tr>
-<tr><td>C 端完整下单</td><td><b>未完成</b>：点「去结算」只触发选品/价格，未跳转订单确认；「更换课程」返回无满足条件课程，换大班班号仍同一 URL，当前 uid 7658127801 仅可选 0 元小班，¥100 大班不可选。页面 ¥100 下单未验，转接口层兜底。</td></tr>
+<tr><td>C 端完整下单</td><td><b>未完成</b>：点「去结算」只触发选品/价格，未跳订单确认；「更换课程」返回无满足条件课程；换大班班号仍同一 URL，当前 uid 7658127801 仅可选 0 元小班。baijia-invoke cosplay 仅支持 EES/OS 老师账号（projectCode 3/4），不支持 C 端学员，无法取得 ¥100 资格学员会话；页面 ¥100 下单未验，转接口层兜底。</td></tr>
+</tbody>
+</table>
+<h2>6.7 待补充：缺失条件与构建方式</h2>
+<table>
+<thead><tr><th>缺什么</th><th>当前证据</th><th>需要 owner 提供/怎么构建</th><th>补齐后的验证步骤</th></tr></thead>
+<tbody>
+<tr><td>C 端 ¥100 页面下单/mock 支付：缺有 ¥100 大班商品 588861402658267136 资格的 C 端学员登录态</td><td>当前页面 uid 7658127801 仅可选 0 元小班 586097025945298944；「更换课程」无满足条件课程；换大班班号 588861397654462464 仍同一 URL（trace 5096f3a3）；baijia-invoke cosplay 仅支持 EES/OS 老师账号（projectCode 3/4），不支持 C 端学员</td><td>请 owner 指定一个**有该商品资格的学员 userId**，并给出 C 端登录方式：账号/验证码自助入口、代登录接口或页面内切换方式（账号 2 开头用 100）</td><td>用该学员登录 C 端 → 打开 suggestShoppingCart 链接 → 勾选 588861402658267136 → 去结算 → 订单确认 → mock 支付 → 回读订单 status、金额、学员；记录截图/network/traceId</td></tr>
+<tr><td>小班好友备注/批量第三人：缺**小班在读且企微好友**的学员样本</td><td>已执行 <code>select account_id,user_id,friend,wechat_type from gaotu_link.tutor_wechat_info where friend=1</code> 报 Unknown column；<code>show columns</code> 该表 17 列无学员关系列；<code>gaotu_link.dws_fuwu_user_teacher_wechat_info</code>、<code>student_center.dws_fuwu_user_teacher_wechat_info</code> 均定位不到；小班 7707218285/7707218286 好友数为 0</td><td>请 owner 指出小班企微好友关系实际所在表/环境，或直接给一组「小班班级 + 3 名在读且好友的学员」；若要造数，请给可写的测试库/表与好友关系字段</td><td>续班服务选该小班 → 勾选 3 人 → 批量标签/修改企微备注 → 查看弹窗与任务结果；记录页面/network/traceId，验证第三未选人不变</td></tr>
+<tr><td>缓存负值/故障/过期组合：缺可构造的异常态</td><td>已真开真关：原 false → true 发布（release 20261106083609）→ cart getRenewalDetail 返回三门商品 trace <code>cart_gaotu100_com.301.17939253769250778</code> → 恢复 false 发布（release 20261106083631）回读 false；仅验证开启后功能可用</td><td>请 owner 确认是否要验负值/故障/过期；若验，给可注入的 Redis key/故障方式（或允许短 TTL 配置）</td><td>构造空值/异常/过期缓存 → 调 cart 推荐 → 验证回源与降级结果；结束后恢复配置并回读</td></tr>
+<tr><td>跨学年/学期：前端无独立页面入口</td><td>前端路由未见独立跨学年/学期验证页；接口子集 round10 已验证主扩科不被从计划污染、跨年级纯续保留</td><td>请 owner 指认页面入口位置；若确认没有，则只需接口层验证</td><td>有页面：按入口验证展示与操作；无页面：在文档标「无独立页面入口」，仅保留接口子集证据</td></tr>
 </tbody>
 </table>
 

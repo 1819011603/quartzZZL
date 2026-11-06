@@ -30,3 +30,6 @@
 - 测试环境只 mock 支付，不真实支付；不要让页面结果替代接口 trace。
 - 本次登录 uid 7658127801 的页面只可选 0 元小班；「更换课程」返回「未查询到满足条件的课程」，换大班班号取链接仍同一 URL，¥100 大班不在可选范围。要验有价商品页面下单，需换有该商品资格的学员登录态，或直接用接口层下单/支付。
 - 点「去结算」只触发 `productSelectConfirm` + `/renewal/price`，未跳订单确认；0 元商品可能不进入支付流程。
+- **cosplay 不支持 C 端学员**：baijia-invoke 的代课登录只支持 EES/OS 老师账号（projectCode 3/4），不能用来切 C 端学员会话；要验有价商品需 owner 提供学员 C 端登录态。
+- **缓存开关实测**：cart.gaotu100.com / TEST `renewal.query.cache.enabled` 原 false → 改 true 发布（release 20261106083609）→ cart getRenewalDetail 正常返回三门商品 trace `cart_gaotu100_com.301.17939253769250778` → 恢复 false 发布（release 20261106083631）并回读 false。
+- **小班好友 DB 实测**：`select account_id,user_id,friend,wechat_type from gaotu_link.tutor_wechat_info` 报 Unknown column；`show columns` 该表 17 列无学员关系列；`gaotu_link.dws_fuwu_user_teacher_wechat_info`、`student_center.dws_fuwu_user_teacher_wechat_info` 均定位不到，未找到小班好友候选。

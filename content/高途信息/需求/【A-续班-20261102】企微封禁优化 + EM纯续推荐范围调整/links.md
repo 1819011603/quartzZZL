@@ -31,7 +31,7 @@
 | 调研 | 当前前端PRD及25项契约 | [frontend-review.md](artifacts/20261105-diff-p0/frontend-review.md) | 2026-11-05 |
 | 调研 | cart修复、测试与边界 | [cart-review.md](artifacts/20261105-diff-p0/cart-review.md) | 2026-11-05 |
 | case | P0对象及逐步证据版（飞书，revision146回读） | [在线文档](https://gaotuedu.feishu.cn/docx/ZQUXdlDxWoknJhxu914c2uVYnBr) | 2026-11-05 |
-| case | P0 精简版 v2（revision365，按代码改动，步骤在前） | [在线文档](https://gaotuedu.feishu.cn/wiki/KeCZwdJTBiIJDJkX8lRcGb9gnCs) | 2026-11-05 |
+| case | P0 精简版 v2（revision375，按代码改动，步骤在前） | [在线文档](https://gaotuedu.feishu.cn/wiki/KeCZwdJTBiIJDJkX8lRcGb9gnCs) | 2026-11-05 |
 | 其他 | C 端纯续链接验证方法（入口/选品/价格/跨模式/mock 支付/坑） | [C端验证方法.md](C端验证方法.md) | 2026-11-05 |
 | 其他 | 精简版前后端验证证据（trace/入参/响应/阻塞） | [verification.json](artifacts/20261105-p0-concise/verification.json) | 2026-11-05 |
 | 其他 | 旧版 revision319 全文备份 | [feishu-revision-before.xml](artifacts/20261105-p0-concise/feishu-revision-before.xml) | 2026-11-05 |
