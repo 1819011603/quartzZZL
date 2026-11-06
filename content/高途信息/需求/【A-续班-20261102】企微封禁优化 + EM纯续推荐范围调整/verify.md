@@ -1,3 +1,11 @@
+## 2026-11-06 小班续班服务「微信备注」空白修复验证（test）
+
+- **现象**：改企微备注任务成功（`ees_data.batch_operate_task` 3 条 `process_status=2`、`export_job_task` `task_status=2`），linkup WK 备注与 ES `ads_small_clazz_user_index_v4`(`_id=563487716417804288-1437223`) `wechatRemark=["测试cs122****0001"]` 均有值，但 `/roster/small/renewal/page`(`microContinuationService`) 响应**无 `wechatRemark` 字段**。
+- **对照**：同班同数据默认花名册 `/smallClazz/clazzStudentList`(`smallClazzRoster`) 正常返回 `wechatRemark:"测试cs122****0001"`。
+- **根因**：`student_field_config` 给 `microContinuationService`/`continuationService` 登记了 `wechatRemark` → `GaiaEsMappingService#getNeedFromEsFields` 把它当 ODS 字段从 ES fetchSource 剔除、又无 DataQueryServiceV2 补值（`SmallWechatRemarkQueryServiceImpl` 注册的是 `smallWechatRemark`）。实测 `getAllFieldNames("microContinuationService")=[wechatRemark,studentTagNames]`。
+- **修复+验证**：`DELETE FROM ees_data.student_field_config WHERE identification IN ('microContinuationService','continuationService') AND field_name='wechatRemark'`（affected=2，保留 `studentTagNames`）；回读 `/roster/small/renewal/page` 返回 `"wechatRemark":"测试cs122****0001"`（trace `5c62f89b-2ba4-4dd3-86cc-ac641fc7acde.0.3`），与 ES/默认花名册一致。
+- 口径见 [tasks T-16](tasks.md)、[知识库 continuationService](~/githubDir/quartzZZL/content/高途信息/知识库/cronus/microClazzRoster/continuationService.md)、[PROD 配置 diff 更正](artifacts/20261104-owner-ready/prod-config-diff.md)。
+
 ## 2026-11-05 P0 v2 精简与验证
 
 - **P0 已重写为 revision325**：正文按「改了什么 → 关键上下文 → 主链路 → 原链路回归 → 影响范围 → 接口改动与关联回归」组织，步骤在前；131653→20114 字符。旧版 revision319 全文与 7 份附件引用存 `artifacts/20261105-p0-concise/feishu-revision-before.xml`，本轮验证证据存 [verification.json](artifacts/20261105-p0-concise/verification.json) 并挂文末。

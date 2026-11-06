@@ -191,6 +191,18 @@ $M $C baijia_invoke cosplay_logout
   3. 重算完发 MQ **`canRenewalChangeEvent`**（topic `gaotu_performance_renewal`，Apollo `RocketMq.service.canRenewalSign.topic/tag`）→ student-data **`OdsSmallCanRenewalSyncConsumer`**（group `GID_OdsSmallCanRenewalSyncConsumer`，顺序消费）→ 写 ES `ads_small_clazz_user.smallCanRenewal`/`smallRoundIdx`。
   4. 重算含"可续修正/可续退款修正"，`smallRoundIdx` 随同一条消息更新；ES 更新后页面/指标（有缓存）刷新即可看到。
 
+## 微信备注字段口径（`wechatRemark`，小班续班服务）
+
+列表列「微信备注」的 `wechatRemark` **直接取自 ES `ads_small_clazz_user`**（keyword，值是 list，`FieldsConvertDataQueryServiceImpl` 拼成逗号串返回），来源与默认花名册 `smallClazzRoster` 一致。
+
+**⚠️ 前提：该 identification 的 `ees_data.student_field_config` 不能有 `wechatRemark` 行。** 一旦登记，`GaiaEsMappingService#getNeedFromEsFields` 会把它当成「需 ODS 补的字段」从 ES `fetchSource` 里剔除；而没有任何 `DataQueryServiceV2` 产出 `wechatRemark`（`SmallWechatRemarkQueryServiceImpl` 注册的是 `smallWechatRemark`、且小班走 ES 不需要它；`FieldsConvert` 只对 doc 里已有值再加工）→ **列恒空**。
+
+- 现象：改企微备注任务成功、linkup 与 ES `wechatRemark` 都有值，但 `/roster/small/renewal/page` 响应里**根本没有 `wechatRemark` 字段**。
+- 对照：同班同数据默认花名册 `/smallClazz/clazzStudentList`（`smallClazzRoster`，无该 field_config 行）正常返回。
+- 实测（2026-11-06，test）：`getAllFieldNames("microContinuationService")` 返回 `[wechatRemark, studentTagNames]` → wechatRemark 被剔除；删除该行后页面立刻返回备注值。
+- 修复：`DELETE FROM ees_data.student_field_config WHERE identification IN ('microContinuationService','continuationService') AND field_name='wechatRemark'`（保留 `studentTagNames`）。
+- 对比：`studentTagNames` **可以**登记——它登记的字段名与 ES 原始字段名不同（原始是 `studentTags`），原始字段仍会从 ES 取，`FieldsConvert` 再转成 `studentTagNames`。换言之：**注册名 == ES 原始字段名 的字段不要写进 field_config**。
+
 ## 关键字段口径（续班状态）
 
 | 展示/筛选 | 来源 |

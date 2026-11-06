@@ -61,6 +61,7 @@ tags: [需求]
 - 计划管理员、待开始/进行中可改；上限10且配置可调，保存最终全集差分，取消不落库。
 - `renewal.pure.relation.enabled`默认true，product/cart/order实例独立配置；关闭只回单计划，不恢复已写关系/标签/备注。B8预热结果保留最长26小时，不用新链接强行当新缓存。
 - 企微历史圈班按`min(begin_time)≥2026-01-01`，不是创建时间；生产回溯、DDL/GAIA/ES字段及上线配置仍需独立交付证据，不从TEST推断生产就绪。
+- **「微信备注」`wechatRemark` 不得登记进 `ees_data.student_field_config`（2026-11-06 更正）**：它是 ES 原生字段（`ads_small_clazz_user.wechatRemark`），登记进 field_config 会被 `GaiaEsMappingService#getNeedFromEsFields` 当作 ODS 字段从 ES fetch 中剔除又无人补值 → 续班服务页「微信备注」恒空。已删除 `continuationService`/`microContinuationService` 的该行，与默认花名册 `smallClazzRoster` 口径一致；test 已回读 `/roster/small/renewal/page` 返回备注值。详见 [tasks T-16](tasks.md) 与 [知识库口径](~/githubDir/quartzZZL/content/高途信息/知识库/cronus/microClazzRoster/continuationService.md)。
 - 测试样本已付/已消费有时间顺序；复跑先核当前资格，不重放同单支付、整批build或未选对象。
 
 ## 涉及代码与入口

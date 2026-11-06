@@ -72,3 +72,21 @@
 **最小修复方向（未实施）**
 - 在 `SmallWechatRemarkQueryServiceImpl` 的 assistant 分支也写入空串（保持字段存在），并让花名册/前端读取 `wechatRemark`；或把 `wechatRemark` 映射到 `studentRemark*`（需确认前端契约）。
 - 好友标记：确认写入 remark 的账号与 `mainTeacherAccountIds` 一致；dws 同步延迟需说明或改为实时查询。
+
+## `studentRemark*` 来源定位（2026-11-06，只读）
+
+**结论**：`studentRemark / studentRemarkOne / Two / Three` 是**学员档案的沟通备注**（按 commentType 分三类），不是企微备注；企微备注走 `wechatRemark` / 企微关系表。两者字段不同，所以写企微备注不会出现在这三列。
+
+**证据**
+- `student-data` `StudentDetail.java:99` 有 `studentRemark` 字段；`RequiredFieldEnum.java:38` 定义 `STUDENT_REMARK("studentRemark","学员备注")`。
+- `student-center` `StudentArchivesFeignController.java:135-160`：`queryRemark` 按 `remarkType + accountId + userId` 查 `StudentCommunicateCommentRecordDO`，按 `commentType` 分组取最新一条 → 对应三类备注。
+- DB 只读：`gaotu.student_communicate_comment_record` 中 `user_id=7707218286` **无任何记录**（total_count=0）→ 三列为空。
+- 企微备注由 `SmallWechatRemarkQueryServiceImpl` 产出 `wechatRemark`（字段驱动，`getFields={smallWechatRemark}`），与 `studentRemark*` 无关；花名册接口响应也无该字段。
+
+**定性**：不是 remark 写入/同步 bug，是**字段口径不同**（学员备注=沟通备注 vs 企微备注=wechatRemark）。
+
+**最小修复点（需产品/前端决策）**
+- 若「学员备注」列应显示企微备注：前端改绑 `wechatRemark`（并让后端/字段配置输出该字段），或后端在组装处把 `wechatRemark` 映射到 `studentRemark*`（会覆盖沟通备注语义，不推荐）。
+- 若仍显示沟通备注：无需改代码，补写三类沟通备注数据即可展示。
+
+**外部依赖**：前端字段绑定（金瑞琳）/产品口径（王永诗）；如走 GAIA 字段映射需改字段配置。

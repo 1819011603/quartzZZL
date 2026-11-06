@@ -1,5 +1,8 @@
 # 决策摘要
 
+- 2026-11-06 **小班续班花名册「微信备注」空白定位与修复（test）**：改备注任务成功、linkup 与 ES `ads_small_clazz_user` 的 `wechatRemark` 都有值，但 `/roster/small/renewal/page`(`microContinuationService`) 不返回该字段。根因=`student_field_config` 给 `microContinuationService`/`continuationService` 登记了 `wechatRemark` → `GaiaEsMappingService#getNeedFromEsFields` 将其从 ES fetchSource 剔除、又无 DataQueryServiceV2 补值 → 列恒空。**口径更正**：`wechatRemark` 是 ES 原生字段，不登记 field_config（与默认花名册 `smallClazzRoster` 一致）；已删除 test 两条该行并回读页面返回备注值。PROD 上线 diff 同步去掉 wechatRemark INSERT（`studentTagNames` 保留）。详见 [tasks T-16](tasks.md)。
+
+
 - 2026-11-05 本轮owner恢复后端修复/测试授权并要求P0文档，前端仍只读。cart a34016fd修缓存污染及扩科主课程来源；order 0cc8ef68b6修跨模式后同模式重复漏判，140例聚焦回归通过；未部署，运行态待验。
 - 2026-11-05 cronus应核需求分支17ee81cc，标签/备注/编辑/筛选已源码接入；不得以master未合入断言未开发。P0步骤与实际执行边界分开，B5/B8及回溯/生产约束不变。
 
