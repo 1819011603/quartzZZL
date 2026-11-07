@@ -1,0 +1,1281 @@
+{
+  "commit": "7f749e65ca6aa78262d118e8cf859bda2775bd69",
+  "environment": "test-gtbg-dev-3",
+  "pipelineId": 1332586,
+  "pod": "cart-gaotu100-com-5969b9f675-z55tv",
+  "eurekaStatus": "UP",
+  "localTests": {
+    "tests": 210,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "before": {
+    "chen-A-controller-args": {
+      "rvoCode": 0,
+      "instanceId": "cart-gaotu100-com-545867d95d-6rsfs:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "traceId": "cart_gaotu100_com.294.17940197287730473",
+      "result": {
+        "all_sign_up": 0,
+        "expand_force_buy": false,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 589037996712550400,
+                "before_course_number": 589037992648269824,
+                "can_change_course": true,
+                "clazz_date_desc": "2026年11月09日-2026年11月09日",
+                "clazz_time_desc": "22:25-22:30",
+                "clazz_week_desc": "每周一",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "50191-1106-英语从计划-post",
+                "product_sku_number": 589041222587408384,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "英语"
+                ],
+                "teacher_list": [
+                  {
+                    "name": "唐稳01主讲",
+                    "teacher_number": 11188041873297121,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              },
+              {
+                "after_course_number": 589037985069162496,
+                "before_course_number": 589037981162168320,
+                "can_change_course": true,
+                "clazz_date_desc": "2026年11月09日-2026年11月09日",
+                "clazz_time_desc": "18:25-18:30",
+                "clazz_week_desc": "每周一",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "50191-1106-数学大班主计划-post",
+                "product_sku_number": 589041202037415936,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              },
+              {
+                "after_course_number": 589038008890712064,
+                "can_change_course": false,
+                "clazz_date_desc": "2026年11月10日-2026年11月10日",
+                "clazz_number": 589041240276885504,
+                "clazz_time_desc": "00:25-00:30",
+                "clazz_week_desc": "每周二",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "50191-1106-物理未关联对照-post",
+                "product_sku_number": 589041240276885504,
+                "product_type": 2,
+                "recommend_type": 2,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "物理"
+                ],
+                "teacher_list": [
+                  {
+                    "name": "唐稳01主讲",
+                    "teacher_number": 11188041873297121,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 31,
+            "grade_name": "高一"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1796607012000,
+        "renewal_force_buy": false,
+        "renewal_number": 589037361072007168,
+        "renewal_start_time": 1793928612000,
+        "status": 0
+      }
+    },
+    "chen-B": {
+      "rvoCode": 0,
+      "instanceId": "cart-gaotu100-com-545867d95d-6rsfs:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "traceId": "cart_gaotu100_com.290.17940196911860465",
+      "result": {
+        "all_sign_up": 0,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 18405861174936327,
+                "before_course_number": 18405861174936317,
+                "can_change_course": true,
+                "force_buy": false,
+                "norm_desc_list": [
+                  "售卖规格一",
+                  "测试1"
+                ],
+                "price": 0,
+                "product_sku_name": "默认规格",
+                "product_sku_number": 589048589437788160,
+                "product_type": 6004,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg",
+                    "name": "王碧云-外显主讲",
+                    "teacher_number": 7932284591800384,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 11,
+            "grade_name": "一年级"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "renewal_end_time": 1799200372000,
+        "renewal_force_buy": false,
+        "renewal_number": 589164864470188032,
+        "renewal_start_time": 1793929972000,
+        "status": 0
+      }
+    },
+    "zhou-A": {
+      "rvoCode": 0,
+      "instanceId": "cart-gaotu100-com-545867d95d-6rsfs:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "traceId": "cart_gaotu100_com.293.17940196923310470",
+      "result": {
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "renewal_end_time": 1796607012000,
+        "renewal_number": 589037361072007168,
+        "renewal_start_time": 1793928612000,
+        "status": 0
+      }
+    },
+    "select-before": {
+      "rvoCode": 0,
+      "instanceId": "cart-gaotu100-com-545867d95d-6rsfs:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "traceId": "cart_gaotu100_com.296.17940198769560475",
+      "result": {
+        "clazzDetailVOList": [],
+        "pager": {
+          "current": 1,
+          "offset": 0,
+          "pageSize": 10,
+          "total": 0
+        }
+      }
+    },
+    "filter-before": {
+      "rvoCode": 0,
+      "instanceId": "cart-gaotu100-com-545867d95d-6rsfs:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "traceId": "cart_gaotu100_com.297.17940198776030469",
+      "result": {}
+    },
+    "preheat-before": {
+      "rvoCode": 0,
+      "instanceId": "cart-gaotu100-com-545867d95d-6rsfs:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "traceId": "cart_gaotu100_com.289.17940198779790479",
+      "result": {
+        "589037992648269824": {
+          "product_sku_number": 589041222587408384,
+          "select": 0,
+          "sign_up": 0,
+          "subject_names": []
+        },
+        "589037981162168320": {
+          "product_sku_number": 589041202037415936,
+          "select": 0,
+          "sign_up": 0,
+          "subject_names": []
+        }
+      }
+    },
+    "clazz": {
+      "rvoCode": 0,
+      "instanceId": "cart-gaotu100-com-545867d95d-6rsfs:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "traceId": "cart_gaotu100_com.297.17940196938510466",
+      "result": [
+        {
+          "begin_time": 1795311300000,
+          "bizNumber": "589048589437788160",
+          "capacity": 20,
+          "clazzDateDesc": "",
+          "clazzName": "50191-1106-数学小班-post",
+          "clazzTimeDesc": "",
+          "clazzType": 0,
+          "clazzWeekDesc": "",
+          "clazz_tags": [],
+          "courseNumber": 18405861174936327,
+          "course_tag_ids": [],
+          "endTime": 1795401300000,
+          "normal_clazz_lesson_num": 2,
+          "number": 589048589437788160,
+          "price": -1,
+          "product_type": 6004,
+          "saleStatus": 50,
+          "sku_page_show_clazz_lesson_num": 2,
+          "teacherNumbers": [
+            7932284591800384,
+            7932284591800384
+          ],
+          "time_desc": ""
+        }
+      ]
+    },
+    "sku": {
+      "rvoCode": 0,
+      "instanceId": "cart-gaotu100-com-545867d95d-6rsfs:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "traceId": "cart_gaotu100_com.289.17940196940870475",
+      "result": [
+        {
+          "product_sku_dto": {
+            "app": 34603187,
+            "biz_type": 0,
+            "can_be_sold": true,
+            "capacity": 20,
+            "clazz_count": 0,
+            "clazz_hour_unit": 0,
+            "image": "",
+            "image_url": "",
+            "need_delivery": 0,
+            "product_sku_name": "默认规格",
+            "product_sku_number": 589048589437788160,
+            "product_sku_version": 1794015211082,
+            "product_spu_number": 18405861174936327,
+            "product_type": 6004,
+            "sale_price": 0,
+            "sale_status": 40,
+            "up_status": 1
+          },
+          "product_sku_norm_detail_dto_list": [
+            {
+              "norm_attr_id": "9018866949889259",
+              "norm_attr_name": "规格",
+              "norm_attr_order": 0,
+              "norm_attr_value": "售卖规格一",
+              "norm_attr_value_id": "293513876270616336"
+            },
+            {
+              "norm_attr_id": "9018866949889293",
+              "norm_attr_name": "规格测试-财商",
+              "norm_attr_order": 0,
+              "norm_attr_value": "测试1",
+              "norm_attr_value_id": "293513876270616971"
+            }
+          ],
+          "product_spu_dto": {
+            "app": 34603187,
+            "can_be_sold": true,
+            "category_id": 1010,
+            "category_path": "5/100/1010",
+            "master_image": "",
+            "master_image_url": "",
+            "product_spu_name": "50191-1106-数学小班-post",
+            "product_spu_number": 18405861174936327,
+            "product_spu_version": 1794015211082,
+            "product_type": 6004,
+            "sale_status": 40
+          },
+          "sku_payment_dto": {
+            "collection_account_name": "gaotuJP",
+            "collection_account_number": "75",
+            "refund_account_name": "gaotuJP",
+            "refund_account_number": "75",
+            "sku_number": 589048589437788160,
+            "tax_subject_name": "gaotuJP",
+            "tax_subject_number": "75"
+          }
+        }
+      ]
+    },
+    "version-before": {
+      "rvoCode": 0,
+      "instanceId": "cart-gaotu100-com-545867d95d-6rsfs:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "traceId": "cart_gaotu100_com.294.17940200074470478",
+      "result": "aaff8e68-3dda-43e5-9596-9007ff3dcebb:on"
+    }
+  },
+  "after": {
+    "chen-A": {
+      "rvoCode": 0,
+      "instanceId": "cart-gaotu100-com-5969b9f675-z55tv:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "traceId": "cart_gaotu100_com.287.17940203948720010",
+      "result": {
+        "all_sign_up": 0,
+        "expand_force_buy": false,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 18405861174936327,
+                "before_course_number": 18405861174936317,
+                "can_change_course": true,
+                "clazz_date_desc": "",
+                "clazz_time_desc": "",
+                "clazz_week_desc": "",
+                "force_buy": false,
+                "lesson_count": 2,
+                "price": 0,
+                "product_sku_name": "50191-1106-数学小班-post",
+                "product_sku_number": 589048589437788160,
+                "product_type": 6004,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg",
+                    "name": "王碧云-外显主讲",
+                    "teacher_number": 7932284591800384,
+                    "teacher_role": "主讲老师"
+                  },
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg",
+                    "name": "王碧云-外显主讲",
+                    "teacher_number": 7932284591800384,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 11,
+            "grade_name": "一年级"
+          },
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "before_course_number": 589037992648269824,
+                "can_change_course": true,
+                "force_buy": false,
+                "product_sku_number": 589041222587408384,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": []
+              },
+              {
+                "before_course_number": 589037981162168320,
+                "can_change_course": true,
+                "force_buy": false,
+                "product_sku_number": 589041202037415936,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": []
+              },
+              {
+                "after_course_number": 589038008890712064,
+                "can_change_course": false,
+                "clazz_date_desc": "2026年11月10日-2026年11月10日",
+                "clazz_number": 589041240276885504,
+                "clazz_time_desc": "00:25-00:30",
+                "clazz_week_desc": "每周二",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "50191-1106-物理未关联对照-post",
+                "product_sku_number": 589041240276885504,
+                "product_type": 2,
+                "recommend_type": 2,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "物理"
+                ],
+                "teacher_list": [
+                  {
+                    "name": "唐稳01主讲",
+                    "teacher_number": 11188041873297121,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "grade": 31,
+            "grade_name": "高一"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1796607012000,
+        "renewal_force_buy": false,
+        "renewal_number": 589037361072007168,
+        "renewal_start_time": 1793928612000,
+        "status": 0
+      }
+    },
+    "chen-B": {
+      "rvoCode": 0,
+      "instanceId": "cart-gaotu100-com-5969b9f675-z55tv:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "traceId": "cart_gaotu100_com.290.17940203959290010",
+      "result": {
+        "all_sign_up": 0,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 18405861174936327,
+                "before_course_number": 18405861174936317,
+                "can_change_course": true,
+                "force_buy": false,
+                "norm_desc_list": [
+                  "售卖规格一",
+                  "测试1"
+                ],
+                "price": 0,
+                "product_sku_name": "默认规格",
+                "product_sku_number": 589048589437788160,
+                "product_type": 6004,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg",
+                    "name": "王碧云-外显主讲",
+                    "teacher_number": 7932284591800384,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 11,
+            "grade_name": "一年级"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "renewal_end_time": 1799200372000,
+        "renewal_force_buy": false,
+        "renewal_number": 589164864470188032,
+        "renewal_start_time": 1793929972000,
+        "status": 0
+      }
+    },
+    "zhou-A": {
+      "rvoCode": 0,
+      "instanceId": "cart-gaotu100-com-5969b9f675-z55tv:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "traceId": "cart_gaotu100_com.293.17940203966500010",
+      "result": {
+        "all_sign_up": 0,
+        "expand_force_buy": false,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 18405861174936327,
+                "before_course_number": 18405861174936317,
+                "can_change_course": true,
+                "clazz_date_desc": "",
+                "clazz_time_desc": "",
+                "clazz_week_desc": "",
+                "force_buy": false,
+                "lesson_count": 2,
+                "price": 0,
+                "product_sku_name": "50191-1106-数学小班-post",
+                "product_sku_number": 589048589437788160,
+                "product_type": 6004,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg",
+                    "name": "王碧云-外显主讲",
+                    "teacher_number": 7932284591800384,
+                    "teacher_role": "主讲老师"
+                  },
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg",
+                    "name": "王碧云-外显主讲",
+                    "teacher_number": 7932284591800384,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 11,
+            "grade_name": "一年级"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1796607012000,
+        "renewal_force_buy": false,
+        "renewal_number": 589037361072007168,
+        "renewal_start_time": 1793928612000,
+        "status": 0
+      }
+    },
+    "chen-A-bside": {
+      "rvoCode": 0,
+      "instanceId": "cart-gaotu100-com-5969b9f675-z55tv:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "traceId": "cart_gaotu100_com.288.17940203976150009",
+      "result": {
+        "all_sign_up": 0,
+        "expand_force_buy": false,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 18405861174936327,
+                "before_course_number": 18405861174936317,
+                "can_change_course": true,
+                "clazz_date_desc": "",
+                "clazz_time_desc": "",
+                "clazz_week_desc": "",
+                "force_buy": false,
+                "lesson_count": 2,
+                "price": 0,
+                "product_sku_name": "50191-1106-数学小班-post",
+                "product_sku_number": 589048589437788160,
+                "product_type": 6004,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg",
+                    "name": "王碧云-外显主讲",
+                    "teacher_number": 7932284591800384,
+                    "teacher_role": "主讲老师"
+                  },
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg",
+                    "name": "王碧云-外显主讲",
+                    "teacher_number": 7932284591800384,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 11,
+            "grade_name": "一年级"
+          },
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "before_course_number": 589037992648269824,
+                "can_change_course": true,
+                "force_buy": false,
+                "product_sku_number": 589041222587408384,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": []
+              },
+              {
+                "before_course_number": 589037981162168320,
+                "can_change_course": true,
+                "force_buy": false,
+                "product_sku_number": 589041202037415936,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": []
+              },
+              {
+                "after_course_number": 589038008890712064,
+                "can_change_course": false,
+                "clazz_date_desc": "2026年11月10日-2026年11月10日",
+                "clazz_number": 589041240276885504,
+                "clazz_time_desc": "00:25-00:30",
+                "clazz_week_desc": "每周二",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "50191-1106-物理未关联对照-post",
+                "product_sku_number": 589041240276885504,
+                "product_type": 2,
+                "recommend_type": 2,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "物理"
+                ],
+                "teacher_list": [
+                  {
+                    "name": "唐稳01主讲",
+                    "teacher_number": 11188041873297121,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "grade": 31,
+            "grade_name": "高一"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1796607012000,
+        "renewal_force_buy": false,
+        "renewal_number": 589037361072007168,
+        "renewal_start_time": 1793928612000,
+        "status": 0
+      }
+    },
+    "select": {
+      "rvoCode": 0,
+      "instanceId": "cart-gaotu100-com-5969b9f675-z55tv:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "traceId": "cart_gaotu100_com.287.17940203993640012",
+      "result": {
+        "clazzDetailVOList": [
+          {
+            "after_course_number": 18405861174936327,
+            "clazz_date_desc": "",
+            "clazz_time_desc": "",
+            "clazz_week_desc": "",
+            "lesson_count": 2,
+            "price": 0,
+            "product_sku_name": "默认规格",
+            "product_sku_number": 589048589437788160,
+            "product_type": 6004,
+            "select": 0,
+            "sign_up": 0,
+            "subject_names": [],
+            "teacher_list": [
+              {
+                "avatar_url": "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg",
+                "name": "王碧云-外显主讲",
+                "teacher_number": 7932284591800384,
+                "teacher_role": "主讲老师"
+              },
+              {
+                "avatar_url": "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg",
+                "name": "王碧云-外显主讲",
+                "teacher_number": 7932284591800384,
+                "teacher_role": "主讲老师"
+              }
+            ]
+          }
+        ],
+        "pager": {
+          "current": 1,
+          "offset": 0,
+          "pageSize": 10,
+          "total": 1
+        }
+      }
+    },
+    "filter": {
+      "rvoCode": 0,
+      "instanceId": "cart-gaotu100-com-5969b9f675-z55tv:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "traceId": "cart_gaotu100_com.290.17940204000000012",
+      "result": {
+        "clazz_type_alias": [
+          {
+            "code": "0",
+            "name": "无班型"
+          }
+        ],
+        "teacher_list": [
+          {
+            "code": "7932284591800384",
+            "name": "王碧云-外显主讲"
+          }
+        ],
+        "textbook_versions": [
+          {
+            "code": "0",
+            "name": "无版本"
+          }
+        ]
+      }
+    },
+    "preheat": {
+      "rvoCode": 0,
+      "instanceId": "cart-gaotu100-com-5969b9f675-z55tv:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "traceId": "cart_gaotu100_com.293.17940204010260012",
+      "result": {
+        "589037992648269824": {
+          "product_sku_number": 589041222587408384,
+          "select": 0,
+          "sign_up": 0,
+          "subject_names": []
+        },
+        "589037981162168320": {
+          "product_sku_number": 589041202037415936,
+          "select": 0,
+          "sign_up": 0,
+          "subject_names": []
+        },
+        "18405861174936317": {
+          "product_sku_number": 589048589437788160,
+          "select": 0,
+          "sign_up": 0,
+          "subject_names": []
+        }
+      }
+    },
+    "after-preheat": {
+      "rvoCode": 0,
+      "instanceId": "cart-gaotu100-com-5969b9f675-z55tv:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "traceId": "cart_gaotu100_com.294.17940204020590007",
+      "result": {
+        "all_sign_up": 0,
+        "expand_force_buy": false,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 18405861174936327,
+                "before_course_number": 18405861174936317,
+                "can_change_course": true,
+                "clazz_date_desc": "",
+                "clazz_time_desc": "",
+                "clazz_week_desc": "",
+                "force_buy": false,
+                "lesson_count": 2,
+                "price": 0,
+                "product_sku_name": "50191-1106-数学小班-post",
+                "product_sku_number": 589048589437788160,
+                "product_type": 6004,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg",
+                    "name": "王碧云-外显主讲",
+                    "teacher_number": 7932284591800384,
+                    "teacher_role": "主讲老师"
+                  },
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg",
+                    "name": "王碧云-外显主讲",
+                    "teacher_number": 7932284591800384,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 11,
+            "grade_name": "一年级"
+          },
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "before_course_number": 589037992648269824,
+                "can_change_course": true,
+                "force_buy": false,
+                "product_sku_number": 589041222587408384,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": []
+              },
+              {
+                "before_course_number": 589037981162168320,
+                "can_change_course": true,
+                "force_buy": false,
+                "product_sku_number": 589041202037415936,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": []
+              },
+              {
+                "after_course_number": 589038008890712064,
+                "can_change_course": false,
+                "clazz_date_desc": "2026年11月10日-2026年11月10日",
+                "clazz_number": 589041240276885504,
+                "clazz_time_desc": "00:25-00:30",
+                "clazz_week_desc": "每周二",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "50191-1106-物理未关联对照-post",
+                "product_sku_number": 589041240276885504,
+                "product_type": 2,
+                "recommend_type": 2,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "物理"
+                ],
+                "teacher_list": [
+                  {
+                    "name": "唐稳01主讲",
+                    "teacher_number": 11188041873297121,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "grade": 31,
+            "grade_name": "高一"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1796607012000,
+        "renewal_force_buy": false,
+        "renewal_number": 589037361072007168,
+        "renewal_start_time": 1793928612000,
+        "status": 0
+      }
+    },
+    "version": {
+      "rvoCode": 0,
+      "instanceId": "cart-gaotu100-com-5969b9f675-z55tv:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "traceId": "cart_gaotu100_com.295.17940203946190007",
+      "result": "7ad54856-4fe2-4faa-bef5-89c5dc6d2543:on:sale-v2"
+    },
+    "restored-normal": {
+      "rvoCode": 0,
+      "instanceId": "cart-gaotu100-com-5969b9f675-z55tv:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "traceId": "cart_gaotu100_com.294.17940205291200010",
+      "result": {
+        "all_sign_up": 0,
+        "expand_force_buy": false,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 18405861174936327,
+                "before_course_number": 18405861174936317,
+                "can_change_course": true,
+                "clazz_date_desc": "",
+                "clazz_time_desc": "",
+                "clazz_week_desc": "",
+                "force_buy": false,
+                "lesson_count": 2,
+                "price": 0,
+                "product_sku_name": "50191-1106-数学小班-post",
+                "product_sku_number": 589048589437788160,
+                "product_type": 6004,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg",
+                    "name": "王碧云-外显主讲",
+                    "teacher_number": 7932284591800384,
+                    "teacher_role": "主讲老师"
+                  },
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg",
+                    "name": "王碧云-外显主讲",
+                    "teacher_number": 7932284591800384,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 11,
+            "grade_name": "一年级"
+          },
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "before_course_number": 589037992648269824,
+                "can_change_course": true,
+                "force_buy": false,
+                "product_sku_number": 589041222587408384,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": []
+              },
+              {
+                "before_course_number": 589037981162168320,
+                "can_change_course": true,
+                "force_buy": false,
+                "product_sku_number": 589041202037415936,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": []
+              },
+              {
+                "after_course_number": 589038008890712064,
+                "can_change_course": false,
+                "clazz_date_desc": "2026年11月10日-2026年11月10日",
+                "clazz_number": 589041240276885504,
+                "clazz_time_desc": "00:25-00:30",
+                "clazz_week_desc": "每周二",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "50191-1106-物理未关联对照-post",
+                "product_sku_number": 589041240276885504,
+                "product_type": 2,
+                "recommend_type": 2,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "物理"
+                ],
+                "teacher_list": [
+                  {
+                    "name": "唐稳01主讲",
+                    "teacher_number": 11188041873297121,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "grade": 31,
+            "grade_name": "高一"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1796607012000,
+        "renewal_force_buy": false,
+        "renewal_number": 589037361072007168,
+        "renewal_start_time": 1793928612000,
+        "status": 0
+      }
+    }
+  },
+  "assertions": [
+    {
+      "case": "cache-engine-revision",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "chen-A",
+      "actual": [
+        589041202037415936,
+        589041222587408384,
+        589048589437788160
+      ],
+      "expected": [
+        589041202037415936,
+        589041222587408384,
+        589048589437788160
+      ],
+      "passed": true
+    },
+    {
+      "case": "chen-B",
+      "actual": [
+        589048589437788160
+      ],
+      "expected": [
+        589048589437788160
+      ],
+      "passed": true
+    },
+    {
+      "case": "zhou-A",
+      "actual": [
+        589048589437788160
+      ],
+      "expected": [
+        589048589437788160
+      ],
+      "passed": true
+    },
+    {
+      "case": "chen-A-bside",
+      "actual": [
+        589041202037415936,
+        589041222587408384,
+        589048589437788160
+      ],
+      "expected": [
+        589041202037415936,
+        589041222587408384,
+        589048589437788160
+      ],
+      "passed": true
+    },
+    {
+      "case": "unrelated-plan-full-response",
+      "actual": {
+        "all_sign_up": 0,
+        "expand_force_buy": false,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 589037996712550400,
+                "before_course_number": 589037992648269824,
+                "can_change_course": true,
+                "clazz_date_desc": "2026年11月09日-2026年11月09日",
+                "clazz_time_desc": "22:25-22:30",
+                "clazz_week_desc": "每周一",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "50191-1106-英语从计划-post",
+                "product_sku_number": 589041222587408384,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "英语"
+                ],
+                "teacher_list": [
+                  {
+                    "name": "唐稳01主讲",
+                    "teacher_number": 11188041873297121,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              },
+              {
+                "after_course_number": 589037985069162496,
+                "can_change_course": false,
+                "clazz_date_desc": "2026年11月09日-2026年11月09日",
+                "clazz_number": 589041202037415936,
+                "clazz_time_desc": "18:25-18:30",
+                "clazz_week_desc": "每周一",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "50191-1106-数学大班主计划-post",
+                "product_sku_number": 589041202037415936,
+                "product_type": 2,
+                "recommend_type": 2,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 31,
+            "grade_name": "高一"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1796607032000,
+        "renewal_force_buy": false,
+        "renewal_number": 589037362856683520,
+        "renewal_start_time": 1793928632000,
+        "status": 0
+      },
+      "expected": {
+        "all_sign_up": 0,
+        "expand_force_buy": false,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 589037996712550400,
+                "before_course_number": 589037992648269824,
+                "can_change_course": true,
+                "clazz_date_desc": "2026年11月09日-2026年11月09日",
+                "clazz_time_desc": "22:25-22:30",
+                "clazz_week_desc": "每周一",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "50191-1106-英语从计划-post",
+                "product_sku_number": 589041222587408384,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "英语"
+                ],
+                "teacher_list": [
+                  {
+                    "name": "唐稳01主讲",
+                    "teacher_number": 11188041873297121,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              },
+              {
+                "after_course_number": 589037985069162496,
+                "can_change_course": false,
+                "clazz_date_desc": "2026年11月09日-2026年11月09日",
+                "clazz_number": 589041202037415936,
+                "clazz_time_desc": "18:25-18:30",
+                "clazz_week_desc": "每周一",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "50191-1106-数学大班主计划-post",
+                "product_sku_number": 589041202037415936,
+                "product_type": 2,
+                "recommend_type": 2,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 31,
+            "grade_name": "高一"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1796607032000,
+        "renewal_force_buy": false,
+        "renewal_number": 589037362856683520,
+        "renewal_start_time": 1793928632000,
+        "status": 0
+      },
+      "passed": true
+    },
+    {
+      "case": "selection-includes-small",
+      "actual": [
+        589048589437788160
+      ],
+      "expected": [
+        589048589437788160
+      ],
+      "passed": true
+    },
+    {
+      "case": "selection-filter-teachers",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "preheat-has-all-three",
+      "actual": [
+        589041202037415936,
+        589041222587408384,
+        589048589437788160
+      ],
+      "expected": [
+        589041202037415936,
+        589041222587408384,
+        589048589437788160
+      ],
+      "passed": true
+    },
+    {
+      "case": "preheated-result",
+      "actual": [
+        589041202037415936,
+        589041222587408384,
+        589048589437788160
+      ],
+      "expected": [
+        589041202037415936,
+        589041222587408384,
+        589048589437788160
+      ],
+      "passed": true
+    }
+  ],
+  "switchAssertions": [
+    {
+      "case": "off-c",
+      "actual": [
+        589041202037415936
+      ],
+      "expected": [
+        589041202037415936
+      ],
+      "trace": "cart_gaotu100_com.295.17940205047700011"
+    },
+    {
+      "case": "off-b",
+      "actual": [
+        589041202037415936
+      ],
+      "expected": [
+        589041202037415936
+      ],
+      "trace": "cart_gaotu100_com.287.17940205056170015"
+    },
+    {
+      "case": "off-only-related",
+      "actual": [],
+      "expected": [],
+      "trace": "cart_gaotu100_com.290.17940205062350015"
+    }
+  ],
+  "switchScope": "指定TEST Cart JVM内4个相关Bean的总开关字段，验证关闭/恢复；不代表执行过Apollo发布或全部服务联动回退。所有字段已回读恢复true。",
+  "apolloPublishedModified": false,
+  "testBusinessDataModified": false,
+  "bugFinalStatus": "resolved"
+}

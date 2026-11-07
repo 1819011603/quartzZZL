@@ -1,5 +1,11 @@
 # 决策摘要
 
+## 2026-11-07 关联小班售卖口径
+
+- 仅对关联小班统一使用商品SKU售卖状态，修复推荐/换班/筛选/预热遗漏；保留大班及无关联计划原判据，关联缓存增加规则版本隔离旧结果。
+- 漏测源于既有样本班级状态均40；后续必须覆盖Clazz与SKU状态不一致，覆盖率和平台通过状态不替代业务断言。
+- 总开关回退只停用关联推荐及跨模式校验放行，不删除关系或撤销企微功能；Cart运行时关闭/恢复已验证，不冒称已执行四应用Apollo发布回退。
+
 - 2026-11-07 **准入口径收口**：覆盖率按测试泳道真实业务调用和报告终态判断；新旧重载入口分别覆盖，本地测试结果不替代运行覆盖率。班山平台状态、实际执行和青舟准入分开记录，不再凭功能记录已通过直接判定同步故障。
 
 - 2026-11-06 **小班续班花名册「微信备注」空白定位与修复（test）**：改备注任务成功、linkup 与 ES `ads_small_clazz_user` 的 `wechatRemark` 都有值，但 `/roster/small/renewal/page`(`microContinuationService`) 不返回该字段。根因=`student_field_config` 给 `microContinuationService`/`continuationService` 登记了 `wechatRemark` → `GaiaEsMappingService#getNeedFromEsFields` 将其从 ES fetchSource 剔除、又无 DataQueryServiceV2 补值 → 列恒空。**口径更正**：`wechatRemark` 是 ES 原生字段，不登记 field_config（与默认花名册 `smallClazzRoster` 一致）；已删除 test 两条该行并回读页面返回备注值。PROD 上线 diff 同步去掉 wechatRemark INSERT（`studentTagNames` 保留）。详见 [tasks T-16](tasks.md)。

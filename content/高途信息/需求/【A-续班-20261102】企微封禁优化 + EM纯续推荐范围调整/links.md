@@ -66,3 +66,4 @@
 | case | 测试侧P0对照50162/72344（原集只读） | https://qa.baijia.com/banshan/#/caseManager/171/50162/72344/3 | 2026-11-05 |
 | case | 当前P0 revision247及集中证据 | https://gaotuedu.feishu.cn/wiki/KeCZwdJTBiIJDJkX8lRcGb9gnCs | 2026-11-05 |
 | 其他 | 本轮逐卡核验与计算/编号自检 | [document-verification.json](artifacts/20261105-p0-execution-round7/document-verification.json) | 2026-11-05 |
+| TAPD | 大班入口遗漏关联小班（1485167，已解决待QA复测） | https://www.tapd.cn/tapd_fe/22531521/bug/detail/1122531521001485167 | 2026-11-07 |
