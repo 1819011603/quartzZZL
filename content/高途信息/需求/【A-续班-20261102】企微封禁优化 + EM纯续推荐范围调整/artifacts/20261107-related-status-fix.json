@@ -1,0 +1,4045 @@
+{
+  "date": "2026-11-07",
+  "prd": {
+    "url": "https://gaotuedu.feishu.cn/wiki/UewqwsMWOiunOgk9Kloce1Jrn52",
+    "revision": 707,
+    "rule": "推荐时从计划不在待开始/进行中，过滤对应推荐"
+  },
+  "commit": "04022be85a6cc7f2a2615f83204f4f3a75d119c2",
+  "environment": "TEST/test-gtbg-dev-3",
+  "pipeline": 1332589,
+  "pod": "cart-gaotu100-com-6d94cc57bf-xmsl7",
+  "local_tests": {
+    "run": 213,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "runtime_status": [
+    {
+      "name": "baseline-root-c",
+      "actual": [
+        585960755422160896,
+        586097025945298944
+      ],
+      "expected": [
+        585960755422160896,
+        586097025945298944
+      ],
+      "trace": "cart_gaotu100_com.293.17940216145690006"
+    },
+    {
+      "name": "baseline-small-self",
+      "actual": [
+        586090628920764416
+      ],
+      "trace": "cart_gaotu100_com.297.17940216156340006"
+    },
+    {
+      "name": "ended-already-enrolled",
+      "actual": [
+        585960755422160896,
+        588861402658267136
+      ],
+      "absent": 586097025945298944,
+      "trace": "cart_gaotu100_com.296.17940216188910009"
+    },
+    {
+      "name": "ended-multiple-c",
+      "actual": [
+        585960755422160896
+      ],
+      "expected": [
+        585960755422160896
+      ],
+      "trace": "cart_gaotu100_com.295.17940216199160008"
+    },
+    {
+      "name": "ended-multiple-b",
+      "actual": [
+        585960755422160896
+      ],
+      "expected": [
+        585960755422160896
+      ],
+      "trace": "cart_gaotu100_com.289.17940216205290007"
+    },
+    {
+      "name": "ended-single-c",
+      "actual": [
+        585960755422160896
+      ],
+      "expected": [
+        585960755422160896
+      ],
+      "trace": "cart_gaotu100_com.288.17940216211330010"
+    },
+    {
+      "name": "ended-single-b",
+      "actual": [
+        585960755422160896
+      ],
+      "expected": [
+        585960755422160896
+      ],
+      "trace": "cart_gaotu100_com.291.17940216218100009"
+    },
+    {
+      "name": "ended-preheat",
+      "trace": "cart_gaotu100_com.296.17940216225510011",
+      "expected": [
+        585960755422160896
+      ]
+    },
+    {
+      "name": "ended-after-preheat",
+      "actual": [
+        585960755422160896
+      ],
+      "expected": [
+        585960755422160896
+      ],
+      "trace": "cart_gaotu100_com.295.17940216232660010"
+    },
+    {
+      "name": "waiting-allowed",
+      "actual": [
+        585960755422160896,
+        586097025945298944
+      ],
+      "expected": [
+        585960755422160896,
+        586097025945298944
+      ],
+      "trace": "cart_gaotu100_com.289.17940216242960009"
+    },
+    {
+      "name": "draft-excluded",
+      "actual": [
+        585960755422160896
+      ],
+      "expected": [
+        585960755422160896
+      ],
+      "trace": "cart_gaotu100_com.288.17940216255370012"
+    },
+    {
+      "name": "deleted-excluded",
+      "actual": [
+        585960755422160896
+      ],
+      "expected": [
+        585960755422160896
+      ],
+      "trace": "cart_gaotu100_com.291.17940216264430011"
+    },
+    {
+      "name": "restored-running",
+      "actual": [
+        585960755422160896,
+        586097025945298944
+      ],
+      "expected": [
+        585960755422160896,
+        586097025945298944
+      ],
+      "trace": "cart_gaotu100_com.296.17940216274040013"
+    },
+    {
+      "name": "all-related-ended",
+      "actual": [],
+      "expected": [],
+      "trace": "cart_gaotu100_com.295.17940216290590012"
+    },
+    {
+      "name": "final-restored",
+      "actual": [
+        585960755422160896,
+        586097025945298944
+      ],
+      "expected": [
+        585960755422160896,
+        586097025945298944
+      ],
+      "trace": "cart_gaotu100_com.289.17940216301710011"
+    },
+    {
+      "name": "final-small-self",
+      "actual": [
+        586090628920764416
+      ],
+      "expected": [
+        586090628920764416
+      ],
+      "trace": "cart_gaotu100_com.288.17940216312110014"
+    }
+  ],
+  "runtime_sale": [
+    {
+      "case": "cache-engine-revision",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "chen-A",
+      "actual": [
+        589041202037415936,
+        589048589437788160
+      ],
+      "expected": [
+        589041202037415936,
+        589048589437788160
+      ],
+      "passed": true
+    },
+    {
+      "case": "chen-B",
+      "actual": [
+        589048589437788160
+      ],
+      "expected": [
+        589048589437788160
+      ],
+      "passed": true
+    },
+    {
+      "case": "zhou-A",
+      "actual": [
+        589048589437788160
+      ],
+      "expected": [
+        589048589437788160
+      ],
+      "passed": true
+    },
+    {
+      "case": "chen-A-bside",
+      "actual": [
+        589041202037415936,
+        589048589437788160
+      ],
+      "expected": [
+        589041202037415936,
+        589048589437788160
+      ],
+      "passed": true
+    },
+    {
+      "case": "unrelated-plan-full-response",
+      "actual": {
+        "all_sign_up": 0,
+        "expand_force_buy": false,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 589037996712550400,
+                "before_course_number": 589037992648269824,
+                "can_change_course": true,
+                "clazz_date_desc": "2026年11月09日-2026年11月09日",
+                "clazz_time_desc": "22:25-22:30",
+                "clazz_week_desc": "每周一",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "50191-1106-英语从计划-post",
+                "product_sku_number": 589041222587408384,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "英语"
+                ],
+                "teacher_list": [
+                  {
+                    "name": "唐稳01主讲",
+                    "teacher_number": 11188041873297121,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              },
+              {
+                "after_course_number": 589037985069162496,
+                "can_change_course": false,
+                "clazz_date_desc": "2026年11月09日-2026年11月09日",
+                "clazz_number": 589041202037415936,
+                "clazz_time_desc": "18:25-18:30",
+                "clazz_week_desc": "每周一",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "50191-1106-数学大班主计划-post",
+                "product_sku_number": 589041202037415936,
+                "product_type": 2,
+                "recommend_type": 2,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 31,
+            "grade_name": "高一"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1796607032000,
+        "renewal_force_buy": false,
+        "renewal_number": 589037362856683520,
+        "renewal_start_time": 1793928632000,
+        "status": 0
+      },
+      "expected": {
+        "all_sign_up": 0,
+        "expand_force_buy": false,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 589037996712550400,
+                "before_course_number": 589037992648269824,
+                "can_change_course": true,
+                "clazz_date_desc": "2026年11月09日-2026年11月09日",
+                "clazz_time_desc": "22:25-22:30",
+                "clazz_week_desc": "每周一",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "50191-1106-英语从计划-post",
+                "product_sku_number": 589041222587408384,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "英语"
+                ],
+                "teacher_list": [
+                  {
+                    "name": "唐稳01主讲",
+                    "teacher_number": 11188041873297121,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              },
+              {
+                "after_course_number": 589037985069162496,
+                "can_change_course": false,
+                "clazz_date_desc": "2026年11月09日-2026年11月09日",
+                "clazz_number": 589041202037415936,
+                "clazz_time_desc": "18:25-18:30",
+                "clazz_week_desc": "每周一",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "50191-1106-数学大班主计划-post",
+                "product_sku_number": 589041202037415936,
+                "product_type": 2,
+                "recommend_type": 2,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 31,
+            "grade_name": "高一"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1796607032000,
+        "renewal_force_buy": false,
+        "renewal_number": 589037362856683520,
+        "renewal_start_time": 1793928632000,
+        "status": 0
+      },
+      "passed": true
+    },
+    {
+      "case": "selection-includes-small",
+      "actual": [
+        589048589437788160
+      ],
+      "expected": [
+        589048589437788160
+      ],
+      "passed": true
+    },
+    {
+      "case": "selection-filter-teachers",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "preheat-current-two-related-products",
+      "actual": [
+        589041202037415936,
+        589048589437788160
+      ],
+      "expected": [
+        589041202037415936,
+        589048589437788160
+      ],
+      "passed": true
+    },
+    {
+      "case": "preheated-result",
+      "actual": [
+        589041202037415936,
+        589048589437788160
+      ],
+      "expected": [
+        589041202037415936,
+        589048589437788160
+      ],
+      "passed": true
+    }
+  ],
+  "runtime_rollback": [
+    {
+      "case": "off-c",
+      "actual": [
+        589041202037415936
+      ],
+      "expected": [
+        589041202037415936
+      ],
+      "trace": "cart_gaotu100_com.294.17940218496410013"
+    },
+    {
+      "case": "off-b",
+      "actual": [
+        589041202037415936
+      ],
+      "expected": [
+        589041202037415936
+      ],
+      "trace": "cart_gaotu100_com.295.17940218502770020"
+    },
+    {
+      "case": "off-only-related",
+      "actual": [],
+      "expected": [],
+      "trace": "cart_gaotu100_com.297.17940218508590014"
+    }
+  ],
+  "raw": {
+    "before/plans-before.json": [
+      {
+        "number": 585960797778243584,
+        "name": "dcg-扩科排除-大班计划-1020",
+        "status": 2,
+        "isdel": 0,
+        "is_test_data": 1,
+        "begin_time": "2026-10-10 00:00:00",
+        "end_time": "2026-12-31 23:59:59",
+        "update_time": "2026-10-20 17:24:36"
+      },
+      {
+        "number": 586116340522184704,
+        "name": "dcg-小班扩科排除-计划",
+        "status": 2,
+        "isdel": 0,
+        "is_test_data": 1,
+        "begin_time": "2026-10-20 14:00:01",
+        "end_time": "2026-11-20 14:00:01",
+        "update_time": "2026-11-04 09:40:41"
+      },
+      {
+        "number": 588858850300473344,
+        "name": "W1-P0-243aa61a-EM独立主计划",
+        "status": 2,
+        "isdel": 0,
+        "is_test_data": 1,
+        "begin_time": "2026-11-05 17:20:00",
+        "end_time": "2027-11-05 17:20:00",
+        "update_time": "2026-11-05 17:36:00"
+      }
+    ],
+    "before/before-online.json": {
+      "url": "http://10.218.250.147:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7658127801",
+          "588858850300473344",
+          false,
+          false,
+          null,
+          "7682",
+          false
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.250.147:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#getRenewalDetail\", \"params\": [\"7658127801\", \"588858850300473344\", false, false, null, \"7682\", false]}'",
+      "traceId": "cart_gaotu100_com.295.17940209134430016",
+      "rvoCode": 0,
+      "result": {
+        "all_sign_up": 0,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "before_course_number": 585960577856301056,
+                "can_change_course": true,
+                "clazz_number": 585960755422160896,
+                "force_buy": false,
+                "product_sku_number": 585960755422160896,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 1,
+                "subject_names": []
+              }
+            ],
+            "grade": 16,
+            "grade_name": "六年级"
+          },
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 18314034380997207,
+                "before_course_number": 18314034380997173,
+                "can_change_course": true,
+                "clazz_date_desc": "",
+                "clazz_time_desc": "",
+                "clazz_week_desc": "",
+                "force_buy": false,
+                "lesson_count": 2,
+                "price": 0,
+                "product_sku_name": "dcg-小班扩科排除-数学-后置",
+                "product_sku_number": 586097025945298944,
+                "product_type": 6004,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  },
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 11,
+            "grade_name": "一年级"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1825406400000,
+        "renewal_force_buy": false,
+        "renewal_number": 588858850300473344,
+        "renewal_start_time": 1793870400000,
+        "status": 0
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-5969b9f675-z55tv:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 4
+    },
+    "before/before-preheat.json": {
+      "url": "http://10.218.250.147:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#preheat",
+        "params": [
+          "7658127801",
+          "588858850300473344"
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.250.147:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#preheat\", \"params\": [\"7658127801\", \"588858850300473344\"]}'",
+      "traceId": "cart_gaotu100_com.287.17940209151440022",
+      "rvoCode": 0,
+      "result": {
+        "585960577856301056": {
+          "clazz_number": 585960755422160896,
+          "product_sku_number": 585960755422160896,
+          "product_type": 2,
+          "select": 0,
+          "sign_up": 0,
+          "subject_names": []
+        },
+        "18314034380997173": {
+          "product_sku_number": 586097025945298944,
+          "select": 0,
+          "sign_up": 0,
+          "subject_names": []
+        }
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-5969b9f675-z55tv:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 4
+    },
+    "before/ended-c.json": {
+      "url": "http://10.218.250.147:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7658127801",
+          "588858850300473344",
+          false,
+          false,
+          null,
+          "7682",
+          false
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.250.147:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#getRenewalDetail\", \"params\": [\"7658127801\", \"588858850300473344\", false, false, null, \"7682\", false]}'",
+      "traceId": "cart_gaotu100_com.290.17940209162760021",
+      "rvoCode": 0,
+      "result": {
+        "all_sign_up": 0,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "before_course_number": 585960577856301056,
+                "can_change_course": true,
+                "clazz_number": 585960755422160896,
+                "force_buy": false,
+                "product_sku_number": 585960755422160896,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 1,
+                "subject_names": []
+              }
+            ],
+            "grade": 16,
+            "grade_name": "六年级"
+          },
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 18314034380997207,
+                "before_course_number": 18314034380997173,
+                "can_change_course": true,
+                "clazz_date_desc": "",
+                "clazz_time_desc": "",
+                "clazz_week_desc": "",
+                "force_buy": false,
+                "lesson_count": 2,
+                "price": 0,
+                "product_sku_name": "dcg-小班扩科排除-数学-后置",
+                "product_sku_number": 586097025945298944,
+                "product_type": 6004,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  },
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 11,
+            "grade_name": "一年级"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1825406400000,
+        "renewal_force_buy": false,
+        "renewal_number": 588858850300473344,
+        "renewal_start_time": 1793870400000,
+        "status": 0
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-5969b9f675-z55tv:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 4
+    },
+    "before/ended-b.json": {
+      "url": "http://10.218.250.147:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7658127801",
+          "588858850300473344",
+          false,
+          true,
+          null,
+          "7682",
+          false
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.250.147:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#getRenewalDetail\", \"params\": [\"7658127801\", \"588858850300473344\", false, true, null, \"7682\", false]}'",
+      "traceId": "cart_gaotu100_com.293.17940209173030018",
+      "rvoCode": 0,
+      "result": {
+        "all_sign_up": 0,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "before_course_number": 585960577856301056,
+                "can_change_course": true,
+                "clazz_number": 585960755422160896,
+                "force_buy": false,
+                "product_sku_number": 585960755422160896,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 1,
+                "subject_names": []
+              }
+            ],
+            "grade": 16,
+            "grade_name": "六年级"
+          },
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 18314034380997207,
+                "before_course_number": 18314034380997173,
+                "can_change_course": true,
+                "clazz_date_desc": "",
+                "clazz_time_desc": "",
+                "clazz_week_desc": "",
+                "force_buy": false,
+                "lesson_count": 2,
+                "price": 0,
+                "product_sku_name": "dcg-小班扩科排除-数学-后置",
+                "product_sku_number": 586097025945298944,
+                "product_type": 6004,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  },
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 11,
+            "grade_name": "一年级"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1825406400000,
+        "renewal_force_buy": false,
+        "renewal_number": 588858850300473344,
+        "renewal_start_time": 1793870400000,
+        "status": 0
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-5969b9f675-z55tv:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 4
+    },
+    "before/ended-row.json": {
+      "number": 586116340522184704,
+      "status": 3,
+      "isdel": 0,
+      "is_test_data": 1,
+      "update_time": "2026-11-07 11:08:35"
+    },
+    "before/restored-row.json": {
+      "number": 586116340522184704,
+      "status": 2,
+      "isdel": 0,
+      "is_test_data": 1,
+      "update_time": "2026-11-04 09:40:41"
+    },
+    "before/ended-live-batch.json": {
+      "url": "http://10.218.250.147:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.feignAdapter.product.impl.ProductFeignServiceAdapterImpl#listRenewalMasterPreCoursesByNumbers",
+        "params": [
+          [
+            "586116340522184704"
+          ]
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.250.147:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.feignAdapter.product.impl.ProductFeignServiceAdapterImpl#listRenewalMasterPreCoursesByNumbers\", \"params\": [[\"586116340522184704\"]]}'",
+      "traceId": "cart_gaotu100_com.288.17940209181590017",
+      "rvoCode": 0,
+      "result": {
+        "586116340522184704": [
+          18314034380997173
+        ]
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-5969b9f675-z55tv:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 4
+    },
+    "after/baseline-small-self.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7658127801",
+          "586116340522184704",
+          false,
+          false,
+          null,
+          "7682",
+          false
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#getRenewalDetail\", \"params\": [\"7658127801\", \"586116340522184704\", false, false, null, \"7682\", false]}'",
+      "traceId": "cart_gaotu100_com.297.17940216156340006",
+      "rvoCode": 0,
+      "result": {
+        "all_sign_up": 0,
+        "expand_force_buy": false,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 18314034380997186,
+                "before_course_number": 18314034380997173,
+                "can_change_course": true,
+                "force_buy": false,
+                "norm_desc_list": [
+                  "售卖规格一",
+                  "测试1"
+                ],
+                "price": 0,
+                "product_sku_name": "默认规格",
+                "product_sku_number": 586090628920764416,
+                "product_type": 6004,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg",
+                    "name": "王碧云-外显主讲",
+                    "teacher_number": 7932284591800384,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 12,
+            "grade_name": "二年级"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "renewal_end_time": 1798732799000,
+        "renewal_force_buy": false,
+        "renewal_number": 586116340522184704,
+        "renewal_start_time": 1791561600000,
+        "status": 0
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 5
+    },
+    "after/all-related-ended.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7658127801",
+          "588858850300473344",
+          false,
+          false,
+          null,
+          "7682",
+          false
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#getRenewalDetail\", \"params\": [\"7658127801\", \"588858850300473344\", false, false, null, \"7682\", false]}'",
+      "traceId": "cart_gaotu100_com.295.17940216290590012",
+      "rvoCode": 0,
+      "result": {
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "renewal_end_time": 1825406400000,
+        "renewal_number": 588858850300473344,
+        "renewal_start_time": 1793870400000,
+        "status": 0
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 5
+    },
+    "after/waiting-allowed.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7658127801",
+          "588858850300473344",
+          false,
+          false,
+          null,
+          "7682",
+          false
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#getRenewalDetail\", \"params\": [\"7658127801\", \"588858850300473344\", false, false, null, \"7682\", false]}'",
+      "traceId": "cart_gaotu100_com.289.17940216242960009",
+      "rvoCode": 0,
+      "result": {
+        "all_sign_up": 0,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "before_course_number": 585960577856301056,
+                "can_change_course": true,
+                "clazz_number": 585960755422160896,
+                "force_buy": false,
+                "product_sku_number": 585960755422160896,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 1,
+                "subject_names": []
+              }
+            ],
+            "grade": 16,
+            "grade_name": "六年级"
+          },
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 18314034380997207,
+                "before_course_number": 18314034380997173,
+                "can_change_course": true,
+                "clazz_date_desc": "",
+                "clazz_time_desc": "",
+                "clazz_week_desc": "",
+                "force_buy": false,
+                "lesson_count": 2,
+                "price": 0,
+                "product_sku_name": "dcg-小班扩科排除-数学-后置",
+                "product_sku_number": 586097025945298944,
+                "product_type": 6004,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  },
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 11,
+            "grade_name": "一年级"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1825406400000,
+        "renewal_force_buy": false,
+        "renewal_number": 588858850300473344,
+        "renewal_start_time": 1793870400000,
+        "status": 0
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 5
+    },
+    "after/ended-preheat.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#preheat",
+        "params": [
+          "7658127801",
+          "588858850300473344"
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#preheat\", \"params\": [\"7658127801\", \"588858850300473344\"]}'",
+      "traceId": "cart_gaotu100_com.296.17940216225510011",
+      "rvoCode": 0,
+      "result": {
+        "585960577856301056": {
+          "clazz_number": 585960755422160896,
+          "product_sku_number": 585960755422160896,
+          "product_type": 2,
+          "select": 0,
+          "sign_up": 0,
+          "subject_names": []
+        }
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 5
+    },
+    "after/final-restored.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7658127801",
+          "588858850300473344",
+          false,
+          false,
+          null,
+          "7682",
+          false
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#getRenewalDetail\", \"params\": [\"7658127801\", \"588858850300473344\", false, false, null, \"7682\", false]}'",
+      "traceId": "cart_gaotu100_com.289.17940216301710011",
+      "rvoCode": 0,
+      "result": {
+        "all_sign_up": 0,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "before_course_number": 585960577856301056,
+                "can_change_course": true,
+                "clazz_number": 585960755422160896,
+                "force_buy": false,
+                "product_sku_number": 585960755422160896,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 1,
+                "subject_names": []
+              }
+            ],
+            "grade": 16,
+            "grade_name": "六年级"
+          },
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 18314034380997207,
+                "before_course_number": 18314034380997173,
+                "can_change_course": true,
+                "clazz_date_desc": "",
+                "clazz_time_desc": "",
+                "clazz_week_desc": "",
+                "force_buy": false,
+                "lesson_count": 2,
+                "price": 0,
+                "product_sku_name": "dcg-小班扩科排除-数学-后置",
+                "product_sku_number": 586097025945298944,
+                "product_type": 6004,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  },
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 11,
+            "grade_name": "一年级"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1825406400000,
+        "renewal_force_buy": false,
+        "renewal_number": 588858850300473344,
+        "renewal_start_time": 1793870400000,
+        "status": 0
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 5
+    },
+    "after/warm-588858850300473344.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#preheat",
+        "params": [
+          "7658127801",
+          "588858850300473344"
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#preheat\", \"params\": [\"7658127801\", \"588858850300473344\"]}'",
+      "traceId": "cart_gaotu100_com.288.17940216165280008",
+      "rvoCode": 0,
+      "result": {
+        "585960577856301056": {
+          "clazz_number": 585960755422160896,
+          "product_sku_number": 585960755422160896,
+          "product_type": 2,
+          "select": 0,
+          "sign_up": 0,
+          "subject_names": []
+        },
+        "18314034380997173": {
+          "product_sku_number": 586097025945298944,
+          "select": 0,
+          "sign_up": 0,
+          "subject_names": []
+        }
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 5
+    },
+    "after/ended-single-b.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7658127801",
+          "585960797778243584",
+          false,
+          true,
+          null,
+          "7682",
+          false
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#getRenewalDetail\", \"params\": [\"7658127801\", \"585960797778243584\", false, true, null, \"7682\", false]}'",
+      "traceId": "cart_gaotu100_com.291.17940216218100009",
+      "rvoCode": 0,
+      "result": {
+        "all_sign_up": 1,
+        "expand_force_buy": false,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 585960751831836672,
+                "before_course_number": 585960577856301056,
+                "can_change_course": true,
+                "clazz_date_desc": "2026年10月22日-2026年10月22日",
+                "clazz_number": 585960755422160896,
+                "clazz_time_desc": "17:25-17:30",
+                "clazz_week_desc": "每周四",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "dcg-扩科排除-后置-六年级语文",
+                "product_sku_number": 585960755422160896,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 1,
+                "subject_names": [
+                  "语文"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 16,
+            "grade_name": "六年级"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1798732799000,
+        "renewal_force_buy": false,
+        "renewal_number": 585960797778243584,
+        "renewal_start_time": 1791561600000,
+        "status": 0
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 5
+    },
+    "after/warm-585960797778243584.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#preheat",
+        "params": [
+          "7658127801",
+          "585960797778243584"
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#preheat\", \"params\": [\"7658127801\", \"585960797778243584\"]}'",
+      "traceId": "cart_gaotu100_com.291.17940216175710007",
+      "rvoCode": 0,
+      "result": {
+        "585960577856301056": {
+          "clazz_number": 585960755422160896,
+          "product_sku_number": 585960755422160896,
+          "product_type": 2,
+          "select": 0,
+          "sign_up": 0,
+          "subject_names": []
+        },
+        "18314034380997173": {
+          "before_course_number": 18314034380997173,
+          "product_sku_number": 586097025945298944,
+          "select": 1,
+          "sign_up": 0,
+          "subject_names": []
+        }
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 5
+    },
+    "after/ended-after-preheat.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7658127801",
+          "588858850300473344",
+          false,
+          false,
+          null,
+          "7682",
+          false
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#getRenewalDetail\", \"params\": [\"7658127801\", \"588858850300473344\", false, false, null, \"7682\", false]}'",
+      "traceId": "cart_gaotu100_com.295.17940216232660010",
+      "rvoCode": 0,
+      "result": {
+        "all_sign_up": 1,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 585960751831836672,
+                "before_course_number": 585960577856301056,
+                "can_change_course": true,
+                "clazz_date_desc": "2026年10月22日-2026年10月22日",
+                "clazz_number": 585960755422160896,
+                "clazz_time_desc": "17:25-17:30",
+                "clazz_week_desc": "每周四",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "dcg-扩科排除-后置-六年级语文",
+                "product_sku_number": 585960755422160896,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 1,
+                "subject_names": [
+                  "语文"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 16,
+            "grade_name": "六年级"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1825406400000,
+        "renewal_force_buy": false,
+        "renewal_number": 588858850300473344,
+        "renewal_start_time": 1793870400000,
+        "status": 0
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 5
+    },
+    "after/ended-single-c.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7658127801",
+          "585960797778243584",
+          false,
+          false,
+          null,
+          "7682",
+          false
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#getRenewalDetail\", \"params\": [\"7658127801\", \"585960797778243584\", false, false, null, \"7682\", false]}'",
+      "traceId": "cart_gaotu100_com.288.17940216211330010",
+      "rvoCode": 0,
+      "result": {
+        "all_sign_up": 1,
+        "expand_force_buy": false,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 585960751831836672,
+                "before_course_number": 585960577856301056,
+                "can_change_course": true,
+                "clazz_date_desc": "2026年10月22日-2026年10月22日",
+                "clazz_number": 585960755422160896,
+                "clazz_time_desc": "17:25-17:30",
+                "clazz_week_desc": "每周四",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "dcg-扩科排除-后置-六年级语文",
+                "product_sku_number": 585960755422160896,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 1,
+                "subject_names": [
+                  "语文"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 16,
+            "grade_name": "六年级"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1798732799000,
+        "renewal_force_buy": false,
+        "renewal_number": 585960797778243584,
+        "renewal_start_time": 1791561600000,
+        "status": 0
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 5
+    },
+    "after/draft-excluded.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7658127801",
+          "588858850300473344",
+          false,
+          false,
+          null,
+          "7682",
+          false
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#getRenewalDetail\", \"params\": [\"7658127801\", \"588858850300473344\", false, false, null, \"7682\", false]}'",
+      "traceId": "cart_gaotu100_com.288.17940216255370012",
+      "rvoCode": 0,
+      "result": {
+        "all_sign_up": 1,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 585960751831836672,
+                "before_course_number": 585960577856301056,
+                "can_change_course": true,
+                "clazz_date_desc": "2026年10月22日-2026年10月22日",
+                "clazz_number": 585960755422160896,
+                "clazz_time_desc": "17:25-17:30",
+                "clazz_week_desc": "每周四",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "dcg-扩科排除-后置-六年级语文",
+                "product_sku_number": 585960755422160896,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 1,
+                "subject_names": [
+                  "语文"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 16,
+            "grade_name": "六年级"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1825406400000,
+        "renewal_force_buy": false,
+        "renewal_number": 588858850300473344,
+        "renewal_start_time": 1793870400000,
+        "status": 0
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 5
+    },
+    "after/ended-already-enrolled.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7658129872",
+          "588858850300473344",
+          false,
+          false,
+          null,
+          "7682",
+          false
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#getRenewalDetail\", \"params\": [\"7658129872\", \"588858850300473344\", false, false, null, \"7682\", false]}'",
+      "traceId": "cart_gaotu100_com.296.17940216188910009",
+      "rvoCode": 0,
+      "result": {
+        "all_sign_up": 1,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "before_course_number": 585960577856301056,
+                "can_change_course": true,
+                "clazz_number": 585960755422160896,
+                "force_buy": false,
+                "product_sku_number": 585960755422160896,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 1,
+                "subject_names": []
+              }
+            ],
+            "grade": 16,
+            "grade_name": "六年级"
+          },
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 588861400563212288,
+                "before_course_number": 588861395571990528,
+                "can_change_course": true,
+                "clazz_date_desc": "2026年11月08日-2026年11月08日",
+                "clazz_number": 588861402658267136,
+                "clazz_time_desc": "14:20-14:25",
+                "clazz_week_desc": "每周日",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 100,
+                "product_sku_name": "B测试-五年级语文暑假后置1B",
+                "product_sku_number": 588861402658267136,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 1,
+                "subject_names": [
+                  "语文"
+                ],
+                "teacher_list": [
+                  {
+                    "name": "唐稳01主讲",
+                    "teacher_number": 11188041873297121,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 15,
+            "grade_name": "五年级"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1825406400000,
+        "renewal_force_buy": false,
+        "renewal_number": 588858850300473344,
+        "renewal_start_time": 1793870400000,
+        "status": 0
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 5
+    },
+    "after/baseline-root-c.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7658127801",
+          "588858850300473344",
+          false,
+          false,
+          null,
+          "7682",
+          false
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#getRenewalDetail\", \"params\": [\"7658127801\", \"588858850300473344\", false, false, null, \"7682\", false]}'",
+      "traceId": "cart_gaotu100_com.293.17940216145690006",
+      "rvoCode": 0,
+      "result": {
+        "all_sign_up": 0,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "before_course_number": 585960577856301056,
+                "can_change_course": true,
+                "clazz_number": 585960755422160896,
+                "force_buy": false,
+                "product_sku_number": 585960755422160896,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 1,
+                "subject_names": []
+              }
+            ],
+            "grade": 16,
+            "grade_name": "六年级"
+          },
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 18314034380997207,
+                "before_course_number": 18314034380997173,
+                "can_change_course": true,
+                "clazz_date_desc": "",
+                "clazz_time_desc": "",
+                "clazz_week_desc": "",
+                "force_buy": false,
+                "lesson_count": 2,
+                "price": 0,
+                "product_sku_name": "dcg-小班扩科排除-数学-后置",
+                "product_sku_number": 586097025945298944,
+                "product_type": 6004,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  },
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 11,
+            "grade_name": "一年级"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1825406400000,
+        "renewal_force_buy": false,
+        "renewal_number": 588858850300473344,
+        "renewal_start_time": 1793870400000,
+        "status": 0
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 5
+    },
+    "after/final-small-self.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7658127801",
+          "586116340522184704",
+          false,
+          false,
+          null,
+          "7682",
+          false
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#getRenewalDetail\", \"params\": [\"7658127801\", \"586116340522184704\", false, false, null, \"7682\", false]}'",
+      "traceId": "cart_gaotu100_com.288.17940216312110014",
+      "rvoCode": 0,
+      "result": {
+        "all_sign_up": 0,
+        "expand_force_buy": false,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 18314034380997186,
+                "before_course_number": 18314034380997173,
+                "can_change_course": true,
+                "force_buy": false,
+                "norm_desc_list": [
+                  "售卖规格一",
+                  "测试1"
+                ],
+                "price": 0,
+                "product_sku_name": "默认规格",
+                "product_sku_number": 586090628920764416,
+                "product_type": 6004,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg",
+                    "name": "王碧云-外显主讲",
+                    "teacher_number": 7932284591800384,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 12,
+            "grade_name": "二年级"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "renewal_end_time": 1798732799000,
+        "renewal_force_buy": false,
+        "renewal_number": 586116340522184704,
+        "renewal_start_time": 1791561600000,
+        "status": 0
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 5
+    },
+    "after/ended-multiple-c.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7658127801",
+          "588858850300473344",
+          false,
+          false,
+          null,
+          "7682",
+          false
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#getRenewalDetail\", \"params\": [\"7658127801\", \"588858850300473344\", false, false, null, \"7682\", false]}'",
+      "traceId": "cart_gaotu100_com.295.17940216199160008",
+      "rvoCode": 0,
+      "result": {
+        "all_sign_up": 1,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 585960751831836672,
+                "before_course_number": 585960577856301056,
+                "can_change_course": true,
+                "clazz_date_desc": "2026年10月22日-2026年10月22日",
+                "clazz_number": 585960755422160896,
+                "clazz_time_desc": "17:25-17:30",
+                "clazz_week_desc": "每周四",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "dcg-扩科排除-后置-六年级语文",
+                "product_sku_number": 585960755422160896,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 1,
+                "subject_names": [
+                  "语文"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 16,
+            "grade_name": "六年级"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1825406400000,
+        "renewal_force_buy": false,
+        "renewal_number": 588858850300473344,
+        "renewal_start_time": 1793870400000,
+        "status": 0
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 5
+    },
+    "after/ended-multiple-b.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7658127801",
+          "588858850300473344",
+          false,
+          true,
+          null,
+          "7682",
+          false
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#getRenewalDetail\", \"params\": [\"7658127801\", \"588858850300473344\", false, true, null, \"7682\", false]}'",
+      "traceId": "cart_gaotu100_com.289.17940216205290007",
+      "rvoCode": 0,
+      "result": {
+        "all_sign_up": 1,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 585960751831836672,
+                "before_course_number": 585960577856301056,
+                "can_change_course": true,
+                "clazz_date_desc": "2026年10月22日-2026年10月22日",
+                "clazz_number": 585960755422160896,
+                "clazz_time_desc": "17:25-17:30",
+                "clazz_week_desc": "每周四",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "dcg-扩科排除-后置-六年级语文",
+                "product_sku_number": 585960755422160896,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 1,
+                "subject_names": [
+                  "语文"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 16,
+            "grade_name": "六年级"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1825406400000,
+        "renewal_force_buy": false,
+        "renewal_number": 588858850300473344,
+        "renewal_start_time": 1793870400000,
+        "status": 0
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 5
+    },
+    "after/enrolled-restored.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7658129872",
+          "588858850300473344",
+          false,
+          false,
+          null,
+          "7682",
+          false
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#getRenewalDetail\", \"params\": [\"7658129872\", \"588858850300473344\", false, false, null, \"7682\", false]}'",
+      "traceId": "cart_gaotu100_com.291.17940216992700013",
+      "rvoCode": 0,
+      "result": {
+        "all_sign_up": 1,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "before_course_number": 585960577856301056,
+                "can_change_course": true,
+                "clazz_number": 585960755422160896,
+                "force_buy": false,
+                "product_sku_number": 585960755422160896,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 1,
+                "subject_names": []
+              }
+            ],
+            "grade": 16,
+            "grade_name": "六年级"
+          },
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 18314034380997207,
+                "before_course_number": 18314034380997173,
+                "can_change_course": true,
+                "clazz_date_desc": "",
+                "clazz_number": 586097025945298944,
+                "clazz_time_desc": "",
+                "clazz_week_desc": "",
+                "force_buy": false,
+                "lesson_count": 2,
+                "price": 0,
+                "product_sku_name": "dcg-小班扩科排除-数学-后置",
+                "product_sku_number": 586097025945298944,
+                "product_type": 6004,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 1,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  },
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 11,
+            "grade_name": "一年级"
+          },
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "before_course_number": 588861395571990528,
+                "can_change_course": true,
+                "clazz_number": 588861402658267136,
+                "force_buy": false,
+                "product_sku_number": 588861402658267136,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 1,
+                "subject_names": []
+              }
+            ],
+            "grade": 15,
+            "grade_name": "五年级"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1825406400000,
+        "renewal_force_buy": false,
+        "renewal_number": 588858850300473344,
+        "renewal_start_time": 1793870400000,
+        "status": 0
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 5
+    },
+    "after/restored-rows.json": {
+      "585960797778243584": {
+        "number": 585960797778243584,
+        "status": 2,
+        "isdel": 0,
+        "is_test_data": 1,
+        "update_time": "2026-10-20 17:24:36"
+      },
+      "586116340522184704": {
+        "number": 586116340522184704,
+        "status": 2,
+        "isdel": 0,
+        "is_test_data": 1,
+        "update_time": "2026-11-04 09:40:41"
+      }
+    },
+    "after/deleted-excluded.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7658127801",
+          "588858850300473344",
+          false,
+          false,
+          null,
+          "7682",
+          false
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#getRenewalDetail\", \"params\": [\"7658127801\", \"588858850300473344\", false, false, null, \"7682\", false]}'",
+      "traceId": "cart_gaotu100_com.291.17940216264430011",
+      "rvoCode": 0,
+      "result": {
+        "all_sign_up": 1,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 585960751831836672,
+                "before_course_number": 585960577856301056,
+                "can_change_course": true,
+                "clazz_date_desc": "2026年10月22日-2026年10月22日",
+                "clazz_number": 585960755422160896,
+                "clazz_time_desc": "17:25-17:30",
+                "clazz_week_desc": "每周四",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "dcg-扩科排除-后置-六年级语文",
+                "product_sku_number": 585960755422160896,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 1,
+                "subject_names": [
+                  "语文"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 16,
+            "grade_name": "六年级"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1825406400000,
+        "renewal_force_buy": false,
+        "renewal_number": 588858850300473344,
+        "renewal_start_time": 1793870400000,
+        "status": 0
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 5
+    },
+    "after/restored-running.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7658127801",
+          "588858850300473344",
+          false,
+          false,
+          null,
+          "7682",
+          false
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#getRenewalDetail\", \"params\": [\"7658127801\", \"588858850300473344\", false, false, null, \"7682\", false]}'",
+      "traceId": "cart_gaotu100_com.296.17940216274040013",
+      "rvoCode": 0,
+      "result": {
+        "all_sign_up": 0,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "before_course_number": 585960577856301056,
+                "can_change_course": true,
+                "clazz_number": 585960755422160896,
+                "force_buy": false,
+                "product_sku_number": 585960755422160896,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 1,
+                "subject_names": []
+              }
+            ],
+            "grade": 16,
+            "grade_name": "六年级"
+          },
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 18314034380997207,
+                "before_course_number": 18314034380997173,
+                "can_change_course": true,
+                "clazz_date_desc": "",
+                "clazz_time_desc": "",
+                "clazz_week_desc": "",
+                "force_buy": false,
+                "lesson_count": 2,
+                "price": 0,
+                "product_sku_name": "dcg-小班扩科排除-数学-后置",
+                "product_sku_number": 586097025945298944,
+                "product_type": 6004,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  },
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 11,
+            "grade_name": "一年级"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1825406400000,
+        "renewal_force_buy": false,
+        "renewal_number": 588858850300473344,
+        "renewal_start_time": 1793870400000,
+        "status": 0
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 5
+    },
+    "after/assertions.json": [
+      {
+        "name": "baseline-root-c",
+        "actual": [
+          585960755422160896,
+          586097025945298944
+        ],
+        "expected": [
+          585960755422160896,
+          586097025945298944
+        ],
+        "trace": "cart_gaotu100_com.293.17940216145690006"
+      },
+      {
+        "name": "baseline-small-self",
+        "actual": [
+          586090628920764416
+        ],
+        "trace": "cart_gaotu100_com.297.17940216156340006"
+      },
+      {
+        "name": "ended-already-enrolled",
+        "actual": [
+          585960755422160896,
+          588861402658267136
+        ],
+        "absent": 586097025945298944,
+        "trace": "cart_gaotu100_com.296.17940216188910009"
+      },
+      {
+        "name": "ended-multiple-c",
+        "actual": [
+          585960755422160896
+        ],
+        "expected": [
+          585960755422160896
+        ],
+        "trace": "cart_gaotu100_com.295.17940216199160008"
+      },
+      {
+        "name": "ended-multiple-b",
+        "actual": [
+          585960755422160896
+        ],
+        "expected": [
+          585960755422160896
+        ],
+        "trace": "cart_gaotu100_com.289.17940216205290007"
+      },
+      {
+        "name": "ended-single-c",
+        "actual": [
+          585960755422160896
+        ],
+        "expected": [
+          585960755422160896
+        ],
+        "trace": "cart_gaotu100_com.288.17940216211330010"
+      },
+      {
+        "name": "ended-single-b",
+        "actual": [
+          585960755422160896
+        ],
+        "expected": [
+          585960755422160896
+        ],
+        "trace": "cart_gaotu100_com.291.17940216218100009"
+      },
+      {
+        "name": "ended-preheat",
+        "trace": "cart_gaotu100_com.296.17940216225510011",
+        "expected": [
+          585960755422160896
+        ]
+      },
+      {
+        "name": "ended-after-preheat",
+        "actual": [
+          585960755422160896
+        ],
+        "expected": [
+          585960755422160896
+        ],
+        "trace": "cart_gaotu100_com.295.17940216232660010"
+      },
+      {
+        "name": "waiting-allowed",
+        "actual": [
+          585960755422160896,
+          586097025945298944
+        ],
+        "expected": [
+          585960755422160896,
+          586097025945298944
+        ],
+        "trace": "cart_gaotu100_com.289.17940216242960009"
+      },
+      {
+        "name": "draft-excluded",
+        "actual": [
+          585960755422160896
+        ],
+        "expected": [
+          585960755422160896
+        ],
+        "trace": "cart_gaotu100_com.288.17940216255370012"
+      },
+      {
+        "name": "deleted-excluded",
+        "actual": [
+          585960755422160896
+        ],
+        "expected": [
+          585960755422160896
+        ],
+        "trace": "cart_gaotu100_com.291.17940216264430011"
+      },
+      {
+        "name": "restored-running",
+        "actual": [
+          585960755422160896,
+          586097025945298944
+        ],
+        "expected": [
+          585960755422160896,
+          586097025945298944
+        ],
+        "trace": "cart_gaotu100_com.296.17940216274040013"
+      },
+      {
+        "name": "all-related-ended",
+        "actual": [],
+        "expected": [],
+        "trace": "cart_gaotu100_com.295.17940216290590012"
+      },
+      {
+        "name": "final-restored",
+        "actual": [
+          585960755422160896,
+          586097025945298944
+        ],
+        "expected": [
+          585960755422160896,
+          586097025945298944
+        ],
+        "trace": "cart_gaotu100_com.289.17940216301710011"
+      },
+      {
+        "name": "final-small-self",
+        "actual": [
+          586090628920764416
+        ],
+        "expected": [
+          586090628920764416
+        ],
+        "trace": "cart_gaotu100_com.288.17940216312110014"
+      }
+    ],
+    "sale-regression/off-only-related.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7714162980",
+          "589037361072007168",
+          false,
+          false,
+          null,
+          "3154",
+          true
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#getRenewalDetail\", \"params\": [\"7714162980\", \"589037361072007168\", false, false, null, \"3154\", true]}'",
+      "traceId": "cart_gaotu100_com.297.17940218508590014",
+      "rvoCode": 0,
+      "result": {
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "renewal_end_time": 1796607012000,
+        "renewal_number": 589037361072007168,
+        "renewal_start_time": 1793928612000,
+        "status": 0
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 4
+    },
+    "sale-regression/filter.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#productFilterData",
+        "params": [
+          "18405861174936317",
+          "18405861174936327",
+          "589037361072007168"
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#productFilterData\", \"params\": [\"18405861174936317\", \"18405861174936327\", \"589037361072007168\"]}'",
+      "traceId": "cart_gaotu100_com.294.17940218155840011",
+      "rvoCode": 0,
+      "result": {
+        "clazz_type_alias": [
+          {
+            "code": "0",
+            "name": "无班型"
+          }
+        ],
+        "teacher_list": [
+          {
+            "code": "7932284591800384",
+            "name": "王碧云-外显主讲"
+          }
+        ],
+        "textbook_versions": [
+          {
+            "code": "0",
+            "name": "无版本"
+          }
+        ]
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 4
+    },
+    "sale-regression/version.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalRelationCacheService#getVersion",
+        "params": [
+          "589037361072007168"
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalRelationCacheService#getVersion\", \"params\": [\"589037361072007168\"]}'",
+      "traceId": "cart_gaotu100_com.297.17940218099600010",
+      "rvoCode": 0,
+      "result": "60e73a9c-f7d8-4c7e-b357-3baad0a0a1ec:on:sale-v2",
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 4
+    },
+    "sale-regression/after-preheat.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7704848531",
+          "589037361072007168",
+          false,
+          false,
+          null,
+          "3154",
+          true
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#getRenewalDetail\", \"params\": [\"7704848531\", \"589037361072007168\", false, false, null, \"3154\", true]}'",
+      "traceId": "cart_gaotu100_com.297.17940218171430012",
+      "rvoCode": 0,
+      "result": {
+        "all_sign_up": 0,
+        "expand_force_buy": false,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 18405861174936327,
+                "before_course_number": 18405861174936317,
+                "can_change_course": true,
+                "clazz_date_desc": "",
+                "clazz_time_desc": "",
+                "clazz_week_desc": "",
+                "force_buy": false,
+                "lesson_count": 2,
+                "price": 0,
+                "product_sku_name": "50191-1106-数学小班-post",
+                "product_sku_number": 589048589437788160,
+                "product_type": 6004,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg",
+                    "name": "王碧云-外显主讲",
+                    "teacher_number": 7932284591800384,
+                    "teacher_role": "主讲老师"
+                  },
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg",
+                    "name": "王碧云-外显主讲",
+                    "teacher_number": 7932284591800384,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 11,
+            "grade_name": "一年级"
+          },
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "before_course_number": 589037981162168320,
+                "can_change_course": true,
+                "force_buy": false,
+                "product_sku_number": 589041202037415936,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": []
+              },
+              {
+                "after_course_number": 589037996712550400,
+                "can_change_course": false,
+                "clazz_date_desc": "2026年11月09日-2026年11月09日",
+                "clazz_number": 589041222587408384,
+                "clazz_time_desc": "22:25-22:30",
+                "clazz_week_desc": "每周一",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "50191-1106-英语从计划-post",
+                "product_sku_number": 589041222587408384,
+                "product_type": 2,
+                "recommend_type": 2,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "英语"
+                ],
+                "teacher_list": [
+                  {
+                    "name": "唐稳01主讲",
+                    "teacher_number": 11188041873297121,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              },
+              {
+                "after_course_number": 589038008890712064,
+                "can_change_course": false,
+                "clazz_date_desc": "2026年11月10日-2026年11月10日",
+                "clazz_number": 589041240276885504,
+                "clazz_time_desc": "00:25-00:30",
+                "clazz_week_desc": "每周二",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "50191-1106-物理未关联对照-post",
+                "product_sku_number": 589041240276885504,
+                "product_type": 2,
+                "recommend_type": 2,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "物理"
+                ],
+                "teacher_list": [
+                  {
+                    "name": "唐稳01主讲",
+                    "teacher_number": 11188041873297121,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "grade": 31,
+            "grade_name": "高一"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1796607012000,
+        "renewal_force_buy": false,
+        "renewal_number": 589037361072007168,
+        "renewal_start_time": 1793928612000,
+        "status": 0
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 4
+    },
+    "sale-regression/old-plan.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7704848531",
+          "589037362856683520",
+          false,
+          false,
+          null,
+          "3154",
+          true
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#getRenewalDetail\", \"params\": [\"7704848531\", \"589037362856683520\", false, false, null, \"3154\", true]}'",
+      "traceId": "cart_gaotu100_com.290.17940218139480011",
+      "rvoCode": 0,
+      "result": {
+        "all_sign_up": 0,
+        "expand_force_buy": false,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 589037996712550400,
+                "before_course_number": 589037992648269824,
+                "can_change_course": true,
+                "clazz_date_desc": "2026年11月09日-2026年11月09日",
+                "clazz_time_desc": "22:25-22:30",
+                "clazz_week_desc": "每周一",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "50191-1106-英语从计划-post",
+                "product_sku_number": 589041222587408384,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "英语"
+                ],
+                "teacher_list": [
+                  {
+                    "name": "唐稳01主讲",
+                    "teacher_number": 11188041873297121,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              },
+              {
+                "after_course_number": 589037985069162496,
+                "can_change_course": false,
+                "clazz_date_desc": "2026年11月09日-2026年11月09日",
+                "clazz_number": 589041202037415936,
+                "clazz_time_desc": "18:25-18:30",
+                "clazz_week_desc": "每周一",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "50191-1106-数学大班主计划-post",
+                "product_sku_number": 589041202037415936,
+                "product_type": 2,
+                "recommend_type": 2,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 31,
+            "grade_name": "高一"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1796607032000,
+        "renewal_force_buy": false,
+        "renewal_number": 589037362856683520,
+        "renewal_start_time": 1793928632000,
+        "status": 0
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 4
+    },
+    "sale-regression/preheat.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#preheat",
+        "params": [
+          "7704848531",
+          "589037361072007168"
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#preheat\", \"params\": [\"7704848531\", \"589037361072007168\"]}'",
+      "traceId": "cart_gaotu100_com.295.17940218163430018",
+      "rvoCode": 0,
+      "result": {
+        "589037981162168320": {
+          "product_sku_number": 589041202037415936,
+          "select": 0,
+          "sign_up": 0,
+          "subject_names": []
+        },
+        "18405861174936317": {
+          "product_sku_number": 589048589437788160,
+          "select": 0,
+          "sign_up": 0,
+          "subject_names": []
+        }
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 4
+    },
+    "sale-regression/restored-normal.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7704848531",
+          "589037361072007168",
+          false,
+          false,
+          null,
+          "3154",
+          true
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#getRenewalDetail\", \"params\": [\"7704848531\", \"589037361072007168\", false, false, null, \"3154\", true]}'",
+      "traceId": "cart_gaotu100_com.288.17940218688480020",
+      "rvoCode": 0,
+      "result": {
+        "all_sign_up": 0,
+        "expand_force_buy": false,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 18405861174936327,
+                "before_course_number": 18405861174936317,
+                "can_change_course": true,
+                "clazz_date_desc": "",
+                "clazz_time_desc": "",
+                "clazz_week_desc": "",
+                "force_buy": false,
+                "lesson_count": 2,
+                "price": 0,
+                "product_sku_name": "50191-1106-数学小班-post",
+                "product_sku_number": 589048589437788160,
+                "product_type": 6004,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg",
+                    "name": "王碧云-外显主讲",
+                    "teacher_number": 7932284591800384,
+                    "teacher_role": "主讲老师"
+                  },
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg",
+                    "name": "王碧云-外显主讲",
+                    "teacher_number": 7932284591800384,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 11,
+            "grade_name": "一年级"
+          },
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "before_course_number": 589037981162168320,
+                "can_change_course": true,
+                "force_buy": false,
+                "product_sku_number": 589041202037415936,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": []
+              },
+              {
+                "after_course_number": 589037996712550400,
+                "can_change_course": false,
+                "clazz_date_desc": "2026年11月09日-2026年11月09日",
+                "clazz_number": 589041222587408384,
+                "clazz_time_desc": "22:25-22:30",
+                "clazz_week_desc": "每周一",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "50191-1106-英语从计划-post",
+                "product_sku_number": 589041222587408384,
+                "product_type": 2,
+                "recommend_type": 2,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "英语"
+                ],
+                "teacher_list": [
+                  {
+                    "name": "唐稳01主讲",
+                    "teacher_number": 11188041873297121,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              },
+              {
+                "after_course_number": 589038008890712064,
+                "can_change_course": false,
+                "clazz_date_desc": "2026年11月10日-2026年11月10日",
+                "clazz_number": 589041240276885504,
+                "clazz_time_desc": "00:25-00:30",
+                "clazz_week_desc": "每周二",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "50191-1106-物理未关联对照-post",
+                "product_sku_number": 589041240276885504,
+                "product_type": 2,
+                "recommend_type": 2,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "物理"
+                ],
+                "teacher_list": [
+                  {
+                    "name": "唐稳01主讲",
+                    "teacher_number": 11188041873297121,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "grade": 31,
+            "grade_name": "高一"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1796607012000,
+        "renewal_force_buy": false,
+        "renewal_number": 589037361072007168,
+        "renewal_start_time": 1793928612000,
+        "status": 0
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 4
+    },
+    "sale-regression/chen-A.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7704848531",
+          "589037361072007168",
+          false,
+          false,
+          null,
+          "3154",
+          true
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#getRenewalDetail\", \"params\": [\"7704848531\", \"589037361072007168\", false, false, null, \"3154\", true]}'",
+      "traceId": "cart_gaotu100_com.292.17940218101850012",
+      "rvoCode": 0,
+      "result": {
+        "all_sign_up": 0,
+        "expand_force_buy": false,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 18405861174936327,
+                "before_course_number": 18405861174936317,
+                "can_change_course": true,
+                "clazz_date_desc": "",
+                "clazz_time_desc": "",
+                "clazz_week_desc": "",
+                "force_buy": false,
+                "lesson_count": 2,
+                "price": 0,
+                "product_sku_name": "50191-1106-数学小班-post",
+                "product_sku_number": 589048589437788160,
+                "product_type": 6004,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg",
+                    "name": "王碧云-外显主讲",
+                    "teacher_number": 7932284591800384,
+                    "teacher_role": "主讲老师"
+                  },
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg",
+                    "name": "王碧云-外显主讲",
+                    "teacher_number": 7932284591800384,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 11,
+            "grade_name": "一年级"
+          },
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "before_course_number": 589037981162168320,
+                "can_change_course": true,
+                "force_buy": false,
+                "product_sku_number": 589041202037415936,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": []
+              },
+              {
+                "after_course_number": 589037996712550400,
+                "can_change_course": false,
+                "clazz_date_desc": "2026年11月09日-2026年11月09日",
+                "clazz_number": 589041222587408384,
+                "clazz_time_desc": "22:25-22:30",
+                "clazz_week_desc": "每周一",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "50191-1106-英语从计划-post",
+                "product_sku_number": 589041222587408384,
+                "product_type": 2,
+                "recommend_type": 2,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "英语"
+                ],
+                "teacher_list": [
+                  {
+                    "name": "唐稳01主讲",
+                    "teacher_number": 11188041873297121,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              },
+              {
+                "after_course_number": 589038008890712064,
+                "can_change_course": false,
+                "clazz_date_desc": "2026年11月10日-2026年11月10日",
+                "clazz_number": 589041240276885504,
+                "clazz_time_desc": "00:25-00:30",
+                "clazz_week_desc": "每周二",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "50191-1106-物理未关联对照-post",
+                "product_sku_number": 589041240276885504,
+                "product_type": 2,
+                "recommend_type": 2,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "物理"
+                ],
+                "teacher_list": [
+                  {
+                    "name": "唐稳01主讲",
+                    "teacher_number": 11188041873297121,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "grade": 31,
+            "grade_name": "高一"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1796607012000,
+        "renewal_force_buy": false,
+        "renewal_number": 589037361072007168,
+        "renewal_start_time": 1793928612000,
+        "status": 0
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 4
+    },
+    "sale-regression/off-c.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7704848531",
+          "589037361072007168",
+          false,
+          false,
+          null,
+          "3154",
+          true
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#getRenewalDetail\", \"params\": [\"7704848531\", \"589037361072007168\", false, false, null, \"3154\", true]}'",
+      "traceId": "cart_gaotu100_com.294.17940218496410013",
+      "rvoCode": 0,
+      "result": {
+        "all_sign_up": 0,
+        "expand_force_buy": false,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 589037985069162496,
+                "before_course_number": 589037981162168320,
+                "can_change_course": true,
+                "clazz_date_desc": "2026年11月09日-2026年11月09日",
+                "clazz_time_desc": "18:25-18:30",
+                "clazz_week_desc": "每周一",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "50191-1106-数学大班主计划-post",
+                "product_sku_number": 589041202037415936,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              },
+              {
+                "after_course_number": 589037996712550400,
+                "can_change_course": false,
+                "clazz_date_desc": "2026年11月09日-2026年11月09日",
+                "clazz_number": 589041222587408384,
+                "clazz_time_desc": "22:25-22:30",
+                "clazz_week_desc": "每周一",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "50191-1106-英语从计划-post",
+                "product_sku_number": 589041222587408384,
+                "product_type": 2,
+                "recommend_type": 2,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "英语"
+                ],
+                "teacher_list": [
+                  {
+                    "name": "唐稳01主讲",
+                    "teacher_number": 11188041873297121,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              },
+              {
+                "after_course_number": 589038008890712064,
+                "can_change_course": false,
+                "clazz_date_desc": "2026年11月10日-2026年11月10日",
+                "clazz_number": 589041240276885504,
+                "clazz_time_desc": "00:25-00:30",
+                "clazz_week_desc": "每周二",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "50191-1106-物理未关联对照-post",
+                "product_sku_number": 589041240276885504,
+                "product_type": 2,
+                "recommend_type": 2,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "物理"
+                ],
+                "teacher_list": [
+                  {
+                    "name": "唐稳01主讲",
+                    "teacher_number": 11188041873297121,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 31,
+            "grade_name": "高一"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1796607012000,
+        "renewal_force_buy": false,
+        "renewal_number": 589037361072007168,
+        "renewal_start_time": 1793928612000,
+        "status": 0
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 4
+    },
+    "sale-regression/chen-B.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7704848531",
+          "589164864470188032",
+          false,
+          false,
+          null,
+          "3154",
+          true
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#getRenewalDetail\", \"params\": [\"7704848531\", \"589164864470188032\", false, false, null, \"3154\", true]}'",
+      "traceId": "cart_gaotu100_com.294.17940218113950009",
+      "rvoCode": 0,
+      "result": {
+        "all_sign_up": 0,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 18405861174936327,
+                "before_course_number": 18405861174936317,
+                "can_change_course": true,
+                "force_buy": false,
+                "norm_desc_list": [
+                  "售卖规格一",
+                  "测试1"
+                ],
+                "price": 0,
+                "product_sku_name": "默认规格",
+                "product_sku_number": 589048589437788160,
+                "product_type": 6004,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg",
+                    "name": "王碧云-外显主讲",
+                    "teacher_number": 7932284591800384,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 11,
+            "grade_name": "一年级"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "renewal_end_time": 1799200372000,
+        "renewal_force_buy": false,
+        "renewal_number": 589164864470188032,
+        "renewal_start_time": 1793929972000,
+        "status": 0
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 4
+    },
+    "sale-regression/off-b.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7704848531",
+          "589037361072007168",
+          false,
+          true,
+          null,
+          "3154",
+          true
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#getRenewalDetail\", \"params\": [\"7704848531\", \"589037361072007168\", false, true, null, \"3154\", true]}'",
+      "traceId": "cart_gaotu100_com.295.17940218502770020",
+      "rvoCode": 0,
+      "result": {
+        "all_sign_up": 0,
+        "expand_force_buy": false,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 589037985069162496,
+                "before_course_number": 589037981162168320,
+                "can_change_course": true,
+                "clazz_date_desc": "2026年11月09日-2026年11月09日",
+                "clazz_time_desc": "18:25-18:30",
+                "clazz_week_desc": "每周一",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "50191-1106-数学大班主计划-post",
+                "product_sku_number": 589041202037415936,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                    "name": "陈陈",
+                    "teacher_number": 346261373801482240,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              },
+              {
+                "after_course_number": 589037996712550400,
+                "can_change_course": false,
+                "clazz_date_desc": "2026年11月09日-2026年11月09日",
+                "clazz_number": 589041222587408384,
+                "clazz_time_desc": "22:25-22:30",
+                "clazz_week_desc": "每周一",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "50191-1106-英语从计划-post",
+                "product_sku_number": 589041222587408384,
+                "product_type": 2,
+                "recommend_type": 2,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "英语"
+                ],
+                "teacher_list": [
+                  {
+                    "name": "唐稳01主讲",
+                    "teacher_number": 11188041873297121,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              },
+              {
+                "after_course_number": 589038008890712064,
+                "can_change_course": false,
+                "clazz_date_desc": "2026年11月10日-2026年11月10日",
+                "clazz_number": 589041240276885504,
+                "clazz_time_desc": "00:25-00:30",
+                "clazz_week_desc": "每周二",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "50191-1106-物理未关联对照-post",
+                "product_sku_number": 589041240276885504,
+                "product_type": 2,
+                "recommend_type": 2,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "物理"
+                ],
+                "teacher_list": [
+                  {
+                    "name": "唐稳01主讲",
+                    "teacher_number": 11188041873297121,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 31,
+            "grade_name": "高一"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1796607012000,
+        "renewal_force_buy": false,
+        "renewal_number": 589037361072007168,
+        "renewal_start_time": 1793928612000,
+        "status": 0
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 4
+    },
+    "sale-regression/current-fixture-state.json": {
+      "plans": [
+        {
+          "number": 589037361072007168,
+          "name": "50191-1106-数学大班主计划",
+          "status": 2,
+          "isdel": 0,
+          "update_time": "2026-11-06 16:59:13"
+        },
+        {
+          "number": 589037362856683520,
+          "name": "50191-1106-英语从计划",
+          "status": 2,
+          "isdel": 0,
+          "update_time": "2026-11-06 16:59:20"
+        },
+        {
+          "number": 589164864470188032,
+          "name": "50191-1107-B真实数学小班从计划",
+          "status": 2,
+          "isdel": 0,
+          "update_time": "2026-11-07 09:47:33"
+        }
+      ],
+      "relations": [
+        {
+          "main_renew_master_number": 589037361072007168,
+          "sub_renew_master_number": 589037362856683520,
+          "is_del": 1,
+          "update_time": "2026-11-07 11:12:53"
+        },
+        {
+          "main_renew_master_number": 589037361072007168,
+          "sub_renew_master_number": 589037363764750336,
+          "is_del": 1,
+          "update_time": "2026-11-06 18:23:13"
+        },
+        {
+          "main_renew_master_number": 589037361072007168,
+          "sub_renew_master_number": 589037364704274432,
+          "is_del": 1,
+          "update_time": "2026-11-06 18:23:13"
+        },
+        {
+          "main_renew_master_number": 589037361072007168,
+          "sub_renew_master_number": 589037365597661184,
+          "is_del": 1,
+          "update_time": "2026-11-06 18:23:13"
+        },
+        {
+          "main_renew_master_number": 589037361072007168,
+          "sub_renew_master_number": 589037366493145088,
+          "is_del": 1,
+          "update_time": "2026-11-06 18:23:13"
+        },
+        {
+          "main_renew_master_number": 589037361072007168,
+          "sub_renew_master_number": 589037367770310656,
+          "is_del": 1,
+          "update_time": "2026-11-06 18:23:13"
+        },
+        {
+          "main_renew_master_number": 589037361072007168,
+          "sub_renew_master_number": 589037368644823040,
+          "is_del": 1,
+          "update_time": "2026-11-06 18:23:13"
+        },
+        {
+          "main_renew_master_number": 589037361072007168,
+          "sub_renew_master_number": 589037369513043968,
+          "is_del": 1,
+          "update_time": "2026-11-06 18:23:13"
+        },
+        {
+          "main_renew_master_number": 589037361072007168,
+          "sub_renew_master_number": 589037370381264896,
+          "is_del": 1,
+          "update_time": "2026-11-06 18:23:13"
+        },
+        {
+          "main_renew_master_number": 589037361072007168,
+          "sub_renew_master_number": 589037371241097216,
+          "is_del": 1,
+          "update_time": "2026-11-06 18:23:13"
+        },
+        {
+          "main_renew_master_number": 589037361072007168,
+          "sub_renew_master_number": 589164864470188032,
+          "is_del": 0,
+          "update_time": "2026-11-07 10:19:12"
+        }
+      ]
+    },
+    "sale-regression/chen-A-bside.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7704848531",
+          "589037361072007168",
+          false,
+          true,
+          null,
+          "3154",
+          true
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#getRenewalDetail\", \"params\": [\"7704848531\", \"589037361072007168\", false, true, null, \"3154\", true]}'",
+      "traceId": "cart_gaotu100_com.289.17940218131170017",
+      "rvoCode": 0,
+      "result": {
+        "all_sign_up": 0,
+        "expand_force_buy": false,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 18405861174936327,
+                "before_course_number": 18405861174936317,
+                "can_change_course": true,
+                "clazz_date_desc": "",
+                "clazz_time_desc": "",
+                "clazz_week_desc": "",
+                "force_buy": false,
+                "lesson_count": 2,
+                "price": 0,
+                "product_sku_name": "50191-1106-数学小班-post",
+                "product_sku_number": 589048589437788160,
+                "product_type": 6004,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg",
+                    "name": "王碧云-外显主讲",
+                    "teacher_number": 7932284591800384,
+                    "teacher_role": "主讲老师"
+                  },
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg",
+                    "name": "王碧云-外显主讲",
+                    "teacher_number": 7932284591800384,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 11,
+            "grade_name": "一年级"
+          },
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "before_course_number": 589037981162168320,
+                "can_change_course": true,
+                "force_buy": false,
+                "product_sku_number": 589041202037415936,
+                "product_type": 2,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": []
+              },
+              {
+                "after_course_number": 589037996712550400,
+                "can_change_course": false,
+                "clazz_date_desc": "2026年11月09日-2026年11月09日",
+                "clazz_number": 589041222587408384,
+                "clazz_time_desc": "22:25-22:30",
+                "clazz_week_desc": "每周一",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "50191-1106-英语从计划-post",
+                "product_sku_number": 589041222587408384,
+                "product_type": 2,
+                "recommend_type": 2,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "英语"
+                ],
+                "teacher_list": [
+                  {
+                    "name": "唐稳01主讲",
+                    "teacher_number": 11188041873297121,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              },
+              {
+                "after_course_number": 589038008890712064,
+                "can_change_course": false,
+                "clazz_date_desc": "2026年11月10日-2026年11月10日",
+                "clazz_number": 589041240276885504,
+                "clazz_time_desc": "00:25-00:30",
+                "clazz_week_desc": "每周二",
+                "force_buy": false,
+                "lesson_count": 1,
+                "price": 0,
+                "product_sku_name": "50191-1106-物理未关联对照-post",
+                "product_sku_number": 589041240276885504,
+                "product_type": 2,
+                "recommend_type": 2,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "物理"
+                ],
+                "teacher_list": [
+                  {
+                    "name": "唐稳01主讲",
+                    "teacher_number": 11188041873297121,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "grade": 31,
+            "grade_name": "高一"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1796607012000,
+        "renewal_force_buy": false,
+        "renewal_number": 589037361072007168,
+        "renewal_start_time": 1793928612000,
+        "status": 0
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 4
+    },
+    "sale-regression/zhou-A.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#getRenewalDetail",
+        "params": [
+          "7714162980",
+          "589037361072007168",
+          false,
+          false,
+          null,
+          "3154",
+          true
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#getRenewalDetail\", \"params\": [\"7714162980\", \"589037361072007168\", false, false, null, \"3154\", true]}'",
+      "traceId": "cart_gaotu100_com.293.17940218121990010",
+      "rvoCode": 0,
+      "result": {
+        "all_sign_up": 0,
+        "expand_force_buy": false,
+        "grade_clazz_list": [
+          {
+            "clazz_detail_d_t_o_list": [
+              {
+                "after_course_number": 18405861174936327,
+                "before_course_number": 18405861174936317,
+                "can_change_course": true,
+                "clazz_date_desc": "",
+                "clazz_time_desc": "",
+                "clazz_week_desc": "",
+                "force_buy": false,
+                "lesson_count": 2,
+                "price": 0,
+                "product_sku_name": "50191-1106-数学小班-post",
+                "product_sku_number": 589048589437788160,
+                "product_type": 6004,
+                "recommend_type": 1,
+                "select": 0,
+                "sign_up": 0,
+                "subject_names": [
+                  "数学"
+                ],
+                "teacher_list": [
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg",
+                    "name": "王碧云-外显主讲",
+                    "teacher_number": 7932284591800384,
+                    "teacher_role": "主讲老师"
+                  },
+                  {
+                    "avatar_url": "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg",
+                    "name": "王碧云-外显主讲",
+                    "teacher_number": 7932284591800384,
+                    "teacher_role": "主讲老师"
+                  }
+                ]
+              }
+            ],
+            "default_select": 1,
+            "grade": 11,
+            "grade_name": "一年级"
+          }
+        ],
+        "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+        "msg": [],
+        "renewal_end_time": 1796607012000,
+        "renewal_force_buy": false,
+        "renewal_number": 589037361072007168,
+        "renewal_start_time": 1793928612000,
+        "status": 0
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 4
+    },
+    "sale-regression/switch-assertions.json": [
+      {
+        "case": "off-c",
+        "actual": [
+          589041202037415936
+        ],
+        "expected": [
+          589041202037415936
+        ],
+        "trace": "cart_gaotu100_com.294.17940218496410013"
+      },
+      {
+        "case": "off-b",
+        "actual": [
+          589041202037415936
+        ],
+        "expected": [
+          589041202037415936
+        ],
+        "trace": "cart_gaotu100_com.295.17940218502770020"
+      },
+      {
+        "case": "off-only-related",
+        "actual": [],
+        "expected": [],
+        "trace": "cart_gaotu100_com.297.17940218508590014"
+      }
+    ],
+    "sale-regression/assertions.json": [
+      {
+        "case": "cache-engine-revision",
+        "actual": true,
+        "expected": true,
+        "passed": true
+      },
+      {
+        "case": "chen-A",
+        "actual": [
+          589041202037415936,
+          589048589437788160
+        ],
+        "expected": [
+          589041202037415936,
+          589048589437788160
+        ],
+        "passed": true
+      },
+      {
+        "case": "chen-B",
+        "actual": [
+          589048589437788160
+        ],
+        "expected": [
+          589048589437788160
+        ],
+        "passed": true
+      },
+      {
+        "case": "zhou-A",
+        "actual": [
+          589048589437788160
+        ],
+        "expected": [
+          589048589437788160
+        ],
+        "passed": true
+      },
+      {
+        "case": "chen-A-bside",
+        "actual": [
+          589041202037415936,
+          589048589437788160
+        ],
+        "expected": [
+          589041202037415936,
+          589048589437788160
+        ],
+        "passed": true
+      },
+      {
+        "case": "unrelated-plan-full-response",
+        "actual": {
+          "all_sign_up": 0,
+          "expand_force_buy": false,
+          "grade_clazz_list": [
+            {
+              "clazz_detail_d_t_o_list": [
+                {
+                  "after_course_number": 589037996712550400,
+                  "before_course_number": 589037992648269824,
+                  "can_change_course": true,
+                  "clazz_date_desc": "2026年11月09日-2026年11月09日",
+                  "clazz_time_desc": "22:25-22:30",
+                  "clazz_week_desc": "每周一",
+                  "force_buy": false,
+                  "lesson_count": 1,
+                  "price": 0,
+                  "product_sku_name": "50191-1106-英语从计划-post",
+                  "product_sku_number": 589041222587408384,
+                  "product_type": 2,
+                  "recommend_type": 1,
+                  "select": 0,
+                  "sign_up": 0,
+                  "subject_names": [
+                    "英语"
+                  ],
+                  "teacher_list": [
+                    {
+                      "name": "唐稳01主讲",
+                      "teacher_number": 11188041873297121,
+                      "teacher_role": "主讲老师"
+                    }
+                  ]
+                },
+                {
+                  "after_course_number": 589037985069162496,
+                  "can_change_course": false,
+                  "clazz_date_desc": "2026年11月09日-2026年11月09日",
+                  "clazz_number": 589041202037415936,
+                  "clazz_time_desc": "18:25-18:30",
+                  "clazz_week_desc": "每周一",
+                  "force_buy": false,
+                  "lesson_count": 1,
+                  "price": 0,
+                  "product_sku_name": "50191-1106-数学大班主计划-post",
+                  "product_sku_number": 589041202037415936,
+                  "product_type": 2,
+                  "recommend_type": 2,
+                  "select": 0,
+                  "sign_up": 0,
+                  "subject_names": [
+                    "数学"
+                  ],
+                  "teacher_list": [
+                    {
+                      "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                      "name": "陈陈",
+                      "teacher_number": 346261373801482240,
+                      "teacher_role": "主讲老师"
+                    }
+                  ]
+                }
+              ],
+              "default_select": 1,
+              "grade": 31,
+              "grade_name": "高一"
+            }
+          ],
+          "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+          "msg": [],
+          "renewal_end_time": 1796607032000,
+          "renewal_force_buy": false,
+          "renewal_number": 589037362856683520,
+          "renewal_start_time": 1793928632000,
+          "status": 0
+        },
+        "expected": {
+          "all_sign_up": 0,
+          "expand_force_buy": false,
+          "grade_clazz_list": [
+            {
+              "clazz_detail_d_t_o_list": [
+                {
+                  "after_course_number": 589037996712550400,
+                  "before_course_number": 589037992648269824,
+                  "can_change_course": true,
+                  "clazz_date_desc": "2026年11月09日-2026年11月09日",
+                  "clazz_time_desc": "22:25-22:30",
+                  "clazz_week_desc": "每周一",
+                  "force_buy": false,
+                  "lesson_count": 1,
+                  "price": 0,
+                  "product_sku_name": "50191-1106-英语从计划-post",
+                  "product_sku_number": 589041222587408384,
+                  "product_type": 2,
+                  "recommend_type": 1,
+                  "select": 0,
+                  "sign_up": 0,
+                  "subject_names": [
+                    "英语"
+                  ],
+                  "teacher_list": [
+                    {
+                      "name": "唐稳01主讲",
+                      "teacher_number": 11188041873297121,
+                      "teacher_role": "主讲老师"
+                    }
+                  ]
+                },
+                {
+                  "after_course_number": 589037985069162496,
+                  "can_change_course": false,
+                  "clazz_date_desc": "2026年11月09日-2026年11月09日",
+                  "clazz_number": 589041202037415936,
+                  "clazz_time_desc": "18:25-18:30",
+                  "clazz_week_desc": "每周一",
+                  "force_buy": false,
+                  "lesson_count": 1,
+                  "price": 0,
+                  "product_sku_name": "50191-1106-数学大班主计划-post",
+                  "product_sku_number": 589041202037415936,
+                  "product_type": 2,
+                  "recommend_type": 2,
+                  "select": 0,
+                  "sign_up": 0,
+                  "subject_names": [
+                    "数学"
+                  ],
+                  "teacher_list": [
+                    {
+                      "avatar_url": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                      "name": "陈陈",
+                      "teacher_number": 346261373801482240,
+                      "teacher_role": "主讲老师"
+                    }
+                  ]
+                }
+              ],
+              "default_select": 1,
+              "grade": 31,
+              "grade_name": "高一"
+            }
+          ],
+          "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+          "msg": [],
+          "renewal_end_time": 1796607032000,
+          "renewal_force_buy": false,
+          "renewal_number": 589037362856683520,
+          "renewal_start_time": 1793928632000,
+          "status": 0
+        },
+        "passed": true
+      },
+      {
+        "case": "selection-includes-small",
+        "actual": [
+          589048589437788160
+        ],
+        "expected": [
+          589048589437788160
+        ],
+        "passed": true
+      },
+      {
+        "case": "selection-filter-teachers",
+        "actual": true,
+        "expected": true,
+        "passed": true
+      },
+      {
+        "case": "preheat-current-two-related-products",
+        "actual": [
+          589041202037415936,
+          589048589437788160
+        ],
+        "expected": [
+          589041202037415936,
+          589048589437788160
+        ],
+        "passed": true
+      },
+      {
+        "case": "preheated-result",
+        "actual": [
+          589041202037415936,
+          589048589437788160
+        ],
+        "expected": [
+          589041202037415936,
+          589048589437788160
+        ],
+        "passed": true
+      }
+    ],
+    "sale-regression/select.json": {
+      "url": "http://10.218.238.234:28688/test/acl/compare/service",
+      "trafficEnv": "test-gtbg-dev-3",
+      "httpStatus": 200,
+      "directIp": true,
+      "request": {
+        "serviceNameAndMethodName": "com.gaotu.renewal.RenewalService#productSelect",
+        "params": [
+          {
+            "renewalNumber": "589037361072007168",
+            "beforeCourseNumber": "18405861174936317",
+            "productCourseNumber": "18405861174936327",
+            "pager": {
+              "current": 1,
+              "pageSize": 10
+            }
+          },
+          "7704848531"
+        ]
+      },
+      "curl": "curl -sk \\\n  'http://10.218.238.234:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-3' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalService#productSelect\", \"params\": [{\"renewalNumber\": \"589037361072007168\", \"beforeCourseNumber\": \"18405861174936317\", \"productCourseNumber\": \"18405861174936327\", \"pager\": {\"current\": 1, \"pageSize\": 10}}, \"7704848531\"]}'",
+      "traceId": "cart_gaotu100_com.288.17940218146200018",
+      "rvoCode": 0,
+      "result": {
+        "clazzDetailVOList": [
+          {
+            "after_course_number": 18405861174936327,
+            "clazz_date_desc": "",
+            "clazz_time_desc": "",
+            "clazz_week_desc": "",
+            "lesson_count": 2,
+            "price": 0,
+            "product_sku_name": "默认规格",
+            "product_sku_number": 589048589437788160,
+            "product_type": 6004,
+            "select": 0,
+            "sign_up": 0,
+            "subject_names": [],
+            "teacher_list": [
+              {
+                "avatar_url": "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg",
+                "name": "王碧云-外显主讲",
+                "teacher_number": 7932284591800384,
+                "teacher_role": "主讲老师"
+              },
+              {
+                "avatar_url": "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg",
+                "name": "王碧云-外显主讲",
+                "teacher_number": 7932284591800384,
+                "teacher_role": "主讲老师"
+              }
+            ]
+          }
+        ],
+        "pager": {
+          "current": 1,
+          "offset": 0,
+          "pageSize": 10,
+          "total": 1
+        }
+      },
+      "eurekaService": "CART.GAOTU100.COM",
+      "instanceId": "cart-gaotu100-com-6d94cc57bf-xmsl7:cart.gaotu100.com:28688:@test-gtbg-dev-3",
+      "instanceCount": 4
+    },
+    "sale-regression/switch-initial.txt": "@ArrayList[\n    @Boolean[true],\n    @Boolean[true],\n    @Boolean[true],\n    @Boolean[true],\n]\n\n[pod-term] gaotu_cart [dev] -> 3 pod(s); using cart-gaotu100-com-6d94cc57bf-xmsl7 (status=Running, eureka=UP, ip=10.218.238.234)\n",
+    "sale-regression/switch-off.txt": "@ArrayList[\n    @Boolean[false],\n    @Boolean[false],\n    @Boolean[false],\n    @Boolean[false],\n]\n\n[pod-term] gaotu_cart [dev] -> 3 pod(s); using cart-gaotu100-com-6d94cc57bf-xmsl7 (status=Running, eureka=UP, ip=10.218.238.234)\n",
+    "sale-regression/switch-restored.txt": "@ArrayList[\n    @Boolean[true],\n    @Boolean[true],\n    @Boolean[true],\n    @Boolean[true],\n]\n\n[pod-term] gaotu_cart [dev] -> 3 pod(s); using cart-gaotu100-com-6d94cc57bf-xmsl7 (status=Running, eureka=UP, ip=10.218.238.234)\n"
+  },
+  "limits": [
+    "服务方法实测，不代替全部HTTP/UI测试或QA复测",
+    "最新修复青舟覆盖率未重算，64%为前版结果",
+    "QA关系A→C于11:12:53已被其他操作移除，本次未恢复该关系；按当前A→B验证两商品",
+    "RPC故障/共享前课等边界为本地测试，不冒充环境故障注入"
+  ],
+  "tapd_comment": {
+    "id": "1122531521001309710",
+    "bug_id": "1122531521001485167",
+    "readback_verified": true
+  }
+}

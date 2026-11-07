@@ -14,6 +14,8 @@ tags: [需求]
 
 # 【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整
 
+> **状态边界修复（2026-11-07）**：重新阅读PRD707，确认推荐时须过滤失效从计划。Cart `04022be8` 已部署TEST/dev3；213项本地测试、16项状态/预热运行检查、10项售卖回归及3项开关回退对照通过，测试状态与开关已恢复。[证据](artifacts/20261107-related-status-fix.json)。当前待QA复测，新版本覆盖率尚未重算。
+
 > **缺陷修复（2026-11-07）**：[TAPD1485167](https://www.tapd.cn/tapd_fe/22531521/bug/detail/1122531521001485167) 已修复并置已解决，待QA复测。Cart `7f749e65` 已部署TEST/dev3；210项本地测试、10项运行断言及B/C开关关闭/恢复对照通过。改前后证据和回退配置见 [verify.md](verify.md)。
 
 > **发布编排复核（2026-11-07）**：后端准入覆盖率已达 **64%≥60%**，任务已终态；Product 72.57%、Cart 64.42%、Order 65.38%，详见[验证及报告](verify.md)。通过补跑真实业务入口达标，未改阈值/排除项。计划24210仍为“规划中”，唯一剩余强卡是 `USER_CASE=0%`：班山功能记录72430显示88/88通过，但冒烟72429仍0/17；原因待核实，不再断言为同步故障。已按页面“刷新”同接口回读，未正式提测。
@@ -67,7 +69,7 @@ T-18完成：cart **1ebd315d**、product-b/product-c **2593dae78**已推送并�
 
 ## 现在什么情况
 
-- 当前工作单 T 9/9 · R 0/0 · C 1/1：C-1（1485167）已修复部署且接口层实测通过；当前阶段为“联调中（待QA复测）”，生产配置、QA用例和外部回溯保留为上线前置。
+- 当前工作单 T 9/9 · R 0/0 · C 2/2：C-2从计划状态变化过滤已修复部署并实测；C-1（1485167）已修复部署且接口层实测通过；当前阶段为“联调中（待QA复测）”，生产配置、QA用例和外部回溯保留为上线前置。
 - 本轮TEST采样与保留对象/恢复结论见verify；前端不改、不新部署，不把默认TEST企微结果归给目标feature。
 - 下一步按P0剩余缺口推进；已补受控大班筛选，剩余EM/小班/页面场景按已授权TEST范围执行，不重放build或已付单。
 
@@ -75,7 +77,7 @@ T-18完成：cart **1ebd315d**、product-b/product-c **2593dae78**已推送并�
 
 - 关联单向；只合并主从有效前置课，推荐规则、扩科年级/学年/学期仍按主计划；同年级同商品去重，跨年级保留，纯续优先。
 - 计划管理员、待开始/进行中可改；上限10且配置可调，保存最终全集差分，取消不落库。
-- `renewal.pure.relation.enabled`默认true，product/cart/order实例独立配置；关闭只回单计划，不恢复已写关系/标签/备注。B8预热结果保留最长26小时，不用新链接强行当新缓存。
+- `renewal.pure.relation.enabled`默认true，product/cart/order实例独立配置；关闭只回单计划，不恢复已写关系/标签/备注。原预热TTL最长26小时保持；关联提交版本或有效从计划集合变化会隔离旧预热，不能继续推荐失效从计划。
 - 企微历史圈班按`min(begin_time)≥2026-01-01`，不是创建时间；生产回溯、DDL/GAIA/ES字段及上线配置仍需独立交付证据，不从TEST推断生产就绪。
 - **「微信备注」`wechatRemark` 不得登记进 `ees_data.student_field_config`（2026-11-06 更正）**：它是 ES 原生字段（`ads_small_clazz_user.wechatRemark`），登记进 field_config 会被 `GaiaEsMappingService#getNeedFromEsFields` 当作 ODS 字段从 ES fetch 中剔除又无人补值 → 续班服务页「微信备注」恒空。已删除 `continuationService`/`microContinuationService` 的该行，与默认花名册 `smallClazzRoster` 口径一致；test 已回读 `/roster/small/renewal/page` 返回备注值。详见 [tasks T-16](tasks.md) 与 [知识库口径](~/githubDir/quartzZZL/content/高途信息/知识库/cronus/microClazzRoster/continuationService.md)。
 - 测试样本已付/已消费有时间顺序；复跑先核当前资格，不重放同单支付、整批build或未选对象。
