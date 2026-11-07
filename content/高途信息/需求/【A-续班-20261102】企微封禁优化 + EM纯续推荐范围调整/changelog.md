@@ -1,3 +1,4 @@
+- 2026-11-07 **关联列表契约补充**：为计划搜索 `/b/renewMaster/list` 与已关联 `/b/renewMaster/relation/list` 同时下发 `createTime`（Long毫秒时间戳），后端查询均保持创建时间倒序；前端仅消费字段，不改前端。Product commit `9828003c`。
 # 决策摘要
 
 

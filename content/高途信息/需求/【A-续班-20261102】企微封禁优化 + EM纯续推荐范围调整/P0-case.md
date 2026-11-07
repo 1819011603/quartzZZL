@@ -116,7 +116,7 @@
 
 ## 接口与数据规则
 
-管理接口统一走TEST网关、traffic-env=test-gtbg-dev-3及b_client=EES。GET /bgwApi/product-b/b/renewMaster/relation/list 的query参数为renewMasterNumber；返回number为字符串，adminList为数组，adminName为展示字符串。POST /bgwApi/product-b/b/renewMaster/list 使用number原字符串与pager.current/pageSize；非法ID预期0条。
+管理接口统一走TEST网关、traffic-env=test-gtbg-dev-3及b_client=EES。GET /bgwApi/product-b/b/renewMaster/relation/list 的query参数为renewMasterNumber；返回number为字符串，createTime为Long毫秒时间戳，adminList为数组，adminName为展示字符串。POST /bgwApi/product-b/b/renewMaster/list 使用number原字符串与pager.current/pageSize；非法ID预期0条。
 
 ```json
 {"mainRenewMasterNumber":"585960797778243584","subRenewMasterNumbers":["586116340522184704"]}
