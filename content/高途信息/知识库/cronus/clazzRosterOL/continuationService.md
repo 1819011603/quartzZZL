@@ -100,7 +100,7 @@
 - `clazzStudentStatus`（**班级维度**，在读状态）：1 在读 / 0 退班。权威值 = 该学员在该班级下是否还有 `subclazzStudentStatus=1` 的辅导班；由 `SubclazzTransferStudentDataQueryServiceV2`（student-data）重算——**触发字段 `transClazzStudentStatus` 不是真实存储字段**（文档里查出来是 null，仅作 DataQueryServiceV2 的 `getFields()` 触发名）。
 - `subclazzStudentStatus`（**辅导班维度**，是否本人辅导班）：1 在 / 2 不在。
 - 合法组合（`StudentSubStatusEnum`，student-data-client）：`(clazzStudentStatus, subclazzStudentStatus)` = `(1,1)` 在读且本人辅导班 / `(1,2)` 在读非本人辅导班 / `(0,2)` 退款；**没有 `(0,1)` —— 出现即非法态**（常见于退班事件按班级维度广播、误清同班其它仍在班辅导班；见工单 `续班与业绩/业绩归因/排查/大班续班服务漏在班学员.md`）。
-- 页面顶部「可续学员数」≈ `canRenewal ∈ {1,2,8} 且 clazzStudentStatus=1` 的条数。
+- 页面顶部「可续学员数」= 接口 `/roster/renewal/subclazz/statistic`（`RenewalService#batchQueryStudentInfo`）：`canRenewal ∈ queryCanRenewal(){1,2,8}` ∩ 登录老师的辅导班(`subclazzNumber`) ∩ 轮次，**不筛 `clazzStudentStatus`/`subclazzStudentStatus`**（故会包含已退班/转班但仍留可续标记的学员）；与列表 `/roster/renewal/page`（默认筛「在读且本人辅导班」`studentSubStatus=[0]` = `clazzStudentStatus=1 且 subclazzStudentStatus=1`）口径不同，可能比列表多。见工单 `续班与业绩/业绩归因/排查/续班服务可续学员数比在读列表多.md`。
 
 ### 「预报名情况」字段口径（`presaleStatus`，2026-11-01 核实）
 
