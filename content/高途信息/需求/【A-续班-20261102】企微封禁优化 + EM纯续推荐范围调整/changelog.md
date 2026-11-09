@@ -2,6 +2,7 @@
 
 - 在需求总入口 `MCUowPVhriDC3okHO0mcW49Unyf` 下创建上线方案子文档：<https://gaotuedu.feishu.cn/wiki/Uqqyw0MROiPysgk30x8cwhRlnOe>。方案逐项登记 Apollo、GAIA、student_field_config、ES、`renew_master_relation` DDL、MQ（不涉及）、代课权限、回溯圈班与 XXL-Job、灰度监控和回滚动作。
 - 复用已有青舟发布计划 **24210**（详情页已登记到 `links.md`），未重复创建同名计划；当前仍为 `test-gtbg-dev-3` 提测/准出规划，生产发布前置保持待闭环。
+- 2026-11-09 **MR 与 TEST 部署**：product-server !862、cart !284、order !2391 均指向 `release`。cart 合并 `origin/release` 后生成 merge commit `4e38ac77`，pipeline `1333698` 部署到 TEST/test-gtbg-dev-3；Pod `cart-gaotu100-com-8464f7c8d7-8mhx9`、10.218.236.203、Eureka UP。固定 Pod 调 `RenewalService#getRenewalDetail` 返回 code=0，主计划大班 + 有效从计划小班，6004 price=0。线上 RELEASE 包待 MR 合入 release 后再定版编译。
 
 - 2026-11-07 **关联列表契约补充**：为计划搜索 `/b/renewMaster/list` 与已关联 `/b/renewMaster/relation/list` 同时下发 `createTime`（Long毫秒时间戳），后端查询均保持创建时间倒序；前端仅消费字段，不改前端。Product commit `9828003c`。
 # 决策摘要

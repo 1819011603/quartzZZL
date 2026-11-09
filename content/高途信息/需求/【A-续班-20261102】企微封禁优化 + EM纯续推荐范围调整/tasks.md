@@ -13,6 +13,8 @@
 
 - 已完成：在需求总入口节点下创建[上线方案](https://gaotuedu.feishu.cn/wiki/Uqqyw0MROiPysgk30x8cwhRlnOe)，覆盖 Apollo、GAIA、student_field_config、ES、`renew_master_relation` DDL、历史标签回溯、XXL-Job、灰度监控与回滚；复用青舟发布计划 24210，未重复创建编排。
 - 上线门禁仍未闭环：QA/P0复测、USER_CASE/ESAI_CR强卡、PROD DDL/Apollo、GAIA 两场景显示记录、历史回溯责任人与窗口、正式生产准出环境。
+- MR 已更新：product-server !862、cart !284、order !2391，目标分支均为 `release`。cart 合并 release 后 commit `4e38ac77` 已部署 TEST/test-gtbg-dev-3（pipeline 1333698），Pod `cart-gaotu100-com-8464f7c8d7-8mhx9` Eureka UP；推荐接口回读主+有效从计划，code=0，6004 售价为 0。
+- 线上 RELEASE 包：待 MR 合入 `release` 后定版编译，不能用当前 feature 分支 SNAPSHOT 作为线上包。
 
 | 编号 | 任务 | 状态 | 产物与边界 |
 |---|---|---|---|
