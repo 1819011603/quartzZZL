@@ -24,6 +24,11 @@
 - 最终口径：本次Order变更不是新增“大小班一起下单/合并支付”能力，而是解除跨模式相同课程/班级编号的重复拦截；支付账户限制仍独立存在。本轮未关闭支付校验/Apollo，不把批量下单成功写成购物车购买通过。
 - 旧版对照泳道保留供复验；测试学员订单与购物车数据保留。详见[版本、请求、DB及运行校验证据](artifacts/20261109-order-comparison.json)。
 
+## 2026-11-09 PROD es_query_config 补数据（待审批）
+
+- 工单 [148118](https://sre.baijia.com/dms/mySql/detail?id=148118&env=/prod-sql)：`ees_data.es_query_config` 补 `continuationService` 的 `studentTags`(basic/necessary)+`studentTagNames`(extra) 共 3 条。待 SRE 审批发布；生效后 `/roster/renewal/page`(continuationService) 应返回 `studentTagNames` 字段，≤5min Caffeine 缓存自动失效。
+- 根因（唐稳反馈 traceId `3df09a43-...`）：写侧全成功（DB+ES 145 条 bulk），调用链 0 error、HTTP 200；读侧因 PROD 缺这 3 条配置，`GaiaEsMappingService` 不取 `studentTags`，列恒空。小班 `microContinuationService` 线上 3 条齐全。
+
 ## 2026-11-07 缺陷1485167修复与回退验证
 
 - 售卖修复提交 `7f749e65` 已包含在当前Cart `04022be8` 中，部署坐标见上节。[改前后原件与断言](artifacts/20261107-sale-status-fix.json)。TAPD1485167已回读为resolved，等待QA复测，未关闭。
