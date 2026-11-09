@@ -8,7 +8,7 @@ branches:
   - student-center:feature-xuban-pure-relation-20261102
   - cart:feature-xuban-pure-relation-20261102
   - order:feature-xuban-pure-relation-20261102
-updated: 2026-11-07
+updated: 2026-11-09
 tags: [需求]
 ---
 
@@ -21,6 +21,8 @@ tags: [需求]
 > **发布编排复核（2026-11-07）**：后端准入覆盖率已达 **64%≥60%**，任务已终态；Product 72.57%、Cart 64.42%、Order 65.38%，详见[验证及报告](verify.md)。通过补跑真实业务入口达标，未改阈值/排除项。计划24210仍为“规划中”，唯一剩余强卡是 `USER_CASE=0%`：班山功能记录72430显示88/88通过，但冒烟72429仍0/17；原因待核实，不再断言为同步故障。已按页面“刷新”同接口回读，未正式提测。
 
 > 飞书方案（含表结构+接口协议）：https://gaotuedu.feishu.cn/docx/AQEtdIeKzo7P5IxeQEzc7EpxnBe
+>
+> 上线方案（含 Apollo、DDL、GAIA、ES、历史回溯、灰度与回滚）：https://gaotuedu.feishu.cn/wiki/Uqqyw0MROiPysgk30x8cwhRlnOe；青舟发布计划 24210：https://qingzhou.baijia.com/#/publishArrangement/subPublishArrangement/publishPlan/detail?storyId=&pageNum=1&id=24210&action=audit
 
 ## 当前缓存补强（已完成）
 

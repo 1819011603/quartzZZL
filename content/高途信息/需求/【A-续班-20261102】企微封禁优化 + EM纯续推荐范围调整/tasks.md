@@ -9,6 +9,11 @@
 - `USER_CASE=0%` 待核实：关联集50191中功能记录72430为88/88通过、线上回归72431为17/17通过，冒烟72429为0/17；准入策略37检查P0。已有平台状态不证明本轮实际执行，不能直接判定同步故障。
 - 提测责任准备：测试 `tangwen01`；开发 `zhangzeling` + `jinruilin`。青舟尚未正式提测，责任字段未写入。
 
+### 上线方案（2026-11-09）
+
+- 已完成：在需求总入口节点下创建[上线方案](https://gaotuedu.feishu.cn/wiki/Uqqyw0MROiPysgk30x8cwhRlnOe)，覆盖 Apollo、GAIA、student_field_config、ES、`renew_master_relation` DDL、历史标签回溯、XXL-Job、灰度监控与回滚；复用青舟发布计划 24210，未重复创建编排。
+- 上线门禁仍未闭环：QA/P0复测、USER_CASE/ESAI_CR强卡、PROD DDL/Apollo、GAIA 两场景显示记录、历史回溯责任人与窗口、正式生产准出环境。
+
 | 编号 | 任务 | 状态 | 产物与边界 |
 |---|---|---|---|
 | T-9 | 需求归属与契约 | 已完成 | 同一主需求两个子项，PRD revision253/675，25项映射见本轮报告；当前允许TEST样本与执行，不改业务代码，前端只读。 |

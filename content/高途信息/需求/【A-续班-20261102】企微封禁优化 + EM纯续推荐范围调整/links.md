@@ -67,3 +67,16 @@
 | case | 当前P0 revision247及集中证据 | https://gaotuedu.feishu.cn/wiki/KeCZwdJTBiIJDJkX8lRcGb9gnCs | 2026-11-05 |
 | 其他 | 本轮逐卡核验与计算/编号自检 | [document-verification.json](artifacts/20261105-p0-execution-round7/document-verification.json) | 2026-11-05 |
 | TAPD | 大班入口遗漏关联小班（1485167，已解决待QA复测） | https://www.tapd.cn/tapd_fe/22531521/bug/detail/1122531521001485167 | 2026-11-07 |
+
+## 上线
+
+| 类型 | 标题 | 链接 / ID | 记录日期 |
+|---|---|---|---|
+| 上线方案 | 上线方案｜企微封禁优化 + EM纯续推荐范围调整（需求节点子文档） | https://gaotuedu.feishu.cn/wiki/Uqqyw0MROiPysgk30x8cwhRlnOe | 2026-11-09 |
+| 青舟发布计划 | 24210｜【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整 | https://qingzhou.baijia.com/#/publishArrangement/subPublishArrangement/publishPlan/detail?storyId=&pageNum=1&id=24210&action=audit | 2026-11-09 |
+
+## 上线检索锚点
+
+- 需求总入口 node_token：`MCUowPVhriDC3okHO0mcW49Unyf`
+- 上线方案 node_token：`Uqqyw0MROiPysgk30x8cwhRlnOe`（obj_token/docx：`Fi8VdlT5uolyoFxuzUUcb6E6nwg`）
+- 青舟 release plan：`24210`；提测泳道/当前准出环境：`test-gtbg-dev-3`
