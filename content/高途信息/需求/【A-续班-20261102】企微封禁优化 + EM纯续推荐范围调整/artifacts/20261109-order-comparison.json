@@ -1,0 +1,532 @@
+{
+  "old-redeploy.json": [
+    {
+      "code": 200,
+      "msg": "success",
+      "serviceCode": "gaotu_order",
+      "envInfoId": 327,
+      "imageCode": "acr.baijia.com/uqun/order-gaotu100-com:release-317482f9-20261102133142",
+      "namespace": "test-eco-10",
+      "resolution": {
+        "getEnvId": {
+          "found": true,
+          "subEnv": "test-eco-10",
+          "envInfoId": 327,
+          "envName": "",
+          "logicEnv": "dev",
+          "cached": true
+        }
+      }
+    },
+    {
+      "code": 200,
+      "msg": "success",
+      "serviceCode": "baijia.gaotu.tech.trade.order-b",
+      "envInfoId": 327,
+      "imageCode": "acr.baijia.com/uqun/order-b-gaotu100-com:release-317482f9-20261102133218",
+      "namespace": "test-eco-10",
+      "resolution": {
+        "getEnvId": {
+          "found": true,
+          "subEnv": "test-eco-10",
+          "envInfoId": 327,
+          "envName": "",
+          "logicEnv": "dev",
+          "cached": true
+        }
+      }
+    }
+  ],
+  "verified-pods.json": {
+    "gaotu_order": [
+      {
+        "namespace": "test-eco-10",
+        "pods": [
+          {
+            "podName": "order-gaotu100-com-5d7f87bd55-xlz2t",
+            "podIP": "10.218.237.117",
+            "imageName": "release-317482f9-20261102133142",
+            "eurekaStatus": "UP",
+            "status": "Running"
+          }
+        ]
+      },
+      {
+        "namespace": "test-gtbg-dev-3",
+        "pods": [
+          {
+            "podName": "order-gaotu100-com-68cb8484fd-rjhnr",
+            "podIP": "10.218.250.77",
+            "imageName": "feature-xuban-pure-relation-20261102-0cc8ef68-20261107143449",
+            "eurekaStatus": "UP",
+            "status": "Running"
+          }
+        ]
+      }
+    ],
+    "baijia.gaotu.tech.trade.order-b": [
+      {
+        "namespace": "test-eco-10",
+        "pods": [
+          {
+            "podName": "order-b-gaotu100-com-75cd9c7d68-b8ptk",
+            "podIP": "10.218.248.247",
+            "imageName": "release-317482f9-20261102133218",
+            "eurekaStatus": "UP",
+            "status": "Running"
+          },
+          {
+            "podName": "order-b-gaotu100-com-75cd9c7d68-x5t6h",
+            "podIP": "10.218.237.155",
+            "imageName": "release-317482f9-20261102133218",
+            "eurekaStatus": "UP",
+            "status": "Running"
+          }
+        ]
+      },
+      {
+        "namespace": "test-gtbg-dev-3",
+        "pods": [
+          {
+            "podName": "order-b-gaotu100-com-555655ff-kxfxv",
+            "podIP": "10.218.237.111",
+            "imageName": "feature-xuban-pure-relation-20261102-0cc8ef68-20261105114404",
+            "eurekaStatus": "UP",
+            "status": "Running"
+          }
+        ]
+      }
+    ]
+  },
+  "old-cart-onsale.json": [
+    {
+      "path": "removeCart",
+      "target": "10.218.248.247",
+      "request": {
+        "userId": 7704852575,
+        "accountId": 3217,
+        "productList": [
+          {
+            "productType": 2,
+            "productNumber": 588861402658267136,
+            "quantity": 1
+          }
+        ]
+      },
+      "response": {
+        "code": 0,
+        "data": "7704852575",
+        "errorTypeCode": 0
+      }
+    },
+    {
+      "path": "addCart",
+      "target": "10.218.248.247",
+      "request": {
+        "userId": 7704852575,
+        "accountId": 3217,
+        "productList": [
+          {
+            "productType": 2,
+            "productNumber": 589537362151786496,
+            "quantity": 1
+          }
+        ]
+      },
+      "response": {
+        "code": 0,
+        "data": "589569541835601920",
+        "errorTypeCode": 0
+      }
+    },
+    {
+      "path": "addCart",
+      "target": "10.218.248.247",
+      "request": {
+        "userId": 7704852575,
+        "accountId": 3217,
+        "productList": [
+          {
+            "productType": 6004,
+            "productNumber": 586097025945298944,
+            "quantity": 1
+          }
+        ]
+      },
+      "response": {
+        "code": 1,
+        "data": [
+          {
+            "validateErrorEnum": "PAYMENT_SIZE",
+            "productSkuNumber": "586097025945298944",
+            "productType": 6004
+          }
+        ],
+        "msg": "支付产品不一致",
+        "errorTypeCode": 0
+      }
+    }
+  ],
+  "new-cart-onsale.json": [
+    {
+      "path": "removeCart",
+      "target": "10.218.237.111",
+      "request": {
+        "userId": 7704852569,
+        "accountId": 3217,
+        "productList": [
+          {
+            "productType": 2,
+            "productNumber": 588861402658267136,
+            "quantity": 1
+          }
+        ]
+      },
+      "response": {
+        "code": 0,
+        "data": "7704852569",
+        "errorTypeCode": 0
+      }
+    },
+    {
+      "path": "addCart",
+      "target": "10.218.237.111",
+      "request": {
+        "userId": 7704852569,
+        "accountId": 3217,
+        "productList": [
+          {
+            "productType": 2,
+            "productNumber": 589537362151786496,
+            "quantity": 1
+          }
+        ]
+      },
+      "response": {
+        "code": 0,
+        "data": "589569543305715712",
+        "errorTypeCode": 0
+      }
+    },
+    {
+      "path": "addCart",
+      "target": "10.218.237.111",
+      "request": {
+        "userId": 7704852569,
+        "accountId": 3217,
+        "productList": [
+          {
+            "productType": 6004,
+            "productNumber": 586097025945298944,
+            "quantity": 1
+          }
+        ]
+      },
+      "response": {
+        "code": 1,
+        "data": [
+          {
+            "validateErrorEnum": "PAYMENT_SIZE",
+            "productSkuNumber": "586097025945298944",
+            "productType": 6004
+          }
+        ],
+        "msg": "支付产品不一致",
+        "errorTypeCode": 0
+      }
+    }
+  ],
+  "old-create-onsale-bff.json": {
+    "tool": "batch_create_order",
+    "request": {
+      "paySourceCode": 1201,
+      "appId": 1,
+      "ignoreCheckAddress": true,
+      "force": false,
+      "giftPromotionList": [],
+      "needPromotion": false,
+      "promotionTotalPrice": 0,
+      "userCouponNumberList": [],
+      "promotionDetailDtoList": [],
+      "orderTags": [
+        {
+          "orderTagType": "createScene",
+          "orderTagValue": "B_Normal"
+        }
+      ],
+      "payPlanInfo": {
+        "payPlanType": 0,
+        "expiredTimeInSeconds": 2592000,
+        "payPlanItems": [
+          {
+            "price": 100,
+            "showOrder": 0,
+            "payMode": 0
+          }
+        ]
+      },
+      "userId": 7704852575,
+      "choiceProductList": [
+        {
+          "productNumber": "589537362151786496",
+          "productType": 2,
+          "quantity": 1
+        },
+        {
+          "productNumber": "586097025945298944",
+          "productType": 6004,
+          "quantity": 1
+        }
+      ],
+      "addressId": 0
+    },
+    "raw": {
+      "code": 0,
+      "msg": "",
+      "data": {
+        "isSuccess": true,
+        "orderNumber": "434016293634441483",
+        "payNumber": "434016293634441483",
+        "payment": {
+          "payType": 0,
+          "payMode": 0,
+          "needPay": true
+        }
+      }
+    },
+    "output": {
+      "orderNumber": "434016293634441483",
+      "payNumber": "434016293634441483",
+      "isSuccess": true,
+      "raw": {
+        "code": 0,
+        "msg": "",
+        "data": {
+          "isSuccess": true,
+          "orderNumber": "434016293634441483",
+          "payNumber": "434016293634441483",
+          "payment": {
+            "payType": 0,
+            "payMode": 0,
+            "needPay": true
+          }
+        }
+      }
+    }
+  },
+  "new-create-onsale-bff.json": {
+    "tool": "batch_create_order",
+    "request": {
+      "paySourceCode": 1201,
+      "appId": 1,
+      "ignoreCheckAddress": true,
+      "force": false,
+      "giftPromotionList": [],
+      "needPromotion": false,
+      "promotionTotalPrice": 0,
+      "userCouponNumberList": [],
+      "promotionDetailDtoList": [],
+      "orderTags": [
+        {
+          "orderTagType": "createScene",
+          "orderTagValue": "B_Normal"
+        }
+      ],
+      "payPlanInfo": {
+        "payPlanType": 0,
+        "expiredTimeInSeconds": 2592000,
+        "payPlanItems": [
+          {
+            "price": 100,
+            "showOrder": 0,
+            "payMode": 0
+          }
+        ]
+      },
+      "userId": 7704852569,
+      "choiceProductList": [
+        {
+          "productNumber": "589537362151786496",
+          "productType": 2,
+          "quantity": 1
+        },
+        {
+          "productNumber": "586097025945298944",
+          "productType": 6004,
+          "quantity": 1
+        }
+      ],
+      "addressId": 0
+    },
+    "raw": {
+      "code": 0,
+      "msg": "",
+      "data": {
+        "isSuccess": true,
+        "orderNumber": "434016298995810375",
+        "payNumber": "434016298995810375",
+        "payment": {
+          "payType": 0,
+          "payMode": 0,
+          "needPay": true
+        }
+      }
+    },
+    "output": {
+      "orderNumber": "434016298995810375",
+      "payNumber": "434016298995810375",
+      "isSuccess": true,
+      "raw": {
+        "code": 0,
+        "msg": "",
+        "data": {
+          "isSuccess": true,
+          "orderNumber": "434016298995810375",
+          "payNumber": "434016298995810375",
+          "payment": {
+            "payType": 0,
+            "payMode": 0,
+            "needPay": true
+          }
+        }
+      }
+    }
+  },
+  "old-mock-pay.json": {
+    "target": "10.218.237.117",
+    "lane": "test-eco-10",
+    "payNumber": "434016293634441483",
+    "before": {
+      "number": 434016293634441483,
+      "user_id": 7704852575,
+      "price": 100,
+      "pay_status": 0
+    },
+    "httpStatus": 200,
+    "response": ""
+  },
+  "new-mock-pay.json": {
+    "target": "10.218.250.77",
+    "lane": "test-gtbg-dev-3",
+    "payNumber": "434016298995810375",
+    "before": {
+      "number": 434016298995810375,
+      "user_id": 7704852569,
+      "price": 100,
+      "pay_status": 0
+    },
+    "httpStatus": 200,
+    "response": ""
+  },
+  "final-readback.json": {
+    "old": {
+      "pay": [
+        {
+          "number": 434016293634441483,
+          "user_id": 7704852575,
+          "price": 100,
+          "real_price": 100,
+          "pay_status": 1,
+          "pay_channel": 58,
+          "paid_time": "2026-11-09 15:27:26"
+        }
+      ],
+      "large": [
+        {
+          "order_number": 434016293634441995,
+          "pay_number": 434016293634441483,
+          "user_id": 7704852575,
+          "clazz_number": 589537362151786496,
+          "course_number": 588854836343234560,
+          "price": 100,
+          "order_status": 2,
+          "paid_time": "2026-11-09 15:27:26"
+        }
+      ],
+      "small": [
+        {
+          "number": 434016293634442507,
+          "pay_number": 434016293634441483,
+          "user_id": 7704852575,
+          "sku_number": 586097025945298944,
+          "sku_type": 6004,
+          "price": 0,
+          "order_status": 2
+        }
+      ],
+      "cart": [
+        {
+          "product_number": 589537362151786496,
+          "product_type": 2,
+          "quantity": 1,
+          "is_del": 0
+        }
+      ]
+    },
+    "new": {
+      "pay": [
+        {
+          "number": 434016298995810375,
+          "user_id": 7704852569,
+          "price": 100,
+          "real_price": 100,
+          "pay_status": 1,
+          "pay_channel": 58,
+          "paid_time": "2026-11-09 15:27:29"
+        }
+      ],
+      "large": [
+        {
+          "order_number": 434016298995810887,
+          "pay_number": 434016298995810375,
+          "user_id": 7704852569,
+          "clazz_number": 589537362151786496,
+          "course_number": 588854836343234560,
+          "price": 100,
+          "order_status": 2,
+          "paid_time": "2026-11-09 15:27:29"
+        }
+      ],
+      "small": [
+        {
+          "number": 434016298995811399,
+          "pay_number": 434016298995810375,
+          "user_id": 7704852569,
+          "sku_number": 586097025945298944,
+          "sku_type": 6004,
+          "price": 0,
+          "order_status": 2
+        }
+      ],
+      "cart": [
+        {
+          "product_number": 589537362151786496,
+          "product_type": 2,
+          "quantity": 1,
+          "is_del": 0
+        }
+      ]
+    }
+  },
+  "validatorRuntime": {
+    "old": "@LinkedHashMap[\n    @String[different_numbers]:@ArrayList[isEmpty=true;size=0],\n    @String[same_course_cross_mode]:@ArrayList[\n        @ValidateResult[\n            validateErrorEnum=@ValidateErrorEnum[SAME_COURSE],\n            errorMsg=null,\n            productSkuNumber=@Long[102],\n            productType=@Integer[6004],\n            $jacocoData=@ConcurrentHashMap[\n                @String[]:@boolean[][isEmpty=false;size=45],\n            ],\n        ],\n    ],\n    @String[same_class_cross_mode]:@ArrayList[\n        @ValidateResult[\n            validateErrorEnum=@ValidateErrorEnum[SAME_CLAZZ],\n            errorMsg=null,\n            productSkuNumber=@Long[101],\n            productType=@Integer[6004],\n            $jacocoData=@ConcurrentHashMap[\n                @String[]:@boolean[][isEmpty=false;size=45],\n            ],\n        ],\n    ],\n    @String[same_mode_duplicate]:@ArrayList[\n        @ValidateResult[\n            validateErrorEnum=@ValidateErrorEnum[SAME_COURSE],\n            errorMsg=null,\n            productSkuNumber=@Long[102],\n            productType=@Integer[2],\n            $jacocoData=@ConcurrentHashMap[\n                @String[]:@boolean[][isEmpty=false;size=45],\n            ],\n        ],\n    ],\n]\n[pod-term] baijia.gaotu.tech.trade.order-b [dev] -> 17 pod(s); using order-b-gaotu100-com-75cd9c7d68-b8ptk (status=Running, eureka=UP, ip=10.218.248.247)\n",
+    "new": "@LinkedHashMap[\n    @String[different_numbers]:@ArrayList[isEmpty=true;size=0],\n    @String[same_course_cross_mode]:@ArrayList[isEmpty=true;size=0],\n    @String[same_class_cross_mode]:@ArrayList[isEmpty=true;size=0],\n    @String[same_mode_duplicate]:@ArrayList[\n        @ValidateResult[\n            validateErrorEnum=@ValidateErrorEnum[SAME_COURSE],\n            errorMsg=null,\n            productSkuNumber=@Long[102],\n            productType=@Integer[2],\n            $jacocoData=@ConcurrentHashMap[\n                @String[]:@boolean[][isEmpty=false;size=45],\n            ],\n        ],\n    ],\n]\n[pod-term] baijia.gaotu.tech.trade.order-b [dev] -> 17 pod(s); using order-b-gaotu100-com-555655ff-kxfxv (status=Running, eureka=UP, ip=10.218.237.111)\n"
+  },
+  "oldCreationRoute": {
+    "pod": "order-b-gaotu100-com-75cd9c7d68-x5t6h",
+    "ip": "10.218.237.155",
+    "imageCommit": "317482f9",
+    "traceId": "ab1ca201-cad7-4a82-b276-29b04e370dab.0.3",
+    "observed": "BatchCreateOrderFacade 创建订单参数(userId=7704852575) + PayInfoFactory paynumber=434016293634441483 at 2026-11-09 15:26:11~13"
+  },
+  "paymentCartFailure": {
+    "traceId": "order-b_gaotu100_com.538.17942090174880002",
+    "pod": "order-b-gaotu100-com-75cd9c7d68-b8ptk",
+    "message": "购物车校验失败：订单资金账户不一致, accountNumbers: [66, 75]"
+  },
+  "baseline": {
+    "deployedRelease": "317482f96df028f5aa42efed878b37b762623aef",
+    "preMergeRelease": "a97904147c3f9793b94a4c453161609da08c20f4",
+    "difference": "only paving/roads.yaml, 202 inserted lines; business code identical"
+  }
+}
