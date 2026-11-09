@@ -1,7 +1,7 @@
 ---
 title: 【A-续班-20261001】膨胀券优化
 aliases: [膨胀券预报名优化-推荐和外显抵扣金额, 膨胀券预报名优化, 小班课学员人数上限修改]
-status: 开发中
+status: 联调中（后端完成，待前端）
 owner: zhangzeling
 branches:
   - product-server:feature-xuban-20261001
@@ -10,7 +10,7 @@ branches:
   - student-center:feature-xuban-20261001
   - cart:feature-xuban-20261001
   - teacher-tool:feature-xuban-20261001
-updated: 2026-10-30
+updated: 2026-11-09
 tags: [需求]
 ---
 
@@ -69,24 +69,24 @@ tags: [需求]
 
 | | |
 |---|---|
-| 阶段 | 开发中（后端 6 仓已实现并提交/推送 feature-xuban-20261001；前端由前端同学实现，改法已写入技术方案 §15 + [[前端如何改]]） |
-| 进度 | T 23/24 · R 0/0 · C 0/0 |
-| 部署泳道 | test-gtbg-dev-3（dev 逻辑环境，8 服务已发布成功） |
-| 当前卡点 | 无后端卡点（两模块后端端到端已验证：非0落库、二选一互斥、按年级匹配、33 拦截/32 边界、userIds 搜索）；仅 **C 端页面渲染待前端 §15**；**线上不动，PROD 项仅记待办** |
-| 最近更新 | 2026-10-30：**测试环境端到端验证完成**（完整 B端 edit 落库非0、二选一互斥、按年级匹配扩科对照、模块② 33 拦截/32 边界、userIds 搜索；10240500 复核为缺登录上下文非缺陷）。**后端 6 仓实现完成并提交/推送 `feature-xuban-20261001`**（模块① 外显金额券商品级落 `pre_order_activity_product.external_deductible_amount`、C 端样式 `showExternalDeductAmount` 二选一、推荐按年级+使用中且售卖中；模块② teacher-tool 上限默认 32 + 选学员 `userIds` 批量精确）。TEST DDL 已执行并回读；泳道 test-gtbg-dev-3 部署 SUCCESS。**前端如何改**写入方案 §15 + [[前端如何改]]。 |
+| 阶段 | 后端测试验证完成（6 仓 `feature-xuban-20261001`，已部署复验；前端由前端同学实现，改法见技术方案 §15 + [[前端如何改]]） |
+| 进度 | T 25 项完成 · R 0/0 · C 0/0 |
+| 部署泳道 | **test-gtbg-dev-2**（dev 逻辑环境；2026-11-09 按目标 commit 重发 8 实例并复验。原 dev-3 已被后续需求占用） |
+| 当前卡点 | 无后端卡点；**前端待前端同学实现**；**PROD DDL 待提工单**（PROD Apollo 已配 `{3:32;4:30}`） |
+| 最近更新 | **2026-11-09 重新部署并端到端复验通过**：8 实例（teacher-tool e3ca4d5d / promotion-management 4485edd7 / student-center 889354d67 / cart 90a00a4f / product-b+product 1109a3c35 / promotion-b+c e0c27ee6e）eureka UP；模块① 按年级匹配（scope subject 与后置学科不一致仍命中）、使用中且售卖中过滤（saleStatus=1 被拒、=2 命中）、B端 edit 真实落库（1234→回读、100001 被拒）、cart 开关切换 5000/20000、外显 0 下发 0、student-center 列表下发 5000；模块② 上限32、userIds 精确（5→2→0）、create 33→30033 / 32→越过上限。详见[[changelog]]。 |
 
 ## 下一步
 
 > **只列还没做的**。必须是能直接上手的动作，"继续推进"不算。
 
-1. 造数后端到端验证：模块①（发链接→C 端落地页→加购→下单页；开关二选一互斥、扩科、状态、边界）；模块②（新建选 32、33 拦截、关联校验、`userIds` 精确搜索）。
-2. 前端按 [[前端如何改]]（＝方案 §15）实现：模块① C 端 + B 端 OES 配置页；模块② boss-counselor 工具箱。
-3. 上线前：PROD Apollo `parentsMeeting.type.limit.map` 配 `{3:32;4:30}`；promotion PROD DDL 工单；product-server-client 定版 RELEASE（当前 `1.5.12-SNAPSHOT`）并同步 cart pom。
+1. 前端按 [[前端如何改]]（＝方案 §15）实现：模块① C 端 + B 端 OES 配置页；模块② boss-counselor 工具箱。
+2. 上线前：promotion PROD DDL 工单（Apollo PROD 已配 `{3:32;4:30}`）；product-server-client 定版 RELEASE（当前 `1.5.12-SNAPSHOT`）并同步 cart pom；青舟发布编排。
+3. QA/联调复现数据：测试活动 296(number `587601919797628928`)、计划 `578668076965308416`、学员 `7489622228`、券商品 `578300357722046465`；测试券已恢复为售卖中（`coupon_expand_config.sale_end_time=1796000000000`），并补了前置课 subclazz_student 在读行。
 
 ## 怎么验 / 新建的东西
 
-> 环境、造好的测试数据、新建的表与 Apollo key → 见 [[links]] 两个模块技术方案「验证思路」节。
-> 未部署、未造数据。
+> 环境：**test-gtbg-dev-2**（dev），8 实例按目标 commit 部署并复验（2026-11-09）。
+> 测试数据：活动 296（number `587601919797628928`）/ 计划 `578668076965308416` / 学员 `7489622228` / 券商品 `578300357722046465`；测试券已恢复售卖中；前置课补 subclazz_student 在读行（subclazz `668000000000000001`）。
 
 ## 待确认
 
@@ -98,8 +98,8 @@ tags: [需求]
 
 > 所有者 2026-10-30：「先做测试，线上先不动，只记待办」。以下全部**未执行**。
 
-1. **Apollo(PROD)**：teacher-tool `parentsMeeting.type.limit.map` 配 `{3:32;4:30}`（现 PROD 未配、走代码默认，代码默认已改 32）。
-2. **MySQL DDL(PROD)**：promotion 库 `pre_order_activity_product` 新增列 `external_deductible_amount`（提 DDL 工单）。
+1. ~~**Apollo(PROD)**：teacher-tool `parentsMeeting.type.limit.map` 配 `{3:32;4:30}`~~ **已完成（2026-11-09 回读 PROD 已发布值 = `{3:32;4:30}`）**。
+2. **MySQL DDL(PROD)**：promotion 库 `pre_order_activity_product` 新增列 `external_deductible_amount`（**2026-11-09 回读 PROD 仍无该列，待提 DDL 工单**）。
 3. **发布编排**：青舟 release plan（服务顺序：promotion DDL 先行 → promotion / promotion-management / product-server / student-center / cart；teacher-tool 独立）。
 4. **定版**：`product-server-client` 由 `1.5.12-SNAPSHOT` 定版 RELEASE 并同步 cart pom。
 5. **前端**：按子需求①技术方案 §15 / [[前端如何改]] 实现后联调。

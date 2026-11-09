@@ -9,6 +9,37 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-11-09（补验剩余需求点）
+
+### 🤖 Claude
+
+- 补验并转「已验证」：模块① 多年级（临时接入含 25 年级后置课，同券返回 grade15/16 两条，`product-b.288.17942272642980008`，验后还原）；预警漏配落库（券范围改 15 → `questionnaire_inspect` 插入 3 行 id 6901-6903，恢复覆盖后清空）；模块② 编辑 33→30033（`f514f08e...`）/32→code26（`916723e1...`）、主从关联总数 40>32 → code21 文案「小班课上限32，自习室上限30」（`d0f47f69...`，验后删临时学生行）。
+- 核实：发链接/通用链接入口 `RenewalPreRegistrationStrategy#preRegistrationUrl` 只组装 URL、不计算券集合；券展示落点（C端 cart / 计划级 product-b / 下单弹窗 student-center）均已验证。
+- 剩余：①-20 向后兼容、①-21 失败兜底、①-22 性能未单独测；前端项与存量订正不在本轮。全部构造数据已清理/还原。
+
+---
+
+## 2026-11-09（重新部署 test-gtbg-dev-2 + 端到端复验）
+
+### 🤖 Claude
+
+- 现场复核：6 仓远端 `feature-xuban-20261001` 提交仍在（product-server `1109a3c35`、promotion `e0c27ee6e`、promotion-management `4485edd7`、student-center `889354d67`、cart `90a00a4f`、teacher-tool `e3ca4d5d`），工作区未改动。原 dev-3 已被后续需求（`feature-xuban-pure-relation-20261102`）占用，故改用空闲 dev-2。
+- 部署：8 实例 pipeline 全部 SUCCESS，`poll_pods --expected-commit` 全部 **eureka UP**（test-gtbg-dev-2）。
+- 验（模块②，teacher-tool）：
+  - `getSignCountLimit(type=3)=32`（trace `teacher-tool.206.17942245007220019`）；`allTypeLimit` 3=32/4=30（`teacher-tool.205.17942245057240014`）。
+  - `listSubclazzStudent(subclazz 6696309177976320)`：不传 userIds=5 条；传 `[654567,6611409825931]`=2 条；传 `[999999999999]`=0（`teacher-tool.205.17942245684860016`）。
+  - `parentsMeeting/create` 经网关：33 人 → `code 30033 小灶课学员达到上限`（trace `164a761e-26c9-46bb-b70d-ca9cadc366d6`）；32 人 → `code 26 有学生已退款`（越过上限校验）。
+- 验（模块①）：
+  - 券商品 `578300357722046465` 售卖窗口已于 10-31 到期（saleStatus=1），被新过滤正确拒绝（日志 `skip coupon not in-use-and-on-sale | couponStatus:1, saleStatus:1`）；恢复 `coupon_expand_config` 售卖中（saleStatus=2）后命中。
+  - `intersect(587601919797628928, 前置课)` → `coupon_sku_numbers=[578300357722046465]`、`post_grades=[16]`、`coupon_external_amount=5000`。**按年级匹配**：临时把 scope 学科改为 999（不在后置学科 {1,4,5} 内）仍命中，验后还原为 5。
+  - cart `preRegistration(7489622228, 578668076965308416)`：C端样式开 → `discount_price=5000`（外显）、关 → `20000`（抵扣），还原后再回 5000；外显金额置 0 并清缓存后 → `discount_price=0`，还原 5000。
+  - promotion-management `detail` 回读 `externalDeductibleAmount=5000`；B端 `edit`（活动296，临时置待发布+未来时间）保存 `externalDeductibleAmount=1234` → `code 0` → 回读 `pre_order_activity_product id=1268 external=1234`；`100001` → 被拒「需在0-100000之间」；验后活动状态/时间与金额已还原（金额 5000）。
+  - student-center `listCoupon(renewMasterNumber=578668076965308416)` → `total=1`、`externalDeductibleAmount=5000`、`deductibleAmount=20000`、`saleStatus=2`（trace `student-center.651.17942253183456866`）。
+- 外部依赖现状：teacher-tool Apollo **PROD 已配 `{3:32;4:30}`**（2026-11-09 回读）；promotion **PROD 仍无 `external_deductible_amount` 列**（待 DDL 工单）。
+- 测试数据：新增前置课 subclazz `668000000000000001` + `subclazz_student(user 7489622228)` 在读行；券保持售卖中；活动296/节点735 已还原。
+
+---
+
 ## 2026-10-30（①-8 补齐 + ②-3 结论 + Boss 提示词新增⑧）
 
 ### 🤖 Claude
