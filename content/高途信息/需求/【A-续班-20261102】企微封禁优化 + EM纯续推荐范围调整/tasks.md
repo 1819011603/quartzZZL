@@ -34,6 +34,8 @@
 | T-18 | 本次纯续关联问题修复与前后验证 | 已完成 | cart1ebd315d/product2593dae78已推送并部署TEST/dev3；76项聚焦测试、9组同输入运行对照和缓存日志验证通过，DB与改前一致；排除全集保存并发。见[修复与对照](artifacts/20261106-relation-fix/README.md)。 |
 | T-19 | 关联修改后的配置与预热缓存失效 | 已完成 | cart deea4c9e、product 84739aab 完成缓存失效主修复；后续 cart `4de323d2`、product `455e8ba8` 补齐开关隔离与订单实时查询。缓存回归、真实预热→清空→恢复链路及无关联老计划兼容均通过。见[缓存失效报告](artifacts/20261106-cache-invalidation/README.md)和[后续复核](artifacts/20261106-followup-review.md)。
 
+| T-20 | 批量预热与关联缓存审查问题修复（飞书《续班推荐与预热改动风险审查》F1~F5） | 进行中 | 新分支 `feature-renewal-preheat-fix-20261109`（均从最新release拉）：cart `22f8f32d` [MR !288](http://git.baijia.com/gaotu/cart/-/merge_requests/288)、product-server `5737204b` [MR !864](http://git.baijia.com/gaotu/product-server/-/merge_requests/864)，目标release，回读为open。修复F1大班批量合并关联课程并去重、F5小班批量补查order_info、F3库存降级标记不可缓存、F4单测补参、F2版本写失败删当前版本缓存键。归因：F1/F2/F3/F4为本需求引入，F5旧取人缺口被本需求放大。已加入青舟发布计划24277（第5~8项：cart/product/product-task/product-b，计划原有4服务未动，step保持2）。已部署test-eco-4（cart/product/product-b均UP，commit对得上）；F1运行态已验证，F5/F2/F3运行态未做或无区分力，见verify.md。待办：合并两个MR前看AICR结论；补F5区分样本。 |
+
 | C-1 | 大班入口遗漏已在售关联小班（TAPD1485167） | 已完成 | Cart7f749e65部署TEST/dev3，210项本地测试及10项运行断言通过；B/C关闭和恢复对照通过；缺陷resolved待QA复测。见verify.md。 |
 
 | C-2 | 从计划状态变化后的关联推荐过滤 | 已完成 | Cart04022be8部署TEST/dev3；213项本地测试、16项状态/预热检查、10项售卖回归及3项回退对照通过；状态与开关已恢复，见verify.md。 |
