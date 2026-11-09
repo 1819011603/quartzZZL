@@ -2485,6 +2485,97 @@
      ]
     },
     {
+     "tabKey": "renewableStudent",
+     "name": "续班学员（班级列表 / 续班配置 / 管理可续学员）",
+     "file": "promotions/continuation-classes/renewableStudent.md",
+     "apis": [
+      {
+       "trigger": "进 tab 班级列表",
+       "method": "POST",
+       "frontPath": "/product-b/b/renewal/manage/clazz/list",
+       "frontFile": "src/pages/continuationClasses/detail/RenewableStudent/index.js:240",
+       "service": "product-b",
+       "backendPath": "/b/renewal/manage/clazz/list",
+       "name": "班级列表",
+       "note": "",
+       "id": 2734319,
+       "frontMethod": "ProTable fetch"
+      },
+      {
+       "trigger": "打开管理可续学员抽屉",
+       "method": "POST",
+       "frontPath": "/product-b/b/renewal/manage/clazzDetail",
+       "frontFile": "src/pages/continuationClasses/detail/RenewableStudent/RenewalManage/index.js:28（src/services/continuationClasses.js:151）",
+       "service": "product-b",
+       "backendPath": "/b/renewal/manage/clazzDetail",
+       "name": "班级详情",
+       "note": "入参 {clazzNumber}",
+       "id": 2734339,
+       "frontMethod": "getRenewalManageClazzDetail"
+      },
+      {
+       "trigger": "管理可续学员 学员列表",
+       "method": "POST",
+       "frontPath": "/product-b/b/renewal/manage/student/list",
+       "frontFile": "src/pages/continuationClasses/detail/RenewableStudent/RenewalManage/index.js:274",
+       "service": "product-b",
+       "backendPath": "/b/renewal/manage/student/list",
+       "name": "可续学员列表",
+       "note": "按 sign_x.can_renewal_status 过滤：默认[1,2,8,17]，筛可续[1,2]，筛不可续[17]；只展示灰名单17类不可续",
+       "id": 2734191,
+       "frontMethod": "ProTable fetch"
+      },
+      {
+       "trigger": "切换可续/不可续",
+       "method": "POST",
+       "frontPath": "/product-b/b/renewal/manage/edit",
+       "frontFile": "src/pages/continuationClasses/detail/RenewableStudent/RenewalManage/index.js:38（src/services/continuationClasses.js:95）",
+       "service": "product-b",
+       "backendPath": "/b/renewal/manage/edit",
+       "name": "设置可续状态",
+       "note": "canRenewalStatus 1可续/0不可续，写操作",
+       "id": 2734100,
+       "frontMethod": "renewalManageEdit"
+      },
+      {
+       "trigger": "不可续原因下拉",
+       "method": "POST",
+       "frontPath": "/product-b/b/renewal/manage/renewalMsgList",
+       "frontFile": "src/pages/continuationClasses/detail/RenewableStudent/RenewalManage/index.js:106（src/services/continuationClasses.js:157）",
+       "service": "product-b",
+       "backendPath": "/b/renewal/manage/renewalMsgList",
+       "name": "不可续原因字典",
+       "note": "",
+       "id": 2734355,
+       "frontMethod": "getRenewalReasons"
+      },
+      {
+       "trigger": "批量配置 下载模板",
+       "method": "GET",
+       "frontPath": "/product-b/b/renewal/manage/renewalConfigType/downloadTemplate",
+       "frontFile": "src/pages/continuationClasses/detail/RenewableStudent/TemplateSetting/index.js:32（src/services/continuationClasses.js:14）",
+       "service": "product-b",
+       "backendPath": "/b/renewal/manage/renewalConfigType/downloadTemplate",
+       "name": "下载模板",
+       "note": "",
+       "id": 2766290,
+       "frontMethod": "downloadTemplate"
+      },
+      {
+       "trigger": "批量配置 上传",
+       "method": "POST",
+       "frontPath": "/product-b/b/renewal/manage/batchUploadRenewalConfigType",
+       "frontFile": "src/pages/continuationClasses/detail/RenewableStudent/TemplateSetting/index.js:115（src/services/continuationClasses.js:19）",
+       "service": "product-b",
+       "backendPath": "/b/renewal/manage/batchUploadRenewalConfigType",
+       "name": "批量上传处理",
+       "note": "",
+       "id": 2766291,
+       "frontMethod": "batchUploadRenewalConfigType"
+      }
+     ]
+    },
+    {
      "tabKey": "renewalProcess",
      "name": "续班流程（续班问卷/预报名/正式报名）",
      "file": "promotions/continuation-classes/renewalProcess.md",
