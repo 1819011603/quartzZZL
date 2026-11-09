@@ -11,6 +11,8 @@
 
 ### 上线方案（2026-11-09）
 
+- 已完成：Order !2391完整回滚并创建[MR !2392](https://git.baijia.com/gaotu/order/-/merge_requests/2392)，提交fad87492bd，目标release；编译及9项检查通过。待用户合并，当前未部署。
+
 - 已完成：Order新旧版对照；旧release部署test-eco-10，两版批量同单/mock支付通过、购物车均被资金账户校验拦截；相同编号运行校验旧拦新放。结论及边界见 verify.md。
 
 - 已完成：在需求总入口节点下创建[上线方案](https://gaotuedu.feishu.cn/wiki/Uqqyw0MROiPysgk30x8cwhRlnOe)，覆盖 Apollo、GAIA、student_field_config、ES、`renew_master_relation` DDL、历史标签回溯、XXL-Job、灰度监控与回滚；复用青舟发布计划 24210，未重复创建编排。

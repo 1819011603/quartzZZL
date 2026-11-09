@@ -8,6 +8,7 @@ branches:
   - student-center:feature-xuban-pure-relation-20261102
   - cart:feature-xuban-pure-relation-20261102
   - order:feature-xuban-pure-relation-20261102
+  - order:feature-revert-order-mr2391-20261109
 updated: 2026-11-09
 tags: [需求]
 ---
@@ -25,6 +26,10 @@ tags: [需求]
 > 飞书方案（含表结构+接口协议）：https://gaotuedu.feishu.cn/docx/AQEtdIeKzo7P5IxeQEzc7EpxnBe
 >
 > 上线方案（含 Apollo、DDL、GAIA、ES、历史回溯、灰度与回滚）：https://gaotuedu.feishu.cn/wiki/Uqqyw0MROiPysgk30x8cwhRlnOe；青舟发布计划 24210：https://qingzhou.baijia.com/#/publishArrangement/subPublishArrangement/publishPlan/detail?storyId=&pageNum=1&id=24210&action=audit
+
+## Order 回滚决定（2026-11-09）
+
+用户确认大小班不会共用课程编号，要求完整回滚 Order !2391。旧版真实同单支付已验证，因此本需求移除Order跨模式重复放行逻辑，恢复原有防重复校验；Product/Cart关联推荐不在此次回滚范围。回滚分支 `feature-revert-order-mr2391-20261109` 从最新release建立，提交 `fad87492bd`，[回滚MR !2392](https://git.baijia.com/gaotu/order/-/merge_requests/2392) 已创建并回读为opened，目标release；编译及9项独立行为检查通过。尚未合并或部署，AICR尚无评审结果。
 
 ## 当前缓存补强（已完成）
 

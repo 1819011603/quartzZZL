@@ -74,6 +74,7 @@
 |---|---|---|---|
 | 上线方案 | 上线方案｜企微封禁优化 + EM纯续推荐范围调整（需求节点子文档） | https://gaotuedu.feishu.cn/wiki/Uqqyw0MROiPysgk30x8cwhRlnOe | 2026-11-09 |
 | 青舟发布计划 | 24210｜【A-续班-20261102】企微封禁优化 + EM纯续推荐范围调整 | https://qingzhou.baijia.com/#/publishArrangement/subPublishArrangement/publishPlan/detail?storyId=&pageNum=1&id=24210&action=audit | 2026-11-09 |
+| MR | Order !2391完整回滚（!2392，待合入release） | https://git.baijia.com/gaotu/order/-/merge_requests/2392 | 2026-11-09 |
 | MR | product-server !862 | https://git.baijia.com/gaotu/product-server/-/merge_requests/862 | 2026-11-09 |
 | MR | cart !284 | https://git.baijia.com/gaotu/cart/-/merge_requests/284 | 2026-11-09 |
 | MR | order !2391 | https://git.baijia.com/gaotu/order/-/merge_requests/2391 | 2026-11-09 |

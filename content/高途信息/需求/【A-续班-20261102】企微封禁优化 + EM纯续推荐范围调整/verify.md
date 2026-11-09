@@ -1,5 +1,12 @@
 ## 2026-11-07 从计划状态变化（已修复并实测）
 
+## 2026-11-09 Order !2391 完整回滚验证
+
+- 回滚MR：[!2392](https://git.baijia.com/gaotu/order/-/merge_requests/2392)，分支 `feature-revert-order-mr2391-20261109` → `release`，提交 `fad87492bd35346def21e5d79212ee87f855a476`。GitLab独立回读为opened，source/target/head与本地及远端一致；未合并、未部署。
+- 使用 `git revert --no-commit -m 1 486b3152` 生成完整逆向改动，仅两个原MR文件；暂存树哈希与合并前 `a9790414` 完全一致，恢复原有班级/课程编号重复校验，删除该MR新增的放行测试。
+- `mvn8 -pl order-app -am -DskipTests compile` BUILD SUCCESS。基于本次编译产物用JDK8运行独立校验程序，9项检查通过：不同编号放行、跨模式同课程双向拦截、跨模式同班级拦截、大小班各自同模式重复拦截、已有购物车重复、空输入、降级开关。该程序不纳入MR，保证回滚内容与原MR严格对应；未声称运行全量单测。
+- AICR截至创建后查询尚无该分支任务/评审结论，不能写成评审已通过。此前旧release运行对照仍见下节。
+
 ## 2026-11-09 Order 新旧版本对照：已实测
 
 - 旧版已部署到空闲的 `test-eco-10`：Order/Order-b 均为历史 release `317482f9`，目标实例均 Running/Eureka UP。与合并前 `a9790414` 仅差 `paving/roads.yaml`，业务代码一致。新版为 dev3 `0cc8ef68`；默认 test 已合入 `486b3152`，未用作旧版对照。
