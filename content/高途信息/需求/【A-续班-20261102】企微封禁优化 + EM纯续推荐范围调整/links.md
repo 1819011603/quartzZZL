@@ -81,7 +81,7 @@
 
 ## 数据交付
 
-- [数据] 大小班纯续推荐差异数据（学员 280406836642422，主从配置+前置/后置）：https://gaotuedu.feishu.cn/docx/HqaEdvM9rotA6bxYv2jcGKjPnrf （2026-11-10）
+- [数据] 主从续班计划配置（纯续关联）与查询方式（5 计划 14 条关系，全量/mutual）：https://gaotuedu.feishu.cn/docx/HqaEdvM9rotA6bxYv2jcGKjPnrf （2026-11-10）
 
 ## 上线检索锚点
 
