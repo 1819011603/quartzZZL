@@ -131,3 +131,4 @@
 
 - [x] 权限保留原管理员与置灰契约，只叠加全局邮箱前缀白名单；无参permission仅查全局grant、列表一次请求。修正提交5ea561da0（31项测试）/1a3a4abb（12项测试）已推送MR866/134；test-eco-4流水线1336710/1336713目标版本均就绪；前端空名单3行管理员可点/7行灰，权限仅一次请求已验。TEST白名单tangwen01已由用户发布并回读，正向页面已验证permission=true、8行可点/2行原状态灰，非管理员计划可打开抽屉且权限仍仅查一次，未save。未生产发布。
 - [x] cart预热键兼容：3e012ec2/MR291，32项回归通过，pipeline1336633目标Pod已Eureka UP；v1/v2两次只读调用均返回原完整预热键。只保留 renewal:preheat:{plan}:{user} 原完整键和值结构，关联配置缓存仍按提交版本隔离。
+- [x] 预热合并缓存（仅纯续：主+全部从·含大小班）：cart `feature-renewal-preheat-merge-plan-20261110`/**MR293**/commit `1bf01ef8`，pipeline1337729 test-gtbg-dev-3 Pod UP。预热把「主+全部有效从」纯续并成一份 map 写入口老 key（`@mergedRenewal@` 标记，小班按 beforeCourseNumber 并入）；在线大班入口命中即只算主计划、不再算从计划，非标准/未知标记走原逻辑，MISS 不写，失效同 key。已验证无损（同 C 端口径 miss==hit）与提速（0.36~0.47s vs 0.94~3.81s）；上线需重跑预热刷新旧值。详见 [verify.md](verify.md)。

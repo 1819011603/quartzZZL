@@ -238,3 +238,21 @@ P0原全文revision247验证沿用；round8受影响章节回读revision271，�
 
 - 用户要求开启 TEST；Apollo `cart.gaotu100.com/TEST/application` 的 `preheat.cache.enabled` 已发布为 `true`，Portal 草稿与 config-server 均回读为 true。
 - test-eco-4 cart Pod `10.218.248.204` 内 `RenewalService.preheatEnabled=true`；计划579985778241837056/学员20002的推荐接口仍返回后置班579985190466650112，trace `cart_gaotu100_com.291.17943083914781043`。
+
+## 2026-11-10 预热合并缓存改造（仅缓存纯续：主+全部从·含大小班）与验证
+
+- **背景**：EM 纯续关联下在线按「主 + 每个有效从」各自读各自预热 key 再合并；从计划若该学员无课则无缓存、每次现算，是「预热了仍慢」的根因（详见工单案例 `续班与业绩/续班推荐加购`）。
+- **口径**：**只缓存纯续**（不含扩科/加购/年级/价格），维度不变（计划×学员），**复用老 key** `renewal:preheat:<入口>:<学员>`；**含主+全部有效从、大小班一起**。
+- **改动**：cart 分支 `feature-renewal-preheat-merge-plan-20261110`（自 `origin/release`），**MR !293**（opened，目标 release），commit `1bf01ef8`。
+  - 预热：把「主 + 全部有效从」的**纯续**一次性算好并成一份 `Map<前置课号, ClazzDetailDTO>`（大班走 `coreHandle`；小班走小班推荐取纯续、按 `beforeCourseNumber` 并入同一 map），写入口老 key，值前缀 `@mergedRenewal@`（区分历史单计划 map 与历史整份结果）；**只预热写**。
+  - 在线：标准 C 端请求（`!fromBCart`、大班入口）命中即**只算主计划**的扩科/加购/年级/价格（纯续直接来自缓存 map），**不再另算从计划**；非标准请求/未知标记值走原逻辑；**MISS 不写**；失效沿用 `relationCacheVersion` + `invalidateUserPreheat`（同 key）。
+- **部署**：pipeline 1337729，test-gtbg-dev-3，Pod `cart-gaotu100-com-6f64775cc-6t4pg` / `10.218.239.13` Running/Eureka UP，commit `1bf01ef8`。
+- **已验证（无损 + 提速，test-gtbg-dev-3）**：
+  - 写入：日志 `preheat-merged-renewal-done, renewalNumber=588858850300473344, userId=7658127801, entries=2`（大班六年级 + 小班二年级，**含小班**）。
+  - **无损**（同 C 端口径「未命中现算 vs 命中缓存」）：学员 `7658127801` 两边均 `{585960755422160896(大班), 586090628920764416(小班)}`；学员 `7658129872` 两边均 `{585960755422160896, 586097025945298944}`。
+  - **提速**：命中 `0.36~0.47s` vs 未命中 `0.94~3.81s`（约 2~8x，视冷热）。
+  - **非标准请求不误用**：`/feign/renewal/renewalCart`（fromBCart=true）仍现算，不读该缓存。
+  - 注：`feign(fromBCart=true)` 与 C端 `fromBCart=false` 结果本就可能不同（`useLocalStockCache` 等口径），非本次引入，不能作对照基线。
+- **历史值兼容**：老 key 若仍是历史单计划 map（无前缀）→ 当未命中；若是上一版整份结果（`@mergedCart@`）→ 也当未命中（不按 map 解析）。**上线后需重跑一次预热**刷新为 `@mergedRenewal@` 纯续 map。
+- **过程插曲（已复位）**：排查时用 arthas 调 Redis `delete` 触发该 Pod `JedisConnection.<clinit>` 失败（`ExceptionInInitializerError`），之后该 Pod Redis 调用报「网络异常」；已重新部署复位，后续验证仅用 HTTP。
+- 证据：线上 curl / Pod `app.log`（`preheat-merged-renewal-done`）；MR !293。

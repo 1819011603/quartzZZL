@@ -9,6 +9,7 @@ branches:
   - cart:feature-xuban-pure-relation-20261102
   - order:feature-xuban-pure-relation-20261102
   - order:feature-revert-order-mr2391-20261109
+  - cart:feature-renewal-preheat-merge-plan-20261110
 updated: 2026-11-10
 tags: [需求]
 ---
