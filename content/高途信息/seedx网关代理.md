@@ -122,3 +122,19 @@ node sync-ccswitch.mjs --watch    # 常驻同步（默认每小时）
 - 网关支持的头名/域名/模型是服务端下发的，代理每次刷新都读最新，**网关变化无需改 cc-switch**。
 - plist 里写的是 **nvm 的 node 绝对路径**（`.../v22.21.1/bin/node`）——升级 Node 大版本要同步改。
 - 脚本**不含任何密钥**（`localToken` 自动生成、存 `config.json`）。
+
+## 十一、错误对照（无授权 / 无权限时各端报什么）
+**网关 / 平台侧**（claude、codex 共用同一条网关）：
+- `401` —— 授权无效 / 未授权；
+- `403 SUBSCRIPTION_NOT_FOUND` —— 无订阅 / 无权限（admin `service.py:3296`）。
+
+**seedx 端侧语义（本代理据此兼容）**：
+- 拿不到授权 → `503` + 文案「seedx 网关授权不可用：确认 daemon 在线 / 已登录 / 服务端已配网关」；
+- 上游 `401` → 刷新一次再**原样**回应（`agent-proxy.ts`）；
+- daemon 待命连接 `401` → 提示执行 `seedx login`。
+
+**agent 自身**：
+- claude：系统帧 `cloud_credential_error`；`.zshrc` 里 export 的 `ANTHROPIC_AUTH_TOKEN` 也会撞 401；
+- codex：`Auth required` / `not logged in` / `Sign in to ChatGPT`；`application network permission was revoked`（macOS 本地网络权限）。
+
+**本代理的处理**：上游 `401` / `403` → **刷新授权 + 重试一次**；拿不到授权 → `503`；本地凭据不对 → `401`（用 `localToken`，`allowLegacyToken` 开启时也认 `seedx-local-proxy`）。
