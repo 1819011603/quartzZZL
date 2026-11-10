@@ -51,6 +51,8 @@ const PROXY_HOST = CFG.proxyHost;
 const PROXY_PORT = CFG.proxyPort; // claude / Anthropic 协议
 const CODEX_PORT = CFG.codexPort; // codex / OpenAI 协议
 const LOCAL_TOKEN = ensureLocalToken(); // 本地鉴权：客户端凭据必须等于它
+const LEGACY_TOKEN = "seedx-local-proxy"; // 兼容老配置的占位值
+const ALLOW_LEGACY = CFG.allowLegacyToken !== false;
 const CONNECT_TIMEOUT_MS = Math.max(1, Number(CFG.upstreamConnectTimeoutSec ?? 15)) * 1000;
 const IDLE_TIMEOUT_MS = Math.max(5, Number(CFG.upstreamIdleTimeoutSec ?? 180)) * 1000;
 const REFRESH_AHEAD_S = Number(ENV.SEEDX_REFRESH_AHEAD_S ?? 300);
@@ -264,10 +266,21 @@ function sendUpstream(target, method, headers, body) {
   });
 }
 
-function makeHandler(which) {
+/** 端口默认协议 + 路径协议标记的兼容：老配置里 codex 会打 8787 的 /responses。 */
+function resolveWhich(portDefault, pathname) {
+  if (pathname.startsWith("/v1/messages")) return "anthropic";
+  if (/(^|\/)responses$/.test(pathname) || /\/chat\/completions$/.test(pathname)) return "openai";
+  return portDefault;
+}
+
+function makeHandler(portDefault) {
   return async function handle(req, res) {
-    // 1) 本地鉴权：客户端凭据必须等于 localToken（本机其它进程/网页拿不到就被拒）
-    if (LOCAL_TOKEN && clientCredential(req) !== LOCAL_TOKEN) {
+    const pathname = new URL(req.url, "http://x").pathname;
+    const which = resolveWhich(portDefault, pathname);
+    // 本地鉴权：凭据须等于 localToken；兼容期内也认老占位值
+    const cred = clientCredential(req);
+    const authed = cred === LOCAL_TOKEN || (ALLOW_LEGACY && cred === LEGACY_TOKEN);
+    if (LOCAL_TOKEN && !authed) {
       res.writeHead(401, { "content-type": "application/json" });
       res.end(
         JSON.stringify({ type: "error", error: { type: "seedx_local_unauthorized", message: "本地代理凭据不正确（见面板 localToken）" } }),
@@ -334,7 +347,7 @@ function makeHandler(which) {
     }
 
     const { res: up } = a;
-    log(`[req] ${which} ${req.method} ${new URL(req.url, "http://x").pathname} -> ${up.statusCode}`);
+    log(`[req] ${which} ${req.method} ${pathname} -> ${up.statusCode}`);
     const outHeaders = {};
     for (const [k, v] of Object.entries(up.headers)) {
       if (v === undefined || STRIPPED_RESPONSE_HEADERS.has(k.toLowerCase())) continue;
@@ -367,9 +380,11 @@ function listen(port, which) {
 
 function main() {
   log(`seed 服务端: ${SERVER_URL}；本地鉴权 token=${LOCAL_TOKEN.slice(0, 8)}…`);
-  log(`claude -> :${PROXY_PORT}   codex -> :${CODEX_PORT}`);
-  listen(PROXY_PORT, "anthropic");
-  listen(CODEX_PORT, "openai");
+  // 两个协议端口；相同则只监听一次（单端口），靠路径识别
+  const listeners = [{ port: PROXY_PORT, which: "anthropic" }];
+  if (CODEX_PORT !== PROXY_PORT) listeners.push({ port: CODEX_PORT, which: "openai" });
+  for (const l of listeners) listen(l.port, l.which);
+  log(`监听：${listeners.map((l) => `${l.port}(${l.which})`).join("、")}`);
   void checkLongTicket();
   refreshGatewayToken();
   const timer = setInterval(() => {

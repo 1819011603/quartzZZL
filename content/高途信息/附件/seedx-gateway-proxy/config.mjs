@@ -16,7 +16,7 @@ export const CONFIG_PATH = process.env.SEEDX_CONFIG || join(HOME_DIR, "config.js
 export const DEFAULTS = {
   proxyHost: "127.0.0.1",
   proxyPort: 8787, // claude（Anthropic 协议）监听端口
-  codexPort: 8788, // codex（OpenAI 协议）监听端口
+  codexPort: 8787, // codex（OpenAI 协议）端口；与 proxyPort 相同 = 单端口，靠路径识别协议
   controlPort: 8790,
   syncCcSwitch: true,
   syncIntervalSec: 3600,
@@ -25,8 +25,9 @@ export const DEFAULTS = {
   serverUrl: "", // 空 = 取 credentials.serverUrl，再否则 https://seed.baijia.com
   seedToken: "", // 一般留空（敏感）；留空则用 credentials
   localToken: "", // 本地鉴权 token：客户端请求凭据须等于它，否则 401（首次自动生成）
-  upstreamConnectTimeoutSec: 15, // 上游"无响应"超时（建连/首字节）
-  upstreamIdleTimeoutSec: 180, // 上游"空闲"超时（两次数据间隔）
+  allowLegacyToken: true, // 兼容老配置：额外接受占位值 "seedx-local-proxy"（重新切过 cc-switch 后可设 false）
+  upstreamConnectTimeoutSec: 120, // 上游"无响应（未收到响应头）"超时。模型首字节可能较慢，别设太小；仅兜死连接
+  upstreamIdleTimeoutSec: 300, // 上游"空闲"超时（收到响应后两次数据间隔）
   usageUrl: "https://ai.baijia.com/ai-service/usage", // 面板「用量看板」跳转地址
 };
 
