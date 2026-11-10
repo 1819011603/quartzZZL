@@ -200,7 +200,7 @@ function readBody(req) {
   });
 }
 
-const RESTART_PROXY_KEYS = ["proxyHost", "proxyPort", "codexPort", "credentialsPath", "seedToken", "serverUrl", "localToken", "allowLegacyToken", "upstreamConnectTimeoutSec", "upstreamIdleTimeoutSec"];
+const RESTART_PROXY_KEYS = ["proxyHost", "proxyPort", "codexPort", "credentialsPath", "seedToken", "serverUrl", "localToken", "allowLegacyToken", "upstreamConnectTimeoutSec", "upstreamIdleTimeoutSec", "refreshAheadSec"];
 const RESTART_SYNC_KEYS = ["proxyHost", "proxyPort", "codexPort", "codexModel", "syncCcSwitch", "syncIntervalSec", "localToken"];
 
 async function applyConfig(partial) {

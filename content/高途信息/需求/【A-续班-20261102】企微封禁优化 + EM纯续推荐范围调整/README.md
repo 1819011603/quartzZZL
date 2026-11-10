@@ -39,6 +39,8 @@ cart追加修复已提交3e012ec2，[MR291](https://git.baijia.com/gaotu/cart/-/
 
 ## 当前缓存补强（已完成）
 
+test-eco-4 cart `preheat.cache.enabled=true` 已发布并在 Pod 内回读为 true；样本推荐接口返回后置班，trace `cart_gaotu100_com.291.17943083914781043`。
+
 按owner要求补B端推荐、Redis失效与预热联动：已复现清空关联后旧大班预热仍含从计划。默认开启失效、从未关联的老计划保持原推荐/缓存语义；证据及状态见[当前验证](verify.md)。四项上一批修复结论保持有效，本批已完成TEST验证；关联缓存与预热联动证据见[缓存失效报告](artifacts/20261106-cache-invalidation/README.md)。
 
 ## 当前修复（2026-11-06，已完成）

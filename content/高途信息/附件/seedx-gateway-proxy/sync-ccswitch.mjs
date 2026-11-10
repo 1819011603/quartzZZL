@@ -27,7 +27,7 @@
  */
 
 import { DatabaseSync } from "node:sqlite";
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync, existsSync, writeFileSync, mkdirSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 import { loadConfig, proxyUrl, ensureLocalToken } from "./config.mjs";
@@ -114,8 +114,38 @@ function setCodexProxy(cfg, model) {
   let toml = cfg.config || 'model_provider = "OpenAI"\n\n[model_providers.OpenAI]\nname = "OpenAI"\nbase_url = ""\nwire_api = "responses"\nrequires_openai_auth = false\n';
   toml = toml.replace(/(base_url\s*=\s*)"[^"]*"/, `$1"${CODEX_URL}"`);
   if (model) toml = toml.replace(/^model = ".*"$/m, `model = "${model}"`);
+  // Codex 桌面 app（codex app-server）用 provider 里的 experimental_bearer_token 发凭据，必须=localToken
+  if (/^\s*experimental_bearer_token\s*=/m.test(toml)) {
+    toml = toml.replace(/^(\s*experimental_bearer_token\s*=\s*).*$/m, `$1"${LOCAL_TOKEN}"`);
+  } else {
+    toml = toml.replace(/(base_url\s*=\s*"[^"]*")/, `$1\nexperimental_bearer_token = "${LOCAL_TOKEN}"`);
+  }
   cfg.config = toml;
   return cfg;
+}
+
+/** 安全网：codex 当前 provider 是 seedx网关 时，确保 ~/.codex/auth.json 的 OPENAI_API_KEY = localToken。
+ *  cc-switch 切换时会写它，但也可能丢（丢 = codex 发不出凭据 → 本地 401）。sync 每轮顺手补。 */
+function ensureCodexAuth(db) {
+  try {
+    const cur = db.prepare("SELECT is_current FROM providers WHERE app_type='codex' AND name=?").get(NAME);
+    if (!cur || Number(cur.is_current) !== 1) return;
+    const authPath = join(homedir(), ".codex", "auth.json");
+    let need = true;
+    try {
+      need = JSON.parse(readFileSync(authPath, "utf8")).OPENAI_API_KEY !== LOCAL_TOKEN;
+    } catch {
+      /* 不存在/坏 → 需写 */
+    }
+    if (!need) return;
+    if (!DRY) {
+      mkdirSync(join(homedir(), ".codex"), { recursive: true });
+      writeFileSync(authPath, JSON.stringify({ OPENAI_API_KEY: LOCAL_TOKEN }), { encoding: "utf8", mode: 0o600 });
+    }
+    log(`[codex] ${DRY ? "将补写" : "已补写"} ~/.codex/auth.json 的 OPENAI_API_KEY = localToken`);
+  } catch (e) {
+    log(`[codex] 校验/补写 auth.json 跳过：${e.message}`);
+  }
 }
 
 async function syncOnce() {
@@ -143,6 +173,7 @@ async function syncOnce() {
     const model = CFG.codexModel ? String(CFG.codexModel).trim() : undefined;
     ensureProvider(db, "claude", setClaudeProxy);
     ensureProvider(db, "codex", (cfg) => setCodexProxy(cfg, model));
+    ensureCodexAuth(db); // 安全网：codex 当前若是 seedx网关，确保 ~/.codex/auth.json 的 key = localToken
   } finally {
     db.close();
   }

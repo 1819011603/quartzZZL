@@ -10,8 +10,9 @@ date: 2026-11-10
 
 # seedx 网关代理（让 claude / codex 走 AI Coding 网关）
 
-> 目标：**不依赖 seedx daemon / 它的 skill 与流程**，也能让 `claude` / `codex` 走「AI Coding 网关」那套链路（计费主体是自然人、按人算额度），且凭据自动刷新；跨平台（**能用在 Windows**，seedx 本身不能）。
+> 目标：**不依赖 seedx daemon / 它的 skill 与流程**，也能让 `claude` / `codex` 走「AI Coding 网关」那套链路（计费主体是自然人、按人算额度），凭据自动续期；**Windows 与 macOS 都支持**（Node.js 跨平台，seedx 本身不能在 Windows 用）。
 > 手段：一个本地 HTTP 代理 —— 用 seed 登录长票换取「网关授权」，注入到请求里再转发到网关。脚本见同目录 `附件/seedx-gateway-proxy/`。
+> 兼容：**Claude Code**、**Codex CLI**（认 `~/.codex/auth.json`）与 **Codex 桌面 app / app-server**（认 provider 里的 `experimental_bearer_token`）都覆盖。
 
 ## 一、两种「请求 AI」的方式
 | | 直连 sub2api 集群 | 走 AI Coding 网关（本文方案） |
@@ -28,64 +29,96 @@ date: 2026-11-10
 ## 二、原理（复刻 seedx 的 `gateway-token.ts` + `agent-proxy.ts`）
 1. **取授权**：`POST {seed}/seedx/resource/manage/service/ctl/gateway-token/refresh`，头 `Authorization: Bearer <长票>`，body `{}`
    → 返回 `{ token(act.…), expiresAt, headerName(x-api-key), anthropicBaseUrl, openaiBaseUrl, issuedAt }`
-2. **本地代理**：claude/codex 请求打到 `127.0.0.1:8787`；代理剥掉客户端自带凭据，注入 `headerName`=`token`，流式转发到对应上游：
-   - `/v1/messages*` → `anthropicBaseUrl`（claude）
-   - 其余 → `openaiBaseUrl`（codex，base 已含 `/v1`，会归一避免 `/v1/v1`）
-3. **刷新**：启动刷一次 → 后台每 60s 检查、距过期 <5min 续 → 上游 401 再刷一次；**每次刷新都现读 `credentials.json`**（长票换了自动跟上）。授权落盘缓存（重启不丢）。
+2. **本地代理（单端口 8787）**：claude / codex 都打到 `127.0.0.1:8787`；代理剥掉客户端自带凭据、注入 `headerName`=`token`，流式转发到上游，**按路径区分协议**：
+   - `/v1/messages*` → `anthropicBaseUrl`（Claude）
+   - `/responses`、`/chat/completions*` → `openaiBaseUrl`（Codex，base 已含 `/v1`，会归一避免 `/v1/v1`）
+   - 其余按端口默认（8787 默认 anthropic）
+3. **续期**：启动刷一次 → 后台每 60s 检查、距过期 < `refreshAheadSec`（默认 300s）就续 → 上游 401 再刷一次；**每次刷新都现读 `credentials.json`**（长票换了自动跟上）。授权落盘缓存（重启不丢）。
+4. **超时**：上游无响应 120s、空闲 300s —— 兜住死 keep-alive / 换网卡住，不再死等几分钟。
+5. **错误兼容（claude / codex 共用）**：上游 `401`/`403` 都按"授权/权限类"处理 → **刷新一次授权再重试**；日志标注「401 授权无效·已过期 / 403 无权限·无订阅（如 `SUBSCRIPTION_NOT_FOUND`）」；拿不到授权回 `503`（可读文案）。
+6. **本地鉴权**：客户端凭据须等于 `localToken`（首次自动生成随机串），否则 401；`allowLegacyToken=true` 时**额外兼容老占位值 `seedx-local-proxy`**（不破坏既有配置）。
 
 网关侧其它端点（都用长票 Bearer）：`GET .../ctl/gateway-models?agentKind=codex|claude`（当前可用模型清单）。
 
 ## 三、文件（附件 `附件/seedx-gateway-proxy/`）
 | 文件 | 作用 |
 |---|---|
-| `seedx-gateway-proxy.mjs` | 代理本体（取授权 + 注入 + 转发 + 每小时刷新；带 `[req]` 访问日志） |
-| `sync-ccswitch.mjs` | 幂等同步 cc-switch 的 `seedx网关` provider + 拉取模型清单；`--watch` 常驻定时 |
-| `start.mjs` | 一键启动：同时拉起上面两个，任一挂了自动重启 |
+| `start.mjs` | **一键启动 + 控制面板**（同时拉起下面两个，挂了自动重启） |
+| `seedx-gateway-proxy.mjs` | 代理本体（取授权 + 注入 + 转发 + 续期 + 本地鉴权；带 `[req]` 日志） |
+| `sync-ccswitch.mjs` | 幂等同步 cc-switch 的 `seedx网关` provider + 拉取模型清单；`--watch` 常驻 |
+| `config.mjs` | 配置读写（`~/.seedx-gateway-proxy/config.json`） |
+| `panel.html` | 控制面板页面 |
+| `start.cmd` | **Windows 双击启动** |
+| `start-macos.command` | **macOS 双击启动** |
+| `install-autostart-windows.cmd` / `uninstall-autostart-windows.cmd` | Windows 登录自启注册/注销（`schtasks`） |
 | `com.gaotu.seedx-gateway-proxy.plist` | macOS 开机自启用的 LaunchAgent |
 
 ## 四、使用
 ```bash
-# 手动跑（前台）
-cd ~/seedx-gateway-proxy && node start.mjs
-# 自检：只取一次授权并打印
-node seedx-gateway-proxy.mjs --check
-# 同步 cc-switch（幂等）
-node sync-ccswitch.mjs            # 一次
-node sync-ccswitch.mjs --watch    # 常驻每小时
+cd ~/seedx-gateway-proxy
+node start.mjs                 # 一键启动 + 控制面板（http://127.0.0.1:8790）
+node start.mjs --headless      # 只常驻、不起面板
+node seedx-gateway-proxy.mjs --check      # 只取一次网关授权并打印（自检）
+node sync-ccswitch.mjs            # 同步一次 cc-switch
+node sync-ccswitch.mjs --watch    # 常驻同步（默认每小时）
 ```
+**双击启动**：Windows 双击 `start.cmd`；macOS 双击 `start-macos.command`（首次右键→打开 绕过 Gatekeeper）。
+**前置**：把 seedx 的 `credentials.json` 放到默认路径（Win：`C:\Users\<你>\.seedx-workspace\`；mac/linux：`~/.seedx-workspace/`），或设 `SEEDX_TOKEN`、或在面板填 `credentialsPath`。
 
-### cc-switch 配置（token 填占位，真凭据由代理注入）
-- **claude** provider `settings_config`：
+## 五、控制面板（http://127.0.0.1:8790）
+- 运行状态：代理/同步进程、**网关授权剩余时间**、**seed 长票有效性**、本地 `localToken`（可复制）。
+- 设置：`proxyHost / proxyPort(=codexPort，默认都 8787) / controlPort / refreshAheadSec / codexModel / 同步间隔 / 凭据路径 / serverUrl / usageUrl / 同步开关 / 兼容老凭据开关`。
+- 按钮：保存并应用、重启代理/同步、全部重启、立即同步 cc-switch、检查长票、停/启。
+- **用量看板**快捷跳转（今天 / 近 2 / 近 7 / 近 30 天）→ `ai.baijia.com/ai-service/usage?dim=coding&g=day&…`。
+- 实时日志（最近 200 行）。
+
+## 六、cc-switch 配置（运行 `node sync-ccswitch.mjs` 会自动写好，名为 `seedx网关`，不改动其它 provider）
+- **claude** provider：
   ```json
-  { "env": { "ANTHROPIC_BASE_URL": "http://127.0.0.1:8787", "ANTHROPIC_AUTH_TOKEN": "seedx-local-proxy" } }
+  { "env": { "ANTHROPIC_BASE_URL": "http://127.0.0.1:8787", "ANTHROPIC_AUTH_TOKEN": "<localToken>" } }
   ```
 - **codex** provider：
   ```json
-  { "auth": { "OPENAI_API_KEY": "seedx-local-proxy" },
-    "config": "model_provider = \"OpenAI\"\nmodel = \"gpt-6-astra\"\n\n[model_providers.OpenAI]\nname = \"OpenAI\"\nbase_url = \"http://127.0.0.1:8787\"\nwire_api = \"responses\"\nrequires_openai_auth = false\n" }
+  { "auth": { "OPENAI_API_KEY": "<localToken>" },
+    "config": "model_provider = \"OpenAI\"\nmodel = \"gpt-6-astra\"\n\n[model_providers.OpenAI]\nname = \"OpenAI\"\nbase_url = \"http://127.0.0.1:8787\"\nwire_api = \"responses\"\nrequires_openai_auth = false\nexperimental_bearer_token = \"<localToken>\"\n" }
   ```
-  - 新增的 provider 命名为 `seedx网关`，**不影响原有** `公司` / `公司新的`；切换时 `model_provider` 沿用 `OpenAI` 不变，只有 `base_url` 变。
+  - `experimental_bearer_token` 是给 **Codex 桌面 app（app-server）** 用的——它靠这个字段发凭据、不看 auth.json；`sync-ccswitch.mjs` 会自动写上，同时给 **Codex CLI** 兜底写 `~/.codex/auth.json`。
+  - `<localToken>` 见控制面板「本地凭据」；`allowLegacyToken` 开着时老的 `seedx-local-proxy` 也认。
+  - cc-switch 库路径默认 `~/.cc-switch/cc-switch.db`；Windows 下若不同，用环境变量 `CC_SWITCH_DB` 指定。
   - codex 可用模型（网关）：`gpt-6.1-sol` / `gpt-6.1-terra` / `gpt-6-sol` / `gpt-6-astra` / `gpt-6-luna`；claude 侧另有 `claude-opus-5-5` / `claude-sonnet-5-5` / `claude-haiku-5-5` / `claude-fable-5-1`。
 
-## 五、开机自启（macOS）
-LaunchAgent：`~/Library/LaunchAgents/com.gaotu.seedx-gateway-proxy.plist`（`RunAtLoad` + `KeepAlive`，跑 `start.mjs`，日志 `~/seedx-gateway-proxy/launchd.out.log`）。
-```bash
-launchctl print "gui/$(id -u)/com.gaotu.seedx-gateway-proxy" | grep -E 'state|pid'   # 看状态
-tail -f ~/seedx-gateway-proxy/launchd.out.log                                        # 看日志
-launchctl bootout "gui/$(id -u)/com.gaotu.seedx-gateway-proxy"                       # 暂停
-launchctl bootstrap "gui/$(id -u)" ~/Library/LaunchAgents/com.gaotu.seedx-gateway-proxy.plist  # 重新启用
-```
-Windows 对应：任务计划程序（登录时）跑 `node ...\start.mjs`。
+## 七、开机自启
+- **macOS**：LaunchAgent `~/Library/LaunchAgents/com.gaotu.seedx-gateway-proxy.plist`（`RunAtLoad` + `KeepAlive`，跑 `start.mjs`，日志 `~/seedx-gateway-proxy/launchd.out.log`）。
+  ```bash
+  launchctl bootstrap "gui/$(id -u)" ~/Library/LaunchAgents/com.gaotu.seedx-gateway-proxy.plist  # 启用
+  launchctl print "gui/$(id -u)/com.gaotu.seedx-gateway-proxy" | grep -E 'state|pid'              # 看状态
+  launchctl kickstart -k "gui/$(id -u)/com.gaotu.seedx-gateway-proxy"                            # 重启
+  launchctl bootout "gui/$(id -u)/com.gaotu.seedx-gateway-proxy"                                 # 暂停
+  ```
+- **Windows**：双击 `install-autostart-windows.cmd`（`schtasks` 建"登录时"任务）；卸载跑 `uninstall-autostart-windows.cmd`。
 
-## 六、验证是否生效
-1. 进程在跑：`pgrep -fl "seedx-gateway-proxy.mjs|sync-ccswitch.mjs"`。
+## 八、验证是否生效
+1. 进程在跑：`pgrep -fl "start.mjs|seedx-gateway-proxy.mjs|sync-ccswitch.mjs"`；监听端口：`lsof -nP -iTCP:8787 -sTCP:LISTEN`。
 2. cc-switch 有两条 `seedx网关`：`sqlite3 ~/.cc-switch/cc-switch.db "SELECT app_type,name,is_current FROM providers WHERE name='seedx网关';"`。
-3. 代理能转发（**免费**）：`curl -s http://127.0.0.1:8787/v1/models -H 'x-api-key: seedx-local-proxy' -w '%{http_code}\n'` → 200，且日志出现 `[req] GET /v1/models -> openai 200`。
-4. cc-switch 切到 `seedx网关`（claude/codex 各一），跑一次 `claude -p "say ok"` / `codex exec "say ok"`，日志出现 `[req] POST /v1/messages -> anthropic 200` / `POST /responses -> openai 200`（**这步花额度**）。
+3. 代理能转发（**免费**）：
+   ```bash
+   TOK=$(python3 -c "import json;print(json.load(open('$HOME/.seedx-gateway-proxy/config.json')).get('localToken',''))")
+   curl -s http://127.0.0.1:8787/v1/models -H "x-api-key: $TOK" -w '%{http_code}\n'   # → 200
+   ```
+   日志出现 `[req] anthropic GET /v1/models -> 200`。
+4. cc-switch 切到 `seedx网关`，跑一次 `claude -p "say ok"` / `codex exec "say ok"`，日志出现 `[req] anthropic POST /v1/messages -> 200` / `[req] openai POST /responses -> 200`（**这步花额度**）。
 5. 额度归属：`seedx status` 或那张 `usage_html` 页面看是否算到本人名下。
 
-## 七、注意事项 / 坑
-- plist 里写的是 **nvm 的 node 绝对路径**（`.../v22.21.1/bin/node`）——升级 Node 大版本要同步改，否则自启失败。
-- 只自动刷新**网关授权**（1h 那个 `act.…`）；**seed 登录长票本身不自动续**（要重登），但代理会现读文件、且启动时用 `/auth/me` 校验并告警。
-- 走网关即**吃本人费控额度**，且会出现在按人用量里；额度用完后按「自助加油包 / 等时段重置」处理。
+## 九、配置项（`~/.seedx-gateway-proxy/config.json`）
+`proxyHost`(127.0.0.1) / `proxyPort`(8787) / `codexPort`(8787，与 proxyPort 同 = 单端口) / `controlPort`(8790) / `localToken`(自动生成) / `allowLegacyToken`(true) / `refreshAheadSec`(300) / `upstreamConnectTimeoutSec`(120) / `upstreamIdleTimeoutSec`(300) / `syncCcSwitch`(true) / `syncIntervalSec`(3600) / `codexModel`(gpt-6-astra) / `credentialsPath`(空=默认) / `serverUrl`(空=取凭据) / `usageUrl`。env 可覆盖（如 `SEEDX_PROXY_PORT`）。
+
+## 十、注意事项 / 坑
+- **网关授权 TTL(3600s) 是 admin 服务端定的**（`sub2api.token.ttlSeconds`），代理只是使用、**改不了**；能调的是**提前续期** `refreshAheadSec`（不是改 TTL）。
+- 只自动续**网关授权**；**seed 登录长票本身不自动续**（失效要重登），但代理会现读文件、且启动时用 `/auth/me` 校验并告警。
+- 首字节超时别设太小：简单模型请求也可能十几秒到几十秒才回；设太小会把正常请求误杀成 502（已默认 120s）。
+- 走网关即**吃本人费控额度**，并计入按人用量；额度用完后按「自助加油包 / 等时段重置」处理。
+- **Codex 桌面 app 报 `application network permission was revoked`**：它直连私网 IP 需要 macOS「本地网络」权限；改走本代理（`127.0.0.1` 回环不需要该权限）即可绕开；若仍报，去「系统设置 → 隐私与安全性 → 本地网络」给 Codex 打开。
+- **兼容矩阵**：Claude Code（`ANTHROPIC_*`）、Codex CLI（`~/.codex/auth.json`）、Codex 桌面 app（`experimental_bearer_token`）——客户端凭据统一用 `localToken`。
 - 网关支持的头名/域名/模型是服务端下发的，代理每次刷新都读最新，**网关变化无需改 cc-switch**。
+- plist 里写的是 **nvm 的 node 绝对路径**（`.../v22.21.1/bin/node`）——升级 Node 大版本要同步改。
+- 脚本**不含任何密钥**（`localToken` 自动生成、存 `config.json`）。

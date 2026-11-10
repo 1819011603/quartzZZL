@@ -227,3 +227,14 @@ P0原全文revision247验证沿用；round8受影响章节回读revision271，�
 - 后端测试部署：pipeline1336710，模板1，目标 `5ea561da` Pod `10.218.236.58` 已Running/Eureka UP；空名单时无参global permission为false，页面管理员仍可点击。白名单发布后同一浏览器唐稳01的无参permission（req527）返回code0、canView=true/canEdit=true；10行中8行可操作状态均可点，2行未发布仍按原状态置灰。非管理员计划579985778241837056（管理员弓雪萌/张岳翔）原置灰、加名单后可打开关联抽屉，空关联0条正常；打开后仍只有1次permission请求，未save。桥默认身份与浏览器身份分开，不混算。
 - Cart兼容修复：`3e012ec2`/MR291，32项聚焦测试通过。pipeline1336633目标Pod10.218.248.204 Running/Eureka UP；反射桥只读调用 `RenewalService#getCacheKey`，同计划580120868989048832/user7的v1和v2关联版本均返回 `renewal:preheat:580120868989048832:7`，原完整键保持。配置缓存版本逻辑未改。
 - 发布编排24298提测产物已同步cart3e012ec2/product-b5ea561da/前端1a3a4abb，五服务及原顺序保留；未生产发布。
+
+## 2026-11-10 单学员预热与实际Redis键核对
+
+- TEST/test-eco-4，cart3e012ec2，目标Pod10.218.248.204 Running/Eureka UP；计划579985778241837056、学员20002。通过 `/web/renewal/preheat` 实际执行单学员预热，HTTP200，trace `cart_gaotu100_com.298.17943066283400994`。
+- Redis实读 `renewal:preheat:579985778241837056:20002`，值为前置课579985105158701056→后置班579985190466650112；两个读写模板均能读到，TTL实测92953秒（初始26小时），键无关联版本后缀。
+- C端同方法7参/fromBCart=false查询code0返回该纯续后置班，trace `cart_gaotu100_com.296.17943072727981007`；但Pod实测preheatEnabled=false，因此本次推荐走实时计算，不能标为缓存命中。未更改开关。证据：[本轮实测](artifacts/20261110-preheat-key-check.json)。
+
+## 2026-11-10 TEST开启预热缓存读取
+
+- 用户要求开启 TEST；Apollo `cart.gaotu100.com/TEST/application` 的 `preheat.cache.enabled` 已发布为 `true`，Portal 草稿与 config-server 均回读为 true。
+- test-eco-4 cart Pod `10.218.248.204` 内 `RenewalService.preheatEnabled=true`；计划579985778241837056/学员20002的推荐接口仍返回后置班579985190466650112，trace `cart_gaotu100_com.291.17943083914781043`。

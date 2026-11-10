@@ -76,6 +76,7 @@
       <div><label>凭据文件 credentialsPath（留空=默认）</label><input type="text" id="credentialsPath"></div>
       <div><label>seed 服务端 serverUrl（留空=取凭据）</label><input type="text" id="serverUrl"></div>
       <div><label>用量看板地址 usageUrl</label><input type="text" id="usageUrl"></div>
+      <div><label>提前续期秒 refreshAheadSec（越大越保险）</label><input type="number" id="refreshAheadSec"></div>
       <div style="display:flex;align-items:flex-end"><label class="chk"><input type="checkbox" id="syncCcSwitch"> 常驻同步 cc-switch</label></div>
       <div style="display:flex;align-items:flex-end"><label class="chk"><input type="checkbox" id="allowLegacyToken"> 兼容老凭据 seedx-local-proxy</label></div>
     </div>
@@ -106,7 +107,7 @@ function copyToken(){ const v=window.__localToken||""; if(!v){toast("token 为�
 function fmtSec(s){ s=Math.round(s); if(s<=0) return "已过期"; const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60; return h>0?`${h}h${m}m`:(m>0?`${m}m${x}s`:`${x}s`); }
 
 function fillForm(cfg){
-  for (const k of ["proxyHost","proxyPort","codexPort","controlPort","syncIntervalSec","codexModel","credentialsPath","serverUrl","usageUrl"]) {
+  for (const k of ["proxyHost","proxyPort","codexPort","controlPort","syncIntervalSec","codexModel","credentialsPath","serverUrl","usageUrl","refreshAheadSec"]) {
     if (document.activeElement && document.activeElement.id===k) continue;
     $(k).value = cfg[k] ?? "";
   }
@@ -169,6 +170,7 @@ async function save(){
     credentialsPath: $("credentialsPath").value.trim(),
     serverUrl: $("serverUrl").value.trim(),
     usageUrl: $("usageUrl").value.trim(),
+    refreshAheadSec: Number($("refreshAheadSec").value),
     syncCcSwitch: $("syncCcSwitch").checked,
     allowLegacyToken: $("allowLegacyToken").checked,
   };

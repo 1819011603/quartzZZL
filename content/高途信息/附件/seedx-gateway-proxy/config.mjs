@@ -28,6 +28,7 @@ export const DEFAULTS = {
   allowLegacyToken: true, // 兼容老配置：额外接受占位值 "seedx-local-proxy"（重新切过 cc-switch 后可设 false）
   upstreamConnectTimeoutSec: 120, // 上游"无响应（未收到响应头）"超时。模型首字节可能较慢，别设太小；仅兜死连接
   upstreamIdleTimeoutSec: 300, // 上游"空闲"超时（收到响应后两次数据间隔）
+  refreshAheadSec: 300, // 距网关授权过期还有这么久就提前续（越大越保险，越小越省刷新请求）
   usageUrl: "https://ai.baijia.com/ai-service/usage", // 面板「用量看板」跳转地址
 };
 

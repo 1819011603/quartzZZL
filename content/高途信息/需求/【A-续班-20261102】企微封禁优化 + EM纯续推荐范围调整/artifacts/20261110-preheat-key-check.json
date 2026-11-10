@@ -1,0 +1,75 @@
+{
+  "environment": "test-eco-4",
+  "cartCommit": "3e012ec2",
+  "pod": "cart-gaotu100-com-7b8775f5b7-jv59s",
+  "podIP": "10.218.248.204",
+  "renewalNumber": "579985778241837056",
+  "userId": "20002",
+  "preheatEndpoint": "/web/renewal/preheat?renewalNumber=579985778241837056&userId=20002",
+  "preheatTraceId": "cart_gaotu100_com.298.17943066283400994",
+  "preheatResponse": "{579985105158701056:{\"product_sku_number\":579985190466650112,\"select\":0,\"sign_up\":0,\"subject_names\":[]}}",
+  "redisKey": "renewal:preheat:579985778241837056:20002",
+  "redisRead": "@String[{579985105158701056:{\"product_sku_number\":579985190466650112,\"select\":0,\"sign_up\":0,\"subject_names\":[]}}]\n",
+  "redisReaderAndTtl": "@ArrayList[\n    @Long[92953],\n    @String[{579985105158701056:{\"product_sku_number\":579985190466650112,\"select\":0,\"sign_up\":0,\"subject_names\":[]}}],\n    @Boolean[false],\n]\n",
+  "ttlSecondsObserved": 92953,
+  "preheatEnabledObserved": false,
+  "recommendCallParams": [
+    "20002",
+    "579985778241837056",
+    false,
+    false,
+    null,
+    null,
+    false
+  ],
+  "recommendTraceId": "cart_gaotu100_com.296.17943072727981007",
+  "recommendResult": {
+    "all_sign_up": 0,
+    "expand_force_buy": false,
+    "grade_clazz_list": [
+      {
+        "clazz_detail_d_t_o_list": [
+          {
+            "after_course_number": 579985185825652736,
+            "before_course_number": 579985105158701056,
+            "can_change_course": true,
+            "clazz_date_desc": "2023年06月13日-06月13日",
+            "clazz_time_desc": "12:00-12:10",
+            "clazz_week_desc": "每周四",
+            "force_buy": false,
+            "lesson_count": 1,
+            "price": 1000,
+            "product_sku_name": "任务系统-续班测试-无正式报名-后置班-四年级语文秋季-0917",
+            "product_sku_number": 579985190466650112,
+            "product_type": 2,
+            "recommend_type": 1,
+            "select": 0,
+            "sign_up": 0,
+            "subject_names": [
+              "语文"
+            ],
+            "teacher_list": [
+              {
+                "name": "刘华(高途课堂-技术部)",
+                "teacher_number": 3109006401521152,
+                "teacher_role": "主讲老师"
+              }
+            ]
+          }
+        ],
+        "default_select": 1,
+        "grade": 14,
+        "grade_name": "四年级"
+      }
+    ],
+    "image_url": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+    "msg": [],
+    "renewal_end_time": 1789743600000,
+    "renewal_force_buy": false,
+    "renewal_number": 579985778241837056,
+    "renewal_start_time": 1789696800000,
+    "status": 0
+  },
+  "conclusion": "单学员预热已实际写入原完整Redis键；两个读写模板均读取到相同值。当前Pod preheatEnabled=false，因此本轮推荐走实时计算，未证明缓存命中且未改开关。",
+  "scope": "仅TEST单学员预热与只读验证，未改业务关联、未改Apollo、未改代码。"
+}

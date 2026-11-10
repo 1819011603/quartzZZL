@@ -55,7 +55,7 @@ const LEGACY_TOKEN = "seedx-local-proxy"; // 兼容老配置的占位值
 const ALLOW_LEGACY = CFG.allowLegacyToken !== false;
 const CONNECT_TIMEOUT_MS = Math.max(1, Number(CFG.upstreamConnectTimeoutSec ?? 15)) * 1000;
 const IDLE_TIMEOUT_MS = Math.max(5, Number(CFG.upstreamIdleTimeoutSec ?? 180)) * 1000;
-const REFRESH_AHEAD_S = Number(ENV.SEEDX_REFRESH_AHEAD_S ?? 300);
+const REFRESH_AHEAD_S = Number(ENV.SEEDX_REFRESH_AHEAD_S ?? CFG.refreshAheadSec ?? 300);
 const REFRESH_TIMEOUT_MS = 10_000;
 const MAX_BODY_BYTES = 64 * 1024 * 1024;
 
@@ -331,12 +331,16 @@ function makeHandler(portDefault) {
     let a;
     try {
       a = await attempt(token);
-      if (a.res.statusCode === 401) {
+      // 401/403 都当"授权/权限类"：可能是 token 过期或权限态变化 → 刷新一次重试
+      if (a.res.statusCode === 401 || a.res.statusCode === 403) {
+        const code0 = a.res.statusCode;
         a.res.resume();
         const fresh = await refreshGatewayToken();
         if (fresh && fresh.token !== token.token) {
           token = fresh;
           a = await attempt(fresh);
+        } else if (code0 === 403) {
+          log(`[warn] 上游 403（授权未变）：疑似无权限/无订阅（如 SUBSCRIPTION_NOT_FOUND），原样返回`);
         }
       }
     } catch (e) {
@@ -347,7 +351,9 @@ function makeHandler(portDefault) {
     }
 
     const { res: up } = a;
-    log(`[req] ${which} ${req.method} ${pathname} -> ${up.statusCode}`);
+    const hint =
+      up.statusCode === 401 ? "（上游 401：授权无效/已过期）" : up.statusCode === 403 ? "（上游 403：无权限/无订阅）" : "";
+    log(`[req] ${which} ${req.method} ${pathname} -> ${up.statusCode}${hint}`);
     const outHeaders = {};
     for (const [k, v] of Object.entries(up.headers)) {
       if (v === undefined || STRIPPED_RESPONSE_HEADERS.has(k.toLowerCase())) continue;
