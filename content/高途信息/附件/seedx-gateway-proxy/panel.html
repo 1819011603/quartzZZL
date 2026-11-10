@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>seedx 网关代理 · 控制面板</title>
+<style>
+  :root { --bd:#d0d7de; --bg:#f6f8fa; --fg:#24292f; --mut:#57606a; --ok:#1a7f37; --bad:#cf222e; --warn:#9a6700; --pri:#0969da; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Segoe UI,Arial,sans-serif; }
+  .wrap { max-width:900px; margin:0 auto; padding:24px 18px 60px; }
+  h1 { font-size:20px; margin:0 0 4px; }
+  .sub { color:var(--mut); font-size:13px; margin-bottom:18px; }
+  .card { background:#fff; border:1px solid var(--bd); border-radius:10px; padding:16px 18px; margin-bottom:16px; }
+  .card h2 { font-size:14px; margin:0 0 12px; color:var(--mut); letter-spacing:.03em; }
+  .row { display:flex; align-items:center; gap:10px; padding:5px 0; font-size:14px; }
+  .row .k { color:var(--mut); min-width:132px; }
+  .dot { width:9px; height:9px; border-radius:50%; display:inline-block; }
+  .dot.ok{background:var(--ok)} .dot.bad{background:var(--bad)} .dot.off{background:#aaa}
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:12px 20px; }
+  label { display:block; font-size:12px; color:var(--mut); margin-bottom:3px; }
+  input[type=text], input[type=number] { width:100%; padding:7px 9px; border:1px solid var(--bd); border-radius:7px; font-size:13px; }
+  .chk { display:flex; align-items:center; gap:8px; font-size:14px; }
+  .btns { display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
+  button { padding:7px 13px; border:1px solid var(--bd); background:#fff; border-radius:7px; font-size:13px; cursor:pointer; }
+  button:hover { background:var(--bg); }
+  button.pri { background:var(--pri); color:#fff; border-color:var(--pri); }
+  button.danger { color:var(--bad); }
+  pre.logs { background:#0d1117; color:#c9d1d9; border-radius:8px; padding:12px; height:260px; overflow:auto;
+    font-family:ui-monospace,Menlo,Consolas,monospace; font-size:12px; line-height:1.5; margin:0; white-space:pre-wrap; }
+  .tag { color:#7d8590; }
+  .hint { color:var(--mut); font-size:12px; margin-top:8px; }
+  code { background:rgba(175,184,193,.25); padding:1px 5px; border-radius:5px; font-size:12px; }
+  .toast { position:fixed; right:18px; bottom:18px; background:#24292f; color:#fff; padding:10px 14px; border-radius:8px;
+    font-size:13px; opacity:0; transition:opacity .2s; pointer-events:none; }
+  .toast.show { opacity:1; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>seedx 网关代理</h1>
+  <div class="sub">让 claude / codex 走 AI Coding 网关；凭据自动刷新。配置：<span id="cfgPath"></span></div>
+
+  <div class="card">
+    <h2>运行状态</h2>
+    <div class="row"><span class="k">代理地址</span><span id="proxyUrl">—</span></div>
+    <div class="row"><span class="k">本地凭据 localToken</span><span><code id="localToken">—</code> <button onclick="copyToken()" style="padding:2px 8px">复制</button></span></div>
+    <div class="row"><span class="k">代理进程</span><span id="proxyProc">—</span></div>
+    <div class="row"><span class="k">cc-switch 同步</span><span id="syncProc">—</span></div>
+    <div class="row"><span class="k">网关授权</span><span id="gw">—</span></div>
+    <div class="row"><span class="k">seed 登录长票</span><span id="ticket">—</span></div>
+  </div>
+
+  <div class="card">
+    <h2>用量看板</h2>
+    <div class="btns">
+      <button onclick="openUsage(0)">今天</button>
+      <button onclick="openUsage(1)">近 2 天</button>
+      <button class="pri" onclick="openUsage(6)">近 7 天</button>
+      <button onclick="openUsage(29)">近 30 天</button>
+      <a id="usageLink" href="#" target="_blank" rel="noopener" style="margin-left:8px;font-size:13px;align-self:center">打开当前链接 ↗</a>
+    </div>
+    <div class="hint">跳转到 <code id="usageHost"></code>（dim=coding，g=day）；需浏览器已登录公司账号。</div>
+  </div>
+
+  <div class="card">
+    <h2>设置</h2>
+    <div class="grid">
+      <div><label>代理监听地址 proxyHost</label><input type="text" id="proxyHost"></div>
+      <div><label>claude 端口 proxyPort（cc-switch 指向它）</label><input type="number" id="proxyPort"></div>
+      <div><label>codex 端口 codexPort（cc-switch 指向它）</label><input type="number" id="codexPort"></div>
+      <div><label>控制面板端口 controlPort</label><input type="number" id="controlPort"></div>
+      <div><label>同步间隔秒 syncIntervalSec（≥60）</label><input type="number" id="syncIntervalSec"></div>
+      <div><label>codex 默认模型 codexModel（留空=不改）</label><input type="text" id="codexModel"></div>
+      <div><label>凭据文件 credentialsPath（留空=默认）</label><input type="text" id="credentialsPath"></div>
+      <div><label>seed 服务端 serverUrl（留空=取凭据）</label><input type="text" id="serverUrl"></div>
+      <div><label>用量看板地址 usageUrl</label><input type="text" id="usageUrl"></div>
+      <div style="display:flex;align-items:flex-end"><label class="chk"><input type="checkbox" id="syncCcSwitch"> 常驻同步 cc-switch</label></div>
+    </div>
+    <div class="btns" style="margin-top:14px">
+      <button class="pri" onclick="save()">保存并应用</button>
+      <button onclick="act('restart-proxy')">重启代理</button>
+      <button onclick="act('restart-sync')">重启同步</button>
+      <button onclick="act('restart-all')">全部重启</button>
+      <button onclick="act('sync-now')">立即同步 cc-switch</button>
+      <button onclick="act('check-ticket')">检查长票</button>
+      <button class="danger" onclick="act('stop-all')">停止全部</button>
+      <button onclick="act('start-all')">启动全部</button>
+    </div>
+    <div class="hint">cc-switch 里把 claude 指到 <code>proxyPort</code>、codex 指到 <code>codexPort</code>，凭据填上面的 <code>localToken</code>（运行 <code>sync-ccswitch</code> 会自动写好名为 <code>seedx网关</code> 的两条 provider）。</div>
+  </div>
+
+  <div class="card">
+    <h2>实时日志（最近 200 行）</h2>
+    <pre class="logs" id="logs">加载中…</pre>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+function toast(msg) { const t=$("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),1800); }
+function copyToken(){ const v=window.__localToken||""; if(!v){toast("token 为空");return;} navigator.clipboard?.writeText(v).then(()=>toast("已复制 localToken"),()=>toast("复制失败，请手动选")); }
+function fmtSec(s){ s=Math.round(s); if(s<=0) return "已过期"; const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60; return h>0?`${h}h${m}m`:(m>0?`${m}m${x}s`:`${x}s`); }
+
+function fillForm(cfg){
+  for (const k of ["proxyHost","proxyPort","codexPort","controlPort","syncIntervalSec","codexModel","credentialsPath","serverUrl","usageUrl"]) {
+    if (document.activeElement && document.activeElement.id===k) continue;
+    $(k).value = cfg[k] ?? "";
+  }
+  $("syncCcSwitch").checked = !!cfg.syncCcSwitch;
+}
+
+let usageBase = "https://ai.baijia.com/ai-service/usage";
+function ymd(d){ const p=n=>String(n).padStart(2,"0"); return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate()); }
+function buildUsageUrl(daysAgo){
+  const end=new Date(), start=new Date(); start.setDate(end.getDate()-(daysAgo||0));
+  return usageBase + "?dim=coding&g=day&start=" + ymd(start) + "&end=" + ymd(end);
+}
+function openUsage(daysAgo){ window.open(buildUsageUrl(daysAgo), "_blank", "noopener"); }
+
+async function refresh(){
+  try {
+    const s = await (await fetch("/api/status")).json();
+    fillForm(s.config);
+    $("cfgPath").textContent = s.configPath;
+    $("proxyUrl").textContent = s.proxyUrl + "  ｜  codex " + (s.codexUrl || "");
+    $("localToken").textContent = s.localToken || "(空)";
+    window.__localToken = s.localToken || "";
+    usageBase = (s.config.usageUrl || usageBase).replace(/\?.*$/, "");
+    $("usageHost").textContent = usageBase;
+    $("usageLink").href = buildUsageUrl(6);
+    $("proxyProc").innerHTML = s.proxy.running
+      ? `<span class="dot ok"></span> 运行中 pid=${s.proxy.pid}（重启 ${s.proxy.restarts} 次）`
+      : `<span class="dot off"></span> 未运行`;
+    $("syncProc").innerHTML = s.sync.running
+      ? `<span class="dot ok"></span> 运行中 pid=${s.sync.pid}（重启 ${s.sync.restarts} 次）`
+      : (s.config.syncCcSwitch ? `<span class="dot bad"></span> 未运行` : `<span class="dot off"></span> 已关闭`);
+    const g = s.gateway||{};
+    $("gw").innerHTML = g.ok
+      ? `<span class="dot ${g.secondsLeft>0?'ok':'bad'}"></span> ${g.headerName} · 剩余 ${fmtSec(g.secondsLeft)}（${g.expiresAt}）`
+      : `<span class="dot bad"></span> 无授权`;
+    const t = s.ticket||{};
+    const cls = t.ok===true?'ok':(t.ok===false?'bad':'off');
+    $("ticket").innerHTML = `<span class="dot ${cls}"></span> ${t.status||"未检查"}`;
+  } catch(e){ /* ignore */ }
+}
+
+async function refreshLogs(){
+  try {
+    const r = await (await fetch("/api/logs?n=200")).json();
+    const el = $("logs");
+    el.textContent = (r.logs||[]).map(l=>`${l.ts.slice(11,19)} [${l.tag}] ${l.line}`).join("\n") || "(空)";
+    el.scrollTop = el.scrollHeight;
+  } catch(e){ /* ignore */ }
+}
+
+async function save(){
+  const body = {
+    proxyHost: $("proxyHost").value.trim(),
+    proxyPort: Number($("proxyPort").value),
+    codexPort: Number($("codexPort").value),
+    controlPort: Number($("controlPort").value),
+    syncIntervalSec: Number($("syncIntervalSec").value),
+    codexModel: $("codexModel").value.trim(),
+    credentialsPath: $("credentialsPath").value.trim(),
+    serverUrl: $("serverUrl").value.trim(),
+    usageUrl: $("usageUrl").value.trim(),
+    syncCcSwitch: $("syncCcSwitch").checked,
+  };
+  const r = await (await fetch("/api/config",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(body)})).json();
+  if (r.error) return toast("保存失败："+r.error);
+  toast(r.note || "已保存并应用");
+  setTimeout(refresh, 600);
+}
+
+async function act(action){
+  const r = await (await fetch("/api/action",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({action})})).json();
+  if (r.error) return toast("失败："+r.error);
+  toast("已执行："+action);
+  setTimeout(refresh, 500);
+}
+
+refresh(); refreshLogs();
+setInterval(refresh, 3000);
+setInterval(refreshLogs, 2000);
+</script>
+</body>
+</html>

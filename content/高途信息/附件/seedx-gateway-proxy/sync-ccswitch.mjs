@@ -30,13 +30,17 @@ import { DatabaseSync } from "node:sqlite";
 import { readFileSync, existsSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
+import { loadConfig, proxyUrl, ensureLocalToken } from "./config.mjs";
 
 const ENV = process.env;
-const PROXY = `http://${ENV.SEEDX_PROXY_HOST ?? "127.0.0.1"}:${ENV.SEEDX_PROXY_PORT ?? 8787}`;
+const CFG = loadConfig();
+const PROXY = proxyUrl(CFG);
+const CLAUDE_URL = `http://${CFG.proxyHost}:${CFG.proxyPort}`;
+const CODEX_URL = `http://${CFG.proxyHost}:${CFG.codexPort}`;
+const LOCAL_TOKEN = ensureLocalToken();
 const NAME = "seedx网关";
-const PLACEHOLDER = "seedx-local-proxy";
 const DB_PATH = ENV.CC_SWITCH_DB || join(homedir(), ".cc-switch", "cc-switch.db");
-const CRED_PATH = ENV.SEEDX_CREDENTIALS || join(homedir(), ".seedx-workspace", "credentials.json");
+const CRED_PATH = CFG.credentialsPath || join(homedir(), ".seedx-workspace", "credentials.json");
 const DRY = process.argv.includes("--dry-run");
 
 const PREFIX_RESOURCE = ENV.SEEDX_PREFIX_RESOURCE ?? "/seedx/resource/manage/service";
@@ -46,10 +50,10 @@ function log(...a) {
 }
 
 function readSeed() {
-  if (ENV.SEEDX_TOKEN) return { token: ENV.SEEDX_TOKEN, serverUrl: ENV.SEEDX_SERVER_URL };
+  if (CFG.seedToken) return { token: CFG.seedToken, serverUrl: CFG.serverUrl };
   try {
     const c = JSON.parse(readFileSync(CRED_PATH, "utf8"));
-    return { token: c.token, serverUrl: c.serverUrl || ENV.SEEDX_SERVER_URL };
+    return { token: c.token, serverUrl: CFG.serverUrl || c.serverUrl };
   } catch {
     return {};
   }
@@ -101,14 +105,14 @@ function ensureProvider(db, appType, transform, templateMeta) {
 }
 
 function setClaudeProxy(cfg) {
-  cfg.env = { ...(cfg.env || {}), ANTHROPIC_BASE_URL: PROXY, ANTHROPIC_AUTH_TOKEN: PLACEHOLDER };
+  cfg.env = { ...(cfg.env || {}), ANTHROPIC_BASE_URL: CLAUDE_URL, ANTHROPIC_AUTH_TOKEN: LOCAL_TOKEN };
   return cfg;
 }
 
 function setCodexProxy(cfg, model) {
-  cfg.auth = { ...(cfg.auth || {}), OPENAI_API_KEY: PLACEHOLDER };
+  cfg.auth = { ...(cfg.auth || {}), OPENAI_API_KEY: LOCAL_TOKEN };
   let toml = cfg.config || 'model_provider = "OpenAI"\n\n[model_providers.OpenAI]\nname = "OpenAI"\nbase_url = ""\nwire_api = "responses"\nrequires_openai_auth = false\n';
-  toml = toml.replace(/(base_url\s*=\s*)"[^"]*"/, `$1"${PROXY}"`);
+  toml = toml.replace(/(base_url\s*=\s*)"[^"]*"/, `$1"${CODEX_URL}"`);
   if (model) toml = toml.replace(/^model = ".*"$/m, `model = "${model}"`);
   cfg.config = toml;
   return cfg;
@@ -136,7 +140,7 @@ async function syncOnce() {
   // 每轮重新开库：cc-switch 可能中途重写该文件，避免持旧句柄
   const db = new DatabaseSync(DB_PATH);
   try {
-    const model = ENV.SEEDX_CODEX_MODEL ? String(ENV.SEEDX_CODEX_MODEL).trim() : undefined;
+    const model = CFG.codexModel ? String(CFG.codexModel).trim() : undefined;
     ensureProvider(db, "claude", setClaudeProxy);
     ensureProvider(db, "codex", (cfg) => setCodexProxy(cfg, model));
   } finally {
@@ -153,7 +157,7 @@ async function main() {
   await syncOnce();
   if (!watch) return;
 
-  const intervalS = Math.max(60, Number(ENV.SEEDX_SYNC_INTERVAL_S ?? 3600));
+  const intervalS = Math.max(60, Number(CFG.syncIntervalSec ?? 3600));
   log(`--watch 进入常驻：每 ${intervalS}s 同步一次（Ctrl+C 退出）`);
   const timer = setInterval(() => {
     void syncOnce().catch((e) => log("同步失败:", e.message));

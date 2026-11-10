@@ -40,13 +40,19 @@ import { request as httpsRequest, Agent as HttpsAgent } from "node:https";
 import { readFileSync, writeFileSync, mkdirSync, renameSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
+import { loadConfig, ensureLocalToken } from "./config.mjs";
 
 const ENV = process.env;
+const CFG = loadConfig();
 const PREFIX_RESOURCE = ENV.SEEDX_PREFIX_RESOURCE ?? "/seedx/resource/manage/service";
 const REFRESH_PATH = `${PREFIX_RESOURCE}/ctl/gateway-token/refresh`;
 const PREFIX_IDENTITY = ENV.SEEDX_PREFIX_IDENTITY ?? "/seedx/identity/manage/service";
-const PROXY_HOST = ENV.SEEDX_PROXY_HOST ?? "127.0.0.1";
-const PROXY_PORT = Number(ENV.SEEDX_PROXY_PORT ?? 8787);
+const PROXY_HOST = CFG.proxyHost;
+const PROXY_PORT = CFG.proxyPort; // claude / Anthropic 协议
+const CODEX_PORT = CFG.codexPort; // codex / OpenAI 协议
+const LOCAL_TOKEN = ensureLocalToken(); // 本地鉴权：客户端凭据必须等于它
+const CONNECT_TIMEOUT_MS = Math.max(1, Number(CFG.upstreamConnectTimeoutSec ?? 15)) * 1000;
+const IDLE_TIMEOUT_MS = Math.max(5, Number(CFG.upstreamIdleTimeoutSec ?? 180)) * 1000;
 const REFRESH_AHEAD_S = Number(ENV.SEEDX_REFRESH_AHEAD_S ?? 300);
 const REFRESH_TIMEOUT_MS = 10_000;
 const MAX_BODY_BYTES = 64 * 1024 * 1024;
@@ -94,14 +100,14 @@ function log(...a) {
   console.log(new Date().toISOString(), ...a);
 }
 
-const CRED_PATH = ENV.SEEDX_CREDENTIALS || join(homedir(), ".seedx-workspace", "credentials.json");
+const CRED_PATH = CFG.credentialsPath || join(homedir(), ".seedx-workspace", "credentials.json");
 
 /** 每次现读 seed 登录长票：在别处重登 / credentials.json 被更新时自动拉到新值（对齐 seedx gateway-acquire）。 */
 function readSeed() {
-  if (ENV.SEEDX_TOKEN) return { token: ENV.SEEDX_TOKEN, serverUrl: ENV.SEEDX_SERVER_URL };
+  if (CFG.seedToken) return { token: CFG.seedToken, serverUrl: CFG.serverUrl };
   try {
     const c = JSON.parse(readFileSync(CRED_PATH, "utf8"));
-    return { token: c.token, serverUrl: c.serverUrl || ENV.SEEDX_SERVER_URL };
+    return { token: c.token, serverUrl: CFG.serverUrl || c.serverUrl };
   } catch (e) {
     return { error: `无法读取 seed 凭据（${CRED_PATH}）：${e.message}` };
   }
@@ -226,118 +232,150 @@ function readBody(req) {
   });
 }
 
-function pickUpstream(pathname, headerOverride) {
-  if (headerOverride === "anthropic" || headerOverride === "openai") return headerOverride;
-  return pathname.startsWith("/v1/messages") ? "anthropic" : "openai";
+/** 取客户端凭据：Authorization: Bearer 或 x-api-key。 */
+function clientCredential(req) {
+  const m = /^bearer\s+(.+)$/i.exec(String(req.headers["authorization"] || ""));
+  if (m) return m[1].trim();
+  const xk = req.headers["x-api-key"];
+  return typeof xk === "string" ? xk.trim() : "";
 }
 
 function sendUpstream(target, method, headers, body) {
   return new Promise((resolve, reject) => {
     const isHttps = target.protocol === "https:";
     const make = isHttps ? httpsRequest : httpRequest;
-    const req = make(target, { method, headers, agent: isHttps ? httpsAgent : httpAgent }, (res) =>
-      resolve({ res, req }),
-    );
-    req.once("error", reject);
+    let settled = false;
+    const req = make(target, { method, headers, agent: isHttps ? httpsAgent : httpAgent }, (res) => {
+      settled = true;
+      clearTimeout(connectTimer);
+      resolve({ res, req });
+    });
+    // 建连/首字节超时：拿不到响应头就中止，避免死等（keep-alive 死连接、换网卡住）
+    const connectTimer = setTimeout(() => {
+      if (!settled) req.destroy(new Error(`上游 ${CONNECT_TIMEOUT_MS}ms 无响应`));
+    }, CONNECT_TIMEOUT_MS);
+    // 收到响应后的空闲超时：两次数据间隔过久也中止（SSE 正常会不断有数据）
+    req.setTimeout(IDLE_TIMEOUT_MS, () => req.destroy(new Error(`上游 ${IDLE_TIMEOUT_MS}ms 空闲超时`)));
+    req.once("error", (e) => {
+      clearTimeout(connectTimer);
+      if (!settled) reject(e);
+    });
     req.end(body);
   });
 }
 
-async function handle(req, res) {
-  let body;
-  try {
-    body = await readBody(req);
-  } catch (e) {
-    res.writeHead(413, { "content-type": "application/json" });
-    res.end(JSON.stringify({ error: e.message }));
-    return;
-  }
-
-  let token = gateway;
-  if (tokenExpiringSoon()) token = (await currentGatewayToken()) ?? gateway;
-  if (!token) {
-    res.writeHead(503, { "content-type": "application/json" });
-    res.end(
-      JSON.stringify({
-        type: "error",
-        error: { type: "seedx_gateway_unavailable", message: "拿不到网关授权：请检查 seed 长票是否有效" },
-      }),
-    );
-    return;
-  }
-
-  const parsed = new URL(req.url, "http://localhost");
-  const which = pickUpstream(parsed.pathname, String(req.headers["x-seedx-upstream"] || "").toLowerCase());
-  const base = which === "anthropic" ? token.anthropicBaseUrl : token.openaiBaseUrl;
-
-  const buildHeaders = (t) => {
-    const out = {};
-    const injectedLower = t.headerName.toLowerCase();
-    for (const [k, v] of Object.entries(req.headers)) {
-      if (v === undefined) continue;
-      const lk = k.toLowerCase();
-      if (STRIPPED_REQUEST_HEADERS.has(lk) || lk === injectedLower) continue;
-      out[k] = v;
+function makeHandler(which) {
+  return async function handle(req, res) {
+    // 1) 本地鉴权：客户端凭据必须等于 localToken（本机其它进程/网页拿不到就被拒）
+    if (LOCAL_TOKEN && clientCredential(req) !== LOCAL_TOKEN) {
+      res.writeHead(401, { "content-type": "application/json" });
+      res.end(
+        JSON.stringify({ type: "error", error: { type: "seedx_local_unauthorized", message: "本地代理凭据不正确（见面板 localToken）" } }),
+      );
+      return;
     }
-    out[t.headerName] = t.token;
-    out["content-length"] = String(body.length);
-    return out;
-  };
 
-  const attempt = async (t) => {
-    // openai base 已含 /v1：客户端若也带 /v1 前缀就剥掉，避免 /v1/v1；anthropic base 不含 /v1，原样拼。
-    let path = req.url;
-    if (which === "openai" && path.startsWith("/v1/")) path = path.slice(3);
-    const target = new URL(base + path);
-    return sendUpstream(target, req.method ?? "POST", buildHeaders(t), body);
-  };
-
-  let a;
-  try {
-    a = await attempt(token);
-    if (a.res.statusCode === 401) {
-      a.res.resume();
-      const fresh = await refreshGatewayToken();
-      if (fresh && fresh.token !== token.token) a = await attempt(fresh);
+    let body;
+    try {
+      body = await readBody(req);
+    } catch (e) {
+      res.writeHead(413, { "content-type": "application/json" });
+      res.end(JSON.stringify({ error: e.message }));
+      return;
     }
-  } catch (e) {
-    res.writeHead(502, { "content-type": "application/json" });
-    res.end(JSON.stringify({ type: "error", error: { type: "seedx_gateway_unreachable", message: String(e.message) } }));
-    return;
-  }
 
-  const { res: up } = a;
-  log(`[req] ${req.method} ${parsed.pathname} -> ${which} ${up.statusCode}${req.headers["x-seedx-upstream"] ? " (forced)" : ""}`);
-  const outHeaders = {};
-  for (const [k, v] of Object.entries(up.headers)) {
-    if (v === undefined || STRIPPED_RESPONSE_HEADERS.has(k.toLowerCase())) continue;
-    outHeaders[k] = v;
-  }
-  res.writeHead(up.statusCode ?? 502, outHeaders);
-  res.flushHeaders?.();
-  up.pipe(res);
+    let token = gateway;
+    if (tokenExpiringSoon()) token = (await currentGatewayToken()) ?? gateway;
+    if (!token) {
+      res.writeHead(503, { "content-type": "application/json" });
+      res.end(
+        JSON.stringify({ type: "error", error: { type: "seedx_gateway_unavailable", message: "拿不到网关授权：请检查 seed 长票是否有效" } }),
+      );
+      return;
+    }
+
+    const baseFor = (t) => (which === "anthropic" ? t.anthropicBaseUrl : t.openaiBaseUrl);
+    const buildHeaders = (t) => {
+      const out = {};
+      const injectedLower = t.headerName.toLowerCase();
+      for (const [k, v] of Object.entries(req.headers)) {
+        if (v === undefined) continue;
+        const lk = k.toLowerCase();
+        if (STRIPPED_REQUEST_HEADERS.has(lk) || lk === injectedLower || lk.startsWith("x-seedx-")) continue;
+        out[k] = v;
+      }
+      out[t.headerName] = t.token;
+      out["content-length"] = String(body.length);
+      return out;
+    };
+    const attempt = async (t) => {
+      // openai base 已含 /v1：客户端若也带 /v1 前缀就剥掉，避免 /v1/v1；anthropic base 不含 /v1，原样拼。
+      let path = req.url;
+      if (which === "openai" && path.startsWith("/v1/")) path = path.slice(3);
+      return sendUpstream(new URL(baseFor(t) + path), req.method ?? "POST", buildHeaders(t), body);
+    };
+
+    let a;
+    try {
+      a = await attempt(token);
+      if (a.res.statusCode === 401) {
+        a.res.resume();
+        const fresh = await refreshGatewayToken();
+        if (fresh && fresh.token !== token.token) {
+          token = fresh;
+          a = await attempt(fresh);
+        }
+      }
+    } catch (e) {
+      const code = /超时/.test(e.message) ? 504 : 502;
+      res.writeHead(code, { "content-type": "application/json" });
+      res.end(JSON.stringify({ type: "error", error: { type: "seedx_gateway_unreachable", message: String(e.message) } }));
+      return;
+    }
+
+    const { res: up } = a;
+    log(`[req] ${which} ${req.method} ${new URL(req.url, "http://x").pathname} -> ${up.statusCode}`);
+    const outHeaders = {};
+    for (const [k, v] of Object.entries(up.headers)) {
+      if (v === undefined || STRIPPED_RESPONSE_HEADERS.has(k.toLowerCase())) continue;
+      outHeaders[k] = v;
+    }
+    res.writeHead(up.statusCode ?? 502, outHeaders);
+    res.flushHeaders?.();
+    up.on("error", () => {
+      if (!res.writableEnded) res.destroy();
+    });
+    res.on("close", () => up.destroy());
+    up.pipe(res);
+  };
 }
 
-function main() {
+function listen(port, which) {
   const server = createServer((req, res) => {
-    void handle(req, res).catch((e) => {
-      log("代理异常", e);
+    void makeHandler(which)(req, res).catch((e) => {
+      log(`代理异常(${which}): ${e.message}`);
       if (!res.headersSent) res.writeHead(500, { "content-type": "application/json" });
       res.end(JSON.stringify({ error: String(e.message) }));
     });
   });
-  server.listen(PROXY_PORT, PROXY_HOST, () => {
-    log(`seedx-gateway-proxy 监听 http://${PROXY_HOST}:${PROXY_PORT}`);
-    log(`seed 服务端: ${SERVER_URL}`);
-    log("cc-switch 指向本地址即可（token 填任意占位，如 seedx-local-proxy）。Ctrl+C 退出。");
-    void checkLongTicket();
-    refreshGatewayToken();
-    // 定时刷新：距过期 < REFRESH_AHEAD_S 就续一次，即使没请求也保持有效
-    const timer = setInterval(() => {
-      if (tokenExpiringSoon()) void refreshGatewayToken();
-    }, 60_000);
-    timer.unref?.();
+  server.on("error", (e) => {
+    log(`监听 ${port} 失败：${e.code || e.message}（端口被占用或非法）`);
+    process.exit(1); // 交给 supervisor 退避重启，不再静默死循环
   });
+  server.listen(port, PROXY_HOST, () => log(`监听 http://${PROXY_HOST}:${port}（${which}）`));
+}
+
+function main() {
+  log(`seed 服务端: ${SERVER_URL}；本地鉴权 token=${LOCAL_TOKEN.slice(0, 8)}…`);
+  log(`claude -> :${PROXY_PORT}   codex -> :${CODEX_PORT}`);
+  listen(PROXY_PORT, "anthropic");
+  listen(CODEX_PORT, "openai");
+  void checkLongTicket();
+  refreshGatewayToken();
+  const timer = setInterval(() => {
+    if (tokenExpiringSoon()) void refreshGatewayToken();
+  }, 60_000);
+  timer.unref?.();
 }
 
 if (ENV.SEEDX_CHECK === "1" || process.argv.includes("--check")) {
