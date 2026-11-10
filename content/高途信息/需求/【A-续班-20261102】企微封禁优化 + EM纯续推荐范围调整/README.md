@@ -33,9 +33,9 @@ tags: [需求]
 
 ## 当前追加：全局权限与预热键兼容
 
-2026-11-10 最新口径：保留原计划管理员和状态置灰逻辑，只叠加全局邮箱前缀白名单 `renewal.pure.relation.admin.email-prefixes`。无参 permission 仅返回全局白名单 grant，前端列表请求一次；每行入口始终显示，可操作=(本计划管理员或白名单)且待开始/进行中，非管理员非名单置灰。save 后端管理员或白名单放行。前一批 product-server 9c09172ac/前端654307b6已在test-eco-4运行，但其替代管理员/隐藏入口的行为不符合最新明确要求，正在修正，不能当业务验收通过。新key仍为空草稿未发布，待指定名单。发布编排24298，MR866/134，TAPD1122531521001397879，未生产发布。
+2026-11-10 最新口径：保留原计划管理员和状态置灰逻辑，只叠加全局邮箱前缀白名单 `renewal.pure.relation.admin.email-prefixes`。无参 permission 仅返回全局白名单 grant，前端列表请求一次；每行入口始终显示，可操作=(本计划管理员或白名单)且待开始/进行中，非管理员非名单置灰。save 后端管理员或白名单放行。修正已提交：product-server 5ea561da0/MR866（31项测试通过）、前端1a3a4abb/MR134（12项测试通过）。test-eco-4前端1336713（模板10）目标1a3a4abb已Running并实测10行始终展示、3行管理员可点/7行置灰、一次无参permission；后端1336710（模板1）目标5ea561da已Running/Eureka UP；旧9c09172ac/654307b6不作为本批验收版本。TEST/default新key已由用户发布为tangwen01，config-server回读确认；同浏览器permission=true，8行可操作状态均可点、2行未发布仍灰，非管理员计划可打开抽屉且仍仅1次权限请求。旧accounts key已删除。PROD/default已暂存tangwen01,zhangzeling,wangyongshi；重新读取确认仅此一项新增，发布被Apollo HTTP403拒绝，当前账号zhangzeling无发布权限。config-server仍未命中新key，尚未生效，需有权限人员发布。发布编排24298，MR866/134，TAPD1122531521001397879，未生产发布。
 
-cart追加修复已提交3e012ec2，[MR291](https://git.baijia.com/gaotu/cart/-/merge_requests/291)，32项缓存聚焦回归通过；保持原完整预热键 `renewal:preheat:{plan}:{user}` 及原JSON值结构，读写和换班/换年级清理统一。关联配置缓存保留提交版本隔离；主从各自独立预热、推荐再合并的现有规则保持。test-eco-4 pipeline1336633发布中，尚未确认目标Pod就绪。
+cart追加修复已提交3e012ec2，[MR291](https://git.baijia.com/gaotu/cart/-/merge_requests/291)，32项缓存聚焦回归通过；保持原完整预热键 `renewal:preheat:{plan}:{user}` 及原JSON值结构，读写和换班/换年级清理统一。关联配置缓存保留提交版本隔离；主从各自独立预热、推荐再合并的现有规则保持。test-eco-4 pipeline1336633已完成，目标3e012ec2 Pod 10.218.248.204 Running/Eureka UP；只读调用同计划v1/v2关联版本均返回相同原完整预热键，运行验证通过。
 
 ## 当前缓存补强（已完成）
 
@@ -84,7 +84,7 @@ T-18完成：cart **1ebd315d**、product-b/product-c **2593dae78**已推送并�
 
 ## 现在什么情况
 
-- 当前工作单 T 9/9 · R 0/0 · C 2/2：C-2从计划状态变化过滤已修复部署并实测；C-1（1485167）已修复部署且接口层实测通过；当前阶段为“联调中（待QA复测）”，生产配置、QA用例和外部回溯保留为上线前置。
+- 当前工作单 T 9/10 · R 0/0 · C 2/2：C-2从计划状态变化过滤已修复部署并实测；C-1（1485167）已修复部署且接口层实测通过；当前阶段为“联调中（待QA复测）”，生产配置、QA用例和外部回溯保留为上线前置。
 - 本轮TEST采样与保留对象/恢复结论见verify；前端不改、不新部署，不把默认TEST企微结果归给目标feature。
 - 下一步按P0剩余缺口推进；已补受控大班筛选，剩余EM/小班/页面场景按已授权TEST范围执行，不重放build或已付单。
 

@@ -218,3 +218,12 @@ P0原全文revision247验证沿用；round8受影响章节回读revision271，�
 - **同班小班非好友前置**：班 `588506026511294464`“【造数】小班续班前置-小学数学-1103-1831”，学员 `7707218286/7707218285`。好友列表 trace `e8797efb-8e00-48cb-977d-48ac4b4cf5a3.0.3` 返回 `notFriendCount=2`；备注前置 trace `e63d3075-48a8-4d80-b9b9-46276d6f860c.0.3` 返回 `code=0,resultStatus=false`，未提交任务。默认页结构回读 trace `6f52402e-f3b3-47f4-9960-23f7d95bd76e.0.3`。这只证明非好友拒绝前置，不证明好友成功或默认模板一致。
 - **证据包**：`/tmp/w1-p0-243aa61a/round10/round10-evidence.json`；P0附件 `round10-p0-evidence.zip`，file token `HUS1blRw5oamDBxU5VdcYkzKn7d`，SHA256 `c798b5438965d17d405b67ab32b9c018fac8ca39e5581dc101335e416d76ae10`。
 - **仍未完成**：小班第三未选对照/完整单人页面；同班好友成功与默认备注模板；缓存回退/优惠/异主体；页面/C端入口；历史 `min(begin_time)` 全量回溯。
+
+## 2026-11-10 管理员权限保留与全局白名单
+
+- 契约：原计划管理员 OR 全局邮箱前缀白名单，继续受原计划状态限制。入口始终展示，无权限置灰；无参 permission 只返回白名单 grant，全列表一次请求。唯一 Apollo key `renewal.pure.relation.admin.email-prefixes`；TEST/default新 key 已由用户发布，config-server回读为 tangwen01；旧 renewal.pure.relation.admin.accounts 未命中（已删除）。PROD/default已暂存tangwen01,zhangzeling,wangyongshi；发布前diff仅此新增。Apollo发布返回HTTP403（zhangzeling无发布权限），config-server未命中新key，尚未生效，需有权限人员发布。
+- 本地验证：后端 `5ea561da0` 31项测试/7模块通过；前端 `1a3a4abb` 12项测试通过、相关lint无错误。MR866/134均opened、目标release。
+- 前端测试部署：pipeline1336713，模板10，test-eco-4，目标 `1a3a4abb` Pod `gaotu-fe-promotions-78686c86c8-tw846` / `10.218.238.74` Running。真实页面293加载 `umi.5708e986` / `list.451f368147444f615710`；10行入口全部展示，唐稳01/account1706为管理员的第1/4/7行可点击，其余7行disabled。仅1次无参permission（req60），code0、canView=false/canEdit=false，traffic-env=test-eco-4。未保存业务数据。
+- 后端测试部署：pipeline1336710，模板1，目标 `5ea561da` Pod `10.218.236.58` 已Running/Eureka UP；空名单时无参global permission为false，页面管理员仍可点击。白名单发布后同一浏览器唐稳01的无参permission（req527）返回code0、canView=true/canEdit=true；10行中8行可操作状态均可点，2行未发布仍按原状态置灰。非管理员计划579985778241837056（管理员弓雪萌/张岳翔）原置灰、加名单后可打开关联抽屉，空关联0条正常；打开后仍只有1次permission请求，未save。桥默认身份与浏览器身份分开，不混算。
+- Cart兼容修复：`3e012ec2`/MR291，32项聚焦测试通过。pipeline1336633目标Pod10.218.248.204 Running/Eureka UP；反射桥只读调用 `RenewalService#getCacheKey`，同计划580120868989048832/user7的v1和v2关联版本均返回 `renewal:preheat:580120868989048832:7`，原完整键保持。配置缓存版本逻辑未改。
+- 发布编排24298提测产物已同步cart3e012ec2/product-b5ea561da/前端1a3a4abb，五服务及原顺序保留；未生产发布。
