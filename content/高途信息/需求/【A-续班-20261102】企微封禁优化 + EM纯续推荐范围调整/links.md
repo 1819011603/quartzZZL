@@ -79,6 +79,10 @@
 | MR | cart !284 | https://git.baijia.com/gaotu/cart/-/merge_requests/284 | 2026-11-09 |
 | MR | order !2391 | https://git.baijia.com/gaotu/order/-/merge_requests/2391 | 2026-11-09 |
 
+## 数据交付
+
+- [数据] 大小班纯续推荐差异数据（学员 280406836642422，主从配置+前置/后置）：https://gaotuedu.feishu.cn/docx/HqaEdvM9rotA6bxYv2jcGKjPnrf （2026-11-10）
+
 ## 上线检索锚点
 
 - 需求总入口 node_token：`MCUowPVhriDC3okHO0mcW49Unyf`
