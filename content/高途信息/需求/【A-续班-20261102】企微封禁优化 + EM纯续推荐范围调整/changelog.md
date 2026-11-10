@@ -142,3 +142,10 @@
   - **③ 同一接口「一次 2 一次 4」= 推荐排除接口间歇 404**：小班计划 `586116340522184704` 扩科配 4 门（语文×2+英语×2）、excludeMode=1；cart 调 student-data `POST /feign/renewal/otherModeInReadSubjects`——命中正常实例（`student-data-5b555988db-bz7w6` 镜像 2026-11-05）返回 `[5]`（大班在读语文）→ 排除后 **2 门**；命中**旧实例**（`student-data-65cb9cd6fd-bxqr6` 镜像 2026-10-20）→ Spring `noHandlerFound` body `{"code":404,"msg":"接口找不到"}` → `ExpandSubjectRecommendService` **降级不排除** → **4 门**。证据 trace `4b673788`（成功 `[5]`）/ `b8c5c02d`（404，`DecodeException`）；gapm 告警 `student-data___http_api___/feign/renewal/otherModeInReadSubjects`。根因=cart Feign 未按泳道固定、轮询到老 student-data pod，属环境/实例问题（需保证该泳道单一版本），非本次关联代码。已同步知识库《续班推荐业务逻辑（纯续-扩科-推荐排除）》。
 
 - 2026-11-06 **后端最终生效收口**：按 owner 口径，Order 的跨模式放行属于购物车 ADD_CART/CART_DETAIL 的续班下单校验链路，未改订单创建、支付、退款等通用流程；跨模式加购/下单与同模式重复拦截通过。cart `4de323d2`、product C/B `455e8ba8` 已部署 TEST 并回读 Eureka UP；cart 26、product 16、order 17 项定向测试通过。product 计划编号前端按字符串传输，后端保留 String 支持 18 位 ID/批量精确查询。真实预热→清空关联→旧缓存不命中→恢复后重新预热命中新结果，未发现本次改动回归。需求状态调整为「上线准备」，生产配置、QA 用例、历史回溯和部分页面矩阵保留为上线前置。
+
+- 2026-11-11 **EM纯续关联·合并预热缓存消费链路沿革（cart）**：
+  - `aa62ba2b`(2026-11-03 zhangzeling) EM纯续关联主+从并集（开关控制，扩科不动）。
+  - `e5c30f6e`(11-04) 大班预热 + operation/cart 入口补并集，避免预热缓存丢从计划。
+  - `f5abee98`(11-04) 小班预热对齐大班合并从计划，引入 `RenewalDataService.mergeRelatedPreCourseResults`——**直接改本地缓存原对象导致全局缓存污染**（后续请求把从计划课程当主计划自身课程、扩科范围被带偏）。
+  - `a34016fd`(11-05) 修复：返回请求副本、隔离主计划缓存。
+  - `ee34a807`(11-10) 改为「主、从计划各自推荐后合并」，`mergeRelatedPreCourseNumbers` 删除。
