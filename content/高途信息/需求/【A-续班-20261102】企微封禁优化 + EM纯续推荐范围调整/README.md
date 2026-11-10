@@ -9,7 +9,7 @@ branches:
   - cart:feature-xuban-pure-relation-20261102
   - order:feature-xuban-pure-relation-20261102
   - order:feature-revert-order-mr2391-20261109
-updated: 2026-11-09
+updated: 2026-11-10
 tags: [需求]
 ---
 
@@ -30,6 +30,12 @@ tags: [需求]
 ## Order 回滚决定（2026-11-09）
 
 用户确认大小班不会共用课程编号，要求完整回滚 Order !2391。旧版真实同单支付已验证，因此本需求移除Order跨模式重复放行逻辑，恢复原有防重复校验；Product/Cart关联推荐不在此次回滚范围。回滚分支 `feature-revert-order-mr2391-20261109` 从最新release建立，提交 `fad87492bd`，[回滚MR !2392](https://git.baijia.com/gaotu/order/-/merge_requests/2392) 已创建并回读为opened，目标release；编译及9项独立行为检查通过。尚未合并或部署，AICR尚无评审结果。
+
+## 当前追加：全局权限与预热键兼容
+
+2026-11-10 最新口径：保留原计划管理员和状态置灰逻辑，只叠加全局邮箱前缀白名单 `renewal.pure.relation.admin.email-prefixes`。无参 permission 仅返回全局白名单 grant，前端列表请求一次；每行入口始终显示，可操作=(本计划管理员或白名单)且待开始/进行中，非管理员非名单置灰。save 后端管理员或白名单放行。前一批 product-server 9c09172ac/前端654307b6已在test-eco-4运行，但其替代管理员/隐藏入口的行为不符合最新明确要求，正在修正，不能当业务验收通过。新key仍为空草稿未发布，待指定名单。发布编排24298，MR866/134，TAPD1122531521001397879，未生产发布。
+
+cart追加修复已提交3e012ec2，[MR291](https://git.baijia.com/gaotu/cart/-/merge_requests/291)，32项缓存聚焦回归通过；保持原完整预热键 `renewal:preheat:{plan}:{user}` 及原JSON值结构，读写和换班/换年级清理统一。关联配置缓存保留提交版本隔离；主从各自独立预热、推荐再合并的现有规则保持。test-eco-4 pipeline1336633发布中，尚未确认目标Pod就绪。
 
 ## 当前缓存补强（已完成）
 
@@ -85,7 +91,7 @@ T-18完成：cart **1ebd315d**、product-b/product-c **2593dae78**已推送并�
 ## 当前规则与边界
 
 - 关联单向；只合并主从有效前置课，推荐规则、扩科年级/学年/学期仍按主计划；同年级同商品去重，跨年级保留，纯续优先。
-- 计划管理员、待开始/进行中可改；上限10且配置可调，保存最终全集差分，取消不落库。
+- 计划管理员或全局邮箱前缀白名单人员、待开始/进行中可改；上限10且配置可调，保存最终全集差分，取消不落库。
 - `renewal.pure.relation.enabled`默认true，product/cart/order实例独立配置；关闭只回单计划，不恢复已写关系/标签/备注。原预热TTL最长26小时保持；关联提交版本或有效从计划集合变化会隔离旧预热，不能继续推荐失效从计划。
 - 企微历史圈班按`min(begin_time)≥2026-01-01`，不是创建时间；生产回溯、DDL/GAIA/ES字段及上线配置仍需独立交付证据，不从TEST推断生产就绪。
 - **「微信备注」`wechatRemark` 不得登记进 `ees_data.student_field_config`（2026-11-06 更正）**：它是 ES 原生字段（`ads_small_clazz_user.wechatRemark`），登记进 field_config 会被 `GaiaEsMappingService#getNeedFromEsFields` 当作 ODS 字段从 ES fetch 中剔除又无人补值 → 续班服务页「微信备注」恒空。已删除 `continuationService`/`microContinuationService` 的该行，与默认花名册 `smallClazzRoster` 口径一致；test 已回读 `/roster/small/renewal/page` 返回备注值。详见 [tasks T-16](tasks.md) 与 [知识库口径](~/githubDir/quartzZZL/content/高途信息/知识库/cronus/microClazzRoster/continuationService.md)。

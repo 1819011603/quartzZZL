@@ -125,3 +125,9 @@
 当前结论以[round8集成报告](artifacts/20261105-p0-version-round8/integration-report.md)、[双统计](artifacts/20261105-p0-version-round8/integration-statistics.json)与[终态](artifacts/20261105-p0-version-round8/integration-final-state.json)为准；原历史执行记录保留。P0/skill表达交付已完成，整体业务验收未全完成，未执行项不记通过。没有新增代码、部署、生产或外部联系。
 
 - round11当前证据与剩余条件：artifacts/20261105-p0-execution-round11/handoff.md；小班单人及默认三变量已有实测，不重放成功任务。T-15仍为进行中，无在途业务或待恢复写入。
+
+
+## 2026-11-10 当前追加
+
+- [ ] 权限保留原管理员与置灰契约，只叠加全局邮箱前缀白名单；无参permission仅查全局grant、列表一次请求。MR866/134正在修正前一批替代管理员的错误；新key空草稿待名单，未生产发布。
+- [ ] cart预热键兼容：3e012ec2/MR291，32项回归通过，pipeline1336633测试发布中。只保留 renewal:preheat:{plan}:{user} 原完整键和值结构，关联配置缓存仍按提交版本隔离。
