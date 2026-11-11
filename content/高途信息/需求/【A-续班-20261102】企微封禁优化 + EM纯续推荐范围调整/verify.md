@@ -1,10 +1,14 @@
 ## 2026-11-11 主从纯续缓存修复全量回归（T-21，test）
 
 - **目标版本**：cart `release-af82f18a-20261111114554` 已在 test 主泳道运行/Eureka UP；针对联报入口专项复测使用 `test-eco-7` Cart Pod `cart-gaotu100-com-7c9d5c75b7-lhjkp`，镜像 `feature-renewal-preheat-small-20261111-53d1cbc1-20261111111132`，Eureka UP。未发生产灰度。
-- **XJob 单用户预热**：测试任务 9981（`RenewalUserPreheatJobHandler`），指定执行器 `10.218.251.68:9999`，入参 `{"renewalNumber":545361759016388608,"userIds":[654745]}`。日志 2541916503 `handleCode=200`，`success=1/failure=0/resultCount=1`。这是 test Redis 预热写入，不包含订单/支付写入。
-- **C/B 端读验证未完成**：按需求矩阵分别请求 `/web/renewal/cart` 与 `/web/renewal/operation/cart`，均返回 `code=700` 登录失效（trace `dc10a4e3-1976-43a8-849a-bbb8906b4480.0.3`、`7538a90b-7694-487e-89d9-af7d0a571e97.0.3`）；按代理规范停止重试。XJob 成功只证明预热执行，不证明缓存命中结果或 C/B 展示正确；需恢复青舟/百家测试登录态后继续。
+- **C/B 端点与免登录方式已核正**：本机 `invoke_http(project=cart)` 误拼 `test-fuwu.baijia.com/bgwApi/cart` 才触发 CAS 700；`invoke_feign` 直连同一泳道 `10.218.251.68:28688`（镜像 `feature-renewal-preheat-small-20261111-53d1cbc1-20261111111132`）无需 Cookie，详情见本节「Cart 免 Cookie 路由核对」。此前“测试登录态失效”结论撤回。
+- **联报入口样本 545361759016388608 / user 654745**：C 端 `GET /web/renewal/cart?...includeBCart=false` trace `cart_gaotu100_com.290.17943722920350610` 返回 code0，SKU `551700015760906241/productType=51`；从计划 `551533000353986560` C 端 trace `cart_gaotu100_com.291.17943722920340606` 同样返回该纯续 SKU。B 实时 `operation/cart?fromC=0` trace `cart_gaotu100_com.297.17943722920270600` 返回 code0、含该 51 商品及主计划 `productType=2` 扩科；B 的 `fromC=1` trace `cart_gaotu100_com.289.17943725397090617` 返回该 51 纯续条目。单用户 XJob 9981 执行器 `10.218.251.68:9999`，log `2542001368` `handleCode=200/success=1/resultCount=1`；预热后 C 端 trace `cart_gaotu100_com.289.17943724350340614` 仍 code0 返回同一 51 商品。以上覆盖联报入口计划(productType=23)携带从计划组合商品(51)，不等于实测到商品条目 productType=23。
+- **大班主 + 大班/小班从计划样本 588858850300473344 / user 7658129872**：预热前 C 端 trace `cart_gaotu100_com.293.17943726141090606` 返回纯续 `productType=2`；同输入 B 实时 `operation/cart?fromC=0` trace `cart_gaotu100_com.294.17943726141170596` 返回 2/6004 商品及主计划正常商品。单用户 XJob 9981 log `2542019545` `handleCode=200/success=1/resultCount=2` 后，C 端 trace `cart_gaotu100_com.292.17943726663890603` 返回纯续 `productType=2` SKU `585960755422160896` 与 `productType=6004` SKU `586097025945298944`；`operation/cart?fromC=1` trace `cart_gaotu100_com.297.17943726663810611` 返回相同两件纯续商品。再次以 `fromC=0` 实时查询 trace `cart_gaotu100_com.297.17943729208750617`，仍返回 6004 与实时班级结果。此组覆盖预热前后行为、2/6004 及 B 绕缓存；未触发下单或支付。
+- **计划级预热补验**：任务 7508 `RenewalJobHandler` 用本次参数 `[588858850300473344]` 定向执行，TEST log `2542053769` `handleCode=200`；之后学员 `7707220467` C 端 trace `cart_gaotu100_com.297.17943732386280629` 返回纯续 `productType=6004`，B 实时 `fromC=0` trace `cart_gaotu100_com.293.17943732586520626` 返回该 6004 与主计划 `productType=2`。XJob detail 未输出逐用户计数，因此只记录调度终态与接口结果，不把它单独当作计划全量预热覆盖证明。
+- **联报条目造数尝试未成功**：data-agent `renew_add_posts` run `r-20261111125748-d603a1f8` 针对从计划 `551533000353986560` 报必填课程属性缺失，`steps=[]`、联报分组因无新班跳过；没有新增班级/联报商品，也没有触碰订单。
+- **本地专项分派回归**：重跑 `mvn8 -pl cart-app -Dtest=RenewalServiceSmallMergedCacheTest test`，10/10 通过；包含入口计划类型23只把自身23条目送入 `processClazzSet`、从计划51/6004走类型分派的断言。该用例使用构造DTO，不替代真实23商品的TEST运行态样本。
 - **本地回归**：`RenewalServiceSmallMergedCacheTest` 等续班缓存相关 5 个测试类共 47 项通过。`cart-app` 全量 608 项中 15 项失败，集中于 `BCartQuerySubBuilderTest`、`ExpandSubjectConfigSubBuilderTest` 的 setup 反射注入不存在的 `enabled` 字段；与本次修改文件无关，不据此声称全量全绿。
-- **仍缺的业务矩阵**：联报入口(23)命中缓存下从计划班级(2/6004)及 2+6004+51+23 混排的运行态结果；同一用户实时 miss、单用户预热 hit、计划级预热、B 端绕缓存的无损对照；关联变化/开关/旧缓存兼容格。依据[回归方案](回归测试方案-主从续班计划纯续.md)，T-21 保持进行中。
+- **仍缺的业务矩阵**：实际商品条目 productType=23、联报入口下 2+6004+51+23 同一缓存混排、计划级预热的逐用户写入回读、关联变化/开关/历史缓存兼容格；需要有必填课程属性齐全的独立续班模板补联报条目，避免把计划入口类型23当商品类型覆盖。当前已有两组用户级预热和 C/B 运行查询，仍不代表完整矩阵通过；T-21 继续进行中。
 - **权限边界**：未经用户明确允许，不发生产灰度或全量。
 
 ## 2026-11-07 从计划状态变化（已修复并实测）
@@ -247,6 +251,13 @@ P0原全文revision247验证沿用；round8受影响章节回读revision271，�
 
 - 用户要求开启 TEST；Apollo `cart.gaotu100.com/TEST/application` 的 `preheat.cache.enabled` 已发布为 `true`，Portal 草稿与 config-server 均回读为 true。
 - test-eco-4 cart Pod `10.218.248.204` 内 `RenewalService.preheatEnabled=true`；计划579985778241837056/学员20002的推荐接口仍返回后置班579985190466650112，trace `cart_gaotu100_com.291.17943083914781043`。
+
+## 2026-11-11 Cart 免 Cookie 路由核对
+
+- **正确路由**：Cart 是 C 端接口。测试网关为 `https://test-api.gaotu100.com/cart/<接口路径>`，不带 `/bgwApi`；青舟 test `cart.gaotu100.com` `/cart/**` routeId `745`，`StripPrefix = 1`。历史真实网关证据见本文件 2026-11-05 round8：绑定 `test-api.gaotu100.com/cart`，业务 `code=0`。不要将通用 fuwu 基址规则套到 Cart。
+- **免 Cookie 后端验证**：`invoke_feign` 使用 `CART.GAOTU100.COM` + `/web/renewal/cart?renewalNumber=545361759016388608&appointUserId=654745&includeBCart=false`，泳道 `test-eco-7`，直连实例 `10.218.251.68:28688`（Pod `cart-gaotu100-com-7c9d5c75b7-lhjkp`），trace `cart_gaotu100_com.293.17943718458860584`，HTTP 200、`code=0`；返回 SKU `551700015760906241`、`productType=51`。说明该后端查询可无 Cookie 直连验证。
+- **错误入口对照**：本机 `invoke_http(project=cart)` 仍生成 `https://test-fuwu.baijia.com/bgwApi/cart/...`，落 `mi-gaotu100-com`，trace `7d2bd6d2-0553-4bd2-86a9-bb0e5c4010f8.0.3` 返回 CAS `code=700`；这是路由/域名错误，不是业务登录失败。当前机器直接请求 `test-api.gaotu100.com` 返回 Nginx HTTP 403，记录为本机入口可达性限制，不算 Cart 业务结果；后续免 Cookie 回归用上述 IP 直连。
+- 接口只读查询，无数据写入；没有灰度或全量发布。完整商品类型/实时计算与预热矩阵仍按 T-21 记录推进，当前不据单样本标记全量回归通过。
 
 ## 2026-11-10 预热合并缓存改造（仅缓存纯续：主+全部从·含大小班）与验证
 

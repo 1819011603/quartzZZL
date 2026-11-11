@@ -34,7 +34,7 @@ tags: [需求]
 
 ## 当前追加：全局权限与预热键兼容
 
-2026-11-11 开始执行 T-21 主从续班「纯续」全量回归：test-eco-7 联报入口样例的单用户 XJob 预热成功，C/B 读验证因测试登录态失效暂停；47 项相关本地测试通过，cart-app 全量另有15项既有测试 setup 失败。T-21 仍进行中，未经用户明确允许不发生产灰度或全量。当前证据见 [verify.md](verify.md)，覆盖矩阵见 [回归测试方案](回归测试方案-主从续班计划纯续.md)。
+2026-11-11 继续执行 T-21 主从续班「纯续」回归：test-eco-7 直连已验证联报入口23带组合条目51；大班主从预热后 C 端同时返回纯续 productType=2/6004，B端 fromC=0 实时查询正常。真实商品条目23及全类型混排、计划级逐用户缓存回读、开关/历史缓存格仍缺；`RenewalServiceSmallMergedCacheTest` 本轮10/10通过（此前47项相关测试通过），cart-app 全量另有15项既有测试 setup 失败。T-21 仍进行中，未经用户明确允许不发生产灰度或全量。当前证据见 [verify.md](verify.md)，覆盖矩阵见 [回归测试方案](回归测试方案-主从续班计划纯续.md)。
 
 2026-11-10 最新口径：保留原计划管理员和状态置灰逻辑，只叠加全局邮箱前缀白名单 `renewal.pure.relation.admin.email-prefixes`。无参 permission 仅返回全局白名单 grant，前端列表请求一次；每行入口始终显示，可操作=(本计划管理员或白名单)且待开始/进行中，非管理员非名单置灰。save 后端管理员或白名单放行。修正已提交：product-server 5ea561da0/MR866（31项测试通过）、前端1a3a4abb/MR134（12项测试通过）。test-eco-4前端1336713（模板10）目标1a3a4abb已Running并实测10行始终展示、3行管理员可点/7行置灰、一次无参permission；后端1336710（模板1）目标5ea561da已Running/Eureka UP；旧9c09172ac/654307b6不作为本批验收版本。TEST/default新key已由用户发布为tangwen01，config-server回读确认；同浏览器permission=true，8行可操作状态均可点、2行未发布仍灰，非管理员计划可打开抽屉且仍仅1次权限请求。旧accounts key已删除。PROD/default已暂存tangwen01,zhangzeling,wangyongshi；重新读取确认仅此一项新增，发布被Apollo HTTP403拒绝，当前账号zhangzeling无发布权限。config-server仍未命中新key，尚未生效，需有权限人员发布。发布编排24298，MR866/134，TAPD1122531521001397879，未生产发布。
 

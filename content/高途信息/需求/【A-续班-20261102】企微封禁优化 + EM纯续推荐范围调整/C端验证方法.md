@@ -25,7 +25,9 @@
 
 ## 5. 关键坑
 - `getReportUrl` 需要 `paramsMap.appInfo`（售卖主体），空值会静默返回无 URL。
-- C 端页面在 `test-m.gaotu.cn`，接口在 `test-api.gaotu.cn`，需带 `p_client=1` 与 `traffic-env: test-gtbg-dev-3`。
+- C 端页面在 `test-m.gaotu.cn`，测试接口网关使用 `test-api.gaotu100.com`，续班购物车前缀为 `/cart`；请求需带 `p_client=1` 与对应 `traffic-env`。不要将 Cart C 端请求拼到 `test-fuwu.baijia.com/bgwApi/cart`，该地址会进 CAS 登录拦截。
+- **免 Cookie 后端验证**：优先用 `invoke_feign(service_name="CART.GAOTU100.COM", path="/web/renewal/cart?...", traffic_env="<测试泳道>")` 直连 Cart 实例。它绕过 fuwu/CAS 登录入口，路径从 `/web/...` 开始（不含网关 `/cart` 前缀）；复现 curl 时保留返回的实例 IP、`traffic-env` 和 `Host: CART.GAOTU100.COM`。本需求当前样本 `545361759016388608` / `654745` 在 `test-eco-7` 命中 `10.218.251.68:28688`，返回 HTTP 200、`code=0`，商品 SKU `551700015760906241` / `productType=51`。这只证明接口层免登录回归，不代替 C 端页面登录态验证。
+- 网关路由以 Cart 的 C 端绑定为准：`test-api.gaotu100.com/cart` → 青舟 test `cart.gaotu100.com` routeId `745`（`/cart/**`, `StripPrefix = 1`）。本机 `invoke_http(project="cart")` 当前仍会按通用规则解析为 `test-fuwu.baijia.com/bgwApi/cart`；如返回 CAS code 700，是错误入口，改走上述 IP 直连或正确 C 端网关，不要据此判定登录态失效。直接访问 `test-api` 若被本机网络层返回 403，应记录为入口可达性限制，不算业务接口失败。
 - 计划 A 的链接可能展示来自关联计划 B 的小班商品，说明关联推荐在 C 端已生效；不要按计划类型误判。
 - 测试环境只 mock 支付，不真实支付；不要让页面结果替代接口 trace。
 - 本次登录 uid 7658127801 的页面只可选 0 元小班；「更换课程」返回「未查询到满足条件的课程」，换大班班号取链接仍同一 URL，¥100 大班不在可选范围。要验有价商品页面下单，需换有该商品资格的学员登录态，或直接用接口层下单/支付。
