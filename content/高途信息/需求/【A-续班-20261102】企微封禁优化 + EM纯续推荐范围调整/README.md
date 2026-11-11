@@ -10,7 +10,7 @@ branches:
   - order:feature-xuban-pure-relation-20261102
   - order:feature-revert-order-mr2391-20261109
   - cart:feature-renewal-preheat-merge-plan-20261110
-updated: 2026-11-10
+updated: 2026-11-11
 tags: [需求]
 ---
 
@@ -33,6 +33,8 @@ tags: [需求]
 用户确认大小班不会共用课程编号，要求完整回滚 Order !2391。旧版真实同单支付已验证，因此本需求移除Order跨模式重复放行逻辑，恢复原有防重复校验；Product/Cart关联推荐不在此次回滚范围。回滚分支 `feature-revert-order-mr2391-20261109` 从最新release建立，提交 `fad87492bd`，[回滚MR !2392](https://git.baijia.com/gaotu/order/-/merge_requests/2392) 已创建并回读为opened，目标release；编译及9项独立行为检查通过。尚未合并或部署，AICR尚无评审结果。
 
 ## 当前追加：全局权限与预热键兼容
+
+2026-11-11 开始执行 T-21 主从续班「纯续」全量回归：test-eco-7 联报入口样例的单用户 XJob 预热成功，C/B 读验证因测试登录态失效暂停；47 项相关本地测试通过，cart-app 全量另有15项既有测试 setup 失败。T-21 仍进行中，未经用户明确允许不发生产灰度或全量。当前证据见 [verify.md](verify.md)，覆盖矩阵见 [回归测试方案](回归测试方案-主从续班计划纯续.md)。
 
 2026-11-10 最新口径：保留原计划管理员和状态置灰逻辑，只叠加全局邮箱前缀白名单 `renewal.pure.relation.admin.email-prefixes`。无参 permission 仅返回全局白名单 grant，前端列表请求一次；每行入口始终显示，可操作=(本计划管理员或白名单)且待开始/进行中，非管理员非名单置灰。save 后端管理员或白名单放行。修正已提交：product-server 5ea561da0/MR866（31项测试通过）、前端1a3a4abb/MR134（12项测试通过）。test-eco-4前端1336713（模板10）目标1a3a4abb已Running并实测10行始终展示、3行管理员可点/7行置灰、一次无参permission；后端1336710（模板1）目标5ea561da已Running/Eureka UP；旧9c09172ac/654307b6不作为本批验收版本。TEST/default新key已由用户发布为tangwen01，config-server回读确认；同浏览器permission=true，8行可操作状态均可点、2行未发布仍灰，非管理员计划可打开抽屉且仍仅1次权限请求。旧accounts key已删除。PROD/default已暂存tangwen01,zhangzeling,wangyongshi；重新读取确认仅此一项新增，发布被Apollo HTTP403拒绝，当前账号zhangzeling无发布权限。config-server仍未命中新key，尚未生效，需有权限人员发布。发布编排24298，MR866/134，TAPD1122531521001397879，未生产发布。
 

@@ -1,3 +1,12 @@
+## 2026-11-11 主从纯续缓存修复全量回归（T-21，test）
+
+- **目标版本**：cart `release-af82f18a-20261111114554` 已在 test 主泳道运行/Eureka UP；针对联报入口专项复测使用 `test-eco-7` Cart Pod `cart-gaotu100-com-7c9d5c75b7-lhjkp`，镜像 `feature-renewal-preheat-small-20261111-53d1cbc1-20261111111132`，Eureka UP。未发生产灰度。
+- **XJob 单用户预热**：测试任务 9981（`RenewalUserPreheatJobHandler`），指定执行器 `10.218.251.68:9999`，入参 `{"renewalNumber":545361759016388608,"userIds":[654745]}`。日志 2541916503 `handleCode=200`，`success=1/failure=0/resultCount=1`。这是 test Redis 预热写入，不包含订单/支付写入。
+- **C/B 端读验证未完成**：按需求矩阵分别请求 `/web/renewal/cart` 与 `/web/renewal/operation/cart`，均返回 `code=700` 登录失效（trace `dc10a4e3-1976-43a8-849a-bbb8906b4480.0.3`、`7538a90b-7694-487e-89d9-af7d0a571e97.0.3`）；按代理规范停止重试。XJob 成功只证明预热执行，不证明缓存命中结果或 C/B 展示正确；需恢复青舟/百家测试登录态后继续。
+- **本地回归**：`RenewalServiceSmallMergedCacheTest` 等续班缓存相关 5 个测试类共 47 项通过。`cart-app` 全量 608 项中 15 项失败，集中于 `BCartQuerySubBuilderTest`、`ExpandSubjectConfigSubBuilderTest` 的 setup 反射注入不存在的 `enabled` 字段；与本次修改文件无关，不据此声称全量全绿。
+- **仍缺的业务矩阵**：联报入口(23)命中缓存下从计划班级(2/6004)及 2+6004+51+23 混排的运行态结果；同一用户实时 miss、单用户预热 hit、计划级预热、B 端绕缓存的无损对照；关联变化/开关/旧缓存兼容格。依据[回归方案](回归测试方案-主从续班计划纯续.md)，T-21 保持进行中。
+- **权限边界**：未经用户明确允许，不发生产灰度或全量。
+
 ## 2026-11-07 从计划状态变化（已修复并实测）
 
 ## 2026-11-09 批量预热与关联缓存修复（T-20，test-eco-4）
