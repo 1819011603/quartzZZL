@@ -1,0 +1,49 @@
+{
+  "url": "http://10.218.249.187:28688/test/acl/compare/service",
+  "trafficEnv": "test-eco-1",
+  "httpStatus": 200,
+  "directIp": true,
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.renewal.RenewalDataService#listRenewalMasterByRenewalNumber",
+    "params": [
+      "551533000353986560"
+    ]
+  },
+  "curl": "curl -sk \\\n  'http://10.218.249.187:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-eco-1' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalDataService#listRenewalMasterByRenewalNumber\", \"params\": [\"551533000353986560\"]}'",
+  "traceId": "cart_gaotu100_com.290.17944255579190168",
+  "rvoCode": 0,
+  "result": {
+    "beginTime": 1782113820000,
+    "combine_product_sku_numbers": [
+      551539692156327937,
+      551539867996231681,
+      551700015760906241,
+      552074829776437248
+    ],
+    "course_numbers": [
+      17235401618358846,
+      17235401618358838
+    ],
+    "effective": true,
+    "endTime": 1808409600000,
+    "productNumberList": [
+      551539692156327937,
+      551539867996231681,
+      551700015760906241,
+      552074829776437248
+    ],
+    "productType": 51,
+    "recommend_map_type": 1,
+    "related_renew_master_numbers": [
+      545361759016388608
+    ],
+    "renewal_number": 551533000353986560,
+    "renewal_recommend_map": {
+      "551537581395924992": 551700015760906241
+    },
+    "type": 2
+  },
+  "eurekaService": "CART.GAOTU100.COM",
+  "instanceId": "cart-gaotu100-com-cd4cb7b69-qnmwr:cart.gaotu100.com:28688:@test-eco-1",
+  "instanceCount": 8
+}

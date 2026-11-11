@@ -10,7 +10,8 @@ branches:
   - order:feature-xuban-pure-relation-20261102
   - order:feature-revert-order-mr2391-20261109
   - cart:feature-renewal-preheat-merge-plan-20261110
-updated: 2026-11-11
+  - cart:feature-renewal-preheat-small-refactor-20261111
+updated: 2026-11-12
 tags: [需求]
 ---
 
@@ -33,6 +34,8 @@ tags: [需求]
 用户确认大小班不会共用课程编号，要求完整回滚 Order !2391。旧版真实同单支付已验证，因此本需求移除Order跨模式重复放行逻辑，恢复原有防重复校验；Product/Cart关联推荐不在此次回滚范围。回滚分支 `feature-revert-order-mr2391-20261109` 从最新release建立，提交 `fad87492bd`，[回滚MR !2392](https://git.baijia.com/gaotu/order/-/merge_requests/2392) 已创建并回读为opened，目标release；编译及9项独立行为检查通过。尚未合并或部署，AICR尚无评审结果。
 
 ## 当前追加：全局权限与预热键兼容
+
+2026-11-12 已复用飞书 P0 的6组样本重跑 Cart da7b9d06（test-eco-1）：36次查询、6次预热及同实例对照；本地231项通过。运行复现强购标记与总体报名状态不一致，代码确认换课只清所属计划缓存、漏入口缓存；当前有未通过项，详见 [本轮报告](artifacts/20261112-cart-rerun/review.md) 和 [verify.md](verify.md)。
 
 2026-11-11 继续执行 T-21 主从续班「纯续」回归：test-eco-7 直连已验证联报入口23带组合条目51；大班主从预热后 C 端同时返回纯续 productType=2/6004，B端 fromC=0 实时查询正常。真实商品条目23及全类型混排、计划级逐用户缓存回读、开关/历史缓存格仍缺；`RenewalServiceSmallMergedCacheTest` 本轮10/10通过（此前47项相关测试通过），cart-app 全量另有15项既有测试 setup 失败。T-21 仍进行中，未经用户明确允许不发生产灰度或全量。当前证据见 [verify.md](verify.md)，覆盖矩阵见 [回归测试方案](回归测试方案-主从续班计划纯续.md)。
 

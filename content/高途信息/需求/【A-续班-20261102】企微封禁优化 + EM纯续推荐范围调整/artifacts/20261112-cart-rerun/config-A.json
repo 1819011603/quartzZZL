@@ -1,0 +1,34 @@
+{
+  "url": "http://10.218.249.187:28688/test/acl/compare/service",
+  "trafficEnv": "test-eco-1",
+  "httpStatus": 200,
+  "directIp": true,
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.renewal.RenewalDataService#listRenewalMasterByRenewalNumber",
+    "params": [
+      "585960797778243584"
+    ]
+  },
+  "curl": "curl -sk \\\n  'http://10.218.249.187:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-eco-1' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalDataService#listRenewalMasterByRenewalNumber\", \"params\": [\"585960797778243584\"]}'",
+  "traceId": "cart_gaotu100_com.299.17944255575440160",
+  "rvoCode": 0,
+  "result": {
+    "beginTime": 1791561600000,
+    "combine_product_sku_numbers": [],
+    "course_numbers": [
+      585960577856301056
+    ],
+    "effective": true,
+    "endTime": 1798732799000,
+    "productType": 2,
+    "recommend_map_type": 1,
+    "related_renew_master_numbers": [
+      586116340522184704
+    ],
+    "renewal_number": 585960797778243584,
+    "type": 1
+  },
+  "eurekaService": "CART.GAOTU100.COM",
+  "instanceId": "cart-gaotu100-com-cd4cb7b69-qnmwr:cart.gaotu100.com:28688:@test-eco-1",
+  "instanceCount": 8
+}

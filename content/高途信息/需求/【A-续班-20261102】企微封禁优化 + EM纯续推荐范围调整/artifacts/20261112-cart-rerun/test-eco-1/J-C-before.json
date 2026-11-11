@@ -1,0 +1,63 @@
+{
+  "path": "/web/renewal/cart?renewalNumber=545361759016388608&appointUserId=654745&includeBCart=false",
+  "instance": "10.218.249.187",
+  "lane": "test-eco-1",
+  "duration_ms": 470,
+  "http": 200,
+  "trace": "cart_gaotu100_com.299.17944254979880156",
+  "response": {
+    "status": 0,
+    "error_info": "",
+    "code": 0,
+    "msg": "",
+    "data": {
+      "renewalNumber": "545361759016388608",
+      "renewalStartTime": "1773129600000",
+      "renewalEndTime": "1804694400000",
+      "imageUrl": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+      "allSignUp": 0,
+      "gradeClazzList": [
+        {
+          "grade": 11,
+          "gradeName": "一年级",
+          "defaultSelect": 1,
+          "clazzDetailDTOList": [
+            {
+              "productSkuNumber": "551700015760906241",
+              "afterCourseNumber": "551696755920590848",
+              "beforeCourseNumber": "17235401618358846",
+              "productSkuName": "后置-二年级-历史-木孟奇-新的组合",
+              "productType": 51,
+              "select": 0,
+              "signUp": 0,
+              "price": "20",
+              "teacherList": [
+                {
+                  "name": "直播主讲78号",
+                  "avatarUrl": "https://test-i.gsxcdn.com/8200386_2whjjy6z.jpg",
+                  "teacherNumber": "375217860934371328",
+                  "teacherRole": "主讲老师"
+                }
+              ],
+              "subjectNames": [
+                "语文"
+              ],
+              "clazzNumber": "551700015760906241",
+              "lessonCount": 1,
+              "normDescList": [
+                "2031-04-06 01:00~2031-04-06 02:05"
+              ],
+              "recommendType": 1,
+              "forceBuy": false,
+              "canChangeCourse": true
+            }
+          ]
+        }
+      ],
+      "status": 0,
+      "msg": [],
+      "renewalForceBuy": false,
+      "expandForceBuy": false
+    }
+  }
+}

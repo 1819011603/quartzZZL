@@ -1,0 +1,48 @@
+{
+  "url": "http://10.218.249.187:28688/test/acl/compare/service",
+  "trafficEnv": "test-eco-1",
+  "httpStatus": 200,
+  "directIp": true,
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.renewal.RenewalDataService#getClazzByClazzNumbersWithCache",
+    "params": [
+      [
+        "588861402658267136"
+      ]
+    ]
+  },
+  "curl": "curl -sk \\\n  'http://10.218.249.187:28688/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-eco-1' \\\n  -H 'host: CART.GAOTU100.COM' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.renewal.RenewalDataService#getClazzByClazzNumbersWithCache\", \"params\": [[\"588861402658267136\"]]}'",
+  "traceId": "cart_gaotu100_com.291.17944260780620185",
+  "rvoCode": 0,
+  "result": [
+    {
+      "begin_time": 1794118800000,
+      "bizNumber": "15YW26XTRO11001",
+      "capacity": -1,
+      "clazzDateDesc": "2026年11月08日-2026年11月08日",
+      "clazzName": "B测试-五年级语文暑假后置1B",
+      "clazzTimeDesc": "14:20-14:25",
+      "clazzType": 0,
+      "clazzWeekDesc": "每周日",
+      "clazz_tags": [],
+      "courseNumber": 588861400563212288,
+      "course_tag_ids": [
+        4
+      ],
+      "endTime": 1794119100000,
+      "normal_clazz_lesson_num": 1,
+      "number": 588861402658267136,
+      "price": 100,
+      "product_type": 2,
+      "saleStatus": 50,
+      "sku_page_show_clazz_lesson_num": 1,
+      "teacherNumbers": [
+        11188041873297121
+      ],
+      "time_desc": "2026年11月08日-2026年11月08日 每周日 14:20-14:25"
+    }
+  ],
+  "eurekaService": "CART.GAOTU100.COM",
+  "instanceId": "cart-gaotu100-com-cd4cb7b69-qnmwr:cart.gaotu100.com:28688:@test-eco-1",
+  "instanceCount": 8
+}

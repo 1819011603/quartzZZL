@@ -1,0 +1,105 @@
+{
+  "path": "/web/renewal/operation/cart?renewalNumber=585960797778243584&userId=7658129872&fromC=1",
+  "instance": "10.218.249.187",
+  "lane": "test-eco-1",
+  "duration_ms": 622,
+  "http": 200,
+  "trace": "cart_gaotu100_com.290.17944254967660162",
+  "response": {
+    "status": 0,
+    "error_info": "",
+    "code": 0,
+    "msg": "",
+    "data": {
+      "renewalNumber": "585960797778243584",
+      "renewalStartTime": "1791561600000",
+      "renewalEndTime": "1798732799000",
+      "imageUrl": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+      "allSignUp": 1,
+      "gradeClazzList": [
+        {
+          "grade": 11,
+          "gradeName": "一年级",
+          "defaultSelect": 1,
+          "clazzDetailDTOList": [
+            {
+              "productSkuNumber": "586097025945298944",
+              "afterCourseNumber": "18314034380997207",
+              "beforeCourseNumber": "18314034380997173",
+              "productSkuName": "默认规格",
+              "productType": 6004,
+              "select": 0,
+              "signUp": 1,
+              "price": "0",
+              "teacherList": [
+                {
+                  "name": "陈陈",
+                  "avatarUrl": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                  "teacherNumber": "346261373801482240",
+                  "teacherRole": "主讲老师"
+                }
+              ],
+              "subjectNames": [
+                "数学"
+              ],
+              "normDescList": [
+                "售卖规格一",
+                "测试1"
+              ],
+              "recommendType": 1,
+              "canChangeCourse": true
+            }
+          ]
+        },
+        {
+          "grade": 16,
+          "gradeName": "六年级",
+          "defaultSelect": 0,
+          "clazzDetailDTOList": [
+            {
+              "productSkuNumber": "585960755422160896",
+              "afterCourseNumber": "585960751831836672",
+              "beforeCourseNumber": "585960577856301056",
+              "productSkuName": "dcg-扩科排除-后置-六年级语文",
+              "productType": 2,
+              "select": 0,
+              "signUp": 1,
+              "price": "0",
+              "teacherList": [
+                {
+                  "name": "陈陈",
+                  "avatarUrl": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                  "teacherNumber": "346261373801482240",
+                  "teacherRole": "主讲老师"
+                }
+              ],
+              "clazzTimeDesc": "17:25-17:30",
+              "clazzDateDesc": "2026年10月22日-2026年10月22日",
+              "clazzWeekDesc": "每周四",
+              "subjectNames": [
+                "语文"
+              ],
+              "clazzNumber": "585960755422160896",
+              "lessonCount": 1
+            }
+          ]
+        }
+      ],
+      "status": 0,
+      "msg": [
+        [
+          "1-续班计划 585960797778243584, 前后置课程关系集合 {585960577856301056=[585960751831836672]}",
+          "2-续班计划 585960797778243584, 前置课程存在订单过滤完成, 前置课程集合courseNumbers is [585960577856301056]",
+          "3-续班计划 585960797778243584, 后置课程信息过滤完成, 过滤前后置课程集合courseNumbers is [585960751831836672], 过滤后后置课程集合courseNumbers is [585960751831836672]",
+          "4-续班计划 585960797778243584, 后置班级信息课程标签过滤完成, 过滤前班级集合clazzNumbers is [585960755422160896], 过滤后班级集合clazzNumbers is [585960755422160896]",
+          "4-1 续班计划 585960797778243584, 非联报续班计划，过滤班级售卖状态，后置班级信息库存与售卖状态过滤完成, 过滤前班级集合clazzNumbers is [585960755422160896], 过滤后班级集合clazzNumbers is [585960755422160896]"
+        ],
+        [
+          "前置课程 is 585960577856301056, 前置班级信息 is 585960582537144320",
+          "待匹配后置班级集合 is [585960755422160896]",
+          "存在有效订单的后置班级，优先展示. 班级 is 585960755422160896 "
+        ]
+      ]
+    }
+  }
+}

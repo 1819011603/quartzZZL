@@ -1,0 +1,9 @@
+{
+  "path": "/web/renewal/preheat?renewalNumber=545361759016388608&userId=654745",
+  "instance": "10.218.249.187",
+  "lane": "test-eco-1",
+  "duration_ms": 1746,
+  "http": 200,
+  "trace": "cart_gaotu100_com.294.17944255610180168",
+  "response": "{17235401618358846:{\"after_course_number\":17235401618358846,\"before_course_number\":17235401618358846,\"can_change_course\":true,\"clazz_number\":551700015760906241,\"force_buy\":true,\"norm_desc_list\":[\"2031-04-06 01:00~2031-04-06 02:05\"],\"price\":20,\"product_sku_name\":\"后置-二年级-历史-木孟奇-新的组合\",\"product_sku_number\":551700015760906241,\"product_type\":51,\"recommend_type\":1,\"select\":0,\"sign_up\":0,\"subject_names\":[\"历史\"],\"teacher_list\":[{\"avatar_url\":\"https://test-i.gsxcdn.com/11059943_hxb79tm2.png\",\"name\":\"木孟奇-改\",\"teacher_number\":528856070475485184,\"teacher_role\":\"主讲老师\"}]}}"
+}

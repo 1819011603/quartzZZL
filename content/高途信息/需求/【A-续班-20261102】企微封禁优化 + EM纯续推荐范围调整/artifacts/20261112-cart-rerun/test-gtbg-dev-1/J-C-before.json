@@ -1,0 +1,14 @@
+{
+  "path": "/web/renewal/cart?renewalNumber=545361759016388608&appointUserId=654745&includeBCart=false",
+  "instance": "10.218.249.114",
+  "lane": "test-gtbg-dev-1",
+  "duration_ms": 176,
+  "http": 200,
+  "trace": "cart_gaotu100_com.303.17944255142844369",
+  "response": {
+    "status": 1,
+    "error_info": "网络异常",
+    "code": 1,
+    "msg": "网络异常"
+  }
+}

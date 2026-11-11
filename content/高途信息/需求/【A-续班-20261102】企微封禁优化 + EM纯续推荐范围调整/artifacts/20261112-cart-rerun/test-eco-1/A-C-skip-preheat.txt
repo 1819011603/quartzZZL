@@ -1,0 +1,23 @@
+@LinkedHashMap[
+    @String[allSignUp]:@Integer[1],
+    @String[grades]:@ArrayList[
+        @LinkedHashMap[
+            @String[grade]:@Integer[11],
+            @String[defaultSelect]:@Integer[1],
+            @String[items]:@ArrayList[
+                @LinkedHashMap[isEmpty=false;size=6],
+            ],
+        ],
+        @LinkedHashMap[
+            @String[grade]:@Integer[16],
+            @String[defaultSelect]:@Integer[0],
+            @String[items]:@ArrayList[
+                @LinkedHashMap[isEmpty=false;size=6],
+                @LinkedHashMap[isEmpty=false;size=6],
+                @LinkedHashMap[isEmpty=false;size=6],
+            ],
+        ],
+    ],
+]
+
+[pod-term] gaotu_cart [dev] -> 7 pod(s); using cart-gaotu100-com-cd4cb7b69-qnmwr (status=Running, eureka=UP, ip=10.218.249.187)

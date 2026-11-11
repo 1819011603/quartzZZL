@@ -1,0 +1,9 @@
+{
+  "path": "/web/renewal/preheat?renewalNumber=588858850300473344&userId=7658129872",
+  "instance": "10.218.249.187",
+  "lane": "test-eco-1",
+  "duration_ms": 1174,
+  "http": 200,
+  "trace": "cart_gaotu100_com.297.17944255561050166",
+  "response": "{585960577856301056:{\"clazz_number\":585960755422160896,\"product_sku_number\":585960755422160896,\"product_type\":2,\"select\":0,\"sign_up\":0,\"subject_names\":[]},18314034380997173:{\"after_course_number\":18314034380997207,\"before_course_number\":18314034380997173,\"can_change_course\":true,\"force_buy\":false,\"norm_desc_list\":[\"售卖规格一\",\"测试1\"],\"price\":0,\"product_sku_name\":\"默认规格\",\"product_sku_number\":586097025945298944,\"product_type\":6004,\"recommend_type\":1,\"select\":0,\"sign_up\":1,\"subject_names\":[\"数学\"],\"teacher_list\":[{\"avatar_url\":\"https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg\",\"name\":\"陈陈\",\"teacher_number\":346261373801482240,\"teacher_role\":\"主讲老师\"}]}}"
+}

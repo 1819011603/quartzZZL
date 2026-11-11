@@ -1,0 +1,354 @@
+[
+  {
+    "case": "M",
+    "mode": "C",
+    "stage": "before",
+    "code": 1,
+    "trace": "cart_gaotu100_com.304.17944255122214362",
+    "ms": 396,
+    "allSignUp": null,
+    "items": []
+  },
+  {
+    "case": "M",
+    "mode": "B",
+    "stage": "before",
+    "code": 0,
+    "trace": "cart_gaotu100_com.300.17944255122694356",
+    "ms": 795,
+    "allSignUp": 1,
+    "items": [
+      {
+        "grade": 15,
+        "productSkuNumber": "588861402658267136",
+        "productType": 2,
+        "recommendType": null,
+        "beforeCourseNumber": "588861395571990528",
+        "signUp": 1,
+        "price": "100",
+        "forceBuy": null
+      }
+    ]
+  },
+  {
+    "case": "M",
+    "mode": "BC",
+    "stage": "before",
+    "code": 1,
+    "trace": "cart_gaotu100_com.299.17944255125974351",
+    "ms": 114,
+    "allSignUp": null,
+    "items": []
+  },
+  {
+    "case": "A",
+    "mode": "C",
+    "stage": "before",
+    "code": 0,
+    "trace": "cart_gaotu100_com.305.17944255127204348",
+    "ms": 544,
+    "allSignUp": 1,
+    "items": [
+      {
+        "grade": 16,
+        "productSkuNumber": "585963387758962688",
+        "productType": 2,
+        "recommendType": 2,
+        "beforeCourseNumber": null,
+        "signUp": 0,
+        "price": "0",
+        "forceBuy": false
+      },
+      {
+        "grade": 16,
+        "productSkuNumber": "585963404555053056",
+        "productType": 2,
+        "recommendType": 2,
+        "beforeCourseNumber": null,
+        "signUp": 0,
+        "price": "0",
+        "forceBuy": false
+      },
+      {
+        "grade": 16,
+        "productSkuNumber": "585960755422160896",
+        "productType": 2,
+        "recommendType": 1,
+        "beforeCourseNumber": "585960577856301056",
+        "signUp": 1,
+        "price": "0",
+        "forceBuy": false
+      }
+    ]
+  },
+  {
+    "case": "A",
+    "mode": "B",
+    "stage": "before",
+    "code": 0,
+    "trace": "cart_gaotu100_com.307.17944255130084388",
+    "ms": 218,
+    "allSignUp": 1,
+    "items": [
+      {
+        "grade": 16,
+        "productSkuNumber": "585960755422160896",
+        "productType": 2,
+        "recommendType": null,
+        "beforeCourseNumber": "585960577856301056",
+        "signUp": 1,
+        "price": "0",
+        "forceBuy": null
+      }
+    ]
+  },
+  {
+    "case": "A",
+    "mode": "BC",
+    "stage": "before",
+    "code": 0,
+    "trace": "cart_gaotu100_com.304.17944255132284364",
+    "ms": 165,
+    "allSignUp": 1,
+    "items": [
+      {
+        "grade": 16,
+        "productSkuNumber": "585960755422160896",
+        "productType": 2,
+        "recommendType": null,
+        "beforeCourseNumber": "585960577856301056",
+        "signUp": 1,
+        "price": "0",
+        "forceBuy": null
+      }
+    ]
+  },
+  {
+    "case": "B",
+    "mode": "C",
+    "stage": "before",
+    "code": 0,
+    "trace": "cart_gaotu100_com.302.17944255132574371",
+    "ms": 1027,
+    "allSignUp": 0,
+    "items": [
+      {
+        "grade": 11,
+        "productSkuNumber": "585963404555053056",
+        "productType": 2,
+        "recommendType": 2,
+        "beforeCourseNumber": "585963400792762368",
+        "signUp": 0,
+        "price": "0",
+        "forceBuy": false
+      },
+      {
+        "grade": 11,
+        "productSkuNumber": "586097025945298944",
+        "productType": 6004,
+        "recommendType": 1,
+        "beforeCourseNumber": "18314034380997173",
+        "signUp": 1,
+        "price": "0",
+        "forceBuy": false
+      },
+      {
+        "grade": 12,
+        "productSkuNumber": "579971527131324416",
+        "productType": 6004,
+        "recommendType": 2,
+        "beforeCourseNumber": "18088786258494163",
+        "signUp": 0,
+        "price": "0",
+        "forceBuy": false
+      }
+    ]
+  },
+  {
+    "case": "B",
+    "mode": "B",
+    "stage": "before",
+    "code": 0,
+    "trace": "cart_gaotu100_com.301.17944255133944359",
+    "ms": 786,
+    "allSignUp": 1,
+    "items": [
+      {
+        "grade": 11,
+        "productSkuNumber": "586097025945298944",
+        "productType": 6004,
+        "recommendType": 1,
+        "beforeCourseNumber": "18314034380997173",
+        "signUp": 1,
+        "price": "0",
+        "forceBuy": null
+      }
+    ]
+  },
+  {
+    "case": "B",
+    "mode": "BC",
+    "stage": "before",
+    "code": 0,
+    "trace": "cart_gaotu100_com.307.17944255141824390",
+    "ms": 323,
+    "allSignUp": 1,
+    "items": [
+      {
+        "grade": 11,
+        "productSkuNumber": "586097025945298944",
+        "productType": 6004,
+        "recommendType": 1,
+        "beforeCourseNumber": "18314034380997173",
+        "signUp": 1,
+        "price": "0",
+        "forceBuy": null
+      }
+    ]
+  },
+  {
+    "case": "J",
+    "mode": "C",
+    "stage": "before",
+    "code": 1,
+    "trace": "cart_gaotu100_com.303.17944255142844369",
+    "ms": 176,
+    "allSignUp": null,
+    "items": []
+  },
+  {
+    "case": "J",
+    "mode": "B",
+    "stage": "before",
+    "code": 0,
+    "trace": "cart_gaotu100_com.304.17944255144634366",
+    "ms": 259,
+    "allSignUp": 0,
+    "items": [
+      {
+        "grade": 19,
+        "productSkuNumber": "564918064353779712",
+        "productType": 2,
+        "recommendType": null,
+        "beforeCourseNumber": "545361294648225792",
+        "signUp": 0,
+        "price": "10",
+        "forceBuy": null
+      }
+    ]
+  },
+  {
+    "case": "J",
+    "mode": "BC",
+    "stage": "before",
+    "code": 1,
+    "trace": "cart_gaotu100_com.301.17944255145044361",
+    "ms": 97,
+    "allSignUp": null,
+    "items": []
+  },
+  {
+    "case": "JS",
+    "mode": "C",
+    "stage": "before",
+    "code": 0,
+    "trace": "cart_gaotu100_com.306.17944255146004362",
+    "ms": 1463,
+    "allSignUp": 0,
+    "items": [
+      {
+        "grade": 11,
+        "productSkuNumber": "551700015760906241",
+        "productType": 51,
+        "recommendType": 1,
+        "beforeCourseNumber": "17235401618358846",
+        "signUp": 0,
+        "price": "20",
+        "forceBuy": true
+      }
+    ]
+  },
+  {
+    "case": "JS",
+    "mode": "B",
+    "stage": "before",
+    "code": 0,
+    "trace": "cart_gaotu100_com.305.17944255147224350",
+    "ms": 1314,
+    "allSignUp": 0,
+    "items": [
+      {
+        "grade": 11,
+        "productSkuNumber": "551700015760906241",
+        "productType": 51,
+        "recommendType": 1,
+        "beforeCourseNumber": "17235401618358846",
+        "signUp": 0,
+        "price": "20",
+        "forceBuy": null
+      }
+    ]
+  },
+  {
+    "case": "JS",
+    "mode": "BC",
+    "stage": "before",
+    "code": 0,
+    "trace": "cart_gaotu100_com.307.17944255160394392",
+    "ms": 1130,
+    "allSignUp": 0,
+    "items": [
+      {
+        "grade": 11,
+        "productSkuNumber": "551700015760906241",
+        "productType": 51,
+        "recommendType": 1,
+        "beforeCourseNumber": "17235401618358846",
+        "signUp": 0,
+        "price": "20",
+        "forceBuy": null
+      }
+    ]
+  },
+  {
+    "case": "M2",
+    "mode": "C",
+    "stage": "before",
+    "code": 0,
+    "trace": "cart_gaotu100_com.299.17944255160674353",
+    "ms": 146,
+    "allSignUp": null,
+    "items": []
+  },
+  {
+    "case": "M2",
+    "mode": "B",
+    "stage": "before",
+    "code": 0,
+    "trace": "cart_gaotu100_com.300.17944255162174359",
+    "ms": 169,
+    "allSignUp": 1,
+    "items": [
+      {
+        "grade": 15,
+        "productSkuNumber": "588861402658267136",
+        "productType": 2,
+        "recommendType": null,
+        "beforeCourseNumber": "588861395571990528",
+        "signUp": 1,
+        "price": "100",
+        "forceBuy": null
+      }
+    ]
+  },
+  {
+    "case": "M2",
+    "mode": "BC",
+    "stage": "before",
+    "code": 0,
+    "trace": "cart_gaotu100_com.302.17944255163844373",
+    "ms": 151,
+    "allSignUp": null,
+    "items": []
+  }
+]

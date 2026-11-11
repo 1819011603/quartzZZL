@@ -1,0 +1,59 @@
+{
+  "path": "/web/renewal/cart?renewalNumber=588858850300473344&appointUserId=7707220467&includeBCart=false",
+  "instance": "10.218.237.35",
+  "lane": "test-eco-7",
+  "duration_ms": 517,
+  "http": 200,
+  "trace": "cart_gaotu100_com.287.17944254706444237",
+  "response": {
+    "status": 0,
+    "error_info": "",
+    "code": 0,
+    "msg": "",
+    "data": {
+      "renewalNumber": "588858850300473344",
+      "renewalStartTime": "1793870400000",
+      "renewalEndTime": "1825406400000",
+      "imageUrl": "https://i.gsxcdn.com/3058475668_wmwp5ie1.png",
+      "allSignUp": 1,
+      "gradeClazzList": [
+        {
+          "grade": 11,
+          "gradeName": "一年级",
+          "defaultSelect": 1,
+          "clazzDetailDTOList": [
+            {
+              "productSkuNumber": "586097025945298944",
+              "afterCourseNumber": "18314034380997207",
+              "beforeCourseNumber": "18314034380997173",
+              "productSkuName": "默认规格",
+              "productType": 6004,
+              "select": 0,
+              "signUp": 1,
+              "price": "0",
+              "teacherList": [
+                {
+                  "name": "陈陈",
+                  "avatarUrl": "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+                  "teacherNumber": "346261373801482240",
+                  "teacherRole": "主讲老师"
+                }
+              ],
+              "subjectNames": [
+                "数学"
+              ],
+              "normDescList": [
+                "售卖规格一",
+                "测试1"
+              ],
+              "recommendType": 1,
+              "forceBuy": false,
+              "canChangeCourse": true
+            }
+          ]
+        }
+      ],
+      "status": 0
+    }
+  }
+}

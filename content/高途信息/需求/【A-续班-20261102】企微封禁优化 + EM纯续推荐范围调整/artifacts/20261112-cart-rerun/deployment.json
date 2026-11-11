@@ -1,0 +1,15 @@
+{
+  "data": [
+    {
+      "serviceCode": "gaotu_cart",
+      "name": "cart-gaotu100-com",
+      "environment": "test",
+      "namespace": "test-eco-7",
+      "groupServiceFullName": "test-eco-7-BJ-Ve1",
+      "replicas": 1,
+      "mainImage": "feature-renewal-preheat-small-20261111-7e610138-20261111145113"
+    }
+  ],
+  "code": 200,
+  "msg": "success"
+}

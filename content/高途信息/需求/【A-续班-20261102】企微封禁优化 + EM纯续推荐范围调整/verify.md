@@ -1,3 +1,12 @@
+## 2026-11-12 Cart 当前分支业务重跑（有未通过项）
+
+- 对照 dedup 审查 `feature-renewal-preheat-small-refactor-20261111` / `da7b9d06`；目标镜像已核验在 test-eco-1，未改代码。
+- 已查阅飞书P0 revision449及5计划14关系文档revision7，复用6组计划/学员：36次目标HTTP查询、6次单用户预热、同实例3组缓存/实时对照；本地现有231项聚焦测试通过。
+- **运行复现**：从计划组合商品强购true在主入口命中预热后变false；已购小班商品signUp=1但总体allSignUp变0。
+- **代码确认、未执行换课**：从主入口更换从计划课程只清owner缓存，入口合并缓存仍保留。
+- 非默认年级详情缺失只记契约差异；主计划商品当前停售造成的C/B差异不算回归。当前真实23联报商品、支付、换课写入链路未实测。
+- 详细分析、改进建议、样本、trace及证据：[本轮报告](artifacts/20261112-cart-rerun/review.md)。
+
 ## 2026-11-11 主从纯续缓存修复全量回归（T-21，test）
 
 - **目标版本**：cart `release-af82f18a-20261111114554` 已在 test 主泳道运行/Eureka UP；针对联报入口专项复测使用 `test-eco-7` Cart Pod `cart-gaotu100-com-7c9d5c75b7-lhjkp`，镜像 `feature-renewal-preheat-small-20261111-53d1cbc1-20261111111132`，Eureka UP。未发生产灰度。

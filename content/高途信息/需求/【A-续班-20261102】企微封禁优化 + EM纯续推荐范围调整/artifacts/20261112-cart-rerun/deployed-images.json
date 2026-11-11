@@ -1,0 +1,30 @@
+[
+  {
+    "lane": "test-gtbg-dev-3",
+    "image": "feature-renewal-preheat-merge-small-20261110-57de49c3-20261111003322"
+  },
+  {
+    "lane": "test-eco-4",
+    "image": "feature-renewal-relation-per-plan-20261110-3e012ec2-20261110150920"
+  },
+  {
+    "lane": "test",
+    "image": "release-af82f18a-20261111114554"
+  },
+  {
+    "lane": "test-gtbg-dev-2",
+    "image": "feature-xuban-20261001-90a00a4f-20261109181628"
+  },
+  {
+    "lane": "test-gtbg-dev-1",
+    "image": "feature-renewal-clazzset-dedup-fd1fdc28-20261107113226"
+  },
+  {
+    "lane": "test-eco-5",
+    "image": "feature-renewal-preheat-small-20261111-d95ed365-20261111015037"
+  },
+  {
+    "lane": "test-eco-1",
+    "image": "feature-renewal-preheat-small-refactor-20261111-da7b9d06-20261112001751"
+  }
+]
