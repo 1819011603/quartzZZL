@@ -87,7 +87,7 @@ T-18完成：cart **1ebd315d**、product-b/product-c **2593dae78**已推送并�
 
 ## 现在什么情况
 
-- 当前工作单 T 9/10 · R 0/0 · C 2/2：C-2从计划状态变化过滤已修复部署并实测；C-1（1485167）已修复部署且接口层实测通过；当前阶段为“联调中（待QA复测）”，生产配置、QA用例和外部回溯保留为上线前置。
+- 当前工作单 T 9/11 · R 0/0 · C 2/2：C-2从计划状态变化过滤已修复部署并实测；C-1（1485167）已修复部署且接口层实测通过；T-20/T-21（预热审查修复、纯续全量回归）进行中；当前阶段为“联调中（待QA复测）”，生产配置、QA用例和外部回溯保留为上线前置。
 - 本轮TEST采样与保留对象/恢复结论见verify；前端不改、不新部署，不把默认TEST企微结果归给目标feature。
 - 下一步按P0剩余缺口推进；已补受控大班筛选，剩余EM/小班/页面场景按已授权TEST范围执行，不重放build或已付单。
 
@@ -105,6 +105,7 @@ T-18完成：cart **1ebd315d**、product-b/product-c **2593dae78**已推送并�
 - product-server：`RenewalMasterRelationService#save`、list/save Controller及关联下发；cart：`RenewalService#mergeRelatedPreCourseNumbers`；order：`CartSameClazzOrCourseImpl`。本批product关联缓存及cart已购/换班/库存范围已修，order保持原提交。
 - student-center：标签/备注与GAIA/ES下游；实际版本/对象/恢复以[verify.md](verify.md)为准，不能把本地分支当已部署。
 - 需求入口及PRD、方案、发布编排、协作责任见[links.md](links.md)；当前任务见[tasks.md](tasks.md)，新造样本方法沿用gaotu-data-seeding入口，端到端入口参考[e2e.md](e2e.md)，实际版本与对象以verify为准。
+- **主从续班计划「纯续」全量回归测试方案**见 [回归测试方案-主从续班计划纯续.md](回归测试方案-主从续班计划纯续.md)（商品类型 2/6004/51/23 全覆盖 × 实时计算/预热 × xjob 计划级/UserId 级）。
 - 页面/接口契约问题归金瑞琳，业务预期归王永诗；本轮未联系。当前无已确认账号/好友或部署阻塞；按必需边界补未执行项，历史回溯另按既定执行边界安排。
 
 ## 2026-11-05 round8 集成记录
