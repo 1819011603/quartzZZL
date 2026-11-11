@@ -1,0 +1,72 @@
+{
+  "date": "2026-11-11",
+  "topic": "联报(productType=23)入口命中含组合/班级类从条目的合并预热缓存：复现与修复",
+  "reproData": {
+    "entryPlan": "545361759016388608",
+    "entryPlanName": "CRM&EES",
+    "entryPlanType": 1,
+    "entryPlanProductType": 23,
+    "relatedPlan": "551533000353986560",
+    "relatedPlanName": "续班计划-只测小班课购买",
+    "relatedPlanType": 2,
+    "userId": 654745,
+    "comboSkuNumber": 551700015760906241,
+    "comboProductType": 51,
+    "comboName": "后置-二年级-历史-木孟奇-新的组合",
+    "beforeCourseNumber": 17235401618358846
+  },
+  "oldCode": {
+    "lane": "test",
+    "cartImage": "release-1cd47185-20261110230217",
+    "pod": "cart-gaotu100-com-55b4c69c9d-tqjrb",
+    "podIP": "10.255.163.79",
+    "endpoint": "/web/renewal/cart?renewalNumber=545361759016388608&appointUserId=654745&includeBCart=false",
+    "response": "{\"status\":1,\"error_info\":\"网络异常\",\"code\":1,\"msg\":\"网络异常\"}",
+    "exception": "java.lang.NullPointerException",
+    "stack": [
+      "com.gaotu.renewal.recommend.condition.RecommendContext.lambda$listCourseDTOByClazzNumbers$2(RecommendContext.java:127)",
+      "com.gaotu.renewal.recommend.condition.RecommendContext.listCourseDTOByClazzNumbers(RecommendContext.java:127)",
+      "com.gaotu.renewal.RenewalService.getSinglePlanRenewalDetail(RenewalService.java:1269)",
+      "com.gaotu.controller.RenewalController.lambda$operationRenewalCart$1(RenewalController.java:88)"
+    ],
+    "traceId": "cart_gaotu100_com.5803.17943647644251429"
+  },
+  "newCodeBeforeThisFix": {
+    "lane": "test-eco-7",
+    "cartImage": "feature-renewal-preheat-small-20261111-08081c4c-20261111100153",
+    "podIP": "10.218.249.168",
+    "masterEntryCEnd": "code=0 但 gradeClazzList 为空（51 被静默丢弃）",
+    "masterEntryOperationEnd": "{\"status\":2,\"error_info\":\"activityNumber不能为空\",\"code\":2}",
+    "rootCause": "splitPureEntriesByProductType 在入口计划为联报(23)时，把合并缓存里所有条目都当联报交给 processClazzSet；从计划的组合(51)/班级类(6004)条目 activityNumber 为空，被丢/报错"
+  },
+  "fix": {
+    "commit1": "f1945058",
+    "commit1Desc": "联报入口不再把从计划的组合条目当联报交给 processClazzSet",
+    "commit2": "53d1cbc1",
+    "commit2Desc": "联报入口仅自身联报条目走 processClazzSet，从计划班级类/组合改走类型分派（含最小年级判定改用同一分派结果）",
+    "mr": "!295",
+    "branch": "feature-renewal-preheat-small-20261111",
+    "files": [
+      "cart-app/src/main/java/com/gaotu/renewal/RenewalService.java",
+      "cart-app/src/test/java/com/gaotu/renewal/RenewalServiceSmallMergedCacheTest.java"
+    ],
+    "localTests": "RenewalServiceSmallMergedCacheTest 10/10；cart-app *Renewal* 279/279"
+  },
+  "verificationAfterFix": {
+    "lane": "test-eco-7",
+    "cartImage": "feature-renewal-preheat-small-20261111-53d1cbc1-20261111111132",
+    "pod": "cart-gaotu100-com-7c9d5c75b7-lhjkp",
+    "podIP": "10.218.251.68",
+    "masterEntryCEnd": "code=0 grade=11 一年级 [(51, 后置-二年级-历史-木孟奇-新的组合, price=20, signUp=0)]",
+    "masterEntryCEndTraceId": "cart_gaotu100_com.290.17943669571050007",
+    "masterEntryOperationEnd": "code=0，含 grade=11 51 条目（不再报 activityNumber不能为空）",
+    "masterEntryOperationEndTraceId": "cart_gaotu100_com.291.17943669575440007",
+    "slaveEntryCEnd": "code=0 grade=11 一年级 [(51, ...)]",
+    "slaveEntryCEndTraceId": "cart_gaotu100_com.294.17943669591380006",
+    "oldLaneRecheckTraceId": "cart_gaotu100_com.285.17943669608698606"
+  },
+  "notes": [
+    "线上 NPE（11-10 23:39）的缓存异常条目正是 productType=51；预热合并缓存改造(1bf01ef8/1cd47185)前主链接在线逐个算从计划再合并、可正常展示从计划纯续，属回归。",
+    "联报入口命中「主+全部从」合并纯续 map，从计划的班级类(6004/2)条目同样无 activityNumber，属同一根因；53d1cbc1 一并覆盖（仅单测覆盖，无该场景运行态数据）。"
+  ]
+}
