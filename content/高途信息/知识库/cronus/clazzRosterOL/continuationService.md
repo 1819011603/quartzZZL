@@ -112,6 +112,12 @@
   - `POST /bgwApi/component/student-center/roster/renewal/page`，body（真实日志口径）：`{"identification":"continuationService","route":{"sceneVersionNumber":<n>},"filter":{"clazzNumber":["<班号>"],"studentSubStatus":[0],"leadTeacher":[<accountId>],"renewalRoundFilter":[1],"fuzzyText":""},"pager":{"current":1,"pageSize":500},"quickFilter":{}}`；返回行看 `presaleStatus`。
 - 排查「已预报名却显示未预报」：① 回读 ES 该学员当前 subclazz 的 `presaleStatus`；② 查 `dws_fuwu_clazz_user_presale_subject` 该学员该学期记录的 `clazz_number` 是否=该班；③ 关系是否配（`course_relation_map.calculate_renewal_type=2`）；④ 同步延时走 `续班与业绩/续班看板指标/排查/预报名状态延时排查链路.md`。
 
+### 顶部「预报名率 / 未预报名率」口径（2026-11-12 核实）
+
+- 接口 `/roster/renewal/subclazz/statistic` → `RenewalService#subclazzStatistic`：`batchQueryStudentInfo` 只筛 `canRenewal∈{1,2,8}`（+ 轮次/权限），`getSubclazzRenewalStatisticVO` 里 `presaleCount = presaleStatus==1`，`depositPreRegistrationRate = presaleCount / canRenewalCount`。**分子分母都是同一批 ES 文档**，不筛 `clazzStudentStatus`（含退班仍留可续标记的文档）。
+- 注意：指标卡片只返回「可续学员数 + 率」，**不返回已预报人数**；运营说的「已预报 N 人」通常来自列表（`presaleStatus=1` + 默认「在读且本人辅导班」，不按可续过滤）。两个数人群不同，直接相除会差人（列表含在班但 `canRenewal` 非可续的学员；分母含退班可续文档）。
+- 实例（2026-11-12）：两班 263 可续、分子 194（73.76%）；列表已预报 195，唯一差异学员在班已预报但 `canRenewal=5`（调课新单缺可续配置/标记）。排查见 [`业绩归因/排查/续班服务预报名率与已预报人数对不上.md`](../../../工单/续班与业绩/业绩归因/排查/续班服务预报名率与已预报人数对不上.md)。
+
 ## 排查提示
 
 - **列表为空 / 数量不对** → `/roster/renewal/page` 的 `filter`/`quickFilter`；total 触顶看 `/roster/renewal/count`。
