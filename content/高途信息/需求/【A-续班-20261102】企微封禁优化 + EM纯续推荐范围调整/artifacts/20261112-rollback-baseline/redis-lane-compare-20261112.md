@@ -115,3 +115,25 @@ STRLEN renewal:preheat:v2:588872241920421888:7658129872 -> 155（1 条）
   - 链接权限：`tenant_readable`（组织内获得链接的人可阅读），已回读确认。
 - 飞书文档（补充说明）：https://gaotuedu.feishu.cn/docx/GFGVd3nd5oOxubx4GjDcEY3rnGb
   - 原先是 docx（文档）不是电子表格；已同步把链接权限从 `closed` 改为 `tenant_readable`。
+
+## 8. 扩展样本与三链路一致性（2026-11-12 15:20-15:26）
+
+- 样本：21 个「计划×用户」、9 个计划、13 个用户；覆盖大→小、小→大、不关联、多从计划（4 个从计划 5 条）、商品类型 2/6004/51、年级 11/12/16/19/31、无有效后置（580120 两用户 0 条）、无学员计划（589178/589558/589994 按订单查询 0 人，调用返回空）。
+- 三链路定义：推荐逻辑=老泳道基线单计划 map；预热逻辑=V2 preheat map + v2 Redis；实时计算=V2 `getRenewalDetailForC` 纯续条目。
+- 结果：
+  - 老单计划推荐 key 均被 V2 预包含：老 key 缺失 0、SKU/type 差异 0。
+  - 预热 vs 实时集合：21 对中 19 对完全一致；2 对不一致（均为 551533000353986560 的两个用户：预热 1 条，实时 2 条，实时多 `545361294648225792`）。
+  - 字段差异：11 对为 `recommend_type` null→1、`sign_up` 0→1，商品 key/SKU/type 一致；属既有「预热存 raw、实时再补状态」口径。
+- 不一致项定性：551533 的差异来自老基线预热对子计划 545361 的 coreHandle 过滤（日志 `needMatchedAfterClazzNumbers is empty`），实时 detail（老/新一致）包含该年级条目；**老基线同样存在，不是 V2 引入**。影响：预热缓存少 1 条，实时打开会现算补齐。
+- 证据：`/tmp/w1_consistency.json`（21 行原始对比 + trace）、飞书表格「扩展样本矩阵 / 三链路一致性 / 不一致项」。
+
+## 9. 基线泳道复现校正（2026-11-12 15:35，test-eco-9 / 1f5a9118）
+
+- 环境：test-eco-9，Pod `cart-gaotu100-com-76966c7fb4-g7gn7` / `10.218.249.60`，镜像 `feature-renewal-rollback-clazzset-dedup-20261112-1f5a9118-20261112144611`，eureka UP。
+- 计划 `551533000353986560`，用户 `654745`、`6611409826452`：
+  - 老预热（`RenewalService#preheat`）：**0 条**；`preheatByRenewalNumber` 也未把老 key 刷新为 26h（老 key TTL≈50176，约 13.9h，值是此前 master 代码留下的 `@mergedRenewal@`）。
+  - 老实时（`RenewalService#getRenewalDetail` 5 参）：**1 条**，key `17235401618358846`（grade=11，type=51）。
+  - 子计划 `545361759016388608`：老预热 **0 条**，老实时 **1 条**（key `545361294648225792`，grade=19，type=2）。
+- 结论校正：**基线不会出现“预热 1 / 实时 2”**；基线在 551533 上是“预热 0/实时 1”，在子计划 545361 上是“预热 0/实时 1（缺 grade19）”。V2 的 1 vs 2 是“主计划 1 条 + 子计划实时 1 条”的组合结果；缺的 grade19 条目在基线子计划预热中同样缺失。因此差异来源是**基线 per-plan 预热过滤与实时 detail 口径不一致**，V2 未新增商品集合差异；此前“老链路同样 1 vs 2”的表述不准确，已按实测校正。
+- trace：老预热 551533 `cart_gaotu100_com.326.17944689240840034`；老实时 551533 `cart_gaotu100_com.325.17944689254330040`；老预热 545361 `cart_gaotu100_com.323.17944689266090034`；老实时 545361 `cart_gaotu100_com.327.17944689269420038`；用户 6611409826452 对应 `...328.../...330.../...321.../...322...`。
+- 开关：TEST `renewal.recommend.v2.enabled=false`（扩展样本后已恢复）、`renewal.preheat.v2.enabled=false`、`renewal.preheat.v2.prefix.enabled=true`；基线老代码不走 V2 开关。
