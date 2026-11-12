@@ -1,0 +1,22 @@
+# rebuilt 2026-11-12 per owner: base origin/release (old base origin/master commit b6692a63 discarded)
+branch=feature-renewal-rollback-clazzset-dedup-20261112
+base=origin/release af82f18acdb26b0434f7ef27eacd6c1735a407cf
+head=1f5a911895730a1b919c4900998807bbebf980fb
+head_parent=af82f18acdb26b0434f7ef27eacd6c1735a407cf
+remote=1f5a911895730a1b919c4900998807bbebf980fb
+baseline=origin/feature-renewal-clazzset-dedup e315a655da44cebac1638b759984cc91f552c662
+prod_image_commit=4b40ee27 4b40ee270124d7b1e6e015421c70c0d6ba777f92
+head_tree=58cd2a93c91133df592dddb089e1d007abc31263
+baseline_tree=58cd2a93c91133df592dddb089e1d007abc31263
+prod_image_tree=58cd2a93c91133df592dddb089e1d007abc31263
+release_tree=2011e66669de11568a30237ea26f08b25dcffc19
+master_tree=2011e66669de11568a30237ea26f08b25dcffc19
+diff_vs_baseline_files=0
+diff_vs_prod_image_files=0
+diff_vs_release_files=41
+diff_vs_master_files=41
+mergetree_release=58cd2a93c91133df592dddb089e1d007abc31263
+mergetree_master=58cd2a93c91133df592dddb089e1d007abc31263
+release_is_ancestor_of_branch=yes
+status=## feature-renewal-rollback-clazzset-dedup-20261112...origin/feature-renewal-rollback-clazzset-dedup-20261112
+mr_298_target=master (read from GitLab page; head auto-follows 1f5a9118)

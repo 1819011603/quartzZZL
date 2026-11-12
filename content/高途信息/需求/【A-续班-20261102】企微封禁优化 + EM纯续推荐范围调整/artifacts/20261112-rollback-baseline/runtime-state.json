@@ -1,0 +1,100 @@
+{
+  "checked_at": "2026-11-12T10:58:14.560053+08:00",
+  "pods": {
+    "gaotu_cart": {
+      "env": "prod",
+      "pods": [
+        {
+          "namespace": "prod",
+          "image": "release-4b40ee27-20261107115215",
+          "status": "Running",
+          "eureka": "UP",
+          "createTime": 1794380455000,
+          "createTimeLocal": "2026-11-11T15:00:55+08:00"
+        },
+        {
+          "namespace": "prod",
+          "image": "release-4b40ee27-20261107115215",
+          "status": "Running",
+          "eureka": "UP",
+          "createTime": 1794380455000,
+          "createTimeLocal": "2026-11-11T15:00:55+08:00"
+        },
+        {
+          "namespace": "prod",
+          "image": "release-4b40ee27-20261107115215",
+          "status": "Running",
+          "eureka": "UP",
+          "createTime": 1794380550000,
+          "createTimeLocal": "2026-11-11T15:02:30+08:00"
+        },
+        {
+          "namespace": "prod",
+          "image": "release-4b40ee27-20261107115215",
+          "status": "Running",
+          "eureka": "UP",
+          "createTime": 1794380553000,
+          "createTimeLocal": "2026-11-11T15:02:33+08:00"
+        }
+      ]
+    },
+    "baijia.gt.ecommerce.product.product": {
+      "env": "prod",
+      "pods": [
+        {
+          "namespace": "prod",
+          "image": "release-c1bc0d6b-20261110155243",
+          "status": "Running",
+          "eureka": "UP",
+          "createTime": 1794299203000,
+          "createTimeLocal": "2026-11-10T16:26:43+08:00"
+        },
+        {
+          "namespace": "prod",
+          "image": "release-c1bc0d6b-20261110155243",
+          "status": "Running",
+          "eureka": "UP",
+          "createTime": 1794299203000,
+          "createTimeLocal": "2026-11-10T16:26:43+08:00"
+        },
+        {
+          "namespace": "prod",
+          "image": "release-c1bc0d6b-20261110155243",
+          "status": "Running",
+          "eureka": "UP",
+          "createTime": 1794299350000,
+          "createTimeLocal": "2026-11-10T16:29:10+08:00"
+        },
+        {
+          "namespace": "prod",
+          "image": "release-c1bc0d6b-20261110155243",
+          "status": "Running",
+          "eureka": "UP",
+          "createTime": 1794299352000,
+          "createTimeLocal": "2026-11-10T16:29:12+08:00"
+        }
+      ]
+    },
+    "baijia.gt.ecommerce.product.product-b": {
+      "env": "prod",
+      "pods": [
+        {
+          "namespace": "prod",
+          "image": "release-c1bc0d6b-20261110155248",
+          "status": "Running",
+          "eureka": "UP",
+          "createTime": 1794299198000,
+          "createTimeLocal": "2026-11-10T16:26:38+08:00"
+        },
+        {
+          "namespace": "prod",
+          "image": "release-c1bc0d6b-20261110155248",
+          "status": "Running",
+          "eureka": "UP",
+          "createTime": 1794299349000,
+          "createTimeLocal": "2026-11-10T16:29:09+08:00"
+        }
+      ]
+    }
+  }
+}
