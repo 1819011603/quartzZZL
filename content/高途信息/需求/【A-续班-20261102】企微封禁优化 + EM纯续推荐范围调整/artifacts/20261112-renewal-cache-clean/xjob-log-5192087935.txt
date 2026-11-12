@@ -1,0 +1,15 @@
+2026-11-12 12:50:58 [com.xxl.job.core.thread.JobThread#run]-[124]-[Thread-3827] 
+----------- xxl-job job execute start -----------
+----------- Param:{"renewalNumber":18265106652594880,"userIds":[87344208341154,6428072577,7244906527]}
+2026-11-12 12:50:58 [com.xxl.job.core.handler.impl.GlueJobHandler#execute]-[25]-[Thread-3829] ----------- glue.version:1793893550000 -----------
+2026-11-12 12:50:58 [sun.reflect.GeneratedMethodAccessor2265#invoke]-[-1]-[Thread-3829] ===>start RenewalUserPreheatJobHandler, param={"renewalNumber":18265106652594880,"userIds":[87344208341154,6428072577,7244906527]}
+2026-11-12 12:50:58 [sun.reflect.GeneratedMethodAccessor2265#invoke]-[-1]-[Thread-3829] ===>开始预热 renewalNumber=18265106652594880, userCount=3, userIds=[87344208341154, 6428072577, 7244906527]
+2026-11-12 12:50:58 [sun.reflect.GeneratedMethodAccessor2265#invoke]-[-1]-[Thread-3829] ===>预热完成 renewalNumber=18265106652594880, userId=87344208341154, resultCount=0
+2026-11-12 12:51:02 [sun.reflect.GeneratedMethodAccessor2265#invoke]-[-1]-[Thread-3829] ===>预热完成 renewalNumber=18265106652594880, userId=6428072577, resultCount=2
+2026-11-12 12:51:02 [sun.reflect.GeneratedMethodAccessor2265#invoke]-[-1]-[Thread-3829] ===>预热完成 renewalNumber=18265106652594880, userId=7244906527, resultCount=0
+2026-11-12 12:51:02 [sun.reflect.GeneratedMethodAccessor2265#invoke]-[-1]-[Thread-3829] ===>RenewalUserPreheatJobHandler 全部完成，renewalNumber=18265106652594880, total=3, success=3, failure=0, resultCount=2
+2026-11-12 12:51:02 [com.xxl.job.core.thread.JobThread#run]-[164]-[Thread-3827] 
+----------- xxl-job job execute end(finish) -----------
+----------- ReturnT:ReturnT [code=200, msg=null, content=null]
+2026-11-12 12:51:02 [com.xxl.job.core.thread.TriggerCallbackThread#callbackLog]-[190]-[xxl-job, executor TriggerCallbackThread] 
+----------- xxl-job job callback finish.

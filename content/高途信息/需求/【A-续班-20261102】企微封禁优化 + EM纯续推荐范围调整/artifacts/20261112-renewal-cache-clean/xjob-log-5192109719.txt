@@ -1,0 +1,11 @@
+2026-11-12 12:54:17 [com.xxl.job.core.thread.JobThread#run]-[124]-[Thread-3918] 
+----------- xxl-job job execute start -----------
+----------- Param:{"renewalNumber":18265106652594880,"userIds":[87344208341154,6428072577,7244906527]}
+2026-11-12 12:54:17 [com.xxl.job.core.handler.impl.GlueJobHandler#execute]-[25]-[Thread-3918] ----------- glue.version:1794448306000 -----------
+2026-11-12 12:54:17 [sun.reflect.GeneratedMethodAccessor2083#invoke]-[-1]-[Thread-3918] ===>start RenewalPreheatCacheCleanJobHandler, param={"renewalNumber":18265106652594880,"userIds":[87344208341154,6428072577,7244906527]}
+2026-11-12 12:54:17 [sun.reflect.GeneratedMethodAccessor2083#invoke]-[-1]-[Thread-3918] ===>清理完成，请求 3 个 key，删除前存在 1 个，已全部删除
+2026-11-12 12:54:17 [com.xxl.job.core.thread.JobThread#run]-[164]-[Thread-3918] 
+----------- xxl-job job execute end(finish) -----------
+----------- ReturnT:ReturnT [code=200, msg=null, content=null]
+2026-11-12 12:54:17 [com.xxl.job.core.thread.TriggerCallbackThread#callbackLog]-[190]-[xxl-job, executor TriggerCallbackThread] 
+----------- xxl-job job callback finish.

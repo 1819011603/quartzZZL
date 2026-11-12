@@ -1,0 +1,27 @@
+2026-11-12 12:50:48 [com.xxl.job.core.thread.JobThread#run]-[124]-[Thread-3827] 
+----------- xxl-job job execute start -----------
+----------- Param:{"renewalNumber":18129407093181888,"userIds":[7262556485,15864822552605,6959233283,7344603153,7040442633,7346143486,6973530541,6676504961,7182778395,15868542365212,5987487,6526097704,15914374078992,4916022026,4814080504]}
+2026-11-12 12:50:48 [com.xxl.job.core.handler.impl.GlueJobHandler#execute]-[25]-[Thread-3828] ----------- glue.version:1793893550000 -----------
+2026-11-12 12:50:48 [sun.reflect.NativeMethodAccessorImpl#invoke0]-[-2]-[Thread-3828] ===>start RenewalUserPreheatJobHandler, param={"renewalNumber":18129407093181888,"userIds":[7262556485,15864822552605,6959233283,7344603153,7040442633,7346143486,6973530541,6676504961,7182778395,15868542365212,5987487,6526097704,15914374078992,4916022026,4814080504]}
+2026-11-12 12:50:48 [sun.reflect.NativeMethodAccessorImpl#invoke0]-[-2]-[Thread-3828] ===>开始预热 renewalNumber=18129407093181888, userCount=15, userIds=[7262556485, 15864822552605, 6959233283, 7344603153, 7040442633, 7346143486, 6973530541, 6676504961, 7182778395, 15868542365212, 5987487, 6526097704, 15914374078992, 4916022026, 4814080504]
+2026-11-12 12:50:48 [sun.reflect.NativeMethodAccessorImpl#invoke0]-[-2]-[Thread-3828] ===>预热完成 renewalNumber=18129407093181888, userId=7262556485, resultCount=0
+2026-11-12 12:50:48 [sun.reflect.NativeMethodAccessorImpl#invoke0]-[-2]-[Thread-3828] ===>预热完成 renewalNumber=18129407093181888, userId=15864822552605, resultCount=0
+2026-11-12 12:50:48 [sun.reflect.NativeMethodAccessorImpl#invoke0]-[-2]-[Thread-3828] ===>预热完成 renewalNumber=18129407093181888, userId=6959233283, resultCount=0
+2026-11-12 12:50:48 [sun.reflect.NativeMethodAccessorImpl#invoke0]-[-2]-[Thread-3828] ===>预热完成 renewalNumber=18129407093181888, userId=7344603153, resultCount=0
+2026-11-12 12:50:48 [sun.reflect.NativeMethodAccessorImpl#invoke0]-[-2]-[Thread-3828] ===>预热完成 renewalNumber=18129407093181888, userId=7040442633, resultCount=0
+2026-11-12 12:50:48 [sun.reflect.NativeMethodAccessorImpl#invoke0]-[-2]-[Thread-3828] ===>预热完成 renewalNumber=18129407093181888, userId=7346143486, resultCount=0
+2026-11-12 12:50:48 [sun.reflect.NativeMethodAccessorImpl#invoke0]-[-2]-[Thread-3828] ===>预热完成 renewalNumber=18129407093181888, userId=6973530541, resultCount=0
+2026-11-12 12:50:48 [sun.reflect.NativeMethodAccessorImpl#invoke0]-[-2]-[Thread-3828] ===>预热完成 renewalNumber=18129407093181888, userId=6676504961, resultCount=0
+2026-11-12 12:50:48 [sun.reflect.GeneratedMethodAccessor2265#invoke]-[-1]-[Thread-3828] ===>预热完成 renewalNumber=18129407093181888, userId=7182778395, resultCount=0
+2026-11-12 12:50:48 [sun.reflect.GeneratedMethodAccessor2265#invoke]-[-1]-[Thread-3828] ===>预热完成 renewalNumber=18129407093181888, userId=15868542365212, resultCount=0
+2026-11-12 12:50:48 [sun.reflect.GeneratedMethodAccessor2265#invoke]-[-1]-[Thread-3828] ===>预热完成 renewalNumber=18129407093181888, userId=5987487, resultCount=0
+2026-11-12 12:50:48 [sun.reflect.GeneratedMethodAccessor2265#invoke]-[-1]-[Thread-3828] ===>预热完成 renewalNumber=18129407093181888, userId=6526097704, resultCount=0
+2026-11-12 12:50:48 [sun.reflect.GeneratedMethodAccessor2265#invoke]-[-1]-[Thread-3828] ===>预热完成 renewalNumber=18129407093181888, userId=15914374078992, resultCount=0
+2026-11-12 12:50:48 [sun.reflect.GeneratedMethodAccessor2265#invoke]-[-1]-[Thread-3828] ===>预热完成 renewalNumber=18129407093181888, userId=4916022026, resultCount=0
+2026-11-12 12:50:48 [sun.reflect.GeneratedMethodAccessor2265#invoke]-[-1]-[Thread-3828] ===>预热完成 renewalNumber=18129407093181888, userId=4814080504, resultCount=0
+2026-11-12 12:50:48 [sun.reflect.GeneratedMethodAccessor2265#invoke]-[-1]-[Thread-3828] ===>RenewalUserPreheatJobHandler 全部完成，renewalNumber=18129407093181888, total=15, success=15, failure=0, resultCount=0
+2026-11-12 12:50:48 [com.xxl.job.core.thread.JobThread#run]-[164]-[Thread-3827] 
+----------- xxl-job job execute end(finish) -----------
+----------- ReturnT:ReturnT [code=200, msg=null, content=null]
+2026-11-12 12:50:48 [com.xxl.job.core.thread.TriggerCallbackThread#callbackLog]-[190]-[xxl-job, executor TriggerCallbackThread] 
+----------- xxl-job job callback finish.

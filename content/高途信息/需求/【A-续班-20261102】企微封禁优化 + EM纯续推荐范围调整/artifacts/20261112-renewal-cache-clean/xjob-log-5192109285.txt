@@ -1,0 +1,11 @@
+2026-11-12 12:54:11 [com.xxl.job.core.thread.JobThread#run]-[124]-[Thread-3918] 
+----------- xxl-job job execute start -----------
+----------- Param:{"renewalNumber":18129407093181888,"userIds":[7262556485,15864822552605,6959233283,7344603153,7040442633,7346143486,6973530541,6676504961,7182778395,15868542365212,5987487,6526097704,15914374078992,4916022026,4814080504]}
+2026-11-12 12:54:11 [com.xxl.job.core.handler.impl.GlueJobHandler#execute]-[25]-[Thread-3918] ----------- glue.version:1794448306000 -----------
+2026-11-12 12:54:11 [sun.reflect.GeneratedMethodAccessor2083#invoke]-[-1]-[Thread-3918] ===>start RenewalPreheatCacheCleanJobHandler, param={"renewalNumber":18129407093181888,"userIds":[7262556485,15864822552605,6959233283,7344603153,7040442633,7346143486,6973530541,6676504961,7182778395,15868542365212,5987487,6526097704,15914374078992,4916022026,4814080504]}
+2026-11-12 12:54:11 [sun.reflect.GeneratedMethodAccessor2083#invoke]-[-1]-[Thread-3918] ===>请求 15 个 key，删除前均不存在，无需删除，keys=[renewal:preheat:18129407093181888:7262556485, renewal:preheat:18129407093181888:15864822552605, renewal:preheat:18129407093181888:6959233283, renewal:preheat:18129407093181888:7344603153, renewal:preheat:18129407093181888:7040442633, renewal:preheat:18129407093181888:7346143486, renewal:preheat:18129407093181888:6973530541, renewal:preheat:18129407093181888:6676504961, renewal:preheat:18129407093181888:7182778395, renewal:preheat:18129407093181888:15868542365212, renewal:preheat:18129407093181888:5987487, renewal:preheat:18129407093181888:6526097704, renewal:preheat:18129407093181888:15914374078992, renewal:preheat:18129407093181888:4916022026, renewal:preheat:18129407093181888:4814080504]
+2026-11-12 12:54:11 [com.xxl.job.core.thread.JobThread#run]-[164]-[Thread-3918] 
+----------- xxl-job job execute end(finish) -----------
+----------- ReturnT:ReturnT [code=200, msg=null, content=null]
+2026-11-12 12:54:11 [com.xxl.job.core.thread.TriggerCallbackThread#callbackLog]-[190]-[xxl-job, executor TriggerCallbackThread] 
+----------- xxl-job job callback finish.
