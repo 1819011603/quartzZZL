@@ -7,6 +7,44 @@ tags: [需求, 决策]
 
 > 只记会影响后续设计判断的理由，不记流水账。**日期倒序（最新在前）。**
 
+## 2026-11-12｜「只生成鸿途、不动班主任部」方案评估：配置 vs Xjob Java Glue
+
+> owner 问：配置方式行不行？不行能否直接建一个 Xjob Java Glue？只读评估 + 方案，未实现、未改配置、未触发。
+
+**Q1. 现有配置方式（把鸿途加进 config12 org）能否满足「只生成鸿途、不动班主任部」？→ 不能（干净地）。**
+- 圈人范围 = config 的 `org_numbers` 集合。要保持"班主任部不动"，就不能把班主任部从 config 移除；只要班主任部还在 config 里，**一次触发即两边都生成**（不是只鸿途）。
+- 若要把一次触发限制成"只鸿途"，只能把 config 改成仅 `112619412210993665` → 但该批次（及后续自动批次）**班主任部不再被覆盖**，并非"不动班主任部"。
+- 且**批次级防重**（`hasExecuted(type,configId,executionSeq)`）会让"改完 org 再重跑已执行批次"整配置跳过。故配置方式无法同时满足"只鸿途 + 不影响班主任部"。
+
+**Q2. 新建 Xjob Java Glue 实现 → 可行。**
+- 平台支持 Java GLUE：`xjob_glue_code` / `xjob_save_glue_code`（全量覆盖脚本、下次触发即生效），在服务端 JVM 内**可直接取 Spring Bean**。已有同类先例——GPS1v1 首call 的 GLUE 补数（glue 里取 `TaskBizService` 调 `insertFirstCall1v1Task`，走真实过滤链路、幂等）。
+- 可复用现有生成逻辑：`StaffAclService#listStaffByOrgNumbers([鸿途 org])` 圈人 →（新链路）`ClazzDistUserAssignAclService#queryContainerByAccountId` + `DailyVisit1v1ScheduleJob#filterCandidates`(大班课/课时) + `DailyVisitTaskCreateService#filterContainers`(资格) + `FairyAclService#createDailyVisit1v1Tasks`；或（老链路）`TaskBizCommonQueryService`(辅导班/学员/课时) + `DailyVisitTaskCreateService#filterLegacyUsers` + `createTask`。
+- 防重：任务级防重保证幂等（老 `DailyVisitDuplicateChecker` 按 account+user+executionSeq；新 `first_call_task_1v1` 唯一键）。`executionSeq` 用**独立可追溯值**（如 `202611_glue_hongtu`）区分批次。
+- 工作量约 **0.5–1 人天**（写 GLUE + test 环境 dry-run 验证 + prod 受控执行）；风险**中**：生产写操作、必须**选对链路**（老 `first_call_task` vs 新 `first_call_task_1v1`，避免新老重叠）、seq 独立避免与自动批次串号。
+
+**Q3. 推荐方案。**
+- 若只是"让鸿途按周期出数据"：**保持 config = 两个 org、正常跑即可**，不必 GLUE（班主任部本就每轮生成，不是额外副作用）。
+- 若必须"只出鸿途、且完全不动线上配置/调度（一次性/定向补齐）"：**推荐 Xjob Java Glue**（优于临时改配置——不改线上调度、可复用现有过滤与防重、可精确限定到鸿途 org）。
+- GLUE 改动点（供后续授权）：① 圈人 `listStaffByOrgNumbers(鸿途 org)`；② 按实际链路复用对应 service（含大班课/课时/资格过滤）；③ 独立 `executionSeq` 写入任务 ext 参与防重；④ 先 `dry-run`（只打印）核对范围与条数，再真跑；⑤ 执行前确认鸿途走老链路还是新链路。
+
+## 2026-11-12｜配置已加鸿途：生成覆盖与防重问答（张梦燚问）
+
+> 背景：刘金金已在 config 12 加上鸿途；张梦燚确认「需要鸿途数据」，并问「生成时是只生成鸿途，还是班主任部也会覆盖」。只读排查，未改配置、未触发。
+
+**配置现状（读回）**：`task_rule_config` id=12「日常回访」`org_numbers = 97353074458795824,112619412210993665`（= **一对一学部_班主任部** + **一对一学部_鸿途项目_班主任组**，已加），`role_labels=4-216`，`task_generate_rule_type=3`，`task_day_limit=0`，`task_expire_hour=384`，执行日 `[10,25]`，`update_time=2026-11-12 21:36`。
+
+**Q. 一次触发会不会同时生成班主任部 + 鸿途？**
+- 会。一次触发按执行日生成一个批次，覆盖配置里**所有 org（含各自子组织）**——不是只生成鸿途。依据 `AbstractScheduledTaskJob#getMatchedAccounts`：遍历配置所有 `org_numbers`（`StaffAclService#listStaffByOrgNumbers` 取每个 org + 全部子组织的员工）→ 逐个 accountId 做虚拟架构就近匹配 → 命中 config 12 的全部取用。两个 org 都挂在同一 config 12 上，故都生成。
+
+**Q. 只想生成鸿途，当前能否做到 / 对班主任部影响？**
+- 能，但需临时把 `org_numbers` 设为**仅** `112619412210993665` 再触发一个**未跑过的批次**；此批次【班主任部】不会生成（范围不包含）。
+- 防重（都会拦住，不会重复、也不会静默覆盖）：
+  - **批次级**：`AbstractScheduledTaskJob#processConfig` 用 `scheduledTaskExecutionLogDao.hasExecuted(ruleType, configId, executionSeq)`，同一 executionSeq（如 `202611_x` / `1v1_202611_x`）已成功执行则整配置跳过——**重跑同批次不会再补、也不会重复**。
+  - **任务级**：老链路 `DailyVisitDuplicateChecker`（同 account+user+executionSeq 跳过）；新链路落 `first_call_task_1v1` 由唯一键（`uq_task_code` / 同(班主任,学员)批内唯一）保证「同轮次不重复、跨轮次各 1 条」。
+- 注意：若班主任部本批次已生成过（如 11/10 批次 `202611_3`/`1v1_202611_3` 已在），事后想「只补鸿途」会被**批次级防重**拦（同 executionSeq 已执行）——需换一个未执行批次，或删除该批次执行记录后再跑（届时班主任部会一并重算，但任务级防重使其幂等、不重复）。
+
+**建议（要给鸿途数据、又不折腾）**：保持 config = 两个 org，按授权触发所需批次；一次即同时覆盖【班主任部】+【鸿途项目_班主任组】（班主任部本就每轮生成，不算额外影响）。
+
 ## 2026-11-12｜回访任务常见口径问答（电话次数 / 组织覆盖 / 完成条件 / 11-10 为 0）
 
 > 本轮 owner 转来的一线提问与查证结论（只读排查，未改配置/代码）。

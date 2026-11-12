@@ -1,0 +1,21 @@
+{
+  "round": "三个 Apollo 开关功能与 ON/OFF 验证矩阵（2026-11-12）",
+  "env": {"lane": "test-eco-8", "cart_image": "feature-renewal-preheat-v2-20261112-68e825e1", "pod": "10.218.236.75", "baseline": "test-eco-9 / 1f5a9118"},
+  "switches": [
+    {"name": "renewal.recommend.v2.enabled", "default": false, "current": false,
+     "function": "C/B/fromC 实时推荐走 V2（主+从纯续合并、纯续>扩科>加购）还是老单计划链路；不影响预热",
+     "on": {"sample": "589037361072007168/7704848531", "result": "V2 C/B/fromC 纯续 5 条（主1+从4）且三链路一致；加购同SKU修复后仅保留 type1/type2", "trace": ["cart_gaotu100_com.290.17944901383740064", "cart_gaotu100_com.286.17944901362010069"]},
+     "off": {"sample": "7 组主从样本", "result": "V2 入口透传老链路，C/B/fromC/preheat 与 eco-9 基线纯续 7/7 一致", "trace": ["cart_gaotu100_com.292.17944892987630033", "cart_gaotu100_com.329.17944893008550275"], "evidence": "/tmp/w1_nonrel_off.json"}},
+    {"name": "renewal.preheat.v2.enabled", "default": false, "current": false,
+     "function": "单用户 /preheat 与计划级预热/RenewalV2JobHandler 是否走 V2；关闭时 V2 preheat 返回空、V2 job 跳过",
+     "on": {"sample": "589721954597011456/7704848531", "result": "计划级预热写 v2 key 5 条（主1+从4）", "trace": ["cart_gaotu100_com.290.17944901809410070"], "log": "renewal-v2 preheat done, key=renewal:preheat:v2:589721954597011456:7704848531, entries=5"},
+     "off": {"result": "V2 preheat 返回 {}", "trace": ["cart_gaotu100_com.286.17944913179510090"], "job_log": "RenewalV2JobHandler skipped: renewal.preheat.v2.enabled=false", "job_logId": 2548476949}},
+    {"name": "renewal.preheat.v2.prefix.enabled", "default": false, "current": true,
+     "function": "仅控制 V2 预热写入 key 前缀：ON→renewal:preheat:v2:，OFF→老 renewal:preheat:；不影响读取",
+     "on": {"release": "20261112214702-release", "result": "v2 key LEN=1045 TTL=93586（重置约26h）；老 key LEN=104 不变、TTL 91548→91534 仅自然递减"},
+     "off": {"release": "20261112214539-release", "result": "老 key LEN 104→1045、TTL=93591（重置26h）；v2 key LEN=1045、TTL 92621→92562 仅自然递减，证明回写老 key；随后老 key 恢复原值 LEN=104/TTL 91586", "note": "本轮补验"}}
+  ],
+  "final_state": {"release": "20261112214802-release", "recommend": false, "preheat": false, "prefix": true, "v2_preheat_result": "{}", "old_key_len": 104, "v2_key_len": 1045},
+  "feishu": {"spreadsheet": "F761sKKgnhMmxptFFH7cE03HnTo", "sheet": "开关验证矩阵", "sheet_id": "RedPHR"},
+  "evidence_files": ["/tmp/w1_switch_matrix.json", "/tmp/w1_nonrel_off.json", "/tmp/w1_preheat_parity.json"]
+}
