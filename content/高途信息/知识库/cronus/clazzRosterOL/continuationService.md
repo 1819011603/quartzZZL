@@ -116,7 +116,7 @@
 
 - 接口 `/roster/renewal/subclazz/statistic` → `RenewalService#subclazzStatistic`：`batchQueryStudentInfo` 只筛 `canRenewal∈{1,2,8}`（+ 轮次/权限），`getSubclazzRenewalStatisticVO` 里 `presaleCount = presaleStatus==1`，`depositPreRegistrationRate = presaleCount / canRenewalCount`。**分子分母都是同一批 ES 文档**，不筛 `clazzStudentStatus`（含退班仍留可续标记的文档）。
 - 注意：指标卡片只返回「可续学员数 + 率」，**不返回已预报人数**；运营说的「已预报 N 人」通常来自列表（`presaleStatus=1` + 默认「在读且本人辅导班」，不按可续过滤）。两个数人群不同，直接相除会差人（列表含在班但 `canRenewal` 非可续的学员；分母含退班可续文档）。
-- 实例（2026-11-12）：两班 263 可续、分子 194（73.76%）；列表已预报 195，唯一差异学员在班已预报但 `canRenewal=5`（调课新单缺可续配置/标记）。排查见 [`业绩归因/排查/续班服务预报名率与已预报人数对不上.md`](../../../工单/续班与业绩/业绩归因/排查/续班服务预报名率与已预报人数对不上.md)。
+- 实例（2026-11-12）：两班 263 可续、分子 194（73.76%）；列表已预报 195，唯一差异学员在班已预报但 `canRenewal=5`（调课新单缺可续配置/标记）。按订单回溯补齐后该单判 `6 不可续-过可续时间`（11-06 转入晚于班级可续截止 11-01 12:10）→ 本就不算可续，率不变。排查见 [`业绩归因/排查/续班服务预报名率与已预报人数对不上.md`](../../../工单/续班与业绩/业绩归因/排查/续班服务预报名率与已预报人数对不上.md)。
 
 ## 排查提示
 
