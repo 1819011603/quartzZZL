@@ -17,7 +17,7 @@
   .row { display:flex; align-items:center; gap:10px; padding:5px 0; font-size:14px; }
   .row .k { color:var(--mut); min-width:132px; }
   .dot { width:9px; height:9px; border-radius:50%; display:inline-block; }
-  .dot.ok{background:var(--ok)} .dot.bad{background:var(--bad)} .dot.off{background:#aaa}
+  .dot.ok{background:var(--ok)} .dot.bad{background:var(--bad)} .dot.off{background:#aaa} .dot.warn{background:var(--warn)}
   .grid { display:grid; grid-template-columns:1fr 1fr; gap:12px 20px; }
   label { display:block; font-size:12px; color:var(--mut); margin-bottom:3px; }
   input[type=text], input[type=number] { width:100%; padding:7px 9px; border:1px solid var(--bd); border-radius:7px; font-size:13px; }
@@ -48,6 +48,7 @@
     <div class="row"><span class="k">本地凭据 localToken</span><span><code id="localToken">—</code> <button onclick="copyToken()" style="padding:2px 8px">复制</button></span></div>
     <div class="row"><span class="k">代理进程</span><span id="proxyProc">—</span></div>
     <div class="row"><span class="k">cc-switch 同步</span><span id="syncProc">—</span></div>
+    <div class="row"><span class="k">claude 上游</span><span id="claudeUp">—</span></div>
     <div class="row"><span class="k">网关授权</span><span id="gw">—</span></div>
     <div class="row"><span class="k">seed 登录长票</span><span id="ticket">—</span></div>
   </div>
@@ -73,6 +74,21 @@
       <div><label>控制面板端口 controlPort</label><input type="number" id="controlPort"></div>
       <div><label>同步间隔秒 syncIntervalSec（≥60）</label><input type="number" id="syncIntervalSec"></div>
       <div><label>codex 默认模型 codexModel（留空=不改）</label><input type="text" id="codexModel"></div>
+      <div><label>claude 上游 claudeUpstream（默认关；开到 llm 后每 5 小时自动还原）</label>
+        <select id="claudeUpstream" style="width:100%;padding:7px 9px;border:1px solid var(--bd);border-radius:7px;font-size:13px">
+          <option value="seed">seedx 网关（默认）</option>
+          <option value="llm">llm 网关（直连）</option>
+        </select></div>
+      <div><label>llm claude base llmClaudeBaseUrl</label><input type="text" id="llmClaudeBaseUrl" placeholder="https://test-llm.baijia.com"></div>
+      <div><label>llm claude token llmClaudeToken</label><input type="text" id="llmClaudeToken" placeholder="sk-..."></div>
+      <div><label>llm 鉴权头 llmClaudeHeaderName</label><input type="text" id="llmClaudeHeaderName" placeholder="x-api-key 或 authorization"></div>
+      <div style="display:flex;align-items:flex-end"><label class="chk"><input type="checkbox" id="claudeFallbackCodex"> claude 额度用尽自动切 codex(gpt)</label></div>
+      <div style="display:flex;align-items:flex-end"><label class="chk"><input type="checkbox" id="claudeForceCodex"> claude 手动切到 codex(gpt)（忽略额度，立即生效；关掉恢复）</label></div>
+      <div><label>切到的 codex 模型 fallbackCodexModel（未命中映射时）</label><input type="text" id="fallbackCodexModel" placeholder="gpt-6.1-sol"></div>
+      <div><label>模型映射 fallbackCodexMap(JSON)</label><input type="text" id="fallbackCodexMap" placeholder='{"claude-opus-5-5":"gpt-6-astra"}'></div>
+      <div><label>额度接口 quotaUrl</label><input type="text" id="quotaUrl"></div>
+      <div><label>额度代理 quotaProxy</label><input type="text" id="quotaProxy" placeholder="http://127.0.0.1:8888"></div>
+      <div><label>额度刷新秒 quotaCheckSec</label><input type="number" id="quotaCheckSec"></div>
       <div><label>凭据文件 credentialsPath（留空=默认）</label><input type="text" id="credentialsPath"></div>
       <div><label>seed 服务端 serverUrl（留空=取凭据）</label><input type="text" id="serverUrl"></div>
       <div><label>用量看板地址 usageUrl</label><input type="text" id="usageUrl"></div>
@@ -105,14 +121,19 @@ const $ = (id) => document.getElementById(id);
 function toast(msg) { const t=$("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),1800); }
 function copyToken(){ const v=window.__localToken||""; if(!v){toast("token 为空");return;} navigator.clipboard?.writeText(v).then(()=>toast("已复制 localToken"),()=>toast("复制失败，请手动选")); }
 function fmtSec(s){ s=Math.round(s); if(s<=0) return "已过期"; const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60; return h>0?`${h}h${m}m`:(m>0?`${m}m${x}s`:`${x}s`); }
+function fmtClock(iso){ const d=new Date(iso); if(isNaN(d)) return "?"; const p=n=>String(n).padStart(2,"0"); return p(d.getHours())+":"+p(d.getMinutes()); }
 
 function fillForm(cfg){
-  for (const k of ["proxyHost","proxyPort","codexPort","controlPort","syncIntervalSec","codexModel","credentialsPath","serverUrl","usageUrl","refreshAheadSec"]) {
+  for (const k of ["proxyHost","proxyPort","codexPort","controlPort","syncIntervalSec","codexModel","credentialsPath","serverUrl","usageUrl","refreshAheadSec","claudeUpstream","llmClaudeBaseUrl","llmClaudeToken","llmClaudeHeaderName","fallbackCodexModel","quotaUrl","quotaProxy","quotaCheckSec"]) {
     if (document.activeElement && document.activeElement.id===k) continue;
     $(k).value = cfg[k] ?? "";
   }
   $("syncCcSwitch").checked = !!cfg.syncCcSwitch;
   $("allowLegacyToken").checked = cfg.allowLegacyToken !== false;
+  $("claudeFallbackCodex").checked = !!cfg.claudeFallbackCodex;
+  $("claudeForceCodex").checked = !!cfg.claudeForceCodex;
+  if (!(document.activeElement && document.activeElement.id==="fallbackCodexMap"))
+    $("fallbackCodexMap").value = JSON.stringify(cfg.fallbackCodexMap || {});
 }
 
 let usageBase = "https://ai.baijia.com/ai-service/usage";
@@ -147,6 +168,10 @@ async function refresh(){
     const t = s.ticket||{};
     const cls = t.ok===true?'ok':(t.ok===false?'bad':'off');
     $("ticket").innerHTML = `<span class="dot ${cls}"></span> ${t.status||"未检查"}`;
+    const cu = s.config && s.config.claudeUpstream;
+    $("claudeUp").innerHTML = cu==="llm"
+      ? `<span class="dot warn"></span> llm 网关（临时）｜ ${fmtClock(s.nextClaudeRevertAt)} 自动还原为 seedx`
+      : `<span class="dot off"></span> seedx 网关（默认关）`;
   } catch(e){ /* ignore */ }
 }
 
@@ -160,13 +185,26 @@ async function refreshLogs(){
 }
 
 async function save(){
-  const body = {
+  let body;
+  try {
+  body = {
     proxyHost: $("proxyHost").value.trim(),
     proxyPort: Number($("proxyPort").value),
     codexPort: Number($("codexPort").value),
     controlPort: Number($("controlPort").value),
     syncIntervalSec: Number($("syncIntervalSec").value),
     codexModel: $("codexModel").value.trim(),
+    claudeUpstream: $("claudeUpstream").value,
+    llmClaudeBaseUrl: $("llmClaudeBaseUrl").value.trim(),
+    llmClaudeToken: $("llmClaudeToken").value.trim(),
+    llmClaudeHeaderName: $("llmClaudeHeaderName").value.trim(),
+    claudeFallbackCodex: $("claudeFallbackCodex").checked,
+    claudeForceCodex: $("claudeForceCodex").checked,
+    fallbackCodexModel: $("fallbackCodexModel").value.trim(),
+    fallbackCodexMap: (() => { const v = $("fallbackCodexMap").value.trim(); if (!v) return {}; try { return JSON.parse(v); } catch { throw new Error("fallbackCodexMap 不是合法 JSON"); } })(),
+    quotaUrl: $("quotaUrl").value.trim(),
+    quotaProxy: $("quotaProxy").value.trim(),
+    quotaCheckSec: Number($("quotaCheckSec").value) || 60,
     credentialsPath: $("credentialsPath").value.trim(),
     serverUrl: $("serverUrl").value.trim(),
     usageUrl: $("usageUrl").value.trim(),
@@ -174,6 +212,7 @@ async function save(){
     syncCcSwitch: $("syncCcSwitch").checked,
     allowLegacyToken: $("allowLegacyToken").checked,
   };
+  } catch(e){ return toast("保存失败："+e.message); }
   const r = await (await fetch("/api/config",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(body)})).json();
   if (r.error) return toast("保存失败："+r.error);
   toast(r.note || "已保存并应用");

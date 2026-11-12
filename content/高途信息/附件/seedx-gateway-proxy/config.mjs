@@ -21,6 +21,26 @@ export const DEFAULTS = {
   syncCcSwitch: true,
   syncIntervalSec: 3600,
   codexModel: "gpt-6-astra",
+  // ── claude 上游切换 ──────────────────────────────────────────────
+  claudeUpstream: "seed", // "seed"=走 seedx 网关（默认）；"llm"=直连 llm 网关
+  llmClaudeBaseUrl: "https://test-llm.baijia.com", // llm 网关 Anthropic 原生 base（不含 /v1）
+  llmClaudeToken: "", // llm 网关 claude 凭据（即 x-api-key 的值）
+  llmClaudeHeaderName: "x-api-key", // 注入的鉴权头名：x-api-key 或 authorization
+  llmClaudeAnthropicVersion: "2023-06-01", // 调 /v1/messages 需带的 anthropic-version
+  // ── claude 额度用尽 → 自动改用 codex(gpt) 模型 ────────────────────
+  // 网关支持在 claude(anthropic) 协议下用 codex 的 gpt 模型（额度计到 gpt 策略）。
+  claudeFallbackCodex: false, // 开启后：claude 额度用尽时把 claude-* 请求的 model 改写成 fallbackCodexModel
+  fallbackCodexModel: "gpt-6.1-sol", // 未命中映射时的默认改写目标
+  fallbackCodexMap: {
+    "claude-sonnet-5-5": "gpt-6.1-sol",
+    "claude-opus-5-5": "gpt-6-astra",
+    "sonnet": "gpt-6.1-sol",
+    "opus": "gpt-6-astra"
+  }, // claude 模型 → codex(gpt) 模型：先精确名，再按 opus/sonnet 关键词，最后用 fallbackCodexModel
+  claudeForceCodex: false, // 手动切换：开启后 claude 请求一律改用 codex(gpt) 模型（忽略额度、立即生效），关掉即恢复
+  quotaUrl: "", // 个人额度接口；默认空，请在 config.json / 面板填（含用户名，不入库）
+  quotaProxy: "http://127.0.0.1:8888", // 取额度走本地 mitmproxy（自动注入 Cookie）
+  quotaCheckSec: 60, // 额度刷新间隔（秒）
   credentialsPath: "", // 空 = 默认 ~/.seedx-workspace/credentials.json
   serverUrl: "", // 空 = 取 credentials.serverUrl，再否则 https://seed.baijia.com
   seedToken: "", // 一般留空（敏感）；留空则用 credentials
@@ -55,6 +75,15 @@ export function loadConfig() {
   if (E.SEEDX_CREDENTIALS) cfg.credentialsPath = E.SEEDX_CREDENTIALS;
   if (E.SEEDX_SERVER_URL) cfg.serverUrl = E.SEEDX_SERVER_URL;
   if (E.SEEDX_CODEX_MODEL) cfg.codexModel = E.SEEDX_CODEX_MODEL;
+  if (E.SEEDX_CLAUDE_UPSTREAM) cfg.claudeUpstream = E.SEEDX_CLAUDE_UPSTREAM;
+  if (E.SEEDX_LLM_CLAUDE_BASE_URL) cfg.llmClaudeBaseUrl = E.SEEDX_LLM_CLAUDE_BASE_URL;
+  if (E.SEEDX_LLM_CLAUDE_TOKEN) cfg.llmClaudeToken = E.SEEDX_LLM_CLAUDE_TOKEN;
+  if (E.SEEDX_LLM_CLAUDE_HEADER) cfg.llmClaudeHeaderName = E.SEEDX_LLM_CLAUDE_HEADER;
+  if (E.SEEDX_CLAUDE_FALLBACK_CODEX) cfg.claudeFallbackCodex = E.SEEDX_CLAUDE_FALLBACK_CODEX !== "0";
+  if (E.SEEDX_FALLBACK_CODEX_MODEL) cfg.fallbackCodexModel = E.SEEDX_FALLBACK_CODEX_MODEL;
+  if (E.SEEDX_CLAUDE_FORCE_CODEX) cfg.claudeForceCodex = E.SEEDX_CLAUDE_FORCE_CODEX !== "0";
+  if (E.SEEDX_QUOTA_URL) cfg.quotaUrl = E.SEEDX_QUOTA_URL;
+  if (E.SEEDX_QUOTA_PROXY) cfg.quotaProxy = E.SEEDX_QUOTA_PROXY;
   return cfg;
 }
 

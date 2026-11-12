@@ -138,3 +138,76 @@ node sync-ccswitch.mjs --watch    # 常驻同步（默认每小时）
 - codex：`Auth required` / `not logged in` / `Sign in to ChatGPT`；`application network permission was revoked`（macOS 本地网络权限）。
 
 **本代理的处理**：上游 `401` / `403` → **刷新授权 + 重试一次**；拿不到授权 → `503`；本地凭据不对 → `401`（用 `localToken`，`allowLegacyToken` 开启时也认 `seedx-local-proxy`）。
+
+## 十二、换授权接口 & 网关调用示例（实测脱敏）
+
+### 1. 换授权（gateway-token refresh）
+- **URL**：`POST {serverUrl}/seedx/resource/manage/service/ctl/gateway-token/refresh`
+- **方法**：`POST`，`content-type: application/json`，body `{}`
+- **长票从哪取、放哪**：取 `~/.seedx-workspace/credentials.json` 的 **`token`** 字段（seed 登录长票）；放**请求头 `Authorization: Bearer <长票>`**。同文件的 `serverUrl` 决定 server base（缺省回退 `https://seed.baijia.com`）。
+- **成功响应**（`200`）：
+```json
+{
+  "token": "act.eyJ…<TOKEN>",           // ★ 网关凭据：值本身就是 bearer，直接用（x-api-key 场景不再拼 "Bearer "）
+  "headerName": "x-api-key",            // ★ 发往上游的 header 名（用它作会话头，值=token）
+  "expiresAt": "2026-11-12T06:47:25Z",  // ★ 过期时间（UTC；TTL 由 admin sub2api.token.ttlSeconds 定）
+  "anthropicBaseUrl": "https://ai-coding.baijia.com",  // ★ Claude/Anthropic 上游 base（不含 /v1）
+  "openaiBaseUrl": "https://ai-coding.baijia.com/v1",  // ★ Codex/OpenAI 上游 base（已含 /v1）
+  "issuedAt": "2026-11-12T05:47:25.155224086Z"
+}
+```
+  > **模型清单不在这条响应里**——另走 `gateway-models`（见 3）。
+- **长票过期 / 无效时**（`401`，纯文本）：
+```
+HTTP/1.1 401
+content-type: text/plain
+
+凭据无效
+```
+
+### 2. 网关直调示例（凭据值统一写成 `x-api-key: <TOKEN>`）
+**Anthropic（Claude）**
+```bash
+curl -sS https://ai-coding.baijia.com/v1/messages \
+  -H 'x-api-key: <TOKEN>' \
+  -H 'anthropic-version: 2023-06-01' \
+  -H 'content-type: application/json' \
+  -d '{"model":"claude-sonnet-5-5","max_tokens":16,"messages":[{"role":"user","content":"ping"}]}'
+```
+**OpenAI（Codex）**——`/responses` 与 `/chat/completions` **实测都支持**：
+```bash
+# Codex 用这个
+curl -sS https://ai-coding.baijia.com/v1/responses \
+  -H 'x-api-key: <TOKEN>' -H 'content-type: application/json' \
+  -d '{"model":"gpt-6.1-sol","input":"ping"}'
+
+# 也支持
+curl -sS https://ai-coding.baijia.com/v1/chat/completions \
+  -H 'x-api-key: <TOKEN>' -H 'content-type: application/json' \
+  -d '{"model":"gpt-6.1-sol","max_tokens":16,"messages":[{"role":"user","content":"ping"}]}'
+```
+> 走本地代理时同义：把 `https://ai-coding.baijia.com` 换成 `http://127.0.0.1:8787`（claude）/ 同端口（codex），`x-api-key` 换成 `localToken`——代理自己剥掉客户端凭据、注入网关 `headerName/token` 后转发。
+
+### 3. 模型清单（`gateway-models`）
+```bash
+# 头用「seed 登录长票」Bearer（不是网关 token）
+curl -sS "https://seed.baijia.com/seedx/resource/manage/service/ctl/gateway-models?agentKind=codex" \
+  -H "Authorization: Bearer <长票>"
+```
+返回 `{"available": true, "models": [{"id","label","efforts":["low",…,"max"],"contextWindow":1048576}]}`；`agentKind=claude` 的清单是 codex 的**超集**（额外含 `claude-opus/sonnet/haiku-5-5`、`glm-5.3(-flash)` 等）。
+
+## 十三、claude 切换 codex(gpt)（额度用尽自动 / 手动强制）
+面板开关 **`claudeFallbackCodex`**（`panel.html`）。**claude 与 codex 是两条独立额度策略**（同一网关、按策略分池），所以 claude 用尽、codex 还有额度时，切过去是有效的。
+
+**原理**：代理每 `quotaCheckSec`(默认 60s) 经**本地 mitmproxy(8888)** 拉个人额度页（`quotaUrl`，注入 Cookie）→ 取 `policies` 里 `policy==="claude"` 的策略 → `remaining_usd<=0` 即判定用尽 → 把 `claude-*` 请求的 `model` 改写成 `fallbackCodexMap`/`fallbackCodexModel`。
+关键：**网关的 Anthropic 端点 `/v1/messages` 直接支持 gpt 模型**（实测 `model:gpt-6.1-sol` → 200，走 Anthropic 协议、计到 **gpt 策略**额度），所以切的是**模型**，不是协议/上游，客户端无感。
+
+**两条触发**：
+1. **前置**：轮询判定用尽 → 请求发出前就换模型（避免先失败）；
+2. **反应式**：请求撞到 `402/403/429`（额度/限流/权限类）→ 即使轮询没跟上，也改写为 gpt **再试一次**（只一次，防循环）。
+
+**手动切换（`claudeForceCodex`，默认关）**：开了之后 **claude 一律改走 codex(gpt)**——不看额度、立即生效（面板独立开关）；关掉即恢复自动逻辑（用尽/反应式）。面板改完保存即重启代理生效。
+
+**依赖 / 注意**：①`mitmproxy`(:8888) 必须在跑，否则额度未知 → 不切；②`claudeUpstream=seed` 时才生效（`llm` 直连模式不切）；③映射默认 `claude-sonnet-5-5→gpt-6.1-sol`、`claude-opus-5-5→gpt-6-astra`，其余按 sonnet/opus 关键词，最后 `fallbackCodexModel`。
+
+**实测**：quota 报 `remaining_usd=0` → `claude-sonnet-5-5` 请求被改写为 `gpt-6.1-sol` 且 200；假上游返 403 → 上游先收 `claude-opus-5-5`、再收 `gpt-6-astra`（反应式生效）；手动开(忽略额度) → 切 `gpt-6.1-sol`，手动关 → 不切。

@@ -37,6 +37,7 @@
 
 import { createServer, request as httpRequest, Agent as HttpAgent } from "node:http";
 import { request as httpsRequest, Agent as HttpsAgent } from "node:https";
+import { execFile } from "node:child_process";
 import { readFileSync, writeFileSync, mkdirSync, renameSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
@@ -58,6 +59,89 @@ const IDLE_TIMEOUT_MS = Math.max(5, Number(CFG.upstreamIdleTimeoutSec ?? 180)) *
 const REFRESH_AHEAD_S = Number(ENV.SEEDX_REFRESH_AHEAD_S ?? CFG.refreshAheadSec ?? 300);
 const REFRESH_TIMEOUT_MS = 10_000;
 const MAX_BODY_BYTES = 64 * 1024 * 1024;
+
+// ── claude 额度用尽 → 自动改用 codex(gpt) 模型 ──────────────────────
+// 网关支持在 claude(anthropic) 协议下用 codex 的 gpt 模型（额度计到 gpt 策略）。
+// 开启后：轮询「个人额度」，claude 策略用尽时把 anthropic 请求的 model 改写成 fallbackCodexModel。
+const FALLBACK_ON = CFG.claudeFallbackCodex === true;
+const FALLBACK_MODEL = String(CFG.fallbackCodexModel || "gpt-6.1-sol");
+const FALLBACK_MAP = CFG.fallbackCodexMap && typeof CFG.fallbackCodexMap === "object" ? CFG.fallbackCodexMap : {};
+const FALLBACK_ACTIVE = FALLBACK_ON || CFG.claudeForceCodex === true; // 自动(用尽) 或 手动强制 任一生效即接管
+const FORCE_CODEX = CFG.claudeForceCodex === true; // 手动切换：claude 一律改走 codex(gpt)
+const QUOTA_URL = String(CFG.quotaUrl || "");
+const QUOTA_PROXY = String(CFG.quotaProxy || "");
+const QUOTA_INTERVAL_MS = Math.max(15, Number(CFG.quotaCheckSec ?? 60)) * 1000;
+let quota = { at: 0, ok: false, remainingUsd: null, usageRatio: null, limitUsd: null, spentUsd: null, resetAt: null };
+
+/** 经本地 mitmproxy（注入 Cookie）取一次个人额度；失败返回 null。 */
+function fetchQuotaOnce() {
+  return new Promise((resolve) => {
+    if (!QUOTA_URL) return resolve(null);
+    const args = ["-sk", "--max-time", "15"];
+    if (QUOTA_PROXY) args.push("-x", QUOTA_PROXY);
+    args.push(QUOTA_URL,
+      "-H", "accept: */*", "-H", "content-type: application/json",
+      "-H", "ingress-traffic-env: test-gtbg-dev-3", "-H", "traffic-env: test-eco-7");
+    execFile("curl", args, { maxBuffer: 4 * 1024 * 1024 }, (err, stdout) => {
+      if (err) return resolve(null);
+      try { resolve(JSON.parse(stdout)); } catch { resolve(null); }
+    });
+  });
+}
+
+async function refreshQuota() {
+  const q = await fetchQuotaOnce();
+  if (!q || !Array.isArray(q.policies)) { quota.at = Date.now(); return; }
+  const cl = q.policies.find((p) => p.policy === "claude" || /claude/i.test(String(p.name || "")));
+  if (!cl) { quota.at = Date.now(); return; }
+  quota = {
+    at: Date.now(), ok: true,
+    remainingUsd: typeof cl.remaining_usd === "number" ? cl.remaining_usd : null,
+    usageRatio: typeof cl.usage_ratio === "number" ? cl.usage_ratio : null,
+    limitUsd: typeof cl.limit_usd === "number" ? cl.limit_usd : null,
+    spentUsd: typeof cl.spent_usd === "number" ? cl.spent_usd : null,
+    resetAt: (q.period && q.period.reset_at) || null,
+  };
+  log(`[quota] claude 剩 $${quota.remainingUsd ?? "?"}/$${quota.limitUsd ?? "?"}（用量 ${((quota.usageRatio ?? 0) * 100).toFixed(1)}%），窗口重置 ${quota.resetAt || "?"}`);
+}
+
+/** claude 是否该切到 codex(gpt)：额度用尽（remaining<=0 或 ratio>=1）；额度未知返回 false。 */
+function claudeShouldFallback() {
+  if (!quota.ok) return false;
+  if (quota.remainingUsd != null) return quota.remainingUsd <= 0;
+  if (quota.usageRatio != null) return quota.usageRatio >= 1;
+  return false;
+}
+
+/** claude 模型 → 目标 codex(gpt) 模型：精确名优先，其次按关键词（opus/sonnet…），最后默认。 */
+function resolveFallbackModel(model) {
+  if (typeof FALLBACK_MAP[model] === "string") return FALLBACK_MAP[model];
+  const lower = String(model).toLowerCase();
+  for (const [k, v] of Object.entries(FALLBACK_MAP)) {
+    if (typeof v === "string" && k && lower.includes(String(k).toLowerCase())) return v;
+  }
+  return FALLBACK_MODEL;
+}
+
+/** anthropic 请求体里 model 是 claude-* → 改写成映射的 codex 模型，返回新 body 或 null。
+ *  requireExhausted=true：仅在「轮询判定 claude 已用尽」时改写（请求前置）；
+ *  requireExhausted=false：无条件改写（用于「请求真撞到额度错误」时的反应式回退重试）。 */
+function rewriteToCodex(buf, requireExhausted) {
+  if (!FALLBACK_ACTIVE || !buf || !buf.length) return null;
+  let obj;
+  try { obj = JSON.parse(buf.toString("utf8")); } catch { return null; }
+  if (!obj || typeof obj.model !== "string" || !/^claude/i.test(obj.model)) return null;
+  if (requireExhausted && !FORCE_CODEX && !claudeShouldFallback()) return null;
+  const from = obj.model;
+  obj.model = resolveFallbackModel(from);
+  log(`[fallback] 模型 ${from} → ${obj.model}（改走 gpt/codex 额度）`);
+  return Buffer.from(JSON.stringify(obj), "utf8");
+}
+
+/** 请求前置：claude 额度已用尽 → 改写为 codex 模型（避免请求先失败）。 */
+function maybeRewriteToCodex(buf) {
+  return rewriteToCodex(buf, true);
+}
 
 // 网关授权落盘缓存：重启不丢、resource 暂时不可用时仍可续用（对齐 seedx gateway-token-cache）。
 const CACHE_PATH = ENV.SEEDX_TOKEN_CACHE || join(homedir(), ".seedx-gateway-proxy", "token.json");
@@ -297,14 +381,42 @@ function makeHandler(portDefault) {
       return;
     }
 
-    let token = gateway;
-    if (tokenExpiringSoon()) token = (await currentGatewayToken()) ?? gateway;
-    if (!token) {
-      res.writeHead(503, { "content-type": "application/json" });
-      res.end(
-        JSON.stringify({ type: "error", error: { type: "seedx_gateway_unavailable", message: "拿不到网关授权：请检查 seed 长票是否有效" } }),
-      );
-      return;
+    // claude 额度用尽 → 自动把 claude-* 请求改写成 codex(gpt) 模型（网关支持 claude 协议调 gpt）。
+    if (which === "anthropic" && CFG.claudeUpstream !== "llm") {
+      const rewritten = maybeRewriteToCodex(body);
+      if (rewritten) body = rewritten;
+    }
+    let usedFallback = false; // 反应式回退：请求撞到额度错误时改写成 gpt 重试，只用一次
+
+    // claude 上游切换：claudeUpstream=llm 时，claude(anthropic) 直连 llm 网关，
+    // 用配置里的凭据，不经过 seedx 网关（也不消耗 seedx 授权）。
+    const useLlmClaude = which === "anthropic" && CFG.claudeUpstream === "llm";
+    let token;
+    if (useLlmClaude) {
+      if (!CFG.llmClaudeToken) {
+        res.writeHead(503, { "content-type": "application/json" });
+        res.end(
+          JSON.stringify({ type: "error", error: { type: "seedx_llm_claude_unconfigured", message: "claude 上游已切到 llm，但未配置 llmClaudeToken" } }),
+        );
+        return;
+      }
+      const llmBase = String(CFG.llmClaudeBaseUrl || "").replace(/\/+$/, "");
+      token = {
+        headerName: CFG.llmClaudeHeaderName || "x-api-key",
+        token: CFG.llmClaudeToken,
+        anthropicBaseUrl: llmBase,
+        openaiBaseUrl: llmBase,
+      };
+    } else {
+      token = gateway;
+      if (tokenExpiringSoon()) token = (await currentGatewayToken()) ?? gateway;
+      if (!token) {
+        res.writeHead(503, { "content-type": "application/json" });
+        res.end(
+          JSON.stringify({ type: "error", error: { type: "seedx_gateway_unavailable", message: "拿不到网关授权：请检查 seed 长票是否有效" } }),
+        );
+        return;
+      }
     }
 
     const baseFor = (t) => (which === "anthropic" ? t.anthropicBaseUrl : t.openaiBaseUrl);
@@ -317,7 +429,9 @@ function makeHandler(portDefault) {
         if (STRIPPED_REQUEST_HEADERS.has(lk) || lk === injectedLower || lk.startsWith("x-seedx-")) continue;
         out[k] = v;
       }
-      out[t.headerName] = t.token;
+      out[t.headerName] = /^authorization$/i.test(t.headerName) ? `Bearer ${t.token}` : t.token;
+      // llm 网关的 anthropic 端点需要版本头（客户端没带就补上）
+      if (useLlmClaude && !out["anthropic-version"]) out["anthropic-version"] = CFG.llmClaudeAnthropicVersion || "2023-06-01";
       out["content-length"] = String(body.length);
       return out;
     };
@@ -332,7 +446,8 @@ function makeHandler(portDefault) {
     try {
       a = await attempt(token);
       // 401/403 都当"授权/权限类"：可能是 token 过期或权限态变化 → 刷新一次重试
-      if (a.res.statusCode === 401 || a.res.statusCode === 403) {
+      // （llm 直连模式不刷新 seedx 授权，原样返回上游错误）
+      if (!useLlmClaude && (a.res.statusCode === 401 || a.res.statusCode === 403)) {
         const code0 = a.res.statusCode;
         a.res.resume();
         const fresh = await refreshGatewayToken();
@@ -341,6 +456,24 @@ function makeHandler(portDefault) {
           a = await attempt(fresh);
         } else if (code0 === 403) {
           log(`[warn] 上游 403（授权未变）：疑似无权限/无订阅（如 SUBSCRIPTION_NOT_FOUND），原样返回`);
+        }
+      }
+      // 反应式回退：claude 请求撞到额度/权限类错误（如 429 限流、402/403 额度不足）时，
+      // 即使轮询还没判定用尽，也改写为 gpt 模型再试一次（网关支持 claude 协议调 gpt 模型）。
+      if (
+        which === "anthropic" &&
+        FALLBACK_ON &&
+        !useLlmClaude &&
+        !usedFallback &&
+        (a.res.statusCode === 402 || a.res.statusCode === 403 || a.res.statusCode === 429)
+      ) {
+        const forced = rewriteToCodex(body, false);
+        if (forced) {
+          a.res.resume();
+          body = forced;
+          usedFallback = true;
+          log(`[fallback] 上游 ${a.res.statusCode} → 改写为 gpt 重试（claude 额度/权限受限）`);
+          a = await attempt(token);
         }
       }
     } catch (e) {
@@ -397,6 +530,18 @@ function main() {
     if (tokenExpiringSoon()) void refreshGatewayToken();
   }, 60_000);
   timer.unref?.();
+  if (FALLBACK_ON || FORCE_CODEX) {
+    if (FALLBACK_ON) {
+      void refreshQuota();
+      const qt = setInterval(() => void refreshQuota(), QUOTA_INTERVAL_MS);
+      qt.unref?.();
+    }
+    log(
+      `claude→codex(gpt) 已启用：改写目标 ${FALLBACK_MODEL}` +
+        (FALLBACK_ON ? `；额度用尽自动切（每 ${QUOTA_INTERVAL_MS / 1000}s 查额度）` : "") +
+        (FORCE_CODEX ? "；**手动切换已开：claude 一律走 gpt（忽略额度）**" : ""),
+    );
+  }
 }
 
 if (ENV.SEEDX_CHECK === "1" || process.argv.includes("--check")) {

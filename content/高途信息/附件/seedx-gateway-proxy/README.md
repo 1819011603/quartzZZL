@@ -49,6 +49,8 @@
 - **自动续期**：`act.` 网关授权有效期由服务端定（默认 1h）；代理在**距过期 < `refreshAheadSec`（默认 300s）**时提前续，每 60s 检查；并**每次现读 credentials.json**（长票换了自动跟上），落盘缓存重启不丢。
 - **超时**：上游无响应 120s、空闲 300s（兜死 keep-alive / 换网卡住，不死等几分钟）。
 - **错误兼容（claude / codex 共用）**：上游 `401`/`403` 都按"授权/权限类"处理 → 刷新一次授权再重试；日志标注「401 授权无效·已过期 / 403 无权限·无订阅（如 `SUBSCRIPTION_NOT_FOUND`）」；拿不到授权回 `503`（可读文案）。
+- **claude 额度用尽 → 自动切 codex(gpt)**：面板 `claudeFallbackCodex` 开启后，代理每 `quotaCheckSec`(默认 60s) 经本地 **mitmproxy(8888)** 拉个人额度页；**claude 策略用尽**时把 `claude-*` 请求的 `model` 改写成 `fallbackCodexMap`/`fallbackCodexModel`（网关 Anthropic 端点**直接支持 gpt 模型**，额度计到 gpt 策略）。两条触发：**①前置**（轮询判定用尽，请求前就换）；**②反应式**（请求撞到 `402/403/429` 时改 gpt 再试一次，轮询没跟上也兜住）。依赖 mitmproxy 在跑。
+  - **手动切换**（`claudeForceCodex`，默认关）：开了之后 **claude 一律改走 codex(gpt)**（忽略额度、立即生效），关掉即恢复。
 
 ## 常用命令
 ```bash

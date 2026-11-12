@@ -172,6 +172,49 @@ async function checkTicket() {
   return ticketStatus;
 }
 
+// ── claude 上游自动还原 ─────────────────────────────────────────────
+// 规则：默认关（走 seedx）；手动切到 llm 后，到「07:00 起每 5 小时」的整点自动还原为 seed。
+const CLAUDE_REVERT_ANCHOR_HOUR = 7; // 锚点：每天 07:00
+const CLAUDE_REVERT_INTERVAL_H = 5; // 间隔：每 5 小时（07:00/12:00/17:00/22:00/03:00/08:00…）
+
+/** 07:00 起每 5 小时网格上、晚于 from 的最近一刻（ms）。 */
+function nextClaudeRevertAt(from = Date.now()) {
+  const step = CLAUDE_REVERT_INTERVAL_H * 3_600_000;
+  const a = new Date(from);
+  a.setHours(CLAUDE_REVERT_ANCHOR_HOUR, 0, 0, 0);
+  let t = a.getTime() + Math.ceil((from - a.getTime()) / step) * step;
+  if (t <= from) t += step;
+  return t;
+}
+
+/** 到点还原：若当前是 llm，则写回 seed 并重启代理。 */
+function applyClaudeRevert() {
+  const cfg = loadConfig();
+  if (cfg.claudeUpstream === "seed") {
+    pushLog("panel", "自动还原时刻：claude 上游已是 seedx（无需改动）");
+    return;
+  }
+  saveConfig({ claudeUpstream: "seed" });
+  stopChild("proxy");
+  ensureChildren();
+  pushLog("panel", "自动还原时刻：claude 上游已由 llm 还原为 seedx（默认关）");
+}
+
+let claudeRevertTimer = null;
+function scheduleClaudeRevert() {
+  clearTimeout(claudeRevertTimer);
+  const delay = Math.max(1000, Math.min(nextClaudeRevertAt() - Date.now(), 2 ** 31 - 1));
+  claudeRevertTimer = setTimeout(() => {
+    try {
+      applyClaudeRevert();
+    } catch (e) {
+      pushLog("panel", `自动还原失败: ${e.message}`);
+    }
+    scheduleClaudeRevert();
+  }, delay);
+  return nextClaudeRevertAt();
+}
+
 function statusPayload() {
   const cfg = loadConfig();
   const c = (name) => {
@@ -188,6 +231,7 @@ function statusPayload() {
     ticket: ticketStatus,
     proxy: c("proxy"),
     sync: c("sync"),
+    nextClaudeRevertAt: new Date(nextClaudeRevertAt()).toISOString(),
   };
 }
 
@@ -200,7 +244,7 @@ function readBody(req) {
   });
 }
 
-const RESTART_PROXY_KEYS = ["proxyHost", "proxyPort", "codexPort", "credentialsPath", "seedToken", "serverUrl", "localToken", "allowLegacyToken", "upstreamConnectTimeoutSec", "upstreamIdleTimeoutSec", "refreshAheadSec"];
+const RESTART_PROXY_KEYS = ["proxyHost", "proxyPort", "codexPort", "credentialsPath", "seedToken", "serverUrl", "localToken", "allowLegacyToken", "upstreamConnectTimeoutSec", "upstreamIdleTimeoutSec", "refreshAheadSec", "claudeUpstream", "llmClaudeBaseUrl", "llmClaudeToken", "llmClaudeHeaderName", "llmClaudeAnthropicVersion", "claudeFallbackCodex", "fallbackCodexModel", "fallbackCodexMap", "claudeForceCodex", "quotaUrl", "quotaProxy", "quotaCheckSec"];
 const RESTART_SYNC_KEYS = ["proxyHost", "proxyPort", "codexPort", "codexModel", "syncCcSwitch", "syncIntervalSec", "localToken"];
 
 async function applyConfig(partial) {
@@ -351,6 +395,7 @@ ensureChildren();
 if (!HEADLESS) {
   listenControl(cfg.controlPort);
 }
+scheduleClaudeRevert();
 setInterval(() => void checkTicket().catch(() => {}), 60_000);
 void checkTicket();
 console.log(`${nowIso()} seedx 网关代理已启动（配置：${CONFIG_PATH}）`);
