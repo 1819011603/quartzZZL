@@ -1,0 +1,44 @@
+{
+  "round": "加购同SKU冲突运行时复测（2026-11-12）",
+  "env": {"lane": "test-eco-8", "old_lane": "test-eco-9"},
+  "image": {"new": "feature-renewal-preheat-v2-20261112-68e825e1", "pod": "10.218.236.75", "pipeline": 1342383, "old_baseline": "1f5a9118 / 10.218.249.60"},
+  "sample": {
+    "user": "7704848531", "seller": "3154", "account_id": "90247",
+    "plans": ["589037361072007168 (big, 4 related)", "589721954597011456 (small main)"],
+    "b_cart_rows_added": [
+      "589202653968359425: product 589041202037415936 type2 (main pure)",
+      "589202653968359426: product 589212673443520512 type2 (related pure)",
+      "589202653968359427: product 589041240276885504 type2 (main expand)",
+      "589202653968359428: product 589762111522013184 type51 (combo pure)"
+    ],
+    "kept": true
+  },
+  "before_fix": {
+    "v2_c": "counts 1=5,2=1,3=2; 589041240276885504 同时 type2+type3; trace cart_gaotu100_com.287.17944869124590037",
+    "v2_f": "同 C; trace cart_gaotu100_com.286.17944869161340035",
+    "oldlink": "counts 1=1,2=2,3=3; 589041240276885504 同时 type2+type3"
+  },
+  "after_fix": {
+    "v2_c": "counts 1=5,2=1,3=1; 589041202037415936 type1; 589212673443520512 type1; 589041240276885504 仅 type2; 原加购 589048589437788160 type3 保留",
+    "v2_f": "同 C",
+    "v2_b": "pure 5 条，与 C 一致（B 链路不含加购/扩科，sellerId 为空）",
+    "preheat": "pure 5 条，与 C 一致",
+    "traces": {"C": "cart_gaotu100_com.291.17944874216120006", "F": "cart_gaotu100_com.284.17944874275480007",
+               "B": "cart_gaotu100_com.286.17944874293970007", "pre": "cart_gaotu100_com.289.17944874331260007",
+               "oldlink_newpod": "cart_gaotu100_com.288.17944874315090007", "oldlink_baseline": "cart_gaotu100_com.327.17944874319450257"},
+    "small_plan": {"plan": "589721954597011456", "C": "cart_gaotu100_com.287.17944876062050017",
+                    "result": "combo 589762111522013184 仅 type1；589041202037415936 仅 type1；原加购被既有 grade/subject 去重移除（与老链路一致）"}
+  },
+  "redis": {
+    "key": "renewal:preheat:v2:589037361072007168:7704848531",
+    "STRLEN": 1045, "TTL": 93570, "format": "raw JSON (StringRedisTemplate), 5 entries",
+    "old_key": "renewal:preheat:589037361072007168:7704848531 STRLEN=104 TTL=90124，未被 V2 覆盖"
+  },
+  "code_change": {
+    "commit": "68e825e1", "file": "cart-app/src/main/java/com/gaotu/renewal/RenewalV2ResultMerger.java",
+    "method": "dedupeByProductPriority", "rule": "同年级同 SKU：纯续>扩科>加购；跨年级保留",
+    "tests": "RenewalV2ResultMergerTest +3, 共 11；RenewalV2* 24/24；Renewal* 117/117"
+  },
+  "config_restored": {"release": "20261112204727-release", "renewal.recommend.v2.enabled": false, "renewal.preheat.v2.enabled": false, "renewal.preheat.v2.prefix.enabled": true},
+  "note": "老链路（eco-9 基线 1f5a9118 与 68e825e1 老代码路径）同数据仍 type2+type3 并存，属既有缺陷（5a key=productId+configuredGrade，加购 configuredGrade=null 不撞），非本次引入；V2 按 owner 规则修正。"
+}
