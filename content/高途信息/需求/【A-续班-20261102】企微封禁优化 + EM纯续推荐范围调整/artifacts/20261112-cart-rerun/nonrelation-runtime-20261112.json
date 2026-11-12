@@ -1,0 +1,44 @@
+{
+  "round": "真不关联场景：product 关联开关运行时关闭（2026-11-12）",
+  "env": {"lane": "test-eco-8", "baseline": "test-eco-9 / 1f5a9118"},
+  "runtime_switch": {
+    "app": "product eco-8",
+    "instances": ["10.218.249.186 (tjjwq)", "10.218.239.222 (8nvp6)"],
+    "bean": "com.gaotu.product.service.renewal.RenewalServiceImpl",
+    "field": "pureRelationEnabled",
+    "method": "Arthas vmtool + OGNL 直接属性赋值（先 options strict false，多实例逐个改）",
+    "off": "两实例改 false 后 listRenewalMasterByRenewalNumber(589037361072007168) 不再下发 related_renew_master_numbers",
+    "restored": "验证后两实例改回 true；related 回读 4 条；已核对无残留 arthas 进程"
+  },
+  "cart_switch": {"during": "release 20261112211558 (recommend=true, preheat=true)", "restored": "release 20261112211733 (false/false/prefix=true)"},
+  "samples": [
+    "589037361072007168/7704848531 (大班主 + 4 从计划)",
+    "585960797778243584/7658129872 (大→小)",
+    "589721954597011456/7704848531 (小→大)",
+    "588872241920421888/7658129872 (真不关联对照)",
+    "551533000353986560/654745 (小班主)",
+    "586116340522184704/7658129872 (无关联小班)",
+    "588858850300473344/7658129872 (大班主)"
+  ],
+  "result_v2_on": {
+    "C/B/fromC 纯续 key+SKU vs baseline": "7/7/7 一致",
+    "preheat vs baseline": "4 个大班计划 4/4 一致；3 个小班计划基线老预热本就为空，V2 预热=主计划纯续=C 实时（既有小班口径）",
+    "key_effect": "589037 纯续 5 条→1 条（仅主计划），确认未关联时无从计划泄漏",
+    "traces": {
+      "589037_C": "cart_gaotu100_com.292.17944893858940046",
+      "589037_B": "cart_gaotu100_com.293.17944893860890045",
+      "589037_F": "cart_gaotu100_com.284.17944893862670045",
+      "589037_pre": "cart_gaotu100_com.289.17944893874810048",
+      "589037_base_C": "cart_gaotu100_com.327.17944893876360282",
+      "585960_C": "cart_gaotu100_com.286.17944893896950051",
+      "589721_C": "cart_gaotu100_com.290.17944893938300050",
+      "588872_C": "cart_gaotu100_com.287.17944893992490051"
+    }
+  },
+  "result_v2_off": {
+    "old link eco-8 vs eco-9 baseline": "C/B/fromC/preheat 纯续 key+SKU 均 7/7 一致",
+    "evidence": "/tmp/w1_nonrel_off.json"
+  },
+  "evidence_files": ["/tmp/w1_nonrel_off.json", "/tmp/w1_nonrel_v2.json"],
+  "note": "product 开关为内存态、重启/重新发布失效；本轮只为验证，未改 Apollo，也未落地任何配置。"
+}

@@ -1,0 +1,31 @@
+{
+  "round": "小班/大班预热口径核对（主计划+从计划 纯续，2026-11-12）",
+  "env": {"lane": "test-eco-8", "cart_image": "feature-renewal-preheat-v2-20261112-68e825e1", "pod": "10.218.236.75"},
+  "code_reference": {
+    "RenewalV2Service#preheat": "cart-app/.../RenewalV2Service.java:190 → computeMergedPure(main+related)",
+    "RenewalV2Service#preheatByRenewalNumber": "RenewalV2Service.java:210（small 分支只额外做下游预热，不改变纯续合并）",
+    "RenewalV2PureRenewalService#computeMergedPure": "RenewalV2PureRenewalService.java:269（主+从逐计划计算后合并）",
+    "conclusion": "纯续合并不区分大小班，无需改代码"
+  },
+  "matrix": [
+    {"label":"589037 大班主+4从","plan":"589037361072007168","user":"7704848531","type":1,"preheat_main":1,"preheat_related":4,"realtime_main":1,"realtime_related":4,"equal":true,"pre_trace":"cart_gaotu100_com.286.17944901362010069","c_trace":"cart_gaotu100_com.290.17944901383740064"},
+    {"label":"585960 大→小","plan":"585960797778243584","user":"7658129872","type":1,"preheat_main":1,"preheat_related":1,"realtime_main":1,"realtime_related":1,"equal":true,"pre_trace":"cart_gaotu100_com.289.17944901411710067","c_trace":"cart_gaotu100_com.284.17944901420880068"},
+    {"label":"589721 小班主+4大从","plan":"589721954597011456","user":"7704848531","type":2,"preheat_main":1,"preheat_related":4,"realtime_main":1,"realtime_related":4,"equal":true,"pre_trace":"cart_gaotu100_com.290.17944901437730066","c_trace":"cart_gaotu100_com.293.17944901450610068"},
+    {"label":"551533 小班主","plan":"551533000353986560","user":"654745","type":2,"preheat_main":1,"preheat_related":0,"realtime_main":1,"realtime_related":0,"equal":true,"pre_trace":"cart_gaotu100_com.291.17944901466400074","c_trace":"cart_gaotu100_com.285.17944901487760070","note":"从计划唯一纯续 564918064353779712 saleStatus=50，按售卖过滤；实时同口径"},
+    {"label":"551533 小班主 user2","plan":"551533000353986560","user":"6611409826452","type":2,"preheat_main":1,"preheat_related":0,"realtime_main":1,"realtime_related":0,"equal":true,"pre_trace":"cart_gaotu100_com.286.17944901507240073","c_trace":"cart_gaotu100_com.292.17944901521260071"},
+    {"label":"586116 小→大","plan":"586116340522184704","user":"7658129872","type":2,"preheat_main":1,"preheat_related":1,"realtime_main":1,"realtime_related":1,"equal":true,"pre_trace":"cart_gaotu100_com.289.17944901537710071","c_trace":"cart_gaotu100_com.284.17944901543360072"},
+    {"label":"588858 大班主+从","plan":"588858850300473344","user":"7658129872","type":1,"preheat_main":0,"preheat_related":1,"realtime_main":0,"realtime_related":1,"equal":true,"pre_trace":"cart_gaotu100_com.287.17944901556100073","c_trace":"cart_gaotu100_com.288.17944901562570077"}
+  ],
+  "plan_level_preheat": {
+    "plan": "589721954597011456",
+    "trace": "cart_gaotu100_com.290.17944901809410070",
+    "redis_key": "renewal:preheat:v2:589721954597011456:7704848531",
+    "entries": 5,
+    "STRLEN": 1045,
+    "TTL_seconds": 93583,
+    "same_set_as_big_plan_589037": true,
+    "log": "renewal-v2 preheat done, key=renewal:preheat:v2:589721954597011456:7704848531, entries=5"
+  },
+  "restored": {"release": "20261112213106-release", "renewal.recommend.v2.enabled": false, "renewal.preheat.v2.enabled": false, "renewal.preheat.v2.prefix.enabled": true},
+  "evidence_files": ["/tmp/w1_preheat_parity.json"]
+}

@@ -7,6 +7,28 @@ tags: [需求, 决策]
 
 > 只记会影响后续设计判断的理由，不记流水账。**日期倒序（最新在前）。**
 
+## 2026-11-12｜回访任务常见口径问答（电话次数 / 组织覆盖 / 完成条件 / 11-10 为 0）
+
+> 本轮 owner 转来的一线提问与查证结论（只读排查，未改配置/代码）。
+
+**Q1. EES 任务列表里的「电话次数」统计范围是多久？**
+- 结论：该班主任与该学员**历史累计的有效通话次数**（单次通话时长 ≥ 60 秒算 1 次），**不限时间范围**——不是任务有效期、不是自然月、不是近 N 天；「最近电话」= 这些有效通话里最晚一次。老/新链路口径一致。
+- 依据：页面接口 `POST /feign/taskPlatform/task/list` → `PlatformTaskPageResponse.callCount`；计算在 `PlatformTaskResponseConverter#queryCallRecords`（仅按 `user_id + account_id + isDel` 过滤 + `call_duration ≥ 60s`，**无时间条件**）、`FirstCallUserCallRecordDaoImpl#listByUserIdsAndAccountIds`。数据佐证：userId=11072460099132 / account=215616 历史记录中 ≥60s 通话 = **58** 条、最晚 **2026-10-29 20:03:06**，与截图完全一致（任务筛选区间为 11-10~11-24 却显示 10-29 的通话，即累计证据）。
+
+**Q2. 回访是否只覆盖【一对一学部——班主任部】？【一对一学部——鸿途项目——班主任组】查不到任务。**
+- 结论：线上日常回访**只圈了【一对一学部——班主任部】**（虚拟架构 org `97353074458795824`），故【一对一学部——鸿途项目——班主任组】（org `112619412210993665`）**不在范围内、不生成任务**——是组织范围没包含，不是学员/容器不满足。
+- 依据：`task_rule_config` id=12「日常回访」（`task_generate_rule_type=3`）`org_numbers=97353074458795824`、`role_labels=4-216`、执行日 `[10,25]`；解析 `ees_data.virtual_employee_info`：`97353074458795824 = 高途课堂_高途_H业务线_一对一学部_班主任部`；`112619412210993665 = 虚拟架构_高途_H业务线_一对一学部_鸿途项目_班主任组`（路径 `一对一学部→鸿途项目→班主任组`，与「班主任部」是**一对一学部下的并列分支**）。圈人链路 `AbstractScheduledTaskJob#getMatchedAccounts`：配置 org（含全部子组织）→ 员工 → accountId → 虚拟架构就近匹配 → 老链路取老师名下辅导班学员 / 新链路取老师名下起效容器。
+- 若要覆盖：在 config 12 的 `org_numbers` 追加 `鸿途项目(111441651978733568)` 或 `鸿途项目_班主任组(112619412210993665)` 即可（父级自动含全部子组织）。
+- 备注：prod 另有测试配置 id=9（org 含 `115518527455104020`、`97353215785868807`），非生产生效范围。
+
+**Q3. 任务完成的单次通话要求 ≥5min，呼入/呼出是否都算？**
+- 结论：现状**不区分方向，家长呼入与班主任呼出都计入**（双向）；需求未规定方向，建议维持双向；若要「仅限班主任呼出」需产品明确后再改。
+- 依据：student-data 日常回访通话过滤 `DailyVisitCallRecordFilter#filterValidCalls` 只按任务有效期 `[startTime, expireTime]` 过滤，**不看 `call_type`**；fairy 日常回访完成判定（`FirstCall1v1StatusCheckService` / `SubTaskUpdateService`）亦无呼入/呼出方向过滤。完成条件本身为 `task_finish_condition = {"requiredRuleList":[{"type":1,"value":5}]}`。
+
+**Q4. 为什么 11/10（10 号）那批回访任务为 0？**
+- 结论：11/10 **没有自动触发**——当时配置的执行日不含 10 号（被配成 25/26），故 10 号未跑；随后**还原执行日为 `[10,25]` 并手动补跑**，11/10 批次已生成（老 **13742** / 新 **40**）。
+- 依据：`platform_task_scheduled_execution_log` config_id=12 无 `execution_date=2026-11-10` 的自动执行记录（自动批次 10/10、10/25 于 00:00 触发；11/03、11/10 均为手动，时间 14:30、17:18）；`task_rule_config#12` 当前 `taskFrequency=[10,25]`、`update_time=2026-11-11 17:49`（补跑后还原）。
+
 ## 2026-11-03｜青舟流水线「合并代码到master分支」步骤标记完成
 - 背景：release→master 已真合并（fairy codeMerge `205822`、student-data `205823`，均 code 200），但**流水线步骤未自动翻状态**（页面仍显示「未开始」）。
 - 按 owner 要求，用 `release.py mark-done --pipeline-id <id> --pipeline-status`（`updatePipelineRecordStatus` + `updatePipelineStatus`，`status=4`=「标记完成」）标记：
