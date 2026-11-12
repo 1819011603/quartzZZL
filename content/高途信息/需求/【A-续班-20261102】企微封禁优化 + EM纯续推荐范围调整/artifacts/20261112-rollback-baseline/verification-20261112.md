@@ -65,6 +65,12 @@
   - `renewal:preheat:v2:585960797778243584:7658127801`（2 条）
   - `renewal:preheat:585960797778243584:7658127801`（1 条）
 
+## 新 xjob
+
+- 已在 test 的 xjob-admin 新建：jobId `9990`，名称「续班购物车V2」，handler `RenewalV2JobHandler`，执行器组 676（`cart.gaotu100.com`，自动注册），路由 FIRST，默认**已停止**（不启动不会周期跑）。
+- 手动触发一次（仅计划 `585960797778243584`，指定执行器 `10.218.251.47:9999`）：triggerCode=200，**handleCode=200 成功**，日志 logId `2547486659`。
+- 该次运行按前缀开关写入 `renewal:preheat:v2:` key。
+
 ## 未覆盖 / 说明
 
 - 未直接 `GET` Redis 原文（无 Redis 客户端入口）；以接口实际返回值 + 写入日志中的 key 和 entries 作为证据。
