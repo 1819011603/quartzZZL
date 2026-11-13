@@ -222,6 +222,8 @@ $M $C baijia_invoke cosplay_logout
 | 派生规则 | `SmallRenewalFiledConvertDataQueryServiceImpl`：ES `smallCanRenewal`(1..17) 经 `RenewalStatusEnum.canRenewal2Renewal`（∈{1,2,8}=可续，否则不可续）+ ES `smallRenewalStateStatus`(1已续/2未续/null→未续) → `RenewalReportStatusEnum` code |
 | 筛选翻译 | `SmallRenewalReportStatusFilterService`：code4(不可续未续) → `smallCanRenewal NOT IN (1,2,8)` AND `smallRenewalStateStatus ∈ (2,null)`；code1/2 → `smallCanRenewal IN (1,2,8)`，code3/4 → NOT IN |
 
+> ⚠️ 「已续/未续」走**课程级续班关系**（course-center `course_relation_map`，经 `SmallClazzUserRenewalStatusQueryService` / 进班 MQ 现算），与业绩判单的续班关系（`performance_order_attribution.pre_order_number`）是两条链路——判单已认续班 ≠ 页面会显示已续；新课上线漏配续班关系时，已付款仍恒显「可续未续」且不自愈，排查见工单 [`业绩归因/排查/已付款但显示可续未续.md`](../../../工单/续班与业绩/业绩归因/排查/已付款但显示可续未续.md)。
+
 ### 学员状态（`clazzStudentStatus`）口径
 
 - 展示给前端的「学员状态」是**后端派生**的：`SmallClazzService#setClazzStudentStatus` = ES `clazzStudentStatus` **+** ES `changeClazzStatus` × 2。
