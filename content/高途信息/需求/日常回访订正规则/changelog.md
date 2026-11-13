@@ -7,13 +7,17 @@ tags: [需求, 决策]
 
 > 只记会影响后续设计判断的理由，不记流水账。**日期倒序（最新在前）。**
 
-## 2026-11-13｜清理：鸿途定向 xjob 去掉 `_masheng` 后缀（test 删 / prod 改名）
+## 2026-11-13｜鸿途定向 xjob 去掉人名后缀（prod/test 均**改名保留，不删**）
 
-- **触发**：owner 要求 **xjob/Glue 命名不加人名后缀**（原 `日常回访_鸿途定向GLUE_masheng`），允许「删掉」或「改下名字」。
-- **处置**：test job `10005`（组 688）**已删除**（`total=0` 回读确认）；prod job `13270`（组 314）**已改名为 `日常回访_鸿途定向GLUE`**（`jobGroup/executor/jobCron/glueType/triggerStatus` 均保持不变，仍 `已停止`）。
-- **原因**：prod **删除**被 xjob 硬闸拦截（须用户明确同意 + 显式 `XJOB_ALLOW_PROD_DELETE`，不自行加），故 prod 取 owner 许可的「改名」路径；测试环境不设闸，直接删。
-- **数据不受影响（回读）**：`first_call_task_ext`（ext_type=4, ext_value=`202611_hongtu`）仍= **994** 条，删除/改名仅动 xjob 配置，不动已建任务。
-- **遗留（待 owner）**：prod job `13270` 仍存在（已停止、不自跑）；若确需彻底删除，请明确同意后再走页面删除或带 `XJOB_ALLOW_PROD_DELETE` 的 CLI。
+- **触发**：owner 要求 **xjob/Glue 命名不加人名后缀**；原 prod jobDesc = `日常回访_鸿途定向GLUE_masheng`。owner 先说「删」，**最新改为「不要删，改名即可」**（以最新为准）。
+- **`masheng` 来源（给依据）**：来自**建任务时写进 `jobDesc` 的后缀**，**不是** Glue 类名/handler（类名 = `DailyVisitHongtuGlueHandler`，无 masheng；GLUE 任务 handler 为空）。Glue 源码里另有一处 `@author masheng`（作者注释，非命名后缀）。
+- **处置**：
+  - prod job `13270`（组 314）→ 改名 `日常回访_鸿途定向GLUE`；`jobGroup/executor/cron/glueType/triggerStatus(已停止)` 均不变（回读）。
+  - test job `10005`（组 688）**上一轮曾被删除**；按最新「不要删」**已重建** → 新 id `10029`，同名 `日常回访_鸿途定向GLUE`、组 688、`GLUE_GROOVY`、`cron 0 0 3 * * ?`、已停止（回读）。
+  - Glue 源码 `@author masheng` → `@author zhangzeling`（**逻辑不变**；prod GLUE 已重新保存并回读，`masheng`=0）。
+- **数据不受影响（回读）**：`first_call_task_ext`（ext_type=4, ext_value=`202611_hongtu`）= **994** 条。
+- **规则落实**：`~/.claude/skills/xjob-admin/SKILL.md` 新增「🚫 命名不加人名后缀（owner 规则）」（回读已确认）。
+- **遗留**：prod job `13270`、test job `10029` 均**保留**（已停止、不自跑）。
 
 ## 2026-11-12｜排查：学员 5281257910「无课时仍生成回访任务」
 
