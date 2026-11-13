@@ -16,6 +16,7 @@ import { createServer } from "node:http";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { readFileSync, existsSync } from "node:fs";
+import { homedir } from "node:os";
 import { randomBytes } from "node:crypto";
 import { loadConfig, saveConfig, CONFIG_PATH, HOME_DIR, proxyUrl, ensureLocalToken } from "./config.mjs";
 
@@ -264,6 +265,29 @@ function json(res, obj, code = 200) {
   res.end(body);
 }
 
+/** 读 seed 登录凭据（长票 + serverUrl），供面板拉网关模型清单。 */
+function readCreds() {
+  const cfg = loadConfig();
+  const p = cfg.credentialsPath || join(homedir(), ".seedx-workspace", "credentials.json");
+  try {
+    const c = JSON.parse(readFileSync(p, "utf8"));
+    const serverUrl = (cfg.serverUrl || c.serverUrl || "https://seed.baijia.com").replace(/\/+$/, "");
+    return c.token ? { token: c.token, serverUrl } : null;
+  } catch {
+    return null;
+  }
+}
+
+/** 拉网关某 agentKind 的模型清单（面板下拉框用）。 */
+async function fetchModels(agentKind) {
+  const c = readCreds();
+  if (!c) return { error: "读不到 seed 凭据（credentials.json / seedToken）" };
+  const url = `${c.serverUrl}/seedx/resource/manage/service/ctl/gateway-models?agentKind=${encodeURIComponent(agentKind)}`;
+  const res = await fetch(url, { headers: { Authorization: `Bearer ${c.token}` } });
+  if (!res.ok) return { error: `网关返回 HTTP ${res.status}` };
+  return await res.json();
+}
+
 function sameOriginOk(req) {
   const origin = req.headers["origin"];
   if (!origin) return true; // 非浏览器请求（无 Origin），CSRF 由 SameSite=Strict cookie 兜
@@ -300,6 +324,11 @@ async function handleControl(req, res) {
   }
 
   if (p === "/api/status") return json(res, statusPayload());
+  if (p === "/api/models") {
+    const agent = url.searchParams.get("agent") || "claude";
+    const r = await fetchModels(agent).catch((e) => ({ error: String(e?.message || e) }));
+    return json(res, r);
+  }
   if (p === "/api/logs") {
     const n = Math.max(1, Math.min(Number(url.searchParams.get("n") || 200), LOG_CAP));
     return json(res, { logs: logs.slice(-n) });

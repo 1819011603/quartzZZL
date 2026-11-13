@@ -84,8 +84,8 @@
       <div><label>llm 鉴权头 llmClaudeHeaderName</label><input type="text" id="llmClaudeHeaderName" placeholder="x-api-key 或 authorization"></div>
       <div style="display:flex;align-items:flex-end"><label class="chk"><input type="checkbox" id="claudeFallbackCodex"> claude 额度用尽自动切 codex(gpt)</label></div>
       <div style="display:flex;align-items:flex-end"><label class="chk"><input type="checkbox" id="claudeForceCodex"> claude 手动切到 codex(gpt)（忽略额度，立即生效；关掉恢复）</label></div>
-      <div><label>切到的 codex 模型 fallbackCodexModel（未命中映射时）</label><input type="text" id="fallbackCodexModel" placeholder="gpt-6.1-sol"></div>
-      <div><label>模型映射 fallbackCodexMap(JSON)</label><input type="text" id="fallbackCodexMap" placeholder='{"claude-opus-5-5":"gpt-6-astra"}'></div>
+      <div><label>切到的模型 fallbackCodexModel（下拉选择）</label><select id="fallbackCodexModel"></select></div>
+      <div><label>高级：按模型覆盖 fallbackCodexMap(JSON，留空=所有 claude 都用上面那个)</label><input type="text" id="fallbackCodexMap" placeholder='{}'></div>
       <div><label>额度接口 quotaUrl</label><input type="text" id="quotaUrl"></div>
       <div><label>额度代理 quotaProxy</label><input type="text" id="quotaProxy" placeholder="http://127.0.0.1:8888"></div>
       <div><label>额度刷新秒 quotaCheckSec</label><input type="number" id="quotaCheckSec"></div>
@@ -123,8 +123,28 @@ function copyToken(){ const v=window.__localToken||""; if(!v){toast("token 为�
 function fmtSec(s){ s=Math.round(s); if(s<=0) return "已过期"; const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60; return h>0?`${h}h${m}m`:(m>0?`${m}m${x}s`:`${x}s`); }
 function fmtClock(iso){ const d=new Date(iso); if(isNaN(d)) return "?"; const p=n=>String(n).padStart(2,"0"); return p(d.getHours())+":"+p(d.getMinutes()); }
 
+let __models = null;
+async function loadModels(){
+  if (__models) return __models;
+  try { const r = await (await fetch("/api/models?agent=claude")).json(); __models = Array.isArray(r.models) ? r.models : []; }
+  catch { __models = []; }
+  return __models;
+}
+function fillFallbackModel(cur){
+  const sel = $("fallbackCodexModel"); if (!sel) return;
+  if (sel.dataset.built !== "1"){
+    sel.innerHTML = "";
+    for (const m of (__models||[])){ const o=document.createElement("option"); o.value=m.id; o.textContent = m.label ? `${m.label}（${m.id}）` : m.id; sel.appendChild(o); }
+    sel.dataset.built = "1";
+  }
+  if (document.activeElement === sel) return;
+  const want = cur || "";
+  if (want && ![...sel.options].some(o=>o.value===want)){ const o=document.createElement("option"); o.value=want; o.textContent=want+"（当前）"; sel.appendChild(o); }
+  if (want) sel.value = want;
+}
+
 function fillForm(cfg){
-  for (const k of ["proxyHost","proxyPort","codexPort","controlPort","syncIntervalSec","codexModel","credentialsPath","serverUrl","usageUrl","refreshAheadSec","claudeUpstream","llmClaudeBaseUrl","llmClaudeToken","llmClaudeHeaderName","fallbackCodexModel","quotaUrl","quotaProxy","quotaCheckSec"]) {
+  for (const k of ["proxyHost","proxyPort","codexPort","controlPort","syncIntervalSec","codexModel","credentialsPath","serverUrl","usageUrl","refreshAheadSec","claudeUpstream","llmClaudeBaseUrl","llmClaudeToken","llmClaudeHeaderName","quotaUrl","quotaProxy","quotaCheckSec"]) {
     if (document.activeElement && document.activeElement.id===k) continue;
     $(k).value = cfg[k] ?? "";
   }
@@ -132,6 +152,7 @@ function fillForm(cfg){
   $("allowLegacyToken").checked = cfg.allowLegacyToken !== false;
   $("claudeFallbackCodex").checked = !!cfg.claudeFallbackCodex;
   $("claudeForceCodex").checked = !!cfg.claudeForceCodex;
+  fillFallbackModel(cfg.fallbackCodexModel);
   if (!(document.activeElement && document.activeElement.id==="fallbackCodexMap"))
     $("fallbackCodexMap").value = JSON.stringify(cfg.fallbackCodexMap || {});
 }
@@ -147,6 +168,7 @@ function openUsage(daysAgo){ window.open(buildUsageUrl(daysAgo), "_blank", "noop
 async function refresh(){
   try {
     const s = await (await fetch("/api/status")).json();
+    await loadModels();
     fillForm(s.config);
     $("cfgPath").textContent = s.configPath;
     $("proxyUrl").textContent = s.proxyUrl + "  ｜  codex " + (s.codexUrl || "");

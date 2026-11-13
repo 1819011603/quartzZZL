@@ -30,13 +30,8 @@ export const DEFAULTS = {
   // ── claude 额度用尽 → 自动改用 codex(gpt) 模型 ────────────────────
   // 网关支持在 claude(anthropic) 协议下用 codex 的 gpt 模型（额度计到 gpt 策略）。
   claudeFallbackCodex: false, // 开启后：claude 额度用尽时把 claude-* 请求的 model 改写成 fallbackCodexModel
-  fallbackCodexModel: "gpt-6.1-sol", // 未命中映射时的默认改写目标
-  fallbackCodexMap: {
-    "claude-sonnet-5-5": "gpt-6.1-sol",
-    "claude-opus-5-5": "gpt-6-astra",
-    "sonnet": "gpt-6.1-sol",
-    "opus": "gpt-6-astra"
-  }, // claude 模型 → codex(gpt) 模型：先精确名，再按 opus/sonnet 关键词，最后用 fallbackCodexModel
+  fallbackCodexModel: "gpt-6.1-sol", // 切换目标模型（面板下拉框选，如 glm-5.3）：claude 用尽/手动切换时改用它
+  fallbackCodexMap: {}, // 高级：按 claude 模型名覆盖目标（先精确名、再 opus/sonnet 关键词）；留空 = 所有 claude 都用 fallbackCodexModel
   claudeForceCodex: false, // 手动切换：开启后 claude 请求一律改用 codex(gpt) 模型（忽略额度、立即生效），关掉即恢复
   quotaUrl: "", // 个人额度接口；默认空，请在 config.json / 面板填（含用户名，不入库）
   quotaProxy: "http://127.0.0.1:8888", // 取额度走本地 mitmproxy（自动注入 Cookie）

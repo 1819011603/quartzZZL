@@ -199,7 +199,7 @@ curl -sS "https://seed.baijia.com/seedx/resource/manage/service/ctl/gateway-mode
 ## 十三、claude 切换 codex(gpt)（额度用尽自动 / 手动强制）
 面板开关 **`claudeFallbackCodex`**（`panel.html`）。**claude 与 codex 是两条独立额度策略**（同一网关、按策略分池），所以 claude 用尽、codex 还有额度时，切过去是有效的。
 
-**原理**：代理每 `quotaCheckSec`(默认 60s) 经**本地 mitmproxy(8888)** 拉个人额度页（`quotaUrl`，注入 Cookie）→ 取 `policies` 里 `policy==="claude"` 的策略 → `remaining_usd<=0` 即判定用尽 → 把 `claude-*` 请求的 `model` 改写成 `fallbackCodexMap`/`fallbackCodexModel`。
+**原理**：代理每 `quotaCheckSec`(默认 60s) 经**本地 mitmproxy(8888)** 拉个人额度页（`quotaUrl`，注入 Cookie）→ 取 `policies` 里 `policy==="claude"` 的策略 → `remaining_usd<=0` 即判定用尽 → 把 `claude-*` 请求的 `model` 改写成**面板下拉框选的 `fallbackCodexModel`**（如 `glm-5.3`）。
 关键：**网关的 Anthropic 端点 `/v1/messages` 直接支持 gpt 模型**（实测 `model:gpt-6.1-sol` → 200，走 Anthropic 协议、计到 **gpt 策略**额度），所以切的是**模型**，不是协议/上游，客户端无感。
 
 **两条触发**：
@@ -208,6 +208,6 @@ curl -sS "https://seed.baijia.com/seedx/resource/manage/service/ctl/gateway-mode
 
 **手动切换（`claudeForceCodex`，默认关）**：开了之后 **claude 一律改走 codex(gpt)**——不看额度、立即生效（面板独立开关）；关掉即恢复自动逻辑（用尽/反应式）。面板改完保存即重启代理生效。
 
-**依赖 / 注意**：①`mitmproxy`(:8888) 必须在跑，否则额度未知 → 不切；②`claudeUpstream=seed` 时才生效（`llm` 直连模式不切）；③映射默认 `claude-sonnet-5-5→gpt-6.1-sol`、`claude-opus-5-5→gpt-6-astra`，其余按 sonnet/opus 关键词，最后 `fallbackCodexModel`。
+**依赖 / 注意**：①`mitmproxy`(:8888) 必须在跑，否则额度未知 → 不切；②`claudeUpstream=seed` 时才生效（`llm` 直连模式不切）；③**切到哪个模型由面板下拉框 `fallbackCodexModel` 决定**（选项来自 `gateway-models?agentKind=claude`，如 `glm-5.3` / `gpt-6.1-sol` / `claude-opus-5-5`…）；`fallbackCodexMap` 为高级「按模型覆盖」，**默认空 = 所有 claude 都用该目标**。
 
 **实测**：quota 报 `remaining_usd=0` → `claude-sonnet-5-5` 请求被改写为 `gpt-6.1-sol` 且 200；假上游返 403 → 上游先收 `claude-opus-5-5`、再收 `gpt-6-astra`（反应式生效）；手动开(忽略额度) → 切 `gpt-6.1-sol`，手动关 → 不切。
