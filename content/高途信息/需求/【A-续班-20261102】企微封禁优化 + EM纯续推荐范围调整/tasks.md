@@ -42,6 +42,8 @@
 
 | T-21 | 主从续班计划「纯续」全量回归 | 进行中 | test-eco-7 Cart IP 直连已完成两组 C/B 查询与单用户预热：联报入口23+组合条目51通过；大班主从覆盖纯续2/6004，预热后C端展示两类，B端fromC=0实时正常；计划级job已触发但日志无逐用户计数。真实商品条目23、全类型混排、计划级逐用户写入回读及开关/历史缓存仍缺。data-agent联报造数因源课程必填属性缺失失败，未新增数据。`RenewalServiceSmallMergedCacheTest` 本轮10/10通过，相关47项此前通过；cart-app全量另有15项既有测试setup失败。详见[方案](回归测试方案-主从续班计划纯续.md)与[验证](verify.md)。 |
 
+| T-22 | V2 分支（feature-renewal-preheat-v2-20261112）P0 缓存格式修复 + 终态切换前置 | 阻塞 | 2026-11-14 完整审查发现 P0：V2 预热用 StringRedisTemplate 写裸 JSON，老读链路（corePreheatCache 经 @Primary redisTemplate=GenericJackson）反序列化抛 SerializationException（JVM 实测，见[审查报告](artifacts/20261114-v2-branch-review/README.md)）。prefix=false 终态下无关联计划 C 端实时读缓存必炸（PROD/TEST preheat.cache.enabled=true）。**修复方案待 owner 决策**（V2 写改回 redisTemplate / 读侧换模板+清存量）；同轮确认：/preheatByRenewal 未路由 V2、B/BC fromBCart 硬编码跳过售卖过滤、V2 实时串行性能、切终态需先停老 RenewalJobHandler。卡点=owner 定修复方案；可并行=其余 P2/P3 项定性已给出。 |
+
 ### 外部依赖与保留边界
 
 - 前端页面接入/展示及共享说明链接：金瑞琳，所需时机=页面联测前；本轮不改、不另发消息。
@@ -52,6 +54,7 @@
 
 ## 完成判据
 
+- T-22：落点=R2 写入模板或读侧兼容（待 owner 定）。怎么验=TEST 泳道 preheat.v2=true + prefix=false 写老 key 后，无关联计划 C 端实时查询（preheat.cache.enabled=true）仍 code=0 且返回正确推荐（不抛 SerializationException/网络异常）；回退态（recommend.v2=false）读 V2 写过的 key 同样不报错。不达标先核 Redis 值原文格式（是否带引号）、userRenewalRedis 实际注入 bean、preheat.cache.enabled 生效值，再核修复代码是否真用同一序列化口径。
 
 
 - T-19：落点=product关联版本查询、cart计划/预热缓存键及Apollo开关；TEST/dev3同一用户先预热→修改/清空关联→旧缓存不再命中→重新预热后命中当前结果，并验证B端及无关联计划。开关回退、迟到写入、小班预热、换班/换年级失效须有对应证据。异常先核提交版本、计划配置缓存、预热key、实际pod版本；恢复测试关联后回读。

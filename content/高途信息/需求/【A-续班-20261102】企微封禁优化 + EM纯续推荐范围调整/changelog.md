@@ -1,3 +1,7 @@
+# 决策摘要
+
+- 2026-11-14 **V2 分支（feature-renewal-preheat-v2-20261112）审查结论**：revert 对齐生产后重做的 V2 方向可保留（老路径抽取逐方法保真、531/546 本地测试通过、V2 新测试全过），但 **f70bd93 改用 StringRedisTemplate 写预热值与老 GenericJackson 读链路格式不兼容（P0，JVM 实测）**，prefix 切 false 前必须先修（T-22）；/preheatByRenewal 未路由 V2、B/BC 售卖过滤差异、实时串行性能待 owner 决策。AICR 15 项甄别：2 项已由分支提交修复，6 项为生产行为本身（对比基线含未上线实现）。详见 [审查报告](artifacts/20261114-v2-branch-review/README.md)。
+
 ## 2026-11-09 上线方案
 
 - 在需求总入口 `MCUowPVhriDC3okHO0mcW49Unyf` 下创建上线方案子文档：<https://gaotuedu.feishu.cn/wiki/Uqqyw0MROiPysgk30x8cwhRlnOe>。方案逐项登记 Apollo、GAIA、student_field_config、ES、`renew_master_relation` DDL、MQ（不涉及）、代课权限、回溯圈班与 XXL-Job、灰度监控和回滚动作。
@@ -5,7 +9,6 @@
 - 2026-11-09 **MR 与 TEST 部署**：product-server !862、cart !284、order !2391 均指向 `release`。cart 合并 `origin/release` 后生成 merge commit `4e38ac77`，pipeline `1333698` 部署到 TEST/test-gtbg-dev-3；Pod `cart-gaotu100-com-8464f7c8d7-8mhx9`、10.218.236.203、Eureka UP。固定 Pod 调 `RenewalService#getRenewalDetail` 返回 code=0，主计划大班 + 有效从计划小班，6004 price=0。线上 RELEASE 包待 MR 合入 release 后再定版编译。
 
 - 2026-11-07 **关联列表契约补充**：为计划搜索 `/b/renewMaster/list` 与已关联 `/b/renewMaster/relation/list` 同时下发 `createTime`（Long毫秒时间戳），后端查询均保持创建时间倒序；前端仅消费字段，不改前端。Product commit `9828003c`。
-# 决策摘要
 
 
 - 2026-11-07：按PRD707将从计划有效性改为推荐时每请求一次批量核验（待开始/进行中且未删除），有效集合/前课参与预热版本；取消从前课正负缓存决策，以避免保存后结束仍被推荐。无关联计划原行为不变。旧“稳态0次从计划RPC/从前课缓存开关”方案已取代。

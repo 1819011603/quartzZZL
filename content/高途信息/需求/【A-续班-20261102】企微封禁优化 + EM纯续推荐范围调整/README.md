@@ -11,7 +11,8 @@ branches:
   - order:feature-revert-order-mr2391-20261109
   - cart:feature-renewal-preheat-merge-plan-20261110
   - cart:feature-renewal-preheat-small-refactor-20261111
-updated: 2026-11-12
+  - cart:feature-renewal-preheat-v2-20261112
+updated: 2026-11-14
 tags: [需求]
 ---
 
@@ -92,7 +93,7 @@ T-18完成：cart **1ebd315d**、product-b/product-c **2593dae78**已推送并�
 
 ## 现在什么情况
 
-- 当前工作单 T 9/11 · R 0/0 · C 2/2：C-2从计划状态变化过滤已修复部署并实测；C-1（1485167）已修复部署且接口层实测通过；T-20/T-21（预热审查修复、纯续全量回归）进行中；当前阶段为“联调中（待QA复测）”，生产配置、QA用例和外部回溯保留为上线前置。
+- 当前工作单 T 9/12 · R 0/0 · C 2/2：C-2从计划状态变化过滤已修复部署并实测；C-1（1485167）已修复部署且接口层实测通过；T-20/T-21（预热审查修复、纯续全量回归）进行中；**T-22（V2 分支 P0 缓存格式修复）阻塞待 owner 定方案**——V2 预热 StringRedisTemplate 写裸 JSON 与老 GenericJackson 读链路不兼容，prefix 切 false 前必须修（2026-11-14 实测，见 [审查报告](artifacts/20261114-v2-branch-review/README.md)）；当前阶段为“联调中（待QA复测）”，生产配置、QA用例和外部回溯保留为上线前置。
 - 本轮TEST采样与保留对象/恢复结论见verify；前端不改、不新部署，不把默认TEST企微结果归给目标feature。
 - 下一步按P0剩余缺口推进；已补受控大班筛选，剩余EM/小班/页面场景按已授权TEST范围执行，不重放build或已付单。
 

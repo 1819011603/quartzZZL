@@ -1,3 +1,12 @@
+## 2026-11-14 V2 分支完整检查（只读，本地）
+
+- 对象：cart `feature-renewal-preheat-v2-20261112` @ `c98c4158`（=远端），基线 `af82f18a`（revert 提交 `1f5a9118` 对齐线上 clazzset-dedup 后重做 V2）。未改代码。
+- 本地验证：全模块 `mvn8 clean install` 通过；cart-app `mvn8 test` 546 项 531 过，15 失败为基线既有（ExpandSubjectConfigSubBuilderTest 9 + BCartQuerySubBuilderTest 6，反射 `enabled` 字段缺失，两处类与测试本分支 0 改动）；V2 新测试 35/35 过。
+- **P0 已验证**：V2 预热 StringRedisTemplate 裸 JSON 与老读（GenericJackson @Primary redisTemplate）格式不兼容，JVM 实测反序列化抛 SerializationException；prefix=false 终态下无关联计划 C 端读缓存必炸（PROD/TEST `preheat.cache.enabled` 均 true）。证据与修复方向见 [审查报告](artifacts/20261114-v2-branch-review/README.md)。
+- 老路径抽取保真：基线 59 方法 48 逐字一致，6 改动均为 delegation/新 flag 门控，2 缺失为基线死代码；LEGACY_PURE/FULL 分别对齐基线 5 参/7 参行为。
+- Apollo 现状：PROD 三个 V2 开关均未配置（默认 false，部署安全）；TEST recommend/preheat=false、prefix=true（对比态）。
+- 沿用 11-12 test-eco-8 @68e825e1 运行时验证（7 组主从预热/实时等价、三开关矩阵、计划级 v2 key）；其后 3 个实质提交静态核对为低风险等价改动，HEAD 未重做运行时验证。
+
 ## 2026-11-12 Cart 当前分支业务重跑（有未通过项）
 
 - 对照 dedup 审查 `feature-renewal-preheat-small-refactor-20261111` / `da7b9d06`；目标镜像已核验在 test-eco-1，未改代码。
