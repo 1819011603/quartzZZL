@@ -158,3 +158,4 @@
 
 - T-24：需求逐点核对 HEAD 3b49fda6（20 项全一致无 P0）；批量预热全量用户 Job 运行时验证通过（计划 545361759016388608、509 用户、6/6 写入 renewal_role=1、空结果不写非异常）；README 同步 G1（版本隔离机制移除）与 G3（cart pure.relation 死配置）口径；push 904a5f13 触发 AICR 新评审。证据：artifacts/20261115-requirement-check-3b49fda6.md、artifacts/20261115-batch-preheat-verify.md。
 - T-25：造数补验批量路径从计划条目——复用存量 fixture 589037361072007168（1主+4从6用户，role=1+2 产出已实证，全新造数缺关联 save/下单 scenario 故按铁律复用并登记 registry）；preheatByRenewalNumber 批量写老 key 5 条=1主(role=1)+4从(role=2) 含 51 组合条目；回退态老链路读取 code=0（TID 17946794980070108）；开关恢复回读。证据：artifacts/20261115-role2-batch-verify.md。
+- T-26：全新造数端到端（owner 纠正正确）——造数项目关联 plan_relation/下单 batch_create_order+mock_pay/正经班 create_renewal_regression_clazz/流程 process_edit 能力齐备；全新造主 590563861447557120+从 590563948968001536+4 正经班+流程+2 已付单；批量预热老 key role=1+role=2、回退态读取 code=0（TID 17946839875570153）；开关恢复回读。新踩坑：骨架无 process→effective=false 预热跳过；renew_build 班不达可售门槛；sd renew_build 502 走本地。证据：artifacts/20261115-fresh-seed-role2-verify.md。
