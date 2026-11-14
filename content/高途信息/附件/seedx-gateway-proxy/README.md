@@ -62,14 +62,17 @@ node sync-ccswitch.mjs --watch            # 常驻同步（默认每小时）
 ```
 
 ## 控制面板（http://127.0.0.1:8790）
-改端口 / `refreshAheadSec` / codex 模型 / 同步间隔、看运行状态（网关授权剩余、长票有效性、进程）、实时日志、一键同步 cc-switch、跳转用量看板。
+分四块：**运行状态**磁贴（进程/授权/长票/上游/localToken，各带就地操作按钮）；**快捷控制**（claude 上游切换、额度降级开关、降级目标模型——改动即存即生效）；**设置**分组折叠（端口/额度/凭据/高级，改过的字段不会再被自动刷新打回，底部浮条提示未保存项，支持 ⌘S）；**实时日志**（彩色 tag、自动跟随可暂停）。另有用量看板快捷跳转、「停止全部」需点两次确认。
 
 ## 开机自启
 - **macOS**：`com.gaotu.seedx-gateway-proxy.plist` 放到 `~/Library/LaunchAgents/`，改里面 node 绝对路径后
   ```bash
   launchctl bootstrap "gui/$(id -u)" ~/Library/LaunchAgents/com.gaotu.seedx-gateway-proxy.plist
   ```
-- **Windows**：双击 `install-autostart-windows.cmd`（用 `schtasks` 建"登录时"任务）；卸载跑 `uninstall-autostart-windows.cmd`。
+- **Windows**：双击 `install-autostart-windows.cmd`（建"登录时"计划任务，经 `start-hidden.vbs` **静默启动、不弹黑窗**）；取消跑 `uninstall-autostart-windows.cmd`。手动等价命令：
+  ```bat
+  schtasks /Create /TN "seedx-gateway-proxy" /TR "wscript.exe \"<解压目录>\start-hidden.vbs\"" /SC ONLOGON /RL LIMITED /F
+  ```
 
 ## 验证
 1. 面板顶部「运行状态」：代理/同步进程、网关授权剩余、长票有效性。
