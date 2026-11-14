@@ -79,6 +79,7 @@
 | MR | cart !284 | https://git.baijia.com/gaotu/cart/-/merge_requests/284 | 2026-11-09 |
 | MR | order !2391 | https://git.baijia.com/gaotu/order/-/merge_requests/2391 | 2026-11-09 |
 | MR | cart !293 预热合并纯续缓存(主+全部从·含大小班)；分支 `feature-renewal-preheat-merge-plan-20261110`，commit 1bf01ef8，test-gtbg-dev-3 | https://git.baijia.com/gaotu/cart/-/merge_requests/293 | 2026-11-10 |
+| 其他 | 续班预热V2分支问题修复报告（P0根因/改动/验证/规则核对，飞书） | https://gaotuedu.feishu.cn/wiki/N9BLw7mJdiRogFkMSHvcysi5nic | 2026-11-14 |
 
 ## 数据交付
 

@@ -1,6 +1,6 @@
 # 决策摘要
 
-- 2026-11-14 **V2 分支（feature-renewal-preheat-v2-20261112）审查结论**：revert 对齐生产后重做的 V2 方向可保留（老路径抽取逐方法保真、531/546 本地测试通过、V2 新测试全过），但 **f70bd93 改用 StringRedisTemplate 写预热值与老 GenericJackson 读链路格式不兼容（P0，JVM 实测）**，prefix 切 false 前必须先修（T-22）；/preheatByRenewal 未路由 V2、B/BC 售卖过滤差异、实时串行性能待 owner 决策。AICR 15 项甄别：2 项已由分支提交修复，6 项为生产行为本身（对比基线含未上线实现）。详见 [审查报告](artifacts/20261114-v2-branch-review/README.md)。
+- 2026-11-14 **V2 分支（feature-renewal-preheat-v2-20261112）审查结论（当晚更正版）**：上午记的「StringRedisTemplate 写值与老 GenericJackson 读格式不兼容」**被运行时实证推翻**（两个 Redis 字段实际都注入 StringRedisTemplate，格式一致）；真实 P0＝prefix=false 时 V2 把合并纯续写进老 `renewal:preheat:` key，老链路读到从计划组合 SKU 条目解析班级 NPE（TID cart_gaotu100_com.293.17946524918130952 已复现）。owner 授权修复后定为：**老 key 只写主计划纯续（终态合并值无读者）、合并值仅写 v2: 前缀、空结果删 key、B/BC fromBCart 透传、/preheatByRenewal 按开关路由、RecommendContext/processClazz 判空加固**（commit 47d445da）。AICR 15 项甄别：2 项已由分支提交修复，其余多为生产行为本身。详见 [审查报告](artifacts/20261114-v2-branch-review/README.md) 与 [修复记录](artifacts/20261114-v2-fix/README.md)。
 
 ## 2026-11-09 上线方案
 

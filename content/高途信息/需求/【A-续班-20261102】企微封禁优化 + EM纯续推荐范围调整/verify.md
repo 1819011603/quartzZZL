@@ -1,10 +1,24 @@
+## 2026-11-14 V2 修复部署验证（T-22，test-eco-8 @47d445da）
+
+- **部署**：pipeline 1345000（模板1）构建成功，新 pod `cart-gaotu100-com-78849dd749-s7vqp`（10.218.238.212）Eureka UP，commit=47d445da 与本地/远端一致。
+- **改前复现**（同 pod 前代 @c98c4158，临时 preheat.v2=true+prefix=false）：V2 单用户预热写老 key 合并值 5 条 → C 老链路 `code=1 网络异常`，NPE `RecommendContext:127`（TID `cart_gaotu100_com.293.17946524918130952`）；恢复老值后 code=0（A/B/A）。
+- **改后验证 7 项全过**：① prefix=false 预热老 key `entries=1`（主计划纯续，TID 17946536998440006）；② C 老链路读该 key `code=0` 且日志 `renewal-data-from-preheat` 命中（TID 17946537111390006）；③ prefix=true 写 `renewal:preheat:v2:` `entries=5` 合并值（TID 17946537902400007）；④ recommend.v2=true C 端 6 条=纯续5(主1+从4含51组合)+扩科1，与 11-12 矩阵一致；⑤ B(fromC=0) 2 条 / BC(fromC=1) 过滤 saleStatus=50 条目为 1 条（J 545361759016388608/user 654745）；⑥ POST /feign/renewal/preheatByRenewal 进入 RenewalV2JobHandler（TID 17946538329740007，样本 is_test_data=1 按规则 skip）；⑦ 三开关恢复验证前值（release 20261114185739），恢复态 C code=0。
+- 本地：全模块 install 通过；cart-app 554 项 539 过（15 失败=基线既有）；V2 更新+新增 43 项全过。
+- **未覆盖**：计划级批量预热全量用户（样本被 is_test_data 过滤，单用户级同链路已验）；prod 未动。
+- 详情与响应存档：[修复记录](artifacts/20261114-v2-fix/README.md)。
+
 ## 2026-11-14 V2 分支完整检查（只读，本地）
+
+> **2026-11-14 晚更正**：本节原记「P0 序列化格式不兼容」已被运行时实证推翻——老写/老读两个
+> RedisTemplate 字段经 Spring 泛型匹配实际注入的都是 StringRedisTemplate（arthas 实证），新旧值同为裸 JSON。
+> **真实 P0**（同日复现，TID `cart_gaotu100_com.293.17946524918130952`）：prefix=false 时 V2 把合并纯续写进老
+> `renewal:preheat:` key，老链路读到从计划组合 SKU（非班级号）条目在 `RecommendContext:127` 解析班级 NPE →
+> 接口「网络异常」。A/B/A：老值 code=0 → V2 合并值崩溃 → 恢复老值 code=0。修复见 2026-11-14 V2 修复部署节。
 
 - 对象：cart `feature-renewal-preheat-v2-20261112` @ `c98c4158`（=远端），基线 `af82f18a`（revert 提交 `1f5a9118` 对齐线上 clazzset-dedup 后重做 V2）。未改代码。
 - 本地验证：全模块 `mvn8 clean install` 通过；cart-app `mvn8 test` 546 项 531 过，15 失败为基线既有（ExpandSubjectConfigSubBuilderTest 9 + BCartQuerySubBuilderTest 6，反射 `enabled` 字段缺失，两处类与测试本分支 0 改动）；V2 新测试 35/35 过。
-- **P0 已验证**：V2 预热 StringRedisTemplate 裸 JSON 与老读（GenericJackson @Primary redisTemplate）格式不兼容，JVM 实测反序列化抛 SerializationException；prefix=false 终态下无关联计划 C 端读缓存必炸（PROD/TEST `preheat.cache.enabled` 均 true）。证据与修复方向见 [审查报告](artifacts/20261114-v2-branch-review/README.md)。
 - 老路径抽取保真：基线 59 方法 48 逐字一致，6 改动均为 delegation/新 flag 门控，2 缺失为基线死代码；LEGACY_PURE/FULL 分别对齐基线 5 参/7 参行为。
-- Apollo 现状：PROD 三个 V2 开关均未配置（默认 false，部署安全）；TEST recommend/preheat=false、prefix=true（对比态）。
+- Apollo 现状：PROD 三个 V2 开关均未配置（默认 false，部署安全）；TEST recommend/preheat=false、prefix=true（对比态）。旧开关 `renewal.pure.relation.enabled` 基线与本分支均无代码引用（死配置）。
 - 沿用 11-12 test-eco-8 @68e825e1 运行时验证（7 组主从预热/实时等价、三开关矩阵、计划级 v2 key）；其后 3 个实质提交静态核对为低风险等价改动，HEAD 未重做运行时验证。
 
 ## 2026-11-12 Cart 当前分支业务重跑（有未通过项）

@@ -1,5 +1,14 @@
 # 2026-11-14 V2 分支完整检查与测试验证（W1）
 
+> **⚠️ 2026-11-14 晚更正**：本文「二、问题清单」中的 P0「序列化格式不兼容」结论**已被运行时实证推翻**——
+> `userRenewalRedis`/老 `redisTemplate` 经 Spring 泛型匹配实际都注入 **StringRedisTemplate**（arthas vmtool 实证，
+> 两个类字段均为 `StringRedisTemplate$$EnhancerBySpringCGLIB`），新旧写读同为裸 JSON，格式一致。
+> **真实 P0（同日端到端复现）**：prefix=false 时 V2 把主+从合并纯续写进老 `renewal:preheat:` key，老链路读者
+> （recommend.v2 回退 / BC 入口）读到从计划组合 SKU 等非班级条目时 `RecommendContext:127` 解析班级 **NPE**
+> （TID `cart_gaotu100_com.293.17946524918130952`，code=1 网络异常；A/B/A 验证：老值 code=0 → V2 合并值崩溃 → 老值恢复 code=0）。
+> 下文「序列化探针」实验本身有效（GenericJackson 确实读不了裸 JSON），但该序列化器不在这条链路上——结论不适用。
+> 修复见 `artifacts/20261114-v2-fix/`（老 key 只写主计划纯续 + 判空加固）。
+
 对象：cart `feature-renewal-preheat-v2-20261112` @ `c98c4158`（本地=远端，工作区干净）。
 基线：`af82f18a`（= origin/release 顶端 = origin/master 合并点；线上生产镜像 release-4b40ee27 内容 = clazzset-dedup@e315a655，由 revert 提交 `1f5a9118` 对齐）。
 范围：只读检查 + 本地构建测试，未修改任何业务代码。
