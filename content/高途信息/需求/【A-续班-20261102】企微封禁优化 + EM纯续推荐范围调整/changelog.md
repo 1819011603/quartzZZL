@@ -157,3 +157,4 @@
 ## 2026-11-15
 
 - T-24：需求逐点核对 HEAD 3b49fda6（20 项全一致无 P0）；批量预热全量用户 Job 运行时验证通过（计划 545361759016388608、509 用户、6/6 写入 renewal_role=1、空结果不写非异常）；README 同步 G1（版本隔离机制移除）与 G3（cart pure.relation 死配置）口径；push 904a5f13 触发 AICR 新评审。证据：artifacts/20261115-requirement-check-3b49fda6.md、artifacts/20261115-batch-preheat-verify.md。
+- T-25：造数补验批量路径从计划条目——复用存量 fixture 589037361072007168（1主+4从6用户，role=1+2 产出已实证，全新造数缺关联 save/下单 scenario 故按铁律复用并登记 registry）；preheatByRenewalNumber 批量写老 key 5 条=1主(role=1)+4从(role=2) 含 51 组合条目；回退态老链路读取 code=0（TID 17946794980070108）；开关恢复回读。证据：artifacts/20261115-role2-batch-verify.md。
