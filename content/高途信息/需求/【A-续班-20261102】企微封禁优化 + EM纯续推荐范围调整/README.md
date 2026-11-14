@@ -12,7 +12,7 @@ branches:
   - cart:feature-renewal-preheat-merge-plan-20261110
   - cart:feature-renewal-preheat-small-refactor-20261111
   - cart:feature-renewal-preheat-v2-20261112
-updated: 2026-11-14
+updated: 2026-11-15
 tags: [需求]
 ---
 
@@ -87,13 +87,14 @@ T-18完成：cart **1ebd315d**、product-b/product-c **2593dae78**已推送并�
 - Q1=B：子项1=大班+小班续班服务都做；「企微封禁」属功能缺失、官方接口正常。
 - Q2=A：子项2 采用计划间关联（新建 `renew_master_relation` + 推荐并集 + 下单跨模式放行）。
 - 推荐并集只并纯续（主+从），扩科不变。
-- 单一 Apollo 总开关 `renewal.pure.relation.enabled`（代码默认 true，显式 false 回退；product/cart/order各实例独立配置）。
+- 单一 Apollo 总开关 `renewal.pure.relation.enabled`（代码默认 true，显式 false 回退；product/cart/order各实例独立配置）。**【2026-11-15 更正】cart 侧该 key 的代码引用已随 V2 重做清零成死配置：cart 回退等价承接 = product 不下发 `related_renew_master_numbers` + cart 自身 `renewal.recommend.v2.enabled`/`renewal.preheat.v2.enabled` 双开关；product/order 侧配置不变**。
 - 上限 10、状态【待开始/进行中】；**接口收敛为单个「最终确认」save（全量集合差分）**。
 - EM关联历史兼容：不刷数；企微历史标签另按回溯方案处理。
 
 ## 现在什么情况
 
 - 当前工作单 T 11/13 · R 0/0 · C 2/2：C-2从计划状态变化过滤已修复部署并实测；C-1（1485167）已修复部署且接口层实测通过；T-20/T-21（预热审查修复、纯续全量回归）进行中；T-22/T-23 已完成——V2 分支 P0 修复 + **owner 口径二轮调整**（原 `renewal:preheat:` key 记录主+从合并值、条目 renewalRole 1=主/2=从 区分、新线程池并行化从计划计算，commit `3b49fda6` 部署 test-eco-8 验证 6 项全过，回退态老链路读合并值不回归 NPE、V2 实时提速 ~25-35%），详见 [修复记录](artifacts/20261114-v2-fix/README.md)；当前阶段为“联调中（待QA复测）”，生产配置、QA用例和外部回溯保留为上线前置。
+- **2026-11-15 需求逐点核对+批量预热补验（T-24）**：HEAD `3b49fda6` 对照 owner 二轮口径与既有规则 20 项全部一致、无 P0（[核对表](artifacts/20261115-requirement-check-3b49fda6.md)）；批量预热全量用户 Job 运行时验证通过（真实非测试计划 545361759016388608、509 用户、有商品用户 6/6 写入 renewal_role=1、空结果不写非异常、开关已恢复，[验证记录](artifacts/20261115-batch-preheat-verify.md)）。4 项非代码缺口：G1 版本隔离机制移除（口径已更新如上，恢复与否待 owner）、G2 老 Job 与 V2 并存覆写原 key（切终态前须停老 `RenewalJobHandler` 调度）、G3 cart 侧 pure.relation 死配置（口径已更新如上）、G4 已由本轮补验关闭。
 - 本轮TEST采样与保留对象/恢复结论见verify；前端不改、不新部署，不把默认TEST企微结果归给目标feature。
 - 下一步按P0剩余缺口推进；已补受控大班筛选，剩余EM/小班/页面场景按已授权TEST范围执行，不重放build或已付单。
 
@@ -101,7 +102,7 @@ T-18完成：cart **1ebd315d**、product-b/product-c **2593dae78**已推送并�
 
 - 关联单向；只合并主从有效前置课，推荐规则、扩科年级/学年/学期仍按主计划；同年级同商品去重，跨年级保留，纯续优先。
 - 计划管理员或全局邮箱前缀白名单人员、待开始/进行中可改；上限10且配置可调，保存最终全集差分，取消不落库。
-- `renewal.pure.relation.enabled`默认true，product/cart/order实例独立配置；关闭只回单计划，不恢复已写关系/标签/备注。原预热TTL最长26小时保持；关联提交版本或有效从计划集合变化会隔离旧预热，不能继续推荐失效从计划。
+- `renewal.pure.relation.enabled`默认true，product/cart/order实例独立配置；关闭只回单计划，不恢复已写关系/标签/备注。原预热TTL最长26小时保持；~~关联提交版本或有效从计划集合变化会隔离旧预热~~ **【2026-11-15 口径更新】该版本隔离机制已随 cart V2 重做的 revert 基线（1f5a9118）移除，V2（3b49fda6）无对应机制：关联变化后存量合并值靠 TTL≤26h 自然过期，窗口内回退态/无关联读路径可能展示失效从计划——已在 `artifacts/20261114-v2-fix/` 声明为取舍；如需恢复隔离须 owner 决策（可选项：关联版本号写入缓存值）**。
 - 企微历史圈班按`min(begin_time)≥2026-01-01`，不是创建时间；生产回溯、DDL/GAIA/ES字段及上线配置仍需独立交付证据，不从TEST推断生产就绪。
 - **「微信备注」`wechatRemark` 不得登记进 `ees_data.student_field_config`（2026-11-06 更正）**：它是 ES 原生字段（`ads_small_clazz_user.wechatRemark`），登记进 field_config 会被 `GaiaEsMappingService#getNeedFromEsFields` 当作 ODS 字段从 ES fetch 中剔除又无人补值 → 续班服务页「微信备注」恒空。已删除 `continuationService`/`microContinuationService` 的该行，与默认花名册 `smallClazzRoster` 口径一致；test 已回读 `/roster/small/renewal/page` 返回备注值。详见 [tasks T-16](tasks.md) 与 [知识库口径](~/githubDir/quartzZZL/content/高途信息/知识库/cronus/microClazzRoster/continuationService.md)。
 - 测试样本已付/已消费有时间顺序；复跑先核当前资格，不重放同单支付、整批build或未选对象。

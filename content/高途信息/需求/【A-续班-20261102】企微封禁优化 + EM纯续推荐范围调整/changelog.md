@@ -153,3 +153,7 @@
   - `f5abee98`(11-04) 小班预热对齐大班合并从计划，引入 `RenewalDataService.mergeRelatedPreCourseResults`——**直接改本地缓存原对象导致全局缓存污染**（后续请求把从计划课程当主计划自身课程、扩科范围被带偏）。
   - `a34016fd`(11-05) 修复：返回请求副本、隔离主计划缓存。
   - `ee34a807`(11-10) 改为「主、从计划各自推荐后合并」，`mergeRelatedPreCourseNumbers` 删除。
+
+## 2026-11-15
+
+- T-24：需求逐点核对 HEAD 3b49fda6（20 项全一致无 P0）；批量预热全量用户 Job 运行时验证通过（计划 545361759016388608、509 用户、6/6 写入 renewal_role=1、空结果不写非异常）；README 同步 G1（版本隔离机制移除）与 G3（cart pure.relation 死配置）口径；push 904a5f13 触发 AICR 新评审。证据：artifacts/20261115-requirement-check-3b49fda6.md、artifacts/20261115-batch-preheat-verify.md。
