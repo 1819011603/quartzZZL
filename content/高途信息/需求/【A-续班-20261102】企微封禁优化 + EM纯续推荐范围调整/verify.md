@@ -1,3 +1,10 @@
+## 2026-11-14 V2 二轮调整验证（owner 口径：原 key 主+从合并 + renewalRole + 并行化，test-eco-8 @3b49fda6）
+
+- **背景**：owner 纠正设计口径——原 `renewal:preheat:` key 就要记录主+从完整合并信息（v2: 前缀仅测试），47d445da 的拆 key 方案撤回；另要求评估并行化。commit `3b49fda6`：合并值恢复写入原 key（条目 `renewalRole` 1=主/2=从）、resolveRelated 恢复无条件、新线程池 `renewalRelatedPlanExecutor` 并行化 relatedDetails 与 computeMergedPure（顺序保持）。
+- **验证全过**：①prefix=false 预热老 key 5 条合并 role=1主+4从（TID 17946706331600008）；②**回退态老链路读合并值 code=0**（51 条目判空跳过，对照 c98c4158 同场景 NPE；TID 17946706444010009）；③V2 实时并行结果与串行完全等价（6 条），耗时 1.06-1.21s vs 串行基线 1.5-1.7s（基线 @47d445da 同日实测）；④BC 售卖过滤保持（J 计划 fromC=1 过滤 saleStatus=50）；⑤prefix=true 写 v2: key 5 条（TID 17946707868170009）；⑥三开关恢复（release 20261114234007）。本地 554 项 539 过（15 失败=基线既有）+ V2/判空 43 项全过。
+- 已知口径：回退态同 SKU 纯续+扩科并存=老链路既有去重口径；关联变更后存量合并值 ≤TTL 过期窗口（既有）；并行子线程日志无 TID（与既有并行写法一致）。
+- 详情：[修复记录二轮调整节](artifacts/20261114-v2-fix/README.md)。
+
 ## 2026-11-14 V2 修复部署验证（T-22，test-eco-8 @47d445da）
 
 - **部署**：pipeline 1345000（模板1）构建成功，新 pod `cart-gaotu100-com-78849dd749-s7vqp`（10.218.238.212）Eureka UP，commit=47d445da 与本地/远端一致。

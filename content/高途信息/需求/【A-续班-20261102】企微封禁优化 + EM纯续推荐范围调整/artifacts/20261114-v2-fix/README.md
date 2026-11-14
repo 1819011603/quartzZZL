@@ -51,3 +51,34 @@
 本地：全模块 `mvn8 clean install` 通过；cart-app 554 项 539 过（15 失败=基线既有 ExpandSubjectConfigSubBuilderTest/BCartQuerySubBuilderTest，与本批无关）；V2 更新+新增测试 43 项全过（RenewalV2PureRenewalServiceTest 15、RenewalV2ServiceTest 10、RenewalV2ResultMergerTest 13、RecommendContextNullGuardTest 5）。
 
 **未覆盖**：计划级批量预热未跑通全量用户（样本计划 is_test_data=1 被 Job 过滤；单用户级同写入链路已运行时验证，Job 编排逻辑 11-12 已验且本轮未改）；prod 未动（三开关 PROD 未配置默认 false）；冲突校验/换课失效路径本轮未改未重验。
+
+## 二轮调整（同日 23 时，owner 纠正后）：原 key 恢复主+从合并值 + renewalRole 标记 + 从计划并行化
+
+owner 设计口径更正：原 `renewal:preheat:` key 就是要记录主+从完整合并信息（"没有什么老 key，v2 只是用来测试"），上一提交 47d445da 的「老 key 只写主计划纯续」拆 key 方案撤回。commit `3b49fda6`（7 文件，+170/−84）：
+
+| # | 改动 | 说明 |
+|---|---|---|
+| 1 | ClazzDetailDTO 新增 `renewalRole`（1=主计划纯续，2=从计划纯续；snake: renewal_role） | owner 指定的区分方式；老值无字段反序列化为 null 兼容 |
+| 2 | preheat 恢复无条件写主+从合并值（老 key 与 v2: key 内容相同，仅前缀区分）；role 按 MergedPure.mainPreCourseNumbers 标记 | 原 key=完整记录；v2:=测试对比；空结果删 key 保留 |
+| 3 | resolveRelated/冲突校验恢复无条件执行（prefix 不再影响） | 合并值需要关联信息 |
+| 4 | 新线程池 `renewalRelatedPlanExecutor`（8-16 线程，SynchronousQueue+CallerRuns，与 C 端详情池隔离） | owner 建议「加一个线程池并行化」；①实时 relatedDetails 各从计划并行（按提交顺序 join，结果与串行一致）；②预热 computeMergedPure 主/从逐计划并行 |
+| 5 | 单测更新+新增（合并写入 role 标记/双前缀/空删 key/并行合并顺序保持），43 项全过；全量 554 项 539 过（15 失败=基线既有） | |
+
+### 运行时验证（test-eco-8 @3b49fda6，pod cart-gaotu100-com-7b989f97d-7nw7q）
+
+| # | 验证项 | 结果 | 证据 |
+|---|---|---|---|
+| 1 | prefix=false 预热老 key | 5 条合并，renewal_role=1主+4从（含 51 组合 role=2） | /preheat 响应 + 日志 TID `cart_gaotu100_com.290.17946706331600008` |
+| 2 | **回退态老链路读合并值（P0 不回归）** | code=0，从计划 51 条目判空跳过、普通班条目展示（对照 c98c4158 同场景 code=1 NPE） | TID `cart_gaotu100_com.288.17946706444010009` |
+| 3 | V2 实时并行化 | 结果 6 条与串行完全等价；耗时 1.06-1.21s vs 串行基线 1.5-1.7s（**降 ~25-35%**；基线首测冷缓存 4.4s）；B 端 1.03-1.29s vs 1.29-1.36s | 响应存档 c-para.json（基线测量见上一节后补充） |
+| 4 | BC 售卖过滤回归 | J 计划 fromC=0 → 2 条；fromC=1 → 1 条（saleStatus=50 过滤）保持 | b2-0/b2-1.json |
+| 5 | prefix=true | v2: key 5 条 role 标记 | 日志 TID `cart_gaotu100_com.293.17946707868170009` |
+| 6 | 开关恢复 | 三开关恢复验证前值（release 20261114234007），恢复态 C code=0 | final 查询 |
+
+已知口径（如实）：回退态展示中同 SKU 纯续+扩科可并存（老链路按 productId+configuredGrade 去重的既有口径，应急态，非本轮引入）；关联配置变更后存量合并值有 ≤TTL 过期窗口（V2 设计既有，靠「变更后重跑预热」兜底）；并行子线程日志无请求 TID（与项目既有并行写法一致）。
+
+**并行化基线（串行 @47d445da，同日测得）**：C 端关联 4 从 1.5-1.7s（冷 4.4s）、B 端 1.29-1.36s。
+
+### 拆 key 方案的当初动机（回答 owner「为什么要这么改」）
+
+当时判断依据：终态（recommend.v2=true）下没有任何代码路径会消费合并值（V2 实时有关联时跳预热读），且已复现回退态老链路消费合并值 NPE——为了让老 key 在所有开关组合下语义绝对安全，选择了「老 key 只写主计划纯续」的最小改动。错在没有先与 owner 对齐「原 key 记录主+从」这个设计意图就改了存储语义，属于该问没问。本轮按设计意图恢复合并写入，NPE 风险由判空加固（已落地）承接，并行化顺带消掉合并计算的串行开销。

@@ -43,6 +43,7 @@
 | T-21 | 主从续班计划「纯续」全量回归 | 进行中 | test-eco-7 Cart IP 直连已完成两组 C/B 查询与单用户预热：联报入口23+组合条目51通过；大班主从覆盖纯续2/6004，预热后C端展示两类，B端fromC=0实时正常；计划级job已触发但日志无逐用户计数。真实商品条目23、全类型混排、计划级逐用户写入回读及开关/历史缓存仍缺。data-agent联报造数因源课程必填属性缺失失败，未新增数据。`RenewalServiceSmallMergedCacheTest` 本轮10/10通过，相关47项此前通过；cart-app全量另有15项既有测试setup失败。详见[方案](回归测试方案-主从续班计划纯续.md)与[验证](verify.md)。 |
 
 | T-22 | V2 分支（feature-renewal-preheat-v2-20261112）P0 修复 + 部署验证 | 已完成 | 真实根因（11-14 复现）＝prefix=false 时 V2 把合并纯续写老 key，老链路读从计划组合 SKU 条目解析班级 NPE（TID cart_gaotu100_com.293.17946524918130952）。owner 授权修复 commit `47d445da`：老 key 只写主计划纯续/合并值仅 v2: 前缀/空结果删 key/B-BC fromBCart 透传/删冗余 forceBuy 双取/preheatByRenewal 按开关路由/RecommendContext+processClazz 判空加固。本地 554 项（15 失败=基线既有）+ 新测试 43 项全过；test-eco-8 @47d445da 运行时验证 7 项全过（改前复现/老 key 主计划纯续写入+老链路命中 code=0/v2: 前缀 5 条/V2 实时 6 条与矩阵一致/BC 售卖过滤/端点路由/开关恢复），见 [修复记录](artifacts/20261114-v2-fix/README.md)。未覆盖：计划级批量全量用户（样本 is_test_data 被 Job 过滤）。 |
+| T-23 | V2 二轮调整：原 key 主+从合并 + renewalRole + 并行化 | 已完成 | owner 纠正设计口径（原 renewal:preheat: key 记录主+从完整信息，v2: 仅测试）后撤回 47d445da 拆 key 方案。commit `3b49fda6`：合并值恢复写原 key（ClazzDetailDTO 新增 renewalRole 1=主/2=从，老值 null 兼容）、resolveRelated 恢复无条件、新线程池 renewalRelatedPlanExecutor 并行 relatedDetails/computeMergedPure（顺序保持、CallerRuns 兜底）。test-eco-8 运行时验证 6 项全过：预热老 key 5 条 role=1主+4从；**回退态老链路读合并值 code=0（P0 不回归，对照 c98c4158 NPE）**；V2 实时并行结果等价、耗时 1.5-1.7s→1.06-1.21s；BC 过滤保持；v2: 前缀写入；开关恢复。见 [修复记录](artifacts/20261114-v2-fix/README.md)。 |
 
 ### 外部依赖与保留边界
 

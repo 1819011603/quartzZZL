@@ -1,5 +1,6 @@
 # 决策摘要
 
+- 2026-11-14（晚）**owner 口径二轮调整（T-23）**：原 renewal:preheat: key 设计意图=记录主+从完整合并信息（v2: 前缀仅测试），撤回 47d445da 拆 key 方案；commit 3b49fda6 恢复合并写入并以条目 renewalRole（1=主/2=从，老值 null 兼容）区分来源，回退态 NPE 由判空加固承接（运行时已验不回归）；另按 owner 建议新增 renewalRelatedPlanExecutor 并行化从计划计算（实时结果等价、C 端耗时 1.5-1.7s→1.06-1.21s）。
 - 2026-11-14 **V2 分支（feature-renewal-preheat-v2-20261112）审查结论（当晚更正版）**：上午记的「StringRedisTemplate 写值与老 GenericJackson 读格式不兼容」**被运行时实证推翻**（两个 Redis 字段实际都注入 StringRedisTemplate，格式一致）；真实 P0＝prefix=false 时 V2 把合并纯续写进老 `renewal:preheat:` key，老链路读到从计划组合 SKU 条目解析班级 NPE（TID cart_gaotu100_com.293.17946524918130952 已复现）。owner 授权修复后定为：**老 key 只写主计划纯续（终态合并值无读者）、合并值仅写 v2: 前缀、空结果删 key、B/BC fromBCart 透传、/preheatByRenewal 按开关路由、RecommendContext/processClazz 判空加固**（commit 47d445da）。AICR 15 项甄别：2 项已由分支提交修复，其余多为生产行为本身。详见 [审查报告](artifacts/20261114-v2-branch-review/README.md) 与 [修复记录](artifacts/20261114-v2-fix/README.md)。
 
 ## 2026-11-09 上线方案
