@@ -4855,8 +4855,17 @@
    "name": "企微侧边栏 AI途途（登录身份与写跟进链路）",
    "repo": "未核实(壳FE未收录;内容页=cronus StudentProfile)",
    "pageFile": "企微侧边栏/侧边栏登录身份与写跟进链路.md",
-   "note": "登录cookie优先+redis标记兜底；写跟进创建人取登录态；机器人转号后webview会话残留会显示原归属人(2026-11-16)",
+   "note": "登录cookie优先+redis标记兜底；写跟进创建人取登录态；机器人转号后webview会话残留会显示原归属人(2026-11-16)；邮箱配置核实用getCorpUserInfo实时接口",
    "pageApis": [
+    {
+     "trigger": "排查-查企微成员实时邮箱",
+     "method": "GET",
+     "frontPath": "https://link.gaotu100.com/linkup/wk/auth/getCorpUserInfo?userIds=<userId>&corpId=<corpId>",
+     "frontFile": "linkup link-wk-adapter WkAuthClientImpl#getCorpUserInfoByUserIds",
+     "service": "linkup.gaotu100.com",
+     "backendPath": "/wk/auth/getCorpUserInfo",
+     "name": "企微成员实时信息(userIds可多个);排查邮箱配置首选,DB镜像wk_member_corp_info可能陈旧勿信"
+    },
     {
      "trigger": "侧边栏登录-身份解析",
      "method": "GET",
