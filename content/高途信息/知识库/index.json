@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-02",
+ "updated": "2026-11-16",
  "note": "机读索引：页面/tab → 接口。字段 frontPath=前端 request 路径，backendPath=后端 Controller 路径，service=青舟 appId。",
  "repos": {
   "epic": "http://git.baijia.com/gaotu-fe/gaotu-btech-fe/epic",
@@ -4849,6 +4849,76 @@
      "note": "入参 id；路径不带 Test；由在线前端构建确认"
     }
    ]
+  },
+  {
+   "route": "企微侧边栏(AI途途,企微客户端webview内嵌,非独立路由)",
+   "name": "企微侧边栏 AI途途（登录身份与写跟进链路）",
+   "repo": "未核实(壳FE未收录;内容页=cronus StudentProfile)",
+   "pageFile": "企微侧边栏/侧边栏登录身份与写跟进链路.md",
+   "note": "登录cookie优先+redis标记兜底；写跟进创建人取登录态；机器人转号后webview会话残留会显示原归属人(2026-11-16)",
+   "pageApis": [
+    {
+     "trigger": "侧边栏登录-身份解析",
+     "method": "GET",
+     "frontPath": "/crmApp/scrm/wk/auth/account",
+     "frontFile": "壳FE未收录",
+     "service": "crm-app-service.gaotu100.com",
+     "backendPath": "/crmApp/scrm/wk/auth/account",
+     "name": "企业微信权限/account",
+     "id": "32112"
+    },
+    {
+     "trigger": "侧边栏登录-jsApiTicket",
+     "method": "GET",
+     "frontPath": "/crmApp/scrm/wk/auth/ticket",
+     "frontFile": "壳FE未收录",
+     "service": "crm-app-service.gaotu100.com",
+     "backendPath": "/crmApp/scrm/wk/auth/ticket",
+     "name": "企业微信权限/ticket",
+     "id": "32113"
+    },
+    {
+     "trigger": "写跟进-保存",
+     "method": "POST",
+     "frontPath": "/component/student-center/ols/w/studentArchives/addFollow",
+     "frontFile": "cronus/src/pages/StudentProfile/components/FollowUpFillIn/index.jsx",
+     "service": "student-center",
+     "backendPath": "/ols/w/studentArchives/addFollow",
+     "name": "PC端添加跟进",
+     "id": "30631"
+    },
+    {
+     "trigger": "跟进流-查询",
+     "method": "POST",
+     "frontPath": "/component/student-center/ols/w/studentArchives/followRecord",
+     "frontFile": "cronus/src/pages/StudentProfile/services/followupInfo.js",
+     "service": "student-center",
+     "backendPath": "/ols/w/studentArchives/followRecord",
+     "name": "PC端跟进记录",
+     "id": "30623"
+    },
+    {
+     "trigger": "动态学生信息-读",
+     "method": "GET",
+     "frontPath": "/crmApp/mcrm/studentMdm/getDynamicWkStudentInfo",
+     "frontFile": "壳FE未收录",
+     "service": "crm-app-service.gaotu100.com",
+     "backendPath": "/crmApp/mcrm/studentMdm/getDynamicWkStudentInfo",
+     "name": "学生档案相关",
+     "id": "31809"
+    },
+    {
+     "trigger": "动态学生信息-写",
+     "method": "POST",
+     "frontPath": "/crmApp/mcrm/studentMdm/updateDynamicWkStudentInfo",
+     "frontFile": "壳FE未收录",
+     "service": "crm-app-service.gaotu100.com",
+     "backendPath": "/crmApp/mcrm/studentMdm/updateDynamicWkStudentInfo",
+     "name": "学生档案相关",
+     "id": "31810"
+    }
+   ],
+   "tabs": []
   }
  ]
 }

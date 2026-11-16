@@ -59,6 +59,7 @@
 | `/gps/app-operation/clazzManageNew/list` | GPS 班级管理 | gps-operation | — |
 | `/gps/app-operation/arrangeResult` | GPS 排课结果 | gps-operation | — |
 | `/gps/app-finance/mainManagement` | GPS 企业主体管理 | ecommerce-fe-finance | — |
+| 企微侧边栏（AI途途，企微客户端 webview 内嵌，非独立路由） | [登录身份与写跟进链路](企微侧边栏/侧边栏登录身份与写跟进链路.md) | 未核实（壳FE；内容页=cronus StudentProfile） | — |
 
 ## 数据平台（非页面条目）
 
