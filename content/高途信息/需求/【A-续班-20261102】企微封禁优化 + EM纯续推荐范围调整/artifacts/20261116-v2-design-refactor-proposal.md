@@ -91,11 +91,19 @@ public interface ProductTypeHandler {
 
 ---
 
-## 五、实施记录（2026-11-16 深夜·方案一 owner 已批，代码完成未提交）
+## 五、实施记录（2026-11-16 深夜·方案一 owner 已批）
 
-**状态：代码+单测完成、全绿；未 commit（待端到端+compare 回归+部署后按规范提交）。**
+**状态：✅ 已实施、已部署、等价性验证完毕（commit `636e67d0`，test-eco-8 部署，2026-11-16 23:00 前后闭环）。**
 
-### 已改（工作区，基于 HEAD 1a8ec96e）
+### 闭环验证（部署 `636e67d0` 新 pod t5nc4 = 10.218.249.53）
+- **端到端（部署前后 + 与原基线三方一致）**：
+  - 实时 `getPurePlanDetail(7704848531,"590843035351398400",false,true,null)` → 23 条目/activity=565844673592092672/before=after=590853244278898688/五年级——与原 TID 17948380350700006、部署前复采（旧 pod TID 17948400391750050）、部署后新 pod 逐字段一致。
+  - 预热 `preheat(userId, mainConfig, related)` → 合并值 `{590853244278898688: 23条目, renewal_role=2}`——与原 TID 17948381795630008 逐字段一致。
+- **compare 31 样本回归零破坏**：规则一 no_related **21/21 一致**；规则二 related **7/10**（3 个不一致=同批纯从学员预期差异 uid 7704850493/7704850494/7714163148，plan 589037361072007168，预热只处理主计划学员）；**与上一轮（1a8ec96e 部署后 compare_diff_20261116_221417）rule1/rule2 逐条签名比对完全相同**。本轮产物：`scripts/compare_baseline_20261116_224941.json` / `compare_v2_20261116_225012.json` / `compare_diff_20261116_225022.json`。
+- **Apollo**：验证期间临时开 recommend.v2=true（release 20261116225001），验毕恢复 false（release 20261116225053）；三开关回读全 false。
+- 单测：定向 5 类 79/79 全绿；全量 563、15 失败=既有基线（无新增失败）。
+
+### 已改（commit `636e67d0`，基于 HEAD 1a8ec96e）
 - 新增 `small/handler/` 包：`ProductTypeHandler`（接口）+ `ProductTypeHandlerRegistry`（@Component，List 注入建 Map，get/getOrDefaultClazz）+ 三实现 `ClazzProductHandler`(6004)/`CombineProductHandler`(51)/`ActivityProductHandler`(23)——各实现逻辑从原 if-else 分支**逐字等价迁移**（含 23 的 1a8ec96e 口径与 51/6004 原口径）。
 - `SmallRenewalCoreService`：构造器 +registry 参数（5 参）；`buildCandidates` 改策略路由（未知类型/null registry→空候选，等价原未命中）；2 参测试构造器内建真实 registry。
 - `WhiteListMatchPlugin`：构造器注入 registry；`validateWhitelistProducts` 改 `getOrDefaultClazz(productType)` 路由（类型缺失/未知默认按班级校验=原 else 兜底语义）。
@@ -105,9 +113,9 @@ public interface ProductTypeHandler {
 ### 验证进度
 - ✅ 定向 5 类 79/79 全绿（含 23 候选/白名单/51 回归/路由真实行为）。
 - ✅ 全量 563、15 失败=既有基线（无新增失败）——**等价性代码层达成**。
-- ⬜ 未做：23 端到端（实时 TID 对照 17948380350700006 / 预热对照 17948381795630008，同参数复采应一致）+ compare 31 样本回归 + 部署 test-eco-8 + Apollo 恢复回读 + commit/push。
+- ✅ 端到端 + compare 31 样本 + 部署 test-eco-8 + Apollo 恢复回读（见上方"闭环验证"）——**全部完成**。
 
-### 接手指令（下轮最短路径）
+### 接手指令（已全部执行完毕，留作流程存档）
 1. 端到端复采：pod 直连（当前最新 pod 需重新 qingzhou 查或沿用部署后新 IP）桥调 getPurePlanDetail(7704848531,"590843035351398400",false,true,null) 期待与 17948380350700006 相同（23 条目+before=590853244278898688）；preheat 同参数（camelCase！内层 configs 也 camelCase）期待与 17948381795630008 相同（role=2）。
 2. compare 31 样本（scripts/renewal_cart_compare.py --phase baseline/--phase v2/--diff，prefix 须 false）。
 3. commit（refactor(renewal): 方案一——推荐层商品类型策略收编…）→ push → qingzhou 部署 test-eco-8（service_code=gaotu_cart）→ 部署后 pod 复跑①②确认线上等价 → Apollo 恢复回读。
