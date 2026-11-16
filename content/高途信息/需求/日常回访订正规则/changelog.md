@@ -13,7 +13,8 @@ tags: [需求, 决策]
 - **修复**：`ClazzHourInfo` 补 `frozenHour` + ACL 映射；`calculateUserTotalAvailableHourBySubclazz` 公式改 `totalHour−costHour−frozenHour`（null 按 0）。commit `04962a82a`（分支 `feature-daily-visit-frozen-hour`，base origin/release，已 push；AICR PASS 0 findings）。**日常回访与日常家长会共用该方法，口径同步修正**（冻结=退款不可用，两任务语义一致，未单独隔离；如产品要求家长会保留旧口径需再拆）。
 - **验证**（test-eco-3 空泳道，pod `student-data-7c66bd848-np5dk` commit=04962a82 eureka UP）：单测 3/3；ACL 桥同参数对比——冻结学员 7658131754（40/20/20）旧代码(test 主泳道)=20.0 → 新代码=**0.0**（traceId `9f3f255b-922d-474f-95c9-4daebd824cce.0.3`）；无冻结学员 1439232（10/1/0）新代码=**9.0** 原行为保留（traceId `f3137e7c-75ee-46c0-a097-fe960b19b6fa.0.3`）。
 - **跟踪表**：任务表新增 tab `261116-daily-visit-frozen-hour` 已写入并回读。
-- **待 owner 决策**：①合并 release/生产上线 ②存量约 222 条错误任务删除 or 等 11/25 过期。
+- **MR 已建（owner 授权「建好mr 补充到表格里面」）**：!1840（feature-daily-visit-frozen-hour → release，链接已补进跟踪表 D2；建 MR 前先合 origin/release → `af043acff`，单测 3/3 复测通过）。**只建未合并**。
+- **待 owner 决策**：①合并 MR !1840 / 生产上线 ②存量约 222 条错误任务删除 or 等 11/25 过期。
 
 ## 2026-11-16｜线上缺陷定性：老链路剩余课时漏减退款冻结课时（frozen_hour），真实剩余=0 仍批量生成
 
