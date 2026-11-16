@@ -7,6 +7,7 @@ GPS（一对一）首call任务：为什么没生成 / 查不到，容器日常�
 | 症状（用户会怎么说） | 去哪 |
 |---|---|
 | 1v1首call任务没生成 / 在 EES「一对一任务」里查不到 / 核对某学员没有任务 | [`1v1首call任务没生成或查不到.md`](排查/1v1首call任务没生成或查不到.md) |
+| 学员课时上完/退了还生成日常回访任务（剩余课时多算） | [`学员课时上完了还生成日常回访任务.md`](排查/学员课时上完了还生成日常回访任务.md) |
 | 某张业务表在大数据/天工没有，怎么同步、找谁 | [`天工没有业务表怎么同步.md`](排查/天工没有业务表怎么同步.md) |
 
 ## 案例
@@ -15,9 +16,11 @@ GPS（一对一）首call任务：为什么没生成 / 查不到，容器日常�
 |---|---|---|
 | 2026-10-23 | [容器进事件字段取错致1v1首call漏建（含大数据缺表同步）](案例/2026-10-23-容器进事件字段取错致1v1首call漏建.md) | 已解决 |
 | 2026-10-26 | [一对一日常回访待发布改动存在误完成与漏建风险](案例/2026-10-26-一对一日常回访待发布改动存在误完成与漏建风险.md) | 已解决 |
+| 2026-11-16 | [日常回访对退款冻结课时多算仍批量生成](案例/2026-11-16-日常回访对退款冻结课时多算仍批量生成.md) | 排查中 |
 
 ## 关键事实速查
 
-- 落库表：`gaotu.first_call_task_1v1`，维度 = (`sub_teach_product_number`, `user_id`)。
+- 落库表：新链路 `gaotu.first_call_task_1v1`（维度 = `sub_teach_product_number`, `user_id`）；老链路 `gaotu.first_call_task`（ruleType=3 日常回访）。
+- 课时口径：老链路用 `course_center.clazz_hour` 的 `total_hour − cost_hour`，**退款课时冻结在 frozen_hour 不回减 total_hour**；真实剩余 = `total−cost−frozen`（= course-center `availableHour`）。
 - 任务列表索引：ES `task_platform_main_task`（1v1 文档有 `subTeachProductNumber`）；读 `isdel=false`。
 - 大数据 ODS：`data_lake_ods.ods_gaotu_first_call_task_1v1_rt`（Iceberg 外表）。

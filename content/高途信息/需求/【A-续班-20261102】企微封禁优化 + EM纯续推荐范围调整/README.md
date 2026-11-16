@@ -12,7 +12,7 @@ branches:
   - cart:feature-renewal-preheat-merge-plan-20261110
   - cart:feature-renewal-preheat-small-refactor-20261111
   - cart:feature-renewal-preheat-v2-20261112
-updated: 2026-11-15
+updated: 2026-11-16
 tags: [需求]
 ---
 
@@ -97,6 +97,7 @@ T-18完成：cart **1ebd315d**、product-b/product-c **2593dae78**已推送并�
 - **2026-11-15 需求逐点核对+批量预热补验（T-24）**：HEAD `3b49fda6` 对照 owner 二轮口径与既有规则 20 项全部一致、无 P0（[核对表](artifacts/20261115-requirement-check-3b49fda6.md)）；批量预热全量用户 Job 运行时验证通过（真实非测试计划 545361759016388608、509 用户、有商品用户 6/6 写入 renewal_role=1、空结果不写非异常、开关已恢复，[验证记录](artifacts/20261115-batch-preheat-verify.md)）。4 项非代码缺口：G1 版本隔离机制移除（口径已更新如上，恢复与否待 owner）、G2 老 Job 与 V2 并存覆写原 key（切终态前须停老 `RenewalJobHandler` 调度）、G3 cart 侧 pure.relation 死配置（口径已更新如上）、G4 已由本轮补验关闭。
 - **2026-11-15 造数补验（T-25，回应「用造数项目验全」）**：复用存量 fixture `589037361072007168`（1主+4从、6 已付用户，role=1+2 产出能力上轮已实证；全新造数缺关联 save/购课下单 scenario 故按造数铁律优先复用）补齐批量路径从计划证据：`preheatByRenewalNumber` 批量写入老 key **5 条=1主(role=1)+4从(role=2)**（含 51 组合条目完整结构）；回退态老链路 `/web/renewal/cart` 读取 code=0（TID `cart_gaotu100_com.292.17946794980070108`，role=1×1+role=2×3 展示、51 条目判空跳过、null 条目兼容）；纯从计划用户不写 key 符合「只处理主计划学员」设计；开关翻 v2=true/prefix=false→验证→恢复 false/true（release 20261115020519）回读确认，[验证记录](artifacts/20261115-role2-batch-verify.md)、fixture 已登记。
 - **2026-11-15 全新造数端到端（T-26，owner 纠正「主从关联和下单也可以造」——判断正确）**：造数项目关联/下单能力完整（`plan_relation`+`batch_create_order`+`mock_pay`+`create_renewal_regression_clazz`+`process_edit`，上轮只看 HTTP scenario 列表没读仓库文档属查证不足）。全新造：主 590563861447557120+从 590563948968001536（关联 verified）、4 个正经班（sale40/1课节/1老师）、流程节点（**骨架无 process 则 effective=false 预热跳过——新踩坑**）、用户 7704848531 两单 mock 支付 status=2。批量预热老 key=2 条 role=1+role=2；回退态读取 code=0、主/从班正确展示（TID `cart_gaotu100_com.294.17946839875570153`）；开关恢复回读。与 T-25 存量验证结论一致，[验证记录](artifacts/20261115-fresh-seed-role2-verify.md)、fixture plan:590563861447557120 已登记。
+- **2026-11-16 重构+AICR#1668 处置+等价性验证（T-27）**：按 owner 要求（领导不动老代码）`ac6cb1ff` 将 RenewalService 还原为 1f5a9118 版**线上原样**（4468 行；非 af82f18a——后者含已 revert 旧实现），仅保留 processClazz 六处判空（P0 根因修复，去掉则回退态读合并值 NPE 回归）；V2 依赖结构确认符合（开关 false 分支调老类、其余全新类）。AICR #1668 十二项闭环（`38d2d741` 修 7：minGrade 早退回归/小班落穿×2/池隔离/TTL 包装/判空/pom 注释；#42570 误报=arthas 实证+两轮运行时推翻；定性不修 4），**block=0 PASS**。等价性验证 6 项全过（回退态 TID `17947966233040009`、V2 实时 TID `17947967571350010`、B 端主从齐全），开关恢复回读；本地 554/539/15 基线一致。**arthas 曾致 pod JedisConnection 污染挂掉（owner 约束后弃用，验证全走 acl 桥）**，[验证记录](artifacts/20261116-refactor-aicr1668-verify.md)。
 - 本轮TEST采样与保留对象/恢复结论见verify；前端不改、不新部署，不把默认TEST企微结果归给目标feature。
 - 下一步按P0剩余缺口推进；已补受控大班筛选，剩余EM/小班/页面场景按已授权TEST范围执行，不重放build或已付单。
 
