@@ -95,3 +95,28 @@ B. 重试临时换绑（解绑 B4→立即绑 S2→实证→部署验证→还�
 2. preheat 复跑：合并值含联报条目（key=克隆课, role=2）。
 3. compare 31 样本回归（scripts/renewal_cart_compare.py）。
 4. Apollo preheat.v2 恢复回读。
+
+## 追加（2026-11-16 第五轮·改后验证与 F2 最终定性）
+
+### 部署与回归（无破坏 ✓）
+- 新 pod cart-gaotu100-com-f654474cb-rv8wz（10.218.249.209，commit=1848584c）eureka UP。
+- compare 31 样本：规则一 no_related **21/21 一致**；规则二 7/10，3 个差异均为已知「纯从学员」预期差异（与改前轮完全相同，only_in_v2 均为从计划条目）。**修复对既有类型零破坏**。
+- Apollo 三开关恢复默认并回读 false ✓（release 20261116210047）。另修复一处环境偏离：prefix 开关曾被置 true（非本需求操作），已恢复 false。
+
+### F2 最终定性（比评审深三层，重大变化）
+改后 getPurePlanDetail(7704848531, S2) 仍空 + 对照计划同链路有条目（590563861447557120, productType=2, TID 17948339496200008，before/after/老师齐全）→ **类型专属缺失**。代码核实 23(联报)在小班推荐链**四层全缺**：
+| 层 | 位置 | 23 支持 |
+|---|---|---|
+| 候选构建 | SmallRenewalCoreService#buildCandidates:739-755 | ✗ 仅 CLAZZ(2)/COMBINE(51) 分支 |
+| 白名单校验 | WhiteListMatchPlugin#validateWhitelistProducts:142-160 | ✗ 非组合按班校验，联报活动号必无效→降级自动→候选仍空 |
+| 结果组装 | SmallRenewalCoreService#buildRecommendResult:847-851 | ✗ 23 无分支，postClassInfo 恒空 |
+| 展示组装 | RenewalSinglePlanDetailService#processClazzSetResult | **✓ 已修**（commit 1848584c，+13/-2） |
+
+结论：
+1. F2「真问题」成立，但**影响面比评审大**：不是「预热缺联报、实时有」，而是**联报(23)型计划端到端（实时+预热+回退）都不出条目**——前三层缺失使 23 到不了展示层，评审所谓「实时展示正常」不成立（其依据的 11-14 对照是 51 组合，非 23）。
+2. 本轮修复（第四层）**必要但不充分**：无害（单测 4/4+回归 21/21）且是 23 出现的前置条件之一；但要让 23 条目真正出现需补全前三层（估 40-60 行：buildCandidates 加 23 分支读联报活动信息、白名单校验加 23 分支、buildRecommendResult 加 23 分支）——**是否补全交 owner 决策**。
+3. 造数侧已全部就绪（6004 订单/白名单/S2 发布状态/关联解析），补全部署后可直接用 7704848531+S2 验证联报条目出现+role=2+before=前置课。
+
+### 待 owner 决策
+- 方案 A：补全前三层（完整支持 23 小班推荐链，改动集中 SmallRenewalCoreService+WhiteListMatchPlugin，风险中低，四层齐后联报条目可在纯续/预热/回退全链出现）。
+- 方案 B：维持现状（仅第四层修复已合入），23 端到端支持另立需求。
