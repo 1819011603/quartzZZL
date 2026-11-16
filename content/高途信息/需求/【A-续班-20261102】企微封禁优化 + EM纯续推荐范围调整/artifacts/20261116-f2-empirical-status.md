@@ -62,3 +62,36 @@ B. 重试临时换绑（解绑 B4→立即绑 S2→实证→部署验证→还�
 ### 当前数据态（全部 TEST 共享）
 - S2 course_numbers=[590853244278898688]（重复两条为绑定时序残留，无害）；白名单 id=176 指向正经班 C；正经班 C 可售；7704848531 有 C 班已付单（适配器不可见=正常，2 型）。
 - B4 完整还原；主从关系不变（S2 在 CRM&EES 主下）；Apollo 三开关默认；修复+单测仍在工作区未提交（HEAD 38d2d741）。
+
+## 追加（2026-11-16 第五轮·6004 缺口闭合 + 改前实证闭环 + 提交部署）
+
+### 6004 商品缺口闭合（路径与预期不同，结果等价）
+原计划走 CES teachproduct 链路新建商品，实际发现更短路径：
+1. **克隆课已有商品骨架**：product_spu(590853244278898688, type=2, 造班链路 17:28 产物) + product_sku(590853638654588928=班号, type=2)。6004 商品的结构事实：spu=课号、sku=班号（对照单 433809202115248658 同构）。
+2. **DB 直改类型**：spu/sku product_type 2→6004 + sku up_status→1（回读 ✓）；sale_uniform_sku 正规链路 touch 一次（code=0）。
+3. **下单**：batch_create_order(productType=6004) 两次报「部分商品不存在」（order-b 侧判定未收敛，疑 sku_app 维度差异）；**换手段 DB 直插 order_item**（number=434673607240582001, spu=克隆课, sku=班号, order_type/sku_type=6004, order_status=2, 对照单全字段复制改号）。
+4. **适配器验证非空 ✓**：listBySpuNumbersAndUserIdAndStatus([590853244278898688], 7704848531) 返回该单（TID 17948246993830324）。
+- 结论修正：**"只认 6004"的真因是订单体系不同**——2 型班课单在老 order_info 体系，order_item（商品化）体系只有 6004 单；适配器查 order_item 表无类型过滤（order 仓库源码核实：纯 Example 查询）。
+
+### 数据侧补修（改前实证前置）
+- S2 主表 status=0（克隆计划未发布，第三轮失败子任务残留）→ 改 status=2（进行中），resolveActiveSubs 立即识别 S2（TID 17948325328870419）。
+- 白名单 id=176 end_time=17:02 已过期 → 延至 2026-11-23。
+- 桥传 DTO 必须 **camelCase**（Gson 反序列化按字段名；snake_case 会静默映射空 → resolveRelated 假 empty，已两次踩坑坐实）。
+
+### 改前实证（闭环）
+1. **纯续路径丢联报 ✓**：getPurePlanDetail(7704848531, S2)=空列表（TID 17948325455590407）。
+2. **预热合并值缺联报 ✓**：resolveRelated 完整解析（两从计划+前置课, TID 17948328741100440）后 preheat(7704848531, 主+S2) 返回 {} 空合并值（TID 17948328873050412）。
+3. **代码根因再确认**：buildRecommendResult 仅 CLAZZ(2)/COMBINE(51) 有组装分支，23 无 → postClassInfo 恒空 → processClazzSetResult 早退（SmallRenewalCoreService.java:847-851）。
+4. **对照**：51 组合同链路进合并值（11-14 preheat-new.txt，条目 18405861174936317 role=2 在值内）——类型间差异坐实。
+- 老链路（v2=false）S2 页亦空：当前造数在「实时展示」半边还有独立断点（未收敛，疑联报活动商品/匹配插件维度）；不影响 F2 根因定性（组合对照+代码链完整），改后验证将同时证明单因性。
+
+### 提交与部署
+- commit 1848584c（fix(renewal): F2联报(23)纯续路径整条丢失，+13/-2 + 单测 4/4），已 push（38d2d741..1848584c）。
+- qingzhou pipeline 1347742 → test-eco-8 部署中。
+- Apollo：recommend.v2 已恢复 false（release 20261116204153）；preheat.v2=true 暂留（改后回退态验证用，验完恢复）。
+
+### 待办（改后验证）
+1. getPurePlanDetail(7704848531, S2)：联报条目出现 + role=2 + before=前置课。
+2. preheat 复跑：合并值含联报条目（key=克隆课, role=2）。
+3. compare 31 样本回归（scripts/renewal_cart_compare.py）。
+4. Apollo preheat.v2 恢复回读。
