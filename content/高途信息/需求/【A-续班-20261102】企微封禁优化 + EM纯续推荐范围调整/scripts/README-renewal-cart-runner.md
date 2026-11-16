@@ -51,8 +51,8 @@ python3 renewal_cart_runner.py --pod 10.x.x.x --fail-on-error
 
 - 全部样本 HTTP 200、`status=0` 且 `code=0`、`data.gradeClazzList` 结构完整；`groups=0`（空购物车）计成功属业务合法。
 - renewalRole 分布（脚本已统计，暂不断言）：
-  - 回退态（recommend.v2=false）+ 预热过老 key 的样本：应出现 `role=1`（主纯续）与 `role=2`（从纯续）条目；`null` 为老条目/实时扩科加购，属预期。
-  - V2 实时（recommend.v2=true）有关联计划：主从纯续条目均应出现（role 1/2），null 条目=扩科/加购。
+  - 回退态（recommend.v2=false）+ 预热过老 key 的样本：缓存值条目带 `role=1`（主纯续）/`role=2`（从纯续）；`null` 为读时新增的扩科/加购条目，属预期。
+  - **V2 实时（recommend.v2=true）不标 role**（`RenewalV2ResultMerger` 无 renewalRole 逻辑，role 仅预热写缓存时标记，符合「原 key 记录主+从信息」设计）：纯续条目 `recommendType=1`+`role=null`，扩科=2/加购=3；有关联计划时主从纯续条目均会出现（靠 sku 集合判断，不靠 role）。
 - RT：上线前以同数据固定并发跑一轮基线存档 `summary_*.json`，回归时对比 p99 偏移（阈值自定，建议 >50% 关注）。
 
 ## 5. 评审结论（入库副本已做的低风险改动）
@@ -71,24 +71,30 @@ python3 renewal_cart_runner.py --pod 10.x.x.x --fail-on-error
 - 多 pod 轮询（`--pod ip1,ip2`）：避免单 pod 热点；单 pod 并发上限与多 pod 收益**未实测**，压测时建议从低并发（5-10 线程）逐步加压观察错误率。
 - `--timeout` 默认 30s 偏宽松，压测可显式 `--timeout 10`。
 
-## 6. 实时 vs 预热对比逻辑：脚本当前没有，步骤级补法
+## 6. 实时 vs 预热对比逻辑：已固化为 `renewal_cart_compare.py`
 
-脚本现只做单接口断言，无「V2 实时结果 vs 预热缓存读取结果」对比。人工/半自动流程（同一 `(user, plan)`，如 7704848531 + 590563861447557120）：
+对比不再手工做，用同目录固化脚本（采集+比对，不翻 Apollo 只经桥检测提示）：
 
-1. **预热写老 key**：Apollo 设 `preheat.v2.enabled=true`、`prefix.enabled=false`、发布；acl 桥 `POST http://{pod}:28688/test/acl/compare/service`，body：
-   ```json
-   {"serviceNameAndMethodName":"com.gaotu.renewal.RenewalV2Service#preheatByRenewalNumber","params":["590563861447557120"]}
-   ```
-   （大数一律传**字符串**防精度截断；单用户用 `#preheat("7704848531","590563861447557120")`）
-2. **回退态读缓存**：Apollo 设 `recommend.v2.enabled=false` → 等发布生效 → `GET /web/renewal/cart?appointUserId=7704848531&renewalNumber=590563861447557120` → 存 `R_cache`（此响应来自老 key `renewal:preheat:{plan}:{user}`）
-3. **V2 实时**：Apollo 设 `recommend.v2.enabled=true` → 同参数再调 → 存 `R_realtime`（V2 强制跳过预热读、全量实时计算）
-4. **diff**：从两个响应的 `gradeClazzList[].clazzDetailDTOList[]` 抽条目（键 `productSkuNumber`）：
-   - 纯续子集等价性：`R_realtime` 中 `renewalRole∈{1,2}` 条目集合 vs `R_cache` 中 `renewalRole∈{1,2}` 条目集合 → 输出「只在实时有 / 只在缓存有」差异清单
-   - role 分布对比：两边 1/2 计数应一致
-   - 口径注意：V2 实时=主计划完整体验（纯续+扩科+加购）+从计划合并，缓存=纯续合并，**整体集合不等价是预期**，只对比纯续子集；null 条目只统计数量
-5. **恢复开关并回读确认**（对比期间 `prefix=false` 占老 key 是必要代价，跑完恢复原值）
+```bash
+cd scripts/
+# ① 预热（Apollo 设 preheat.v2=true + prefix=false 并发布 → 桥预热有关联计划 → 恢复两开关）
+#    大数一律传字符串：RenewalV2Service#preheatByRenewalNumber params ["590563861447557120"]；单用户 #preheat ["uid","plan"]
+# ② baseline 采集（recommend.v2=false，脚本先桥检开关，不符即中止）
+python3 renewal_cart_compare.py --phase baseline --pod 10.218.238.179 --traffic-env test-eco-8
+# ③ v2 采集（Apollo 开 recommend.v2=true 并发布后）
+python3 renewal_cart_compare.py --phase v2 --pod 10.218.238.179 --traffic-env test-eco-8
+# ④ 比对（退出码 1=存在不一致）
+python3 renewal_cart_compare.py --diff compare_baseline_*.json compare_v2_*.json
+# ⑤ 恢复 recommend.v2=false 并发布，桥回读 isRecommendV2Enabled/isPreheatV2Enabled
+```
 
-判定：纯续子集无差异 + role 分布一致 → 预热与实时等价；有差异 → 按 `productSkuNumber` 差异清单排查（优先查主从去重/51 组合条目判空跳过逻辑）。
+判定口径（owner 2026-11-16）：
+- **规则一 no_related（无关联计划样本）**：与基线保持一致 —— `productSkuNumber` 多重集完全一致（fixture 21 行）。
+- **规则二 related（有关联计划样本）**：验证实时与预热一致 —— 纯续子集（`recommendType∈{null,1}`）按 sku 多重集比对（实时不标 role，role 只在基线侧做覆盖检查：合并值应同时含 role=1 与 role=2）。
+- 已知设计内差异（不算失败，diff 输出会标 note）：
+  - **纯从学员**：预热只处理 A 计划学员（`preheatByRenewalNumber` 只遍历 A 自己的学员），纯从学员 baseline 空、V2 实时有 role=2 条目 → 预期差异。
+  - **从计划组合条目（productType 23/51）**：预热值与实时都含该条目（实时=预热一致），但**回退态老链路展示层** `RenewalService#processClazz:1914-1917` 按判空加固跳过组合条目（组合 sku 非班级号查不到 ClazzDTO）→ 回退态展示不含从计划组合推荐，为 2026-11-14 已定取舍（判空加固承接，见 changelog T-23）。
+  - 回退态缓存读路径会在读时附加扩科/加购且不与缓存纯续去重（可能与纯续同 sku 双条），V2 实时会去重（纯续大于扩科）——回退态展示口径，非预热值差异。
 
 ## 7. 已验证 / 未验证
 
@@ -103,3 +109,14 @@ python3 renewal_cart_runner.py --pod 10.x.x.x --fail-on-error
   role 分布 role=1×1 / role=2×1 / null×9（含老缓存条目）；QPS 3.4（3 线程冷启动，仅功能性验证非压测结论）
 - 首轮发现的归类问题已修：code=0 且 data 无 gradeClazzList 从 data_missing 改为 success_empty（业务空）
 - 未做：高并发压测（单 pod 承载上限未实测，建议 5-10 线程起步观察）；实时 vs 预热对比按第 4 节步骤执行
+
+## 8. 实时 vs 预热双规则对比实验记录（2026-11-16）
+
+- 环境：TEST test-eco-8，pod 10.218.238.179:28688（cart @38d2d741），fixture 31 行（no_related 21 / related 10）
+- 流程：Apollo 翻 `preheat.v2=true`+`prefix=false`（release 20261116145727）→ 桥预热 3 个有关联计划（590563861447557120 / 589037361072007168 / 580120868989048832）→ 恢复（release 20261116145817，桥回读 false）→ baseline 采集（recommend.v2=false）→ 开 recommend.v2=true（release 20261116150023）→ v2 采集 → 恢复（release 20261116150822/150957，桥回读全 false）
+- 产物：`compare_baseline_20261116_145925.json`（首轮）/ `compare_baseline_20261116_151010.json`（单用户重预热后复采）/ `compare_v2_20261116_150037.json` / `compare_diff_20261116_150207.json`、`compare_diff_20261116_151221.json`
+- **结果：规则一 21/21 一致**（含 8 非空样本 sku 全等 + 13 空对空）；**规则二 6/10 一致，4 差异全部定性**：
+  - 3× 纯从学员（7704850493/7704850494/7714163148）：预期差异（预热只处理 A 计划学员）。
+  - 1× 7704848531+589037361072007168：仅差从计划 51 组合条目 `589762111522013184`（小班组合计划 589721954597011456）。**定向复现证实实时=预热一致**：单用户 `#preheat` 重预热返回 5 条含该组合（role=2，TID cart_gaotu100_com.287.17948129236470191），实时亦 5 条；差异来自**回退态老链路展示层 `processClazz` 判空跳过组合条目**（2026-11-14 已定取舍）。
+- 结论：无关联计划与基线一致 ✓；有关联计划实时与预热一致 ✓（组合条目回退态不展示为已知取舍，非预热值缺失）。
+- 遗留观察（推断未验证，非本次实测发现）：批量预热若从计划解析/单用户计算瞬时失败会静默写部分合并值（`loadRelatedConfigs` 跳过查询失败的从计划、`resolveActiveSubs` 异常返回空，均无重试/告警），留 ≤TTL 26h；与 G1（关联版本号入缓存值）同族，读侧版本指纹可一并兜底，待 owner 决策。

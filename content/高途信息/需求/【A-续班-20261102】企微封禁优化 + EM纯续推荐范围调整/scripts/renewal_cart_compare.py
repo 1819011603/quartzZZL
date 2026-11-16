@@ -76,14 +76,21 @@ def bridge_call(pod, name_method, timeout=15):
 
 
 def extract_bridge_bool(payload):
-    for key in ("result", "data", "value"):
-        val = payload.get(key) if isinstance(payload, dict) else None
-        if isinstance(val, bool):
-            return val
-        if isinstance(val, dict):
-            for sub in ("result", "value", "data"):
-                if isinstance(val.get(sub), bool):
-                    return val[sub]
+    if not isinstance(payload, dict):
+        return None
+    for key in ("result", "value"):
+        if isinstance(payload.get(key), bool):
+            return payload[key]
+    data = payload.get("data")
+    if isinstance(data, bool):
+        return data
+    if isinstance(data, dict):
+        for sub in ("result", "value"):
+            if isinstance(data.get(sub), bool):
+                return data[sub]
+        for val in data.values():
+            if isinstance(val, bool):
+                return val
     return None
 
 
@@ -237,21 +244,26 @@ def diff(args):
         else:
             bp = [e for e in b_entries if is_pure(e)]
             vp = [e for e in v_entries if is_pure(e)]
-            bc = collections.Counter((e["sku"], str(e["role"])) for e in bp)
-            vc = collections.Counter((e["sku"], str(e["role"])) for e in vp)
+            # 实时展示条目不带 renewalRole(只有预热写缓存才标), 纯续等价性按 sku 多重集比对;
+            # role 仅在基线侧做覆盖检查(合并值应同时含 role=1 主纯续与 role=2 从纯续)
+            bc = collections.Counter(e["sku"] for e in bp)
+            vc = collections.Counter(e["sku"] for e in vp)
             only_b, only_v = bc - vc, vc - bc
             verdict = "一致" if not only_b and not only_v else "不一致"
             note = ""
             if verdict == "一致":
                 r2_pass += 1
-            elif not bp and vp and all(e["role"] == 2 for e in vp):
-                note = "预期差异候选: baseline纯续为空且v2纯续全为role=2(纯从学员, 预热只处理A计划学员)"
+            elif not bp and vp:
+                note = "预期差异候选: baseline纯续为空且v2非空(纯从学员, 预热只处理A计划学员)"
+            b_roles = collections.Counter(str(e["role"]) for e in bp)
+            role_ok = "1" in b_roles and "2" in b_roles
             report["rule2"].append({
-                "uid": uid, "plan": plan, "verdict": verdict, "note": note,
-                "base_pure": {f"{k[0]}|role={k[1]}": n for k, n in bc.items()},
-                "v2_pure": {f"{k[0]}|role={k[1]}": n for k, n in vc.items()},
-                "only_in_baseline": {f"{k[0]}|role={k[1]}": n for k, n in only_b.items()},
-                "only_in_v2": {f"{k[0]}|role={k[1]}": n for k, n in only_v.items()},
+                "uid": uid, "plan": plan, "verdict": verdict,
+                "note": note + ("" if role_ok or not bp else "; 基线role覆盖异常: 应同时含role=1与role=2"),
+                "base_pure": {f"{k}": n for k, n in bc.items()},
+                "v2_pure": {f"{k}": n for k, n in vc.items()},
+                "only_in_baseline": dict(only_b), "only_in_v2": dict(only_v),
+                "base_pure_role_dist": dict(b_roles),
                 "base_role_dist": dict(collections.Counter(str(e["role"]) for e in b_entries)),
                 "v2_role_dist": dict(collections.Counter(str(e["role"]) for e in v_entries))})
 
@@ -290,6 +302,7 @@ if __name__ == "__main__":
     args = ap.parse_args()
 
     if args.diff:
+        args.baseline, args.v2file = args.diff
         diff(args)
     elif args.phase and args.pod:
         rows = load_fixture(args.file)
