@@ -14,7 +14,9 @@ tags: [需求, 决策]
 - **验证**（test-eco-3 空泳道，pod `student-data-7c66bd848-np5dk` commit=04962a82 eureka UP）：单测 3/3；ACL 桥同参数对比——冻结学员 7658131754（40/20/20）旧代码(test 主泳道)=20.0 → 新代码=**0.0**（traceId `9f3f255b-922d-474f-95c9-4daebd824cce.0.3`）；无冻结学员 1439232（10/1/0）新代码=**9.0** 原行为保留（traceId `f3137e7c-75ee-46c0-a097-fe960b19b6fa.0.3`）。
 - **跟踪表**：任务表新增 tab `261116-daily-visit-frozen-hour` 已写入并回读。
 - **MR 已建（owner 授权「建好mr 补充到表格里面」）**：!1840（feature-daily-visit-frozen-hour → release，链接已补进跟踪表 D2；建 MR 前先合 origin/release → `af043acff`，单测 3/3 复测通过）。**只建未合并**。
-- **待 owner 决策**：①合并 MR !1840 / 生产上线 ②存量约 222 条错误任务删除 or 等 11/25 过期。
+- **已合入 feature-tiered-homework-compat（owner 授权「合并到 feature-tiered-homework-compat 需要一起带上线」，2026-11-16）**：merge 提交 `5a7fbcf17`（无冲突，两分支 base 同为 dba33bdc7），合并结果单测 3/3，已 push（远端 sha 一致）；**上线随该分支自己的发布节奏**，不单独触发。MR !1840 保持 open，是否关闭/调整待 owner 决策。
+- **该分支泳道重部署+验证（owner 授权，2026-11-16）**：定位其部署泳道 **test-eco-5**（原 pod 在旧提交 d55b7e4a）→ pipeline `1346361` 重发合并后代码，新 pod `student-data-f4b79dbdb-bffj8` eureka UP commit=`5a7fbcf1`。验证（owner 收窄口径：只验冻结修复自身）：冻结学员 7658131754（40/20/20）=**0.0**（traceId `eea54609-…`）；无冻结学员 1439232（10/1/0）=**9.0** 不变（traceId `57f80ae2-…`）。结构性核对：合并 diff 严格等于修复 4 文件（+114/-1），未触碰该分支自有代码（该分支自有 Homework 测试按 owner 指示未测；跑动时 facade 模块有其自有测试失败，非本次合并引入，合并未触碰 facade）。
+- **待 owner 决策**：①合并 MR !1840 / 生产上线（当前口径=随 feature-tiered-homework-compat 上线，!1840 处置待定）②存量约 222 条错误任务删除 or 等 11/25 过期。
 
 ## 2026-11-16｜线上缺陷定性：老链路剩余课时漏减退款冻结课时（frozen_hour），真实剩余=0 仍批量生成
 

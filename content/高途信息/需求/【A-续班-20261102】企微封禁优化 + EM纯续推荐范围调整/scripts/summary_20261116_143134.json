@@ -1,0 +1,53 @@
+{
+  "config": {
+    "url": "http://10.218.238.179:28688/web/renewal/cart",
+    "file": "cart_test_fixture.txt",
+    "rows": 7,
+    "threads": 3,
+    "mode": "限次 7",
+    "started_at": "2026-11-16 14:31:31"
+  },
+  "duration_s": 2.071,
+  "total": 7,
+  "success": 4,
+  "failed": 3,
+  "success_rate_pct": 57.14,
+  "qps": 3.38,
+  "empty_cart": 0,
+  "renewal_role_dist": {
+    "main(1)": 1,
+    "slave(2)": 1,
+    "null(老条目/实时扩科加购)": 9
+  },
+  "latency_ms": {
+    "avg": 495.86,
+    "p50": 416.78,
+    "p90": 1034.3,
+    "p95": 1049.32,
+    "p99": 1061.33,
+    "max": 1064.33
+  },
+  "categories": {
+    "data_missing": 3
+  },
+  "top_messages": [
+    {
+      "category": "data_missing",
+      "message": "缺少 data.gradeClazzList",
+      "count": 3
+    }
+  ],
+  "status_dist": {
+    "0": 7
+  },
+  "plan_stats": {
+    "589037361072007168": {
+      "total": 6,
+      "failed": 3
+    },
+    "590563861447557120": {
+      "total": 1,
+      "failed": 0
+    }
+  }
+}
