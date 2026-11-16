@@ -120,3 +120,49 @@ B. 重试临时换绑（解绑 B4→立即绑 S2→实证→部署验证→还�
 ### 待 owner 决策
 - 方案 A：补全前三层（完整支持 23 小班推荐链，改动集中 SmallRenewalCoreService+WhiteListMatchPlugin，风险中低，四层齐后联报条目可在纯续/预热/回退全链出现）。
 - 方案 B：维持现状（仅第四层修复已合入），23 端到端支持另立需求。
+
+## 追加（2026-11-16 晚·联报链路查证：老代码有没有？——回答 owner 三问）
+
+### 口径澄清
+此前「四层全缺」= **小班课推荐链路**（V2 纯续/预热与线上小班新版 SmallRenewalCoreService 是同一条；S2 是 type=2 小班计划）。不含大班链路。
+
+### 事实表（链路 × 联报 23 支持，代码证据）
+
+| 链路 | 23 支持 | 关键证据 |
+|---|---|---|
+| **大班老链路**（RenewalService，type=1 计划） | **✓ 完整端到端** | 候选+白名单：1551-1577（productType=23 分支、recommend_map_type=2 白名单取联报活动号、handleWhitelistClazzSet/handleClazzSet）；联报回填：1633-1652（按白名单或班级交集回填 activityNumber）；详情填充：processClazzSet:1719+（ClazzSetVO/子班/教师/年级）；扩科加购兼容：748/811-870 convertClazzSetResultToDTO；联报库存缓存：218。git：0a54c0f6(2025-07-02)即存在，1d2de255(2026-05-29)扩科加购兼容，f3f22d55(2026-06-30)白名单联报新模板 |
+| **小班老逻辑**（SmallRenewalService 旧版 1108 行） | **✗ 从无** | coreHandle:219-410 只处理组合(51)映射（Apollo renewal.smallClazz.map 计划→组合 sku）；412「过滤重复联报」/834 勾选组装是组合时代兼容口径，非 23 活动链路 |
+| **小班新链**（SmallRenewalCoreService，2026-04-01 重构） | **✗ 从无** | ProductType 枚举创建即仅 CLAZZ(6004)/COMBINE(51)；buildCandidates:739 / WhiteListMatchPlugin.validate:142 / buildRecommendResult:847 三处均无 23 分支 |
+| **V2 纯续/预热**（经小班新链） | ✗ 同上（展示组装层已修 1848584c，必要不充分） | processClazzSetResult 修复只能承接「已产出的 23 结果」，候选层仍断 |
+
+### 大班链已购判定（type=1 路线可行性依据）
+- 大班按课号：`listByCourseNumbersAndUserIdAndStatus`（RenewalService:1358/1413/2014，查老 order_info 体系）——**用户 7704848531 的 2 型班课单（434673607240581138，已支付）在此体系可见**（与 11-15 配方可见同理）。
+- 联报已购：`listActivityNumberOrderInfo`（按活动号，:531/1114）；按班：`ListByClazzNumbersAndUserIds`（:536/1124）。
+
+### 定性
+1. 联报缺失**不是 V2 遗漏**：小班课链路（旧版→重构版→V2）**从来无 23 能力**；联报 23 的既定归属一直是**大班链路**（2025-07 起）。
+2. S2=「type=2(小班)+productType=23(联报)」的组合配置在小班链**从来不被支持**——该配置下四层缺失是历史现状，非本次回归。
+3. 评审 F2 定性需修正：在 V2 场景下「联报从计划条目」要出现，前提是从计划走**有联报能力的链路**。
+
+### 三个可选方案（待 owner 定）
+- **A. 小班链补 23**（候选/白名单/结果组装三层，估 40-60 行）：可完整借鉴大班 1551-1660 口径（白名单活动号/班级交集回填）+已合入的展示层；改动集中小班新链。
+- **B. 维持现状另立需求**：已合入的展示层修复无害保留。
+- **C.（新发现，可能零代码）S2 改 type=1 走大班链**：大班链联报完整+已购判定查老体系（2 型单可见）+白名单同款 recommend_map_type=2 支持；V2 侧 type=1 从计划走 getSinglePlanDetailInternal 大班分支（278 行 Objects.equals(2,type) 不满足）→ 大班联报逻辑生效。**若「小班计划+联报」本身是非标配置（业务上联报计划应配 type=1），C 是正解**；一条 DB UPDATE 即可实证。需产品确认：联报计划（productType=23）的业务形态应配 type=1（大班）还是 type=2（小班）？
+
+## 追加（2026-11-16 深夜·方案A实施：小班链补 23 推荐）
+
+### Owner 决策
+『方案a』——小班链补联报(23)完整支持（大班链不动，V2 依赖结构不变）。
+
+### 改动（commit 1a8ec96e，5 文件 +175/-1）
+- `ProductType`：+ACTIVITY(23, 联报活动)
+- `ProductKey`：+ofActivity 工厂
+- `SmallRenewalCoreService#buildCandidates`：+23 分支——候选=计划配置 productNumberList 活动号（与 51 从配置取同构）；可售性由展示层 ClazzSetVO 查询兜底
+- `WhiteListMatchPlugin#validateWhitelistProducts`：+23 分支——活动号须在计划配置内（与大班 recommend_map_type=2 口径一致），未配置降级自动推荐
+- `buildRecommendResult` 不改（23 的 courseNumber=前置课已由通用逻辑设置，展示层 1848584c 降级组装承接）
+- 兼容性核实：Stock/SaleSubject 插件对 map 缺失候选宽容通过（23 天然通过）；PurchasedMatch 对 23 不命中即保留原候选；排序插件 supports 均 false→原序（白名单 interrupt 场景无排序需求）；isSingleClazz 不含 23→走 processClazzSetResult ✓
+
+### 验证
+- 单测 ActivityProductRecommendTest 5/5（候选构建/缺配置空/白名单命中中断/未配置降级/51 回归）
+- 全量 563=基线 558+5，15 失败均为既有（ExpandSubject 等）
+- 部署：pipeline 1347804 → test-eco-8
