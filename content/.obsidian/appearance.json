@@ -4,5 +4,6 @@
   "theme": "obsidian",
   "textFontFamily": "",
   "monospaceFontFamily": "",
-  "cssTheme": "Obsidianite"
+  "cssTheme": "Obsidianite",
+  "showRibbon": true
 }
