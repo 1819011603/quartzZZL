@@ -3,6 +3,7 @@
 > 数据全部为 TEST 环境真实 ID，取自造数台账与覆盖报告，未编造。
 > 每个场景给出「续班计划号 / 学员ID / 班级或课程 / 验证功能 / 操作步骤 / 预期结果」，最后一列留空供你填。
 > 环境：TEST，泳道 `test-eco-8`。前端入口路径一般形如 `/web/renewal/cart?renewalNumber=<计划号>&userId=<学员>`（B 端可能不同，按你习惯的入口点即可）。
+> 飞书文档：https://gaotuedu.feishu.cn/docx/EaKXdTkzXoJTStxBJH3cX7Qinzh（docx token `EaKXdTkzXoJTStxBJH3cX7Qinzh`，由 `lark-cli docs +create` 以 user 身份创建，revision 3，回读校验 15 场景完整）
 
 ---
 
