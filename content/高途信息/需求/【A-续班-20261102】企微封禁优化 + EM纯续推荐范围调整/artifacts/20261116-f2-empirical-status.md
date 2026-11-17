@@ -331,3 +331,15 @@ owner 最终要求『整合到图里，画一个图：整个推荐逻辑，老�
 - 想看到加购单班：换一条与纯续不同（年级,学科）的加购班（如五年级数学），或给计划配扩科配置并开 allowDuplicate；
 - 想看到组合：把两个组合 SKU 上架（sale_status=40/can_be_sold=true）；
 - 想验证 V2 完整链路（主+从合并+加购）：traffic-env=test-eco-8 + recommend.v2=true 再测（当前两开关为 owner 双关状态）。
+
+## 追加（2026-11-17 第十一轮 · test 默认泳道基线重部署=线上 11-07 版本，对照结论修正）
+
+**owner 授权**：『那test泳道 发下现在线上的代码的泳道 重新部署到test 基线』+『应该是 11-07那个』。
+
+**版本核实（已验证）**：生产 SLS 日志——今日 16:50 全量实例镜像 `acr.baijia.com/uqun/cart-gaotu100-com:release-4b40ee27-20261107115215`（11-07 11:52 构建）；11-10 曾为 release-873a767c（后被替换=印证「cart 回滚」背景）。4b40ee27 = `Merge branch 'feature-renewal-clazzset-dedup' into 'release'`（release 分支合并提交，git 已核实）。与 owner 锚点（11-07）一致，无多版本歧义。
+
+**执行与验证（已验证）**：`qingzhou_redeploy` 直接发布已有镜像（不重跑构建）至 **test 默认泳道**（envInfoId=2，非 test-eco-8）——dry_run 预览→正式发布 code 200→`poll_pods --expected-commit 4b40ee27`：新 pod `cart-gaotu100-com-79ff5bd76-7mgsp`（10.255.166.130）branch=release commit=4b40ee27 **Running+eureka UP**（4 轮就绪）。自验同参数请求（appointUserId=7746793736/计划 591020372877623296/includeBCart=true/sellerId=8645）：HTTP 200 code=0，1 条联报纯续 recType=1，无加购。
+
+**对照结论修正（重要）**：新基线（线上 4b40ee27）在 default 泳道 = **1 条联报纯续、无加购**，与 test-eco-8（5f0df948 老链 v2=false）**完全一致**——此前 owner 观察的「default 泳道不一致（3 条 vs 1 条）」系 default 泳道原跑 af82f18a（11-11 中间态，老链含 EM 逻辑）所致的假差异；**基线刷新后两泳道行为一致，加购三条丢失的根因结论不变**（①加购单班与纯续联报同为五年级语文被 (grade,subject) 去重规则删除；②两条组合商品主 SKU sale_status=1 未上架被展示过滤——均非代码 bug，处置建议见第十轮）。
+
+**约束遵守**：Apollo 全程零改动（当前 recommend.v2=false/preheat.v2=false/timeout=10 为 owner 本人 17:39 双关后的状态）；test-eco-8 未动；老链路代码零改动；无在途部署残留。
