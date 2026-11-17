@@ -213,3 +213,29 @@ B. 重试临时换绑（解绑 B4→立即绑 S2→实证→部署验证→还�
 - **验证（已验证）**：全量 563/15 失败=既有基线（ExpandSubjectConfigSubBuilder 11 + BCartQuerySubBuilder 4，XML 逐用例核对无新增）；test-eco-8 新 pod qkhft @2ce425b2 实时 getPurePlanDetail + 预热 preheat 与 636e67d0 基线 **JSON 程序化比对一致**（qkhft_puredetail.json / qkhft_preheat.json）。
 - **统一方案（未实施）**：`artifacts/20261117-unified-product-type-parsing-proposal.md` ——策略族+共用组件（否掉纯模板方法），共用层=类型通用解析一处（ProductTypeHandler 升格），差异层=班型特有留各自链路；膨胀券理想 1 处（现状约 5 处两套）；大班桥接分两步、②启动前需 owner 认可，老链当前零改动。
 - **分支现状**：大小班商品解析仍是两条独立分支（大班内联 if-else 约 3 处 + 小班 handler 策略 + 展示组装约 2 处），加膨胀券现状需改约 5 处——统一方案待 owner 拍板后收敛为 1+N。
+
+## 追加（2026-11-17 第二轮 · 统一方案实施与 owner 口径调整）
+
+**最终落地的改动（全部在新类侧，RenewalService 零改动）：**
+- `2ce425b2`：小班链路抽方法（getSmallClassRenewalDetail）——已部署验证（实时/预热与基线 JSON 程序化一致、563/15 基线）。
+- `510509aa`：统一方案第一步——ProductTypeHandler 移包 small/handler → product/handler（11 文件纯 import 级改动，563/15 基线）。
+
+**大班桥接第二步：已实施中途被 owner 叫停还原。** 过程：策略接口+23 实现+generic+registry 已写、coreHandle 四处替换+删三个 handle* 方法完成，编译修到一半时 owner 明确『RenewalService不改 还原』+『我说改动说的都是新类』——立即 checkout 还原 RenewalService、删除四个大班策略类；`git diff 2ce425b2 -- RenewalService.java` 零差异确认；从未 commit 无需 revert。
+
+**移包态部署验证（test-eco-8 ztqrt @510509aa）**：实时 getPurePlanDetail + 预热 preheat 与基线程序化一致（ztqrt_puredetail/ztqrt_preheat.json）；compare 31 样本 21/21+7/10 与 636e67d0 轮逐条签名一致（compare_diff_20261117_113641.json）；Apollo 三开关验证后恢复全 false（release 20261117113710）。
+
+**配图文档（新建独立 wiki）**：`续班推荐规则总览与商品类型解析结构图` https://gaotuedu.feishu.cn/wiki/M5m0wXOJzi9jLPkKy9bc5dZpnyg （挂技术方案节点下）——推荐规则总览（业务节点、B/C 差异标注、去重①②规则标注）+ 商品类型解析改动前后对比（改动高亮仅新类侧、膨胀券一处接入示例）；两个画板节点关键词全量命中核验通过；技术方案文档「六（三）推荐引擎」已加指向链接。
+
+**遗留**：大班桥接（若未来重启）设计已验证可行的形态=大班散点(候选正查/勾选附加校验/回填/去重键四段)策略化+状态打包，但受"只动新类"口径约束不再推进；膨胀券接入=共用层加一个策略实现（小班侧一处）。
+
+## 追加（2026-11-17 第三轮 · 配图文档按 owner 五点反馈重排）
+
+配图文档（M5m0wXOJzi9jLPkKy9bc5dZpnyg）v2 重排完成：六章结构=①开关分发与两链对照图（V2新链/老链泳道并行、共用与独有环节分色）②V2新链详图（纯续六步/扩科三步业务规则、B/C规则直接写节点、类型解析在主链路）③老链路详图（大班老链10环节完整展开含联报正查/回填/去重、小班老链插件链、回退态缓存读）④配置字段说明表10行（扩科排除/主从关联/productType/白名单模板/强购/allowDuplicate/renewalRole/三Apollo开关：含义+在哪配+影响）⑤类型解析前后对比图 ⑥去重与B/C速查表。四画板 whiteboard+query 关键词全量命中核验通过；正文章节与字段表关键词回读零缺失。
+
+## 追加（2026-11-17 第四轮 · 配图文档 v3 产品可读化）
+
+owner 反馈『计算逻辑 写清楚 规则写清楚 要产品能看懂』+『老链新链图分开 别画一起（放一起那张是对照用）』——v3 重写：①V2 新链、老链路两张独立完整图 ②对照图独立且标题明示"仅用于对照" ③新增「四、计算逻辑与规则逐点说明」七小节（入口端差异/纯续五步/主从合并/扩科+排除/加购/三路去重/老链+回退态），全部业务语言、技术概念带白话解释（Apollo=配置后台开关等） ④字段表白话强化 ⑤对比图保留。回读：正文 18/18 关键词命中（含"取开课时间最早的/先到先占/同学年+同学期/只比科目不比年级/随时可以安全切回"等规则表述）、4 画板关键词全命中。
+
+## 追加（2026-11-17 第五轮 · 最终形态=一张全景主图）
+
+owner 最终要求『整合到图里，画一个图：整个推荐逻辑，老链路、新链路，实时和预热』——文档 v4 重写为**单一全景主图**（画板 KVrPw8OcXhqRb2bCrefcED2en）：图例区（颜色+3张字段速查卡片：productType/白名单/扩科排除/allowDuplicate/主从关联/renewalRole/三开关）→ 入口与B/C端规则 → V2开关分叉 → 新链路（实时计算链8节点含去重①②/扩科排除 + 预热块含主+从合并写缓存≤26h/小班特殊 + 实时缓存关系）→ 老链路（大班/小班子链+老预热单计划+回退态衔接）→ 纯续匹配判定链（已购＞勾选＞白名单＞条件链→取开课最早，规则写在判定节点）→ B/C展示。正文压缩为主图+读图顺序一段。曾因 Mermaid 边语法用 Unicode 箭头+~~~ 不可见连线导致首次渲染失败（partial_success/whiteboard 0），修复后 block_insert_after 成功，28/28 关键词核验全命中。旧分图与长文字章节已随 overwrite 移除。
