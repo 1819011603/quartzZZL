@@ -33,4 +33,9 @@
 - V2组件: getRelatedPlanDetail S2→pt2 ✓ .286.17949018663040032; 小班从→6004 ✓ .292.17949020653270036; getMainPlanDetailSkipPreheat M23→23 ✓ .287.17949020663270037
 - P1: stu4@586116340522184704 未命中 1纯续+4扩科 TID .292.17949019848590033; preheatAndCache 写 key renewal:preheat:586116340522184704:7746791494 TID .284.17949019988990039; 命中(log small preheat cache hit) 1纯续+4扩科一致 TID .291.17949020108120042 ✓
 - 新发现: 小班缓存payload含debug_info日志(PROD renewal.small.builder.debug.enabled=true)
-- 51计划589721954597011456推不出: 组合SKU 589762111522013184 sale_status=1/up0, 子班saleStatus=50 salable=false (存量数据问题)
+- ~~51计划589721954597011456推不出: 组合SKU 589762111522013184 sale_status=1/up0, 子班saleStatus=50 salable=false (存量数据问题)~~
+  **【2026-11-17 已推翻】** 真实入口 `RenewalService#getRenewalDetail`(7704848531, 589721954597011456) **正常返回 1 条 product_type=51**(sku 589762111522013184, grade=11, price=0, all_sign_up=0)，trace `cart_gaotu100_com.289.17949067348720087`。
+  当时推不出是因为缺续班关系(`18405861174936317 → 18405861174936327`)：补关系后即可返回。组合 SKU `sale_status=1`/`can_be_sold=false` **不是阻断项**——`can_be_sold` 是派生字段非持久化列；cart 消费 `canBeSold` 仅 `SmallClazzAgger:59`(单商品)与 `SmallRenewalService:423`(**SPU**, 值 true)，组合 SKU 自身无人消费；`isCombineCanSale` 判 SPU.canBeSold + 组合库存(capacity=-1 不校验)。**无需数据修正，0 次写入。**
+- 关系方向(已核实, 代码依据 `RenewalService.java:3162-3172` 注释「前置获取后置课程」+ `RenewalCourseDTO` 字段语义): `18405861174936317` 是**前置**课程，`18405861174936327` 是**后置**课程。trace `cart_gaotu100_com.285.17949067511850106`。
+- 组合字段只读回读 trace `cart_gaotu100_com.288.17949067043950084`：SKU type=51/sale_status=1/up_status=0/can_be_sold=false/capacity=-1；SPU 589762111519916032 sale_status=40/saleable=0/can_be_sold=**true**；子 SKU 589048589437788160 sale_status=40/up=1/cap=20；子 SKU 587755482459084800 sale_status=40/up=0/cap=32。
+- 完整覆盖报告见 `artifacts/20261117-v2-test-coverage-report.md`。
