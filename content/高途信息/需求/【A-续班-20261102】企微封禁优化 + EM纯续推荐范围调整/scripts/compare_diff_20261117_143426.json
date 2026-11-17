@@ -1,0 +1,478 @@
+{
+ "rule1": [
+  {
+   "uid": "1437263",
+   "plan": "578532432171743232",
+   "verdict": "一致",
+   "base_skus": {
+    "578530911878922240": 1
+   },
+   "v2_skus": {
+    "578530911878922240": 1
+   },
+   "only_in_baseline": {},
+   "only_in_v2": {}
+  },
+  {
+   "uid": "1437264",
+   "plan": "578532432171743232",
+   "verdict": "一致",
+   "base_skus": {
+    "578530911878922240": 1
+   },
+   "v2_skus": {
+    "578530911878922240": 1
+   },
+   "only_in_baseline": {},
+   "only_in_v2": {}
+  },
+  {
+   "uid": "1438225",
+   "plan": "578299529141458944",
+   "verdict": "一致",
+   "base_skus": {},
+   "v2_skus": {},
+   "only_in_baseline": {},
+   "only_in_v2": {}
+  },
+  {
+   "uid": "1438226",
+   "plan": "578299529141458944",
+   "verdict": "一致",
+   "base_skus": {},
+   "v2_skus": {},
+   "only_in_baseline": {},
+   "only_in_v2": {}
+  },
+  {
+   "uid": "1438227",
+   "plan": "578299529141458944",
+   "verdict": "一致",
+   "base_skus": {},
+   "v2_skus": {},
+   "only_in_baseline": {},
+   "only_in_v2": {}
+  },
+  {
+   "uid": "1544386",
+   "plan": "578299529141458944",
+   "verdict": "一致",
+   "base_skus": {},
+   "v2_skus": {},
+   "only_in_baseline": {},
+   "only_in_v2": {}
+  },
+  {
+   "uid": "17331743719598",
+   "plan": "548944373423863808",
+   "verdict": "一致",
+   "base_skus": {},
+   "v2_skus": {},
+   "only_in_baseline": {},
+   "only_in_v2": {}
+  },
+  {
+   "uid": "19758758649346",
+   "plan": "578299529141458944",
+   "verdict": "一致",
+   "base_skus": {},
+   "v2_skus": {},
+   "only_in_baseline": {},
+   "only_in_v2": {}
+  },
+  {
+   "uid": "20001",
+   "plan": "578532432171743232",
+   "verdict": "一致",
+   "base_skus": {
+    "578530911878922240": 1
+   },
+   "v2_skus": {
+    "578530911878922240": 1
+   },
+   "only_in_baseline": {},
+   "only_in_v2": {}
+  },
+  {
+   "uid": "20002",
+   "plan": "578532432171743232",
+   "verdict": "一致",
+   "base_skus": {
+    "578530911878922240": 1
+   },
+   "v2_skus": {
+    "578530911878922240": 1
+   },
+   "only_in_baseline": {},
+   "only_in_v2": {}
+  },
+  {
+   "uid": "20003",
+   "plan": "578532432171743232",
+   "verdict": "一致",
+   "base_skus": {
+    "578530911878922240": 1
+   },
+   "v2_skus": {
+    "578530911878922240": 1
+   },
+   "only_in_baseline": {},
+   "only_in_v2": {}
+  },
+  {
+   "uid": "20004",
+   "plan": "578532432171743232",
+   "verdict": "一致",
+   "base_skus": {
+    "578530911878922240": 1
+   },
+   "v2_skus": {
+    "578530911878922240": 1
+   },
+   "only_in_baseline": {},
+   "only_in_v2": {}
+  },
+  {
+   "uid": "20005",
+   "plan": "578532432171743232",
+   "verdict": "一致",
+   "base_skus": {
+    "578530911878922240": 1
+   },
+   "v2_skus": {
+    "578530911878922240": 1
+   },
+   "only_in_baseline": {},
+   "only_in_v2": {}
+  },
+  {
+   "uid": "20006",
+   "plan": "578532432171743232",
+   "verdict": "一致",
+   "base_skus": {
+    "578530911878922240": 1
+   },
+   "v2_skus": {
+    "578530911878922240": 1
+   },
+   "only_in_baseline": {},
+   "only_in_v2": {}
+  },
+  {
+   "uid": "7053328405",
+   "plan": "548944373423863808",
+   "verdict": "一致",
+   "base_skus": {},
+   "v2_skus": {},
+   "only_in_baseline": {},
+   "only_in_v2": {}
+  },
+  {
+   "uid": "7053328579",
+   "plan": "548944373423863808",
+   "verdict": "一致",
+   "base_skus": {},
+   "v2_skus": {},
+   "only_in_baseline": {},
+   "only_in_v2": {}
+  },
+  {
+   "uid": "7053328841",
+   "plan": "548944373423863808",
+   "verdict": "一致",
+   "base_skus": {},
+   "v2_skus": {},
+   "only_in_baseline": {},
+   "only_in_v2": {}
+  },
+  {
+   "uid": "7053330729",
+   "plan": "548944373423863808",
+   "verdict": "一致",
+   "base_skus": {},
+   "v2_skus": {},
+   "only_in_baseline": {},
+   "only_in_v2": {}
+  },
+  {
+   "uid": "7312777312",
+   "plan": "548944373423863808",
+   "verdict": "一致",
+   "base_skus": {},
+   "v2_skus": {},
+   "only_in_baseline": {},
+   "only_in_v2": {}
+  },
+  {
+   "uid": "7312777313",
+   "plan": "548944373423863808",
+   "verdict": "一致",
+   "base_skus": {},
+   "v2_skus": {},
+   "only_in_baseline": {},
+   "only_in_v2": {}
+  },
+  {
+   "uid": "7313175005",
+   "plan": "548944373423863808",
+   "verdict": "一致",
+   "base_skus": {},
+   "v2_skus": {},
+   "only_in_baseline": {},
+   "only_in_v2": {}
+  }
+ ],
+ "rule2": [
+  {
+   "uid": "20001",
+   "plan": "580120868989048832",
+   "verdict": "一致",
+   "note": "",
+   "base_pure": {},
+   "v2_pure": {},
+   "only_in_baseline": {},
+   "only_in_v2": {},
+   "base_pure_role_dist": {},
+   "base_role_dist": {},
+   "v2_role_dist": {}
+  },
+  {
+   "uid": "20002",
+   "plan": "580120868989048832",
+   "verdict": "一致",
+   "note": "",
+   "base_pure": {},
+   "v2_pure": {},
+   "only_in_baseline": {},
+   "only_in_v2": {},
+   "base_pure_role_dist": {},
+   "base_role_dist": {},
+   "v2_role_dist": {}
+  },
+  {
+   "uid": "20003",
+   "plan": "580120868989048832",
+   "verdict": "一致",
+   "note": "",
+   "base_pure": {},
+   "v2_pure": {},
+   "only_in_baseline": {},
+   "only_in_v2": {},
+   "base_pure_role_dist": {},
+   "base_role_dist": {},
+   "v2_role_dist": {}
+  },
+  {
+   "uid": "7704848531",
+   "plan": "589037361072007168",
+   "verdict": "一致",
+   "note": "",
+   "base_pure": {
+    "589041222587408384": 1,
+    "589041202037415936": 1,
+    "589212918174867456": 1,
+    "589212673443520512": 1
+   },
+   "v2_pure": {
+    "589041202037415936": 1,
+    "589041222587408384": 1,
+    "589212673443520512": 1,
+    "589212918174867456": 1
+   },
+   "only_in_baseline": {},
+   "only_in_v2": {},
+   "base_pure_role_dist": {
+    "2": 3,
+    "1": 1
+   },
+   "base_role_dist": {
+    "2": 3,
+    "1": 1,
+    "None": 2
+   },
+   "v2_role_dist": {
+    "None": 5
+   }
+  },
+  {
+   "uid": "7704848531",
+   "plan": "590563861447557120",
+   "verdict": "一致",
+   "note": "",
+   "base_pure": {
+    "590564278055026688": 1,
+    "590564441871958016": 1
+   },
+   "v2_pure": {
+    "590564278055026688": 1,
+    "590564441871958016": 1
+   },
+   "only_in_baseline": {},
+   "only_in_v2": {},
+   "base_pure_role_dist": {
+    "1": 1,
+    "2": 1
+   },
+   "base_role_dist": {
+    "1": 1,
+    "2": 1
+   },
+   "v2_role_dist": {
+    "None": 2
+   }
+  },
+  {
+   "uid": "7704848533",
+   "plan": "589037361072007168",
+   "verdict": "一致",
+   "note": "; 基线role覆盖异常: 应同时含role=1与role=2",
+   "base_pure": {
+    "589041202037415936": 1
+   },
+   "v2_pure": {
+    "589041202037415936": 1
+   },
+   "only_in_baseline": {},
+   "only_in_v2": {},
+   "base_pure_role_dist": {
+    "1": 1
+   },
+   "base_role_dist": {
+    "1": 1,
+    "None": 2
+   },
+   "v2_role_dist": {
+    "None": 3
+   }
+  },
+  {
+   "uid": "7704850492",
+   "plan": "589037361072007168",
+   "verdict": "一致",
+   "note": "; 基线role覆盖异常: 应同时含role=1与role=2",
+   "base_pure": {
+    "589041202037415936": 1
+   },
+   "v2_pure": {
+    "589041202037415936": 1
+   },
+   "only_in_baseline": {},
+   "only_in_v2": {},
+   "base_pure_role_dist": {
+    "1": 1
+   },
+   "base_role_dist": {
+    "1": 1,
+    "None": 2
+   },
+   "v2_role_dist": {
+    "None": 3
+   }
+  },
+  {
+   "uid": "7704850493",
+   "plan": "589037361072007168",
+   "verdict": "不一致",
+   "note": "预期差异候选: baseline纯续为空且v2非空(纯从学员, 预热只处理A计划学员)",
+   "base_pure": {},
+   "v2_pure": {
+    "589212673443520512": 1,
+    "589212918174867456": 1
+   },
+   "only_in_baseline": {},
+   "only_in_v2": {
+    "589212673443520512": 1,
+    "589212918174867456": 1
+   },
+   "base_pure_role_dist": {},
+   "base_role_dist": {},
+   "v2_role_dist": {
+    "None": 2
+   }
+  },
+  {
+   "uid": "7704850494",
+   "plan": "589037361072007168",
+   "verdict": "不一致",
+   "note": "预期差异候选: baseline纯续为空且v2非空(纯从学员, 预热只处理A计划学员)",
+   "base_pure": {},
+   "v2_pure": {
+    "589212673443520512": 1
+   },
+   "only_in_baseline": {},
+   "only_in_v2": {
+    "589212673443520512": 1
+   },
+   "base_pure_role_dist": {},
+   "base_role_dist": {},
+   "v2_role_dist": {
+    "None": 1
+   }
+  },
+  {
+   "uid": "7714163148",
+   "plan": "589037361072007168",
+   "verdict": "不一致",
+   "note": "预期差异候选: baseline纯续为空且v2非空(纯从学员, 预热只处理A计划学员)",
+   "base_pure": {},
+   "v2_pure": {
+    "589212673443520512": 1
+   },
+   "only_in_baseline": {},
+   "only_in_v2": {
+    "589212673443520512": 1
+   },
+   "base_pure_role_dist": {},
+   "base_role_dist": {},
+   "v2_role_dist": {
+    "None": 1
+   }
+  }
+ ],
+ "meta": {
+  "baseline": "compare_baseline_20261117_143345.json",
+  "v2": "compare_v2_20261117_143426.json",
+  "base_meta": {
+   "phase": "baseline",
+   "pod": "10.218.251.119",
+   "traffic_env": "test-eco-8",
+   "collected_at": "2026-11-17 14:33:45",
+   "switches": {
+    "recommend_v2": false,
+    "recommend_v2_raw": "{\"code\": 0, \"data\": {\"com.gaotu.renewal.RenewalV2Service#isRecommendV2Enabled\": false}, \"msg\": \"\"}",
+    "preheat_v2": false,
+    "preheat_v2_raw": "{\"code\": 0, \"data\": {\"com.gaotu.renewal.RenewalV2Service#isPreheatV2Enabled\": false}, \"msg\": \"\"}"
+   },
+   "fixture": "cart_test_fixture.txt",
+   "total": 31,
+   "ok": 31,
+   "success_empty": 19,
+   "error": 0,
+   "role_dist": {
+    "None": 14,
+    "1": 4,
+    "2": 4
+   }
+  },
+  "v2_meta": {
+   "phase": "v2",
+   "pod": "10.218.251.119",
+   "traffic_env": "test-eco-8",
+   "collected_at": "2026-11-17 14:34:26",
+   "switches": {
+    "recommend_v2": true,
+    "recommend_v2_raw": "{\"code\": 0, \"data\": {\"com.gaotu.renewal.RenewalV2Service#isRecommendV2Enabled\": true}, \"msg\": \"\"}",
+    "preheat_v2": false,
+    "preheat_v2_raw": "{\"code\": 0, \"data\": {\"com.gaotu.renewal.RenewalV2Service#isPreheatV2Enabled\": false}, \"msg\": \"\"}"
+   },
+   "fixture": "cart_test_fixture.txt",
+   "total": 31,
+   "ok": 31,
+   "success_empty": 13,
+   "error": 0,
+   "role_dist": {
+    "None": 25
+   }
+  }
+ }
+}

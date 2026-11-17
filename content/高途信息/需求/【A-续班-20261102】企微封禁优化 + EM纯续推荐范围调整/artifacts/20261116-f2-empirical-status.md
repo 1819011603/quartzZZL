@@ -247,3 +247,11 @@ owner 最终要求『整合到图里，画一个图：整个推荐逻辑，老�
 - **改动（全部 V2 新类，老链零改动）**：新增 `SmallRenewalPreheatCacheService`（写：key `renewal:preheat:计划:学员`/TTL 26h/空删 key/v2 前缀开关，全对齐大班 writePreheat；读+轻量 context 重建）；`SmallRenewalPreheatService#preheatAndCache`（一次 C 端口径计算，填充纯续结果+context 五 map+preClassInfoList+配置，保留原焐热语义）；`RenewalV2Service#preheat` 小班分支接入；`getSmallClassRenewalDetail` C 端（!fromBCart && !skipPreheatRead && !legacyPure && preheat.cache.enabled）先读缓存，命中跳过纯续计算、扩科/加购/合并仍现算（与大班 corePreheatCache 同构），未命中现算兜底。
 - **验证（已验证）**：单测 +6（缓存服务读写/前缀/空删/重建）+2 处适配，全量 569/15=既有基线逐用例一致；test-eco-8 sfw9x @07dd4710：①预热写入——read 回读命中（1 条目 23/sku/before+context 完整）；②C 端命中——getMainPlanDetail 返回与基线一致且日志 `small preheat cache hit, key=renewal:preheat:590843035351398400:7704848531`（TID cart_gaotu100_com.306.17948911836590009）；③未命中兜底（未预热用户 HTTP 200 正常）；④compare 31 样本 21/21+7/10 与基线轮逐条签名一致（大班样本含内=大班链不受影响）；⑤验证毕三开关恢复全 false（release 20261117125536）。
 - **设计说明**：读命中为「缓存快照」语义（26h 内勾选/已购变化不反映）——与大班缓存行为一致；skipPreheatRead（V2 合并从计划提取）/B 端/legacyPure 场景不读不污染。主图小班预热块已更新（"本轮新增·与大班对齐"）。
+
+## 追加（2026-11-17 第七轮 · 从计划失败抛异常 + 并发 10s 超时，owner 纠正）
+
+**commits `583dd267`+`04395c96`（chore：移除误提交截图）已推送部署验证闭环。**
+
+- **改动（全部 V2 新类，老链零改动，撤销 AICR#42572 原定性）**：①`RenewalV2Service#relatedDetails` 删 catch-continue 降级——单从计划异常保留原始原因上抛=整体请求失败；②`resolveActiveSubs` 关联状态查询失败抛 IllegalStateException（不再静默当无关联）；③并行计算 join 改 `get(10s)`（Apollo `renewal.related.plan.timeout.seconds` 可配默认 10）超时上抛；④批量预热批次 allOf 加 `get(600s)` 防卡死（预热尽力而为语义，独立配置 `renewal.preheat.batch.timeout.seconds`）。
+- **验证（已验证）**：单测+3（从计划失败抛出/1s 超时抛出/正常不受影响）+1 改造（should_not_cache_when_related_status_query_fails 按新口径断言抛出），全量 572/15=基线；test-eco-8 k6w24@04395c96 实测——timeout=0 真实触发：`getRenewalDetailForC` 返回 `RuntimeException: renewal-v2 related plan timeout after 0s`（**不再降级**）；恢复 timeout=10 后同入口正常返回（年级组1）；compare 31 样本 21/21+7/10 与基线轮逐条签名一致；Apollo 恢复回读（三开关 false + timeout=10）。
+- 文档/主图同步：技术文档并行化段落补「失败语义（定稿）」；全景主图 V2 实时链节点加「❗失败语义：单个从计划失败=整体报错（不降级）· 并行计算 10s 超时=报错」。
