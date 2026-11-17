@@ -18,17 +18,32 @@
 
 ## 2. Apollo 开关状态
 
-2026-11-17 16:33:31 CST 核实（`cart.gaotu100.com / TEST / application / default`）：
+### 2.1 终态（本报告交付时）
+
+2026-11-17 17:39:39 CST 读回（`cart.gaotu100.com / TEST / application / default`）：
 
 | key | Apollo 已发布值 | 运行时读回 |
 |---|---:|---|
-| `renewal.recommend.v2.enabled` | `false` | 实例 `...-78d4855cbb-dpg75` 为 `false`（trace `.289.17949043753670061`） |
-| `renewal.preheat.v2.enabled` | `false` | 同实例为 `false`（trace `.284.17949043756880073`） |
+| `renewal.recommend.v2.enabled` | `false` | `isRecommendV2Enabled=false` |
+| `renewal.preheat.v2.enabled` | `false` | `isPreheatV2Enabled=false` |
 | `renewal.preheat.v2.prefix.enabled` | `false` | 未读运行时；全程未修改 |
 
-- 开/停闭环：开启 release `20261117161619-release`（false→true）；恢复关闭 release `20261117162256-release`（true→false，releaseKey `20261117162257-37ca49b33afd42e4`）。
-- **覆盖面限制**：`test-eco-8` 共 8 个实例，本次只直连核实 **1 个**，其余 7 个未逐一读回。
-- 本任务（归档与报告阶段）**未对 Apollo 做任何写入**。
+### 2.2 本轮开关窗口（已完整闭环）
+
+| 动作 | release | releaseKey | 变更 |
+|---|---|---|---|
+| 开启（V2 全链路测试） | `20261117173520-release` | `20261117173520-37ca49b33afd432d` | 两开关 false → true |
+| 恢复关闭 | `20261117173931-release` | `20261117173931-37caa6ecfba691f4` | 两开关 true → false |
+
+- 开启后运行时读回：`isRecommendV2Enabled=true`、`isPreheatV2Enabled=true`（直连实例 `test-eco-8`）。
+- 恢复后运行时读回：两者均 `false`（2026-11-17 17:39:39 CST）。
+- 两次发布前均先 `dry_run=true` 预览，diff 仅含目标两个 key，无夹带。
+- **覆盖面限制**：`test-eco-8` 共 8 个实例，本次直连核实 **1 个**，其余 7 个未逐一读回。
+
+### 2.3 早前闭环（阶段 1）
+
+- 开启 release `20261117161619-release`；恢复 release `20261117162256-release`（releaseKey `20261117162257-37ca49b33afd42e4`）。
+- 2026-11-17 16:33:31 CST 读回：两开关发布值 `false`，实例 `...-78d4855cbb-dpg75` 运行时 `false`（trace `.289.17949043753670061`、`.284.17949043756880073`）。
 
 ## 3. 数据覆盖
 
@@ -81,7 +96,51 @@
 | 12 | 续班关系只读查询 | 外部接口 | HEAD `5f0df948` | `.285.17949067511850106`：`18405861174936317 → [18405861174936327]` |
 | 13 | 运行时开关读回 | 运行时 | — | `isRecommendV2Enabled=false`（`.289.17949043753670061`）、`isPreheatV2Enabled=false`（`.284.17949043756880073`） |
 
-### 4.2 Worker 回报（非本阶段重新验证）
+### 4.2 本轮新增：V2 全链路实测（开关开启窗口 `20261117173520` → `20261117173931`）
+
+全部经 **ACL 桥直调 Service**（`/test/acl/compare/service`，泳道 `test-eco-8`，宿主 `10.218.249.48:28688`），**不是真实 HTTP 网关入口**。运行版本 HEAD `5f0df948`。
+
+| # | 场景 | 入参 | 实际结果 | trace |
+|---|---|---|---|---|
+| 14 | V2 C 端主从合并（M23 stu1） | `getRenewalDetailForC(7746793735, 591020372877623296)` | **3 条 / 2 个年级**：grade11 → 6004 从计划 `588506155490336768`；grade15 → 23 联报 `591020757501380608` + 2 从计划 `591020573457448960`。all_sign_up=0 | `.286.17949081411640099` |
+| 15 | V2 C 端同计划另一学员（M23 stu2） | `(7746793736, 591020372877623296)` | 与 #14 一致：3 条、2 个年级 | `.292.17949081433730108` |
+| 16 | V2 C 端独立从计划（S2 stu1） | `(7746793735, 591020374322561024)` | 1 条 grade15 / pt=2 / sku `591020573457448960`，不误带主计划 | `.290.17949081443010120` |
+| 17 | V2 C 端独立从计划（S2 stu3） | `(7746791482, 591020374322561024)` | 1 条 grade15 / pt=2，与 #16 一致 | `.290.17949084090350131` |
+| 18 | **V2 B 端主从合并** | `getRenewalDetailForB(7746793735, 591020372877623296)` | 3 条 / 2 年级；**价格正确**：23 联报 `price=200`、从计划 2 `price=100`、6004 `price=0` | `.291.17949081584720116` |
+| 19 | **V2 下小班组合 51** | `(7704848531, 589721954597011456)` | 2 个年级：grade11 → **pt=51** `589762111522013184`（price 0）；grade31 → 4 条扩科 pt=2。证明 51 在 V2 链路可返回 | `.288.17949081596280100` |
+| 20 | V2 无关联计划（小班带扩科） | `(7746791494, 586116340522184704)` | 独立返回 5 条：grade11 两条 pt=2（扩科）、grade12 三条 6004 | `.290.17949081622220122` |
+| 21 | V2 空结果（学员无该计划前置单） | `(7704848531, 591020372877623296)` | `grade_clazz_list` 为空、不抛错 | `.289.17949081638230104` |
+| 22 | V2 单用户预热（大班） | `preheat(7746793735, 591020372877623296)` | 返回 3 个 key：主前置 `591020433489467393` → 联报 `591020757501380608` + 班 `591020573128196096`（role=1）；从前置 `591020433489467392` → `591020573457448960`（role=2）；含跨课程映射 `18390028220432911` | `.287.17949081853530109` |
+| 23 | V2 单用户预热（小班） | `preheat(7746791494, 586116340522184704)` | 返回空 Map（设计如此：小班走 `preheatAndCache` 写缓存，不回传 Map） | `.289.17949081863270106` |
+| 24 | 预热后 V2 读取一致性（大班） | `(7746793735, 591020372877623296)` 在 #22 之后 | 结果与 #14 完全一致（3 条 / 2 年级 / 价格相同） | `.290.17949082005990126` |
+| 25 | 预热后 V2 读取一致性（小班） | `(7746791494, 586116340522184704)` 在 #23 之后 | 结果与 #20 完全一致（5 条 / 2 年级） | `.285.17949082019050129` |
+| 26 | 异常入参：不存在的 renewalNumber（C） | `(7746793735, 999999999999999)` | 返回空壳 `{image_url, renewal_number, status:0}`，**不 500** | `.285.17949081868230127` |
+| 27 | 异常入参：renewalNumber=null（C） | `(7746793735, null)` | 抛 `RuntimeException: 关键信息不能为空`（受控业务异常，非 NPE/5xx） | `.286.17949081869690101` |
+| 28 | 异常入参：renewalNumber=null（B） | `getRenewalDetailForB(7746793735, null)` | 同样抛 `关键信息不能为空`，C/B 行为一致 | `.283.17949084088620116` |
+
+**下游调用链验证（#24 的 trace 全链路日志）**：确认 V2 实际打通了 order（`listByCourseNumbersAndUserIdAndStatus`、`listByUserIdAndActivityNumberAndOrderBizStatus`、`listByClazzNumbersAndUserIds`）、course-setting（`clazzSetRelation/list/byClazzNumbers`，返回 activity `591020757501380608` 与两个后置班）、teacher-basic（`searchTeacher`）、clazz-distribution（`subclazz/getSubclazzByUserIdAndClazz`、`listSubclazzByClazzNumbersAndTeacher`），均为 200。
+
+**未能在本轮模拟的场景**：
+- **10s 超时**：`relatedDetails` 的 `future.get(10s)` 需从计划 RPC 卡住才触发；本轮无法在不改动下游的条件下造出长阻塞，未实测（代码路径已读：`RenewalV2Service.java:166-177`，超时抛 `IllegalStateException` 并 `cancel(true)`）。
+- **从计划失败上抛**：代码口径为「单个从计划失败 → 抛异常 → 整个请求失败」（`RenewalV2Service.java:154-155` 注释与实现一致），本轮未做故障注入验证实际抛出。
+
+### 4.3 本轮新增：Maven 单测
+
+命令（**必须用完整路径**，`~/.local/bin/mvn8` 在当前 shell 下报 `mvn:1: permission denied`（exit 126））：
+
+```bash
+cd /Users/gaotu/IdeaProjects/JavaProject/cart
+JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home \
+"/Applications/Utilities/IntelliJ IDEA.app/Contents/plugins/maven/lib/maven3/bin/mvn" \
+  -o -pl cart-app -am test -DfailIfNoTests=false -Dsurefire.failIfNoSpecifiedTests=false \
+  -Dtest='RenewalV2ServiceTest,RenewalV2PureRenewalServiceTest,RenewalV2ResultMergerTest,RelatedPlanCacheTest,RenewalMasterWithProcessCacheTest,SmallClassPreheatCacheHitTest,RenewalCartStockCacheTest,RecommendContextNullGuardTest,ProcessClazzSetResultPurePathTest,ProcessCombineProductResultTest,ActivityProductRecommendTest,WhiteListMatchPluginTest,SmallRenewalCoreServiceTest,CombineProductSubClassMatchPluginTest,CombineProductBuildSubBuilderTest'
+```
+
+结果：`Tests run: 161, Failures: 0, Errors: 0, Skipped: 0` — **BUILD SUCCESS**。日志 `/tmp/w1seed2/mvn15.log`。
+
+覆盖的 15 个测试类聚焦 V2 主链路（Service / PureRenewal / ResultMerger）、预热与缓存（小班预热命中、关联计划缓存、MasterWithProcess 缓存、购物车库存缓存）、上下文空值防护，以及组合商品与小班核心链路（SubBuilder、匹配/排序插件、CoreService）。
+
+### 4.4 Worker 回报（前序阶段，非本轮重新验证）
 
 - **V2 全链路 B/C 端 23+2+6004 合并**：开关开启窗口内，通过 ACL 桥直调 Service（`RenewalV2Service#getRenewalDetailForC/#getRenewalDetailForB`），**不是真实 HTTP 业务入口**。C 端与 B 端均合并出 23 + 2 + 6004 三类；无关联小班独立返回 5 条；已报名标记正常；异常入参不 500。响应存档 `/tmp/w1seed2/out/v2_*.json`（`v2_M23_stu1.json`、`v2_M23_signed.json`、`v2_B25.json`、`v2_small_main.json`、`v2_empty.json`）。
 - **V2 `recommendAll` 产出 51**：`recommendAll(7704848531, 589721954597011456)` 命中白名单 → `WhiteListMatchPlugin INTERRUPT` → 返回 1 条 product_type=51，trace `.292.17949054763510079`；响应 `/tmp/w1seed2/out/r51.json`。
@@ -100,29 +159,37 @@
 
 ## 5. 未覆盖场景
 
+**本轮已从不覆盖转为已覆盖**（详见 §4.2、§4.3）：V2 完整主链路（C 端 + B 端主从合并 23+2+6004）、V2 下小班组合 51、预热写入后 V2 读取一致性（大班/小班各 1）、异常入参（不存在/null，C 端 + B 端）、Maven 单测（161 项全通过）。
+
+仍**未覆盖**：
+
 | 项 | 说明 |
 |---|---|
-| V2 完整主链路再验证 | 需再次开启 Apollo，**当前未授权**；开关保持关闭 |
-| 真实 HTTP 业务入口 `/web/renewal/cart` | 只到 Service 层（ACL 桥），未经网关与完整鉴权链路 |
-| 组合 51 下单 / 支付 | 本轮禁止下单；仅验证「推荐返回」，未验证「可下单」 |
-| 加购（B 端购物车） | 未单独构造 |
-| 超时（10s，多从计划） | P2 风险：线程池满时 CallerRuns 使 cancel 失效，未实测 |
-| 从计划失败抛异常 | 未构造故障注入 |
-| 降级年级口径（联报 23） | 未验证 |
+| 真实 HTTP 业务入口 `/web/renewal/cart` | 全部经 ACL 桥直调 Service，未经网关、鉴权与 C 端完整参数链路 |
+| 组合 51 下单 / 支付 | 本轮禁止下单；只验证「推荐能返回」，未验证「能下单成功」 |
+| 加购（B 端购物车） | 未单独构造 B 端购物车数据验证加购合并 |
+| 超时（10s，多从计划） | 需下游 RPC 长阻塞才能触发，本轮无法在不改下游的前提下模拟；代码路径已读（`RenewalV2Service.java:166-177`） |
+| 从计划失败抛异常 | 未做故障注入，仅读到代码口径（失败→抛异常→整体失败） |
+| 降级年级口径（联报 23） | 未构造降级分支验证 |
 | 静默少条（`coreHandle`） | 未验证 |
-| 小班批量预热写缓存（`e6199773` 新逻辑） | 未验证 |
-| 主从四向中的「小→大」「小→小」 | 未单独构造 |
-| Apollo TEST 其余 7 个实例运行时读回 | 只核 1 个 |
-| Maven 单测 | **权限拒绝（exit 126），未运行，不计为通过** |
+| 小班批量预热写缓存（`e6199773` 新逻辑，`preheatByRenewalNumberAndCache`） | 本轮只测了单用户 `preheat`，未测计划级批量 |
+| 主从四向中的「小→大」「小→小」 | 只覆盖「大→大」「大→小」；小班为主计划的方向未单独构造 |
+| Apollo TEST 其余 7 个实例运行时读回 | 只直连核实 1 个实例（`test-eco-8`） |
 
 ## 6. 数据与配置修改说明
 
-- **TEST 业务数据写入：0 次**（本任务含全部阶段）。`gaotu.product_sku` 中 `589762111522013184` 的 `update_time` 仍为 `2026-11-10 16:54:01`，可作反证。
-- **Apollo 写入：0 次**（归档与报告阶段）；此前开/停已闭环恢复为 `false`。
-- 唯一历史写入：51 续班关系 `add_renew_master_course_relation`（前置 `18405861174936317` → 后置 `18405861174936327`），已在上一轮完成并读回确认存在，本轮未重复写入。
+- **TEST 业务数据写入：0 次**（本任务含全部阶段）。`gaotu.product_sku` 中 `589762111522013184` 的 `update_time` 仍为 `2026-11-10 16:54:01`，可作反证。本轮 V2 全链路测试只做读取与预热写缓存，未改任何业务表。
+- **Apollo 写入：4 次发布**，均针对 `cart.gaotu100.com / TEST / application / default` 的两个 V2 开关，且已完整闭环回落 `false`：
+  - 阶段 1：开启 `20261117161619-release` → 恢复 `20261117162256-release`
+  - 本轮：开启 `20261117173520-release` → 恢复 `20261117173931-release`
+  - `renewal.preheat.v2.prefix.enabled` 全程未改，保持 `false`。
+- 唯一历史数据写入：51 续班关系 `add_renew_master_course_relation`（前置 `18405861174936317` → 后置 `18405861174936327`），已在上一轮完成并读回确认存在，本轮未重复写入。
+- 缓存副作用：本轮 `preheat` 调用写入了 `renewal:preheat:591020372877623296:7746793735` 等预热 key（TTL 由 `preheatTime` 控制），属产品正常行为，未做清理。
 
 ## 7. 结论
 
+- **V2 全链路（开关开启窗口内）实测通过**：C 端与 B 端均能跨计划、跨年级合并出 23 联报 + 2 从计划 + 6004，价格计算正确（B 端 23 为 200 分 = 两门后置班，从计划 100 分）；V2 下小班组合 51 可正常返回；无关联计划独立展示；空结果与异常入参均不 500。
+- **Maven 单测 161 项全通过**，覆盖 V2 主链路、预热/缓存、上下文空值防护与组合商品链路。
 - 开关全关状态下，老链路对大班 23、大班 2、小班 6004、小班 51 均正常返回，P1（命中缓存丢扩科/加购）已实测修复。
 - 组合 51 的 `sale_status=1` 为历史非规范值，**不影响推荐链路**，无需数据修正。
-- 上线前仍需补齐：V2 完整主链路（尤其超时、从计划失败、降级口径）、真实 HTTP 入口、51 下单链路。
+- 上线前仍需补齐：10s 超时与从计划失败的故障注入验证、真实 HTTP 网关入口、51 下单链路、小班批量预热（`preheatByRenewalNumberAndCache`）、「小→大/小→小」主从方向。
