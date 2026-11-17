@@ -9,6 +9,18 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-11-17（C 端匹配新口径改造）
+
+### 🤖 Claude
+
+- 定（Owner 原话定稿）：C 端匹配起点改为**当前在读班所在课程的后置**——旧「学员在计划全部前置课的所有在读班并集」理解有误，PRD 本意「展示当前班级A所在的续班计划中…当前班级A对应的所有后置产品年级的全学科膨胀券」；**无在读筛选概念**。「配置按年级+学科、匹配只按年级」保持不变。
+- 做（product-server `c6bd0b2ad`、cart `aaf63a52`+`aa969377`）：client `PreOrderDisplayableCouponRequest` 加 `preClazzNumber`；cart 落地页必带的当前班级号透传；product-server `PreOrderDisplayableCouponService` 新三参口径——班→课程（`listClazzByNumbers` 带缓存）→ 后置；未传班号兼容回退旧口径（WARN）；班不存在→空（不回退计划级）；B 端计划级/预警链路不动。client 1.5.12-SNAPSHOT 已重发 Nexus。
+- 验（test-gtbg-dev-2，product/product-b/cart 新版 UP）：7 场景矩阵全过——当前班命中/另一课后置班为空/班不存在空/不传班号回退并集命中/B 端计划级不变/cart 端到端正反两向；服务端日志含 `resolveCurrentClazzCodeNumbers 新口径匹配起点=当前班所在课程`。trace 详见 [[验证对照]] 2026-11-17 节。临时插的学员第二门课在读行已删并回读恢复。
+- AICR：cart PASS 0 阻塞（#45879 采纳补 Javadoc；#45880 有意透传设计已注明；#45881 既有逻辑不扩）；product-server 评审任务被系统取消（0 findings/0 阻塞）。
+- 同日 teacher-tool：`STUDENT_EXCEED_RELATION_LIMIT` 文案去掉写死上限数字并改为 Apollo `typeLimitMap` 联动动态文案 + 超限日志输出实际人数/动态上限（`f733d61a`→`ae38d480`，验证 trace `teacher-tool.207.17948869245400002`，AICR PASS）。
+
+---
+
 ## 2026-11-09（补验剩余需求点）
 
 ### 🤖 Claude
