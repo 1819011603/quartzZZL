@@ -1,0 +1,698 @@
+{
+ "meta": {
+  "phase": "v2",
+  "pod": "10.218.249.48",
+  "traffic_env": "test-eco-8",
+  "collected_at": "2026-11-17 15:45:12",
+  "switches": {
+   "recommend_v2": true,
+   "recommend_v2_raw": "{\"code\": 0, \"data\": {\"com.gaotu.renewal.RenewalV2Service#isRecommendV2Enabled\": true}, \"msg\": \"\"}",
+   "preheat_v2": false,
+   "preheat_v2_raw": "{\"code\": 0, \"data\": {\"com.gaotu.renewal.RenewalV2Service#isPreheatV2Enabled\": false}, \"msg\": \"\"}"
+  },
+  "fixture": "cart_test_fixture.txt",
+  "total": 31,
+  "ok": 31,
+  "success_empty": 13,
+  "error": 0,
+  "role_dist": {
+   "None": 25
+  }
+ },
+ "samples": [
+  {
+   "uid": "1438225",
+   "plan": "578299529141458944",
+   "category": "no_related",
+   "ts": 1794901508081,
+   "elapsed_ms": 320,
+   "trace_id": "cart_gaotu100_com.287.17949015082200016",
+   "http_code": 200,
+   "status": 0,
+   "code": 0,
+   "ok": true,
+   "kind": "success_empty",
+   "entries": []
+  },
+  {
+   "uid": "1438226",
+   "plan": "578299529141458944",
+   "category": "no_related",
+   "ts": 1794901508082,
+   "elapsed_ms": 324,
+   "trace_id": "cart_gaotu100_com.292.17949015082220012",
+   "http_code": 200,
+   "status": 0,
+   "code": 0,
+   "ok": true,
+   "kind": "success_empty",
+   "entries": []
+  },
+  {
+   "uid": "1438227",
+   "plan": "578299529141458944",
+   "category": "no_related",
+   "ts": 1794901508082,
+   "elapsed_ms": 346,
+   "trace_id": "cart_gaotu100_com.285.17949015082200017",
+   "http_code": 200,
+   "status": 0,
+   "code": 0,
+   "ok": true,
+   "kind": "success_empty",
+   "entries": []
+  },
+  {
+   "uid": "1544386",
+   "plan": "578299529141458944",
+   "category": "no_related",
+   "ts": 1794901508083,
+   "elapsed_ms": 318,
+   "trace_id": "cart_gaotu100_com.290.17949015082210020",
+   "http_code": 200,
+   "status": 0,
+   "code": 0,
+   "ok": true,
+   "kind": "success_empty",
+   "entries": []
+  },
+  {
+   "uid": "19758758649346",
+   "plan": "578299529141458944",
+   "category": "no_related",
+   "ts": 1794901508402,
+   "elapsed_ms": 155,
+   "trace_id": "cart_gaotu100_com.289.17949015085400019",
+   "http_code": 200,
+   "status": 0,
+   "code": 0,
+   "ok": true,
+   "kind": "success_empty",
+   "entries": []
+  },
+  {
+   "uid": "17331743719598",
+   "plan": "548944373423863808",
+   "category": "no_related",
+   "ts": 1794901508402,
+   "elapsed_ms": 677,
+   "trace_id": "cart_gaotu100_com.288.17949015085440015",
+   "http_code": 200,
+   "status": 0,
+   "code": 0,
+   "ok": true,
+   "kind": "success_empty",
+   "entries": []
+  },
+  {
+   "uid": "7053328405",
+   "plan": "548944373423863808",
+   "category": "no_related",
+   "ts": 1794901508407,
+   "elapsed_ms": 680,
+   "trace_id": "cart_gaotu100_com.290.17949015085450022",
+   "http_code": 200,
+   "status": 0,
+   "code": 0,
+   "ok": true,
+   "kind": "success_empty",
+   "entries": []
+  },
+  {
+   "uid": "7053328579",
+   "plan": "548944373423863808",
+   "category": "no_related",
+   "ts": 1794901508430,
+   "elapsed_ms": 658,
+   "trace_id": "cart_gaotu100_com.287.17949015085680018",
+   "http_code": 200,
+   "status": 0,
+   "code": 0,
+   "ok": true,
+   "kind": "success_empty",
+   "entries": []
+  },
+  {
+   "uid": "7053328841",
+   "plan": "548944373423863808",
+   "category": "no_related",
+   "ts": 1794901508559,
+   "elapsed_ms": 521,
+   "trace_id": "cart_gaotu100_com.285.17949015086980019",
+   "http_code": 200,
+   "status": 0,
+   "code": 0,
+   "ok": true,
+   "kind": "success_empty",
+   "entries": []
+  },
+  {
+   "uid": "7053330729",
+   "plan": "548944373423863808",
+   "category": "no_related",
+   "ts": 1794901509087,
+   "elapsed_ms": 356,
+   "trace_id": "cart_gaotu100_com.292.17949015092270014",
+   "http_code": 200,
+   "status": 0,
+   "code": 0,
+   "ok": true,
+   "kind": "success_empty",
+   "entries": []
+  },
+  {
+   "uid": "7312777312",
+   "plan": "548944373423863808",
+   "category": "no_related",
+   "ts": 1794901509087,
+   "elapsed_ms": 300,
+   "trace_id": "cart_gaotu100_com.289.17949015092270021",
+   "http_code": 200,
+   "status": 0,
+   "code": 0,
+   "ok": true,
+   "kind": "success_empty",
+   "entries": []
+  },
+  {
+   "uid": "7312777313",
+   "plan": "548944373423863808",
+   "category": "no_related",
+   "ts": 1794901509088,
+   "elapsed_ms": 294,
+   "trace_id": "cart_gaotu100_com.288.17949015092290017",
+   "http_code": 200,
+   "status": 0,
+   "code": 0,
+   "ok": true,
+   "kind": "success_empty",
+   "entries": []
+  },
+  {
+   "uid": "7313175005",
+   "plan": "548944373423863808",
+   "category": "no_related",
+   "ts": 1794901509089,
+   "elapsed_ms": 293,
+   "trace_id": "cart_gaotu100_com.285.17949015092290021",
+   "http_code": 200,
+   "status": 0,
+   "code": 0,
+   "ok": true,
+   "kind": "success_empty",
+   "entries": []
+  },
+  {
+   "uid": "1437263",
+   "plan": "578532432171743232",
+   "category": "no_related",
+   "ts": 1794901509388,
+   "elapsed_ms": 581,
+   "trace_id": "cart_gaotu100_com.283.17949015095330022",
+   "http_code": 200,
+   "status": 0,
+   "code": 0,
+   "ok": true,
+   "kind": "ok",
+   "entries": [
+    {
+     "sku": "578530911878922240",
+     "role": null,
+     "rtype": 1,
+     "ptype": 2,
+     "before": "578530883890331648",
+     "sign": 0,
+     "grade": 14
+    }
+   ]
+  },
+  {
+   "uid": "1437264",
+   "plan": "578532432171743232",
+   "category": "no_related",
+   "ts": 1794901509388,
+   "elapsed_ms": 588,
+   "trace_id": "cart_gaotu100_com.284.17949015095330016",
+   "http_code": 200,
+   "status": 0,
+   "code": 0,
+   "ok": true,
+   "kind": "ok",
+   "entries": [
+    {
+     "sku": "578530911878922240",
+     "role": null,
+     "rtype": 1,
+     "ptype": 2,
+     "before": "578530883890331648",
+     "sign": 0,
+     "grade": 14
+    }
+   ]
+  },
+  {
+   "uid": "20001",
+   "plan": "578532432171743232",
+   "category": "no_related",
+   "ts": 1794901509389,
+   "elapsed_ms": 541,
+   "trace_id": "cart_gaotu100_com.286.17949015095330015",
+   "http_code": 200,
+   "status": 0,
+   "code": 0,
+   "ok": true,
+   "kind": "ok",
+   "entries": [
+    {
+     "sku": "578530911878922240",
+     "role": null,
+     "rtype": 1,
+     "ptype": 2,
+     "before": "578530883890331648",
+     "sign": 1,
+     "grade": 14
+    }
+   ]
+  },
+  {
+   "uid": "20002",
+   "plan": "578532432171743232",
+   "category": "no_related",
+   "ts": 1794901509445,
+   "elapsed_ms": 485,
+   "trace_id": "cart_gaotu100_com.288.17949015095840019",
+   "http_code": 200,
+   "status": 0,
+   "code": 0,
+   "ok": true,
+   "kind": "ok",
+   "entries": [
+    {
+     "sku": "578530911878922240",
+     "role": null,
+     "rtype": 1,
+     "ptype": 2,
+     "before": "578530883890331648",
+     "sign": 1,
+     "grade": 14
+    }
+   ]
+  },
+  {
+   "uid": "20003",
+   "plan": "578532432171743232",
+   "category": "no_related",
+   "ts": 1794901509933,
+   "elapsed_ms": 229,
+   "trace_id": "cart_gaotu100_com.290.17949015100710024",
+   "http_code": 200,
+   "status": 0,
+   "code": 0,
+   "ok": true,
+   "kind": "ok",
+   "entries": [
+    {
+     "sku": "578530911878922240",
+     "role": null,
+     "rtype": 1,
+     "ptype": 2,
+     "before": "578530883890331648",
+     "sign": 1,
+     "grade": 14
+    }
+   ]
+  },
+  {
+   "uid": "20004",
+   "plan": "578532432171743232",
+   "category": "no_related",
+   "ts": 1794901509933,
+   "elapsed_ms": 252,
+   "trace_id": "cart_gaotu100_com.291.17949015100720019",
+   "http_code": 200,
+   "status": 0,
+   "code": 0,
+   "ok": true,
+   "kind": "ok",
+   "entries": [
+    {
+     "sku": "578530911878922240",
+     "role": null,
+     "rtype": 1,
+     "ptype": 2,
+     "before": "578530883890331648",
+     "sign": 0,
+     "grade": 14
+    }
+   ]
+  },
+  {
+   "uid": "20005",
+   "plan": "578532432171743232",
+   "category": "no_related",
+   "ts": 1794901509973,
+   "elapsed_ms": 219,
+   "trace_id": "cart_gaotu100_com.288.17949015101100022",
+   "http_code": 200,
+   "status": 0,
+   "code": 0,
+   "ok": true,
+   "kind": "ok",
+   "entries": [
+    {
+     "sku": "578530911878922240",
+     "role": null,
+     "rtype": 1,
+     "ptype": 2,
+     "before": "578530883890331648",
+     "sign": 1,
+     "grade": 14
+    }
+   ]
+  },
+  {
+   "uid": "20006",
+   "plan": "578532432171743232",
+   "category": "no_related",
+   "ts": 1794901509979,
+   "elapsed_ms": 244,
+   "trace_id": "cart_gaotu100_com.286.17949015101160018",
+   "http_code": 200,
+   "status": 0,
+   "code": 0,
+   "ok": true,
+   "kind": "ok",
+   "entries": [
+    {
+     "sku": "578530911878922240",
+     "role": null,
+     "rtype": 1,
+     "ptype": 2,
+     "before": "578530883890331648",
+     "sign": 0,
+     "grade": 14
+    }
+   ]
+  },
+  {
+   "uid": "7704848531",
+   "plan": "590563861447557120",
+   "category": "related",
+   "ts": 1794901510164,
+   "elapsed_ms": 1169,
+   "trace_id": "cart_gaotu100_com.284.17949015103040019",
+   "http_code": 200,
+   "status": 0,
+   "code": 0,
+   "ok": true,
+   "kind": "ok",
+   "entries": [
+    {
+     "sku": "590564278055026688",
+     "role": null,
+     "rtype": 1,
+     "ptype": 2,
+     "before": "590563875993239552",
+     "sign": 0,
+     "grade": 15
+    },
+    {
+     "sku": "590564441871958016",
+     "role": null,
+     "rtype": 1,
+     "ptype": 2,
+     "before": "590563954137317376",
+     "sign": 0,
+     "grade": 15
+    }
+   ]
+  },
+  {
+   "uid": "7704848531",
+   "plan": "589037361072007168",
+   "category": "related",
+   "ts": 1794901510188,
+   "elapsed_ms": 1656,
+   "trace_id": "cart_gaotu100_com.292.17949015103260016",
+   "http_code": 200,
+   "status": 0,
+   "code": 0,
+   "ok": true,
+   "kind": "ok",
+   "entries": [
+    {
+     "sku": "589041202037415936",
+     "role": null,
+     "rtype": 1,
+     "ptype": 2,
+     "before": "589037981162168320",
+     "sign": 0,
+     "grade": 31
+    },
+    {
+     "sku": "589041222587408384",
+     "role": null,
+     "rtype": 1,
+     "ptype": 2,
+     "before": "589037992648269824",
+     "sign": 0,
+     "grade": 31
+    },
+    {
+     "sku": "589212673443520512",
+     "role": null,
+     "rtype": 1,
+     "ptype": 2,
+     "before": "589178070450200576",
+     "sign": 0,
+     "grade": 31
+    },
+    {
+     "sku": "589212918174867456",
+     "role": null,
+     "rtype": 1,
+     "ptype": 2,
+     "before": "589178079144992768",
+     "sign": 0,
+     "grade": 31
+    },
+    {
+     "sku": "589041240276885504",
+     "role": null,
+     "rtype": 2,
+     "ptype": 2,
+     "before": null,
+     "sign": 0,
+     "grade": 31
+    }
+   ]
+  },
+  {
+   "uid": "7704848533",
+   "plan": "589037361072007168",
+   "category": "related",
+   "ts": 1794901510194,
+   "elapsed_ms": 1645,
+   "trace_id": "cart_gaotu100_com.290.17949015103310026",
+   "http_code": 200,
+   "status": 0,
+   "code": 0,
+   "ok": true,
+   "kind": "ok",
+   "entries": [
+    {
+     "sku": "589041202037415936",
+     "role": null,
+     "rtype": 1,
+     "ptype": 2,
+     "before": "589037981162168320",
+     "sign": 0,
+     "grade": 31
+    },
+    {
+     "sku": "589041222587408384",
+     "role": null,
+     "rtype": 2,
+     "ptype": 2,
+     "before": null,
+     "sign": 0,
+     "grade": 31
+    },
+    {
+     "sku": "589041240276885504",
+     "role": null,
+     "rtype": 2,
+     "ptype": 2,
+     "before": null,
+     "sign": 0,
+     "grade": 31
+    }
+   ]
+  },
+  {
+   "uid": "7704850492",
+   "plan": "589037361072007168",
+   "category": "related",
+   "ts": 1794901510225,
+   "elapsed_ms": 1597,
+   "trace_id": "cart_gaotu100_com.291.17949015103630021",
+   "http_code": 200,
+   "status": 0,
+   "code": 0,
+   "ok": true,
+   "kind": "ok",
+   "entries": [
+    {
+     "sku": "589041202037415936",
+     "role": null,
+     "rtype": 1,
+     "ptype": 2,
+     "before": "589037981162168320",
+     "sign": 0,
+     "grade": 31
+    },
+    {
+     "sku": "589041222587408384",
+     "role": null,
+     "rtype": 2,
+     "ptype": 2,
+     "before": null,
+     "sign": 0,
+     "grade": 31
+    },
+    {
+     "sku": "589041240276885504",
+     "role": null,
+     "rtype": 2,
+     "ptype": 2,
+     "before": null,
+     "sign": 0,
+     "grade": 31
+    }
+   ]
+  },
+  {
+   "uid": "7704850493",
+   "plan": "589037361072007168",
+   "category": "related",
+   "ts": 1794901511335,
+   "elapsed_ms": 537,
+   "trace_id": "cart_gaotu100_com.289.17949015114740023",
+   "http_code": 200,
+   "status": 0,
+   "code": 0,
+   "ok": true,
+   "kind": "ok",
+   "entries": [
+    {
+     "sku": "589212673443520512",
+     "role": null,
+     "rtype": 1,
+     "ptype": 2,
+     "before": "589178070450200576",
+     "sign": 0,
+     "grade": 31
+    },
+    {
+     "sku": "589212918174867456",
+     "role": null,
+     "rtype": 1,
+     "ptype": 2,
+     "before": "589178079144992768",
+     "sign": 0,
+     "grade": 31
+    }
+   ]
+  },
+  {
+   "uid": "7704850494",
+   "plan": "589037361072007168",
+   "category": "related",
+   "ts": 1794901511822,
+   "elapsed_ms": 521,
+   "trace_id": "cart_gaotu100_com.285.17949015119610023",
+   "http_code": 200,
+   "status": 0,
+   "code": 0,
+   "ok": true,
+   "kind": "ok",
+   "entries": [
+    {
+     "sku": "589212673443520512",
+     "role": null,
+     "rtype": 1,
+     "ptype": 2,
+     "before": "589178070450200576",
+     "sign": 0,
+     "grade": 31
+    }
+   ]
+  },
+  {
+   "uid": "7714163148",
+   "plan": "589037361072007168",
+   "category": "related",
+   "ts": 1794901511840,
+   "elapsed_ms": 554,
+   "trace_id": "cart_gaotu100_com.284.17949015119790021",
+   "http_code": 200,
+   "status": 0,
+   "code": 0,
+   "ok": true,
+   "kind": "ok",
+   "entries": [
+    {
+     "sku": "589212673443520512",
+     "role": null,
+     "rtype": 1,
+     "ptype": 2,
+     "before": "589178070450200576",
+     "sign": 0,
+     "grade": 31
+    }
+   ]
+  },
+  {
+   "uid": "20001",
+   "plan": "580120868989048832",
+   "category": "related",
+   "ts": 1794901511846,
+   "elapsed_ms": 634,
+   "trace_id": "cart_gaotu100_com.291.17949015119860023",
+   "http_code": 200,
+   "status": 0,
+   "code": 0,
+   "ok": true,
+   "kind": "ok",
+   "entries": []
+  },
+  {
+   "uid": "20002",
+   "plan": "580120868989048832",
+   "category": "related",
+   "ts": 1794901511873,
+   "elapsed_ms": 627,
+   "trace_id": "cart_gaotu100_com.290.17949015120160028",
+   "http_code": 200,
+   "status": 0,
+   "code": 0,
+   "ok": true,
+   "kind": "ok",
+   "entries": []
+  },
+  {
+   "uid": "20003",
+   "plan": "580120868989048832",
+   "category": "related",
+   "ts": 1794901512345,
+   "elapsed_ms": 302,
+   "trace_id": "cart_gaotu100_com.287.17949015124860020",
+   "http_code": 200,
+   "status": 0,
+   "code": 0,
+   "ok": true,
+   "kind": "ok",
+   "entries": []
+  }
+ ]
+}

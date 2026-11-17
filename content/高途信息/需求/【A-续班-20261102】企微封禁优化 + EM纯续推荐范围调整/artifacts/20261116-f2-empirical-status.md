@@ -265,3 +265,47 @@ owner 最终要求『整合到图里，画一个图：整个推荐逻辑，老�
 - **剩余**：①写命中路径单测（断言 buildContext 被调+recommendAll 不被调+扩科拿到现场 context）；②改前复现证据补留（可选：构造命中+扩科场景——用主计划 545361759016388608 或给 S2 配扩科；至少以单测覆盖证明）；③全量=基线 → commit/push → 部署 → 命中+扩科场景实测 → compare；④主图/文档同步。
 
 **P2/P3 未定性（下轮做）**：P2①Feign /preheat 传参开关全关也真算真写（RenewalFeignService:70-72）；②10s 超时非整体超时（任务停不下/CallerRuns 失效——已知限制，超时保证的是请求不无限等，池内任务仍跑完，定性=设计说明或改进为可取消）；③小班+23 无开关老链 allSignUp=1（线上暂无此配置，口径类待 owner）；④coreHandle 静默少条目 vs 失败即报错口径（老链行为不动，口径类待 owner）。P3 六项均低风险/取舍类：resolveRelated 无缓存 RPC+INFO 全量 DTO（性能可优化）；小班批量预热不写缓存（preheatByRenewalNumber 小班分支未接 preheatAndCache——与单用户预热不一致，待定是否对齐）；processClazzSet 3 处判空与归档口径（=38d2d741 判空加固，归档说法滞后，澄清即可）；批量预热吞中断；联报 23 降级年级取前置课；新类字段注入/全限定类名/Facade 未登记（风格+登记类）。误报 1 项确认剔除（Facade 状态过滤）。「7 项待决定」清单在评审原文（未随消息附全），下轮向 owner 或报告原文核对。
+
+## 追加（2026-11-17 第九轮 · P1 收口闭环 + P2/P3 逐项处置 + compare 回归）
+
+**P1 收口完成。4 commit 全部推送并部署 test-eco-8（镜像 e6199773，流水线 1349085/1349131 SUCCESS）：**
+
+| commit | 内容 |
+|---|---|
+| `1918959b` | P1 修复（比第八轮交接更彻底）：Payload 瘦身**只存纯续结果**（删全部上下文字段+rebuildContext）、写侧只写 results、读侧命中→`buildContext(userId, renewalNumber, config, null, sellerId, includeBCart)` 5 参现场构建完整 context——与大班「缓存纯续条目+现场续算」语义完全对齐 |
+| `a3b34ff7` | P3：`RenewalDataService#listActiveRelatedPreCoursesWithCache`（60s 本地缓存，Apollo `renewal.related.plan.cache.enabled/expire.seconds`），V2 `resolveRelated` 改走缓存方法 |
+| `d95f0512` | P3：从计划批量查询日志降级（INFO 打 size 不打整组 DTO） |
+| `e6199773` | P3：小班 V2 批量预热补写结果缓存——新增 `preheatByRenewalNumberAndCache` 口子（复用批量框架），**老链路口子 preheatByRenewalNumber 行为不变（仍不写）** |
+
+**P1 验证（已验证）**：
+- 单测：新增 `SmallClassPreheatCacheHitTest` 3 用例（命中→现场 buildContext 被调+recommendAll never+merge 拿现场 context assertSame 级；未命中→完整现算；fromBCart→不读缓存）+ `RelatedPlanCacheTest` 5 用例 + 批量预热写缓存差异 2 用例 + Payload 写侧瘦身 1 用例。
+- **改前复现对照**：stash 修复后在 HEAD 旧代码跑同一命中测试 → setUp 即失败（`Could not find field 'smallRenewalContextBuilder'`=旧代码命中路径无现场构建能力）；旧 `rebuildContext` 源码 grep 0 处回填 relationMap/userId/purchasedPostClazzSkuNumbers/additionalPurchaseList（留档 T/opencode/p1_before_cache_service.java）。
+- 全量 580/15=基线（572+新增 8；失败 15 个=BCartQuery 6+ExpandSubject 9 固定名单，既有失败非本次引入）。
+- **运行时命中验证**（test-eco-8 @e6199773，TID `cart_gaotu100_com.290.17949014179710014`）：preheatAndCache 写缓存→v2=true 调 C 端→日志链 `small preheat cache hit, key=renewal:preheat:590843035351398400:7704848531, entries=1` → `SmallRenewalContextBuilder:116 开始构建推荐上下文`（305ms 完整 SubBuilder 链）→ **无纯续重算**（无插件链日志）→ 三路合并正常 → 响应五年级联报 recType=1 正常展示、allSignUp=0。
+- compare 31 样本回归：规则一 21/21 + 规则二 7/10，3 差异=同一批纯从学员已知预期（compare_diff_20261117_154559.json）——**与上轮基线逐条一致，零回归**。
+- Apollo 用毕恢复回读：recommend.v2=false / preheat.v2=false / timeout=10（本轮 recommend.v2 true→false 已恢复，release 20261117154536）。
+- **未覆盖（如实标注）**：「有扩科配置的计划命中缓存后扩科条目出现」的运行时实测——S2（590843035351398400）无 expandSubjectConfig、主计划 545361759016388608 为大班且扩科关闭、590563861447557120 大班无扩科，现环境无小班+扩科样本（renew_build 造数不支持扩科参数、product 侧配置表定位未果——3 步后止损）；扩科/加购「不消失」的 context 传递已由单测 assertSame 级证明 + 运行时三路合并路径正常证明。补测需给小班计划配扩科（product 管理后台或 owner 提供）。
+
+**P2/P3 逐项处置**：
+- P2① Feign /preheat 传参（RenewalFeignService:70-72）：**定性=修正基线参数反传缺陷**（基线 `preheat(renewalNumber, userId)` 与签名 `(userId, renewalNumber)` 相反），开关只管新老路由、「真算真写」是预热接口本职——不改代码；上游生产调用行为列 owner 确认。
+- P2② 10s 超时非整体超时：**已知限制**（超时保证请求不无限等，池内任务仍跑完；CallerRuns 时失效）——定性说明，改进需可取消任务重构（成本>收益），列 owner 取舍。
+- P2③ 小班+联报 23 无开关、老链 allSignUp=1：口径类，**列 owner**（线上暂无此配置）。
+- P2④ coreHandle 静默少条目 vs「从计划失败=抛异常」口径不一致：口径类（老链行为不动），**列 owner**。
+- P3① resolveRelated 每请求未缓存 RPC + INFO 全量 DTO：**已修+验证**（a3b34ff7 60s 缓存 + d95f0512 日志降级，RelatedPlanCacheTest 5 用例）。
+- P3② 小班批量预热不写缓存：**已修+验证**（e6199773 新口子写/老口子不写，2 单测）。
+- P3③ processClazzSet 3 处判空 vs 归档说法：**澄清=38d2d741(F1) 有意判空加固**，归档说法滞后，不改代码。
+- P3④ 批量预热吞中断信号：**已知限制**（与 P2② 同类，批次任务不响应中断；166 行已恢复中断标志），列 owner。
+- P3⑤ 联报 23 降级年级取前置课：取舍类，**列 owner**。
+- P3⑥ 新类风格/Facade 未登记：Facade 方法 `listRenewalMasterPreCoursesByNumbers` **已登记** external-concepts.md（product 行）；字段注入/全限定类名=风格类不改。
+
+**「7 项待决定」重构清单**（评审原文未附全，按已有核实材料对应；标 ※ 的需要 owner 提供报告原文核对）：
+1. P2① 上游（product 中心）生产是否/何时调 Feign /preheat（参数修正后该接口真实生效）；
+2. P2② 10s 超时接受已知限制 or 改进为可取消整体超时；
+3. P2③ 小班+联报 23 的 allSignUp 口径（老链=1）；
+4. P2④ coreHandle 静默少条目口径（与从计划失败即报错不一致）；
+5. P3⑤ 联报 23 降级年级取前置课的取舍；
+6. G1 归档规则「关联变化隔离旧预热」与 V2 无隔离机制（≤TTL 26h 窗口内可展示失效从计划）；
+7. G2 老 RenewalJobHandler 无 v2 门控，V2 全开前必须停老 Job 调度（否则单计划值覆写合并值）。
+※ 若评审报告原 7 项与此清单不一致，以原文为准需 owner 提供。
+
+**文档同步**：技术文档（AQEtdIeKzo7P5IxeQEzc7EpxnBe）「（六）预热机制」追加「小班结果缓存读写（V2，2026-11-17 修正语义）」小节（写=只存纯续结果；读=命中复用纯续+现场重建上下文；修正背景+验证），回读命中；全景主图（d0_master.mmd）上轮已是修复后语义无需改；external-concepts.md 已登记新 Adapter 方法。
