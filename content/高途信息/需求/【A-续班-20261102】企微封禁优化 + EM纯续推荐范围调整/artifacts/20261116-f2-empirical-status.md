@@ -309,3 +309,25 @@ owner 最终要求『整合到图里，画一个图：整个推荐逻辑，老�
 ※ 若评审报告原 7 项与此清单不一致，以原文为准需 owner 提供。
 
 **文档同步**：技术文档（AQEtdIeKzo7P5IxeQEzc7EpxnBe）「（六）预热机制」追加「小班结果缓存读写（V2，2026-11-17 修正语义）」小节（写=只存纯续结果；读=命中复用纯续+现场重建上下文；修正背景+验证），回读命中；全景主图（d0_master.mmd）上轮已是修复后语义无需改；external-concepts.md 已登记新 Adapter 方法。
+
+## 追加（2026-11-17 第十轮 · owner 自验「选了加购不展示」诊断，只读未改任何代码/配置）
+
+**现象**：owner 两条 TID——464a3665…（default 泳道，17:35）与 b84c5095…（test-eco-8 泳道，17:42），C 端 uid=7746793736 / 计划 591020372877623296（大班主「W1矩阵-大班主-联报23-1117」，2 从计划）/ includeBCart=true / sellerId=8645，B 端已勾 3 条加购，C 端无加购条目。
+
+**链路还原（已验证）**：
+- 两条 TID 发出时 `renewal.recommend.v2` 均为 false（owner 翻转间隙：17:38 双开→17:40 双关→17:35 双开→17:39 双关，发布历史 437360/437370/437561/437565 均为 owner 本人操作）→ 两条都走**老链** RenewalService#getRenewalDetail；464a3665 落 default 泳道 pod（镜像 release-af82f18a-202611111，中间版本），b84c5095 落 test-eco-8 pod（5f0df948，基线还原版老链）。
+- 本人同参数直连复现（Apollo 冻结只读，v2=false 现状）：default（af82f18a）→3 条全 recType=1（大班单班+联报+小班6004，无加购）；test-eco-8（5f0df948）→1 条联报 recType=1（无加购）。**两条泳道都不展示加购**（非泳道差异）。
+- 数据源正常：BCartFacade#listAdditionalPurchase(7746793736,8645)=3 条（type2 sku 591020573457448960 + type51 sku 591027705114509312/590134533098291201）；日志 AdditionalPurchaseService:60「加购推荐完成, count=3」（TID cart_gaotu100_com.287.17949087790480124）。
+
+**三条加购逐条死点（已验证）**：
+1. **type2 单班**「W1矩阵S2后置班语文1117」：课程 591020448295360512 grades=[15]subjects=[5]，与纯续联报课程 591020448289069056 grades=[15]subjects=[5] **完全重叠** → 被「加购 vs 纯续 (grade,subject) 去重」删除（RenewalService:477-480；该规则为 owner 2026-11-14 定的「同商品×同年级学科去重」，计划无扩科配置→allowDuplicate=false→去重生效；af82f18a 与 5f0df948 该段代码一致）→**按规则工作，非 bug**。
+2. **type51 组合×2**「组合商品-脚本」：主 SKU **sale_status=1 / can_be_sold=false**（脚本造数未上架可售；子商品 8007 会员卡+8010 实物，无班级）→ 展示层售卖状态过滤跳过（与归档既有取舍「回退态展示层跳过组合条目」同类）→ **数据侧问题（商品未上架），非代码 bug**。
+
+**「跟 default 泳道不一致」的真相**：差异在**纯续条目数**（default 3 条 vs test-eco-8 1 条），非加购——default 泳道 af82f18a（11-11 中间版）老链仍含 EM 关联订单并集（withCrossModeOrderItemOrders+从计划计算），test-eco-8 5f0df948 老链已按 owner 口径**还原基线**（EM 合并只在 V2 链）→ v2=false 时两边老链行为不同=**版本差异、符合设计**；v2=true 走 V2 链才有主+从完整合并。default 泳道的 af82f18a 是待下线中间态，不是「正确基准」。
+
+**定性**：非 P1 漏网（计划为大班，未涉及小班缓存命中路径）、非版本路由 bug、非新代码 bug——是「测试数据（组合未上架）+ 既有去重规则（加购同学科 vs 纯续）+ 两泳道老链版本差异（预期）」三者叠加的预期行为。
+
+**处置建议（待 owner 决定，未动任何配置/代码）**：
+- 想看到加购单班：换一条与纯续不同（年级,学科）的加购班（如五年级数学），或给计划配扩科配置并开 allowDuplicate；
+- 想看到组合：把两个组合 SKU 上架（sale_status=40/can_be_sold=true）；
+- 想验证 V2 完整链路（主+从合并+加购）：traffic-env=test-eco-8 + recommend.v2=true 再测（当前两开关为 owner 双关状态）。
