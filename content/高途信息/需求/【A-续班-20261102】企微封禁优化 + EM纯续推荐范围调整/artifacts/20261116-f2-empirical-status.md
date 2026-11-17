@@ -239,3 +239,11 @@ owner 反馈『计算逻辑 写清楚 规则写清楚 要产品能看懂』+『�
 ## 追加（2026-11-17 第五轮 · 最终形态=一张全景主图）
 
 owner 最终要求『整合到图里，画一个图：整个推荐逻辑，老链路、新链路，实时和预热』——文档 v4 重写为**单一全景主图**（画板 KVrPw8OcXhqRb2bCrefcED2en）：图例区（颜色+3张字段速查卡片：productType/白名单/扩科排除/allowDuplicate/主从关联/renewalRole/三开关）→ 入口与B/C端规则 → V2开关分叉 → 新链路（实时计算链8节点含去重①②/扩科排除 + 预热块含主+从合并写缓存≤26h/小班特殊 + 实时缓存关系）→ 老链路（大班/小班子链+老预热单计划+回退态衔接）→ 纯续匹配判定链（已购＞勾选＞白名单＞条件链→取开课最早，规则写在判定节点）→ B/C展示。正文压缩为主图+读图顺序一段。曾因 Mermaid 边语法用 Unicode 箭头+~~~ 不可见连线导致首次渲染失败（partial_success/whiteboard 0），修复后 block_insert_after 成功，28/28 关键词核验全命中。旧分图与长文字章节已随 overwrite 移除。
+
+## 追加（2026-11-17 第六轮 · V2 小班结果缓存读写，owner 指示与大班对齐）
+
+**commit `07dd4710`（feat: V2小班结果缓存读写——语义对齐大班）已推送部署验证闭环。**
+
+- **改动（全部 V2 新类，老链零改动）**：新增 `SmallRenewalPreheatCacheService`（写：key `renewal:preheat:计划:学员`/TTL 26h/空删 key/v2 前缀开关，全对齐大班 writePreheat；读+轻量 context 重建）；`SmallRenewalPreheatService#preheatAndCache`（一次 C 端口径计算，填充纯续结果+context 五 map+preClassInfoList+配置，保留原焐热语义）；`RenewalV2Service#preheat` 小班分支接入；`getSmallClassRenewalDetail` C 端（!fromBCart && !skipPreheatRead && !legacyPure && preheat.cache.enabled）先读缓存，命中跳过纯续计算、扩科/加购/合并仍现算（与大班 corePreheatCache 同构），未命中现算兜底。
+- **验证（已验证）**：单测 +6（缓存服务读写/前缀/空删/重建）+2 处适配，全量 569/15=既有基线逐用例一致；test-eco-8 sfw9x @07dd4710：①预热写入——read 回读命中（1 条目 23/sku/before+context 完整）；②C 端命中——getMainPlanDetail 返回与基线一致且日志 `small preheat cache hit, key=renewal:preheat:590843035351398400:7704848531`（TID cart_gaotu100_com.306.17948911836590009）；③未命中兜底（未预热用户 HTTP 200 正常）；④compare 31 样本 21/21+7/10 与基线轮逐条签名一致（大班样本含内=大班链不受影响）；⑤验证毕三开关恢复全 false（release 20261117125536）。
+- **设计说明**：读命中为「缓存快照」语义（26h 内勾选/已购变化不反映）——与大班缓存行为一致；skipPreheatRead（V2 合并从计划提取）/B 端/legacyPure 场景不读不污染。主图小班预热块已更新（"本轮新增·与大班对齐"）。
