@@ -255,3 +255,13 @@ owner 最终要求『整合到图里，画一个图：整个推荐逻辑，老�
 - **改动（全部 V2 新类，老链零改动，撤销 AICR#42572 原定性）**：①`RenewalV2Service#relatedDetails` 删 catch-continue 降级——单从计划异常保留原始原因上抛=整体请求失败；②`resolveActiveSubs` 关联状态查询失败抛 IllegalStateException（不再静默当无关联）；③并行计算 join 改 `get(10s)`（Apollo `renewal.related.plan.timeout.seconds` 可配默认 10）超时上抛；④批量预热批次 allOf 加 `get(600s)` 防卡死（预热尽力而为语义，独立配置 `renewal.preheat.batch.timeout.seconds`）。
 - **验证（已验证）**：单测+3（从计划失败抛出/1s 超时抛出/正常不受影响）+1 改造（should_not_cache_when_related_status_query_fails 按新口径断言抛出），全量 572/15=基线；test-eco-8 k6w24@04395c96 实测——timeout=0 真实触发：`getRenewalDetailForC` 返回 `RuntimeException: renewal-v2 related plan timeout after 0s`（**不再降级**）；恢复 timeout=10 后同入口正常返回（年级组1）；compare 31 样本 21/21+7/10 与基线轮逐条签名一致；Apollo 恢复回读（三开关 false + timeout=10）。
 - 文档/主图同步：技术文档并行化段落补「失败语义（定稿）」；全景主图 V2 实时链节点加「❗失败语义：单个从计划失败=整体报错（不降级）· 并行计算 10s 超时=报错」。
+
+## 追加（2026-11-17 第八轮 · 评审报告核实——P1 确认+修复中，上下文收束交接）
+
+**P1（小班命中缓存后扩科/加购消失）定性：确认为真（上轮小班缓存改动引入的回归）。**
+- 代码证据：ExpandSubjectRecommendService 用 context.getUserId()/purchasedPostClazzSkuNumbers（:67/:74/:203），AdditionalPurchaseService 用 additionalPurchaseList；rebuildContext 未回填这些字段 → 命中路径扩科/加购拿到残缺 context。
+- 上轮验证盲区确认：S2 造数计划无扩科配置，命中实测时扩科本来就空 → compare 一致不能证明此路径（评审指正正确）。
+- **修复（工作区未提交）**：getSmallClassRenewalDetail 命中分支改为「现场构建完整 context（smallRenewalContextBuilder.buildContext 3 参重载）+ 仅纯续结果用缓存快照」——与大班 corePreheatCache「缓存纯续条目+现场重建 context 续算」语义完全对齐；扩科/加购/合并/VO 全走现场 context。编译通过；测试类（AppointUserCheckTest）mock 注入已备齐（contextBuilder/expand/additional/merge/preheatEnabled=false），test-compile 通过。
+- **剩余**：①写命中路径单测（断言 buildContext 被调+recommendAll 不被调+扩科拿到现场 context）；②改前复现证据补留（可选：构造命中+扩科场景——用主计划 545361759016388608 或给 S2 配扩科；至少以单测覆盖证明）；③全量=基线 → commit/push → 部署 → 命中+扩科场景实测 → compare；④主图/文档同步。
+
+**P2/P3 未定性（下轮做）**：P2①Feign /preheat 传参开关全关也真算真写（RenewalFeignService:70-72）；②10s 超时非整体超时（任务停不下/CallerRuns 失效——已知限制，超时保证的是请求不无限等，池内任务仍跑完，定性=设计说明或改进为可取消）；③小班+23 无开关老链 allSignUp=1（线上暂无此配置，口径类待 owner）；④coreHandle 静默少条目 vs 失败即报错口径（老链行为不动，口径类待 owner）。P3 六项均低风险/取舍类：resolveRelated 无缓存 RPC+INFO 全量 DTO（性能可优化）；小班批量预热不写缓存（preheatByRenewalNumber 小班分支未接 preheatAndCache——与单用户预热不一致，待定是否对齐）；processClazzSet 3 处判空与归档口径（=38d2d741 判空加固，归档说法滞后，澄清即可）；批量预热吞中断；联报 23 降级年级取前置课；新类字段注入/全限定类名/Facade 未登记（风格+登记类）。误报 1 项确认剔除（Facade 状态过滤）。「7 项待决定」清单在评审原文（未随消息附全），下轮向 owner 或报告原文核对。
