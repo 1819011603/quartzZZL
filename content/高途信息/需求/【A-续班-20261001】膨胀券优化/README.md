@@ -74,7 +74,7 @@ tags: [需求]
 | 进度 | T 25 项完成 · R 0/0 · C 0/0 |
 | 部署泳道 | **test-gtbg-dev-2**（dev 逻辑环境；2026-11-09 按目标 commit 重发 8 实例并复验。原 dev-3 已被后续需求占用） |
 | 当前卡点 | 无后端卡点；**前端待前端同学实现**；**PROD DDL 待提工单**（PROD Apollo 已配 `{3:32;4:30}`） |
-| 最近更新 | **2026-11-17 C 端匹配新口径改造并验证通过**：匹配起点由「学员全部在读班并集」改为「当前在读班所在课程的后置」（product-server `c6bd0b2ad` / cart `aaf63a52`，已部署 test-gtbg-dev-2：product/product-b/cart UP）。同日 teacher-tool 关联超限文案改为 Apollo 联动动态文案（`ae38d480`）。此前 **2026-11-09 端到端复验通过**：模块① 按年级匹配、售卖中过滤、B端 edit 落库、cart 开关、student-center 下发；模块② 上限32、userIds 精确。 |
+| 最近更新 | **2026-11-17 全量回归通过（Owner 要求全量验证）**：35 项中 28 项已验证（本轮新跑 trace 22+ 复用 11-09 trace 4——对应代码零改动且部署版本一致）、推断未验证 3（①-20/21/22）、前端没做 3、待产品 1。期间发现并修复 **dev-2 泳道 4 服务实例被回收**（feign 回退旧版本致 external 下发 null），已重建 8 实例完整。同日：C 端匹配新口径改造并验证（product-server `c6bd0b2ad` / cart `aa969377`）、teacher-tool 文案 Apollo 联动（`ae38d480`）。详见[[验证对照]]。 |
 
 ## 下一步
 
