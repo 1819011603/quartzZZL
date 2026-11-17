@@ -204,3 +204,12 @@ B. 重试临时换绑（解绑 B4→立即绑 S2→实证→部署验证→还�
 - S2=590843035351398400 主从关联、status=2 发布、克隆课 590853244278898688 spu 改 6004、DB 造单 434673607240582001 全部闭环（见上文第二~五轮记录）；
 - 6004 订单实证 + 联报 23 端到端验证（实时 TID 17948380350700006 / 预热 TID 17948381795630008 / 方案一部署后三方一致）均有据。
 该子任务中断于脚本执行报错，未产出错误数据；失败后由主链路以 data-agent+DB+桥调组合完成同目标。**勿重跑、勿重建造数数据。**
+
+## 追加（2026-11-17 · 小班链路抽方法 + 统一方案产出）
+
+**commit `2ce425b2`（refactor: getSinglePlanDetailInternal 小班链路抽独立方法）已推送部署验证。**
+
+- **改动**：小班分支（原 278-357）逐字抽为 `getSmallClassRenewalDetail`，主方法保留 `type==2` 分发条件，与 `getLargeClassRenewalDetail` 对称；行为零变化（+95/-79 单文件）。
+- **验证（已验证）**：全量 563/15 失败=既有基线（ExpandSubjectConfigSubBuilder 11 + BCartQuerySubBuilder 4，XML 逐用例核对无新增）；test-eco-8 新 pod qkhft @2ce425b2 实时 getPurePlanDetail + 预热 preheat 与 636e67d0 基线 **JSON 程序化比对一致**（qkhft_puredetail.json / qkhft_preheat.json）。
+- **统一方案（未实施）**：`artifacts/20261117-unified-product-type-parsing-proposal.md` ——策略族+共用组件（否掉纯模板方法），共用层=类型通用解析一处（ProductTypeHandler 升格），差异层=班型特有留各自链路；膨胀券理想 1 处（现状约 5 处两套）；大班桥接分两步、②启动前需 owner 认可，老链当前零改动。
+- **分支现状**：大小班商品解析仍是两条独立分支（大班内联 if-else 约 3 处 + 小班 handler 策略 + 展示组装约 2 处），加膨胀券现状需改约 5 处——统一方案待 owner 拍板后收敛为 1+N。
