@@ -18,3 +18,9 @@
 - 无法覆盖：从计划失败整页失败（需故障注入）；small.renewal.enabled=false（TEST/PROD 均 true）；小班 23 降级（PROD 无）；userId 缺失/指定学员≠登录人（入口层，与 V2 无关）。
 
 前序覆盖审计（预热 vs 实时、路径效力边界）：`20261118-coverage-gap-audit.md`。
+
+## 风险：从计划条目换课 / 换年级不生效（V2 新增）
+- 写：RenewalService.productSelectConfirm（:3177）按 request.renewalNumber 保存；读：RenewalSinglePlanDetailService:1891 按从计划号读；合并结果只带主计划号（:257），条目无来源计划字段。
+- 已验证：V2 下 F/A/D/E 从计划条目 canChangeCourse=true（trace 6b392760 / 23445f79 / 88a0095f / 73c11751）；TEST user_renewal_clazz id=1463 是主计划 F 下保存了从计划 D 前置课 18405861174936317 的换课记录（该学员已无有效订单，无法回放）。
+- 未验证：换课后刷新不生效。需授权调用 productSelectConfirm 写 1 条记录（测完删除），并带登录态 sid 或走 acl 桥。
+- 影响：PROD 有从计划的主计划（大班 4 个、小班 2 个）；无关联计划不受影响。建议：条目带来源计划号，或后端按前置课反查从计划；临时把从计划条目 canChangeCourse 置 false。待所有者决定，未改代码。

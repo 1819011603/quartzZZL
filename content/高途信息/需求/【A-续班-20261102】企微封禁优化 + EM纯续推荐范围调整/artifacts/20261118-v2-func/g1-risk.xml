@@ -1,0 +1,16 @@
+<h2>风险说明：从计划条目上换课 / 换年级不生效（V2 新增问题）</h2>
+<p><b>现象</b>：V2 把从计划的条目合并进主计划页面展示，这些条目带「更换课程」按钮（canChangeCourse=true）。学员在主计划页对从计划条目换课后，换课记录按<b>主计划号</b>保存；但 V2 计算从计划条目时按<b>从计划号</b>读换课记录，读不到。结果是刷新后从计划条目又显示原推荐，学员的选择不生效。换年级（productSelectGrade）同理。</p>
+<p><b>代码位置</b>（HEAD 0528c192）：</p>
+<ul><li>写：RenewalService.productSelectConfirm（RenewalService.java:3177 起）用 request.renewalNumber 保存 user_renewal_clazz / user_renewal_grade，并删除该计划号的预热 key</li>
+<li>读：RenewalSinglePlanDetailService.java:1891 用正在计算的计划号（从计划号）调用 listUserRenewalClazz</li>
+<li>合并结果只带主计划号（RenewalSinglePlanDetailService.java:257），条目 ClazzDetailDTO 没有来源计划字段，前端换课时只能传主计划号</li></ul>
+<p><b>运行时验证情况</b>：</p>
+<ul><li>✅ <b>已验证</b>：V2 下从计划条目确实展示换课按钮。F/A/D/E 四个主计划的从计划条目 canChangeCourse 全为 true（trace F <code>6b392760-d2c4-4f2e-abba-a0de8a5ce6f8</code>、A <code>23445f79-6f72-46d6-b9dd-30d42ca31821</code>、D <code>88a0095f-bc5d-477c-bba0-f008ed1b3cc3</code>、E <code>73c11751-d156-4e81-a970-821cd300487c</code>）</li>
+<li>✅ <b>已验证（库内现存记录）</b>：TEST gaotu_cart.user_renewal_clazz id=1463（学员 7651551236，2026-11-07 14:55）保存在主计划 F 589037361072007168 下，前置课 18405861174936317 却是从计划 D 589721954597011456 的前置课，正是「主计划页给从计划条目换课」留下的记录形态；该学员目前已无有效前置订单，F 和 D 都返回空，无法回放</li>
+<li>❌ <b>未验证</b>：「换课后刷新不生效」这一步需要调用一次换课写接口 productSelectConfirm（向 user_renewal_clazz 写 1 条记录，测完删除即可恢复），并且要带登录态 sid 或走 acl 桥直调。本轮约定不改数据，所以没有做</li>
+<li>只读替代尝试：productFilterData 用主计划号和从计划号各查一次，返回相同（trace <code>2147b051-1789-43c2-8051-5227aa071a26</code> / <code>66e2eddf-8e54-41da-b124-cf946627490a</code>），这个接口只返回筛选项，不能证明也不能排除问题</li></ul>
+<p><b>影响面</b>：只影响 V2 下<b>有从计划</b>的主计划，即 PROD 里 4 个大班主计划（互相关联的那组 5 个计划）和 2 个小班主计划（18252903801684672、18400036578265280）；大班、小班的从计划条目都会遇到。无关联计划（PROD 大班 44 个、小班 3 个）不受影响。老链路没有这个问题，因为老链路主计划页不展示从计划条目。</p>
+<p><b>建议</b>（待所有者决定，未改代码）：</p>
+<ol><li>最小修复：条目上带出来源计划号（例如 ClazzDetailDTO 增加 sourceRenewalNumber），前端换课 / 换年级时传这个号；或者后端 productSelectConfirm 收到主计划号时，按前置课反查它属于哪个从计划再保存</li>
+<li>临时规避：V2 合并时把从计划条目的 canChangeCourse 置为 false，先不让在主计划页换</li>
+<li>补测：授权后用学员 7704848531 在 F 主计划页对从计划条目（前置课 589178070450200576）换一次课，刷新确认，再删除该记录恢复</li></ol>
