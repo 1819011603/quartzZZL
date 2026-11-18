@@ -412,3 +412,74 @@ key 格式由 `renewal.preheat.v2.prefix.enabled` 决定（大班 `RenewalV2Pure
 
 > **当前 TEST 状态提示**：两个 V2 开关在 2026-11-18 16:45:48 已被改成 **true**（release 438174）。所以现在直接点场景 1-8 会是 V2 链路，不是老链路基线。要验 1-8，需要先改回 false。  
 > **开 V2 和恢复 V2 由 owner 执行**，我这边按 owner 通知的时间点核验，不擅自动 Apollo。
+
+---
+
+# 可直接点击的验证链接
+
+> 全部链接为 TEST 环境，已逐条实测（HTTP 200 + status=0），返回结构与预期一致。  
+> 测试时间：2026-11-18 17:2x CST。**点击前须知**：`/cart` 接口只有在 `appointUserId` 存在时才跳过登录校验（依赖 Apollo `renewal.cart.debug.appoint-user.enabled=true`，TEST 已开）。**不带 `appointUserId` 会直接返回 code=16「帐号长时间未登录已被退出」**——这是实测确认的，不是推断。
+
+## 链接参数说明
+
+| 参数 | 是否必填 | 实测结论 |
+|-|-|-|
+| `renewalNumber` | 必填 | 续班计划号，为空返回 400 结构 |
+| `appointUserId` | **必填（实测）** | 不带时返回 `{"code":16,"msg":"您的帐号由于长时间未登录已被退出"}`；带上即正常返回。原因：TEST 的 `renewal.cart.debug.appoint-user.enabled=true`，接口直接用该参数作为调用主体 |
+| `includeBCart` | 可选，默认 false | 是否带 B 端购物车（加购）数据。本清单统一 `false`，与预热口径一致 |
+| `sellerId` | 可选 | 实测 `8645` / 不传 / `null` 三种返回**完全相同**，对本批场景无影响，沿用 owner 样例值 |
+| `p_client` | 可选 | 实测有无均返回相同结构，保留以贴合前端真实调用 |
+
+## 15 个场景的链接
+
+| 场景 | 实时计算（C 端） | 预热 | 实时（跳过缓存） |
+|-|-|-|-|
+| 场景 1 | [实时计算链接](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=591020372877623296&appointUserId=7746793735&includeBCart=false&sellerId=8645&p_client=1) | [预热链接](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=591020372877623296&userId=7746793735) | [实时(跳过缓存)链接](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=591020372877623296&userId=7746793735&fromC=1) |
+| 场景 2 | [实时计算链接](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=591020374322561024&appointUserId=7746793735&includeBCart=false&sellerId=8645&p_client=1) | [预热链接](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=591020374322561024&userId=7746793735) | [实时(跳过缓存)链接](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=591020374322561024&userId=7746793735&fromC=1) |
+| 场景 3 | [实时计算链接](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=586116340522184704&appointUserId=7746791494&includeBCart=false&sellerId=8645&p_client=1) | [预热链接](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=586116340522184704&userId=7746791494) | [实时(跳过缓存)链接](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=586116340522184704&userId=7746791494&fromC=1) |
+| 场景 4 | [实时计算链接](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=591020372877623296&appointUserId=7746793735&includeBCart=false&sellerId=8645&p_client=1) | [预热链接](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=591020372877623296&userId=7746793735) | [实时(跳过缓存)链接](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=591020372877623296&userId=7746793735&fromC=1) |
+| 场景 5 | [实时计算链接](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=586116340522184704&appointUserId=7746791494&includeBCart=false&sellerId=8645&p_client=1) | [预热链接](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=586116340522184704&userId=7746791494) | [实时(跳过缓存)链接](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=586116340522184704&userId=7746791494&fromC=1) |
+| 场景 6 | [实时计算链接](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=591020372877623296&appointUserId=7746793735&includeBCart=false&sellerId=8645&p_client=1) | [预热链接](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=591020372877623296&userId=7746793735) | [实时(跳过缓存)链接](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=591020372877623296&userId=7746793735&fromC=1) |
+| 场景 7 | [实时计算链接](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=591020372877623296&appointUserId=7746793736&includeBCart=false&sellerId=8645&p_client=1) | [预热链接](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=591020372877623296&userId=7746793736) | [实时(跳过缓存)链接](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=591020372877623296&userId=7746793736&fromC=1) |
+| 场景 8 | [实时计算链接](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=589721954597011456&appointUserId=7704848531&includeBCart=false&sellerId=8645&p_client=1) | [预热链接](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=589721954597011456&userId=7704848531) | [实时(跳过缓存)链接](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=589721954597011456&userId=7704848531&fromC=1) |
+| 场景 9 | [实时计算链接](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=591020372877623296&appointUserId=7746793735&includeBCart=false&sellerId=8645&p_client=1) | [预热链接](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=591020372877623296&userId=7746793735) | [实时(跳过缓存)链接](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=591020372877623296&userId=7746793735&fromC=1) |
+| 场景 10 | [实时计算链接](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=589721954597011456&appointUserId=7704848531&includeBCart=false&sellerId=8645&p_client=1) | [预热链接](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=589721954597011456&userId=7704848531) | [实时(跳过缓存)链接](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=589721954597011456&userId=7704848531&fromC=1) |
+| 场景 11 | [实时计算链接](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=588671894562123776&appointUserId=7704848531&includeBCart=false&sellerId=8645&p_client=1) | [预热链接](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=588671894562123776&userId=7704848531) | [实时(跳过缓存)链接](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=588671894562123776&userId=7704848531&fromC=1) |
+| 场景 12 | [实时计算链接](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=588671894562123776&appointUserId=7704848531&includeBCart=false&sellerId=8645&p_client=1) | [预热链接](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=588671894562123776&userId=7704848531) | [实时(跳过缓存)链接](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=588671894562123776&userId=7704848531&fromC=1) |
+| 场景 13 | [实时计算链接](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=591020372877623296&appointUserId=7746793735&includeBCart=false&sellerId=8645&p_client=1) | [预热链接](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=591020372877623296&userId=7746793735) | [实时(跳过缓存)链接](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=591020372877623296&userId=7746793735&fromC=1) |
+| 场景 14 | [实时计算链接](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=589037361072007168&appointUserId=7704848531&includeBCart=false&sellerId=8645&p_client=1) | [预热链接](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=589037361072007168&userId=7704848531) | [实时(跳过缓存)链接](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=589037361072007168&userId=7704848531&fromC=1) |
+| 场景 15 | [实时计算链接](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=999999999999999&appointUserId=7746793735&includeBCart=false&sellerId=8645&p_client=1) | [预热链接](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=999999999999999&userId=7746793735) | [实时(跳过缓存)链接](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=999999999999999&userId=7746793735&fromC=1) |
+
+## 对比方法：现有接口就能做（不需要新接口）
+
+**结论：现有 GET 接口已能完成「预热 vs 实时」一致性对比，无需新增接口。**
+
+依据是代码 + 实测：B 端 `GET /web/renewal/operation/cart` 走的是 `getPurePlanDetailSkipPreheat` —> `getSinglePlanDetailInternal(..., skipPreheatRead=true, ...)`，**强制不读预热缓存**（`RenewalSinglePlanDetailService.java:1151-1158`）。所以它就是一条现成的「纯实时」通道。
+
+**三步对比法**：
+
+1. **先预热**：点「预热链接」（`GET /web/renewal/preheat?renewalNumber=&userId=`），把结果写进 `renewal:preheat:{计划号}:{学员ID}`。这个接口不校验登录态，直接返回 JSON。
+2. **再读 C 端**：点「实时计算链接」（`/cart?appointUserId=...`），此时应命中预热缓存。
+3. **取纯续部分对比**：点「实时（跳过缓存）链接」（`/operation/cart?userId=...&fromC=1`），这是纯实时计算结果。
+
+**判定标准**：C 端返回里 `recommendType=1` 的条目（纯续）必须和 B 端实时链接的条目**在商品号集合上完全一致**。`recommendType=2` 的是扩科，只出现在 C 端，不参与纯续对比。
+
+## 实测对比结果（2026-11-18 17:2x CST）
+
+| 场景 | C 端纯续 | 实时(跳缓存) | 纯续是否一致 | C 端全部条目 |
+|-|-|-|-|-|
+| 1 | 1 条 | 1 条 | **一致** | 1 条（扩科 0） |
+| 2 | 1 条 | 1 条 | **一致** | 1 条（扩科 0） |
+| 3 | 1 条 | 1 条 | **一致** | 5 条（扩科 4） |
+| 8 | 1 条 | 1 条 | **一致** | 1 条（扩科 0） |
+| 11 | 1 条 | 1 条 | **一致** | 1 条（扩科 0） |
+| 14 | 1 条 | 1 条 | **一致** | 3 条（扩科 2） |
+
+**上面的结果说明**：预热写入后 C 端读到的纯续结果，与完全跳过缓存的实时计算结果逐条对齐，**6/6 通过**。场景 3 和 14 的差额是扩科条目，属于设计内行为（预热只存纯续，扩科每次现场重算）。
+
+## 几点实测发现（使用前必读）
+
+- **预热接口不校验登录态**，但返回的是 fastjson 非标准 JSON（key 不带引号，如 `{591020433489467393:{...}}`），浏览器直接打开是纯文本，不能用 JSON 工具解析。
+- **小班预热接口固定返回 `{}`**（代码里 `return Collections.emptyMap()`），但缓存是**照常写入**的。所以小班场景不要用预热接口的返回判断成功，要看后续 C 端请求的表现。
+- **B 端实时链接是 `LEGACY_PURE` 模式**：只算纯续，不算扩科、不算加购。所以它不能直接和 C 端的全部条目比，只能比纯续部分。
+- 预热缓存 TTL 是 **26 小时**（`preheat.cache.time` 默认值）。要重新验「未命中」分支，得等过期或让 owner 清 key。
