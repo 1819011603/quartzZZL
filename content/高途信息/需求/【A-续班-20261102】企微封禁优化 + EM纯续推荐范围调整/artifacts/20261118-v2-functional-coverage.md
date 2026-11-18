@@ -32,3 +32,15 @@
 - 清理：同一接口 status=0 type=2 反向删除（trace cart_gaotu100_com.292.17950173993550146），回读 user_renewal_clazz 该学员仅剩原有 1468/1469；恢复后 C 端结果与换课前一致（trace d9540f8f-8c49-4750-ab4e-7efdae91e5e4）。
 - 未做：按从计划号写入的对照实验（授权限写 1 条已用掉）；结论基于代码 key 不一致 + 主计划号写入路径实测，因果链已闭合。
 - 结论：缺陷证实。是否修复由所有者决定（建议见上文）。
+
+## 2026-11-19 00:48 换课缺陷已修复并实测闭环（owner 选方案 2）
+- 修复 commit `f6c12222`（已 push）：`RenewalV2PureRenewalService.resolveCourseOwnerPlan`（前置课→所属有效从计划号，复用带缓存的关联解析，查询失败降级回入参号）；`RenewalService.productSelectConfirm` 落库 key 归位 + 双 key（主/从计划）预热缓存失效。老链路不变：无关联、前置课属主计划自身时落库 key 与修复前一致。
+- 单测：ProductSelectConfirmSubPlanKeyTest 5 项（TDD 红→绿）；全量 597 项，失败 15 项与基线一致（既有 ExpandSubjectConfig/BCartQuery SubBuilder）。
+- 部署：pipeline 1352874，pod cart-gaotu100-com-6cbd4f78f6-vbkgs @ f6c12222 eureka UP（00:48:05）。
+- 实测闭环（写操作打新 pod IP 10.218.238.169，其余走网关）：
+  ① 修复后主计划 F 页面对从计划条目换课（传主计划号）→ 落库 id=1477 挂在从计划号 589177989139464192 下（修复前挂主计划号）；
+  ② 刷新 C 端 trace ce2f6744：页面按所选课程展示（所选 SKU 与主计划条目同 SKU，被同 SKU 去重合并，符合设计）；换回原课程 trace 69d322f4：该条目重新独立出现——写读闭环成立；
+  ③ 老链路回归：V2 全关时 F 结果与修复前基线一致（trace 5b3a1c53）；老链路勾选（主计划自身前置课）select 0→1 正常（trace 46aa3494）；
+  ④ 清理与恢复：验证记录全部删除，重建了被 type=2 语义替换的原有勾选行（内容等价，id 不同：1480 替代 1469）；C 端终态与测前基线一致（trace 5d7eee20）；Apollo 三开关恢复 true 并回读（release 20261119005153）。
+- 遗留：换年级（productSelectGrade）同族问题（删除范围只按主计划号）本次未修，已在文档标注。
+- AICR task #1987（head ea1d6f91，早于 0528c192/f6c12222）有 3 条 blocking 为既有问题，非本修复引入：#50256 对比接口 diff 实参顺序颠倒（仅影响诊断标注，不影响业务链路）、#50261/#50260 大班详情 grades/teacherMap 判空缺失。f6c12222 的 AICR 评审异步进行中，未出结论。
