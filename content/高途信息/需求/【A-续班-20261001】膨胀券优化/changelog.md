@@ -9,6 +9,17 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-11-18（Arthas 缩短 TEST 缓存 TTL）
+
+### 🤖 Claude
+
+- 所有者指令：先用 Arthas 改所有容器缓存时长。改 `gaotu_promotion_c` TEST 全部 3 个 pod（default / test-eco-2 / test-gtbg-dev-2）：`visibleActivityRedisExpireSeconds` 300→1、`…RandomSeconds` 60→0；独立回读三台均 1/0。需先 `options strict false`（默认 strict 拦截赋值）。
+- 只有 promotion-c 在这条链路上重建该缓存；promotion-b/task 只做删除，未改。
+- 复测：连续 10 次 39999；default 旧版本刚重建后 1 秒内读到 0（8/8），等 1.5s 后 39999（5/5）——残留窗口约 1 秒。
+- 重启或重新部署后恢复 300/60；长期方案仍需 litao04 开 Apollo 权限，或默认泳道升级到含该字段的版本。
+
+---
+
 ## 2026-11-18（联调：外显 399.99 显示 0）
 
 ### 🤖 Claude
