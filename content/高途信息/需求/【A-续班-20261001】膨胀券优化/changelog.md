@@ -9,7 +9,18 @@ tags: [需求, 日志]
 
 ---
 
-## 2026-11-18（①-23 配置化实现）
+## 2026-11-18（①-23 配置化运行时验证完成）
+
+### 🤖 Claude
+
+- Apollo TEST 发布（`couponStatusWhiteList=[1]`/`saleStatusWhiteList=[2]`），dev-2 product-b/product 部署至 `9ffc54f0`（两 pod Running UP）。
+- 运行时三场景验证：① `[2]`→放行（`coupon_sku_numbers=[578300357722046465]`，traceId `959b51cf`）；② 临时改 `[3]`→拦截（`empty=true`，traceId `97f54f12`）；③ 还原 `[2]`→再次放行（traceId `ec9e690c`）。Apollo 回读 `[1]`/`[2]` ✅。测试数据已还原（Apollo `[2]`，DB 未改动）。
+- ①-23 由「推断未验证」更新为**已验证（单测 Tests 8/0 + 运行时三场景对照）**。
+- PROD 两个 key（`preOrderActivity.coupon.displayable.couponStatusWhiteList`/`preOrderActivity.coupon.displayable.saleStatusWhiteList`，`product-b`/`product` application namespace）上线前另行发布，不擅自操作。
+
+---
+
+
 
 ### 🤖 Claude
 
