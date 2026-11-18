@@ -1,0 +1,349 @@
+{
+ "BE_A": {
+  "consistent": false,
+  "ndiff": 9,
+  "diffs": [
+   [
+    ".data.gradeClazzList[len]",
+    "1",
+    "2"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[len]",
+    "1",
+    "2"
+   ],
+   [
+    ".data.msg[len]",
+    "2",
+    "4"
+   ],
+   [
+    ".data.msg[1][len]",
+    "31",
+    "5"
+   ],
+   [
+    ".data.msg[1][0]",
+    "前置课程 is 591020433489467393, 前置班级信息 is 591020573289676800",
+    "1-续班计划 591020374322561024, 前后置课程关系集合 {591020433489467392=[591020448295360512]}"
+   ],
+   [
+    ".data.msg[1][1]",
+    "匹配条件 主讲老师 开始, 前置班级 is 591020573289676800, 待匹配班级集合 is [591020573128196096, 591020573595860992]",
+    "2-续班计划 591020374322561024, 前置课程存在订单过滤完成, 前置课程集合courseNumbers is [591020433489467392]"
+   ],
+   [
+    ".data.msg[1][2]",
+    "匹配条件 主讲老师 结束, 前置班级 is 591020573289676800, 本次匹配班级集合结果 is [591020573128196096, 591020573595860992]",
+    "3-续班计划 591020374322561024, 后置课程信息过滤完成, 过滤前后置课程集合courseNumbers is [591020448295360512], 过滤后后置课程集合courseNumbers is [591020"
+   ],
+   [
+    ".data.msg[1][3]",
+    "匹配条件 二讲老师 开始, 前置班级 is 591020573289676800, 待匹配班级集合 is [591020573128196096, 591020573595860992]",
+    "4-1 续班计划 591020374322561024, 非联报续班计划，过滤班级售卖状态，后置班级信息库存与售卖状态过滤完成, 过滤前班级集合clazzNumbers is [591020573457448960], 过滤后班级集合cla"
+   ],
+   [
+    ".data.msg[1][4]",
+    "匹配条件 二讲老师 结束, 前置班级 is 591020573289676800, 本次匹配班级集合结果 is [591020573128196096, 591020573595860992]",
+    "4-续班计划 591020374322561024, 后置班级信息课程标签过滤完成, 过滤前班级集合clazzNumbers is [591020573457448960], 过滤后班级集合clazzNumbers is [59102057"
+   ]
+  ]
+ },
+ "BE_B": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "BE_C": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "BE_D": {
+  "consistent": false,
+  "ndiff": 2,
+  "diffs": [
+   [
+    ".data.gradeClazzList[len]",
+    "1",
+    "2"
+   ],
+   [
+    ".data.msg",
+    "None",
+    "[['1-续班计划 589037361072007168, 前后置课程关系集合 {589037981162168320=[589037985069162496]}', '2-续班计划 589037361072007168, 前置课程存在订单"
+   ]
+  ]
+ },
+ "BE_E": {
+  "consistent": false,
+  "ndiff": 3,
+  "diffs": [
+   [
+    ".data.gradeClazzList[len]",
+    "1",
+    "2"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[len]",
+    "1",
+    "2"
+   ],
+   [
+    ".data.msg",
+    "None",
+    "[['1-续班计划 591020374322561024, 前后置课程关系集合 {591020433489467392=[591020448295360512]}', '2-续班计划 591020374322561024, 前置课程存在订单"
+   ]
+  ]
+ },
+ "BE_F": {
+  "consistent": false,
+  "ndiff": 27,
+  "diffs": [
+   [
+    ".data.gradeClazzList[len]",
+    "1",
+    "2"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].afterCourseNumber",
+    "589037985069162496",
+    "18405861174936317"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].beforeCourseNumber",
+    "589037981162168320",
+    "18405861174936317"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].canChangeCourse",
+    "None",
+    "True"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].clazzDateDesc",
+    "2026年11月09日-2026年11月09日",
+    "None"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].clazzNumber",
+    "None",
+    "589762111522013184"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].clazzTimeDesc",
+    "18:25-18:30",
+    "None"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].clazzWeekDesc",
+    "每周一",
+    "None"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].forceBuy",
+    "None",
+    "False"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].lessonCount",
+    "1",
+    "None"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].normDescList",
+    "None",
+    "['2026-10-30 15:15~2027-03-25 20:40']"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].productSkuName",
+    "50191-1106-数学大班主计划-post",
+    "QA-小班组合能力集成-1110165358"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].productSkuNumber",
+    "589041202037415936",
+    "589762111522013184"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].productType",
+    "2",
+    "51"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].recommendType",
+    "None",
+    "1"
+   ]
+  ]
+ },
+ "BE_S3": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "BE_S4": {
+  "consistent": false,
+  "ndiff": 8,
+  "diffs": [
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[len]",
+    "1",
+    "2"
+   ],
+   [
+    ".data.msg[len]",
+    "2",
+    "4"
+   ],
+   [
+    ".data.msg[1][len]",
+    "10",
+    "5"
+   ],
+   [
+    ".data.msg[1][0]",
+    "前置课程 is 590563875993239552, 前置班级信息 is 590564403009634304",
+    "1-续班计划 590563948968001536, 前后置课程关系集合 {590563954137317376=[590563960523145216]}"
+   ],
+   [
+    ".data.msg[1][1]",
+    "匹配条件 主讲老师 开始, 前置班级 is 590564403009634304, 待匹配班级集合 is [590564278055026688, 590564313490604032]",
+    "2-续班计划 590563948968001536, 前置课程存在订单过滤完成, 前置课程集合courseNumbers is [590563954137317376]"
+   ],
+   [
+    ".data.msg[1][2]",
+    "匹配条件 主讲老师 结束, 前置班级 is 590564403009634304, 本次匹配班级集合结果 is [590564278055026688]",
+    "3-续班计划 590563948968001536, 后置课程信息过滤完成, 过滤前后置课程集合courseNumbers is [590563960523145216], 过滤后后置课程集合courseNumbers is [590563"
+   ],
+   [
+    ".data.msg[1][3]",
+    "匹配条件 学科条件 开始, 前置班级 is 590564403009634304, 待匹配班级集合 is [590564278055026688, 590564313490604032]",
+    "4-1 续班计划 590563948968001536, 非联报续班计划，过滤班级售卖状态，后置班级信息库存与售卖状态过滤完成, 过滤前班级集合clazzNumbers is [590564441871958016], 过滤后班级集合cla"
+   ],
+   [
+    ".data.msg[1][4]",
+    "匹配条件 学科条件 结束, 前置班级 is 590564403009634304, 本次匹配班级集合结果 is [590564278055026688, 590564313490604032]",
+    "4-续班计划 590563948968001536, 后置班级信息课程标签过滤完成, 过滤前班级集合clazzNumbers is [590564441871958016], 过滤后班级集合clazzNumbers is [59056444"
+   ]
+  ]
+ },
+ "BE_S8": {
+  "consistent": false,
+  "ndiff": 3,
+  "diffs": [
+   [
+    ".data.allSignUp",
+    "None",
+    "0"
+   ],
+   [
+    ".data.gradeClazzList",
+    "None",
+    "[{'grade': 15, 'gradeName': '五年级', 'defaultSelect': 1, 'clazzDetailDTOList': [{'productSkuNumber': '591020573457448960',"
+   ],
+   [
+    ".data.msg",
+    "None",
+    "[['1-续班计划 591020374322561024, 前后置课程关系集合 {591020433489467392=[591020448295360512]}', '2-续班计划 591020374322561024, 前置课程存在订单"
+   ]
+  ]
+ },
+ "BE_G": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "BE1_B": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "BE1_F": {
+  "consistent": false,
+  "ndiff": 27,
+  "diffs": [
+   [
+    ".data.gradeClazzList[len]",
+    "1",
+    "2"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].afterCourseNumber",
+    "589037985069162496",
+    "18405861174936317"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].beforeCourseNumber",
+    "589037981162168320",
+    "18405861174936317"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].canChangeCourse",
+    "None",
+    "True"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].clazzDateDesc",
+    "2026年11月09日-2026年11月09日",
+    "None"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].clazzNumber",
+    "None",
+    "589762111522013184"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].clazzTimeDesc",
+    "18:25-18:30",
+    "None"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].clazzWeekDesc",
+    "每周一",
+    "None"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].forceBuy",
+    "None",
+    "False"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].lessonCount",
+    "1",
+    "None"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].normDescList",
+    "None",
+    "['2026-10-30 15:15~2027-03-25 20:40']"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].productSkuName",
+    "50191-1106-数学大班主计划-post",
+    "QA-小班组合能力集成-1110165358"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].productSkuNumber",
+    "589041202037415936",
+    "589762111522013184"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].productType",
+    "2",
+    "51"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].recommendType",
+    "None",
+    "1"
+   ]
+  ]
+ },
+ "BE1_S3": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ }
+}

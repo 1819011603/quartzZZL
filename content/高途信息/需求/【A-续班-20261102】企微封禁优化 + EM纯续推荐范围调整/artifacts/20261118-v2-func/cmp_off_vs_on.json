@@ -1,0 +1,470 @@
+{
+ "A": {
+  "consistent": false,
+  "ndiff": 2,
+  "diffs": [
+   [
+    ".data.gradeClazzList[len]",
+    "1",
+    "2"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[len]",
+    "1",
+    "2"
+   ]
+  ]
+ },
+ "A_bc": {
+  "consistent": false,
+  "ndiff": 2,
+  "diffs": [
+   [
+    ".data.gradeClazzList[len]",
+    "1",
+    "2"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[len]",
+    "1",
+    "2"
+   ]
+  ]
+ },
+ "A2": {
+  "consistent": false,
+  "ndiff": 2,
+  "diffs": [
+   [
+    ".data.gradeClazzList[len]",
+    "1",
+    "2"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[len]",
+    "1",
+    "2"
+   ]
+  ]
+ },
+ "A2_bc": {
+  "consistent": false,
+  "ndiff": 2,
+  "diffs": [
+   [
+    ".data.gradeClazzList[len]",
+    "1",
+    "2"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[len]",
+    "1",
+    "2"
+   ]
+  ]
+ },
+ "B": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "B_bc": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "C": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "C_bc": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "D": {
+  "consistent": false,
+  "ndiff": 2,
+  "diffs": [
+   [
+    ".data.gradeClazzList[len]",
+    "1",
+    "2"
+   ],
+   [
+    ".data.msg",
+    "None",
+    "[]"
+   ]
+  ]
+ },
+ "D_bc": {
+  "consistent": false,
+  "ndiff": 28,
+  "diffs": [
+   [
+    ".data.gradeClazzList[1].clazzDetailDTOList[len]",
+    "3",
+    "5"
+   ],
+   [
+    ".data.gradeClazzList[1].clazzDetailDTOList[0].beforeCourseNumber",
+    "589037985069162496",
+    "589037981162168320"
+   ],
+   [
+    ".data.gradeClazzList[1].clazzDetailDTOList[0].canChangeCourse",
+    "False",
+    "True"
+   ],
+   [
+    ".data.gradeClazzList[1].clazzDetailDTOList[0].clazzDateDesc",
+    "None",
+    "2026年11月09日-2026年11月09日"
+   ],
+   [
+    ".data.gradeClazzList[1].clazzDetailDTOList[0].clazzTimeDesc",
+    "None",
+    "18:25-18:30"
+   ],
+   [
+    ".data.gradeClazzList[1].clazzDetailDTOList[0].clazzWeekDesc",
+    "None",
+    "每周一"
+   ],
+   [
+    ".data.gradeClazzList[1].clazzDetailDTOList[0].lessonCount",
+    "None",
+    "1"
+   ],
+   [
+    ".data.gradeClazzList[1].clazzDetailDTOList[0].recommendType",
+    "3",
+    "1"
+   ],
+   [
+    ".data.gradeClazzList[1].clazzDetailDTOList[1].afterCourseNumber",
+    "589038008890712064",
+    "589037996712550400"
+   ],
+   [
+    ".data.gradeClazzList[1].clazzDetailDTOList[1].beforeCourseNumber",
+    "589038008890712064",
+    "589037992648269824"
+   ],
+   [
+    ".data.gradeClazzList[1].clazzDetailDTOList[1].canChangeCourse",
+    "False",
+    "True"
+   ],
+   [
+    ".data.gradeClazzList[1].clazzDetailDTOList[1].clazzDateDesc",
+    "None",
+    "2026年11月09日-2026年11月09日"
+   ],
+   [
+    ".data.gradeClazzList[1].clazzDetailDTOList[1].clazzTimeDesc",
+    "None",
+    "22:25-22:30"
+   ],
+   [
+    ".data.gradeClazzList[1].clazzDetailDTOList[1].clazzWeekDesc",
+    "None",
+    "每周一"
+   ],
+   [
+    ".data.gradeClazzList[1].clazzDetailDTOList[1].lessonCount",
+    "None",
+    "1"
+   ]
+  ]
+ },
+ "E": {
+  "consistent": false,
+  "ndiff": 3,
+  "diffs": [
+   [
+    ".data.gradeClazzList[len]",
+    "1",
+    "2"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[len]",
+    "1",
+    "2"
+   ],
+   [
+    ".data.msg",
+    "None",
+    "[]"
+   ]
+  ]
+ },
+ "E_bc": {
+  "consistent": false,
+  "ndiff": 3,
+  "diffs": [
+   [
+    ".data.gradeClazzList[len]",
+    "2",
+    "3"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[len]",
+    "1",
+    "2"
+   ],
+   [
+    ".data.msg",
+    "None",
+    "[]"
+   ]
+  ]
+ },
+ "F": {
+  "consistent": false,
+  "ndiff": 19,
+  "diffs": [
+   [
+    ".data.gradeClazzList[len]",
+    "1",
+    "2"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[len]",
+    "3",
+    "1"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].afterCourseNumber",
+    "589037985069162496",
+    "18405861174936317"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].beforeCourseNumber",
+    "589037981162168320",
+    "18405861174936317"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].clazzDateDesc",
+    "2026年11月09日-2026年11月09日",
+    "None"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].clazzNumber",
+    "None",
+    "589762111522013184"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].clazzTimeDesc",
+    "18:25-18:30",
+    "None"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].clazzWeekDesc",
+    "每周一",
+    "None"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].lessonCount",
+    "1",
+    "None"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].normDescList",
+    "None",
+    "['2026-10-30 15:15~2027-03-25 20:40']"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].productSkuName",
+    "50191-1106-数学大班主计划-post",
+    "QA-小班组合能力集成-1110165358"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].productSkuNumber",
+    "589041202037415936",
+    "589762111522013184"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].productType",
+    "2",
+    "51"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].teacherList[0].avatarUrl",
+    "https://test-i.gsxcdn.com/8057297_amc1nu80.jpeg",
+    "https://test-i.gsxcdn.com/6700650_mmwkrhyl.jpeg"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].teacherList[0].name",
+    "陈陈",
+    "王碧云-外显主讲"
+   ]
+  ]
+ },
+ "F_bc": {
+  "consistent": false,
+  "ndiff": 43,
+  "diffs": [
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[len]",
+    "1",
+    "2"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].afterCourseNumber",
+    "18405861174936327",
+    "18405861174936317"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].beforeCourseNumber",
+    "None",
+    "18405861174936317"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].canChangeCourse",
+    "False",
+    "True"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].clazzDateDesc",
+    "",
+    "None"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].clazzNumber",
+    "589048589437788160",
+    "589762111522013184"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].clazzTimeDesc",
+    "",
+    "None"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].clazzWeekDesc",
+    "",
+    "None"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].lessonCount",
+    "2",
+    "None"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].normDescList",
+    "None",
+    "['2026-10-30 15:15~2027-03-25 20:40']"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].productSkuName",
+    "默认规格",
+    "QA-小班组合能力集成-1110165358"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].productSkuNumber",
+    "589048589437788160",
+    "589762111522013184"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].productType",
+    "6004",
+    "51"
+   ],
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[0].recommendType",
+    "3",
+    "1"
+   ],
+   [
+    ".data.gradeClazzList[1].clazzDetailDTOList[1].beforeCourseNumber",
+    "None",
+    "589037992648269824"
+   ]
+  ]
+ },
+ "G": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "G_bc": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "S3": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "S3_bc": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "S4": {
+  "consistent": false,
+  "ndiff": 1,
+  "diffs": [
+   [
+    ".data.gradeClazzList[0].clazzDetailDTOList[len]",
+    "1",
+    "2"
+   ]
+  ]
+ },
+ "S4_bc": {
+  "consistent": false,
+  "ndiff": 1,
+  "diffs": [
+   [
+    ".data.gradeClazzList[2].clazzDetailDTOList[len]",
+    "1",
+    "2"
+   ]
+  ]
+ },
+ "S8": {
+  "consistent": false,
+  "ndiff": 3,
+  "diffs": [
+   [
+    ".data.allSignUp",
+    "None",
+    "0"
+   ],
+   [
+    ".data.gradeClazzList",
+    "None",
+    "[{'grade': 15, 'gradeName': '五年级', 'defaultSelect': 1, 'clazzDetailDTOList': [{'productSkuNumber': '591020573457448960',"
+   ],
+   [
+    ".data.msg",
+    "None",
+    "[]"
+   ]
+  ]
+ },
+ "S9": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "S12": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "X1": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "X2": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ }
+}

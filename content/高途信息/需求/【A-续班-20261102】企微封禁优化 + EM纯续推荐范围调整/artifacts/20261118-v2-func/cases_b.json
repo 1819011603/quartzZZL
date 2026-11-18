@@ -1,0 +1,93 @@
+[
+ {
+  "id": "BE_A",
+  "rn": "591020372877623296",
+  "uid": "7746793735",
+  "desc": "B端 fromC=0",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=591020372877623296&userId=7746793735&fromC=0"
+ },
+ {
+  "id": "BE_B",
+  "rn": "591020374322561024",
+  "uid": "7746793735",
+  "desc": "B端 fromC=0",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=591020374322561024&userId=7746793735&fromC=0"
+ },
+ {
+  "id": "BE_C",
+  "rn": "586116340522184704",
+  "uid": "7746791494",
+  "desc": "B端 fromC=0",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=586116340522184704&userId=7746791494&fromC=0"
+ },
+ {
+  "id": "BE_D",
+  "rn": "589721954597011456",
+  "uid": "7704848531",
+  "desc": "B端 fromC=0",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=589721954597011456&userId=7704848531&fromC=0"
+ },
+ {
+  "id": "BE_E",
+  "rn": "588671894562123776",
+  "uid": "7704848531",
+  "desc": "B端 fromC=0",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=588671894562123776&userId=7704848531&fromC=0"
+ },
+ {
+  "id": "BE_F",
+  "rn": "589037361072007168",
+  "uid": "7704848531",
+  "desc": "B端 fromC=0",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=589037361072007168&userId=7704848531&fromC=0"
+ },
+ {
+  "id": "BE_S3",
+  "rn": "588506246722727936",
+  "uid": "7707218285",
+  "desc": "B端 fromC=0",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=588506246722727936&userId=7707218285&fromC=0"
+ },
+ {
+  "id": "BE_S4",
+  "rn": "590563861447557120",
+  "uid": "7704848531",
+  "desc": "B端 fromC=0",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=590563861447557120&userId=7704848531&fromC=0"
+ },
+ {
+  "id": "BE_S8",
+  "rn": "591020372877623296",
+  "uid": "7704848531",
+  "desc": "B端 fromC=0",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=591020372877623296&userId=7704848531&fromC=0"
+ },
+ {
+  "id": "BE_G",
+  "rn": "999999999999999",
+  "uid": "7746793735",
+  "desc": "B端 fromC=0",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=999999999999999&userId=7746793735&fromC=0"
+ },
+ {
+  "id": "BE1_B",
+  "rn": "591020374322561024",
+  "uid": "7746793735",
+  "desc": "B端 fromC=1（按C端口径、可读缓存）",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=591020374322561024&userId=7746793735&fromC=1"
+ },
+ {
+  "id": "BE1_F",
+  "rn": "589037361072007168",
+  "uid": "7704848531",
+  "desc": "B端 fromC=1（按C端口径、可读缓存）",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=589037361072007168&userId=7704848531&fromC=1"
+ },
+ {
+  "id": "BE1_S3",
+  "rn": "588506246722727936",
+  "uid": "7707218285",
+  "desc": "B端 fromC=1（按C端口径、可读缓存）",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=588506246722727936&userId=7707218285&fromC=1"
+ }
+]

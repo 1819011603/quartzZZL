@@ -1,0 +1,127 @@
+{
+ "A": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "A_bc": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "A2": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "A2_bc": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "B": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "B_bc": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "C": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "C_bc": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "D": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "D_bc": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "E": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "E_bc": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "F": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "F_bc": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "G": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "G_bc": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "S3": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "S3_bc": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "S4": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "S4_bc": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "S8": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "S9": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "S12": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "X1": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ },
+ "X2": {
+  "consistent": true,
+  "ndiff": 0,
+  "diffs": []
+ }
+}

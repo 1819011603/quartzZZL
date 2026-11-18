@@ -1,0 +1,202 @@
+[
+ {
+  "id": "A",
+  "rn": "591020372877623296",
+  "uid": "7746793735",
+  "bcart": false,
+  "desc": "大班主(23)→大从+小从，联报23纯续+从计划合并",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=591020372877623296&appointUserId=7746793735&includeBCart=false&sellerId=8645&p_client=1"
+ },
+ {
+  "id": "A_bc",
+  "rn": "591020372877623296",
+  "uid": "7746793735",
+  "bcart": true,
+  "desc": "大班主(23)→大从+小从，联报23纯续+从计划合并；includeBCart=true（加购）",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=591020372877623296&appointUserId=7746793735&includeBCart=true&sellerId=8645&p_client=1"
+ },
+ {
+  "id": "A2",
+  "rn": "591020372877623296",
+  "uid": "7746793736",
+  "bcart": false,
+  "desc": "同A，另一学员",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=591020372877623296&appointUserId=7746793736&includeBCart=false&sellerId=8645&p_client=1"
+ },
+ {
+  "id": "A2_bc",
+  "rn": "591020372877623296",
+  "uid": "7746793736",
+  "bcart": true,
+  "desc": "同A，另一学员；includeBCart=true（加购）",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=591020372877623296&appointUserId=7746793736&includeBCart=true&sellerId=8645&p_client=1"
+ },
+ {
+  "id": "B",
+  "rn": "591020374322561024",
+  "uid": "7746793735",
+  "bcart": false,
+  "desc": "大班 pt=2 无从计划（被A/E共享的从）",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=591020374322561024&appointUserId=7746793735&includeBCart=false&sellerId=8645&p_client=1"
+ },
+ {
+  "id": "B_bc",
+  "rn": "591020374322561024",
+  "uid": "7746793735",
+  "bcart": true,
+  "desc": "大班 pt=2 无从计划（被A/E共享的从）；includeBCart=true（加购）",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=591020374322561024&appointUserId=7746793735&includeBCart=true&sellerId=8645&p_client=1"
+ },
+ {
+  "id": "C",
+  "rn": "586116340522184704",
+  "uid": "7746791494",
+  "bcart": false,
+  "desc": "小班主↔大从（环），6004+2，含扩科",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=586116340522184704&appointUserId=7746791494&includeBCart=false&sellerId=8645&p_client=1"
+ },
+ {
+  "id": "C_bc",
+  "rn": "586116340522184704",
+  "uid": "7746791494",
+  "bcart": true,
+  "desc": "小班主↔大从（环），6004+2，含扩科；includeBCart=true（加购）",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=586116340522184704&appointUserId=7746791494&includeBCart=true&sellerId=8645&p_client=1"
+ },
+ {
+  "id": "D",
+  "rn": "589721954597011456",
+  "uid": "7704848531",
+  "bcart": false,
+  "desc": "小班主→4大从（含环），51+2",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=589721954597011456&appointUserId=7704848531&includeBCart=false&sellerId=8645&p_client=1"
+ },
+ {
+  "id": "D_bc",
+  "rn": "589721954597011456",
+  "uid": "7704848531",
+  "bcart": true,
+  "desc": "小班主→4大从（含环），51+2；includeBCart=true（加购）",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=589721954597011456&appointUserId=7704848531&includeBCart=true&sellerId=8645&p_client=1"
+ },
+ {
+  "id": "E",
+  "rn": "588671894562123776",
+  "uid": "7704848531",
+  "bcart": false,
+  "desc": "小班主→小从+大从（混合）",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=588671894562123776&appointUserId=7704848531&includeBCart=false&sellerId=8645&p_client=1"
+ },
+ {
+  "id": "E_bc",
+  "rn": "588671894562123776",
+  "uid": "7704848531",
+  "bcart": true,
+  "desc": "小班主→小从+大从（混合）；includeBCart=true（加购）",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=588671894562123776&appointUserId=7704848531&includeBCart=true&sellerId=8645&p_client=1"
+ },
+ {
+  "id": "F",
+  "rn": "589037361072007168",
+  "uid": "7704848531",
+  "bcart": false,
+  "desc": "大班主→3大从+1小从（环、共享从）",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=589037361072007168&appointUserId=7704848531&includeBCart=false&sellerId=8645&p_client=1"
+ },
+ {
+  "id": "F_bc",
+  "rn": "589037361072007168",
+  "uid": "7704848531",
+  "bcart": true,
+  "desc": "大班主→3大从+1小从（环、共享从）；includeBCart=true（加购）",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=589037361072007168&appointUserId=7704848531&includeBCart=true&sellerId=8645&p_client=1"
+ },
+ {
+  "id": "G",
+  "rn": "999999999999999",
+  "uid": "7746793735",
+  "bcart": false,
+  "desc": "计划不存在（异常入参）",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=999999999999999&appointUserId=7746793735&includeBCart=false&sellerId=8645&p_client=1"
+ },
+ {
+  "id": "G_bc",
+  "rn": "999999999999999",
+  "uid": "7746793735",
+  "bcart": true,
+  "desc": "计划不存在（异常入参）；includeBCart=true（加购）",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=999999999999999&appointUserId=7746793735&includeBCart=true&sellerId=8645&p_client=1"
+ },
+ {
+  "id": "S3",
+  "rn": "588506246722727936",
+  "uid": "7707218285",
+  "bcart": false,
+  "desc": "小班无从计划（单计划），已报名后置（S7 signUp=1）",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=588506246722727936&appointUserId=7707218285&includeBCart=false&sellerId=8645&p_client=1"
+ },
+ {
+  "id": "S3_bc",
+  "rn": "588506246722727936",
+  "uid": "7707218285",
+  "bcart": true,
+  "desc": "小班无从计划（单计划），已报名后置（S7 signUp=1）；includeBCart=true",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=588506246722727936&appointUserId=7707218285&includeBCart=true&sellerId=8645&p_client=1"
+ },
+ {
+  "id": "S4",
+  "rn": "590563861447557120",
+  "uid": "7704848531",
+  "bcart": false,
+  "desc": "大班主→大从（纯大大链），前置班今日停售",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=590563861447557120&appointUserId=7704848531&includeBCart=false&sellerId=8645&p_client=1"
+ },
+ {
+  "id": "S4_bc",
+  "rn": "590563861447557120",
+  "uid": "7704848531",
+  "bcart": true,
+  "desc": "大班主→大从（纯大大链），前置班今日停售；includeBCart=true",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=590563861447557120&appointUserId=7704848531&includeBCart=true&sellerId=8645&p_client=1"
+ },
+ {
+  "id": "S8",
+  "rn": "591020372877623296",
+  "uid": "7704848531",
+  "bcart": false,
+  "desc": "无前置订单（学员没买该计划前置课）",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=591020372877623296&appointUserId=7704848531&includeBCart=false&sellerId=8645&p_client=1"
+ },
+ {
+  "id": "S9",
+  "rn": "493364154346823680",
+  "uid": "7704848531",
+  "bcart": false,
+  "desc": "计划已失效（status=3）",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=493364154346823680&appointUserId=7704848531&includeBCart=false&sellerId=8645&p_client=1"
+ },
+ {
+  "id": "S12",
+  "rn": "548944373423863808",
+  "uid": "7704848531",
+  "bcart": false,
+  "desc": "联报23配置缺失（组合SKU查不到）",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=548944373423863808&appointUserId=7704848531&includeBCart=false&sellerId=8645&p_client=1"
+ },
+ {
+  "id": "X1",
+  "rn": "abc",
+  "uid": "7704848531",
+  "bcart": false,
+  "desc": "异常入参：renewalNumber 非数字",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=abc&appointUserId=7704848531&includeBCart=false&sellerId=8645&p_client=1"
+ },
+ {
+  "id": "X2",
+  "rn": "",
+  "uid": "7704848531",
+  "bcart": false,
+  "desc": "异常入参：缺 renewalNumber",
+  "url": "https://test-api.gaotu.cn/cart/web/renewal/cart?appointUserId=7704848531&includeBCart=false&sellerId=8645&p_client=1"
+ }
+]
