@@ -9,6 +9,31 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-11-18（联调问题闭环：复现证实 + TEST 缓存开关落地）
+
+### 🤖 Claude
+
+- **复现证实**：桥调 cart `RegistrationService#preRegistration(7658127801, 591029634963933184, 585960755422160896, null)`（dev-2），`discount_price=39999`（trace `cart_gaotu100_com.2422.17949880915790785`；复测 `...295.17949889857701042`）。**根因坐实=活动详情共享 Redis 缓存版本混写**（默认泳道旧代码重建缓存缺 `externalDeductibleAmount`），清缓存+新代码重建后恢复；配置落库/后端计算/前端字段三层无缺陷。
+- **可回复金瑞琳的结论**：字段=`productList[0].discountPrice`（契约字段，前端没读错）；单位=**分**；该计划预期值=**39999（=399.99 元）**；展示受节点开关 `showExternalDeductAmount` 控制（开=外显金额，关=抵扣金额）。
+- **TEST 缓存开关（Owner 授权「测试环境不要开启缓存」）**：
+  - `product-b` 发布 `cache.skip.global.redis=true` + `cache.skip.global.guava=true`（cscache 框架全局跳过，release `20261118155956-release`，回读已生效）；发布后 error 日志仅 mosn sidecar 噪音，无业务异常。
+  - `gaotu-promotion-c`（Owner 已开权限）回读 `pre.order.activity.redis.expire.seconds=1`、`...random.seconds=0` **已发布**（开权限时已配好，set 幂等）——活动缓存 TTL=1s 配置兜底到位，配合此前 Arthas 运行时改值双层生效。
+  - `product` 的 `cache.skip.global.redis/guava=true` 两个 key **草稿就绪未发布**（Owner 指令「别发布」针对 renewal key 混入事件，待确认后发布）。
+  - promotion 活动详情缓存**无 on/off 开关**（代码只有 TTL 配置）；cart 无缓存开关；续班计划链路（`listRenewalWithProcessByNumber`）直查 DB 无缓存。
+- **Apollo 草稿清污（Owner 指令「删掉 别发布」）**：`product`/TEST/application 草稿中他人遗留的 `renewal.pure.relation.enabled=false`（纯续关联需求，代码默认 true）已删除（itemId=1564527），仅删草稿未发布，运行时零变化；dry_run 复核 product 待发布项只剩上述两个 cache key。
+
+---
+
+## 2026-11-18（TEST promotion-c Apollo 发布缓存 TTL）
+
+### 🤖 Claude
+
+- litao04 已开权限。`gaotu-promotion-c` TEST default/application 新增并发布 `pre.order.activity.redis.expire.seconds=1`、`random.seconds=0`（releaseId 438138）；该 app 在 TEST 只有 default cluster，各泳道共用。
+- 三台 promotion-c pod 都有 Apollo 热更新日志写入这两个字段，Apollo 客户端与 bean 字段回读均 1/0；此后重启/重新部署也由 Apollo 注入，不再依赖 Arthas 内存改动。
+- 复测 10/10 返回 39999。默认泳道旧版本残留窗口约 1 秒仍存在。生产未动。
+
+---
+
 ## 2026-11-18（Arthas 缩短 TEST 缓存 TTL）
 
 ### 🤖 Claude

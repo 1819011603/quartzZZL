@@ -73,8 +73,8 @@ tags: [需求]
 | 阶段 | 后端测试验证完成（6 仓 `feature-xuban-20261001`，已部署复验；**C 端匹配已按 2026-11-17 新口径改造并验证**；前端由前端同学实现，改法见技术方案 §15 + [[前端如何改]]） |
 | 进度 | T 26 项完成（含 T-26 Bug 修复） · R 0/0 · C 0/0 |
 | 部署泳道 | **test-gtbg-dev-2**（dev 逻辑环境；2026-11-09 按目标 commit 重发 8 实例并复验。原 dev-3 已被后续需求占用） |
-| 当前卡点 | 无后端卡点；**前端待前端同学实现**；**PROD DDL 待提工单**（PROD Apollo 已配 `{3:32;4:30}`）；**`product-server-client` 1.5.12-SNAPSHOT 须以新版本号（非 master 已有的 1.5.13）定版 RELEASE，cart pom 同步升**（master 1.5.13 不含 `preClazzNumber`/`showExternalDeductAmount`） |
-| 最近更新 | **2026-11-18 Bug 修复（T-26）**：`promotion/PreOrderActivityService.java` `externalDeductibleAmount` 校验上限单位错误（100000分=1000元→10000000分=100000元），`promotion/0437258bf`；`promotion-management` Javadoc 单位歧义修正 `b635b97d`。全量比对完成：35项无新遗漏，①-23 建议关闭偏差（状态常量为上游枚举值，不应配置化，待所有者确认）。N-1 client 版本风险已登记 T-21④。详见[[验证对照]]。 |
+| 当前卡点 | 无后端卡点；**前端待前端同学实现**；**PROD DDL 待提工单**（PROD Apollo 已配 `{3:32;4:30}`）；**`product-server-client` 1.5.12-SNAPSHOT 须以新版本号（非 master 已有的 1.5.13）定版 RELEASE，cart pom 同步升**（master 1.5.13 不含 `preClazzNumber`/`showExternalDeductAmount`）；**TEST `product` 的 `cache.skip.global.redis/guava` 草稿待 Owner 确认发布** |
+| 最近更新 | **2026-11-18 联调问题闭环（金瑞琳 discountPrice=0）**：根因=活动详情共享 Redis 缓存版本混写（非代码缺陷、非前端字段错误），复现 39999 证实；TEST 缓存处置：`product-b` 发布 cscache 全局跳过、`gaotu-promotion-c` 活动 TTL=1s 已发布、`product` 草稿待确认。详见 changelog 2026-11-18。此前：T-26 Bug 修复（`promotion/0437258bf`）、35 项全量比对无遗漏。 |
 
 ## 下一步
 
