@@ -167,3 +167,4 @@
 - 从计划条目换课风险收口：代码确认写读 key 不一致（主计划号写、从计划号读）；运行时验证从计划条目 canChangeCourse=true，TEST 库现存 id=1463 记录符合缺陷形态；「刷新不生效」需授权调 1 次换课写接口，未做。飞书文档「V2 功能覆盖矩阵」节补风险说明（现象/代码/验证情况/影响面/建议）。证据：artifacts/20261118-v2-functional-coverage.md、artifacts/20261118-v2-func/g1-risk.xml。
 - 换课缺陷实测证实（授权写1条已清理）：主计划号写入成功（id=1476）但 C 端/B 端刷新仍显示原推荐；反向删除后回读恢复。文档「风险说明」更新为实测结论并回读。未做从计划号对照（授权限1条）。证据：artifacts/20261118-v2-functional-coverage.md。
 - 换课缺陷修复（owner 选方案2，commit f6c12222 已 push）：前置课反查从计划号落库+双 key 失效；单测 5 项 TDD+全量 597 与基线一致；pipeline 1352874 部署 f6c12222；实测闭环（落库从计划号、C端生效 trace ce2f6744/69d322f4、老链路回归 5b3a1c53/46aa3494）、记录清理恢复、Apollo 恢复读回；文档风险节改为已修复。换年级同族问题未修。AICR #1987 3 blocking 为既有问题已记录。证据：artifacts/20261118-v2-functional-coverage.md。
+- 接口与交互扫尾：10 HTTP 入口+Feign+2 AICR 风险全清单；新验 price/preRegistration 通过；证实换年级两个问题（从计划年级无效 + 不清空从计划记录，trace 64440472），建议与换课同法修待定；productSelectData/productList 受工具与登录态限制无法端到端。飞书文档新增「接口与交互扫尾清单」并回读。证据：artifacts/20261119-api-sweep.md。
