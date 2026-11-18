@@ -9,6 +9,18 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-11-18（联调：外显 399.99 显示 0）
+
+### 🤖 Claude
+
+- 现象（金瑞琳）：计划 `591029634963933184` 外显配 399.99，C 端 `discountPrice="0"`。
+- 定位：落库 39999 ✅、product 开关 true ✅、promotion-c 走 DB 返回 39999 ✅；**差异发生在 promotion-c 的共享 Redis 缓存** `promotion:preOrderActivity:visible:<活动号>`（TTL 300+0~60s，所有泳道共用一个 key）。默认泳道 promotion-c 仍是 release 旧代码（缓存 DTO 无 `externalDeductibleAmount`），谁先在缓存 miss 时重建，缓存就是谁的版本；旧版本写入 → cart 读到 null → 按 0。日志可见同一页面 15:35 为 39999、15:36 为 0。
+- 不是本需求代码缺陷，也不是前端读错字段（前端读 `discountPrice` 即约定字段，单位分）。
+- 处置：用 dev-2 实例清缓存并重建 → cart 返回 39999（`cart_gaotu100_com.294.17949877163971020`）。此修复是临时的，TTL 到期后若默认泳道先重建会再变 0。
+- Apollo（所有者授权 TEST）：缓存只有 TTL 配置，没有关闭开关。`promotion.gaotu100.com`（promotion-b）新增并发布 `pre.order.activity.redis.expire.seconds=1`、`random.seconds=0`；真正写缓存的 C 端 `gaotu-promotion-c` **无权限**（isConfigHidden，负责人 litao04），未能修改。生产未动。
+
+---
+
 ## 2026-11-18（①-23 配置化运行时验证完成）
 
 ### 🤖 Claude
