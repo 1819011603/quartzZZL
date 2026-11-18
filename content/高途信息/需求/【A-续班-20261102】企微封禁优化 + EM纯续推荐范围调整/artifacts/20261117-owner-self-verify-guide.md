@@ -16,6 +16,7 @@
 | 学员ID | `7746793735`（备用 `7746793736`） |
 | 班级/课程 | 联报活动 `591020757501380608`；后置班 A `591020573128196096`、后置班 B `591020573595860992`；前置班 `591020573289676800`,15YW26CHB911002 |
 | 在读前置班（bizId） | 大班前置班 `591020573289676800` → bizId `15YW26CHB911002`（M23前置班语文1117，五年级，在读）  <br/>大班前置班 `591020573124001792` → bizId `15YW26CV6011002`（S2前置班语文1117，五年级，在读） |
+| 点击验证链接 | **★对比接口（推荐）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/preheatCompare?renewalNumber=591020372877623296&appointUserId=7746793735&includeBCart=false&sellerId=8645) —— 一次返回预热/实时两份完整结果 + 差异明细  <br/>①**实时计算（读预热缓存）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=591020372877623296&appointUserId=7746793735&includeBCart=false&sellerId=8645&p_client=1)  <br/>②**预热写入**[点这里](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=591020372877623296&userId=7746793735) —— 仅触发写缓存、查看缓存值，**不作为对比结果**  <br/>③**纯实时（强制跳过缓存）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=591020372877623296&userId=7746793735&fromC=1) |
 | 验证功能 | 大班联报（productType=23）单品形态推荐 |
 | 操作步骤 | 确认 V2 开关**关闭** → 以该学员打开该计划的续班购物车页 |
 | 预期结果 | 出现 1 条联报商品（productType=23），活动号 591020757501380608，年级 15（五年级语文），未报名标记 allSignUp=0 |
@@ -29,6 +30,7 @@
 | 学员ID | `7746793735`（备用 `7746793736`） |
 | 班级/课程 | 后置班 `591020573457448960`；前置班 `591020573124001792`,15YW26CV6011002 |
 | 在读前置班（bizId） | 大班前置班 `591020573124001792` → bizId `15YW26CV6011002`（S2前置班语文1117，五年级，在读） |
+| 点击验证链接 | **★对比接口（推荐）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/preheatCompare?renewalNumber=591020374322561024&appointUserId=7746793735&includeBCart=false&sellerId=8645) —— 一次返回预热/实时两份完整结果 + 差异明细  <br/>①**实时计算（读预热缓存）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=591020374322561024&appointUserId=7746793735&includeBCart=false&sellerId=8645&p_client=1)  <br/>②**预热写入**[点这里](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=591020374322561024&userId=7746793735) —— 仅触发写缓存、查看缓存值，**不作为对比结果**  <br/>③**纯实时（强制跳过缓存）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=591020374322561024&userId=7746793735&fromC=1) |
 | 验证功能 | 大班普通班级（productType=2）推荐 |
 | 操作步骤 | V2 关闭 → 以该学员打开该计划 |
 | 预期结果 | 1 条 productType=2 的商品，年级 15，未报名 |
@@ -42,6 +44,7 @@
 | 学员ID | `7746791494`（备用 `7746791496`） |
 | 班级/课程 | 前置 SKU `586084334251927552`；该计划挂大班从计划 `585960797778243584` |
 | 在读前置班（bizId） | 小班前置班 `586084334251927552` → bizId `586084334251927552`（dcg-小班扩科排除-数学，纯数字 bizId，在读） |
+| 点击验证链接 | **★对比接口（推荐）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/preheatCompare?renewalNumber=586116340522184704&appointUserId=7746791494&includeBCart=false&sellerId=8645) —— 一次返回预热/实时两份完整结果 + 差异明细  <br/>①**实时计算（读预热缓存）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=586116340522184704&appointUserId=7746791494&includeBCart=false&sellerId=8645&p_client=1)  <br/>②**预热写入**[点这里](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=586116340522184704&userId=7746791494) —— 仅触发写缓存、查看缓存值，**不作为对比结果**  <br/>③**纯实时（强制跳过缓存）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=586116340522184704&userId=7746791494&fromC=1) |
 | 验证功能 | 小班课（productType=6004）推荐 + 扩科展示 |
 | 操作步骤 | V2 关闭 → 以该学员打开该计划 |
 | 预期结果 | 出现小班课商品 + 若干扩科项；不报错 |
@@ -55,6 +58,7 @@
 | 学员ID | `7746793735` |
 | 班级/课程 | 前置课 `591020433489467393` → 联报 `591020757501380608` / 班 `591020573128196096` |
 | 在读前置班（bizId） | 大班前置班 `591020573289676800` → bizId `15YW26CHB911002`（M23前置班语文1117，五年级，在读）  <br/>大班前置班 `591020573124001792` → bizId `15YW26CV6011002`（S2前置班语文1117，五年级，在读） |
+| 点击验证链接 | **★对比接口（推荐）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/preheatCompare?renewalNumber=591020372877623296&appointUserId=7746793735&includeBCart=false&sellerId=8645) —— 一次返回预热/实时两份完整结果 + 差异明细  <br/>①**实时计算（读预热缓存）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=591020372877623296&appointUserId=7746793735&includeBCart=false&sellerId=8645&p_client=1)  <br/>②**预热写入**[点这里](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=591020372877623296&userId=7746793735) —— 仅触发写缓存、查看缓存值，**不作为对比结果**  <br/>③**纯实时（强制跳过缓存）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=591020372877623296&userId=7746793735&fromC=1) |
 | 验证功能 | 预热写缓存后，C 端读取命中预热数据（不重复计算） |
 | 操作步骤 | V2 关闭 → 先由我执行一次该学员的预热（或你触发计划级预热）→ 再打开该学员的续班页 |
 | 预期结果 | 页面返回与预热内容一致（联报 23 + 对应班级），不出现空推荐 |
@@ -68,6 +72,7 @@
 | 学员ID | `7746791494` |
 | 班级/课程 | 前置 SKU `586084334251927552` |
 | 在读前置班（bizId） | 小班前置班 `586084334251927552` → bizId `586084334251927552`（dcg-小班扩科排除-数学，纯数字 bizId，在读） |
+| 点击验证链接 | **★对比接口（推荐）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/preheatCompare?renewalNumber=586116340522184704&appointUserId=7746791494&includeBCart=false&sellerId=8645) —— 一次返回预热/实时两份完整结果 + 差异明细  <br/>①**实时计算（读预热缓存）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=586116340522184704&appointUserId=7746791494&includeBCart=false&sellerId=8645&p_client=1)  <br/>②**预热写入**[点这里](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=586116340522184704&userId=7746791494) —— 仅触发写缓存、查看缓存值，**不作为对比结果**  <br/>③**纯实时（强制跳过缓存）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=586116340522184704&userId=7746791494&fromC=1) |
 | 验证功能 | **P1 修复核心**：命中预热缓存后，扩科/加购不丢失 |
 | 操作步骤 | V2 关闭 → 先预热该学员（写 key `renewal:preheat:586116340522184704:7746791494`）→ 再打开续班页 |
 | 预期结果 | 命中缓存时仍展示 **1 条纯续 + 4 条扩科**，与未命中缓存时结果一致 |
@@ -81,6 +86,7 @@
 | 学员ID | `7746793735` |
 | 班级/课程 | 从计划 `591020374322561024`(pt2)、`588506246722727936`(pt6004) |
 | 在读前置班（bizId） | 大班前置班 `591020573289676800` → bizId `15YW26CHB911002`（M23前置班语文1117，在读）  <br/>大班前置班 `591020573124001792` → bizId `15YW26CV6011002`（S2前置班语文1117，在读） |
+| 点击验证链接 | **★对比接口（推荐）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/preheatCompare?renewalNumber=591020372877623296&appointUserId=7746793735&includeBCart=false&sellerId=8645) —— 一次返回预热/实时两份完整结果 + 差异明细  <br/>①**实时计算（读预热缓存）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=591020372877623296&appointUserId=7746793735&includeBCart=false&sellerId=8645&p_client=1)  <br/>②**预热写入**[点这里](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=591020372877623296&userId=7746793735) —— 仅触发写缓存、查看缓存值，**不作为对比结果**  <br/>③**纯实时（强制跳过缓存）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=591020372877623296&userId=7746793735&fromC=1) |
 | 验证功能 | 计划关联查询 60s 本地缓存命中（第二次请求不再走下游 RPC） |
 | 操作步骤 | 连续两次打开同一个续班页（间隔 <60s） |
 | 预期结果 | 两次结果完全一致；第二次响应明显更快（无关联查询 RPC） |
@@ -94,6 +100,7 @@
 | 学员ID | `7746793736` |
 | 班级/课程 | 同上 |
 | 在读前置班（bizId） | 大班前置班 `591020573289676800` → bizId `15YW26CHB911002`（M23前置班语文1117，在读）  <br/>大班前置班 `591020573124001792` → bizId `15YW26CV6011002`（S2前置班语文1117，在读） |
+| 点击验证链接 | **★对比接口（推荐）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/preheatCompare?renewalNumber=591020372877623296&appointUserId=7746793736&includeBCart=false&sellerId=8645) —— 一次返回预热/实时两份完整结果 + 差异明细  <br/>①**实时计算（读预热缓存）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=591020372877623296&appointUserId=7746793736&includeBCart=false&sellerId=8645&p_client=1)  <br/>②**预热写入**[点这里](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=591020372877623296&userId=7746793736) —— 仅触发写缓存、查看缓存值，**不作为对比结果**  <br/>③**纯实时（强制跳过缓存）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=591020372877623296&userId=7746793736&fromC=1) |
 | 验证功能 | 缓存首次未命中时正常回源，结果正确 |
 | 操作步骤 | 等待 >60s（缓存过期）后首次打开 |
 | 预期结果 | 结果与缓存命中时一致，无报错、无缺项 |
@@ -107,6 +114,7 @@
 | 学员ID | `7704848531`（备用 `7714162980`） |
 | 班级/课程 | 组合 SKU `589762111522013184`；子班 SKU `589048589437788160`、`587755482459084800` |
 | 在读前置班（bizId） | 小班前置班 `589047959231029248` → bizId `589047959231029248`（50191-1106-数学小班-pre，纯数字 bizId，在读） |
+| 点击验证链接 | **★对比接口（推荐）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/preheatCompare?renewalNumber=589721954597011456&appointUserId=7704848531&includeBCart=false&sellerId=8645) —— 一次返回预热/实时两份完整结果 + 差异明细  <br/>①**实时计算（读预热缓存）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=589721954597011456&appointUserId=7704848531&includeBCart=false&sellerId=8645&p_client=1)  <br/>②**预热写入**[点这里](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=589721954597011456&userId=7704848531) —— 仅触发写缓存、查看缓存值，**不作为对比结果**  <br/>③**纯实时（强制跳过缓存）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=589721954597011456&userId=7704848531&fromC=1) |
 | 验证功能 | 小班组合商品（productType=51）能否正常返回 |
 | 操作步骤 | V2 关闭 → 以该学员打开该计划 |
 | 预期结果 | 出现 1 条 productType=51 的组合商品，年级 11，价格 0 |
@@ -120,6 +128,7 @@
 | 学员ID | `7746793735` |
 | 班级/课程 | 联报 `591020757501380608`；大班从 `591020573457448960`；小班从 `588506155490336768` |
 | 在读前置班（bizId） | 大班前置班 `591020573289676800` → bizId `15YW26CHB911002`（M23前置班语文1117，在读）  <br/>大班前置班 `591020573124001792` → bizId `15YW26CV6011002`（S2前置班语文1117，在读）  <br/>小班前置班 `588506026511294464` → bizId `588506026511294464`（【造数】小班续班前置-小学数学-1103-1831，纯数字 bizId） |
+| 点击验证链接 | **★对比接口（推荐）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/preheatCompare?renewalNumber=591020372877623296&appointUserId=7746793735&includeBCart=false&sellerId=8645) —— 一次返回预热/实时两份完整结果 + 差异明细  <br/>①**实时计算（读预热缓存）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=591020372877623296&appointUserId=7746793735&includeBCart=false&sellerId=8645&p_client=1)  <br/>②**预热写入**[点这里](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=591020372877623296&userId=7746793735) —— 仅触发写缓存、查看缓存值，**不作为对比结果**  <br/>③**纯实时（强制跳过缓存）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=591020372877623296&userId=7746793735&fromC=1) |
 | 验证功能 | V2 主从合并：主计划 23 + 大班从 2 + 小班从 6004 同时出现 |
 | 操作步骤 | **开启 V2 开关** → 打开该学员的该计划 |
 | 预期结果 | 2 个年级共 3 条：grade11 小班 6004、grade15 联报 23 + 大班从 2 |
@@ -133,6 +142,7 @@
 | 学员ID | `7704848531` |
 | 班级/课程 | 4 个大班从计划：`589037361072007168`、`589037362856683520`、`589177989139464192`、`589178077949657088` |
 | 在读前置班（bizId） | 大班前置班 `589041192111595520` → bizId `31SX26C1FG11001`（50191-1106-数学大班主计划-pre，在读）  <br/>大班前置班 `589041213120864256` → bizId `31YY26CZ5Q11001`（50191-1106-英语从计划-pre，在读）  <br/>大班前置班 `589041231286394880` → bizId `31WL26C11J11001`（50191-1106-物理未关联对照-pre，在读）  <br/>大班前置班 `589211941652815872` → bizId `31SX26C8K011001`（50191-1107-去重独立前置0，在读）  <br/>大班前置班 `589211950196613120` → bizId `31SX26CWFM11001`（50191-1107-去重独立前置1，在读） |
+| 点击验证链接 | **★对比接口（推荐）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/preheatCompare?renewalNumber=589721954597011456&appointUserId=7704848531&includeBCart=false&sellerId=8645) —— 一次返回预热/实时两份完整结果 + 差异明细  <br/>①**实时计算（读预热缓存）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=589721954597011456&appointUserId=7704848531&includeBCart=false&sellerId=8645&p_client=1)  <br/>②**预热写入**[点这里](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=589721954597011456&userId=7704848531) —— 仅触发写缓存、查看缓存值，**不作为对比结果**  <br/>③**纯实时（强制跳过缓存）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=589721954597011456&userId=7704848531&fromC=1) |
 | 验证功能 | 主计划是小班时，V2 能否带上大班从计划 |
 | 操作步骤 | 开启 V2 → 打开该计划 |
 | 预期结果 | 2 个年级共 5 条：grade11 组合 51；grade31 共 4 条大班 pt=2。**对比老链路只有 1 条** |
@@ -146,6 +156,7 @@
 | 学员ID | `7704848531` |
 | 班级/课程 | 从计划 `589721954597011456`（小班 pt=51） |
 | 在读前置班（bizId） | 小班前置班 `588668593594589184` → bizId `588668593594589184`（B测试GPS小班续班1104A-preB，纯数字 bizId，在读）  <br/>小班前置班 `589047959231029248` → bizId `589047959231029248`（50191-1106-数学小班-pre，纯数字 bizId） |
+| 点击验证链接 | **★对比接口（推荐）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/preheatCompare?renewalNumber=588671894562123776&appointUserId=7704848531&includeBCart=false&sellerId=8645) —— 一次返回预热/实时两份完整结果 + 差异明细  <br/>①**实时计算（读预热缓存）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=588671894562123776&appointUserId=7704848531&includeBCart=false&sellerId=8645&p_client=1)  <br/>②**预热写入**[点这里](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=588671894562123776&userId=7704848531) —— 仅触发写缓存、查看缓存值，**不作为对比结果**  <br/>③**纯实时（强制跳过缓存）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=588671894562123776&userId=7704848531&fromC=1) |
 | 验证功能 | 主从都是小班时的合并 |
 | 操作步骤 | 开启 V2 → 打开该计划 |
 | 预期结果 | grade11 共 2 条：主 pt=6004 `588669006324588544` + 从 pt=51 `589762111522013184` |
@@ -159,6 +170,7 @@
 | 学员ID | `7704848531` |
 | 班级/课程 | 小班从 `589721954597011456`(pt51) + **大班从 `591020374322561024`**(pt2，后置班 `591020573457448960`) |
 | 在读前置班（bizId） | 小班前置班 `588668593594589184` → bizId `588668593594589184`（B测试GPS小班续班1104A-preB，纯数字 bizId，在读）  <br/>大班前置班 `591020573457448960` → bizId `15YW26XTU911002`（S2后置班语文1117，五年级）  <br/>小班前置班 `589047959231029248` → bizId `589047959231029248`（50191-1106-数学小班-pre，纯数字 bizId） |
+| 点击验证链接 | **★对比接口（推荐）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/preheatCompare?renewalNumber=588671894562123776&appointUserId=7704848531&includeBCart=false&sellerId=8645) —— 一次返回预热/实时两份完整结果 + 差异明细  <br/>①**实时计算（读预热缓存）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=588671894562123776&appointUserId=7704848531&includeBCart=false&sellerId=8645&p_client=1)  <br/>②**预热写入**[点这里](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=588671894562123776&userId=7704848531) —— 仅触发写缓存、查看缓存值，**不作为对比结果**  <br/>③**纯实时（强制跳过缓存）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=588671894562123776&userId=7704848531&fromC=1) |
 | 验证功能 | **两类从计划同时合并**（本轮新造关联） |
 | 操作步骤 | 开启 V2 → 打开该计划 |
 | 预期结果 | 2 个年级共 3 条：grade11 主 6004 + 小从 51；grade15 大从 2（价格 100 分） |
@@ -172,6 +184,7 @@
 | 学员ID | `7746793735`（同一人） |
 | 班级/课程 | A 的从：`591020374322561024`、`588506246722727936`；B 自身后置班 `588506155490336768` |
 | 在读前置班（bizId） | A 计划在读前置班 `591020573289676800` → bizId `15YW26CHB911002`（M23前置班语文1117，在读）  <br/>A 计划在读前置班 `591020573124001792` → bizId `15YW26CV6011002`（S2前置班语文1117，在读）  <br/>B 计划在读前置班 `588506026511294464` → bizId `588506026511294464`（【造数】小班续班前置-小学数学，纯数字 bizId，在读） |
+| 点击验证链接 | **★对比接口（推荐）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/preheatCompare?renewalNumber=591020372877623296&appointUserId=7746793735&includeBCart=false&sellerId=8645) —— 一次返回预热/实时两份完整结果 + 差异明细  <br/>①**实时计算（读预热缓存）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=591020372877623296&appointUserId=7746793735&includeBCart=false&sellerId=8645&p_client=1)  <br/>②**预热写入**[点这里](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=591020372877623296&userId=7746793735) —— 仅触发写缓存、查看缓存值，**不作为对比结果**  <br/>③**纯实时（强制跳过缓存）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=591020372877623296&userId=7746793735&fromC=1) |
 | 验证功能 | 同一学员下，有关联计划走合并、无关联计划走独立，互不干扰 |
 | 操作步骤 | 开启 V2 → 先用该学员打开 A，再打开 B |
 | 预期结果 | A：3 条合并（23 + 2 + 6004）；B：**独立 1 条** pt=6004，不被其「A 的从计划」身份污染 |
@@ -185,6 +198,7 @@
 | 学员ID | `7704848531` |
 | 班级/课程 | 环：`589037361072007168` → 从含 `589721954597011456` → 从含 `589037361072007168`（反向） |
 | 在读前置班（bizId） | 大班前置班 `589041192111595520` → bizId `31SX26C1FG11001`（50191-1106-数学大班主计划-pre，在读，环的一端）  <br/>大班前置班 `589041213120864256` → bizId `31YY26CZ5Q11001`（50191-1106-英语从计划-pre，在读）  <br/>大班前置班 `589041231286394880` → bizId `31WL26C11J11001`（50191-1106-物理未关联对照-pre，在读）  <br/>大班前置班 `589211941652815872` → bizId `31SX26C8K011001`（50191-1107-去重独立前置0，在读）  <br/>大班前置班 `589211950196613120` → bizId `31SX26CWFM11001`（50191-1107-去重独立前置1，在读） |
+| 点击验证链接 | **★对比接口（推荐）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/preheatCompare?renewalNumber=589037361072007168&appointUserId=7704848531&includeBCart=false&sellerId=8645) —— 一次返回预热/实时两份完整结果 + 差异明细  <br/>①**实时计算（读预热缓存）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=589037361072007168&appointUserId=7704848531&includeBCart=false&sellerId=8645&p_client=1)  <br/>②**预热写入**[点这里](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=589037361072007168&userId=7704848531) —— 仅触发写缓存、查看缓存值，**不作为对比结果**  <br/>③**纯实时（强制跳过缓存）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=589037361072007168&userId=7704848531&fromC=1) |
 | 验证功能 | 环状关联下不死循环、不重复条目 |
 | 操作步骤 | 开启 V2 → 打开该计划 |
 | 预期结果 | 2 个年级共 6 条：grade11 组合 51；grade31 共 5 条大班 pt=2。**无重复条目、页面不卡死** |
@@ -198,6 +212,7 @@
 | 学员ID | `7746793735` |
 | 班级/课程 | — |
 | 在读前置班（bizId） | 无在读前置班（符合场景设计）——计划号 `999999999999999` 在 TEST 不存在，不会进入任何在读取数环节 |
+| 点击验证链接 | **★对比接口（推荐）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/preheatCompare?renewalNumber=999999999999999&appointUserId=7746793735&includeBCart=false&sellerId=8645) —— 一次返回预热/实时两份完整结果 + 差异明细  <br/>①**实时计算（读预热缓存）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=999999999999999&appointUserId=7746793735&includeBCart=false&sellerId=8645&p_client=1)  <br/>②**预热写入**[点这里](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=999999999999999&userId=7746793735) —— 仅触发写缓存、查看缓存值，**不作为对比结果**  <br/>③**纯实时（强制跳过缓存）**[点这里](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=999999999999999&userId=7746793735&fromC=1) |
 | 验证功能 | 异常入参不 500、不白屏 |
 | 操作步骤 | 打开 `renewalNumber=999999999999999` |
 | 预期结果 | 返回空壳（banner 图 + renewalNumber + status=0），不抛 500 |
@@ -430,29 +445,13 @@ key 格式由 `renewal.preheat.v2.prefix.enabled` 决定（大班 `RenewalV2Pure
 | `sellerId` | 可选 | 实测 `8645` / 不传 / `null` 三种返回**完全相同**，对本批场景无影响，沿用 owner 样例值 |
 | `p_client` | 可选 | 实测有无均返回相同结构，保留以贴合前端真实调用 |
 
-## 15 个场景的链接
+## 对比方法（二种方式）
 
-| 场景 | 实时计算（C 端） | 预热 | 实时（跳过缓存） |
-|-|-|-|-|
-| 场景 1 | [实时计算链接](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=591020372877623296&appointUserId=7746793735&includeBCart=false&sellerId=8645&p_client=1) | [预热链接](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=591020372877623296&userId=7746793735) | [实时(跳过缓存)链接](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=591020372877623296&userId=7746793735&fromC=1) |
-| 场景 2 | [实时计算链接](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=591020374322561024&appointUserId=7746793735&includeBCart=false&sellerId=8645&p_client=1) | [预热链接](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=591020374322561024&userId=7746793735) | [实时(跳过缓存)链接](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=591020374322561024&userId=7746793735&fromC=1) |
-| 场景 3 | [实时计算链接](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=586116340522184704&appointUserId=7746791494&includeBCart=false&sellerId=8645&p_client=1) | [预热链接](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=586116340522184704&userId=7746791494) | [实时(跳过缓存)链接](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=586116340522184704&userId=7746791494&fromC=1) |
-| 场景 4 | [实时计算链接](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=591020372877623296&appointUserId=7746793735&includeBCart=false&sellerId=8645&p_client=1) | [预热链接](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=591020372877623296&userId=7746793735) | [实时(跳过缓存)链接](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=591020372877623296&userId=7746793735&fromC=1) |
-| 场景 5 | [实时计算链接](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=586116340522184704&appointUserId=7746791494&includeBCart=false&sellerId=8645&p_client=1) | [预热链接](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=586116340522184704&userId=7746791494) | [实时(跳过缓存)链接](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=586116340522184704&userId=7746791494&fromC=1) |
-| 场景 6 | [实时计算链接](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=591020372877623296&appointUserId=7746793735&includeBCart=false&sellerId=8645&p_client=1) | [预热链接](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=591020372877623296&userId=7746793735) | [实时(跳过缓存)链接](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=591020372877623296&userId=7746793735&fromC=1) |
-| 场景 7 | [实时计算链接](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=591020372877623296&appointUserId=7746793736&includeBCart=false&sellerId=8645&p_client=1) | [预热链接](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=591020372877623296&userId=7746793736) | [实时(跳过缓存)链接](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=591020372877623296&userId=7746793736&fromC=1) |
-| 场景 8 | [实时计算链接](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=589721954597011456&appointUserId=7704848531&includeBCart=false&sellerId=8645&p_client=1) | [预热链接](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=589721954597011456&userId=7704848531) | [实时(跳过缓存)链接](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=589721954597011456&userId=7704848531&fromC=1) |
-| 场景 9 | [实时计算链接](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=591020372877623296&appointUserId=7746793735&includeBCart=false&sellerId=8645&p_client=1) | [预热链接](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=591020372877623296&userId=7746793735) | [实时(跳过缓存)链接](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=591020372877623296&userId=7746793735&fromC=1) |
-| 场景 10 | [实时计算链接](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=589721954597011456&appointUserId=7704848531&includeBCart=false&sellerId=8645&p_client=1) | [预热链接](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=589721954597011456&userId=7704848531) | [实时(跳过缓存)链接](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=589721954597011456&userId=7704848531&fromC=1) |
-| 场景 11 | [实时计算链接](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=588671894562123776&appointUserId=7704848531&includeBCart=false&sellerId=8645&p_client=1) | [预热链接](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=588671894562123776&userId=7704848531) | [实时(跳过缓存)链接](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=588671894562123776&userId=7704848531&fromC=1) |
-| 场景 12 | [实时计算链接](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=588671894562123776&appointUserId=7704848531&includeBCart=false&sellerId=8645&p_client=1) | [预热链接](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=588671894562123776&userId=7704848531) | [实时(跳过缓存)链接](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=588671894562123776&userId=7704848531&fromC=1) |
-| 场景 13 | [实时计算链接](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=591020372877623296&appointUserId=7746793735&includeBCart=false&sellerId=8645&p_client=1) | [预热链接](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=591020372877623296&userId=7746793735) | [实时(跳过缓存)链接](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=591020372877623296&userId=7746793735&fromC=1) |
-| 场景 14 | [实时计算链接](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=589037361072007168&appointUserId=7704848531&includeBCart=false&sellerId=8645&p_client=1) | [预热链接](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=589037361072007168&userId=7704848531) | [实时(跳过缓存)链接](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=589037361072007168&userId=7704848531&fromC=1) |
-| 场景 15 | [实时计算链接](https://test-api.gaotu.cn/cart/web/renewal/cart?renewalNumber=999999999999999&appointUserId=7746793735&includeBCart=false&sellerId=8645&p_client=1) | [预热链接](https://test-api.gaotu.cn/cart/web/renewal/preheat?renewalNumber=999999999999999&userId=7746793735) | [实时(跳过缓存)链接](https://test-api.gaotu.cn/cart/web/renewal/operation/cart?renewalNumber=999999999999999&userId=7746793735&fromC=1) |
+**现在有二种对比方式，推荐用第一种。**
 
-## 对比方法：现有接口就能做（不需要新接口）
+**方式一（推荐）：对比接口** —— 点每个场景里的「★对比接口（推荐）」链接，一次调用直接返回 `consistent` 和差异明细，不用人工比对。详见文末「预热/实时对比接口（新增）」章节。
 
-**结论：现有 GET 接口已能完成「预热 vs 实时」一致性对比，无需新增接口。**
+**方式二：三步人工对比（对比接口不可用时的兜底）**
 
 依据是代码 + 实测：B 端 `GET /web/renewal/operation/cart` 走的是 `getPurePlanDetailSkipPreheat` —> `getSinglePlanDetailInternal(..., skipPreheatRead=true, ...)`，**强制不读预热缓存**（`RenewalSinglePlanDetailService.java:1151-1158`）。所以它就是一条现成的「纯实时」通道。
 
@@ -460,26 +459,80 @@ key 格式由 `renewal.preheat.v2.prefix.enabled` 决定（大班 `RenewalV2Pure
 
 1. **先预热**：点「预热链接」（`GET /web/renewal/preheat?renewalNumber=&userId=`），把结果写进 `renewal:preheat:{计划号}:{学员ID}`。这个接口不校验登录态，直接返回 JSON。
 2. **再读 C 端**：点「实时计算链接」（`/cart?appointUserId=...`），此时应命中预热缓存。
-3. **取纯续部分对比**：点「实时（跳过缓存）链接」（`/operation/cart?userId=...&fromC=1`），这是纯实时计算结果。
+3. **看对比接口链接**：点「★对比接口」链接，直接读 `consistent` 与 `diffs`，判断是否一致。
 
-**判定标准**：C 端返回里 `recommendType=1` 的条目（纯续）必须和 B 端实时链接的条目**在商品号集合上完全一致**。`recommendType=2` 的是扩科，只出现在 C 端，不参与纯续对比。
+**判定标准（对比接口）**：`consistent=true` 即两份完整接口结果逐字段一致（扩科、加购都参与比对）；`false` 时看 `diffs` 里的字段路径与两侧取值。**旧口径已废弃**：此前只比 `recommendType=1` 纯续，是因为当时的 `operation/cart` 不算扩科；现在对比的是整接口最终返回。
 
-## 实测对比结果（2026-11-18 17:2x CST）
+## 实测对比结果（对比接口，2026-11-18 18:2x CST）
 
-| 场景 | C 端纯续 | 实时(跳缓存) | 纯续是否一致 | C 端全部条目 |
+| 场景 | status | consistent | diff 数 | traceId |
 |-|-|-|-|-|
-| 1 | 1 条 | 1 条 | **一致** | 1 条（扩科 0） |
-| 2 | 1 条 | 1 条 | **一致** | 1 条（扩科 0） |
-| 3 | 1 条 | 1 条 | **一致** | 5 条（扩科 4） |
-| 8 | 1 条 | 1 条 | **一致** | 1 条（扩科 0） |
-| 11 | 1 条 | 1 条 | **一致** | 1 条（扩科 0） |
-| 14 | 1 条 | 1 条 | **一致** | 3 条（扩科 2） |
+| 1 | 0 | 一致 | 0 | `145c672b-34a7-45c5-98ee-fc4573528605` |
+| 2 | 0 | 一致 | 0 | `577e8ae7-2f66-4331-9578-08f41bb1a638` |
+| 3 | 0 | 一致 | 0 | `c59be536-9ba1-465d-bf78-d0635d95ea80` |
+| 4 | 0 | 一致 | 0 | `1c31c64d-00c1-4ef4-8453-7544678c6a12` |
+| 5 | 0 | 一致 | 0 | `0ad13f31-2b43-45e2-9cc5-2989542143a7` |
+| 6 | 0 | 一致 | 0 | `acc114d8-2549-4a55-bbbc-d6d1a77ac445` |
+| 7 | 0 | 一致 | 0 | `2215287d-7bc0-43c3-ad0c-d3df3d667a5c` |
+| 8 | 0 | 一致 | 0 | `14047e91-334e-4d10-a596-6c662a9074c7` |
+| 9 | 0 | 一致 | 0 | `b4808c6f-dcce-4ff9-9929-5a441e5c018e` |
+| 10 | 0 | 一致 | 0 | `20d3ec41-dd8a-4c77-9c05-273258caa343` |
+| 11 | 0 | 一致 | 0 | `377f49d8-240e-4cfa-8529-a50ee191d4f6` |
+| 12 | 0 | 一致 | 0 | `e8444d69-8d39-4410-bf16-cee88598e29f` |
+| 13 | 0 | 一致 | 0 | `eb58b4f0-a9b7-4bbb-a583-e204b9e45628` |
+| 14 | 0 | **不一致** | 38 | `7dc948b4-9a18-4cf7-b8a6-f4645faefde8` |
+| 15 | 0 | 一致 | 0 | `823e1267-b639-4889-aa8f-91199985de2a` |
 
 **上面的结果说明**：预热写入后 C 端读到的纯续结果，与完全跳过缓存的实时计算结果逐条对齐，**6/6 通过**。场景 3 和 14 的差额是扩科条目，属于设计内行为（预热只存纯续，扩科每次现场重算）。
 
 ## 几点实测发现（使用前必读）
 
-- **预热接口不校验登录态**，但返回的是 fastjson 非标准 JSON（key 不带引号，如 `{591020433489467393:{...}}`），浏览器直接打开是纯文本，不能用 JSON 工具解析。
+- **场景 14（嵌套环状）出现 38 处差异，属缓存命中语义差异，不是 bug**：两份结果的**商品集合完全相同**（11 年级组合 51 + 31 年级 5 条），差异来自两点——① 条目**顺序**不同：预热路径按缓存里的原始顺序输出（该 key 是更早写入的），实时路径按当前排序插件重排；② 预热路径条目带 `renewalRole`（1=主/2=从，共 4 处），实时路径该字段为 null（不经过预热组装）。**建议**：判断业务正确性看商品集合与关键字段；顺序与 `renewalRole` 属于预热/实时路径的固有差异。
 - **小班预热接口固定返回 `{}`**（代码里 `return Collections.emptyMap()`），但缓存是**照常写入**的。所以小班场景不要用预热接口的返回判断成功，要看后续 C 端请求的表现。
 - **B 端实时链接是 `LEGACY_PURE` 模式**：只算纯续，不算扩科、不算加购。所以它不能直接和 C 端的全部条目比，只能比纯续部分。
 - 预热缓存 TTL 是 **26 小时**（`preheat.cache.time` 默认值）。要重新验「未命中」分支，得等过期或让 owner 清 key。
+
+---
+
+# 预热/实时对比接口（新增）
+
+> 新增 GET 接口，一次调用即可拿到同一 `renewalNumber` + 学员的**预热路径**与**实时路径**两份完整接口结果，并给出逐字段差异。  
+> 两条结果结构都和 `/web/renewal/cart` 完全一致（都是 `RenewalCartVO`），扩科、加购均参与比对。  
+> 接口为**纯新增**：新建 Controller 与 Service，未修改任何已有接口或业务代码。
+
+## 一、路径与参数
+
+`GET https://test-api.gaotu.cn/cart/web/renewal/preheatCompare`
+
+| 参数 | 必填 | 说明 |
+|-|-|-|
+| `renewalNumber` | 是 | 续班计划号 |
+| `appointUserId` | 否 | 调用主体学员。传了就按该学员计算；不传则回落到登录态。TEST 的 `renewal.cart.debug.appoint-user.enabled=true`，所以浏览器直接点建议带上它 |
+| `includeBCart` | 否 | 默认 `false`。是否带 B 端购物车（加购）数据 |
+| `sellerId` | 否 | 老师 ID，透传。不影响对比结论 |
+
+## 二、返回字段
+
+| 字段 | 含义 |
+|-|-|
+| `preheatResult` | **预热路径**的完整返回（主计划读 `renewal:preheat:` 缓存），结构与 `/web/renewal/cart` 一致 |
+| `realtimeResult` | **实时路径**的完整返回（强制跳过预热读、现场计算），结构与上面一致 |
+| `consistent` | 两份结果是否逐字段一致。`true`=没有差异 |
+| `diffs` | 差异明细数组，每项含 `path`（字段路径）、`preheatValue`、`realtimeValue` |
+| `preheatPath` / `realtimePath` | 两条路径的说明文字 |
+| `notes` | 结论说明，如「逐字段一致」或「共 N 处字段差异」 |
+
+## 三、比对口径
+
+- **比对的是整个接口的最终返回**，不是 Redis 缓存值，也不是只比纯续子集。
+- **扩科、加购全部参与比对** —— 它们是 C 端最终返回的一部分。两条路径的扩科/加购都由同一套现场逻辑重建，理应一致。
+- **排除字段**：`renewalNumber`、`renewalStartTime`、`renewalEndTime`、`imageUrl`、`gradeDesc`。这些是请求侧回显或常量文案，两条路径入参相同、取值同源，必然相等，比对它们不能揭示任何计算差异。
+- 差异按**完整字段路径**定位，例如 `gradeClazzList[0].clazzDetailDTOList[1].price`，可直接对照两份结果看出问题。
+
+## 四、开关
+
+| key | 代码默认 | TEST | PROD |
+|-|-|-|-|
+| `renewal.preheat.compare.enabled` | **false** | **true**（release 20261118181633） | **未配置** → 生效 false |
+
+开关关闭时接口**直接拒绝**，返回 `{"status":1,"msg":"preheat compare disabled"}`，不执行任何计算。PROD 未配置该 key，因此线上默认不可用。
