@@ -9,7 +9,17 @@ tags: [需求, 日志]
 
 ---
 
-## 2026-11-18（Bug 修复 + 全量逐条比对）
+## 2026-11-18（①-23 配置化实现）
+
+### 🤖 Claude
+
+- 定（所有者决定）：①-23 状态白名单**配置化**，不采纳「已覆盖」建议。
+- 做：`PreOrderCouponIntersectService` 新增两个 `@ApolloJsonValue` 注入字段——`displayableCouponStatusWhiteList`（默认 `[1]`）和 `displayableSaleStatusWhiteList`（默认 `[2]`）；`isCouponDisplayable` 改用 `contains` 判断；空列表 fallback 到常量默认值，不退化为全放行。Apollo key：`preOrderActivity.coupon.displayable.couponStatusWhiteList` / `preOrderActivity.coupon.displayable.saleStatusWhiteList`，namespace `application`，appId `product-b`（B 端）和 `product`（C 端）。补回归单测 8 条 Tests 8/0。提交 `product-server/9ffc54f04`，`ls-remote` 确认远端。TEST Apollo 草稿已写（`apollo_set_key`，值 `[1]`/`[2]`，未发布）。
+- 验证：单测层已验证（Tests 8/0）；运行时验证需所有者：① 手动发布 TEST Apollo 草稿；② 重新部署 dev-2 product-b/product 到 `9ffc54f04`。
+
+---
+
+
 
 ### 🤖 Claude
 
