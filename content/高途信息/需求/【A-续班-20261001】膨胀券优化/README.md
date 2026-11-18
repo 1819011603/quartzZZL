@@ -71,10 +71,10 @@ tags: [需求]
 | | |
 |---|---|
 | 阶段 | 后端测试验证完成（6 仓 `feature-xuban-20261001`，已部署复验；**C 端匹配已按 2026-11-17 新口径改造并验证**；前端由前端同学实现，改法见技术方案 §15 + [[前端如何改]]） |
-| 进度 | T 25 项完成 · R 0/0 · C 0/0 |
+| 进度 | T 26 项完成（含 T-26 Bug 修复） · R 0/0 · C 0/0 |
 | 部署泳道 | **test-gtbg-dev-2**（dev 逻辑环境；2026-11-09 按目标 commit 重发 8 实例并复验。原 dev-3 已被后续需求占用） |
-| 当前卡点 | 无后端卡点；**前端待前端同学实现**；**PROD DDL 待提工单**（PROD Apollo 已配 `{3:32;4:30}`） |
-| 最近更新 | **2026-11-17 全量回归完成（含补验终版）：35 项 = 已验证 30 + 前端没做 3（①-9/②-8/②-9）+ 待产品 1（②-12）+ 偏差待确认 1（①-23）**。补验 3 项转已验证：①-20 兼容三层实测（缺字段回退/DEFAULT 0/FastJSON 忽略未知字段）、①-21 失败兜底单测（Tests 1/0，`3bb9cbbfd`）、①-22 调用计数（班查询双缓存，热 0 次/冷 1 次替换旧 1 次无缓存 feign）。期间发现并修复 dev-2 泳道 4 服务实例被回收问题（重建后 8 实例完整）。同日：C 端匹配新口径改造并验证（product-server `c6bd0b2ad`+`3bb9cbbfd` / cart `aa969377`）、teacher-tool 文案 Apollo 联动（`ae38d480`）。详见[[验证对照]]。 |
+| 当前卡点 | 无后端卡点；**前端待前端同学实现**；**PROD DDL 待提工单**（PROD Apollo 已配 `{3:32;4:30}`）；**`product-server-client` 1.5.12-SNAPSHOT 须以新版本号（非 master 已有的 1.5.13）定版 RELEASE，cart pom 同步升**（master 1.5.13 不含 `preClazzNumber`/`showExternalDeductAmount`） |
+| 最近更新 | **2026-11-18 Bug 修复（T-26）**：`promotion/PreOrderActivityService.java` `externalDeductibleAmount` 校验上限单位错误（100000分=1000元→10000000分=100000元），`promotion/0437258bf`；`promotion-management` Javadoc 单位歧义修正 `b635b97d`。全量比对完成：35项无新遗漏，①-23 建议关闭偏差（状态常量为上游枚举值，不应配置化，待所有者确认）。N-1 client 版本风险已登记 T-21④。详见[[验证对照]]。 |
 
 ## 下一步
 

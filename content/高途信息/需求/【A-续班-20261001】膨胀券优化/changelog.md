@@ -9,7 +9,19 @@ tags: [需求, 日志]
 
 ---
 
-## 2026-11-17（补验 3 项 · 全量终版）
+## 2026-11-18（Bug 修复 + 全量逐条比对）
+
+### 🤖 Claude
+
+- **前端截图触发 Bug**：金瑞琳发现「你的限制好像是 1000」——`promotion/PreOrderActivityService.java:1325` 校验 `externalDeductibleAmount > 100000L`（单位分，实际限制 1000 元），PRD 要求 0–100000 **元**应为 `10000000` 分。
+- **修复**：校验改为 `> 10000000L`；报错文案改为「C端外显抵扣金额需在0-100000元之间」；补回归单测 6 条（边界 0/10000000/旧错误边界 100000/超限/负数/null），Tests 6/0。提交 `promotion/0437258bf`，`ls-remote` 确认远端已更新。同步修正 `promotion-management/PreOrderActivityProductEditReq` Javadoc 单位歧义，提交 `promotion-management/b635b97d`。
+- **全量逐条比对**：35 项矩阵无新遗漏，实现与 PRD 全部一致。
+- **N-1 client 版本风险**：master `1.5.13` 已被纯续关联特性占用且**不含** `preClazzNumber`/`showExternalDeductAmount`；上线前须以**新版本号**（如 `1.5.14`）定版 feature 分支 client，cart pom 同步升——不能 bump 到 1.5.13，否则 C 端新口径匹配和样式开关失效。已登记 T-21④。
+- **①-23 建议关闭偏差**：状态常量 `1/2` 是上游电商枚举值，不是业务阈值，配置化反而会引入误配风险；PRD §9.2「可配」实际指向已有续班计划 renewalNumber 白名单（已 Apollo）。建议所有者确认接受，改为「已覆盖」。
+
+---
+
+
 
 ### 🤖 Claude
 
