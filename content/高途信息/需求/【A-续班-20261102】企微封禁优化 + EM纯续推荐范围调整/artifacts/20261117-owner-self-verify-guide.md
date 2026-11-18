@@ -2,6 +2,10 @@
 > 每个场景给出「续班计划号 / 学员ID / 班级或课程 / 验证功能 / 操作步骤 / 预期结果」，最后一列留空供你填。  
 > 环境：TEST，泳道 `test-eco-8`。前端入口路径一般形如 `/web/renewal/cart?renewalNumber=\<计划号\>&userId=\<学员\>`（B 端可能不同，按你习惯的入口点即可）。
 
+> **「在读前置班」口径说明**  
+> 大班 bizId 取自 `gaotu.clazz.biz_number`（字母+数字）；小班 bizId 取自 `course_center.clazz.biz_number`（纯数字，且等于班级号本身）。  
+> **小班特别注意**：小班学员在 `gaotu.subclazz_student` 和 `course_center.clazz_student` 两张关系表里都是 **0 条记录**，所以小班的「在读」只能靠 `gaotu.order_item` 已支付订单（`order_status=2`）佐证，没有学员-班级关系行可以交叉验证。大班两边都有：`subclazz_student` 关系行（`status=1`）+ 订单。
+
 ---
 
 ### 1. 老链路-大班联报 23
@@ -203,7 +207,16 @@
 
 # 如何开 V2 开关
 
-需要验场景 9-14 时，**联系我**，我在 TEST Apollo（`cart.gaotu100.com` / TEST / `application`）把下面两个 key 改为 `true` 并发布：
+**当前 TEST 实际状态（2026-11-18 16:53:19\~16:53:34 CST 只读实查 apollo_get_key，读的是已发布值）**：
+
+- `renewal.recommend.v2.enabled`（C/B 端详情实时计算走 V2）= **true**
+- `renewal.preheat.v2.enabled`（预热走 V2）= **true**
+- 这两个 key 由 release **438174** 在 **2026-11-18 16:45:48** 从 `false` 改为 `true`（操作人 zhangzeling）。**不是本自验任务改的**，本任务全程没有动 Apollo。
+- `renewal.preheat.v2.prefix.enabled` = `false`，保持不动。
+
+**这意味着**：现在直接打开测试页，走的是 **V2 链路**，不是老链路基线。所以要验场景 1-8，**必须先把上面两个开关改回 false**。
+
+开关的开启和恢复都由 owner 执行，我不动 Apollo。改完告知我，我再去核验并回读确认。
 
 - `renewal.recommend.v2.enabled`（C/B 详情走 V2）
 - `renewal.preheat.v2.enabled`（单用户预热走 V2）
@@ -216,8 +229,8 @@
 
 # 补充说明
 
-- 场景 1-8 是 **V2 关闭**（老链路）基线，任何时候都能验，不依赖开关。
-- 场景 9-14 必须开 V2，且**建议连在一起验**，避免反复开关。
+- 场景 1-8 是 **V2 关闭**（老链路）基线，**必须在两个 V2 开关关闭时验证**。当前 TEST 两个开关是 **true**（2026-11-18 16:45:48 release 438174），所以**验之前要先把开关关掉**，由 owner 负责关闭，我不动 Apollo。
+- 场景 9-14 必须开 V2（两个开关都是 true，也正是当前 TEST 的状态），**建议连在一起验**，避免反复开关。
 - 场景 8（组合 51）与场景 10/11/12 有重叠的计划号，注意区分当前开关状态。
 - 所有 ID 均来自 TEST 环境真实数据；若某计划已过期或数据被改动，告我一声我重新核。
 
