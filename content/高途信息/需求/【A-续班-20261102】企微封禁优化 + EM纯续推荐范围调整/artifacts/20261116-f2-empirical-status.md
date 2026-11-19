@@ -398,3 +398,39 @@ owner 最终要求『整合到图里，画一个图：整个推荐逻辑，老�
 2. 若 sale_status=40 正常：TID ea7405fa 查调用链/日志定位 V2 链小班加购路径断点（getSmallClassRenewalDetail → additionalPurchaseService.recommend(context) → enrich/merge → convertToRenewalCartVO 的组合处理）；
 3. 复现需重新加购（工单已取消）——造数走 b_cart addCart 或让测试重加；
 4. 结论按问题卡口径回报；若定性=第十轮同类（数据），回复 owner 并可 tapd_comment/tapd_set_bug_status（接受/不解决需 owner 拍板）。
+
+## 追加（2026-11-19 第十六轮 · TAPD 缺陷 1122531521001486137 终局：不成立，已按 owner 授权流转「不解决」）
+
+**owner 条件授权**（原话『如果不是问题 改一下bug状态 并加上评论』）：结论=不是问题 → 直接改状态+评论。
+
+**最终定性：不是代码缺陷（历史既有行为 + 数据未上架，非 V2 回归）**，处置=工单「不解决」。
+
+**证据链（三档）**：
+- **已验证·数据回读**：两个工单组合 SKU 主 SKU 均 sale_status=1/can_be_sold=false（桥调 getCombinedDTOsBySkuNumbersWithCache，TID cart_gaotu100_com.301.17950678400610194）；现存第三组合 591027705114509312（b_cart 有记录、属 account_id=177071 员工）同状态——测试环境组合 SKU 普遍未上架。
+- **已验证·代码事实（定性核心，修正第十轮口径）**：小班 C 端推荐展示加购组合需年级来源（combineProductInfo.preCourseNumber 或 configuredGrade 之一非空）。B 端加购数据 BcartVO 从不携带年级（老链路 commit **1e368b48** 2026-05-29 提交说明明确『清理 AdditionalPurchaseBO 的 grade/subject 死字段（BcartVO 从未提供）』+『processCombineProductResult 不再因 preCourseNumber=null 丢弃扩科组合商品』——只为扩科留 configuredGrade 通道）；加购 enrich（RenewalSinglePlanDetailService:2840/V2、RenewalService:4509/老链，逐字一致）不填 preCourseNumber → convert（V2:2379 / 老:4058，逐字一致）`courseDTO==null && configuredGrade==null` → warn『组合商品无法确定年级』丢弃。**结论：加购组合在 C 端推荐页从未展示过，与上架无关，上架了也不展示**。
+- **未取到·运行时 warn 日志**：工单 TID 日志在 SLS/TLS 均未命中（traceId 未采集/scanLimit 窗口外）；端到端复现需重写 b_cart 加购数据，写入通道未开（mysql 工具仅 SELECT、order-b 写接口未定位）——按代码确定性收口。
+- 其它现场：TID ea7405fa trace_tree 54 span 全链 200 无错（走 SmallRenewalCoreService#recommendAll V2 小班链）；b_cart 工单两条已物理删除；listAdditionalPurchase(7658129872,8645) 现仅返回 8014 实体一条（TID ...302.17950687243600208）；V2 入口实调（TID ...295.17950688623170214）返回无 pt=51 条目，与数据现状一致；8014 实体类不进推荐列表=设计（convert 三分支均不匹配非班级类）。
+
+**第十轮口径修正**：『组合 SKU 未上架被展示层售卖过滤、上架即可展示』**不完整**——小班 C 端加购链路根本无售卖过滤点，真正拦截是年级解析缺失；上架 SKU 不改变展示结果。第十轮当时的组合若走 C 端同样不展示。
+
+**工单流转（已验证·回读）**：tapd_set_bug_status → **rejected（不解决）**+custom_field_14 不解决原因已落；tapd_comment（comment_id 1122531521001310352，含结论/依据/影响面/处置建议）已落；get_bug 回读 status=rejected、评论 author=张泽灵 在列。
+
+**遗留（待 owner/产品）**：若产品要支持『B 端加购组合在 C 端展示』，需先定组合年级归属口径（子班课程推导 or 运营配置）再排开发——新需求，非缺陷修复。
+
+## 追加（2026-11-19 第十七轮 · owner 反例对账：定性修正为「小班路径缺年级兜底」，非状态过滤）
+
+**owner 反例**：TID 8bd69b02-c0bf-444a-83b5-f96f67381432.0.3（/web/renewal/cart?renewalNumber=**591020372877623296（大班主计划）**&sellerId=8645&includeBCart=true，test-eco-8，V2 链）展示了加购组合。
+
+**重放反例（已验证，TID cart_gaotu100_com.302.17950695767440221，7746793735 × 591020372877623296）**：grade15 返回 `pt=51 recommend_type=3 sku=590801222278299649（造数-组合-C4）`——**加购组合展示成功**；同请求中 591199755407966209（无班级子班）未展示。
+
+**SKU 状态对账（已验证，桥调 TID ...299.17950695795230224）**：反例展示的 590801222278299649 主 SKU **sale_status=1/can_be_sold=false（未上架，与工单两 SKU 完全同状态）**——**推翻「不展示=状态被过滤」**：展示层不做售卖状态过滤。
+
+**真根因（代码+运行时双证）**：**主计划类型决定路径，小班路径缺年级兜底**——
+- 大班路径 `RenewalSinglePlanDetailService#convertCombineResultToDTO`(:995-1067)：组合→combineClazzNumberList 子班→查 ClazzDTO→查课程→`resolveGrade`(:1072) fallback **子班课程 grades[0]** → 加购组合能展示（反例 sku 有 2 个大班子班→年级 15）；无班级子班（591199755407966209=会员卡+实物）→ grade=null → 不展示。
+- 小班路径 `processCombineProductResult`(:2377-2382)：年级仅 preCourseNumber（纯续）/configuredGrade（扩科），**无「从组合子班课程推年级」兜底** → 加购组合必丢弃（工单 sku 483217233600958464 有子班也丢）。老链 RenewalService:4058 同款，历史既有非 V2 回归。
+
+**对账表**：| 案例 | 主计划 | 组合SKU状态 | 班级子班 | 年级来源 | 展示 |；反例A(5908012..) 大班 sale_status=1 有→子班课程15 ✅；反例B(5911997..) 大班 sale_status=1 无→null ❌；工单A/B 小班 sale_status=1 有→无兜底 ❌。**同状态不同展示→状态非决定因素；同学员同请求内有/无子班不同展示→年级可得性是决定因素**。
+
+**工单处置**：按 owner「查证不符→工单不动」执行（当前 rejected+既有评论；评论中『C端从未支持展示』表述不精确——大班主计划支持、小班主计划不支持，待 owner 定是否修正）。
+
+**若支持小班展示（挂起授权的方案锚点）**：把大班路径的年级兜底（子班→课程→grades[0]）对齐到小班路径组合处理（V2 类 RenewalSinglePlanDetailService 小班分支，不动老链 RenewalService）；无班级子班组合维持不展示（与大班口径一致）。注意 enrich 子班收集还需覆盖 combinedSingleProductDtoList（6003/6004 SKU 类子商品，CombineProductBuildSubBuilder:419 已有先例读法）。
