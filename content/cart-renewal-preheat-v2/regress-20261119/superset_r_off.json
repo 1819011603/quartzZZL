@@ -1,0 +1,795 @@
+{
+ "A": {
+  "old": 1,
+  "v2": 3,
+  "missing": [],
+  "changed": [],
+  "added": [
+   [
+    "11",
+    "6004",
+    "588506155490336768",
+    "18390028220432911",
+    "18390028220432921"
+   ],
+   [
+    "15",
+    "2",
+    "591020573457448960",
+    "591020433489467392",
+    "591020448295360512"
+   ]
+  ],
+  "top_old": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "top_v2": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "grade_changed": {}
+ },
+ "A_bc": {
+  "old": 3,
+  "v2": 5,
+  "missing": [
+   [
+    "15",
+    "51",
+    "590801222278299649",
+    "None",
+    "590337995970770944"
+   ]
+  ],
+  "changed": [
+   [
+    [
+     "11",
+     "51",
+     "579426174109902848",
+     "None",
+     "579423844278867968"
+    ],
+    [
+     "clazzDateDesc"
+    ]
+   ]
+  ],
+  "added": [
+   [
+    "22",
+    "51",
+    "579426174109902848",
+    "None",
+    "579423844278867968"
+   ],
+   [
+    "11",
+    "6004",
+    "588506155490336768",
+    "18390028220432911",
+    "18390028220432921"
+   ],
+   [
+    "15",
+    "2",
+    "591020573457448960",
+    "591020433489467392",
+    "591020448295360512"
+   ]
+  ],
+  "top_old": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "top_v2": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "grade_changed": {}
+ },
+ "A2": {
+  "old": 1,
+  "v2": 3,
+  "missing": [],
+  "changed": [],
+  "added": [
+   [
+    "11",
+    "6004",
+    "588506155490336768",
+    "18390028220432911",
+    "18390028220432921"
+   ],
+   [
+    "15",
+    "2",
+    "591020573457448960",
+    "591020433489467392",
+    "591020448295360512"
+   ]
+  ],
+  "top_old": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "top_v2": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "grade_changed": {}
+ },
+ "A2_bc": {
+  "old": 1,
+  "v2": 3,
+  "missing": [],
+  "changed": [],
+  "added": [
+   [
+    "11",
+    "6004",
+    "588506155490336768",
+    "18390028220432911",
+    "18390028220432921"
+   ],
+   [
+    "15",
+    "2",
+    "591020573457448960",
+    "591020433489467392",
+    "591020448295360512"
+   ]
+  ],
+  "top_old": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "top_v2": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "grade_changed": {}
+ },
+ "B": {
+  "old": 1,
+  "v2": 1,
+  "missing": [],
+  "changed": [],
+  "added": [],
+  "top_old": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "top_v2": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "grade_changed": {}
+ },
+ "B_bc": {
+  "old": 3,
+  "v2": 3,
+  "missing": [
+   [
+    "15",
+    "51",
+    "590801222278299649",
+    "None",
+    "590337995970770944"
+   ]
+  ],
+  "changed": [
+   [
+    [
+     "11",
+     "51",
+     "579426174109902848",
+     "None",
+     "579423844278867968"
+    ],
+    [
+     "clazzDateDesc"
+    ]
+   ]
+  ],
+  "added": [
+   [
+    "22",
+    "51",
+    "579426174109902848",
+    "None",
+    "579423844278867968"
+   ]
+  ],
+  "top_old": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "top_v2": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "grade_changed": {}
+ },
+ "C": {
+  "old": 5,
+  "v2": 5,
+  "missing": [],
+  "changed": [],
+  "added": [],
+  "top_old": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "top_v2": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "grade_changed": {}
+ },
+ "C_bc": {
+  "old": 5,
+  "v2": 5,
+  "missing": [],
+  "changed": [],
+  "added": [],
+  "top_old": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "top_v2": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "grade_changed": {}
+ },
+ "D": {
+  "old": 1,
+  "v2": 5,
+  "missing": [],
+  "changed": [
+   [
+    [
+     "11",
+     "51",
+     "589762111522013184",
+     "18405861174936317",
+     "18405861174936317"
+    ],
+    [
+     "clazzDateDesc"
+    ]
+   ]
+  ],
+  "added": [
+   [
+    "31",
+    "2",
+    "589041202037415936",
+    "589037981162168320",
+    "589037985069162496"
+   ],
+   [
+    "31",
+    "2",
+    "589041222587408384",
+    "589037992648269824",
+    "589037996712550400"
+   ],
+   [
+    "31",
+    "2",
+    "589212673443520512",
+    "589178070450200576",
+    "589212669790281728"
+   ],
+   [
+    "31",
+    "2",
+    "589212918174867456",
+    "589178079144992768",
+    "589212914653749248"
+   ]
+  ],
+  "top_old": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "top_v2": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "grade_changed": {}
+ },
+ "D_bc": {
+  "old": 4,
+  "v2": 6,
+  "missing": [
+   [
+    "31",
+    "2",
+    "589041202037415936",
+    "589037985069162496",
+    "589037985069162496"
+   ],
+   [
+    "31",
+    "2",
+    "589212673443520512",
+    "589212669790281728",
+    "589212669790281728"
+   ]
+  ],
+  "changed": [
+   [
+    [
+     "11",
+     "51",
+     "589762111522013184",
+     "18405861174936317",
+     "18405861174936317"
+    ],
+    [
+     "clazzDateDesc"
+    ]
+   ]
+  ],
+  "added": [
+   [
+    "31",
+    "2",
+    "589041202037415936",
+    "589037981162168320",
+    "589037985069162496"
+   ],
+   [
+    "31",
+    "2",
+    "589041222587408384",
+    "589037992648269824",
+    "589037996712550400"
+   ],
+   [
+    "31",
+    "2",
+    "589212673443520512",
+    "589178070450200576",
+    "589212669790281728"
+   ],
+   [
+    "31",
+    "2",
+    "589212918174867456",
+    "589178079144992768",
+    "589212914653749248"
+   ]
+  ],
+  "top_old": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "top_v2": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "grade_changed": {}
+ },
+ "E": {
+  "old": 1,
+  "v2": 3,
+  "missing": [],
+  "changed": [],
+  "added": [
+   [
+    "11",
+    "51",
+    "589762111522013184",
+    "18405861174936317",
+    "18405861174936317"
+   ],
+   [
+    "15",
+    "2",
+    "591020573457448960",
+    "591020433489467392",
+    "591020448295360512"
+   ]
+  ],
+  "top_old": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "top_v2": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "grade_changed": {}
+ },
+ "E_bc": {
+  "old": 5,
+  "v2": 9,
+  "missing": [
+   [
+    "11",
+    "51",
+    "589762111522013184",
+    "None",
+    "None"
+   ]
+  ],
+  "changed": [],
+  "added": [
+   [
+    "11",
+    "51",
+    "589762111522013184",
+    "18405861174936317",
+    "18405861174936317"
+   ],
+   [
+    "15",
+    "2",
+    "591020573457448960",
+    "591020433489467392",
+    "591020448295360512"
+   ],
+   [
+    "37",
+    "51",
+    "589762111522013184",
+    "None",
+    "None"
+   ],
+   [
+    "38",
+    "51",
+    "589762111522013184",
+    "None",
+    "None"
+   ],
+   [
+    "39",
+    "51",
+    "589762111522013184",
+    "None",
+    "None"
+   ]
+  ],
+  "top_old": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "top_v2": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "grade_changed": {}
+ },
+ "F": {
+  "old": 3,
+  "v2": 6,
+  "missing": [
+   [
+    "31",
+    "2",
+    "589041222587408384",
+    "None",
+    "589037996712550400"
+   ]
+  ],
+  "changed": [],
+  "added": [
+   [
+    "11",
+    "51",
+    "589762111522013184",
+    "18405861174936317",
+    "18405861174936317"
+   ],
+   [
+    "31",
+    "2",
+    "589041222587408384",
+    "589037992648269824",
+    "589037996712550400"
+   ],
+   [
+    "31",
+    "2",
+    "589212673443520512",
+    "589178070450200576",
+    "589212669790281728"
+   ],
+   [
+    "31",
+    "2",
+    "589212918174867456",
+    "589178079144992768",
+    "589212914653749248"
+   ]
+  ],
+  "top_old": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "top_v2": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "grade_changed": {}
+ },
+ "F_bc": {
+  "old": 5,
+  "v2": 7,
+  "missing": [
+   [
+    "31",
+    "2",
+    "589041222587408384",
+    "None",
+    "589037996712550400"
+   ],
+   [
+    "31",
+    "2",
+    "589212673443520512",
+    "None",
+    "589212669790281728"
+   ]
+  ],
+  "changed": [
+   [
+    [
+     "31",
+     "2",
+     "589041240276885504",
+     "None",
+     "589038008890712064"
+    ],
+    [
+     "recommendType"
+    ]
+   ]
+  ],
+  "added": [
+   [
+    "11",
+    "51",
+    "589762111522013184",
+    "18405861174936317",
+    "18405861174936317"
+   ],
+   [
+    "31",
+    "2",
+    "589041222587408384",
+    "589037992648269824",
+    "589037996712550400"
+   ],
+   [
+    "31",
+    "2",
+    "589212673443520512",
+    "589178070450200576",
+    "589212669790281728"
+   ],
+   [
+    "31",
+    "2",
+    "589212918174867456",
+    "589178079144992768",
+    "589212914653749248"
+   ]
+  ],
+  "top_old": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "top_v2": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "grade_changed": {}
+ },
+ "G": {
+  "old": 0,
+  "v2": 0,
+  "missing": [],
+  "changed": [],
+  "added": [],
+  "top_old": {
+   "allSignUp": null,
+   "renewalForceBuy": null
+  },
+  "top_v2": {
+   "allSignUp": null,
+   "renewalForceBuy": null
+  },
+  "grade_changed": {}
+ },
+ "G_bc": {
+  "old": 0,
+  "v2": 0,
+  "missing": [],
+  "changed": [],
+  "added": [],
+  "top_old": {
+   "allSignUp": null,
+   "renewalForceBuy": null
+  },
+  "top_v2": {
+   "allSignUp": null,
+   "renewalForceBuy": null
+  },
+  "grade_changed": {}
+ },
+ "S3": {
+  "old": 1,
+  "v2": 1,
+  "missing": [],
+  "changed": [],
+  "added": [],
+  "top_old": {
+   "allSignUp": 1,
+   "renewalForceBuy": false
+  },
+  "top_v2": {
+   "allSignUp": 1,
+   "renewalForceBuy": false
+  },
+  "grade_changed": {}
+ },
+ "S3_bc": {
+  "old": 1,
+  "v2": 1,
+  "missing": [],
+  "changed": [],
+  "added": [],
+  "top_old": {
+   "allSignUp": 1,
+   "renewalForceBuy": false
+  },
+  "top_v2": {
+   "allSignUp": 1,
+   "renewalForceBuy": false
+  },
+  "grade_changed": {}
+ },
+ "S4": {
+  "old": 1,
+  "v2": 2,
+  "missing": [],
+  "changed": [],
+  "added": [
+   [
+    "15",
+    "2",
+    "590564441871958016",
+    "590563954137317376",
+    "590563960523145216"
+   ]
+  ],
+  "top_old": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "top_v2": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "grade_changed": {}
+ },
+ "S4_bc": {
+  "old": 5,
+  "v2": 6,
+  "missing": [],
+  "changed": [],
+  "added": [
+   [
+    "15",
+    "2",
+    "590564441871958016",
+    "590563954137317376",
+    "590563960523145216"
+   ]
+  ],
+  "top_old": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "top_v2": {
+   "allSignUp": 0,
+   "renewalForceBuy": false
+  },
+  "grade_changed": {}
+ },
+ "S8": {
+  "old": 0,
+  "v2": 1,
+  "missing": [],
+  "changed": [],
+  "added": [
+   [
+    "15",
+    "2",
+    "591020573457448960",
+    "591020433489467392",
+    "591020448295360512"
+   ]
+  ],
+  "top_old": {
+   "allSignUp": null,
+   "renewalForceBuy": null
+  },
+  "top_v2": {
+   "allSignUp": 0,
+   "renewalForceBuy": null
+  },
+  "grade_changed": {}
+ },
+ "S9": {
+  "old": 0,
+  "v2": 0,
+  "missing": [],
+  "changed": [],
+  "added": [],
+  "top_old": {
+   "allSignUp": null,
+   "renewalForceBuy": null
+  },
+  "top_v2": {
+   "allSignUp": null,
+   "renewalForceBuy": null
+  },
+  "grade_changed": {}
+ },
+ "S12": {
+  "old": 0,
+  "v2": 0,
+  "missing": [],
+  "changed": [],
+  "added": [],
+  "top_old": {
+   "allSignUp": null,
+   "renewalForceBuy": null
+  },
+  "top_v2": {
+   "allSignUp": null,
+   "renewalForceBuy": null
+  },
+  "grade_changed": {}
+ },
+ "X1": {
+  "old": 0,
+  "v2": 0,
+  "missing": [],
+  "changed": [],
+  "added": [],
+  "top_old": {
+   "allSignUp": null,
+   "renewalForceBuy": null
+  },
+  "top_v2": {
+   "allSignUp": null,
+   "renewalForceBuy": null
+  },
+  "grade_changed": {}
+ },
+ "X2": {
+  "old": 0,
+  "v2": 0,
+  "missing": [],
+  "changed": [],
+  "added": [],
+  "top_old": {
+   "allSignUp": null,
+   "renewalForceBuy": null
+  },
+  "top_v2": {
+   "allSignUp": null,
+   "renewalForceBuy": null
+  },
+  "grade_changed": {}
+ }
+}
