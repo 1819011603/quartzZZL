@@ -715,3 +715,23 @@ C 端（cart）核心链路：勾选展示/同商品去重/换课限制/含小�
 6. 归档第三十轮终态、插话一回复（case 在文档 rev 155/156 已确认）。
 
 **环境现状**：test-eco-8 @e2b17741（pod 10.218.238.216 UP）；Apollo 缓存两开关 false（owner 认可）+V2 双开关 true；28 轮 id118/119 扩科配置保留；无在途部署/子 Agent。
+
+## 追加（2026-11-19 第三十一轮 · 第 20 轮待办全清：AICR 回归+收口+沉淀+分支总结）
+
+**环境核实**：HEAD=e2b17741 干净；pod 10.218.238.216:28688 UP（TICKET 探测正常返回）。
+
+1. **AICR 修复运行时回归（第一优先，完成）**：主 Worker 亲自跑 45 条（脚本 reg21.py，结果 reg21_rows.json，均 opencode 目录）——38 case+TICKET+compare×5+20f **45/45 实质全过、0 疑似回归**。**#52085 预期变化全链生效**：全部 case rt2/rt3 条目 beforeCourseNumber=null（0 违规）、rt1 纯续保持课号；**联报 23 路径（#52078/#52081/#52082）无损**：A=3/A_bc=8/A2/S8 与基线一致无 NPE。相对基线（w14 @88c25a90，注意其早于 id118/119 插入）5 处差异全部判定预期：C/C_bc 5→6、F 6→7、F_bc 11→12（id118/119 扩科 sjg rt2，bc=false 也生效）、TICKET 11 不变（sjg g11 rt3→rt2 合并呈现 su=1 保持=缺陷E∪口径）。收口表 /tmp/reg21_result.md（45 条 TID 全集）。**AICR**：ad9c241e/e2b17741 push 后新评审任务未出（--list 最新仍 #2058=d3f76f2e 修复前）；代码核对修复在位（teacherMap 判空@2013、safeClazzNumbers@1993-1998），运行时回归即修复效果直接证据，新评审出来后可再确认。
+2. **全量 38 case 收口（完成）**：结论落测试文档「三、全量 case 回归」新增 h3「AICR 修复回归 + 全量收口（@e2b17741）」（rev 157，回读 45/45+reg21_rows+safeClazzNumbers 全在）。
+3. **已验接口沉淀（完成）**：测试文档新增 h1「已验接口速查（复用）」（rev 158）：cart 域 6 接口（cart/operation cart/productList/preheatCompare/preheat/换课链）+外部域（BossBatch prepare|createOrder、recommendProductList）+调试入口（acl 桥大数传字符串、fixture 清单、Apollo 现状），入口/参数/预期/示例 TID 齐全，回读 9 项关键内容全在位。
+4. **造数方法沉淀（完成，子 Agent W1-0f8ae2）**：《续班组合商品与配置_构造与复现步骤.md》165 行落 quartzZZL/content/高途信息/构造数据/（BossBatch source 规则/扩科直插/推荐位不实时/单主软删/DB 口径/fixture 全表，格式对齐既有笔记，回读 6 项全在，既有两份笔记未动）。
+5. **分支总结（重点交付，完成）**：新飞书文档 https://gaotuedu.feishu.cn/docx/TzD4dvRQLoVTx6xGTcHcWafQnOd ——功能 13 条（组合加购 12 需求点/推荐准入/扩科/∪口径已报名/类型过滤终态/预热V2/P1/换课换年级/联报缓存/EM纯续/联报23/统一解析链/质量加固）+兼容 8 条（老链零改动/开关回退/renewalRole/原key 两取舍/beforeCourseNumber 变化/过滤删除影响/上下游不变/数据兼容）+未支持 6 项+上线必办与遗留+验证状态；全文回读 14 项关键内容全在位。
+6. **1486137 证据评论（完成）**：tapd_comment 落库（comments[0]，回读含 88c25a90/e2b17741/TID …290.17950844672520048 全证据与复测建议）；状态保持 reopened 未改。
+
+**环境终态**：test-eco-8 @e2b17741 UP；Apollo 缓存两开关 false + V2 双开关 true（不变）；28 轮 id118/119 保留；无在途部署/子 Agent。遗留待 owner 不变（fromC NPE、D1、联报23 根治、上线必办 2 项、B 端 tab 进度、1486168/1486137 待 QA）。
+
+## 追加（2026-11-19 第三十二轮 · owner 插话两项：拍板详解 + case 文档核对发送）
+
+1. **待拍板详解（完成）**：基于既有材料（归档 363 行联报 23 二选一原文、587 行 D1、G2/G3 等）整理 6 条逐项展开（问题/为何待定/方案/影响/建议）：①fromC NPE（建议独立小修单 B）；②联报 23 根治 A 老链一行需特批/B V2 写入侧兼容/C 不修关回即不现（建议 B 或 C）；③D1 展示侧 defaultSelect（A 后端重算/B 前端/C 接受，不阻塞提测）；④B 端 tab 进度需 owner 向 B 端确认；⑤上线必办三项含 V2 开关「关回 false vs 切终态」决策（建议关回 false、切终态独立变更）；⑥QA 状态知悉。落分支总结文档新增「六、待拍板事项详解」（rev4，全文回读 8 项关键内容 IN）。
+2. **case 文档核对（完成，无漏补）**：owner 历次 9 类要求逐项对上测试文档场景（大小班→22 矩阵；主从组合→22+1-14+45 条；加购/推荐/扩科→16-19/20b/20d+22ab；口径更正→20 全章 20a-20i；单主→23；已报名造数→21；小班主计划补漏→16/17/18；不影响原 case→三章节+AICR 收口；接口复用→已验接口速查），本轮逐节 section 回读核验在位（场景 17/20/21/22/23 全拉）。
+3. **发送（完成）**：话题消息（拍板详解精华+9 行映射表+两文档链接）经 feishu-send-topic --task 9bddb709 发送成功，message_id=om_x100b60c4456074acb4beda8c44374c7。
+边界遵守：零代码/Apollo/bug 状态改动；无新增调查（全部基于归档既有材料）。
