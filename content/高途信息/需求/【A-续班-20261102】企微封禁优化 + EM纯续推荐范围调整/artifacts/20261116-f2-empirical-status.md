@@ -679,3 +679,20 @@ C 端（cart）核心链路：勾选展示/同商品去重/换课限制/含小�
 6. **待 owner 口径细化**：③类型过滤「大班计划→须含大班课」方向无代码实现（88c25a90 准入仅「须含 6004」且在小班链路）；F 实测大班主计划 rt1 条目为从计划（小班侧已过审）合并条目，有合理解释；大班主计划自身推荐位配组合的准入未实现——如无此配置场景则无影响。
 
 **文档**：场景 22（12 格矩阵+22a/22b+行为记录）+ 缺陷 E 落 EaKXdTkzXoJTStxBJH3cX7Qinzh 回读（rev 155）。遗留待 owner 不变。
+
+## 追加（2026-11-19 第二十九轮 · 单主计划×组合专项【完成】+ 缓存授权落地）
+
+**owner 决定**：①③类型过滤大班方向「不用管，需求没写」→关闭；②单主样本需要专造。追加授权：测试环境缓存可关闭提速。
+
+**缓存开关落地（owner 授权）**：cart TEST Apollo 发布 preheat.cache.enabled / course.renewal.cache.enabled true→false（release 20261119204457），回读生效；V2 双开关 true 不动；按 owner 认可测试期间保持 false（上线检查须含恢复）。
+
+**单主 4 格验证（软删 main 侧关联临时构造单主，验后全部还原）**：
+1. 单主×小班×加购+扩科 ✅：TID cart_gaotu100_com.293.17950922090910280（缓存开）/…285.17950925541890335（缓存关干净态）——1v1 su=0 负向、sjg rt3 拆条 su=1、sjg rt2 g11 物理 su=1（∪口径）与主从态逐条一致。
+2. 单主×大班×加购+扩科 ✅：TID …289.17950923791810306——软删实时生效（从计划纯续/推荐条目正确消失），sjg g31 rt2 生物 su=0、rt3 组合全保持；推荐位合并行为=单主态从计划 rt1 条目消失（正确）。
+3. 单主自身推荐位新配组合 ⚠️ 未即时生效：DB 直插 renewal_link(pt51)+renewal_recommend_file（3 计划 6 行尝试）不实时（product 配置组装链多层，cart 缓存全关仍不生效）——正式入口 B 端 editProcess；组合推荐位解析由主从运行时+代码同路径覆盖，定性=配置链路限制非解析缺陷。
+
+**关键事实沉淀**：主从真源=product productRelationList 下发 relatedRenewMasterNumbers（RenewalMasterRelationService.listSubNumbers，版本化 Redis 缓存 renewal:relation:version:{main}/v2:{main}:{version}，仅 B 端 save 刷新）；软删 gaotu.renew_master_relation 后预热缓存仍残留合并值（G1 取舍），关 preheat.cache 后实时生效。
+
+**清理回读**：两计划 main 关联精确复原（小班 1 条/F 4 条/S4 1 条）；本轮 3 条 pt51 link+3 条 file 全部 is_del=1；S4 临时扩科节点+行全删；28 轮 id118/119 保留（场景 21/22 断言依赖）。副作用记录：F 历史关联 13 行 update_time 时间戳漂移（is_del 已精确复位，内容无损）。
+
+**文档**：场景 23 落 EaKXdTkzXoJTStxBJH3cX7Qinzh 回读（rev 156）。事项①关闭记录在案。
