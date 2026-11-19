@@ -601,3 +601,54 @@ C 端（cart）核心链路：勾选展示/同商品去重/换课限制/含小�
 **测试文档精简（owner 要求终态快照）**：EaKXdTkzXoJTStxBJH3cX7Qinzh overwrite 为 40.8K 精简版（原 76K）：场景 1-20 case 格式不变、缺陷 A-D2 保留原因+解决简写+换课业务口径 5 行、「详情接口逐条结果（C 端 25+B 端 13）」更新为 @88c25a90 结果表、其余一行式速查（覆盖缺口/风险说明/工具入口/8 条差异）；历史全文在归档本文件。事故记录：首次 overwrite 因 heredoc $(cat) 命令替换被当字面传入致文档短暂损坏（rev137），即用 stdin 文件重定向重写恢复（rev141 回读 18 项关键内容全在位）。
 
 **20f 补验（同日追加）**：组合「已报名」正向运行时验证完成——现成数据命中（无需造单）：学员 7634387306 对 1v1 组合子商品 580507069560399872 持有效订单（gaotu.order_item order_status=2，number 432727509236712088），其 b_cart 含 1v1 组合 580508980380479488（id 3382）；C 端打开计划 586116340522184704 → 1v1 组合条目 signUp=1（子商品 SKU 命中），同请求钱包/大班组合 signUp=0 负向对照（TID cart_gaotu100_com.291.17950858195680076）；无订单学员 7658129872 同组合 signUp=0（TID …290.17950839051180012）。测试文档 20f 行已更新并回读。至此场景 20 全部 case 运行时验证完毕（20d 代码路径+单测、20f 正负向+单测齐备）。
+
+## 追加（2026-11-19 第二十四轮 · 主 Worker 独立全量回归，owner 指令不用子 Agent）
+
+**执行**：主 Worker 亲自批量直连 pod（10.218.236.107:28688，traffic-env=test-eco-8），45 条一次性全跑（脚本 indep_regression.py，结果 indep_rows.json，均在 /var/folders/.../opencode/）：C 端 26（A/A2/B/C/D/E/F/G/S3/S4/S8/S9/S12/X1/X2 各含 _bc 变体+TICKET 工单组合）+B 端 13（BE×10=fromC:1、BE1×3=fromC:0）+compare 5（A/C×2/D/E）+20f 正向（7634387306）。
+
+**结果：45/45 全 PASS，与子 Agent 前轮结论完全一致，零不一致、零新问题**：
+- C 端 26 条目数与预期精确一致（A_bc=8/B_bc=6/D_bc=7/E_bc=10/F_bc=11/S4_bc=11/TICKET=11 等预期变化值复现）；锚点断言全过——D_bc/E_bc/TICKET 的 1v1 组合@g16 rt3 展示、E_bc 的 589762111522013184 拆条保持、S3 signUp=1 保持、X1 status=5/X2 status=10241007 拦截正常
+- B 端 13 全过（BE1 三条 fromC=0 正常，避开 fromC NPE 既有缺陷）
+- compare 5/5 consistent=true 且 preheatTriggered=true（预热真实命中）
+- 20f 正向：1v1 组合 (grade=16, recommendType=3, signUp=1) 独立复现 ✅
+- TID 全集：cart_gaotu100_com.284~293.179508627~179508632（45 条逐条见 indep_rows.json；抽样：TICKET=…288.17950863002590098、E_bc=…286.17950862910020096、cmp_E=…287.17950863217290095、20f=…292.17950863256990104）
+
+**版本旁证**：git HEAD=88c25a90 干净；流水线 1355028 SUCCESS=88c25a90 后无新部署；本轮全部返回行为与 @88c25a90 预期（含③口径更正效果）精确一致。**文档更新**：「全量 case 回归」章节说明段已加独立复跑结论并回读（45/45）。20d（扩科零过滤）沿用前轮 diff 确认+单测，本轮未重跑单测（版本未变，复用 6/6 证据）。
+
+## 追加（2026-11-19 第二十五轮 · 需求↔交付终态逐点确认【owner 质询，只读核对】）
+
+**核对方式**：重读 PRD wiki D89iwm9U1iL6vWkEOgwcg8otnqc V1.1《组合商品加购》C 端展示原文（本地留档 prd.md），以第十九轮差距清单为底稿按最新口径修订，对照 @88c25a90 交付+45 条独立回归证据四档标注。
+
+**关键发现**：owner ③更正口径（推荐过滤/扩科加购不过滤）与 **PRD 原文字面一致**——PRD 写明「小班课推荐会过滤到不含小班课的组合……全其他商品被加购，C端展示」；最初的旧口径（全来源过滤）才是偏离 PRD，更正即回归需求本意。
+
+**结论：C 端（cart）范围内交付与需求一致**——12 项需求点全部 ✅（勾选展示/重复让位推荐/年级学科去重含子班展开+年级粒度/同商品去重/不可换课/推荐过滤不含小班课组合/加购全其他组合展示/最早子班展示/多年级可筛/已报名标识含组合SKU∪子商品SKU/换课年级筛选）或 🔁 按 owner 口径且与 PRD 相符（无班级子班组合不展示=场景18 既有取舍 owner 已验收；大班推荐过滤分支=coreHandle 无组合路径天然满足）。确认表已落测试文档「需求↔交付确认」章节（14 行四档表+例外清单）并回读。
+
+**例外/遗留（如实）**：①B 端整块（快速加购/明细/校验/上限20/下单顺序/支付）范围外未核实②膨胀券 owner 明示不做③小班年级粒度判重与推荐负向过滤两条的运行时正向样本未构造（单测覆盖）④「不可重复下单」由下单链路把关（cart 外）⑤D1 换年级展示侧（既有）⑥缺陷单 1486168（独立单）⑦fromC NPE（既有，RenewalController:89）。主编数据/问卷/预报名=PRD 自标已上线/已支持。
+
+**顺手修正（文档格式收尾）**：发现终态快照 overwrite 时场景 15/16 之间误保留 6 个旧工具章节（如何开V2开关/补充说明/预热怎么验/实时计算怎么验/Apollo配置/开关组合，10.2K，信息已并入「四、验证工具速查」）——已批量删除（298 块分 5 批）并回读：42.8K→35.0K，12 项检查全过（旧章节已删、确认表/场景 15/16/20/缺陷清单/速查在位）。
+
+## 追加（2026-11-19 第二十六轮 · B端核查+已报名造数专项【进行中·上下文收束交接】）
+
+**工作单**：A=B端推荐核查+验证+补case；B=已报名标记专项（mock支付造数，owner 指引 Obsidian 造数笔记）。主 Worker 亲自跑不用子 Agent。
+
+**已完成（本轮）**：
+1. 核实现场：git HEAD=88c25a90 干净。
+2. **找到 Obsidian 造数笔记**（owner 所指）：`~/githubDir/quartzZZL/content/高途信息/构造数据/续班C端下单_构造与复现步骤.md` + `续班B端推荐下单_构造与复现步骤.md`。关键方法：
+   - **mock 支付**：createOrder → data-agent `mock_pay`（传 createOrder 返回的**订单号/批次单号**，非支付单号；历史 run r-20261106100523-08edf28b）→ 回读 `gaotu.pay_info.pay_status=1`+`gaotu.order_item order_status=2`
+   - **BossBatch 下单**（容器直连绕网关）：`/bgwApi/intranet-rpc/order-b/web/order/batch/boss/prepare?userId=X`，body `{"productList":[{"productNumber":"<SKU>","productType":<51/2/6004>,"quantity":1}]}`（归档 20261105-p0-execution-round7/preview-main-small.json 有完整样例）；create 需**有效 source orderTag**（test can.create.order.when.invalid.source=false 强制校验）——create 完整入参记录待找（round7 README 快照/B端笔记§4 有线索：历史 orderNumber 433534690352693254，trace order_gaotu100_com.444.17937606425700088）
+   - 学员 7658129872（手机 12026102281，验证码 12 开头固定 1000）；B 端接口必带 b_client:EES
+3. **PRD 关键定性（工作单A重点①已解答）**：PRD V1.1「快速加购组合商品」的【1】组合商品范围原文=「~~续班计划的续班学年、学期、部门、年级、科目对应的组合商品。售卖状态：非【未上架】。~~**全部组合商品**」——售卖状态过滤被删除线划掉，最终口径=全部组合商品**不过滤售卖状态**→「3 个未上架组合曾被成功加购」符合 PRD 最终稿，**不是缺陷**（待落文档）。
+4. B 端链路事实（笔记+代码）：cart 的 operation/cart=LEGACY_PURE 只算纯续不含加购；B 端推荐列表=`POST /bgwApi/product-b/b/renewMaster/recommendProductList`（经 cart renewalCart feign，B 端过滤已购 signUp==1）；B 端快速加购 tab/上限20/每组合限1次/子商品订单校验/下单页顺序=order-b/OES/前端侧（只读）。
+
+**待办（交接下一棒，按序）**：
+1. 【工作单B主链】用 BossBatch 给 7658129872 造**组合订单**（sjg 483217233600958464，type 51，泳道 test-eco-8 注意 source/tag 与 traffic_env；B端笔记环境是 test-gtbg-dev-3，本轮 case 学员数据在 test-eco-8——下单走 order-b 不分 cart 泳道，mock_pay 传 traffic_env 与下单一致）→ mock_pay → 回读 pay_info/order_item → C 端 `GET /cart/web/renewal/cart?renewalNumber=586116340522184704&appointUserId=7658129872&sellerId=8645&includeBCart=true&p_client=EES`（直连 pod 10.218.236.107:28688 + traffic-env: test-eco-8）验证 sjg 5 个拆条全部 signUp=1 + 负向对照（1v1 组合仍=0）+TID
+2. 【工作单B】小班课已购正向复用实证：同请求内 586097025945298944（g11 纯续）signUp=1（已多轮验证，再回读一次即可）
+3. 【工作单A】fromC NPE 复核（不传 fromC→NPE，fromC=0/1→成功，TID；定性=既有缺陷非本需求回归，RenewalController:89 lang2 拆箱）
+4. 【工作单A】recommendProductList ×组合行为验证（renewMasterNumber=586116340522184704&userId=7658129872，b_client:EES；看组合是否返回/过滤已购语义）
+5. 【工作单A】B 端范围外项落文档定性：售卖过滤=PRD 已删（符合）、上限20/限1次/子商品校验/下单顺序=order-b/OES/前端（只读或列范围外）
+6. case 按现有格式补进测试文档（场景 21：B端+已报名专项），逐条结论+TID，回读
+7. 回报：B 端逐点结论+标记验证结果+问题清单（定性+该谁修）
+
+**注意**：78c25a90 部署在 test-eco-8（pod 10.218.236.107:28688）；b_cart 学员数据（7658129872 id 3513/3532/3533/3534 等）在位；sjg 组合已在该学员 b_cart（id 3533）；本单边界=Apollo（true/true/10）/缓存/老链零改动、主 Worker 亲自跑、少用 arthas。
+
+**追加（同日第二十六轮补 · 覆盖度自查+diff 盘点+未支持清单，owner 要求范围充分）**：以基线 4b40ee27..88c25a90 全量 diff（105 提交/59 文件/+9496 行）逐模块对照验证台账，产出三样：①12 模块功能盘点+覆盖对照表（组合加购/预热V2/P1/换课换年级/联报缓存/EM纯续关联=充分，小班联报23+V2批量预热口子+B端推荐列表+fromC NPE=本轮补验）——补验 TID：S2 小班联报 23 rt1（…287.17950876374910124）、V2 preheat 口子（…284.17950876387910137）、fromC NPE 复现 status=1（…289.17950876396110124，定性既有）、recommendProductList code=0（baijia-proxy 网关，已购过滤正确，组合不在此接口=PRD B端快速加购 tab 属 order-b 范围外）；②未支持清单 6 项（B端整块需 B 端 owner 确认/售卖过滤 PRD 已删无需实现/膨胀券不做/不可重复下单属下单链路/无班级子班组合不展示=已验收取舍/大班推荐过滤天然满足）；③重构系列行为等价由 45 条回归覆盖。已落测试文档「代码 diff 功能盘点与验证覆盖」章节并回读。**工作单 B（mock 支付造组合订单→signUp=1 全链路）未实施**——交接段已写（第二十六轮开头），下一棒第一优先。
