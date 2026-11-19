@@ -802,3 +802,70 @@ C 端（cart）核心链路：勾选展示/同商品去重/换课限制/含小�
 **结果：人工 vs 脚本 45/45 完全一致（含复用 10 条）**。本轮 35 条人工核对要点：A=3（纯续 bcn=课号 #52237 在位）/A_bc=8（含 579426174109902848 同 SKU 跨 g22+g11 拆条人工确认）/B=1/B_bc=6/C=C_bc=6（基线5+id118 sjg rt2）/D_bc=7（1v1+组合推荐+从计划4+589041240 在 D 为 rt3 加购位=F 为 rt2 扩科位，来源差异合理）/E=3/E_bc=10（1v1+589762拆37/38/39）/G/S9/S12/X1(status=5)/X2(status=10241007) 全对/S3=S3_bc=1 且 **su=1+allSignUp=1**（有效订单）/S4=2/S4_bc=11/S8=1/TICKET=11（g11 组 su0→su1(rt1)→su1(rt2) 排序人工确认、586097 bcn=课号、sjg 五年级拆条 su 全对）；B 端 BE×7/BE1×2 条数全对（BE_C=1 只出主计划=LEGACY_PURE 语义、BE_S3 su1）；cmp_A/C1/C2/E 全 consistent=true+triggered=true；20f **1v1 g16 rt3 su=1 + 同请求 7 条无订单组合全 su=0**（正负向完整人工确认）。TID 段：第一批 286~295.1795103339~1795103355、第二批 286~295.1795103384~1795103400。
 
 **唯一新观察项（定性：推断非问题，先记录不改）**：B 端接口部分条目 recommendType=null（如 BE_A 联报条/BE_F 首条 g31/BE_S4 首条）与 rt=1 混合——推断=null 为老链主计划路径条目（老 B 端一直不标记，基线常态）、rt=1 为 V2 合并带入的从计划/新链条目，V2 开关期间的条目来源混合表现；老 B 端前端不消费 rt 字段（null 是其常态值），无功能影响。历史轮 BE 系列仅断言条数、无 rt 基线，**标注推断未验证**；建议 QA/前端确认 B 端是否消费 rt，不消费则无影响。
+
+## 追加（2026-11-19 第三十八轮 · 外部 AI 评审文档逐条定性【进行中·上下文收束交接】）
+
+**输入**：文档 XQ3KdRKapov8JRxOwl8cB87QnQc（rev6，11 条：P1×2/P2×4/P3×5+取证），评审基线 **88c25a90**（早于当前 08f67363 共 8 个提交）。全文已读+11 条全提取（本地 ext_review.txt/json）。**本轮零改动**（owner 口径先别改只判断）。
+
+**已定 9 条（证据充分）**：
+- **P1-1 从计划失败→整页500**：不适用——owner 2026-11-17 已拍板强一致口径（代码注释明示「单个从计划失败必须抛异常」）；如要改降级=口径变更需 owner 决定（可配套熔断/告警）。
+- **P1-2 双开关中间态**：运维注意事项不改代码——上线按 owner 已拍「V2 关回 false」不会进中间态；未来切终态需按顺序（先开预热后开详情，关闭反序）——建议补进分支总结第七节上线必办。
+- **P2-1 扩科受推荐准入影响**：**真问题（口径偏差，低概率触发）**——已核实 CombineProductBuildSubBuilder 两道过滤在 build 阶段 return null（第一道 subClassList.isEmpty 无小班课子班=null=场景18既有取舍；第二道 ③88c25a90 准入），扩科共享 context.combineProductInfoList 候选→「不含6004但含其他班级子班的组合」扩科位不可达，与 owner「扩科不过滤」口径偏差；触发条件=运营在扩科位配不含小班课组合（当前测试库 id118/119 均含6004未触发）。建议=③过滤下沉推荐阶段或扩科单独取候选；**待 owner 拍**。subClassList 是否含大班子班的细节未看完（buildSubClassList）。
+- **P2-4 D1**：已修复 @28e2eece+场景24闭环——评审基线早于修复，不适用。
+- **P3-1**：建议项（老链换课/换年级多一次带60s缓存的关联查询，已catch降级）。
+- **P3-2 单文件3587行**：已知技术债（AICR #52090 同款），后续拆分。
+- **P3-3 validateNoSharedPreCourse 抛错**：设计取舍（防脏配置故意抛+1h缓存+单测 should_throw_when_main_and_related_share_same_pre_course 在案）。
+- **P3-4 normalize fastjson命名**：纯工具接口（compare）展示问题不影响业务——误报级。
+- **P3-5 串行**：有意设计（注释明示外层用户级并行足够），生产压测关注。
+- **第六节未覆盖项**：场景14 grade31=6条 vs 文档5条 → **id118/119 预期+1（历轮已判定，文档基线滞后）**；D1/fromC/缓存开关=已修/已关闭/上线必办已知；场景1-8文档栏位空→验证在归档多轮有据（栏位滞后可补填）；renewalRole 前端=老值null已验兼容（O3），建议前端确认一句。
+
+**未完成（下一棒续）**：
+1. **P2-2 JobHandler 跳过条件**：RenewalV2JobHandler 循环内 processDTO 判空+preCourseList isEmpty 已见（40-70行），评审说的 renewalLinkActivityDTO 非空跳过在 70 行之后——**看 70-90 行确认**；若属实=普通大班计划被批量预热跳过（退化实时兜底，RT 风险），对照老 Job 跳过条件定性。
+2. **P2-3 批量预热小班无订单状态过滤**：看 RenewalV2Service.queryPlanUserIds 小班分支是否真无 2/7 过滤——属实则低风险优化项（开销类不影响正确性）。
+3. P2-1 补看 buildSubClassList（subClassList 是否含大班子班——决定「纯大班子班组合」能否过第一道）。
+4. 汇总输出完整判断表（11 条+第六节 6 项）→ 话题汇报业务语言+归档终稿；文档本身不改。
+素材：ext_review.txt（已提取全文）、ext_review.json。
+
+## 追加（2026-11-20 第三十九轮 · 评审 11 条定性收口：P2-1 修正为误报，全部条目定性完毕，零代码待改）
+
+**本轮完成**：P2-2/P2-3 定性 + P2-1 补强实读（buildSubClassList/ExpandSubjectRecommendService/AdditionalPurchaseService/CombineProductSortPlugin/SmallRenewalCoreService 全链路）。**P2-1 发生定性修正（真问题→误报）**，待 owner 拍板项从 1 个降为 **0 个**。本轮零改动（代码/Apollo/评审文档均未动）。
+
+### 三条新定性
+
+**P2-2（JobHandler renewalLinkActivityDTO 跳过）→ 既有行为/有意复制，非本分支引入（误报级）**：
+- 代码属实（RenewalV2JobHandler.java:67-76），但与老 RenewalJobHandler.java:55-60 **逐字一致**（老 Job 2022-07 上线至今同一条件）。V2 有意复制老链路准入（类 javadoc 明示「两者写值语义一致」），保证两 Job 预热同一批计划；单边收紧/放宽反而破坏 V2/老链路写值面一致性。
+- 「误跳普通大班计划」前提（正常计划无 renewal_link 活动记录）实测不成立：测试环境全部非联报计划（普通大班 591020573457448960 pt=2、小班 586116340522184704 等 38 case 全量计划）均可正常预热。
+- 即使线上存在此类计划：老链路 4 年来同样跳过（既有行为），退化实时兜底=RT 风险非正确性问题，V2 未改变任何行为。
+
+**P2-3（批量预热小班无订单状态过滤）→ 对象错位：评审所指代码不可达；真实路径现象属实但为既有口径，低风险优化项（建议级）**：
+- 评审指的 RenewalV2Service.queryPlanUserIds 小班分支（:288-296 listByCourseNumber 无 2/7 过滤）**代码存在但不可达**：preheatByRenewalNumber :233-238 小班计划走 smallRenewalPreheatService.preheatByRenewalNumberAndCache 后 return，永远到不了 :248 queryPlanUserIds；其 small 分支为死代码（可顺手清理）。
+- 小班真实用户集在 SmallRenewalPreheatService.queryUserIds（:239-245）：同样 listByCourseNumber 无状态过滤——现象属实。但 RenewalV2Service :234-236 注释明示「该问题两口子（V2/老链路）一致，不因写缓存放大计算量」——**既有差异非本分支引入**。
+- 影响=预热用户集偏大（含待支付/已退款订单用户），徒增计算/Redis 开销；无正确性问题（多算用户按 userId 隔离写缓存，纯续结果为空/无意义不污染他人）。修复属老链路同款优化，需下游确认 listByCourseNumber 返回是否含状态字段。
+
+**P2-1（类型过滤影响扩科）→ 修正为误报：评审所述代码路径不存在**：
+- 评审证据链：「ExpandSubjectRecommendService 从 preClassInfo.getCombineProductInfoList() 拿候选，扩科无法访问被过滤的组合」——**实读不存在**。扩科候选来自 DB 配置表 expandSubjectConfig.getRecommendList()（renewal_expand_subject_recommend），小班路径 buildResult（ExpandSubjectRecommendService.java:190-210）与大班重载（:104-162）均直接用 recommend 的 productType/productNumber 构建 ProductKey，年级用 configuredGrade（配置行自带），signUp 用 purchasedPostClazzSkuNumbers——**全程不查 combineProductInfoList**。加购（AdditionalPurchaseService）同样无 combineProduct 依赖（b_cart 配置）。
+- combineProductInfoList（build 阶段过滤结果）的消费者经穷举全部为**推荐位链路**：CombineProductHandler（V2 推荐 handler :38-51）、CombineProductSubClassMatchPlugin、CombineProductSortPlugin（supports :43-47 限 pt=51 计划的推荐候选，查不到才丢候选）、SmallRenewalCoreService.buildRecommendResult（:845 推荐位展示填充）、UserPostClassOrderSubBuilder、PurchasedProductMatchPlugin、RenewalV2ResultMerger（:270 仅按 EXPAND_SUBJECT 归类 SKU 集合做去重，不查组合详情）；C 端展示组装（RenewalSinglePlanDetailService）无 EXPAND_SUBJECT 特判。
+- **补强结论（buildSubClassList :423-473）**：subClassList 只收班级类子班（isClazzLikeSubProduct :479-482 = 6004/6003，**大班子班 pt=2 不进**）→ 纯大班子班组合死在第一道过滤（subClassList.isEmpty），纯 1v1 组合过第一道死在第二道（containsSmallClazzSubProduct 要求 6004）。两道过滤只作用于推荐位候选池——**恰好与 owner 口径「推荐过滤、扩科加购不过滤」一致**。
+- 证据边界：扩科配「不含 6004 组合」当前测试库无数据（id118/119 均含 6004），运行时复现需 DB 写插配置（超出本轮只读边界）；代码全链路实读无拦截点。场景 14 扩科组合 pt=51 展示正常（评审自身取证 TID .292.17950846940780049 同段）。**上一棒「真问题待拍板」作废，无需 owner 决策、无需改码**。
+
+### 11 条完整判断表（终稿）
+
+| 条目 | 定性 | 依据（一句话） | 建议 |
+|---|---|---|---|
+| P1-1 从计划失败→整页500 | 不适用 | owner 2026-11-17 强一致口径（代码注释明示） | 改降级=口径变更需 owner 决定，本轮不动 |
+| P1-2 双开关中间态 | 运维注意 | 上线 V2 关回 false 不进中间态 | 切终态顺序建议补分支总结第七节（先预热后详情，关闭反序） |
+| P2-1 类型过滤影响扩科 | **误报** | 扩科/加购候选直接来自 DB 配置表，不经过 combineProductInfoList；过滤只作用推荐位=口径一致 | 无需改码；扩科配不含6004组合的运行时验证留作后续可选 |
+| P2-2 Job 跳过条件 | 误报级（既有行为） | 与老 Job 逐字一致（2022 至今）；38 case 全量计划均可预热 | 不改；单边改反而破坏 V2/老链路一致性 |
+| P2-3 小班预热无状态过滤 | 建议项（既有口径） | 评审指的代码不可达；真实路径（SmallRenewalPreheatService:239）属实但两口子一致，开销类无正确性问题 | 后续优化：补状态过滤+清理死代码分支，需下游确认 |
+| P2-4 D1 换年级 defaultSelect | 已修不适用 | @28e2eece 修复+场景24闭环（评审基线早于修复） | 无 |
+| P3-1 老链换课多一次查询 | 建议项 | 带 60s 缓存已 catch 降级 | 后续加开关保护 |
+| P3-2 单文件 3587 行 | 已知技术债 | AICR #52090 同款 | 后续拆分 |
+| P3-3 validateNoSharedPreCourse 抛错 | 设计取舍 | 防脏配置故意抛+1h缓存+单测在案 | 运营配置规范约束 |
+| P3-4 normalize fastjson 命名 | 误报级 | 纯 compare 工具接口展示问题 | 无 |
+| P3-5 从计划串行 | 有意设计 | 注释明示外层用户级并行足够 | 生产压测关注 |
+| 第六节·场景14=6条 | 文档滞后 | id118/119 预期+1（历轮已判定） | 测试文档基线可补 |
+| 第六节·D1/fromC/缓存开关 | 已知 | 已修/已关闭/上线必办在案 | 无 |
+| 第六节·场景1-8 栏位空 | 文档滞后 | 验证在归档多轮有据 | 可补填 |
+| 第六节·renewalRole 前端 | 已验兼容 | 老值 null=O3 已验 | 建议前端确认一句 |
+
+**收口结论：11 条全部定性完毕，0 条需要本轮改代码，0 条待 owner 拍板**（上轮唯一待拍项 P2-1 已修正为误报）。评审文档本身未改（owner 口径）。分支 @08f67363 终态不变：已双重核验无改坏、可交付验收。
