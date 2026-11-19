@@ -735,3 +735,50 @@ C 端（cart）核心链路：勾选展示/同商品去重/换课限制/含小�
 2. **case 文档核对（完成，无漏补）**：owner 历次 9 类要求逐项对上测试文档场景（大小班→22 矩阵；主从组合→22+1-14+45 条；加购/推荐/扩科→16-19/20b/20d+22ab；口径更正→20 全章 20a-20i；单主→23；已报名造数→21；小班主计划补漏→16/17/18；不影响原 case→三章节+AICR 收口；接口复用→已验接口速查），本轮逐节 section 回读核验在位（场景 17/20/21/22/23 全拉）。
 3. **发送（完成）**：话题消息（拍板详解精华+9 行映射表+两文档链接）经 feishu-send-topic --task 9bddb709 发送成功，message_id=om_x100b60c4456074acb4beda8c44374c7。
 边界遵守：零代码/Apollo/bug 状态改动；无新增调查（全部基于归档既有材料）。
+
+## 追加（2026-11-19 第三十三轮 · owner 拍板 5 条执行完毕）
+
+**拍板（原话）**：1 fromC NPE 不用管（线上没问题的话）；2 联报 23 选 B+讲清从计划数据成因；3 D1 选 A+讲清 defaultSelect；4 B 端 tab 不用管；5 记待办（测试环境恢复走 V2+预热写老 key 配置）。
+
+**逐条执行（全部已验证）**：
+1. **fromC NPE 关闭**：线上核实 cart 近 7 天错误日志零 NPE（SLS serviceName=cart + queryStr 完整 token 双姿势均 0 条；token 有效性已用 "cart.gaotu100.com" 单查有结果证实）。按 owner 口径关闭。
+2. **联报 23 方案 B @8a7d596b**：话题已讲清成因（从计划班课天然无活动号，null=正常形态非脏数据；老链联报分支无差别收集致订单服务拒绝；生产未开 V2 不受影响）。实现=RenewalV2PureRenewalService.preheat 主计划联报型(role=2 且 act==null)占位自身 SKU；**新链消费 filter 早已在位**（RenewalSinglePlanDetailService:643/667，方案 B 实际只剩写入侧一处）。验证：preheat 运行时实证（A 计划 591020372877623296×7746793735，role=2 条目 act=591020573457448960=自身 SKU、role=1 保持真活动号，TID cart_gaotu100_com.304.17950999421290066）+ 单测 2 项新增（31/31）。老链端到端待缓存开关恢复后补（如实分档）。
+3. **D1 方案 A @28e2eece**：话题已讲清 defaultSelect 作用与改因。实现=主计划模式（FULL/SKIP_PREHEAT）换年级记录按主+从计划号合并取最新（repository 新增 listUserRenewalGradeByNumbers，order by update_time desc）；记录年级在从计划侧时主计划不设默认（gradeRecordOutside）由合并器取从计划默认；小班侧 convertToRenewalCartVO 加 gradeRecordsOverride 参数（主计划入口传、从计划/LEGACY_PURE null 保持原行为）；老链零改动。验证（先复现后修复）：复现=插 user_renewal_grade(7746791494, 从计划号 585960797778243584, 12) → defaultSelect 停兜底 g11；修复后=**defaultSelect=1@g12**（TID …303.17950994883430008）；边缘（grade=16 不在主计划年级组）→ 合并器接管回兜底 g11 不 crash（…297.17950995129900010）+ merger 接管单测新增（@839a1612，14/14）；负向删记录回 g11（…302.17950999775500072）；复现记录已清理（回读 0 行）。
+4. **B 端 tab 关闭**：记录在案。
+5. **待办落文档**：分支总结新增「七、后续待办」（恢复走 V2+预热写老 key 配置，owner 安排时机执行）；第六节标题后插拍板结果 callout（rev5/6 回读 10 项 IN）。
+
+**回归**：45 条全量 @28e2eece（reg23.py，pod 10.218.248.35）= 43 PASS + C=6/F=7 与上轮同值同判定（id118/119 预期+1），**0 疑似回归**；联报 23 路径（A=3/A_bc=8）与 bcn 断言全保持。
+
+**提交**：8a7d596b（占位+单测）→ 28e2eece（D1 三文件）→ 839a1612（merger 单测）已 push；部署 pipeline 1355452 SUCCESS，pod 10.218.248.35 eureka UP @28e2eece。测试文档场景 24 落库（rev161 回读 10 项 IN）。
+
+**环境终态**：test-eco-8 @28e2eece UP（HEAD=839a1612 仅多单测）；Apollo 零改动（缓存 false+V2 true/true 保持）；id118/119 保留；复现记录已清理；无在途部署/子 Agent。遗留待 owner：上线必办 3 项、待办 2 项（第七节）、1486168/1486137 待 QA、AICR 新评审未出（平台延迟）。
+
+## 追加（2026-11-19 第三十四轮 · AICR #2062 处置 + 既有规则体检【owner 插话，只读分析】）
+
+**一、AICR #2062（@28e2eece 新评审，10 条）处置完毕 @08f67363 部署 UP（pod 10.218.238.169）**：
+- **#52237 [blocking] #52085 扩大化**：processSingleClazzResult 对所有单班条目传 null 致**纯续小班 6004 条目丢 beforeCourseNumber**（V2 extractPureMap 以其为 key，null 条目被跳过丢出合并值）——修复=纯续（RENEWAL/null）传 result.getCourseNumber()、扩科/加购保持 null。修复前现状实证=TICKET 586097 g11 rt1 bcn=None（@28e2eece 输出）；修复后=bcn'18314034380997173' 恢复+rt2/rt3 保持 null（TID cart_gaotu100_com.289.17951014193630015）+A preheat 从计划条目 bcn=18390028220432911 进合并值（TID …286.17951014530740017）。
+- **#52229 [blocking] 换年级落库丢事务**（D1 修复 b61f95a5 引入）：串行直连写中途失败清空用户记录——修复=RenewalDataService 新增 productSelectGradeWithSubPlans @Transactional（主+从计划号版本），RenewalService 调用、缓存失效留事务外。
+- 另修 7 项：#52230/31 subjects 判空、#52238 grade 过滤 null、#52236 拼写、#52234 无用导入、#52233 死分支、#52232 preheat 入口判空；**#52235 N+1 不改**（与 #52091 同口径记录后续优化）。定向单测 32/32。
+- 45 条回归 @08f67363：43 PASS + C=6/F=7 老判定，**0 疑似回归**；TAPD 1486168（new）/1486137（reopened）无新 QA 动态。
+
+**二、既有规则体检（owner「先分析」，只读，14 条全满足）**：
+| 规则 | 结论 | 证据 |
+|---|---|---|
+| 列表排序：未购在前→forceBuy→纯续>扩科>加购 | ✅ | 代码三处同款（V2ResultMerger DISPLAY_ORDER:34 与 SinglePlanDetail sortClazzDetailDTOsForDisplay:2939，大班/小班/V2 合并统一）；**排序专项 6 case 程序断言全过**（TICKET/E_bc/F/A_bc/C_bc/D_bc，TID 287~294.1795101726~1733 段）；与 @28e2eece 基线顺序一致 |
+| 去重（年级学科含子班展开/同商品/推荐让位加购） | ✅ | 场景 16-18/20c+45 条条目数三轮保持 |
+| 类型过滤（仅推荐来源；6004 枚举；1v1 不算小班） | ✅ | 场景 20a-20i 全过+TICKET 1v1 g16 rt3 加购位（88c25a90=owner 更正口径预期变化） |
+| SKU 售卖状态（B 端 fromBCart 过滤） | ✅保持 | F2 b2-0/b2-1 对照+fromBCart 透传未动 |
+| 已购过滤（B 端推荐列表） | ✅ | 26 轮 recommendProductList 已购过滤正确 |
+| 已报名判定（组合SKU∪子商品SKU∪子班级号） | ✅ | 场景 21 造数全链路+20f+缺陷E 22a/22b+1486168 修复复验 |
+| 跨年级拆条 | ✅ | E_bc 589762 拆 37/38/39+TICKET sjg 5 年级 |
+| 开课最早子班展示 | ✅ | 28 轮判定（空文案=源数据，sjg 日期佐证） |
+| 主从合并展示 | ✅ | compare 5/5 三轮（88c25a90/28e2eece/08f67363）+场景 22/23 |
+| 换年级默认年级 | ✅（owner 拍板新行为） | 场景 24b-24d 闭环 |
+| 换课规则（从计划 key 归位/组合不可换课） | ✅ | 缺陷 C 修复实测+场景断言 |
+| allSignUp 语义 | ✅ | 45 条 su 分布锚点保持 |
+| 联报 23 展示与预热 | ✅ | A=3/A_bc=8 三轮一致+preheat 占位实证 |
+| 开关路由与老链行为 | ✅（老链仅两处已授权修复） | BE×13/BE1×3 全过；RenewalService diff 仅换年级事务收敛+productList 两区域 |
+
+**曾偏离两点均已闭环**：#52085 扩大化（#52237 本轮修复验证）；类型过滤口径（owner 更正=预期变化）。**疑似改坏项：无**。
+
+环境终态：test-eco-8 @08f67363 UP；Apollo 零改动；HEAD=08f67363 已 push。
