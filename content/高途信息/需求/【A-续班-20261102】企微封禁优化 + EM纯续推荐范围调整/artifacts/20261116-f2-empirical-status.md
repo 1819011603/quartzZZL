@@ -386,3 +386,15 @@ owner 最终要求『整合到图里，画一个图：整个推荐逻辑，老�
 **V2 链生效预检（已验证）**：owner 测试文档场景 9 同参数（7746793735 × 591020372877623296，test-eco-8 @5f0df948）→ code=0，3 条跨类型合并：grade11 小班 6004（从）+ grade15 联报 23（主）+ grade15 大班单班 2（从）——与文档场景 9 预期完全一致（TID cart_gaotu100_com.287.17949915970800969）。前置保障：昨日联报 23 报错已解除、无遗留同风险缓存；V2 有关联不读缓存强制现算。
 
 **告知 owner 可开测**：按其文档 EaKXdTkzXoJTStxBJH3cX7Qinzh 场景 9-14 验证（V2 已开）；场景 1-8 为关开关基线（注意：当前开关为开，验老链场景需再关——由 owner 决定操作）。代码/老链/缓存零改动。
+
+## 追加（2026-11-19 第十五轮 · TAPD 缺陷 1122531521001486137 核查【进行中·上下文收束交接】）
+
+**工单内容（已取）**：【组合商品加购/test-eco-8】加购成功后 C 端推荐接口未返回组合商品。报告人唐稳01，2026-11-19 13:39，状态 new，处理人=张泽灵。学员 7658129872、计划 **586116340522184704（小班主计划**=owner 测试文档场景 3/5 同计划）、sellerId=8645、includeBCart=true。加购组合 SKU 580508980380479488 + 483217233600958464（pt=51）均 b_cart 落库成功、signUp=0，但推荐接口（TID ea7405fa-b8d6-489e-b957-33cc49a5f824.0.3，HTTP200 code=0）年级列表无组合。**注意：工单声明「两个组合均已取消加购、数据已恢复」——复现需重新加购或靠日志取证。**
+
+**初步比对（推断，未验证）**：与前天加购排查（归档第十轮）模式高度相似——组合 type51 加购缺失，第十轮定性=组合主 SKU `sale_status=1/can_be_sold=false`（脚本造数未上架）被展示层售卖过滤跳过=数据问题非代码 bug。本轮两个新组合 SKU 大概率同状态。且当前 V2 双开中（11-18 我开的，小班主计划走 V2 链）。
+
+**接手最短路径**：
+1. 桥调 `RenewalDataService#getCombinedDTOsBySkuNumbersWithCache([580508980380479488,483217233600958464])`（test-eco-8，大数传字符串）看 product_sku_dto.sale_status/can_be_sold——若 ≠40 即同第十轮定性（数据未上架，处置=上架组合，非代码 bug，可回复工单不成立）；
+2. 若 sale_status=40 正常：TID ea7405fa 查调用链/日志定位 V2 链小班加购路径断点（getSmallClassRenewalDetail → additionalPurchaseService.recommend(context) → enrich/merge → convertToRenewalCartVO 的组合处理）；
+3. 复现需重新加购（工单已取消）——造数走 b_cart addCart 或让测试重加；
+4. 结论按问题卡口径回报；若定性=第十轮同类（数据），回复 owner 并可 tapd_comment/tapd_set_bug_status（接受/不解决需 owner 拍板）。
