@@ -696,3 +696,22 @@ C 端（cart）核心链路：勾选展示/同商品去重/换课限制/含小�
 **清理回读**：两计划 main 关联精确复原（小班 1 条/F 4 条/S4 1 条）；本轮 3 条 pt51 link+3 条 file 全部 is_del=1；S4 临时扩科节点+行全删；28 轮 id118/119 保留（场景 21/22 断言依赖）。副作用记录：F 历史关联 13 行 update_time 时间戳漂移（is_del 已精确复位，内容无损）。
 
 **文档**：场景 23 落 EaKXdTkzXoJTStxBJH3cX7Qinzh 回读（rev 156）。事项①关闭记录在案。
+
+## 追加（2026-11-19 第三十轮 · AICR+TAPD bug【进行中·上下文收束交接】）
+
+**已完成（全部已验证）**：
+1. **漏提交补交** e3d99f60：18 轮新增单测 RenewalExpandSignUpTest.should_markExpandCombineSignUp 上轮漏 commit。
+2. **AICR 14 条逐条处置**（task #2058 FAIL：1 blocking+6 medium+7 low）——**12 项修复 @ad9c241e 已部署 test-eco-8 UP**：#52078 teacherMap 缺 key 判空（blocking，0L 混合查询缺 key NPE→联报 23 整体失败）；#52089 applyPurchaseSignUp 单班分支排除联报 23（activityNumber≠班级号编号空间）；#52088 remainCount 判空；#52081 processClazzSet 聚合查询移出循环（N+1）；#52080 endClazz 判空；#52079 allGrades grades 判空；#52083 gradesMap 判空；#52082 getClazzes 判空（新增 safeClazzNumbers）；#52086 组合查询走 WithCache；#52085 扩科/加购 beforeCourseNumber 对齐 null（与大班一致，**预期行为变化**）；#52084 orderStatus Objects.equals 4 处；#52087 魔法数字枚举化；#52090 注释纠正（不动老链）。**#52091（逐条转换 N+1 大重构）不改**，记录为后续优化。编译+定向单测 13/13 过。
+3. **TAPD owner 待办 3 项**（tapd_list_my_tasks）：主 Story（EM纯续，54/54h）+ **Bug 1486168**（new）+ **Bug 1486137**（reopened）。
+4. **Bug 1486168 定性=真 bug（线上既有）+已修复 @e2b17741**：productList→setSmallClazzVO（6004 项）只查 order_info 班级号，6004 订单落 order_item（DB 实证：order_info by clazz=SKU 0 行，order_item 有 433534690352694278 status=2）→ signUp 必 0。代码源自 ac6cb1ff「还原线上老代码原样」=既有。修复=补 listBySkuNumbersAndUserIdNoRefundBatch SKU 口径（与组合分支同款）。**复现（修复前 su=0，TID cart_gaotu100_com.286.17950940954010010 @ad9c241e）→ 复验（su=1 + 负向 GPS su=0，TID …295.17950943700480008 @e2b17741 pod 10.218.238.216）**。bug 状态未改（按 owner 要求）。
+5. **Bug 1486137 定性=已修复待 QA 复测**：QA 17:57 复测时 eco8=ce3c66cf（旧口径）；88c25a90 已删加购过滤且 TICKET case 实证 1v1 组合 g16 rt3 恢复（TID …290.17950844672520048）。处置建议=QA 复测后关闭（**证据评论未发**，下一棒可选 tapd_comment）。
+
+**未完成（下一棒按序）**：
+1. **AICR 修复回归（第一优先）**：@e2b17741 跑核心 case——重点联报 23 路径（processClazzSet 大改 #52078/#52081/#52082）：A 计划 591020372877623296×7746793735（W1矩阵-大班主-联报23）+ TICKET（586116340522184704×7658129872&sellerId=8645&includeBCart=true）+C/D/F 核心断言；**注意 #52085 预期变化**：小班路径扩科/加购条目 beforeCourseNumber 由后置课号变 null。回归后可再跑 `python3 ~/.claude/skills/git-branch-convention/scripts/aicr.py` 看 e2b17741 评审是否转 PASS。
+2. **全量测试收口**：38 case 重跑对照 /tmp/w14_result.md 基线（差异只允许=#52085 beforeCourseNumber 变化）。
+3. **接口沉淀**：已验接口（renewalCart/productList/BossBatch createOrder/prepare/acl 桥 preheat 等，入口/参数/预期/示例 TID）补测试文档「已验接口」章节。
+4. **造数沉淀**：BossBatch 下单（source 规则=纯数字10-20位或z结尾）、扩科组合配置 INSERT（renewal_expand_subject_recommend+已有节点实时生效；新节点被结构缓存挡）、推荐位配置（renewal_link pt51+renewal_recommend_file，**DB 直插不实时生效**，正式入口 B 端 editProcess）、单主构造（软删 renew_master_relation main 侧+关缓存后实时生效；**注意 product 侧关联有版本化 Redis 缓存 renewal:relation:version:{main}**）、mock 支付（0 元单免支付）——写到 quartzZZL/content/高途信息/构造数据/ 新笔记。
+5. **分支总结（重点交付）**：功能层面+兼容层面逐条（素材=测试文档 12 模块盘点表+场景 19-23+缺陷 A-E 清单），落测试文档+话题讲清。
+6. 归档第三十轮终态、插话一回复（case 在文档 rev 155/156 已确认）。
+
+**环境现状**：test-eco-8 @e2b17741（pod 10.218.238.216 UP）；Apollo 缓存两开关 false（owner 认可）+V2 双开关 true；28 轮 id118/119 扩科配置保留；无在途部署/子 Agent。
