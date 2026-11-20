@@ -9,6 +9,24 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-11-20（目标13：B端膨胀券列表改为活动绑定全量券）
+
+### 🤖 Claude
+
+- **口径定稿**：Owner 原话 + 截图（产品王永诗↔唐稳定稿）——「**B端不过滤全展示，C端展示续班年级的**」。B端老师可自选，列表不再沿用 C端推荐过滤口径；C端推荐（按当前班课程后置+按年级匹配）保持不动。
+- **B端现状缺陷坐实**（改动前实测）：curl 直连 product-b（test-eco-8 旧 pod）`/feign/preOrderActivity/couponScope/listDisplayableByRenewalPlan`（renewMasterNumber=591029634963933184）→ 仅 **2 张**六年级券（生物 29900/语文 39999），活动实绑 4 张，四数学 19900/五英语 9900 被后置年级过滤。
+- **改动（product-server `1007b859e`，4 文件 +111/-38，已推送）**：
+  - `PreOrderCouponIntersectService` 新增 `listAllBoundCoupons(activityNumber)`：活动全部绑定券×scope 拍平，保留【使用中+售卖中】白名单，**不做后置年级过滤**，无 scope 行补空行，external 金额透传；
+  - `PreOrderDisplayableCouponService`：userId 缺失（null/0/负）即 B端口径，直接返回全量绑定券，不再查前置课程/intersect；**C端路径零改动**；
+  - 单测：新增 B端全量回归 2 例；既有 4 个 C端行为用例（拍平/防御/去重/交集空）改走学员级入口（`mockPreCoursesAllInClazz`+USER_ID）对齐新分流；`should_return_empty_when_downstream_throws` 对齐既有提交 `80eebcfa3`「下游失败显式抛错」契约。**Tests 13/13 绿**；
+  - 覆盖两个 B端消费方：①-17 product-b 券列表 + student-center B端下单弹窗（同走计划级入口）。
+- **编译卡点修复（release 合并带入，非业务改动）**：`RenewalMasterListQueryBO` Long→String 编译错误根因=定版提交 `8ccf51809`（client 1.5.14）**漏改 parent pom `product.client.version`**（仍 1.5.12-SNAPSHOT）→ reactor 断裂 → infrastructure 解析到 `~/.m2` 旧 jar（`getNumber()`=Long，javap 证实）。修复：parent pom 同步 1.5.14；nexus 已有 1.5.14 pom/jar（HTTP 200 回读）。全 8 模块 `mvn8 clean compile` BUILD SUCCESS（真实退出码 EXIT=0）。
+- **目标10 假退出码补验**：cart、student-center `mvn8 clean compile` 重跑（zsh pipestatus 真实退出码）均 **EXIT=0**。
+- **部署**：product-b（pipeline 1357132）、product（pipeline 1357133）test-eco-8，pod 均 Running+Eureka UP，commit=1007b859。
+- **复测**：**B端列表 4 张全量券**——四数学 19900/五英语 9900/六生物 29900/六语文 39999（年级 14/15/16 全展示，trace `product-b.256.17951743323670002`，镜像 `1007b859-20261120192413`）；**C端回归不变**——cart preRegistration（学员 7658127801/计划 591029634963933184/班 585960755422160896）仍 2 张六年级券（生物 29900/语文 39999，trace `cart_gaotu100_com.293.17951745236520048`，trace tree 证实仍走 `intersect` C端路径、全链 test-eco-8、0 错误 span）。
+
+---
+
 ## 2026-11-20（目标9 作废/删除联动 + 目标10 合并 release + 目标11/12 编排与部署）
 
 ### 🤖 Claude
