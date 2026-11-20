@@ -890,3 +890,89 @@ C 端（cart）核心链路：勾选展示/同商品去重/换课限制/含小�
 - 验收环境提醒：场景 1-8（老链路基线）在 default 泳道验=1 条；场景 9-14（V2）在 test-eco-8 验=3 条——两套预期并存是设计（老链路行为保持不变=兼容要求）。
 
 **零改动**（纯定性排查，代码/Apollo/数据/文档均未动）。
+
+## 追加（2026-11-20 第四十一轮 · 主从链路解析 debug 页调研+方案（零实现，待 owner 确认））
+
+**Owner 需求**：像 student-data renewal-debug.html 一样做「主从链路 纯续+扩科+加购」解析页，支持新老链路（开关开=新链/关=老链），在 cart 服务；插话一：接口入参传班级号还是计划号还是都支持；插话二：免登录直连先例 `test-api.gaotu.cn/cart/web/renewal/cart?appointUserId=654745&renewalNumber=545361759016388608`（群 Pin）。
+
+**一、renewal-debug.html 现状研究（已验证）**
+- 形态：单文件静态页 258KB（HTML+CSS+JS 无框架），放 `student-data-facade/src/main/resources/static/`（Spring Boot 自动伺服），URL=`/bgwApi/student-data/static/renewal-debug.html`（BGW 免鉴权直通）。
+- 后端：`TestController(/test/dataQuery)` POST debugRenewalInfo 等 6 个接口（单查+批量）；实调返回（TID 无需，200）：输入回显+续班状态+三段（在读/续班/扩科目）+班级明细（clazzType 标记/订单金额/在读/同维度班）。入参=userId+clazzNumber（班级视角，student-data 域）。
+
+**二、cart 侧路由/复用调研（全部实测）**
+- cart 无 static 先例；`bgwApi/cart/**` 被 CAS 302 拦截（student-data 免）；fuwu(APISIX) 无 `/cart/static/**` 路由（nginx 404）；直连 pod 全路径通。
+- **免登录直连可用**（插话二验证）：test-api.gaotu.cn 同 URL 不带泳道头→default 泳道基线（老链），带 `traffic-env: test-eco-8`→V2 新链——同计划同学员 0 条 vs 1 条 pt51（主从合并差异实例）；CORS `allow-origin:*` 且 allow-headers 含 traffic-env——**页面 JS 直接 fetch 双通道可行**。
+- 可复用：C 端 /web/renewal/cart（年级/rt/signUp/价格/类型全有，**缺 renewalRole 主从来源+主从结构概览**）；V2 方法 getRenewalDetailForC(:93)/ForB(:126)/preheat(:192)；老链 RenewalService 入口（只读调用）。
+- 入参事实：cart 全入口=renewalNumber（RenewalDataService 仅 listRenewalMasterByRenewalNumber:414/getRenewalMasterWithProcess:320），**无班级号→计划号反查能力**。
+
+**三、方案（推荐 A+B 组合）**
+- **A 双栏对比纯前端页（一期）**：静态页放 cart static（直连 pod `http://{pod}:28688/static/renewal-chain-debug.html` 访问，零网关配置）；JS 并发调同一免登录 URL 两次（不带头=老链栏 / 带 test-eco-8=新链栏），年级分组+类型徽章（23/2/6004/51）+rt 徽章（纯续/扩科/加购）+signUp+差异高亮。≈0.5-1 天。
+- **B 解析聚合接口（二期，新类不动老链）**：`RenewalDebugController(/debug/renewal)` 新增，参数 chain=auto|v2|legacy 请求级指定链路（v2→RenewalV2Service；legacy→老入口只读；auto→按 Apollo 并回显开关值），补齐 renewalRole/主从结构（resolveRelated）/扩科加购配置来源。≈+1 天。
+- **新老链路机制**：推荐泳道头（A）+请求级参数（B），均环境内隔离不动 Apollo；「页面切开关」会影响 TEST 全环境不推荐（仅作背景说明）。
+- **入参建议**：主入参 renewalNumber+appointUserId（与全部现有入口+群 Pin 先例一致，主从解析在计划维度）；班级号一期不支持（无反查链路，新增≈+0.5 天且需 product 侧接口，二期可加；页面返回展示前置班列表辅助班级号用户定位计划号）。
+- **风险**：①老链栏依赖 default 泳道保持基线部署（重部署即失真，B 的 legacy 参数是更稳的老链参照）；②debug 触发真实下游调用——生产不部署/开关控制；③页面若要固定 URL 需 fuwu 注册 /cart/static 路由（+0.5 天流程，可选）。
+
+**待 owner 确认**：A 先做还是 A+B 一次做；入参只收计划号是否接受；页面访问用直连 pod 还是要固定 URL。本轮零实现代码/零配置改动。
+
+## 追加（2026-11-20 第四十二轮 · debug 页 diff 级实施方案（owner「先给方案别改代码」，本轮零代码改动））
+
+**已核实的实现基础**（代码实读+运行时探测）：MvcConfig.java:79-86 addResourceHandlers 仅注册 swagger（/static/** 缺失属实）；UserAuthInterceptor.java:79 裸强转属实（拦截器注册 `/**` 全路径 :69，静态资源必经）；renewalRole 实时链为空、V2 纯续合并时已算好（V2PureRenewalService:493-494 按 mainPreCourseNumbers 判主从）——debug 取 role 无需新计算；拦截器语义「无 sid 放行」（:116-118）→ debug 接口/页面天然免登录（与 C 端 /cart 同机制）；test-api 对 /cart/static 现为 nginx 404（无路由，本轮实测），/cart/web/** 已透传。
+
+### 一、两处结构障碍 diff 级改法（owner 已授权方向）
+
+**1) MvcConfig.java addResourceHandlers（:79-86）**，swagger 两段注册之后、`super` 之前加：
+```java
+registry.addResourceHandler("/static/**")
+        .addResourceLocations("classpath:/static/");
+```
+影响面：仅新增映射；swagger handler 独立不受影响；@EnableWebMvc 下显式注册是标准做法。
+
+**2) UserAuthInterceptor.java preHandle（:79）**，裸强转前加类型判断：
+```java
+if (!(handler instanceof HandlerMethod)) {
+    return true;   // 静态资源(ResourceHttpRequestHandler)等非 Controller 请求放行
+}
+HandlerMethod handlerMethod = (HandlerMethod) handler;   // 原行不动
+```
+鉴权影响分析：现有全部接口 handler 均为 HandlerMethod，走原逻辑零变化；非 HandlerMethod 请求当前必 CCE 500（本来不可用），改后放行——**无任何现有鉴权行为的收窄/放宽**（放行的前提是请求不带 sid；带 sid 的静态请求理论上会跳过校验，但静态资源无业务语义，可忽略）。
+
+### 二、RenewalDebugController 设计（全部新类，老链零改动）
+
+- **落点**：cart-app 新增 `com.gaotu.renewal.debug.RenewalDebugController` / `RenewalDebugService` / `RenewalDebugVO`（约 250 行）；RenewalV2Service（新类）内新增 debug 取数方法（约 30 行，内聚 V2 链中间产物导出，不改任何现有方法）。
+- **接口**：`GET /web/renewal/debugChain`（挂在已透传的 /cart/web/ 前缀下，**零新增接口路由**）。入参：`renewalNumber`（必）+ `appointUserId`（必）+ `chain`（auto|v2|legacy，默认 auto）+ 可选 `includeBCart`/`sellerId`。
+- **链路机制**：
+  - `auto` → renewalV2Service.getRenewalDetailForC(...)（内部按 Apollo 开关转发，与生产 /cart 完全同路径）；响应回显 v2Switch 实际值与 chainUsed。
+  - `v2` → V2Service 新增 debug 方法：跳过 :96 开关判断走 V2 核心链（resolveRelated→主/从详情→MergedPure→merge/reconcilePure），**导出中间产物**：MergedPure.entries（sku→renewalRole，:493 已算好）+ RelatedPlans（主从结构）。
+  - `legacy` → renewalService.getRenewalDetail(...)（老链 C 端入口，只读调用不改一行）；role 恒空（老链无主从概念，如实展示）。
+- **返回 JSON 结构**：
+```
+{ chainRequested, chainUsed, v2Switch,
+  plan: {renewalNumber, type(大班/小班), productType(2/23/51…), preCourseNumbers[]},
+  relatedPlans: [{renewalNumber, type, productType, preCourseNumbers[]}],
+  summary: {pure条数, expand条数, additional条数, signedUp条数},
+  items: [{grade, sku, name, productType, typeName(联报/大班/小班课/组合/1v1),
+           recommendType, rtName(纯续/扩科/加购), renewalRole, roleName(主计划/从计划/—),
+           price, signUp, beforeCourseNumber, fromPlan(从计划号,v2链可得；不可得降级为空)}],
+  errorMsg }
+```
+- 免登录：拦截器无 sid 放行（既有语义），另加 @IgnoreUserAuth 显式化。
+
+### 三、静态页与固定 URL
+
+- **文件**：`cart-app/src/main/resources/static/renewal-chain-debug.html`（约 400 行，无框架单文件；表单+链路选择+三段解析卡片+类型/rt/role 徽章+年级分组；可选保留 A 方案双泳道对比 tab）。
+- **固定 URL**：`https://test-api.gaotu.cn/cart/static/renewal-chain-debug.html`（C 端域名免登录）。
+- **打通动作（1 条网关路由，非代码）**：青舟(APISIX) 给 cart 注册 `/cart/static/**` → 服务 `/static/**`（现状 nginx 404 已实测；参照 student-data 的 /static 路由配法，owner 侧或走青舟流程添加）。bgwApi 不可行（CAS 302 已实测）；debug 接口挂 /web/ 前缀免路由动作。页面调接口用同域相对路径，无 CORS 问题。
+
+### 四、部署验证方案（test-eco-8）
+
+1. 免登录：固定 URL 200；直连 pod /static/ 200（ResourceHandler 生效）；
+2. 解析对照：A 计划 591020372877623296×7746793735 → v2=3 条（role=1主+2从）对照场景 9/12 预期；legacy=1 条对照场景 1 预期；auto=随开关（当前 true=v2 结果）；
+3. 结构改动影响面回归：C 端 /cart 免登录+带 sid 登录态各抽 1、B 端 /operation/cart、swagger-ui 可访问；reg24.py 全量 45 条锚点复跑 0 变化；
+4. 单测（TestNG）：拦截器非 HandlerMethod 放行；debug Service 链路分发（auto 按开关/v2 强制/legacy 直调）。
+
+### 五、工作量与风险
+
+- 代码 ≈1 天（结构 10 行+V2Service 30 行+debug 三类 250 行+页面 400 行+单测 80 行）；网关路由流程另计。
+- 风险：①拦截器/ResourceHandler 改动影响面极低（现状这些路径本就 500/404）；②debug 接口触发真实下游调用——测试环境工具可接受，生产不注册 /cart/static 路由即整体不可达（双保险）；③fromPlan（条目→具体从计划号）依赖前置课↔从计划反查（RelatedPlans.preCourses 可反查），实现时若结构不便则降级只给 role；④网关路由审批时效影响固定 URL，路由未批前可用直连 pod URL 先行验证。
+
+**状态：方案完毕，零代码改动，等 owner 确认后实施。**
