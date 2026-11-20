@@ -9,6 +9,18 @@ tags: [需求, 日志]
 
 ---
 
+## 2026-11-20（目标9 作废/删除联动 + 目标10 合并 release + 目标11/12 编排与部署）
+
+### 🤖 Claude
+
+- **目标9（作废/删除后券绑定关系取消）——实测闭环，代码无需改动**：校验 `validateCouponNotUsedByOtherActivity`（promotion `d6982e89b`，2026-09-20）已过滤占用活动的 `is_del=true` 与 `activity_status=ABOLISHED(6)`。运行时三路径取证（真实 editAndPublish/abolish/delete 接口，dev-2）：①有效占用拦截（报「已被活动 591156993945767936 使用」）；②占用方 status=6 → create 放行（活动 591576942084362240 创建成功，含真实 abolish）；③占用方 is_del=1 → create 放行（活动 591577596615987200 创建成功）。测试活动已作废清理，联调活动/fixture 数据已恢复（status=3/is_del=0 回读）。
+- **附带发现**：QA 过 P0 case 期间把 fixture 活动 296（587601919797628928）作废、新建活动「cc」（591567248479490048）挂走 fixture 券——**fixture 活动已作废，P0 用例 A/B 组原 fixture 数据失效**，过 case 请用联调活动数据（归档 P0用例.md 已以联调计划为主）。
+- **目标10（合并 origin/release）**：cart `93282547`、product-server `eb0990fef`（冲突 2 处：client 版本保留 1.5.12-SNAPSHOT、DTO 双字段共存）、student-center `dc29350f6`；三仓编译 0 已推送。promotion/promotion-management/teacher-tool release 无新提交免合并。⚠️ release 带入纯续关联代码（`renewal.pure.relation.enabled` 代码默认 true）——部署后默认生效，是否 TEST 配 false 待 Owner 定。
+- **目标11（发布编排 24355）**：加本需求 9 服务（product/product-b/product-task、promotion-b/c/task、promotion-management、student-center、teacher-tool，提测分支 feature-xuban-20261001；promotion 系上线 master、其余 release），泳道 test-eco-8，TAPD 需求未动；gaotu_cart 沿用纯续提测分支行（膨胀券 cart 代码经 release 上线）。回读 10 服务确认。名称未改（工具无名称参数）。
+- **目标12（部署 test-eco-8）✅**：8 业务服务全部 pod Running + Eureka UP（product/product-b/cart/teacher-tool/promotion-b/promotion-c/promotion-management/student-center，分支 feature-xuban-20261001 含目标10 合并；pipeline 1356850-1356859）。主链路冒烟：test-eco-8 泳道 cart preRegistration 联调样本返回 2 券（语文 39999/生物 29900，trace `cart_gaotu100_com.299.17951674178890069`）。
+
+---
+
 ## 2026-11-20（create 超限文案带人数 + 联调活动加券）
 
 ### 🤖 Claude
