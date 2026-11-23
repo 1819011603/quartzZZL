@@ -100,6 +100,8 @@ test 环境对应应用见 [`verify.md`](verify.md)。
 
 完整逐点状态见 [覆盖与迁移实践](artifacts/expanded-scope/coverage.md)。
 
+TEST 可替换场景的实际生效配置、版本和 trace 汇总见 [TEST交付](artifacts/expanded-scope/test-replacement-delivery.md)。
+
 ## 当前结论与剩余边界
 
 本轮已按所有者最新决定收束为 13 个无前置知识库的生产目标应用、8 类场景；问题建议高中/素养与降退费精品/素养共 4 个生产应用保留 Dify。SOP V2 在测试 fixture 上完整 messages 逐字段一致；画像、摘要、分层仅指令与业务正文逐字一致，角色包装不同；退费根因、旅程、课程体验、NPS 精品存在已定位的标签、位置、换行或模板版本差异；素养 NPS 没有旧/新双侧 LiteLLM 实收：已核对生产绑定、TEST 映射并完成本地模板生成；因 TEST 无素养旧 Dify 映射且不能用生产 key 发推理，保留未验证。详见 [素养 NPS 证据边界](artifacts/expanded-renewal/nps-suyang-evidence-boundary.md)。

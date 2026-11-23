@@ -312,6 +312,10 @@ SOP普通compare及V2旧路均为Seed-1.6且有推理，本次未改SOP配置；
 
 详见[调用次数与证据](artifacts/expanded-scope/call-count-evidence.md)、[原材料对照](artifacts/expanded-renewal/source-scope.md)、[生产与废弃绑定](artifacts/expanded-refund/deprecated-binding.md)。本次未改路由/代码/生产；知识库保留决定已落实，未建设替代检索。
 
+## TEST可替换场景实际交付
+
+最终7个网关覆盖条目覆盖8类场景，配置发布及trace见 [TEST交付](artifacts/expanded-scope/test-replacement-delivery.md)。这代表测试环境生效，不代表生产13个应用全部通过。
+
 ## 最新收窄范围与prompt裁决
 
 所有者已决定知识库4个生产应用保留Dify，TEST恢复旧路且复验完成。当前逐项结果和证据见 [当前prompt交接](artifacts/expanded-scope/current-prompt-handoff.md)；飞书第9节已全文回读。SOP完整一致，其他正文保留但messages不完全一致；素养NPS无双侧实收，不冒称通过。
