@@ -1,0 +1,19 @@
+{
+  "data": {
+    "id": 37268,
+    "caller": "gps-ai",
+    "modelName": "Doubao-Seed-2.0-lite 260428",
+    "modelCode": "doubao-seed-2-0-lite-260428",
+    "timeout": 600,
+    "numRetries": 1,
+    "fallback": false,
+    "useCache": false,
+    "moderation": false,
+    "promptModeration": false,
+    "responseModeration": false,
+    "appIds": [],
+    "defaultParams": {}
+  },
+  "code": 200,
+  "msg": "success"
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "case": "renewal",
+    "message": "2026-11-23 18:20:48,343 INFO  [litellm_pre_call_utils.py:1136] [TID:7fdbe39b-bd88-4579-8fc3-fc594f4658d0.0.3] 29 Model redirect applied: caller=caller_0167, from_model=doubao/Doubao-1-5-pro-32k, to_model=doubao-seed-2-0-lite-260428"
+  },
+  {
+    "case": "renewal",
+    "message": "2026-11-23 18:20:48,362 INFO  [router.py:1395] [TID:7fdbe39b-bd88-4579-8fc3-fc594f4658d0.0.3] 29 Model redirect default params injected: doubao/Doubao-1-5-pro-32k -> doubao-seed-2-0-lite-260428, keys=['thinking']"
+  },
+  {
+    "case": "renewal",
+    "message": "2026-11-23 18:20:48,363 INFO  [utils.py:2948] [TID:7fdbe39b-bd88-4579-8fc3-fc594f4658d0.0.3] 29 \nLiteLLM completion() model= doubao-seed-2.0-lite; provider = litellm_proxy"
+  },
+  {
+    "case": "refund",
+    "message": "2026-11-23 18:20:48,301 INFO  [litellm_pre_call_utils.py:1136] [TID:10effaa6-5d46-4f72-887b-932b033a45d9.0.3] 32 Model redirect applied: caller=caller_0167, from_model=deepseek/DeepSeek-R1-250528, to_model=deepseek-flash"
+  },
+  {
+    "case": "refund",
+    "message": "2026-11-23 18:20:48,333 INFO  [utils.py:2948] [TID:10effaa6-5d46-4f72-887b-932b033a45d9.0.3] 32 \nLiteLLM completion() model= deepseek-v4.1-flash; provider = litellm_proxy"
+  }
+]

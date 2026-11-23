@@ -266,3 +266,34 @@ tags: [需求, 验证]
 - **已核对的 Apollo 运行状态**：`student-data` TEST/PROD 已发布 namespace 中，`renewal.ai.dept.module.switch`、`refund.ai.dept.module.switch`、`refund.ai.module.deps` 均为 `{}`；PROD `refund.predict.async.switch=true`，续班/退费相关 topic、group 和 AI agent 映射仍存在。结合 `ees_data.ai_agent` 中目标应用的 `platform_type=1` 清单，未发现某个本期目标应用被 Apollo 明确关闭的证据。
 - PROD `ai.agent.accessor.override.map={}` 只说明迁移开关尚未打开，不能据此判断业务功能下线；因此本期迁移范围仍按已确认的 15 个目标应用 + 2 个知识库应用保留 Dify 处理。
 - **未覆盖**：没有业务访问量/调用次数或逐应用线上任务统计，因此不能据此证明每个应用当前都有流量；若后续要缩小范围，应另查应用调用记录或产品确认，不能把“无开关关闭证据”当成“全量仍在使用”。
+
+
+## 2026-11-23 18:22 trace 实查纠正（优先于此前结论）
+
+- 历史退费 trace `9e84dced-3614-499e-80b7-b1fb0bb0ca4d.0.3`：TEST trace_tree=0 span；按北京时间 2026-10-27 00:00 至 10-29 00:00 查 app 日志，SLS/TLS 均 0 条。不能确认是 ID 错误还是日志保留期等原因。此前凭归档称最下游已核验的结论证据不足，应撤回；actual_query 是应用侧留痕，不是 Dify 内部最终 LLM 请求。
+- 新续班 trace：`7fdbe39b-bd88-4579-8fc3-fc594f4658d0.0.3`，沟通摘要-test，2026-11-23 18:20:46～18:20:52 +08:00。
+- 新退费 trace：`10effaa6-5d46-4f72-887b-932b033a45d9.0.3`，退费根因分析，2026-11-23 18:20:46～18:20:58 +08:00。输入为时间冲突的明确测试文本。
+- 两条请求均带 test-gtbg-dev-1，入口 quickTestAiApplication，响应 event=message；TEST 调用链分别 51/46 span，含 student-data 对 /dify/api/v1/chat-messages 的调用；SLS app 日志用完整 trace 加双引号查询已实际命中，TLS 未命中。建议查询时间 2026-11-23 18:20～18:23，北京时间，不要使用默认 error 日志。
+- 原 compareAiApplication 在当前泳道返回“未找到方法”，本次新证据不是双路 compare，不代表当前部署仍为 91012878d。两条新 trace 未取得 Dify 内部最下游 LLM 请求日志，不能据此宣称最终输入对等。
+- 证据：[trace 实查目录](artifacts/trace-recheck-20261123/)。本次无生产修改、无代码修改。
+
+
+## 2026-11-23 18:24 下游日志库纠正
+
+已沿两条新 trace 只读查询 PROD/SLS/app，找到 dify-api、dify-plugin-daemon、litellm 同 trace 日志。测试业务请求调用共享 dify-open，不能只在 TEST 日志库搜索下游。未新增生产业务调用。
+
+- 续班 `7fdbe39b-bd88-4579-8fc3-fc594f4658d0.0.3`：18:20:48.343 LiteLLM 收到 caller_0167 请求，model=doubao/Doubao-1-5-pro-32k，stream=true，messages 仅 user（完整 flat prompt）。
+- 退费 `10effaa6-5d46-4f72-887b-932b033a45d9.0.3`：18:20:48.300 LiteLLM 收到 caller_0167 请求，model=deepseek/DeepSeek-R1-250528，stream=true，messages 为 system（Dify 补入完整指令）+ user（原应用 flat prompt）。
+- 两条实收 body 均仅包含 model/stream/messages/user，未显式包含 enable_thinking、stop、temperature、max_tokens；此前从应用配置推导这些参数已完全对齐不成立。网关内部后续默认参数与模型重定向还需单独追踪。
+- 精简实收请求证据：`artifacts/trace-recheck-20261123/renewal-dify-llm-request.json`、`refund-dify-llm-request.json`。这是网关实收层证据，不自动等于提供商收到的最终 HTTP body。
+- **未完成**：迁移分支运行版本当前尚未恢复，原泳道缺 compareAiApplication；尚无同样输入的迁移侧网关实收请求，也未完成提供商侧最终参数核对。现有证据只能确认 Dify 侧消息结构与隐含提示词处理，不能确认迁移对等。需要先定位可用迁移版本实例或安排隔离测试部署再续验，不能把当前旧链路成功视作迁移验证完成。
+
+
+## 2026-11-23 迁移侧部署阻塞与参数证据
+
+- 已验证原 test-gtbg-dev-1 namespace 无 Pod，因此此前带该泳道头的 quickTest 请求不能标作迁移版本执行。
+- 恢复测试部署流水线 1359971（record 1763148，Jenkins build 498072），分支 feature-xuban-dify-offline、commit 91012878d692119e79fb7d14baa1bab594c9534d。镜像 `acr.baijia.com/uqun/student-data:feature-xuban-dify-offline-91012878-20261123182636` 已推送，Jenkins 18:29:20 Finished: SUCCESS。
+- 青舟 imageBuildRecord 仍 status=1，stepNum=1，updateTime 停留创建时间；20轮/10分钟轮询超时，目标泳道仍无 Pod。指定同镜像 redeploy 被 code=400“当前环境正在发布”拒绝，未执行成功。需要青舟平台核对该构建完成回调/记录状态并解除卡住的发布锁。未停止其他流水线，未手改平台数据库。
+- 轮询进程已以退出码2结束；远端流水线仍显示 RUNNING，尚未终态，不能当作部署完成。恢复后须沿原 pipeline/镜像续验，不重复构建。
+- 参数已证实：Dify caller_0167 的续班模型由 doubao/Doubao-1-5-pro-32k 重定向到 doubao-seed-2-0-lite-260428，日志明确注入 thinking；退费 R1 重定向 deepseek-flash。gps-ai TEST Doubao 路由37268的 defaultParams={}。证据见同目录 model-redirect-evidence.json、gps-doubao-route-test.json。不能从入口未传 thinking 推断实际没启用思考，也不能据这些证据断言两侧最终参数相同。
+- 未完成：迁移代码实际运行后的网关请求对比、提供商最终参数核对及必要修正。没有新代码修正和生产写入。
