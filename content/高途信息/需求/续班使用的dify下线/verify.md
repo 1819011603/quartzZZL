@@ -233,67 +233,53 @@ tags: [需求, 验证]
 - 判断：**当前有必要保留**（续班归因必须稳定 JSON，去掉会回归「非法 JSON 解析失败」）。风险点：把退费类（同用 `deepseek-v4-flash-0731`）迁到 gps-ai 后**共用同一 route**，若其中有**要纯文本**的场景会被强约束成 JSON。
 - 处置建议（二选一）：① 确认同 route 下所有应用都要 JSON → 保留；② 需要按应用区分 → **不删 route 默认值，改在请求里按应用下发 `response_format`**（给 `AiModelCallOption`/`LlmGatewayRequest` 加可选字段），route 默认值再退为兜底。
 
-## 迁移审查复核（2026-11-23）
+## 当前审查范围与证据口径
 
-### 当前实际生效配置
+版本 `91012878`，测试泳道 `test-gtbg-dev-1`。11 个后端文件已审查，独立 worktree 编译通过；本轮无业务代码修正。生产只读，未发布。
 
-- 读取 Apollo 已发布值：`student-data / TEST / application / ai.agent.accessor.override.map` 当前命中 9 个应用；续班/退费的两个知识库应用未命中，仍保留 Dify。
-- `student-data / PROD / application / ai.agent.accessor.override.map` 当前为 `{}`，生产没有误切新链路；生产提示词列、路由和代码发布仍按 T-09～T-13 的顺序推进。
-- 证据来自 Apollo 已发布配置读取，入口分别为 `http://test-apollo-meta.baijia.com/configs/student-data/TEST/application` 与 `http://10.255.162.197:8000/configs/student-data/PROD/application`。
+用户要求已扩大到其余迁移场景；两例不是整体验收。当前细节见 [逐字段报告](artifacts/expanded-diff/report.md)，在途验证见 [交接](artifacts/expanded-scope/handoff.md)。历史 actual_query 仅为应用侧留痕，不能代替 LiteLLM 实收请求；以以下可查询的新 trace 为准。
 
-### 代码级对等性审查结论
+PROD 迁移开关为 `{}`，不代表功能下线。部门模块开关 `{}` 的代码语义为全放开；实时续班启用，T+N 关闭仅表示该触发关闭。未取得逐应用流量统计，不能据此认定全部活跃或已下线。证据见 `artifacts/expanded-scope/`。
 
-- `origin/feature-xuban-dify-offline` 相对 `origin/release` 仅改动 11 个后端文件；没有前端改动。`mvn8 -pl student-data-service -am -DskipTests compile` 在独立 worktree（commit `91012878d`）通过。
-- 已确认 Dify 额外承担的功能只有知识库 dataset 的向量检索/rerank 回灌；扫描到的目标应用 `tools` 为空，敏感词、注释和其它 `gt_configs` 均关闭，不能把普通模型输出文本差异当成迁移缺陷。
-- 新链路已按应用复制 Dify 的 `completion_params`（`enable_thinking`、`stop`、`temperature` 等），网关请求合并时禁止 `params` 覆盖 `model`、`max_tokens`、`messages`；旧链路仍使用原 flat prompt 和 Dify accessor。
-- 目前没有发现可由代码直接修正的确定性缺陷，因此本轮未改业务代码。模型输出的自由文本和分类项仍可能因模型、随机性和上下文结构产生差异；验收应优先检查 JSON 结构、枚举合法性、关键业务语义和非空约束，不能要求逐字相同。
+Dify 的知识库检索必须保留；其他应用的工具、工作流、参数默认值需结合实际请求核实，不能把无知识库等同无隐含处理。
 
-### 未覆盖 / 仍需按发布顺序验证
+## 2026-11-23 18:54 重建恢复及双路实收验证（当前结论）
 
-- 本轮未调用生产业务入口、未写生产 Apollo/数据库、未进行生产发布；生产 15 个应用的逐应用成功 trace 仍待 T-09～T-14 完成。
-- 测试现有对比证据覆盖桥调 `compareAiApplication` 和测试泳道，不等价于全量线上异步任务验证；上线后仍需按应用回读 `ai_application_call_task_result` 及最下游 LLM trace。
-
-## 对增量问题的澄清（2026-11-23）
-
-### 最下游 LLM 输入与 trace 覆盖边界
-
-- **已覆盖一条真实测试对比链路**：`artifacts/compare-detail.md` 的 trace `9e84dced-3614-499e-80b7-b1fb0bb0ca4d.0.3` 对应退费根因应用；同一应用、同一输入在 `ai_application_call_task_result.actual_query` 留下 Dify 与网关两条请求，已逐项核对 system/user 来源、请求路径和模型参数。Dify 的完整指令由 Dify 内部补齐，网关侧来自 `gateway_core_prompt`；参数差异集中在 `enable_thinking`、`stop` 等，补齐后相似度由 0.228 提升到 0.531。
-- **已覆盖测试桥返回层**：`verify.md` 中 `沟通摘要-test` 的 trace `005cf022-…` 证明同一输入串行命中 Dify 与网关，响应事件分别为 `message` 和 `litellm_proxy/...`；`actual_query`/`result` 和网关模型、参数的对比证据见 `artifacts/compare-detail.md`。
-- **边界**：这些证据能证明测试链路的下游请求构造和差异原因，覆盖的是代表性退费应用及续班试点，不代表 15 个应用的每个真实异步任务都已取得独立 LLM SLS trace；本轮不再把“结构一致”扩写成“全量输入完全一致”。
-
-### “部分功能线上可能已下线”的核实
-
-- **已核对的 Apollo 运行状态**：`student-data` TEST/PROD 已发布 namespace 中，`renewal.ai.dept.module.switch`、`refund.ai.dept.module.switch`、`refund.ai.module.deps` 均为 `{}`；PROD `refund.predict.async.switch=true`，续班/退费相关 topic、group 和 AI agent 映射仍存在。结合 `ees_data.ai_agent` 中目标应用的 `platform_type=1` 清单，未发现某个本期目标应用被 Apollo 明确关闭的证据。
-- PROD `ai.agent.accessor.override.map={}` 只说明迁移开关尚未打开，不能据此判断业务功能下线；因此本期迁移范围仍按已确认的 15 个目标应用 + 2 个知识库应用保留 Dify 处理。
-- **未覆盖**：没有业务访问量/调用次数或逐应用线上任务统计，因此不能据此证明每个应用当前都有流量；若后续要缩小范围，应另查应用调用记录或产品确认，不能把“无开关关闭证据”当成“全量仍在使用”。
+- 按所有者决定停止旧 build498072，停止API返回200；新流水线1360042/build498084成功。目标Pod student-data-86c8f5db5d-cpwj9（10.218.238.186）Running/Eureka UP，镜像feature-xuban-dify-offline-91012878-20261123184341，commit91012878。原部署阻塞已解除。
+- 在该版本的compareAiApplication进行两例同输入双路调用，Dify与gateway均成功，未改代码、数据库或Apollo。
+- 续班沟通摘要trace：15760243-f225-4246-a103-c9565c2652ba.0.3。Dify实收18:53:04.814，迁移实收18:53:14.831。
+- 退费根因trace：a32fe4b6-6269-4882-8d39-81c76f8ca23e.0.3。Dify实收18:53:04.743，迁移实收18:53:19.148。
+- 查询日期2026-11-23北京时间18:53～18:55；SLS/app、完整trace加双引号。Dify侧在PROD日志库、迁移侧在TEST日志库，均有service=litellm的Chat_completion request。生产只读查询，无生产业务写调用。
+- **已验证的内容保留**：两例user内容在Dify原flat prompt中逐字存在；续班新system内容也逐字存在；退费Dify额外system指令在迁移system中完整保留（仅末尾换行归一化），后接应用输出要求。因此这两个样本未见核心指令/数据丢失。
+- **已验证的输入差异**：续班从单user flat变为system+user；退费从Dify system+user flat变为合并指令的system+纯user。旧侧stream=true、无显式max_tokens；新侧非流式、max_tokens=8192。续班新侧额外response_format=json_object、stop=[]；退费新侧enable_thinking=true、stop=[]。旧侧重定向模型最终分别为doubao-seed-2-0-lite-260428/deepseek-flash，续班另有thinking注入日志。不能从入口缺省推断提供商默认值。
+- **结论边界**：完成两个代表样本的网关实收输入核对，确认内容保留但请求不逐字段等同；未证明提供商最终HTTP body及所有默认参数逐字段相同，不以随机文案差异判断迁移失败，也不能以成功两例推断全量业务等价。没有运行证据支持新增业务代码修正，未盲目改变既有消息角色策略或全局网关参数。
+- 对后续放量适用：固定业务数据、对齐实际模型路由和thinking语义，区分入口参数与重定向/默认参数；按结构、合法枚举、事实忠实度验收，抽取多次结果评估随机性；保留知识库应用的检索路径和单应用回滚。
+- 证据位于artifacts/trace-recheck-20261123/compare-{renewal,refund}-{prod,test}-request.json及compare-{renewal,refund}.json。未覆盖完整业务异步落值、全量应用、提供商最终请求；若必须证明提供商逐字段参数，需要网关侧提供出站请求审计（当前已查日志只有实收、重定向和返回）。
 
 
-## 2026-11-23 18:22 trace 实查纠正（优先于此前结论）
+## 2026-11-23 19:00 差异处置结论（两个代表样本）
 
-- 历史退费 trace `9e84dced-3614-499e-80b7-b1fb0bb0ca4d.0.3`：TEST trace_tree=0 span；按北京时间 2026-10-27 00:00 至 10-29 00:00 查 app 日志，SLS/TLS 均 0 条。不能确认是 ID 错误还是日志保留期等原因。此前凭归档称最下游已核验的结论证据不足，应撤回；actual_query 是应用侧留痕，不是 Dify 内部最终 LLM 请求。
-- 新续班 trace：`7fdbe39b-bd88-4579-8fc3-fc594f4658d0.0.3`，沟通摘要-test，2026-11-23 18:20:46～18:20:52 +08:00。
-- 新退费 trace：`10effaa6-5d46-4f72-887b-932b033a45d9.0.3`，退费根因分析，2026-11-23 18:20:46～18:20:58 +08:00。输入为时间冲突的明确测试文本。
-- 两条请求均带 test-gtbg-dev-1，入口 quickTestAiApplication，响应 event=message；TEST 调用链分别 51/46 span，含 student-data 对 /dify/api/v1/chat-messages 的调用；SLS app 日志用完整 trace 加双引号查询已实际命中，TLS 未命中。建议查询时间 2026-11-23 18:20～18:23，北京时间，不要使用默认 error 日志。
-- 原 compareAiApplication 在当前泳道返回“未找到方法”，本次新证据不是双路 compare，不代表当前部署仍为 91012878d。两条新 trace 未取得 Dify 内部最下游 LLM 请求日志，不能据此宣称最终输入对等。
-- 证据：[trace 实查目录](artifacts/trace-recheck-20261123/)。本次无生产修改、无代码修改。
+结论：核心业务指令与输入数据已核对保留，两例响应可解析，但续班两侧存在多用户措辞，退费样本缺分类清单，不能算业务质量或枚举验收通过；更不能据此证明全量等价。本轮确认并修正了一项运行差异：续班测试试点丢失旧模型重定向的 thinking disabled。
 
+| 差异 | 决定与理由 | 影响/边界 |
+|---|---|---|
+| 消息角色 | 保留新system+user结构。指令/数据完整保留，明确区分可信指令和业务数据；无运行证据证明必须恢复旧flat包装 | 角色优先级会影响模型行为，不能声称语义数学等价；两例成功不排除边界样本差异 |
+| stream | 保留网关非流式。现有业务同步消费完整结果，旧Dify内部流式最终也聚合为完整结果 | 内部传输、耗时/超时表现可能不同；未做流式延迟等价测试，无需为输入对齐改成流式 |
+| max_tokens | 保留8192及既有length截断报错保护，旧侧入口未显式传，不擅自删上限 | 本轮四个响应finish_reason均stop，无截断；长输入的Dify动态预算不能认定已复刻，列边界，不盲目抬限 |
+| response_format | 保留续班json_object，保障已有JSON解析契约；退费不强加 | 旧侧允许代码围栏、新侧纯JSON，格式约束更强，可能影响措辞，不等于指令丢失 |
+| stop=[] | 保留空列表，无自定义停止串；未发现提前截断 | 不把空列表与未传视为所有提供商实现绝对相同 |
+| thinking | 续班试点已对齐disabled；退费保留enable_thinking=true | 旧退费实际reasoning_tokens=1685、新侧2992，均有reasoning，数量随输入结构/采样变化，不以数量差修参数 |
 
-## 2026-11-23 18:24 下游日志库纠正
+续班修正依据：原compare响应旧侧reasoning_tokens=0且无reasoning，新侧522且有reasoning。只读网关配置确认旧doubao/1.5重定向规则是thinking={type:disabled}、force=true；直用新模型绕过该规则。TEST Apollo仅修改agent255107338300556288（画像/摘要共享agent）的params.thinking，其余agent内容回读不变；releaseKey=20261123185859-188a6f5d9e0ed575。配置保留供测试使用，无生产变更、无代码commit。
 
-已沿两条新 trace 只读查询 PROD/SLS/app，找到 dify-api、dify-plugin-daemon、litellm 同 trace 日志。测试业务请求调用共享 dify-open，不能只在 TEST 日志库搜索下游。未新增生产业务调用。
+同入口复验trace f059219f-2d7c-46c5-945e-fd3a9cdab509.0.3（19:00前后，TEST/SLS/app，版本91012878）：实收thinking.disabled；网关返回finish_reason=stop、无reasoning内容，reasoning_tokens字段为null（不能写成计数0）。原应用双路均成功。已保存thinking规则、变更前后配置、请求/响应日志和compare结果。
 
-- 续班 `7fdbe39b-bd88-4579-8fc3-fc594f4658d0.0.3`：18:20:48.343 LiteLLM 收到 caller_0167 请求，model=doubao/Doubao-1-5-pro-32k，stream=true，messages 仅 user（完整 flat prompt）。
-- 退费 `10effaa6-5d46-4f72-887b-932b033a45d9.0.3`：18:20:48.300 LiteLLM 收到 caller_0167 请求，model=deepseek/DeepSeek-R1-250528，stream=true，messages 为 system（Dify 补入完整指令）+ user（原应用 flat prompt）。
-- 两条实收 body 均仅包含 model/stream/messages/user，未显式包含 enable_thinking、stop、temperature、max_tokens；此前从应用配置推导这些参数已完全对齐不成立。网关内部后续默认参数与模型重定向还需单独追踪。
-- 精简实收请求证据：`artifacts/trace-recheck-20261123/renewal-dify-llm-request.json`、`refund-dify-llm-request.json`。这是网关实收层证据，不自动等于提供商收到的最终 HTTP body。
-- **未完成**：迁移分支运行版本当前尚未恢复，原泳道缺 compareAiApplication；尚无同样输入的迁移侧网关实收请求，也未完成提供商侧最终参数核对。现有证据只能确认 Dify 侧消息结构与隐含提示词处理，不能确认迁移对等。需要先定位可用迁移版本实例或安排隔离测试部署再续验，不能把当前旧链路成功视作迁移验证完成。
+外部条件：若要求提供商最终HTTP body/隐式默认值逐字段证实，仍需网关出站观测；此不是本轮两例输入内容核对的新增验收前置。当前正扩大测试场景覆盖；完整异步落值仍未覆盖，生产发布不在授权内。其他应用是否需要thinking覆盖须按各自真实旧模型重定向规则判断，不能批量套用。
 
+## 当前新增缺口与处置（扩大验证）
 
-## 2026-11-23 迁移侧部署阻塞与参数证据
-
-- 已验证原 test-gtbg-dev-1 namespace 无 Pod，因此此前带该泳道头的 quickTest 请求不能标作迁移版本执行。
-- 恢复测试部署流水线 1359971（record 1763148，Jenkins build 498072），分支 feature-xuban-dify-offline、commit 91012878d692119e79fb7d14baa1bab594c9534d。镜像 `acr.baijia.com/uqun/student-data:feature-xuban-dify-offline-91012878-20261123182636` 已推送，Jenkins 18:29:20 Finished: SUCCESS。
-- 青舟 imageBuildRecord 仍 status=1，stepNum=1，updateTime 停留创建时间；20轮/10分钟轮询超时，目标泳道仍无 Pod。指定同镜像 redeploy 被 code=400“当前环境正在发布”拒绝，未执行成功。需要青舟平台核对该构建完成回调/记录状态并解除卡住的发布锁。未停止其他流水线，未手改平台数据库。
-- 轮询进程已以退出码2结束；远端流水线仍显示 RUNNING，尚未终态，不能当作部署完成。恢复后须沿原 pipeline/镜像续验，不重复构建。
-- 参数已证实：Dify caller_0167 的续班模型由 doubao/Doubao-1-5-pro-32k 重定向到 doubao-seed-2-0-lite-260428，日志明确注入 thinking；退费 R1 重定向 deepseek-flash。gps-ai TEST Doubao 路由37268的 defaultParams={}。证据见同目录 model-redirect-evidence.json、gps-doubao-route-test.json。不能从入口未传 thinking 推断实际没启用思考，也不能据这些证据断言两侧最终参数相同。
-- 未完成：迁移代码实际运行后的网关请求对比、提供商最终参数核对及必要修正。没有新代码修正和生产写入。
+- PROD DMS 实查 `ai_application.gateway_core_prompt` 返回 0 行，当前缺列；发布前必须先完成 DDL，不能靠迁移开关关闭规避。证据：[生产表结构查询](artifacts/expanded-scope/prod-ddl-check.txt)。本次生产只读。
+- 画像、SOP compare、分层有效样本已取 LiteLLM 双路请求，见 [续班报告](artifacts/expanded-renewal/report.md)。分层被强制 JSON 与直接原因文本契约冲突，空/有效样本均复现，TEST 配置修正及同入口复验进行中，尚不能写已修好。
+- SOP 真正业务入口 V2 与 compare 消息结构不同，正在补验；compare 不算真实业务入口通过。
+- 退费五场景已有双路响应，但 LiteLLM 实收请求与工具执行证据尚未补齐；不能用 code=0 或 answer 中工具措辞判断等价或实际调用工具。
+- 静态风险适用性见 [核对报告](artifacts/expanded-diff/risk-applicability.md)：当前未发现 stream=true、TEST 缺列或六退费提示词为空，不据潜在风险盲改代码。

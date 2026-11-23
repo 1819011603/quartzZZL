@@ -31,7 +31,7 @@ tags: [需求]
 - **判定做完的标准**：每个目标应用都能经 Apollo 独立切到新链路且功能正常；全量切换并稳定后，
   代码移除 Dify 路径（代码切换阶段）。
 - **明确不做**：本期不迁与 AI 无关的链路；`我家子涵最近学的怎么样` 归属待定，暂不纳入；**`生成沟通建议-高中/素养`（= 问题建议-高中/素养）保留 Dify、不迁**。
-  - **原因**：这两个应用在 Dify 上是 `agent-chat + function_call` 且**绑定了 Dify 知识库（dataset）**——Dify 把知识库**注册成一个工具**交给模型，**由模型运行时自己发起检索**（Dify 做向量检索 + rerank，命中片段回灌）；**知识不在提示词里，而在「运行时检索」这一步**。而迁移目标（公司 LLM 网关）是**标准单次 chat completion**（只发 `system`+`user`，**无工具/检索**）→ 直接切会**丢掉知识库检索、属有损替换**。其余 15 个应用无知识库，切换无损。
+  - **原因**：这两个应用在 Dify 上是 `agent-chat + function_call` 且**绑定了 Dify 知识库（dataset）**——Dify 把知识库**注册成一个工具**交给模型，**由模型运行时自己发起检索**（Dify 做向量检索 + rerank，命中片段回灌）；**知识不在提示词里，而在「运行时检索」这一步**。而迁移目标（公司 LLM 网关）是**标准单次 chat completion**（只发 `system`+`user`，**无工具/检索**）→ 直接切会**丢掉知识库检索、属有损替换**。其余应用是否对等仍须核对实际提示词、参数及工作流处理；无知识库不能证明切换无损。
   - **可后续替代**：知识库实为 **Teable 结构化话术表**（高中 ~10.4 万字 / 素养 ~4.8K 字），可用 student-data 既有 `TableApiDataHolder`「按问题类型+课程取话术 → 拼 prompt」等价复刻（不需向量库），但须**单独立项**。评估见 [`artifacts/dify-kb-eval.md`](artifacts/dify-kb-eval.md)。**本期这 2 个不下线，Dify 不能完全下线**。
 
 ## 已定共识
@@ -83,21 +83,21 @@ test 环境对应应用见 [`verify.md`](verify.md)。
 | | |
 |---|---|
 | 阶段 | 开发中 |
-| 进度 | T 7/14 · R 0/0 · C 0/0 |
-| 部署泳道 | `student-data=test-gtbg-dev-1`（流水线 1316286） |
-| 当前卡点 | 无（退费提示词已改挂 `ai_application.gateway_core_prompt` 应用级列，绕开 prod 的 pc 共享问题）；等 prod 按序上线 |
-| 最近更新 | 2026-11-23：复核需求分支 diff 与 TEST/PROD Apollo 已发布值；TEST 当前 9 个应用命中新链路覆盖，PROD 仍为 `{}`。代码级审查未发现确定性缺陷，详见 [`verify.md`](verify.md#迁移审查复核2026-11-23)。|
+| 进度 | T 6/14 · R 0/0 · C 0/0 |
+| 部署泳道 | `student-data=test-gtbg-dev-1`，commit `91012878`，流水线 `1360042` |
+| 当前卡点 | 扩大场景验证进行中；需合流 LiteLLM 实收差异、学部变体与工作流处理证据，尚不能判整体对等 |
+| 最近更新 | 2026-11-23：两例实收提示词/参数差异已核对；TEST 画像/摘要共享 agent 的 thinking.disabled 已修正并复验。其余场景正在验证；详细差异见 [审查报告](artifacts/expanded-diff/report.md)，续接见 [交接](artifacts/expanded-scope/handoff.md)。 |
 
 ## 下一步
 
-1. 全量切剩余续班 + 退费应用（T-05）：**只改 Apollo**——在 `ai.agent.accessor.override.map` 里按 `ai_agent.number` 增条目 `{name, platformType:2, model, params}`，**无需改代码/发版**
-2. 上线前把 gps-ai **prod** 路由补齐（`doubao-seed-2-0-lite-260428`、`deepseek-v4.1-flash-1017`；test 已有）
-3. 功能替换稳定后，代码切换：收口/移除 Dify 路径（T-06）
+1. 完成其余续班与退费场景的双路实收对比，核对学部变体和 Dify 隐含工具/工作流处理。
+2. 对运行确认的迁移问题作最小修正并同入口复验；共有质量问题单列，不归因迁移。
+3. 汇总覆盖、风险与未覆盖项；生产发布不在本次授权范围。
 
 ## 待确认
 
-- [ ] 退费 10 个应用的处理：先把 Dify 提示词迁进 student-data `prompt_config`，还是本期先只切续班 7 个？—— 等确认
-- [ ] 「功能替换稳定」的观察窗口与放量节奏（全量一次性还是分批）
+- 功能替换稳定的观察窗口与放量节奏，留待生产发布阶段决定。
+- 当前扩大验证未完成，不以代表样本或 JSON 可解析作为全量验收。
 
 ## 涉及的代码
 

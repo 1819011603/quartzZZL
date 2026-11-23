@@ -15,15 +15,15 @@ tags: [需求, 任务]
 | T-02 | 定切换粒度与测试环境首个试点应用 | 已完成 | — | 粒度 `ai_agent`；试点 `用户画像/沟通摘要-test`(255107338300556288)；复用 `LlmGatewayAccessor` |
 | T-03 | Apollo 新增按应用链路开关并落地（命中走 LLM 网关 `gps-ai`） | 已完成 | — | 现为 `ai.agent.accessor.override.map`（`{name,platformType,model,params}`）+ `AiApplicationExecutor` 接入（commit `f0c58aaf`）；TEST Apollo 已发布 |
 | T-04 | 测试环境切一个试点应用并验证功能 | 已完成 | — | 试点 `沟通摘要-test`：开关开=网关/关=Dify、模型=按应用指定、`params` 生效，均实测通过 |
-| T-05 | 全量切换剩余续班 + 退费 Dify 应用并逐个验证 | 进行中 | — | **test 15 个已验证**（续班 5 个 test app + 退费 6 个 test app；`生成沟通建议-高中/素养` 2 个保留 Dify 不迁）；prod 待发 |
+| T-05 | 全量切换剩余续班 + 退费 Dify 应用并逐个验证 | 进行中 | — | TEST 10 应用覆盖核对中；剩余分层格式修正、SOP真实入口、退费实收及学部变体。不能外推生产15应用通过 |
 | T-06 | 代码切换：收口 / 移除 Dify 路径 | 待办 | T-05 | 功能替换稳定后再做 |
 | T-07 | 每应用模型一一对应：按应用配 `model`/`params` + 网关加路由 | 已完成 | — | 映射全定：Doubao 旧系列→`doubao-seed-2-0-lite-260428`、R1→`deepseek-v4.1-flash-1017`；gps-ai test 加 2 条路由（37268/37270）；prod 路由已提工单 5546/5547 |
 | T-08 | 退费提示词从 Dify 迁到 student-data（新链路用） | 已完成 | — | **test 已迁并复验**；承载列为 `ai_application.gateway_core_prompt`，prod 待迁 |
 | T-09 | prod Apollo：补 `params` 并发布 | 待办 | T-13 | **prod 现置空 `{}`（全走老链路）**；**代码上线后**再发正式配置（15 应用，退费 `deepseek-flash` + 各应用 params） |
-| T-10 | 按应用定返回格式 | 已完成 | — | 结论：续班 doubao 带 `response_format=json_object`；**退费 deepseek 一律不带**（NPS/课程体验同模型行为不一致） |
+| T-10 | 按应用定返回格式 | 进行中 | — | 分层原因应输出文本，强制 JSON 已在有效样本复现差异；正在做 TEST 最小配置修正及复验，不套用续班统一 JSON |
 | T-11 | prod：`ai_application` 加 `gateway_core_prompt` 列 + 迁移退费提示词 | 待办 | — | 先提 DDL 工单加列（应用级，替代 prompt_config 方案）；再按 `ai_application.number` 写 10 条退费应用提示词（按学部取文件，NPS 素养≠精品） |
 | T-12 | prod 路由工单审批（gps-ai） | 待办 | — | 需 `doubao-seed-2-0-lite-260428`、**`deepseek-flash`**（替换已提的 5547 用 v4.1-1017） |
-| T-13 | prod 代码发布 | 待办 | T-09,T-12 | 合 release / 发版；发布后按应用逐个 `compare` 复验 |
+| T-13 | prod 代码发布 | 待办 | T-11,T-12 | 合 release / 发版；发布后按应用逐个 `compare` 复验 |
 | T-14 | 迁移表 tab 状态同步（prod） | 待办 | T-13 | 表链接见 [`links.md`](links.md) |
 | T-15 | 生成沟通建议-高中/素养：知识库检索替换 | 已取消 | — | **本期不迁，这两个保留 Dify**。原因：Dify 上为 agent-chat+function_call 且**绑定 Dify 知识库(dataset)**，运行时由模型自行检索（向量检索+rerank 回灌），**知识不在提示词里**；而网关是单次 chat completion、**无工具/检索** → 直接切属**有损**。可后续用 Teable 结构化话术复刻（须单独立项）。评估见 [`artifacts/dify-kb-eval.md`](artifacts/dify-kb-eval.md)；test 已撤其开关回到 Dify |
 
@@ -44,6 +44,10 @@ tags: [需求, 任务]
 - T-02 切换粒度与试点应用确定并写入 README → 判据：README「待确认」对应项清空
 - T-03 Apollo 开关读回确认已发布 → 判据：`apollo_get_key` 读回命中新 key
 - T-04 测试环境试点应用走新链路且功能正常（含日志 traceId 证据）→ 判据：产出与 Dify 对齐、无报错
-- T-05 17 个应用（续班+退费）全部切到新链路并逐个验证 → 判据：每个应用各有一次成功调用留痕
+- T-05 按目标场景/学部变体核对新旧 LiteLLM 实收指令、角色、参数和消费契约；有效样本及反例有 trace，不以调用成功代替业务正确。知识库两应用保留 Dify；TEST 映射不能代替生产逐应用覆盖。
 - T-07 每应用 `model`/`params` 落 Apollo 且 gps-ai 路由齐 → 判据：`apollo_get_key` 读回各应用配置、`callerRoute` 读回目标模型
 - T-06 Dify 路径移除后无引用 → 判据：全仓检索 `Dify`/`dify-open` 无续班调用残留
+
+- T-10 分层格式修正后，同有效样本返回直接原因文本，LiteLLM实收与Apollo发布值一致，其他agent配置保持不变。
+- T-11 生产DDL回读目标列存在且退费应用提示词完整；当前只读查询缺列，不在本次生产写授权内。
+- T-09/T-12/T-13/T-14 属后续生产发布阶段，须另获发布授权并按依赖顺序执行。

@@ -1,0 +1,10 @@
+# student-data / PROD / application / 4 个 key
+已查 namespace: application
+
+命中:
+- `refund.predict.change.switch` = `true`
+- `refund.predict.async.switch` = `true`
+- `refund.reason.task-fast.switch` = `true`
+
+未命中(1): `fuwu.refund.reason.realtime.switch`
+用 fallback_namespaces 补其它 namespace，或 apollo_list_namespaces 核对 namespace 名

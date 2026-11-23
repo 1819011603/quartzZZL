@@ -1,0 +1,14 @@
+# student-data / PROD / application / 7 个 key
+已查 namespace: application
+
+命中:
+- `renewal.ai.dept.module.switch` = `{}`
+- `refund.ai.dept.module.switch` = `{}`
+- `refund.ai.module.deps` = `{}`
+- `renewal.ai.analyze.realtime.enable` = `true`
+- `renewal.ai.analyze.scheduled.tn.enable` = `false`
+- `renewal.ai.app.analyze.scene.config` = `{
+    "21": 256923739884667904,
+    "22": 256923816171717632
+}`
+- `renewal.lift.reasoning.ai.agent.dept.map` = `{"default": 263057935240821760,"精品班学部": 263057935240821760,"综合素养学部": 263080132187550720}`

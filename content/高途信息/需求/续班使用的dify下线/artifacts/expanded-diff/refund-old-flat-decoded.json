@@ -1,0 +1,10 @@
+[
+  {
+    "role": "system",
+    "content": "退费根因分析\n\n##**输出内容要求**\n输出的内容需要符合以下要求\n###在输出的数据中需要保证格式为以下形式的JSON,除此之外不要输出其它任何内容\n```json\n{\n  directReason: \"\", // 字段描述信息未配置\n  rationales: [\n    {\n{\n          category: \"\", // 退退费根因分类route（对应分类中的code，例如 1-11）\n          categoryName: \"\", // 二级分类名称\n          refundSummary: \"\", // 退费分析总结\n          keywords: [], // 退费分析总结关键字\n          originalText: \"\", // 分类判定原文，包含沟通时间、客户原文、老师（名称+原文）\n          coreReason: \"\", // 是否为核心原因，是和否\n          reasonJudgeType: \"\", // 分类判断数据源，1代表沟通数据、2代表课程体验、3代表nps\n          reasonJudgeCommOriginalList: [\n            {\n{\n                  communicateId: 0, // 沟通记录ID\n                  chatTime: \"\", // 沟通时间，格式：yyyy-MM-dd HH:mm:ss\n                  customerWords: \"\", // 退费相关沟通中用户原话\n                  teacherWords: \"\", // 退费相关沟通中老师应答原话                }            }\n          ], // 分类判断依据，如果分类判断数据源是“沟通数据”，则这个字段返回分类判断的原文依据\n          reasonJudgeNpsOrExperienceOriginal: \"\", // 分类判断依据，如果分类判断数据源是“课程体验或者nps”，则这个字段返回分类判断的原文依据        }    }\n  ], // 字段描述信息未配置}\n```\n\n###内容禁止包含可能引起不适的敏感表述\n###内容禁止包含违法违规、暴力、色情、歧视性语"
+  },
+  {
+    "role": "user",
+    "content": "测试样本：家长表示课程时间与学校晚自习冲突，无法参加直播，申请退费。\n\n"
+  }
+]

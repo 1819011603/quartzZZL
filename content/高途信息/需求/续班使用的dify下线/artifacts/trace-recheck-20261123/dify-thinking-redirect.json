@@ -1,0 +1,13 @@
+{
+  "modelCode": "doubao/Doubao-1-5-pro-32k",
+  "redirectToModelCode": "doubao-seed-2-0-lite-260428",
+  "redirectDefaultParams": {
+    "thinking": {
+      "type": "object",
+      "value": {
+        "type": "disabled"
+      },
+      "force": true
+    }
+  }
+}

@@ -1,0 +1,108 @@
+[
+  {
+    "case": "renewal",
+    "side": "prod",
+    "model": "doubao-seed-2.0-lite",
+    "usage": {
+      "completion_tokens": 171,
+      "prompt_tokens": 1289,
+      "total_tokens": 1460,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": null
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cached_tokens": null
+      },
+      "cost": 0.0009723
+    },
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "has_reasoning": false
+      }
+    ]
+  },
+  {
+    "case": "renewal",
+    "side": "test",
+    "model": "litellm_proxy/doubao-seed-2.0-lite",
+    "usage": {
+      "completion_tokens": 736,
+      "prompt_tokens": 1383,
+      "total_tokens": 2119,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 522,
+        "rejected_prediction_tokens": null
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cached_tokens": null
+      }
+    },
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "has_reasoning": true
+      }
+    ]
+  },
+  {
+    "case": "refund",
+    "side": "prod",
+    "model": "deepseek-v4.1-flash",
+    "usage": {
+      "completion_tokens": 1939,
+      "prompt_tokens": 1468,
+      "total_tokens": 3407,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 1685,
+        "rejected_prediction_tokens": null
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cached_tokens": 1408
+      },
+      "cost": 0.0046431488
+    },
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "has_reasoning": true
+      }
+    ]
+  },
+  {
+    "case": "refund",
+    "side": "test",
+    "model": "litellm_proxy/deepseek-v4.1-flash",
+    "usage": {
+      "completion_tokens": 3312,
+      "prompt_tokens": 1426,
+      "total_tokens": 4738,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 2992,
+        "rejected_prediction_tokens": null
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cached_tokens": 1024
+      }
+    },
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "has_reasoning": true
+      }
+    ]
+  }
+]

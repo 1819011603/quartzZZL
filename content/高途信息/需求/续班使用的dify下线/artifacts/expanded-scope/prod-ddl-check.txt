@@ -1,0 +1,5 @@
+2026-11-23 PROD DMS只读查询
+工具 mysql_query，table=ees_data.ai_application，env=prod
+SQL: SHOW COLUMNS FROM ees_data.ai_application LIKE "gateway_core_prompt"
+返回列 Field/Type/Null/Key/Default/Extra；total_count: 0
+结论：该列不存在。迁移提交Mapper无条件查询此列，代码发布前须完成DDL。本次未修改生产。

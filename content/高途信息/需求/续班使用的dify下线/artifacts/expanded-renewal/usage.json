@@ -1,0 +1,126 @@
+{
+  "sop-test-llm-logs.json": {
+    "completion_tokens": 1398,
+    "prompt_tokens": 12710,
+    "total_tokens": 14108,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 634,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cached_tokens": null
+    }
+  },
+  "tier-valid-test-logs.json": {
+    "completion_tokens": 339,
+    "prompt_tokens": 4379,
+    "total_tokens": 4718,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 252,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cached_tokens": null
+    }
+  },
+  "tier-test-logs.json": {
+    "completion_tokens": 351,
+    "prompt_tokens": 1924,
+    "total_tokens": 2275,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 344,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cached_tokens": null
+    }
+  },
+  "profile-prod-logs.json": {
+    "completion_tokens": 262,
+    "prompt_tokens": 2198,
+    "total_tokens": 2460,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cached_tokens": null
+    },
+    "cost": 0.0015834
+  },
+  "sop-prod-logs.json": {
+    "completion_tokens": 1558,
+    "prompt_tokens": 12619,
+    "total_tokens": 14177,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 817,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cached_tokens": null
+    },
+    "cost": 0.01048866
+  },
+  "profile-test-logs.json": {
+    "completion_tokens": 236,
+    "prompt_tokens": 2288,
+    "total_tokens": 2524,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": null,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cached_tokens": null
+    }
+  },
+  "tier-prod-logs.json": {
+    "completion_tokens": 7,
+    "prompt_tokens": 1830,
+    "total_tokens": 1837,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cached_tokens": null
+    },
+    "cost": 0.00078624
+  },
+  "tier-valid-prod-logs.json": {
+    "completion_tokens": 79,
+    "prompt_tokens": 4285,
+    "total_tokens": 4364,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cached_tokens": null
+    },
+    "cost": 0.00199878
+  }
+}

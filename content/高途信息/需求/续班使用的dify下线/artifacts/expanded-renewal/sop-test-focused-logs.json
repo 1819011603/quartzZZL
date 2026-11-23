@@ -1,0 +1,9 @@
+[窗口 2026-11-16 19:24:37 ~ 2026-11-23 19:24:37 | 查询 {"queryStr": "\"e3197197-27eb-4b23-8b1e-2f8b83d16ff5.0.3\" AND service:litellm", "env": "test", "logType": "app", "limit": 100}]
+日志查询失败,错误原因为: {
+    "httpCode": 400,
+    "errorCode": "ParameterInvalid",
+    "errorMessage": "key (service) is not config as key value config,if symbol : is  in your log,please wrap : with quotation mark \"",
+    "requestID": "6B042275DB55A1519A8DBC54"
+}
+
+
