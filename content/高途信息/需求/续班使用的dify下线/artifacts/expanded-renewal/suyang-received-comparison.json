@@ -1,0 +1,17 @@
+{
+  "full_messages_equal": false,
+  "system_equal_except_trailing_newline": true,
+  "business_exact_equal": true,
+  "old_inner_instruction": {
+    "role": "system",
+    "content": "请按要求分析用户数据"
+  },
+  "roles_old": [
+    "system",
+    "user"
+  ],
+  "roles_new": [
+    "system",
+    "user"
+  ]
+}

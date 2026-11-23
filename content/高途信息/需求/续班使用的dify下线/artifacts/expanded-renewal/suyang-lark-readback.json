@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"keyword\" keyword=\"素养NPS|NPS素养|321|8c802dc4|旧侧user\"><p id=\"doxcnLnRs6cAn8KBKQlZjZpme3g\">直接回答：不是全部一致。SOP V2完整messages一致；画像、摘要、分层拆出的指令和业务正文逐字一致，但实际角色/包装不同。退费根因、体验、精品NPS保留正文和核心指令，仍有标签、换行、指令位置差异；旅程另有旧TEST与当前生产模板版本差异。素养NPS已补齐双侧实收：正文一致，主指令末尾换行及user包装、通用指令存在差异，完整messages不相同。</p><excerpt top-block-id=\"doxcn0ixjzRe2M1KewMqrYk2Klh\"><table id=\"doxcn0ixjzRe2M1KewMqrYk2Klh\"><thead><tr><th vertical-align=\"top\"><p id=\"doxcnr1JMD85STH9mn1Fp0yzhSg\">场景</p></th><th vertical-align=\"top\"><p id=\"doxcnIAjK7MlQbc72wdnh6MOalc\">完整prompt/messages结论</p></th><th vertical-align=\"top\"><p id=\"doxcnuYU6zH4b0xIUDbOoQCJuhL\">具体差异和原因</p></th></tr></thead><tbody><tr><td vertical-align=\"top\"><p id=\"doxcnVQWkSjVTb1f4faJFDdEnub\">NPS素养</p></td><td vertical-align=\"top\"><p id=\"doxcnGBNGtl1HM8OOYg5EnY08uh\">已核对双侧实收：完整messages不相同</p></td><td vertical-align=\"top\"><p id=\"doxcn2L4T0nGLbOnHDZoc4ASpNc\">321字主模板已复制；实收主指令旧侧末尾多一个换行，正文逐字一致；旧user伪JSON包装及其中通用指令未保留，详见第10节实收补证。</p></td></tr></tbody></table></excerpt><p id=\"doxcnHaarwa9mbJqZmntylgyZ1b\">素养NPS此前缺TEST映射的限制已解除：已从线上只读复制321字模板并建立TEST副本，已取得双侧LiteLLM实收。完整messages不相同，具体差异和真实trace见第10节；没有触发生产业务应用推理，也不据此宣称全量对等。</p><h1 id=\"doxcnBNSovm2JWmpwnkbSqShR4f\">10. 旧Dify system prompt完整复制与素养NPS副本</h1><p id=\"doxcnw2noWMZNRo8n9rq3A7r1Gf\">按最新要求，TEST可替换场景已核对旧Dify system prompt完整承载：画像2272字、摘要466字、分层2715字，退费根因2254字、旅程2482字、课程体验2381字、精品NPS473字均与对应TEST gateway_core_prompt完整相等；SOP V2原有flat user已完整相等，不重复追加system以免破坏一致输入。素养NPS已从线上应用复制321字模板到TEST Dify副本与TEST ai_application，Dify app spcjE2Q2agjjjJ2GYZc_fb2db0ac-d837-43d6-a1ab-8e7b46e06bfa已发布版本1，Apollo releaseKey=20261123221121-188aa6ecfba69681；同输入compare旧侧event=message/messageId=92f54eec-345e-4e58-829a-dc8504f4bb4c，新侧event=litellm_proxy/deepseek-v4.1-flash/messageId=22df5821-d4ed-4856-ac9d-229e04cb1bc4.0.3，双方均成功。完整证据见本地归档full-dify-system-prompt-copy.md与suyang-nps-copy-validation.md。</p><h2 id=\"doxcnFzQJtsGHgI0TQjVSfM6mGb\">10.1 素养NPS实际输入补证与标识纠正</h2><p id=\"doxcnydY55YhRm2TaaH0HL0AFZg\"><b>321字系统模板已完整复制，不等于运行时完整messages一致。</b>本样本完整messages不相同：两侧真正角色都是system+user；旧侧system比新侧多一个末尾换行，其余321字主指令相同。解析旧user包装后，业务正文逐字一致，包括末尾四个换行。</p><p id=\"doxcnOz0hv5xdgns8JTHAJIUxvh\">旧侧user承载伪JSON字符串，其中嵌有system文本“请按要求分析用户数据”和user业务正文；新侧拆包后直接传业务正文，伪JSON包装及这句通用指令均未保留。这是query直接透传与新链路拆包的处理差异。本轮没有补入该句，不宣称所有指令或完整输入已对等。</p><p id=\"doxcn2heIvIJviwRgdxogcOI90f\">已验证范围：TEST/test-gtbg-dev-1，student-data版本91012878d692119e79fb7d14baa1bab594c9534d，素养NPS TEST副本，2026-11-23（北京时间）。旧侧LiteLLM实收22:27:31.985，caller_0167；新侧实收22:27:57.809，gps-ai。仅覆盖该既有样本，未新增业务调用或质量验收。</p><p id=\"doxcnoQPDBxmK5TBjyrT0QLSfXd\"><b>真实共用trace：8c802dc4-ed69-4533-b63a-3851e20bb83d.0.3。</b>旧响应messageId 92f54eec-345e-4e58-829a-dc8504f4bb4c已由Dify聚合日志映射到该trace；新响应messageId 22df5821-d4ed-4856-ac9d-229e04cb1bc4.0.3对应同trace下LiteLLM响应id（原响应id不含.0.3）。前述两个messageId均不能作为真实trace直接引用。旧侧日志在共享Dify/LiteLLM的prod SLS，新侧在test SLS；日志归属不表示调用了生产业务应用。</p></fragment>",
+      "document_id": "EWI6dsdvPokck0xy89ccJDuEnhg",
+      "revision_id": 25
+    }
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.70",
+      "latest": "1.0.100",
+      "message": "lark-cli 1.0.100 available, current 1.0.70, run: lark-cli update"
+    }
+  }
+}

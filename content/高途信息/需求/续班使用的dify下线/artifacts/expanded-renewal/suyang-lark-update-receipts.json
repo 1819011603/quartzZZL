@@ -1,0 +1,32 @@
+[
+  {
+    "id": "doxcnLnRs6cAn8KBKQlZjZpme3g",
+    "exit": 0,
+    "output": "{\n  \"ok\": true,\n  \"identity\": \"user\",\n  \"data\": {\n    \"document\": {\n      \"revision_id\": 21,\n      \"url\": \"https://gaotuedu.feishu.cn/docx/EWI6dsdvPokck0xy89ccJDuEnhg\"\n    },\n    \"result\": \"success\",\n    \"warnings\": []\n  },\n  \"_notice\": {\n    \"update\": {\n      \"command\": \"lark-cli update\",\n      \"current\": \"1.0.70\",\n      \"latest\": \"1.0.100\",\n      \"message\": \"lark-cli 1.0.100 available, current 1.0.70, run: lark-cli update\"\n    }\n  }\n}\n",
+    "error": ""
+  },
+  {
+    "id": "doxcnGBNGtl1HM8OOYg5EnY08uh",
+    "exit": 0,
+    "output": "{\n  \"ok\": true,\n  \"identity\": \"user\",\n  \"data\": {\n    \"document\": {\n      \"revision_id\": 22,\n      \"url\": \"https://gaotuedu.feishu.cn/docx/EWI6dsdvPokck0xy89ccJDuEnhg\"\n    },\n    \"result\": \"success\",\n    \"warnings\": []\n  },\n  \"_notice\": {\n    \"update\": {\n      \"command\": \"lark-cli update\",\n      \"current\": \"1.0.70\",\n      \"latest\": \"1.0.100\",\n      \"message\": \"lark-cli 1.0.100 available, current 1.0.70, run: lark-cli update\"\n    }\n  }\n}\n",
+    "error": ""
+  },
+  {
+    "id": "doxcn2L4T0nGLbOnHDZoc4ASpNc",
+    "exit": 0,
+    "output": "{\n  \"ok\": true,\n  \"identity\": \"user\",\n  \"data\": {\n    \"document\": {\n      \"revision_id\": 23,\n      \"url\": \"https://gaotuedu.feishu.cn/docx/EWI6dsdvPokck0xy89ccJDuEnhg\"\n    },\n    \"result\": \"success\",\n    \"warnings\": []\n  },\n  \"_notice\": {\n    \"update\": {\n      \"command\": \"lark-cli update\",\n      \"current\": \"1.0.70\",\n      \"latest\": \"1.0.100\",\n      \"message\": \"lark-cli 1.0.100 available, current 1.0.70, run: lark-cli update\"\n    }\n  }\n}\n",
+    "error": ""
+  },
+  {
+    "id": "doxcnHaarwa9mbJqZmntylgyZ1b",
+    "exit": 0,
+    "output": "{\n  \"ok\": true,\n  \"identity\": \"user\",\n  \"data\": {\n    \"document\": {\n      \"revision_id\": 24,\n      \"url\": \"https://gaotuedu.feishu.cn/docx/EWI6dsdvPokck0xy89ccJDuEnhg\"\n    },\n    \"result\": \"success\",\n    \"warnings\": []\n  },\n  \"_notice\": {\n    \"update\": {\n      \"command\": \"lark-cli update\",\n      \"current\": \"1.0.70\",\n      \"latest\": \"1.0.100\",\n      \"message\": \"lark-cli 1.0.100 available, current 1.0.70, run: lark-cli update\"\n    }\n  }\n}\n",
+    "error": ""
+  },
+  {
+    "append": true,
+    "exit": 0,
+    "output": "{\n  \"ok\": true,\n  \"identity\": \"user\",\n  \"data\": {\n    \"document\": {\n      \"revision_id\": 25,\n      \"url\": \"https://gaotuedu.feishu.cn/docx/EWI6dsdvPokck0xy89ccJDuEnhg\"\n    },\n    \"result\": \"success\",\n    \"warnings\": []\n  },\n  \"_notice\": {\n    \"update\": {\n      \"command\": \"lark-cli update\",\n      \"current\": \"1.0.70\",\n      \"latest\": \"1.0.100\",\n      \"message\": \"lark-cli 1.0.100 available, current 1.0.70, run: lark-cli update\"\n    }\n  }\n}\n",
+    "error": ""
+  }
+]
