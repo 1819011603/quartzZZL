@@ -1,0 +1,66 @@
+[
+  {
+    "name": "根因",
+    "old_file": "trace-recheck-20261123/compare-refund-prod-request.json",
+    "new_file": "trace-recheck-20261123/compare-refund-test-request.json",
+    "messages_equal": false,
+    "roles_old": [
+      "system",
+      "user"
+    ],
+    "roles_new": [
+      "system",
+      "user"
+    ],
+    "new_user_in_old": true,
+    "new_user_chars": 36
+  },
+  {
+    "name": "旅程",
+    "old_file": "expanded-refund/exact-旅程-prod-1.json",
+    "new_file": "expanded-refund/exact-旅程-test-1.json",
+    "messages_equal": false,
+    "roles_old": [
+      "system",
+      "user"
+    ],
+    "roles_new": [
+      "system",
+      "user"
+    ],
+    "new_user_in_old": true,
+    "new_user_chars": 302
+  },
+  {
+    "name": "课程体验",
+    "old_file": "expanded-refund/exact-课程体验-prod-1.json",
+    "new_file": "expanded-refund/exact-课程体验-test-1.json",
+    "messages_equal": false,
+    "roles_old": [
+      "system",
+      "user"
+    ],
+    "roles_new": [
+      "system",
+      "user"
+    ],
+    "new_user_in_old": true,
+    "new_user_chars": 302
+  },
+  {
+    "name": "NPS",
+    "old_file": "expanded-refund/exact-NPS-prod-1.json",
+    "new_file": "expanded-refund/exact-NPS-test-1.json",
+    "messages_equal": false,
+    "roles_old": [
+      "system",
+      "user"
+    ],
+    "roles_new": [
+      "system",
+      "user"
+    ],
+    "new_user_in_old": true,
+    "new_user_chars": 302
+  }
+]

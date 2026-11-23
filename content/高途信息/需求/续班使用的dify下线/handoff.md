@@ -9,7 +9,7 @@ tags: [需求, 交接]
 > 详细背景：[`README.md`](README.md) · 逐应用对比 [`artifacts/compare-detail.md`](artifacts/compare-detail.md) · 模型映射 [`artifacts/llm-gateway-model-mapping.md`](artifacts/llm-gateway-model-mapping.md) · 知识库评估 [`artifacts/dify-kb-eval.md`](artifacts/dify-kb-eval.md) · 提示词归档 [`artifacts/dify-refund-prompts/`](artifacts/dify-refund-prompts/)
 
 ## 0. 一句话
-把续班/退费共 **15 个 Dify 应用**（续班 5 + 退费 10）切到公司 LLM 网关（caller `gps-ai`）；用 Apollo `ai.agent.accessor.override.map` 按应用控制，可回退。**2 个有知识库的应用（生成沟通建议-高中/素养）保留 Dify，不迁**——原因见第 5 节。
+把无前置知识库的 **13 个生产应用**切到公司 LLM 网关（caller `gps-ai`）；用 Apollo `ai.agent.accessor.override.map` 按应用控制，可回退。**4 个有前置知识库/检索的应用（问题建议-高中/素养、降退费精品/素养）保留 Dify，不迁**。
 
 ## 1. 已定结论（不要改）
 - 切换粒度：`ai_agent.number`；开关走 **Apollo `ai.agent.accessor.override.map`**（`{name, platformType:2, model, params}`）。
@@ -99,10 +99,10 @@ curl -sk -x "${AGENT_PROXY_URL:-http://127.0.0.1:8888}" \
 
 ## 原需求与调用次数复核（2026-11-23）
 
-原始17个生产应用，问题建议高中/素养2个明确保留Dify，目标15个不变。本轮TEST10样本不是生产10/15/17项通过。9个旧/新各单次；仅TEST通用降退费旧2次、新1次，已核实它绑定【废弃】agent-chat。
+原始17个生产应用，问题建议高中/素养与降退费精品/素养共4个明确保留Dify，本轮目标13个不变。本轮TEST10样本不是生产10/15/17项通过。9个旧/新各单次；仅TEST通用降退费旧2次、新1次，已核实它绑定【废弃】agent-chat。
 
 生产精品/素养降退费目标为已发布advanced-chat：代码提取→知识检索→单LLM生成。不是两轮LLM；仍需迁移前置检索与context注入。撤回此前把TEST废弃两轮外推生产的口径；生产检索缺口依据已发布图而非TEST两轮。重试/compare双路/不同阶段不算内部多轮。
 
 可支持TEST单次替换试验：画像、摘要、SOP V2、修正后的分层、课程体验、NPS本模板、修正后的素养服务建议本模板。根因弱样本与旅程指令差异不能列业务验收通过。生产学部与流程准入未全验，尤其素养TEST一次不代表生产可去掉检索。
 
-详见[调用次数与证据](artifacts/expanded-scope/call-count-evidence.md)、[原材料对照](artifacts/expanded-renewal/source-scope.md)、[生产与废弃绑定](artifacts/expanded-refund/deprecated-binding.md)。本次未改路由/代码/生产，未选择保留或建设方案。
+详见[调用次数与证据](artifacts/expanded-scope/call-count-evidence.md)、[原材料对照](artifacts/expanded-renewal/source-scope.md)、[生产与废弃绑定](artifacts/expanded-refund/deprecated-binding.md)。本次未改路由/代码/生产；知识库保留决定已落实，未建设替代检索。

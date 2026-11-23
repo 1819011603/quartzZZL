@@ -82,9 +82,11 @@ test 环境对应应用见 [`verify.md`](verify.md)。
 
 飞书说明：[具体遗漏了什么、已修正什么](https://gaotuedu.feishu.cn/docx/EWI6dsdvPokck0xy89ccJDuEnhg)（已全文回读）。
 
-## 已确认的迁移阻断
+## 本轮有效范围（所有者最新决定）
 
-生产降退费已发布工作流是前置检索加一个LLM节点；迁移缺前置检索与context注入。两轮工具调用仅实证于TEST废弃绑定，不能外推生产。证据：[检索遗漏](artifacts/expanded-refund/confirmed-retrieval-gap.json)，trace `81e849b4-d461-4fd0-910a-154368d68bc0.0.3`。其他退费场景仍在核对，不外推。
+有前置知识库的暂不替换：问题建议高中/素养、降退费服务建议精品/素养，4个生产应用保留Dify，不建设替代检索。原17项减去这4项，本轮无知识库目标13个生产应用，归为画像、摘要、SOP、分层、退费根因、旅程、课程体验、NPS共8类；TEST素养服务建议不再列入可替换白名单。
+
+本轮验收聚焦同输入的新旧LiteLLM完整prompt/messages：文本、业务数据、角色包装分别比较；输入一致即可收束，不追加输出质量或提供商HTTP一致性门槛。知识库检索缺口已移出本轮阻塞，生产发布仍未授权。
 
 ## 现在什么情况
 
@@ -93,21 +95,18 @@ test 环境对应应用见 [`verify.md`](verify.md)。
 | 阶段 | 开发中 |
 | 进度 | T 6/14 · R 0/0 · C 0/0 |
 | 部署泳道 | `student-data=test-gtbg-dev-1`，commit `91012878`，流水线 `1360042` |
-| 当前卡点 | 扩大场景验证进行中；需合流 LiteLLM 实收差异、学部变体与工作流处理证据，尚不能判整体对等 |
-| 最近更新 | 2026-11-23：两例实收提示词/参数差异已核对；TEST 画像/摘要 thinking.disabled、分层 text 格式已修正复验；SOP V2长指令逐字一致。退费逐字段实收已核对，降退费检索遗漏及模板残留正在处理；详细差异见 [审查报告](artifacts/expanded-diff/report.md)，续接见 [交接](artifacts/expanded-scope/handoff.md)。 |
+| 当前状态 | 已完成测试环境对等性审查与逐场景裁决；SOP V2输入一致，其余场景保留具体差异。生产只读，未授权发布 |
+| 最近更新 | 2026-11-23：TEST知识库场景已恢复Dify并复验；逐场景LiteLLM输入裁决已收束。SOP V2完整messages一致；画像/摘要/分层正文一致但角色包装不同；退费根因、旅程、课程体验、NPS精品均有明确差异；素养NPS缺双侧实收，不标通过。详见[审查交付](artifacts/expanded-scope/review-result.md)与[当前prompt交接](artifacts/expanded-scope/current-prompt-handoff.md)。 |
 
 完整逐点状态见 [覆盖与迁移实践](artifacts/expanded-scope/coverage.md)。
 
-## 下一步
+## 当前结论与剩余边界
 
-1. 完成其余续班与退费场景的双路实收对比，核对学部变体和 Dify 隐含工具/工作流处理。
-2. 对运行确认的迁移问题作最小修正并同入口复验；共有质量问题单列，不归因迁移。
-3. 汇总覆盖、风险与未覆盖项；生产发布不在本次授权范围。
+本轮已按所有者最新决定收束为 13 个无前置知识库的生产目标应用、8 类场景；问题建议高中/素养与降退费精品/素养共 4 个生产应用保留 Dify。SOP V2 在测试 fixture 上完整 messages 逐字段一致；画像、摘要、分层仅指令与业务正文逐字一致，角色包装不同；退费根因、旅程、课程体验、NPS 精品存在已定位的标签、位置、换行或模板版本差异；素养 NPS 没有旧/新双侧 LiteLLM 实收：已核对生产绑定、TEST 映射并完成本地模板生成；因 TEST 无素养旧 Dify 映射且不能用生产 key 发推理，保留未验证。详见 [素养 NPS 证据边界](artifacts/expanded-renewal/nps-suyang-evidence-boundary.md)。
 
-## 待确认
+不一致的主要来源是旧 Dify 的 flat prompt 与网关真实 system/user 分层，以及 Dify 工作流/模板的额外处理；有正文保留证据的场景不因包装差异盲改。旅程当前生产模板的“已解决退费原因”字段属于既有合法增强，不能为对齐落后 TEST 模板删除。
 
-- 功能替换稳定的观察窗口与放量节奏，留待生产发布阶段决定。
-- 当前扩大验证未完成，不以代表样本或 JSON 可解析作为全量验收。
+剩余事项属于后续生产发布前置：生产 `ai_application.gateway_core_prompt` DDL、路由与 Apollo 配置按依赖发布；本轮没有生产修改、代码下线或质量/供应商 HTTP 验收。
 
 ## 涉及的代码
 
@@ -134,10 +133,10 @@ test 环境对应应用见 [`verify.md`](verify.md)。
 
 ## 原需求与调用次数复核（2026-11-23）
 
-原始17个生产应用，问题建议高中/素养2个明确保留Dify，目标15个不变。本轮TEST10样本不是生产10/15/17项通过。9个旧/新各单次；仅TEST通用降退费旧2次、新1次，已核实它绑定【废弃】agent-chat。
+原始17个生产应用，问题建议高中/素养与降退费精品/素养共4个明确保留Dify，本轮目标13个不变；15是第一次排除问题建议两项后的中间口径，13是再排除降退费两学部后的当前口径，四项并集包含原明确不迁的两项。详见 [计数口径](artifacts/expanded-scope/scope-reconciliation.md)。本轮TEST10样本不是生产10/15/17项通过。9个旧/新各单次；仅TEST通用降退费旧2次、新1次，已核实它绑定【废弃】agent-chat。
 
 生产精品/素养降退费目标为已发布advanced-chat：代码提取→知识检索→单LLM生成。不是两轮LLM；仍需迁移前置检索与context注入。撤回此前把TEST废弃两轮外推生产的口径；生产检索缺口依据已发布图而非TEST两轮。重试/compare双路/不同阶段不算内部多轮。
 
 可支持TEST单次替换试验：画像、摘要、SOP V2、修正后的分层、课程体验、NPS本模板、修正后的素养服务建议本模板。根因弱样本与旅程指令差异不能列业务验收通过。生产学部与流程准入未全验，尤其素养TEST一次不代表生产可去掉检索。
 
-详见[调用次数与证据](artifacts/expanded-scope/call-count-evidence.md)、[原材料对照](artifacts/expanded-renewal/source-scope.md)、[生产与废弃绑定](artifacts/expanded-refund/deprecated-binding.md)。本次未改路由/代码/生产，未选择保留或建设方案。
+详见[调用次数与证据](artifacts/expanded-scope/call-count-evidence.md)、[原材料对照](artifacts/expanded-renewal/source-scope.md)、[生产与废弃绑定](artifacts/expanded-refund/deprecated-binding.md)。本次未改路由/代码/生产；知识库保留决定已落实，未建设替代检索。

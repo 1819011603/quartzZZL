@@ -1,0 +1,1 @@
+{"serviceNameAndMethodName": "com.gaotu.student.data.domain.ai.manager.service.impl.AiApplicationTestServiceImpl#quickTestAiApplication", "params": ["降退费服务建议", "测试学员李明，本班数学课家长反馈作业反馈慢。退费根因：{\"directReason\":\"作业反馈慢\",\"categoryName\":\"服务不满意-沟通答疑及时性\"}。2026-11-23陈老师沟通，家长表示改善答疑可继续学习。", "test", {"clazzNumber": "500775385189890048", "userId": "7404351741", "commTag": 0}]}

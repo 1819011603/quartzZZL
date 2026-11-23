@@ -1,0 +1,8 @@
+{
+  "evidenceType": "local deterministic template substitution; NOT LiteLLM received",
+  "baseActualSystemEqualsCurrentJingpinTemplate": true,
+  "replacementEqualsCurrentSuyangTemplate": true,
+  "businessUserUnchanged": true,
+  "currentSuyangTemplateChars": 321,
+  "testSharedConfigChanged": false
+}

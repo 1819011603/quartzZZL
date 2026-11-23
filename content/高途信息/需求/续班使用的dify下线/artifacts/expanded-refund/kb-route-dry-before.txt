@@ -1,0 +1,2 @@
+# student-data / TEST / default / application
+配置没有变化，未发布（幂等）。

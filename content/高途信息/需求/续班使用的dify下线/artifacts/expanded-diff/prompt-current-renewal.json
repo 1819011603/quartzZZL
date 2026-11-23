@@ -1,0 +1,194 @@
+[
+  {
+    "case": "画像",
+    "old_file": "expanded-renewal/profile-prod-received.json",
+    "new_file": "expanded-renewal/profile-test-received.json",
+    "old_trace": "2a9ff650-ba6f-4bf2-93f8-88034f864c93.0.3",
+    "new_trace": "2a9ff650-ba6f-4bf2-93f8-88034f864c93.0.3",
+    "old_roles": [
+      "user"
+    ],
+    "new_roles": [
+      "system",
+      "user"
+    ],
+    "full_messages": {
+      "equal": false,
+      "old_chars": 3674,
+      "new_chars": 3582,
+      "first_diff_offset": 10,
+      "old_at_diff": "[{\"role\":\"user\",\"content\":\"[\\n  {\\n    \\\"role\\\": \\\"system\\\",\\n    \\\"content\\\": \\\"##角色\\n你是一名在线教育的数据分析",
+      "new_at_diff": "[{\"role\":\"system\",\"content\":\"##角色\\n你是一名在线教育的数据分析师\\n\\n##任务\\n基于提供的“老师和用户的每通沟通记录中的关键点”（包括续班兴趣点清单、续班抗性点清"
+    },
+    "decoded_content": {
+      "system": {
+        "equal": true,
+        "old_chars": 2272,
+        "new_chars": 2272,
+        "first_diff_offset": null,
+        "old_at_diff": null,
+        "new_at_diff": null
+      },
+      "user": {
+        "equal": true,
+        "old_chars": 1124,
+        "new_chars": 1124,
+        "first_diff_offset": null,
+        "old_at_diff": null,
+        "new_at_diff": null
+      }
+    },
+    "new_parameters": {
+      "response_format": {
+        "type": "json_object"
+      },
+      "stop": [],
+      "max_tokens": 8192,
+      "model": "doubao-seed-2-0-lite-260428",
+      "thinking": {
+        "type": "disabled"
+      }
+    }
+  },
+  {
+    "case": "摘要",
+    "old_file": "trace-recheck-20261123/compare-renewal-prod-request.json",
+    "new_file": "trace-recheck-20261123/dify-thinking-verified.json",
+    "old_trace": "15760243-f225-4246-a103-c9565c2652ba.0.3",
+    "new_trace": "f059219f-2d7c-46c5-945e-fd3a9cdab509.0.3",
+    "old_roles": [
+      "user"
+    ],
+    "new_roles": [
+      "system",
+      "user"
+    ],
+    "full_messages": {
+      "equal": false,
+      "old_chars": 2145,
+      "new_chars": 2053,
+      "first_diff_offset": 10,
+      "old_at_diff": "[{\"role\":\"user\",\"content\":\"[\\n  {\\n    \\\"role\\\": \\\"system\\\",\\n    \\\"content\\\": \\\"##角色\\n你是一名在线教育的数据分析",
+      "new_at_diff": "[{\"role\":\"system\",\"content\":\"##角色\\n你是一名在线教育的数据分析师\\n\\n##任务\\n你的主要工作是基于老师和用户的每通沟通记录中的【关键点】提炼出整体的【关键点】，接"
+    },
+    "decoded_content": {
+      "system": {
+        "equal": true,
+        "old_chars": 466,
+        "new_chars": 466,
+        "first_diff_offset": null,
+        "old_at_diff": null,
+        "new_at_diff": null
+      },
+      "user": {
+        "equal": true,
+        "old_chars": 1493,
+        "new_chars": 1493,
+        "first_diff_offset": null,
+        "old_at_diff": null,
+        "new_at_diff": null
+      }
+    },
+    "new_parameters": {
+      "response_format": {
+        "type": "json_object"
+      },
+      "stop": [],
+      "max_tokens": 8192,
+      "model": "doubao-seed-2-0-lite-260428",
+      "thinking": {
+        "type": "disabled"
+      }
+    }
+  },
+  {
+    "case": "分层",
+    "old_file": "expanded-renewal/tier-valid-prod-received.json",
+    "new_file": "expanded-renewal/thinking-received.json",
+    "old_trace": "3c9e6b70-e6f3-4f95-883b-14408cdafc2b.0.3",
+    "new_trace": "7a05052d-9094-4a00-aa88-bf44dcf0eb61.0.3",
+    "old_roles": [
+      "user"
+    ],
+    "new_roles": [
+      "system",
+      "user"
+    ],
+    "full_messages": {
+      "equal": false,
+      "old_chars": 9065,
+      "new_chars": 8973,
+      "first_diff_offset": 10,
+      "old_at_diff": "[{\"role\":\"user\",\"content\":\"[\\n  {\\n    \\\"role\\\": \\\"system\\\",\\n    \\\"content\\\": \\\"## 角色\\n- 你是一位经验丰富且专",
+      "new_at_diff": "[{\"role\":\"system\",\"content\":\"## 角色\\n- 你是一位经验丰富且专业的数据分析师，擅长以通俗易懂且灵活多变的语言分析用户数据，并给出合理原因解释，以此让在线教育行业的辅导"
+    },
+    "decoded_content": {
+      "system": {
+        "equal": true,
+        "old_chars": 2715,
+        "new_chars": 2715,
+        "first_diff_offset": null,
+        "old_at_diff": null,
+        "new_at_diff": null
+      },
+      "user": {
+        "equal": true,
+        "old_chars": 5601,
+        "new_chars": 5601,
+        "first_diff_offset": null,
+        "old_at_diff": null,
+        "new_at_diff": null
+      }
+    },
+    "new_parameters": {
+      "response_format": {
+        "type": "text"
+      },
+      "stop": [],
+      "max_tokens": 8192,
+      "model": "doubao-seed-2-0-lite-260428",
+      "thinking": {
+        "type": "disabled"
+      }
+    }
+  },
+  {
+    "case": "SOP V2",
+    "old_file": "expanded-renewal/sop-v2-1-received.json",
+    "new_file": "expanded-renewal/sop-v2-2-received.json",
+    "old_trace": "315c294d-dbc3-4d8f-adc6-e036ad96d1e1.0.3",
+    "new_trace": "2b757fa1-ac59-4cbd-aac5-1260f6bcba8a.0.3",
+    "old_roles": [
+      "user"
+    ],
+    "new_roles": [
+      "user"
+    ],
+    "full_messages": {
+      "equal": true,
+      "old_chars": 15002,
+      "new_chars": 15002,
+      "first_diff_offset": null,
+      "old_at_diff": null,
+      "new_at_diff": null
+    },
+    "decoded_content": {
+      "user": {
+        "equal": true,
+        "old_chars": 13647,
+        "new_chars": 13647,
+        "first_diff_offset": null,
+        "old_at_diff": null,
+        "new_at_diff": null
+      }
+    },
+    "new_parameters": {
+      "response_format": {
+        "type": "json_object"
+      },
+      "stop": [],
+      "max_tokens": 8192,
+      "model": "doubao-seed-2-0-lite-260428"
+    }
+  }
+]

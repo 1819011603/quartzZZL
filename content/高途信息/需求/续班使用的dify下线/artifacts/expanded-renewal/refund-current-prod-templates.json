@@ -1,0 +1,68 @@
+[
+  {
+    "number": "256995767298823168",
+    "name": "退费旅程分析(精品班学部)",
+    "ai_agent_number": "256994902246699008",
+    "core_prompt": "请按要求分析用户数据",
+    "after_processor_prompt_config": "",
+    "dependency_metadata_config": ""
+  },
+  {
+    "number": "256995860148134912",
+    "name": "退费课程体验分析(精品班学部)",
+    "ai_agent_number": "256994989452607488",
+    "core_prompt": "请按要求分析用户数据",
+    "after_processor_prompt_config": "",
+    "dependency_metadata_config": ""
+  },
+  {
+    "number": "256995936629163008",
+    "name": "退费根因分析(精品班学部)",
+    "ai_agent_number": "256995079971961856",
+    "core_prompt": "退费根因分析",
+    "after_processor_prompt_config": "结果JSON格式(com.gaotu.student.data.domain.refundless.model.RefundRationaleSummary);敏感词过滤;违法违规过滤",
+    "dependency_metadata_config": ""
+  },
+  {
+    "number": "256996044560210944",
+    "name": "退费NPS分析(精品班学部)",
+    "ai_agent_number": "256995228385317888",
+    "core_prompt": "请按要求分析用户数据",
+    "after_processor_prompt_config": "",
+    "dependency_metadata_config": ""
+  },
+  {
+    "number": "261424803504732160",
+    "name": "退费NPS分析(素养学部)",
+    "ai_agent_number": "261424755557579776",
+    "core_prompt": "请按要求分析用户数据",
+    "after_processor_prompt_config": "",
+    "dependency_metadata_config": ""
+  },
+  {
+    "number": "261425035474903040",
+    "name": "退费根因分析(素养学部)",
+    "ai_agent_number": "261424983727715328",
+    "core_prompt": "退费根因分析",
+    "after_processor_prompt_config": "结果JSON格式(com.gaotu.student.data.domain.refundless.model.RefundRationaleSummary);敏感词过滤;违法违规过滤",
+    "dependency_metadata_config": ""
+  },
+  {
+    "number": "261425205028651008",
+    "name": "退费课程体验分析(素养学部)",
+    "ai_agent_number": "261425172233344000",
+    "core_prompt": "请按要求分析用户数据",
+    "after_processor_prompt_config": "",
+    "dependency_metadata_config": ""
+  },
+  {
+    "number": "261425336093323264",
+    "name": "退费旅程分析(素养学部)",
+    "ai_agent_number": "261425291830803456",
+    "core_prompt": "请按要求分析用户数据",
+    "after_processor_prompt_config": "",
+    "dependency_metadata_config": ""
+  }
+]
+
+-- total_count: 8
