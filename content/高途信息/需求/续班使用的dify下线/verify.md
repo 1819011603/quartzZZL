@@ -232,3 +232,37 @@ tags: [需求, 验证]
 - `force=false` 语义 = 只补调用方**没传**的参数；而 `LlmGatewayRequest`（`student-data`）**不发送 `response_format`** → 该 route 下**所有**调用方（当前=续班归因）实际都被注入 `json_object`。
 - 判断：**当前有必要保留**（续班归因必须稳定 JSON，去掉会回归「非法 JSON 解析失败」）。风险点：把退费类（同用 `deepseek-v4-flash-0731`）迁到 gps-ai 后**共用同一 route**，若其中有**要纯文本**的场景会被强约束成 JSON。
 - 处置建议（二选一）：① 确认同 route 下所有应用都要 JSON → 保留；② 需要按应用区分 → **不删 route 默认值，改在请求里按应用下发 `response_format`**（给 `AiModelCallOption`/`LlmGatewayRequest` 加可选字段），route 默认值再退为兜底。
+
+## 迁移审查复核（2026-11-23）
+
+### 当前实际生效配置
+
+- 读取 Apollo 已发布值：`student-data / TEST / application / ai.agent.accessor.override.map` 当前命中 9 个应用；续班/退费的两个知识库应用未命中，仍保留 Dify。
+- `student-data / PROD / application / ai.agent.accessor.override.map` 当前为 `{}`，生产没有误切新链路；生产提示词列、路由和代码发布仍按 T-09～T-13 的顺序推进。
+- 证据来自 Apollo 已发布配置读取，入口分别为 `http://test-apollo-meta.baijia.com/configs/student-data/TEST/application` 与 `http://10.255.162.197:8000/configs/student-data/PROD/application`。
+
+### 代码级对等性审查结论
+
+- `origin/feature-xuban-dify-offline` 相对 `origin/release` 仅改动 11 个后端文件；没有前端改动。`mvn8 -pl student-data-service -am -DskipTests compile` 在独立 worktree（commit `91012878d`）通过。
+- 已确认 Dify 额外承担的功能只有知识库 dataset 的向量检索/rerank 回灌；扫描到的目标应用 `tools` 为空，敏感词、注释和其它 `gt_configs` 均关闭，不能把普通模型输出文本差异当成迁移缺陷。
+- 新链路已按应用复制 Dify 的 `completion_params`（`enable_thinking`、`stop`、`temperature` 等），网关请求合并时禁止 `params` 覆盖 `model`、`max_tokens`、`messages`；旧链路仍使用原 flat prompt 和 Dify accessor。
+- 目前没有发现可由代码直接修正的确定性缺陷，因此本轮未改业务代码。模型输出的自由文本和分类项仍可能因模型、随机性和上下文结构产生差异；验收应优先检查 JSON 结构、枚举合法性、关键业务语义和非空约束，不能要求逐字相同。
+
+### 未覆盖 / 仍需按发布顺序验证
+
+- 本轮未调用生产业务入口、未写生产 Apollo/数据库、未进行生产发布；生产 15 个应用的逐应用成功 trace 仍待 T-09～T-14 完成。
+- 测试现有对比证据覆盖桥调 `compareAiApplication` 和测试泳道，不等价于全量线上异步任务验证；上线后仍需按应用回读 `ai_application_call_task_result` 及最下游 LLM trace。
+
+## 对增量问题的澄清（2026-11-23）
+
+### 最下游 LLM 输入与 trace 覆盖边界
+
+- **已覆盖一条真实测试对比链路**：`artifacts/compare-detail.md` 的 trace `9e84dced-3614-499e-80b7-b1fb0bb0ca4d.0.3` 对应退费根因应用；同一应用、同一输入在 `ai_application_call_task_result.actual_query` 留下 Dify 与网关两条请求，已逐项核对 system/user 来源、请求路径和模型参数。Dify 的完整指令由 Dify 内部补齐，网关侧来自 `gateway_core_prompt`；参数差异集中在 `enable_thinking`、`stop` 等，补齐后相似度由 0.228 提升到 0.531。
+- **已覆盖测试桥返回层**：`verify.md` 中 `沟通摘要-test` 的 trace `005cf022-…` 证明同一输入串行命中 Dify 与网关，响应事件分别为 `message` 和 `litellm_proxy/...`；`actual_query`/`result` 和网关模型、参数的对比证据见 `artifacts/compare-detail.md`。
+- **边界**：这些证据能证明测试链路的下游请求构造和差异原因，覆盖的是代表性退费应用及续班试点，不代表 15 个应用的每个真实异步任务都已取得独立 LLM SLS trace；本轮不再把“结构一致”扩写成“全量输入完全一致”。
+
+### “部分功能线上可能已下线”的核实
+
+- **已核对的 Apollo 运行状态**：`student-data` TEST/PROD 已发布 namespace 中，`renewal.ai.dept.module.switch`、`refund.ai.dept.module.switch`、`refund.ai.module.deps` 均为 `{}`；PROD `refund.predict.async.switch=true`，续班/退费相关 topic、group 和 AI agent 映射仍存在。结合 `ees_data.ai_agent` 中目标应用的 `platform_type=1` 清单，未发现某个本期目标应用被 Apollo 明确关闭的证据。
+- PROD `ai.agent.accessor.override.map={}` 只说明迁移开关尚未打开，不能据此判断业务功能下线；因此本期迁移范围仍按已确认的 15 个目标应用 + 2 个知识库应用保留 Dify 处理。
+- **未覆盖**：没有业务访问量/调用次数或逐应用线上任务统计，因此不能据此证明每个应用当前都有流量；若后续要缩小范围，应另查应用调用记录或产品确认，不能把“无开关关闭证据”当成“全量仍在使用”。

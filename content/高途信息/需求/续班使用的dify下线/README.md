@@ -7,7 +7,7 @@ branches:
   - student-data:feature-xuban-dify-offline
 repos:
   - student-data
-updated: 2026-10-27
+updated: 2026-11-23
 tags: [需求]
 ---
 
@@ -83,10 +83,10 @@ test 环境对应应用见 [`verify.md`](verify.md)。
 | | |
 |---|---|
 | 阶段 | 开发中 |
-| 进度 | T 6/14 · R 0/0 · C 0/0 |
+| 进度 | T 7/14 · R 0/0 · C 0/0 |
 | 部署泳道 | `student-data=test-gtbg-dev-1`（流水线 1316286） |
 | 当前卡点 | 无（退费提示词已改挂 `ai_application.gateway_core_prompt` 应用级列，绕开 prod 的 pc 共享问题）；等 prod 按序上线 |
-| 最近更新 | 2026-10-28：**退费提示词承载改为 `ai_application.gateway_core_prompt`（应用级，替代 prompt_config）**；test 已迁并复验（commit `91012878`）；prod 待 DDL 工单加列后再迁。prod Apollo 仍置空 `{}`（全走老链路），代码未进 release |
+| 最近更新 | 2026-11-23：复核需求分支 diff 与 TEST/PROD Apollo 已发布值；TEST 当前 9 个应用命中新链路覆盖，PROD 仍为 `{}`。代码级审查未发现确定性缺陷，详见 [`verify.md`](verify.md#迁移审查复核2026-11-23)。|
 
 ## 下一步
 
