@@ -5,7 +5,7 @@ tags: [需求, 交接]
 
 # 交接：prod 上线执行清单（续班/退费 Dify 下线 → LLM 网关）
 
-> 交接对象：另一个 AI/同学。**test 已完成**，本文只列 **prod 待办**，按序执行。
+> 历史发布清单，不能直接执行：当前测试仅有样本证据，生产降退费工作流前置检索尚未替代。以 README 最新复核及逐场景清单为准。
 > 详细背景：[`README.md`](README.md) · 逐应用对比 [`artifacts/compare-detail.md`](artifacts/compare-detail.md) · 模型映射 [`artifacts/llm-gateway-model-mapping.md`](artifacts/llm-gateway-model-mapping.md) · 知识库评估 [`artifacts/dify-kb-eval.md`](artifacts/dify-kb-eval.md) · 提示词归档 [`artifacts/dify-refund-prompts/`](artifacts/dify-refund-prompts/)
 
 ## 0. 一句话
@@ -14,11 +14,11 @@ tags: [需求, 交接]
 ## 1. 已定结论（不要改）
 - 切换粒度：`ai_agent.number`；开关走 **Apollo `ai.agent.accessor.override.map`**（`{name, platformType:2, model, params}`）。
 - 模型：续班 `doubao-seed-2-0-lite-260428`；**退费 `deepseek-flash`**（= 网关控制面 `redirectToModelCode` 官方接管值）。
-- 返回格式：续班 doubao **带** `response_format={"type":"json_object"}`；**退费不带**。
+- 返回格式：续班按应用配置：分层原因用text；其他JSON场景按契约配置；**退费不带**。
 - 参数（`params`）按应用对齐 Dify 的 `completion_params`：退费根因/旅程/降退费 `enable_thinking:true`；各应用 `stop:[]`；素养服务建议加 `temperature:0.7`。
 - **退费提示词**用新列 `ai_application.gateway_core_prompt`（应用级，仅 `platform_type=2` 时作 system 提示词）；老链路(Dify)仍读 `prompt_config.core_prompt` 保持原样（可回退、老链路零变化）。
 - **不要对齐 Dify 的消息结构**（试过、无收益、已回退），保持：`system=完整指令`、`user=数据`。
-- 隐藏能力已扫：除知识库外无其它（tools 全空、敏感词/注释/gt_configs 均关）。
+- 已发布降退费工作流有前置知识检索，单LLM节点不等于无检索；旧tools扫描结论不可作放行依据。
 
 ## 2. prod 待办（按序）
 
@@ -91,8 +91,18 @@ curl -sk -x "${AGENT_PROXY_URL:-http://127.0.0.1:8888}" \
 - **`生成沟通建议-高中`（问题建议-高中 `256918735665808384`）/ `生成沟通建议-素养`（问题建议-素养 `256918818763359232`）——保留 Dify，不迁**。原因（给领导口径）：
   1. 这两个应用在 Dify 上是 **agent-chat + function_call 且绑定了 Dify 知识库（dataset）**；Dify 把知识库**注册成一个工具**交给模型，**由模型运行时自己发起检索**，Dify 做**向量检索 + rerank**，再把命中的话术片段**回灌**给模型。**知识不在提示词里，而在「运行时检索」这一步**。
   2. 我们迁移的目标链路（公司 LLM 网关）是**标准单次 chat completion**：只发 `system`（指令）+ `user`（数据），**没有工具/检索能力** → 直接切会**丢掉知识库检索**、答案不再基于话术库，**属有损替换**，不能做。
-  3. 对比其余 15 个应用：无知识库（`tools` 全空、无 dataset），提示词可完整搬到 student-data，**切换无损、已逐个验证结构一致**。差别就在**知识库**。
+  3. 对比其余 15 个应用：无知识库（`tools` 全空、无 dataset），提示词可完整搬到 student-data，**历史结构对比不构成无损证据，生产工作流的前置检索须另核对**。差别就在**知识库**。
   4. **不是完全没法做**：这两个知识库其实是 **Teable 结构化话术表**（高中 ~10.4 万字 / 素养 ~4.8K 字，字段：问题类型/适用课程/标准回复/评分标准…），student-data 已有 `TableApiDataHolder` 取数能力，可「先判问题类型+课程 → 从 Teable 取话术 → 拼进 prompt」等价复刻（不需向量库）——但**属额外开发、须单独立项，本期未做**。
   - **结论：本期 15 个切网关、这 2 个留 Dify，故 Dify 在这 2 个应用上暂不能完全下线**。评估明细见 [`artifacts/dify-kb-eval.md`](artifacts/dify-kb-eval.md)。
 - `我家子涵最近学的怎么样`（Dify「二讲回复」；归属待定）
 - ~~退费「素养/精品班」共用同一 `prompt_config` 的应用~~ —— **已由「改挂 `ai_application`（应用级）」解决**（2026-10-28）。
+
+## 原需求与调用次数复核（2026-11-23）
+
+原始17个生产应用，问题建议高中/素养2个明确保留Dify，目标15个不变。本轮TEST10样本不是生产10/15/17项通过。9个旧/新各单次；仅TEST通用降退费旧2次、新1次，已核实它绑定【废弃】agent-chat。
+
+生产精品/素养降退费目标为已发布advanced-chat：代码提取→知识检索→单LLM生成。不是两轮LLM；仍需迁移前置检索与context注入。撤回此前把TEST废弃两轮外推生产的口径；生产检索缺口依据已发布图而非TEST两轮。重试/compare双路/不同阶段不算内部多轮。
+
+可支持TEST单次替换试验：画像、摘要、SOP V2、修正后的分层、课程体验、NPS本模板、修正后的素养服务建议本模板。根因弱样本与旅程指令差异不能列业务验收通过。生产学部与流程准入未全验，尤其素养TEST一次不代表生产可去掉检索。
+
+详见[调用次数与证据](artifacts/expanded-scope/call-count-evidence.md)、[原材料对照](artifacts/expanded-renewal/source-scope.md)、[生产与废弃绑定](artifacts/expanded-refund/deprecated-binding.md)。本次未改路由/代码/生产，未选择保留或建设方案。

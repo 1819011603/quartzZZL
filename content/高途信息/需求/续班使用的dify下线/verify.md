@@ -301,3 +301,13 @@ SOP普通compare及V2旧路均为Seed-1.6且有推理，本次未改SOP配置；
 - 降退费与素养的{{#sys.query#}}未展开已在LiteLLM实收确认，TEST提示词已最小修正并同输入复验；见 [模板修正](artifacts/expanded-refund/template-fix.md)，不代表检索遗漏解决。
 
 当前汇总以 [审查交付](artifacts/expanded-scope/review-result.md) 为准；两行测试提示词已独立回读，最终trace为25046ce3-eb13-43e3-88ae-78859fd34e33.0.3及cd3eed1b-00db-4c9d-bdd4-a4cf7ad22c33.0.3。
+
+## 原需求与调用次数复核（2026-11-23）
+
+原始17个生产应用，问题建议高中/素养2个明确保留Dify，目标15个不变。本轮TEST10样本不是生产10/15/17项通过。9个旧/新各单次；仅TEST通用降退费旧2次、新1次，已核实它绑定【废弃】agent-chat。
+
+生产精品/素养降退费目标为已发布advanced-chat：代码提取→知识检索→单LLM生成。不是两轮LLM；仍需迁移前置检索与context注入。撤回此前把TEST废弃两轮外推生产的口径；生产检索缺口依据已发布图而非TEST两轮。重试/compare双路/不同阶段不算内部多轮。
+
+可支持TEST单次替换试验：画像、摘要、SOP V2、修正后的分层、课程体验、NPS本模板、修正后的素养服务建议本模板。根因弱样本与旅程指令差异不能列业务验收通过。生产学部与流程准入未全验，尤其素养TEST一次不代表生产可去掉检索。
+
+详见[调用次数与证据](artifacts/expanded-scope/call-count-evidence.md)、[原材料对照](artifacts/expanded-renewal/source-scope.md)、[生产与废弃绑定](artifacts/expanded-refund/deprecated-binding.md)。本次未改路由/代码/生产，未选择保留或建设方案。

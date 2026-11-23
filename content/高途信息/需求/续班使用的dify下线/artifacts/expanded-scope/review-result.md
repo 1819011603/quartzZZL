@@ -1,7 +1,7 @@
 # 迁移审查当前交付
 
 ## 结论
-当前不是整体对等迁移。明确阻断为降退费服务建议遗漏Dify dataset检索与多轮回灌；其他场景也有角色、格式、参数及模板差异，不能用一次JSON成功外推质量等价。
+当前不是整体对等迁移。明确缺口为生产降退费工作流的前置dataset检索与context注入；多轮回灌仅实证于TEST废弃绑定；其他场景也有角色、格式、参数及模板差异，不能用一次JSON成功外推质量等价。
 
 范围：student-data feature-xuban-dify-offline，91012878，11文件diff；TEST test-gtbg-dev-1已部署。生产仅只读，没有代码修改/新commit/生产发布。原仓库其他需求现场保留。
 
@@ -43,3 +43,5 @@ PROD gateway_core_prompt列实查不存在；Mapper无条件依赖此列，关�
 Apollo模块{}语义为放开，T+N关闭不代表应用下线；未取得全量流量统计，不能确认每应用均活跃。生产未开迁移开关。TEST10应用不等于生产15目标应用；独立生产app映射及全量异步落值没有验证。
 
 验证判断采用输入内容/角色/实际路由和默认参数、消费格式、事实与枚举；随机文案不要求一致。共有多用户措辞问题不归因迁移。提供商最终HTTP未观测，不影响本次已完成的LiteLLM层取证。
+
+最新应用归属与计数见call-count-evidence.md及../expanded-refund/deprecated-binding.md；TEST废弃两轮不外推生产。

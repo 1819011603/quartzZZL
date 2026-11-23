@@ -1,0 +1,397 @@
+[
+  {
+    "trace": "25046ce3-eb13-43e3-88ae-78859fd34e33.0.3",
+    "time": "2026-11-23 19:50:29,130",
+    "service": "litellm",
+    "model": "deepseek-flash",
+    "roles": [
+      "system",
+      "user"
+    ],
+    "tools": 0,
+    "sources": [
+      "expanded-refund/template-降退费服务建议-logs.txt"
+    ]
+  },
+  {
+    "trace": "2a9ff650-ba6f-4bf2-93f8-88034f864c93.0.3",
+    "time": "2026-11-23 19:21:19,911",
+    "service": "litellm",
+    "model": "doubao/Doubao-1-5-pro-32k",
+    "roles": [
+      "user"
+    ],
+    "tools": 0,
+    "sources": [
+      "expanded-renewal/profile-prod-logs.json",
+      "expanded-renewal/profile-prod-logs-litellm.json"
+    ]
+  },
+  {
+    "trace": "2a9ff650-ba6f-4bf2-93f8-88034f864c93.0.3",
+    "time": "2026-11-23 19:21:26,856",
+    "service": "litellm",
+    "model": "doubao-seed-2-0-lite-260428",
+    "roles": [
+      "system",
+      "user"
+    ],
+    "tools": 0,
+    "sources": [
+      "expanded-renewal/profile-test-logs-litellm.json",
+      "expanded-renewal/profile-test-logs.json"
+    ]
+  },
+  {
+    "trace": "2b757fa1-ac59-4cbd-aac5-1260f6bcba8a.0.3",
+    "time": "2026-11-23 19:29:01,243",
+    "service": "litellm",
+    "model": "doubao-seed-2-0-lite-260428",
+    "roles": [
+      "user"
+    ],
+    "tools": 0,
+    "sources": [
+      "expanded-renewal/sop-v2-2-logs.txt"
+    ]
+  },
+  {
+    "trace": "315c294d-dbc3-4d8f-adc6-e036ad96d1e1.0.3",
+    "time": "2026-11-23 19:29:00,818",
+    "service": "litellm",
+    "model": "doubao/Doubao-Seed-1-6",
+    "roles": [
+      "user"
+    ],
+    "tools": 0,
+    "sources": [
+      "expanded-renewal/sop-v2-1-logs.txt"
+    ]
+  },
+  {
+    "trace": "3c9e6b70-e6f3-4f95-883b-14408cdafc2b.0.3",
+    "time": "2026-11-23 19:24:39,699",
+    "service": "litellm",
+    "model": "doubao/Doubao-1-5-pro-32k",
+    "roles": [
+      "user"
+    ],
+    "tools": 0,
+    "sources": [
+      "expanded-renewal/tier-valid-prod-logs.json"
+    ]
+  },
+  {
+    "trace": "3c9e6b70-e6f3-4f95-883b-14408cdafc2b.0.3",
+    "time": "2026-11-23 19:24:42,948",
+    "service": "litellm",
+    "model": "doubao-seed-2-0-lite-260428",
+    "roles": [
+      "system",
+      "user"
+    ],
+    "tools": 0,
+    "sources": [
+      "expanded-renewal/tier-valid-test-logs.json"
+    ]
+  },
+  {
+    "trace": "5e258635-6bba-4358-bb49-8c6017142140.0.3",
+    "time": "2026-11-23 19:25:17,155",
+    "service": "litellm",
+    "model": "deepseek/DeepSeek-R1-250528",
+    "roles": [
+      "system"
+    ],
+    "tools": 0,
+    "sources": [
+      "expanded-refund/prod-all-5e25.log",
+      "expanded-refund/prod-tid-e1cc0e7d-full.log"
+    ]
+  },
+  {
+    "trace": "5e258635-6bba-4358-bb49-8c6017142140.0.3",
+    "time": "2026-11-23 19:25:33,975",
+    "service": "litellm",
+    "model": "deepseek-flash",
+    "roles": [
+      "system",
+      "user"
+    ],
+    "tools": 0,
+    "sources": [
+      "expanded-refund/llm-full-7dbd83e7.log"
+    ]
+  },
+  {
+    "trace": "7a05052d-9094-4a00-aa88-bf44dcf0eb61.0.3",
+    "time": "2026-11-23 19:32:26,666",
+    "service": "litellm",
+    "model": "doubao-seed-2-0-lite-260428",
+    "roles": [
+      "system",
+      "user"
+    ],
+    "tools": 0,
+    "sources": [
+      "expanded-renewal/thinking-test-logs.txt"
+    ]
+  },
+  {
+    "trace": "81e849b4-d461-4fd0-910a-154368d68bc0.0.3",
+    "time": "2026-11-23 19:24:45,191",
+    "service": "litellm",
+    "model": "deepseek/DeepSeek-R1-250528",
+    "roles": [
+      "system",
+      "user"
+    ],
+    "tools": 1,
+    "sources": [
+      "expanded-refund/prod-trace-service-main.log"
+    ]
+  },
+  {
+    "trace": "81e849b4-d461-4fd0-910a-154368d68bc0.0.3",
+    "time": "2026-11-23 19:24:50,133",
+    "service": "litellm",
+    "model": "deepseek/DeepSeek-R1-250528",
+    "roles": [
+      "system",
+      "user",
+      "assistant",
+      "tool",
+      "tool"
+    ],
+    "tools": 1,
+    "sources": [
+      "expanded-refund/prod-trace-service-main.log"
+    ]
+  },
+  {
+    "trace": "81e849b4-d461-4fd0-910a-154368d68bc0.0.3",
+    "time": "2026-11-23 19:24:56,985",
+    "service": "litellm",
+    "model": "deepseek-flash",
+    "roles": [
+      "system",
+      "user"
+    ],
+    "tools": 0,
+    "sources": [
+      "expanded-refund/llm-full-419e58d2.log"
+    ]
+  },
+  {
+    "trace": "a711d06d-e6c2-4e8d-9160-afef54fc4099.0.3",
+    "time": "2026-11-23 19:21:37,333",
+    "service": "litellm",
+    "model": "doubao/Doubao-1-5-pro-32k",
+    "roles": [
+      "user"
+    ],
+    "tools": 0,
+    "sources": [
+      "expanded-renewal/tier-prod-logs-litellm.json",
+      "expanded-renewal/tier-prod-logs.json"
+    ]
+  },
+  {
+    "trace": "a711d06d-e6c2-4e8d-9160-afef54fc4099.0.3",
+    "time": "2026-11-23 19:21:39,521",
+    "service": "litellm",
+    "model": "doubao-seed-2-0-lite-260428",
+    "roles": [
+      "system",
+      "user"
+    ],
+    "tools": 0,
+    "sources": [
+      "expanded-renewal/tier-test-logs-litellm.json",
+      "expanded-renewal/tier-test-logs.json"
+    ]
+  },
+  {
+    "trace": "bfd44413-31f5-493d-904b-e670783ff2c4.0.3",
+    "time": "2026-11-23 19:22:49,960",
+    "service": "litellm",
+    "model": "deepseek/DeepSeek-R1-250528",
+    "roles": [
+      "system",
+      "user"
+    ],
+    "tools": 0,
+    "sources": [
+      "expanded-refund/prod-tid-cc31e065-full.log"
+    ]
+  },
+  {
+    "trace": "bfd44413-31f5-493d-904b-e670783ff2c4.0.3",
+    "time": "2026-11-23 19:23:24,406",
+    "service": "litellm",
+    "model": "deepseek-flash",
+    "roles": [
+      "system",
+      "user"
+    ],
+    "tools": 0,
+    "sources": [
+      "expanded-refund/llm-full-c9335c5b.log"
+    ]
+  },
+  {
+    "trace": "cd3eed1b-00db-4c9d-bdd4-a4cf7ad22c33.0.3",
+    "time": "2026-11-23 19:50:55,920",
+    "service": "litellm",
+    "model": "deepseek-flash",
+    "roles": [
+      "system",
+      "user"
+    ],
+    "tools": 0,
+    "sources": [
+      "expanded-refund/template-素养服务建议-logs.txt"
+    ]
+  },
+  {
+    "trace": "d2003cc1-b573-4e1c-8918-d3a4d162fe62.0.3",
+    "time": "2026-11-23 19:24:27,614",
+    "service": "litellm",
+    "model": "deepseek/DeepSeek-R1-250528",
+    "roles": [
+      "system",
+      "user"
+    ],
+    "tools": 0,
+    "sources": [
+      "expanded-refund/prod-tid-2c46f2e3-full.log",
+      "expanded-refund/prod-all-d200.log"
+    ]
+  },
+  {
+    "trace": "d2003cc1-b573-4e1c-8918-d3a4d162fe62.0.3",
+    "time": "2026-11-23 19:24:35,007",
+    "service": "litellm",
+    "model": "deepseek-flash",
+    "roles": [
+      "system",
+      "user"
+    ],
+    "tools": 0,
+    "sources": [
+      "expanded-refund/llm-full-fa98c35e.log"
+    ]
+  },
+  {
+    "trace": "e02d7092-ee55-4e73-b731-b6f31ef2fb6e.0.3",
+    "time": "2026-11-23 19:23:42,540",
+    "service": "litellm",
+    "model": "deepseek/DeepSeek-R1-250528",
+    "roles": [
+      "system",
+      "user"
+    ],
+    "tools": 0,
+    "sources": [
+      "expanded-refund/prod-all-e02.log",
+      "expanded-refund/prod-tid-f5443e35-full.log"
+    ]
+  },
+  {
+    "trace": "e02d7092-ee55-4e73-b731-b6f31ef2fb6e.0.3",
+    "time": "2026-11-23 19:23:55,604",
+    "service": "litellm",
+    "model": "deepseek-flash",
+    "roles": [
+      "system",
+      "user"
+    ],
+    "tools": 0,
+    "sources": [
+      "expanded-refund/llm-full-c2512c21.log"
+    ]
+  },
+  {
+    "trace": "e3197197-27eb-4b23-8b1e-2f8b83d16ff5.0.3",
+    "time": "2026-11-23 19:21:40,079",
+    "service": "litellm",
+    "model": "doubao/Doubao-Seed-1-6",
+    "roles": [
+      "user"
+    ],
+    "tools": 0,
+    "sources": [
+      "expanded-renewal/sop-prod-logs.json",
+      "expanded-renewal/sop-prod-logs-litellm.json"
+    ]
+  },
+  {
+    "trace": "e3197197-27eb-4b23-8b1e-2f8b83d16ff5.0.3",
+    "time": "2026-11-23 19:22:13,403",
+    "service": "litellm",
+    "model": "doubao-seed-2-0-lite-260428",
+    "roles": [
+      "system",
+      "user"
+    ],
+    "tools": 0,
+    "sources": [
+      "expanded-renewal/sop-test-llm-logs.json"
+    ]
+  },
+  {
+    "trace": "15760243-f225-4246-a103-c9565c2652ba.0.3",
+    "time": "2026-11-23 18:53:04,814",
+    "service": "litellm",
+    "model": "doubao/Doubao-1-5-pro-32k",
+    "roles": [
+      "user"
+    ],
+    "tools": 0,
+    "sources": [
+      "/private/tmp/compare-renewal-prod.txt"
+    ]
+  },
+  {
+    "trace": "15760243-f225-4246-a103-c9565c2652ba.0.3",
+    "time": "2026-11-23 18:53:14,831",
+    "service": "litellm",
+    "model": "doubao-seed-2-0-lite-260428",
+    "roles": [
+      "system",
+      "user"
+    ],
+    "tools": 0,
+    "sources": [
+      "/private/tmp/compare-renewal-test.txt"
+    ]
+  },
+  {
+    "trace": "a32fe4b6-6269-4882-8d39-81c76f8ca23e.0.3",
+    "time": "2026-11-23 18:53:04,743",
+    "service": "litellm",
+    "model": "deepseek/DeepSeek-R1-250528",
+    "roles": [
+      "system",
+      "user"
+    ],
+    "tools": 0,
+    "sources": [
+      "/private/tmp/compare-refund-prod.txt"
+    ]
+  },
+  {
+    "trace": "a32fe4b6-6269-4882-8d39-81c76f8ca23e.0.3",
+    "time": "2026-11-23 18:53:19,148",
+    "service": "litellm",
+    "model": "deepseek-flash",
+    "roles": [
+      "system",
+      "user"
+    ],
+    "tools": 0,
+    "sources": [
+      "/private/tmp/compare-refund-test.txt"
+    ]
+  }
+]

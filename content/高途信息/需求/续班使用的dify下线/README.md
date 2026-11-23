@@ -80,9 +80,11 @@ test 环境对应应用见 [`verify.md`](verify.md)。
 
 当前完整结论见 [迁移审查交付](artifacts/expanded-scope/review-result.md)。
 
+飞书说明：[具体遗漏了什么、已修正什么](https://gaotuedu.feishu.cn/docx/EWI6dsdvPokck0xy89ccJDuEnhg)（已全文回读）。
+
 ## 已确认的迁移阻断
 
-降退费服务建议旧路实际两轮调用话术库，迁移单次 completion 缺少检索回灌，当前非对等。证据：[检索遗漏](artifacts/expanded-refund/confirmed-retrieval-gap.json)，trace `81e849b4-d461-4fd0-910a-154368d68bc0.0.3`。其他退费场景仍在核对，不外推。
+生产降退费已发布工作流是前置检索加一个LLM节点；迁移缺前置检索与context注入。两轮工具调用仅实证于TEST废弃绑定，不能外推生产。证据：[检索遗漏](artifacts/expanded-refund/confirmed-retrieval-gap.json)，trace `81e849b4-d461-4fd0-910a-154368d68bc0.0.3`。其他退费场景仍在核对，不外推。
 
 ## 现在什么情况
 
@@ -129,3 +131,13 @@ test 环境对应应用见 [`verify.md`](verify.md)。
 - 切换**不靠改 `ai_agent.platform_type`**：用 Apollo 开关（运行时可切、可单应用回滚）；库值改动属于代码切换阶段。
 - Dify 与网关提示词形态不同：Dify 收扁平文本 query，网关走 OpenAI messages；`AiApplicationExecutor` 按平台类型自动选（网关走 messages），切平台后无需改提示词拼装。
 - 未显式传 `model` 的应用走网关 `llm.gateway.default-model` 兜底（test 未配则用代码默认 `claude-sonnet-5`）——试点若不指定模型，需确认该模型在 `gps-ai` test 路由可用。
+
+## 原需求与调用次数复核（2026-11-23）
+
+原始17个生产应用，问题建议高中/素养2个明确保留Dify，目标15个不变。本轮TEST10样本不是生产10/15/17项通过。9个旧/新各单次；仅TEST通用降退费旧2次、新1次，已核实它绑定【废弃】agent-chat。
+
+生产精品/素养降退费目标为已发布advanced-chat：代码提取→知识检索→单LLM生成。不是两轮LLM；仍需迁移前置检索与context注入。撤回此前把TEST废弃两轮外推生产的口径；生产检索缺口依据已发布图而非TEST两轮。重试/compare双路/不同阶段不算内部多轮。
+
+可支持TEST单次替换试验：画像、摘要、SOP V2、修正后的分层、课程体验、NPS本模板、修正后的素养服务建议本模板。根因弱样本与旅程指令差异不能列业务验收通过。生产学部与流程准入未全验，尤其素养TEST一次不代表生产可去掉检索。
+
+详见[调用次数与证据](artifacts/expanded-scope/call-count-evidence.md)、[原材料对照](artifacts/expanded-renewal/source-scope.md)、[生产与废弃绑定](artifacts/expanded-refund/deprecated-binding.md)。本次未改路由/代码/生产，未选择保留或建设方案。

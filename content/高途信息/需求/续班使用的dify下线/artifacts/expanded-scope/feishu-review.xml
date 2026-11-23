@@ -1,0 +1,33 @@
+<title>Dify 下线迁移：具体遗漏了什么、已修正什么</title>
+<p>2026-11-23审查｜student-data feature-xuban-dify-offline，版本91012878，测试泳道test-gtbg-dev-1。业务验证在TEST；共享Dify下游日志位于PROD，仅只读查询。本文不是生产发布或迁移方案选择。</p>
+<h1>1. 当前明确少了什么</h1>
+<p>已验证：降退费服务建议缺少“从现有话术库找出匹配内容，再带着这些内容生成建议”的能力。旧Dify替业务做了工具注册、模型发起查询、检索结果回灌和第二轮生成。迁移链路目前只发送提示词与业务数据，调用一次模型；没有注册检索工具，也没有把旧路实际命中的话术交给模型。因此当前不能认定整体对等。</p>
+<p>问题不是两次答案措辞不同，也不是Teable权限报错：最直接证据是同一测试输入下，旧请求确实有两轮和工具结果，新请求只有一轮。原代码里虽然写了“结合话术库”的注释，实际上下文只拼接退费根因、退费旅程等信息，没有读取话术内容。</p>
+<h1>2. 用本次实际样本看旧新差别</h1>
+<p>这是用于验证的合成沟通样本，不是真实家长投诉：近三次数学作业正确率从85%降到62%，家长反馈节奏快、互动少、作业反馈慢和个性化不足，NPS为3/10；正在考虑退费，但增加答疑与针对性练习可能愿意继续。新旧业务正文均为302字符，已逐字核对相同。</p>
+<table><thead><tr><th>步骤</th><th>旧Dify实际执行</th><th>迁移链路实际执行</th></tr></thead><tbody>
+<tr><td>第一次请求</td><td>system+user，另带话术库dataset工具，tool_choice=auto</td><td>system+user，无tools</td></tr>
+<tr><td>找到话术</td><td>模型发出两次工具调用，取得两条检索结果</td><td>没有发起检索，也没有话术结果</td></tr>
+<tr><td>带知识生成</td><td>第二次请求为system、user、assistant、tool、tool；两段话术分别1363和1152字符</td><td>直接根据第一轮业务输入生成答案</td></tr>
+</tbody></table>
+<p>旧路命中内容包含“课程适配类—分层教学缺失”的具体话术：例如提供基础巩固、能力提升、拓展拔高不同层次练习，结合答疑、阶段报告给针对性辅导，并约定观察期和后续退费处理。另一个返回片段还含老师调整场景的话术。这些知识是否都适用于当前用户仍须由模型筛选，但它们确实进入旧模型的第二轮输入；新模型没有收到。</p>
+<p>已验证的影响是“模型可用依据不同”。推断未验证的风险是：新建议可能更泛化、漏掉现有服务动作或产生不符合话术口径的承诺；不声称每次输出必然更差，也未做质量统计。两侧都能返回suggestion、recallSuccessRate、recallReason，只能证明结构可用，不能证明建议依据相同。</p>
+<p>关键trace：81e849b4-d461-4fd0-910a-154368d68bc0.0.3。北京时间19:24:45旧首轮，19:24:50旧第二轮，19:24:56新请求。查询SLS/app，完整trace加引号，核验service=litellm的Chat_completion request；旧侧PROD、新侧TEST。dataset工具为dataset_86233d1a_bddf_4a15_a229_c90b6a061c57。</p>
+<p>范围纠正：退费旅程本次样本只有一轮、无tools；不能把降退费证据套到旅程。课程体验、NPS和素养服务建议的已查样本也未见工具多轮；这不证明所有线上输入永远不会触发工具。</p>
+<h1>3. 69个分段已经拿到，为什么还没补齐</h1>
+<p>已验证：Dify Console可读出全部69个已索引分段，分页已结束。它们来自一个Teable“降退费服务建议话术库”文档，文档记录52358 tokens；分段规则为双换行、1024 tokens、重叠50。源表ID为tblf6HnwVYpJzy8wVlu。69是分段数量，不等于69条独立业务规则。</p>
+<p>读出数据解决了“知识在哪里、能否取得”的调查问题。尚未实现的是：服务如何持续取得更新、如何按本次根因/语义选择相关片段、怎样保留匹配排序及空命中处理、怎样把命中结果回灌给模型，并验证与旧链路一致。把全部分段直接塞进提示词会改变输入规模与检索语义，不能称为等价替代。</p>
+<p>直接Teable record API返回403 restricted_resource：限制当前身份直接读取源表，不妨碍已通过Dify Console完成的分段导出，也不是检索遗漏的证明。已尝试的Console retrieve/search路径返回404，只能说明这些路径不可用，不能断言平台没有任何检索API。后续若使用实时源表，需要可用只读凭证；若基于导出快照建设替代源，仍需版本、更新和检索机制。</p>
+<h1>4. 已修正项：仅TEST，均已回读复验</h1>
+<p>画像/摘要共享agent补thinking.disabled，恢复旧1.5模型别名重定向的关闭思考行为。复验trace：f059219f-2d7c-46c5-945e-fd3a9cdab509.0.3。分层原因取消强制JSON对象，改为text并关闭思考；最终trace：7a05052d-9094-4a00-aa88-bf44dcf0eb61.0.3，releaseKey：20261123193207-188aa6ecfba69670。实际响应无reasoning_content，reasoning_tokens为null，不能写成计数0。</p>
+<p>降退费和素养服务建议的gateway_core_prompt残留{{#sys.query#}}，已改为引用本次user消息的说明，未固化业务输入。两行TEST数据按原值条件更新、独立连接回读；同输入复验无模板残留且JSON结构合法。降退费trace：25046ce3-eb13-43e3-88ae-78859fd34e33.0.3；素养trace：cd3eed1b-00db-4c9d-bdd4-a4cf7ad22c33.0.3。此修正没有补齐检索。</p>
+<p>SOP没有关闭思考：旧Seed-1.6和新路都有推理。V2历史fixture两侧单user的13647字符逐字相等，均返回10项SOP。旅程resolvedRefundReasonList属于2025年已有契约，保留现有字段和归档模板；当前旧Dify实收未要求该字段，仍记录为输入差异，不宣称完全相同。</p>
+<h1>5. 未验证边界与发布前置</h1>
+<p>未证明全量学部路由、业务MQ/最终DB或ES落值、跨班级NPS、多次随机输出质量、长文本截断和耗时等价。TEST10应用不等于生产15目标应用。生产画像/摘要直接使用新模型名，TEST使用旧别名，不能机械复制TEST默认参数结论。max_tokens=8192、stream、stop、角色等已列差异；提供商最终HTTP不可观测，不能据入口缺省推断默认参数相同。</p>
+<p>Apollo部门模块{}的代码语义为放开；T+N关闭不能当作应用下线。尚无逐应用流量统计，不能宣布所有功能都活跃或都停用。生产gateway_core_prompt列只读查询不存在，Mapper无条件依赖该列，未来发布必须先完成DDL；这是发布前置，与本次检索遗漏分开处理。没有生产修改、发布或新业务代码提交。</p>
+<h1>6. 可选处置：尚未决定</h1>
+<p>建议短期保留该降退费场景Dify，让现有检索继续工作，并明确它尚未完成迁移；代价是仍依赖Dify及dataset。另一选择是建设独立检索和数据更新机制，复用现有HTTP/缓存组件，但需新增退费数据接入、命中回灌及回归验证；仅有导出数据不等于能力已经实现。推荐只是建议，所有者尚未选择；本次文档请求没有改变路由，也没有授权据此新建检索系统。既定保留Dify的两项沟通建议知识库应用不变。</p>
+<h1>7. 证据索引</h1>
+<p>代码审查：student-data MR !1796，feature-xuban-dify-offline，commit 91012878d692119e79fb7d14baa1bab594c9534d，11个后端文件。</p>
+<p><a href="https://git.baijia.com/gaotu/yunying_workbench/student-data/-/merge_requests/1796">查看需求代码差异</a></p>
+<p>本机原始证据根目录：/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/续班使用的dify下线/artifacts/。以下是文件定位，不是飞书可下载附件：expanded-refund/report-exact.md及summary-exact.json（五场景逐字段请求）；prod-trace-service-main.log（两轮及工具原文）；dataset-export-sanitized.json（69分段导出）；template-fix.md（模板复验）；expanded-renewal/thinking-followup.md、sop-real-entry.md、department-coverage.md、journey-contract.md；expanded-scope/prod-ddl-check.txt。本文结论以实际请求、配置/数据回读为依据，模型文本中“我要调用工具”本身不作为执行证据。</p>

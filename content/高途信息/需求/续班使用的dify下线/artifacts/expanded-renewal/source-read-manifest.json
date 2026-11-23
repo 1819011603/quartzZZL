@@ -1,0 +1,47 @@
+[
+  {
+    "path": "README.md",
+    "sha256": "f03aae6e46aea1c6d0a2da44e06ac0d6064bd2f8bcbf932235e24d2036f882fe",
+    "lines": 133
+  },
+  {
+    "path": "links.md",
+    "sha256": "e643911b6cf82d260d9718e247ff1d07760ec1ff04309de9d00e11964c94ca14",
+    "lines": 52
+  },
+  {
+    "path": "tasks.md",
+    "sha256": "4443450a55dd4352bffa5774da3596d3cbcb708e466da7f8e90bb065e5995605",
+    "lines": 53
+  },
+  {
+    "path": "changelog.md",
+    "sha256": "d844c4d1fce3e0dfe11fe74ae4bbbeffd4c5d4ee66c0b934ff4267cad463e15b",
+    "lines": 68
+  },
+  {
+    "path": "handoff.md",
+    "sha256": "b8828b9e452ca55841480076984148872e436001562cd701b3572bfa27542140",
+    "lines": 98
+  },
+  {
+    "path": "verify.md",
+    "sha256": "0e073106326004b8235c9bd706ae3e6765b117cf0f7f6e257141a322ce9b1921",
+    "lines": 303
+  },
+  {
+    "path": "artifacts/compare-detail.md",
+    "sha256": "1e5092dfa3decb8ee619060202cb474087cc8beb6b5c9193cdc0a44a1f2220a1",
+    "lines": 115
+  },
+  {
+    "path": "artifacts/dify-kb-eval.md",
+    "sha256": "4e7371cdc5efa54c692a96ee0329a234c27c9192784e9d3629fd9d724e671533",
+    "lines": 37
+  },
+  {
+    "path": "artifacts/llm-gateway-model-mapping.md",
+    "sha256": "fdb9b20e37c00d00d0d465ac9e3c6f64159fa6e6e4b15a141241a7d76d63a1dd",
+    "lines": 36
+  }
+]
