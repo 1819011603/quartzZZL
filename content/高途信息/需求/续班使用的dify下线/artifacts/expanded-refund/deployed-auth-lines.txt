@@ -1,0 +1,19 @@
+grep -n "def validate_dataset_token\|def validate_dataset.*\|Bearer\|ApiToken\|token.type" controllers/service_api/wraps.py
+root@dify-api-84cf56596c-zbl8j:/apps/srv/instance# grep -n "def validate_dataset_token\|def validate_dataset.*\|Bearer\|ApiToken\|token.type" controllers/service_api/wraps.py
+27:from models.model import ApiToken
+162:def cloud_edition_billing_resource_check(resource: str, api_token_type: str):
+165:            api_token = validate_and_get_api_token(api_token_type)
+192:def cloud_edition_billing_knowledge_limit_check(resource: str, api_token_type: str):
+196:            api_token = validate_and_get_api_token(api_token_type)
+214:def cloud_edition_billing_rate_limit_check(resource: str, api_token_type: str):
+218:            api_token = validate_and_get_api_token(api_token_type)
+251:def validate_dataset_token(view: Callable[Concatenate[T, P], R] | None = None):
+349:        raise Unauthorized("Authorization header must be provided and start with 'Bearer'")
+355:        raise Unauthorized("Authorization scheme must be 'Bearer'")
+361:            update(ApiToken)
+363:                ApiToken.token == auth_token,
+364:                (ApiToken.last_used_at.is_(None) | (ApiToken.last_used_at < cutoff_time)),
+365:                ApiToken.type == scope,
+368:            .returning(ApiToken)
+374:            stmt = select(ApiToken).where(ApiToken.token == auth_token, ApiToken.type == scope)
+root@dify-api-84cf56596c-zbl8j:/apps/srv/instance# 

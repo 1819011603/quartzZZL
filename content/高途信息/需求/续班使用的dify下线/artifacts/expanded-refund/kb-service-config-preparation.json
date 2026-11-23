@@ -1,0 +1,11 @@
+{
+  "credential_length": 32,
+  "credential_sha256": "633571e86581fce99f7941dec559fc02187131e4e9151a61c35ec3e1d1fcb299",
+  "file_mode": "0o600",
+  "system_template_characters": 1390,
+  "system_template_sha256": "e24fb960acf9d089e68bc69a4372260e1e879840d70179414b77fce38d4c9ce2",
+  "source_sha256": {
+    "DifyDatasetRetriever.java": "6f4363e25dab3ada0e5f2bc75375c513556ef9e7d30548c4e92d945c67bb5259",
+    "DifyDatasetGatewayTestService.java": "6f31a8a6d431862e2072caa4f3e252b4437522ea702e88e5c72dc7dd64d5fe6b"
+  }
+}

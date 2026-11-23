@@ -1,0 +1,20 @@
+[
+  {
+    "id": "spcjE2Q2agjjjJ2GYZc",
+    "name": "张泽灵的空间",
+    "spaceType": "PERSONAL",
+    "role": "owner"
+  },
+  {
+    "id": "spcIHRmiYeOUfzoVvpu",
+    "name": "企业空间",
+    "spaceType": "ENTERPRISE",
+    "role": "commenter"
+  },
+  {
+    "id": "spcAm3oupwKuWRMD8UV",
+    "name": "续班AI",
+    "spaceType": "TEAM",
+    "role": "owner"
+  }
+]

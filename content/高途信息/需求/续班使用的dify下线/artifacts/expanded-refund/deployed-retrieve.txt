@@ -1,0 +1,61 @@
+cat controllers/service_api/dataset/hit_testing.py
+root@dify-api-84cf56596c-zbl8j:/apps/srv/instance# cat controllers/service_api/dataset/hit_testing.py
+
+from controllers.console.datasets.hit_testing_base import DatasetsHitTestingBase
+from controllers.service_api import service_api_ns
+from controllers.service_api.wraps import (
+    DatasetApiResource,
+    cloud_edition_billing_rate_limit_check,
+    dataset_permission_check,
+)
+
+
+@service_api_ns.route("/datasets/<uuid:dataset_id>/hit-testing", "/datasets/<uuid:dataset_id>/retrieve")
+class HitTestingApi(DatasetApiResource, DatasetsHitTestingBase):
+    @service_api_ns.doc("dataset_hit_testing")
+    @service_api_ns.doc(description="Perform hit testing on a dataset")
+    @service_api_ns.doc(params={"dataset_id": "Dataset ID"})
+    @service_api_ns.doc(
+        responses={
+            200: "Hit testing results",
+            401: "Unauthorized - invalid API token",
+            404: "Dataset not found",
+        }
+    )
+    @cloud_edition_billing_rate_limit_check("knowledge", "dataset")
+    @dataset_permission_check(operation_type='query')
+    def post(self, tenant_id, dataset_id):
+        """Perform hit testing on a dataset.
+
+        Tests retrieval performance for the specified dataset.
+        """
+        dataset_id_str = str(dataset_id)
+
+        dataset = self.get_and_validate_dataset(dataset_id_str)
+        args = self.parse_args()
+        self.hit_testing_args_check(args)
+
+        return self.perform_hit_testing(dataset, args)
+
+
+@service_api_ns.route("/vector-cache")
+class VectorCacheApi(DatasetApiResource, DatasetsHitTestingBase):
+    """向量数据库缓存管理API"""
+    
+    def get(self, tenant_id):
+        """获取缓存信息"""
+        return self.get_vector_cache_info()
+    
+    def delete(self, tenant_id):
+        """清空客户端缓存"""
+        return self.clear_vector_cache()
+
+
+@service_api_ns.route("/bm25-manager")
+class BM25ManagerApi(DatasetApiResource, DatasetsHitTestingBase):
+    """全局BM25编码器管理API"""
+    
+    def delete(self, tenant_id):
+        """强制重置全局BM25编码器"""
+        return self.force_reset_bm25()
+root@dify-api-84cf56596c-zbl8j:/apps/srv/instance# 

@@ -1,0 +1,66 @@
+{
+  "id": "0105aec9-ef88-4a45-8f4a-fb1b5a3f12ce",
+  "name": "TEST-service-retrieval-20261124",
+  "description": "隔离服务检索验证",
+  "provider": "vendor",
+  "permission": "only_me",
+  "data_source_type": null,
+  "indexing_technique": "economy",
+  "app_count": 0,
+  "document_count": 0,
+  "word_count": 0,
+  "created_by": "177071",
+  "created_at": 1795457253,
+  "updated_by": "177071",
+  "updated_at": 1795457253,
+  "embedding_model": null,
+  "embedding_model_provider": null,
+  "embedding_available": null,
+  "retrieval_model_dict": {
+    "search_method": "semantic_search",
+    "reranking_enable": false,
+    "reranking_mode": null,
+    "reranking_model": {
+      "reranking_provider_name": "",
+      "reranking_model_name": ""
+    },
+    "weights": null,
+    "top_k": 2,
+    "score_threshold_enabled": false,
+    "score_threshold": null
+  },
+  "tags": [],
+  "doc_form": null,
+  "external_knowledge_info": {
+    "external_knowledge_id": null,
+    "external_knowledge_api_id": null,
+    "external_knowledge_api_name": null,
+    "external_knowledge_api_endpoint": null
+  },
+  "external_retrieval_model": {
+    "top_k": 2,
+    "score_threshold": 0.0,
+    "score_threshold_enabled": null
+  },
+  "doc_metadata": [],
+  "built_in_field_enabled": false,
+  "pipeline_id": null,
+  "runtime_mode": "general",
+  "chunk_structure": null,
+  "icon_info": {
+    "icon_type": null,
+    "icon": null,
+    "icon_background": null,
+    "icon_url": null
+  },
+  "is_published": false,
+  "total_documents": 0,
+  "total_available_documents": 0,
+  "enable_api": true,
+  "space_ids": [
+    "spcynF7tYh4ROXnG8Xg"
+  ],
+  "partial_member_list": null,
+  "edit_permission": null,
+  "delete_permission": null
+}

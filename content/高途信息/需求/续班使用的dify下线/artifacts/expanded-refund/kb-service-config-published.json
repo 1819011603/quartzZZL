@@ -1,0 +1,19 @@
+{
+  "release": null,
+  "release_summary": "✅ 已发布 student-data / TEST / default / application\nreleaseTitle: 20261124021612-release\nreleaseKey: 20261124021612-188aa6ecfba6968e\n操作人: zhangzeling\n\n",
+  "keys": [
+    "ai.dify.dataset.retrieve.enabled",
+    "ai.dify.dataset.retrieve.base-url",
+    "ai.dify.dataset.retrieve.api-key",
+    "ai.dify.dataset.retrieve.top-k",
+    "ai.dify.dataset.retrieve.reranking-enabled",
+    "ai.dify.dataset.retrieve.search-method",
+    "ai.dify.dataset.retrieve.environment",
+    "ai.agent.accessor.override.map"
+  ],
+  "api_key_length": 32,
+  "api_key_sha256": "633571e86581fce99f7941dec559fc02187131e4e9151a61c35ec3e1d1fcb299",
+  "added_agent": "1795457739670155",
+  "previous_agents_unchanged": true,
+  "readback_equal": true
+}

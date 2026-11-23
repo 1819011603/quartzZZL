@@ -1,0 +1,9 @@
+{
+  "ai.dify.dataset.retrieve.enabled": "true",
+  "ai.dify.dataset.retrieve.base-url": "https://test-dify-open.baijia.com/dify/api/v1",
+  "ai.dify.dataset.retrieve.api-key": "<read /tmp/kb-test-service-key.json token at publish time>",
+  "ai.dify.dataset.retrieve.top-k": "4",
+  "ai.dify.dataset.retrieve.reranking-enabled": "false",
+  "ai.dify.dataset.retrieve.search-method": "keyword_search",
+  "ai.dify.dataset.retrieve.environment": "test"
+}

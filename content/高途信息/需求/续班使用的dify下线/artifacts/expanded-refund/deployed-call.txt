@@ -1,0 +1,75 @@
+sed -n "885,956p" core/workflow/nodes/llm/node.py
+root@dify-api-84cf56596c-zbl8j:/apps/srv/instance# sed -n "885,956p" core/workflow/nodes/llm/node.py
+    @staticmethod
+    def fetch_prompt_messages(
+        *,
+        sys_query: str | None = None,
+        sys_files: Sequence["File"],
+        context: str | None = None,
+        memory: TokenBufferMemory | None = None,
+        model_config: ModelConfigWithCredentialsEntity,
+        prompt_template: Sequence[LLMNodeChatModelMessage] | LLMNodeCompletionModelPromptTemplate,
+        memory_config: MemoryConfig | None = None,
+        vision_enabled: bool = False,
+        vision_detail: ImagePromptMessageContent.DETAIL,
+        variable_pool: VariablePool,
+        jinja2_variables: Sequence[VariableSelector],
+        tenant_id: str,
+    ) -> tuple[Sequence[PromptMessage], Sequence[str] | None]:
+        prompt_messages: list[PromptMessage] = []
+
+        if isinstance(prompt_template, list):
+            # For chat model
+            prompt_messages.extend(
+                LLMNode.handle_list_messages(
+                    messages=prompt_template,
+                    context=context,
+                    jinja2_variables=jinja2_variables,
+                    variable_pool=variable_pool,
+                    vision_detail_config=vision_detail,
+                )
+            )
+
+            # Get memory messages for chat mode
+            memory_messages = _handle_memory_chat_mode(
+                memory=memory,
+                memory_config=memory_config,
+                model_config=model_config,
+            )
+            # Extend prompt_messages with memory messages
+            prompt_messages.extend(memory_messages)
+
+            # Add current query to the prompt messages
+            if sys_query:
+                message = LLMNodeChatModelMessage(
+                    text=sys_query,
+                    role=PromptMessageRole.USER,
+                    edition_type="basic",
+                )
+                prompt_messages.extend(
+                    LLMNode.handle_list_messages(
+                        messages=[message],
+                        context="",
+                        jinja2_variables=[],
+                        variable_pool=variable_pool,
+                        vision_detail_config=vision_detail,
+                    )
+                )
+
+        elif isinstance(prompt_template, LLMNodeCompletionModelPromptTemplate):
+            # For completion model
+            prompt_messages.extend(
+                _handle_completion_template(
+                    template=prompt_template,
+                    context=context,
+                    jinja2_variables=jinja2_variables,
+                    variable_pool=variable_pool,
+                )
+            )
+
+            # Get memory text for completion model
+            memory_text = _handle_memory_completion_mode(
+                memory=memory,
+                memory_config=memory_config,
+                model_config=model_config,
+root@dify-api-84cf56596c-zbl8j:/apps/srv/instance# 

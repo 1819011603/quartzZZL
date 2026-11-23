@@ -1,0 +1,52 @@
+grep -n "context\|prompt_transform" core/workflow/nodes/llm/node.py
+root@dify-api-84cf56596c-zbl8j:/apps/srv/instance# grep -n "context\|prompt_transform" core/workflow/nodes/llm/node.py
+208:            # fetch context value
+209:            generator = self._fetch_context(node_data=self._node_data)
+210:            context = None
+212:                context = event.context
+214:            if context:
+215:                node_inputs["#context#"] = context
+250:                context=context,
+627:                # check if it's a context structure
+691:    def _fetch_context(self, node_data: LLMNodeData):
+692:        if not node_data.context.enabled:
+695:        if not node_data.context.variable_selector:
+698:        context_value_variable = self.graph_runtime_state.variable_pool.get(node_data.context.variable_selector)
+699:        if context_value_variable:
+700:            if isinstance(context_value_variable, StringSegment):
+701:                yield RunRetrieverResourceEvent(retriever_resources=[], context=context_value_variable.value)
+702:            elif isinstance(context_value_variable, ArraySegment):  # 这里做的兼容上下文中知识检索处理，我们会优化去掉上下文
+703:                context_str = ""
+705:                for item in context_value_variable.value:
+707:                        context_str += item + "\n"
+710:                            raise InvalidContextStructureError(f"Invalid context structure: {item}")
+712:                        context_str += item["content"] + "\n"
+719:                    retriever_resources=original_retriever_resource, context=context_str.strip()
+762:                    context_str = ""
+766:                            context_str += item + "\n"
+771:                            context_str += item["content"] + "\n"
+776:                    variable.knowledge_content_value = context_str.strip()
+779:                        context=context_str.strip()
+819:    def _convert_to_original_retriever_resource(self, context_dict: dict) -> RetrievalSourceMetadata | None:
+821:            "metadata" in context_dict
+822:            and "_source" in context_dict["metadata"]
+823:            and context_dict["metadata"]["_source"] == "knowledge"
+825:            metadata = context_dict.get("metadata", {})
+841:                content=context_dict.get("content"),
+890:        context: str | None = None,
+908:                    context=context,
+934:                        context="",
+946:                    context=context,
+1113:        if typed_node_data.context.enabled:
+1114:            variable_mapping["#context#"] = typed_node_data.context.variable_selector
+1171:        context: str | None,
+1190:                if context:
+1191:                    template = message.text.replace("{#context#}", context)
+1410:    model_context_tokens = model_config.model_schema.model_properties.get(ModelPropertyKey.CONTEXT_SIZE)
+1411:    if model_context_tokens:
+1429:        rest_tokens = model_context_tokens - max_tokens - curr_message_tokens
+1476:    context: str | None,
+1484:        context: Optional context string
+1499:        if context:
+1500:            template_text = template.text.replace("{#context#}", context)
+root@dify-api-84cf56596c-zbl8j:/apps/srv/instance# 

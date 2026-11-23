@@ -1,0 +1,10 @@
+{
+  "message": "you have no permission to access this space",
+  "status": 403,
+  "code": "restricted_resource",
+  "data": {
+    "localization": {
+      "i18nKey": "httpErrors.permission.notAllowedSpace"
+    }
+  }
+}

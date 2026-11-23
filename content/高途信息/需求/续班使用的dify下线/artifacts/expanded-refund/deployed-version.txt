@@ -1,0 +1,6 @@
+git rev-parse HEAD 2>/dev/null; sha256sum core/workflow/nodes/llm/node.py controllers/service_api/wraps.py controllers/service_api/dataset/hit_testing.py
+root@dify-api-84cf56596c-zbl8j:/apps/srv/instance# git rev-parse HEAD 2>/dev/null; sha256sum core/workflow/nodes/llm/node.py controllers/service_api/wraps.py controllers/service_api/dataset/hit_testing.py
+74c2cc9483c3dea3bbde7bfbb8c029c35e8248eeace5a29a6d57149d7c304f03  core/workflow/nodes/llm/node.py
+1cc05b8020fc071453af7ef558e0f4aa01e1cc8f4d2482e2b938880104f386a9  controllers/service_api/wraps.py
+1c3d6f4b12b8ee0407ad4fb81473dce46b4ee4c3c3bb5fbf67ff22736df77979  controllers/service_api/dataset/hit_testing.py
+root@dify-api-84cf56596c-zbl8j:/apps/srv/instance# 

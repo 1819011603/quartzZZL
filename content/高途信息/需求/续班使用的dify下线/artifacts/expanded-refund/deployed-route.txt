@@ -1,0 +1,14 @@
+grep -R -n "datasets/<.*retrieve\|class.*Retriev\|validate_dataset_token" controllers/service_api/dataset
+root@dify-api-84cf56596c-zbl8j:/apps/srv/instance# grep -R -n "datasets/<.*retrieve\|class.*Retriev\|validate_dataset_token" controllers/service_api/dataset
+controllers/service_api/dataset/hit_testing.py:11:@service_api_ns.route("/datasets/<uuid:dataset_id>/hit-testing", "/datasets/<uuid:dataset_id>/retrieve")
+controllers/service_api/dataset/dataset.py:17:    validate_dataset_token,
+controllers/service_api/dataset/dataset.py:639:    @validate_dataset_token
+controllers/service_api/dataset/dataset.py:664:    @validate_dataset_token
+controllers/service_api/dataset/dataset.py:692:    @validate_dataset_token
+controllers/service_api/dataset/dataset.py:722:    @validate_dataset_token
+controllers/service_api/dataset/dataset.py:749:    @validate_dataset_token
+controllers/service_api/dataset/dataset.py:778:    @validate_dataset_token
+controllers/service_api/dataset/dataset.py:806:    @validate_dataset_token
+grep: controllers/service_api/dataset/__pycache__/dataset.cpython-311.pyc: binary file matches
+grep: controllers/service_api/dataset/__pycache__/hit_testing.cpython-311.pyc: binary file matches
+root@dify-api-84cf56596c-zbl8j:/apps/srv/instance# 

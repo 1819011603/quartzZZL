@@ -1,0 +1,59 @@
+sed -n "404,459p" controllers/service_api/wraps.py
+root@dify-api-84cf56596c-zbl8j:/apps/srv/instance# sed -n "404,459p" controllers/service_api/wraps.py
+def dataset_permission_check(operation_type='query'):
+    """知识库权限校验装饰器
+
+    Args:
+        operation_type: 操作类型，可选值为 'query'（查询）或 'modify'（修改，包括创建、更新、删除）
+    """
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            # 从参数中获取 dataset_id
+            dataset_id = kwargs.get('dataset_id')
+            if not dataset_id:
+                # 尝试从路径中获取
+                from flask import request
+                dataset_id = request.view_args.get('dataset_id')
+
+            if not dataset_id:
+                raise ValueError("找不到知识库ID")
+
+            # 获取当前API token的用户
+            creator_account = get_creator_from_api_token()
+
+            # 获取知识库信息
+            dataset_id_str = str(dataset_id)
+            dataset = DatasetService.get_dataset(dataset_id_str)
+            if dataset is None:
+                raise NotFound("知识库不存在")
+
+            # 根据操作类型选择权限校验逻辑
+            if operation_type == 'modify':
+                # 修改操作：检查创建人是否一致
+                if str(dataset.created_by) != str(creator_account.id):
+                    raise Forbidden("您没有权限修改此知识库")
+            else:
+                # 查询操作：检查空间权限
+                teable_client = get_teable_client()
+                user_spaces = teable_client.get_user_role_spaces(user=creator_account)
+                space_ids = [space.space_id for space in user_spaces] if user_spaces else []
+
+                if not DatasetService.check_dataset_in_spaces(dataset_id_str, space_ids):
+                    raise Forbidden("您没有权限查询此知识库")
+
+            # 权限校验通过，执行原始函数
+            return func(*args, **kwargs)
+        return wrapper
+    return decorator
+
+
+class DatasetApiResource(Resource):
+    method_decorators = [validate_dataset_token]
+
+    def get_dataset(self, dataset_id: str, tenant_id: str) -> Dataset:
+        dataset = db.session.query(Dataset).where(Dataset.id == dataset_id, Dataset.tenant_id == tenant_id).first()
+
+        if not dataset:
+            raise NotFound("Dataset not found.")
+root@dify-api-84cf56596c-zbl8j:/apps/srv/instance# 

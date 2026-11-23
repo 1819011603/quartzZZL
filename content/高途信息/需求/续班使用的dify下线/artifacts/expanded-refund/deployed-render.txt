@@ -1,0 +1,64 @@
+sed -n "1170,1230p" core/workflow/nodes/llm/node.py
+root@dify-api-84cf56596c-zbl8j:/apps/srv/instance# sed -n "1170,1230p" core/workflow/nodes/llm/node.py
+        messages: Sequence[LLMNodeChatModelMessage],
+        context: str | None,
+        jinja2_variables: Sequence[VariableSelector],
+        variable_pool: VariablePool,
+        vision_detail_config: ImagePromptMessageContent.DETAIL,
+    ) -> Sequence[PromptMessage]:
+        prompt_messages: list[PromptMessage] = []
+        for message in messages:
+            if message.edition_type == "jinja2":
+                result_text = _render_jinja2_message(
+                    template=message.jinja2_text or "",
+                    jinja2_variables=jinja2_variables,
+                    variable_pool=variable_pool,
+                )
+                prompt_message = _combine_message_content_with_role(
+                    contents=[TextPromptMessageContent(data=result_text)], role=message.role
+                )
+                prompt_messages.append(prompt_message)
+            else:
+                # Get segment group from basic message
+                if context:
+                    template = message.text.replace("{#context#}", context)
+                else:
+                    template = message.text
+                segment_group = variable_pool.convert_template(template)
+
+                # Process segments for images
+                file_contents = []
+                for segment in segment_group.value:  # 这里做的提示词中使用文件的兼容处理
+                    if isinstance(segment, ArrayFileSegment):
+                        for file in segment.value:
+                            if file.type in {FileType.IMAGE, FileType.VIDEO, FileType.AUDIO, FileType.DOCUMENT}:
+                                file_content = file_manager.to_prompt_message_content(
+                                    file, image_detail_config=vision_detail_config
+                                )
+                                file_contents.append(file_content)
+                    elif isinstance(segment, FileSegment):
+                        file = segment.value
+                        if file.type in {FileType.IMAGE, FileType.VIDEO, FileType.AUDIO, FileType.DOCUMENT}:
+                            file_content = file_manager.to_prompt_message_content(
+                                file, image_detail_config=vision_detail_config
+                            )
+                            file_contents.append(file_content)
+
+                # Create message with text from all segments
+                plain_text = segment_group.text
+                if plain_text:
+                    prompt_message = _combine_message_content_with_role(
+                        contents=[TextPromptMessageContent(data=plain_text)], role=message.role
+                    )
+                    prompt_messages.append(prompt_message)
+
+                if file_contents:
+                    # Create message with image contents
+                    prompt_message = _combine_message_content_with_role(contents=file_contents, role=message.role)
+                    prompt_messages.append(prompt_message)
+
+        return prompt_messages
+
+    @staticmethod
+    def handle_blocking_result(
+root@dify-api-84cf56596c-zbl8j:/apps/srv/instance# 

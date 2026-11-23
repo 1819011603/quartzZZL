@@ -1,0 +1,8 @@
+head -5 pyproject.toml
+root@dify-api-75848d98bf-2ssjs:/apps/srv/instance# head -5 pyproject.toml
+[project]
+name = "dify-api"
+version = "1.10.0"
+requires-python = ">=3.11,<3.13"
+
+root@dify-api-75848d98bf-2ssjs:/apps/srv/instance# 
