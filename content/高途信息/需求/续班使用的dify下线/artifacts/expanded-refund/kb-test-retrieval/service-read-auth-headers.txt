@@ -1,0 +1,16 @@
+HTTP/1.1 200 Connection established
+
+HTTP/2 401 
+server: nginx
+date: Mon, 23 Nov 2026 17:55:21 GMT
+content-type: application/json
+www-authenticate: Bearer realm="api"
+access-control-allow-origin: *
+x-version: 1.10.0
+x-env: production
+gapm-traceid: ddfb2041-99b5-47d8-9ae6-b802abe3d7fe.0.1
+gapm-appid: dify-api
+content-length: 111
+x-agent-cookie-refreshed: 1
+x-agent-cookie-diagnosis: still-700-but-cookies-not-actually-refreshed (Cookie 未变化); backend-appid=dify-api; will-retry-next-time
+

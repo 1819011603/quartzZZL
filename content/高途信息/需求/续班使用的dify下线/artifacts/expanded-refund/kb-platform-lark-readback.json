@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"keyword\" keyword=\"知识库机制与复用Dify|call_00_ql1i01jf80olhguk1a2gk29r|公司服务账号接通|不能仅凭context|原则上不需要tools\"><h1 id=\"doxcnb3malFzCVxOOLLiRxIXBHb\">12. 知识库机制与复用Dify平台检索方案</h1><p id=\"doxcnEHYsUkhue2cb39RlZfhYCb\">部署前仍须确认公司实例Service API base/网关路由、当前版本、知识库API key及目标dataset授权/API开关、embedding和检索资源可用性。现有Console Cookie能读取分段，不等于后端具有服务凭证；本轮未创建key或发起检索、生产推理。官方API能力已确认，公司服务账号接通及返回结果对等未验证。检索可能调用embedding/rerank并产生查询记录，后续需在获准测试接入时验证。</p><p id=\"doxcncCyCs0tRY5XNyZKwQuT1Xd\">生产降退费：保留原代码提取规则与学部映射→按原query和检索参数调用平台检索→明确组装命中上下文和完整业务指令→一次网关LLM生成。原则上不需要tools。先核实旧生产context是否真正注入；如旧侧没注入，新增上下文是行为增强，不能冒称纯迁移。保留top_k、排序、阈值、去重及空命中/超时处理；不把69段全塞进prompt冒充检索。</p><pre id=\"doxcn82vKg3vIkqkfzL0WASiclg\" caption=\"&#xA;\" lang=\"json\" wrap=\"false\"><code>[<br/>  {<br/>    \"role\": \"assistant\",<br/>    \"content\": \"\",<br/>    \"tool_calls\": [<br/>      {<br/>        \"id\": \"call_00_ql1i01jf80olhguk1a2gk29r\",<br/>        \"type\": \"function\",<br/>        \"function\": {<br/>          \"name\": \"dataset_86233d1a_bddf_4a15_a229_c90b6a061c57\",<br/>          \"arguments\": \"{\\\"query\\\": \\\"孩子觉得课程节奏快、互动少，作业正确率下降，考虑退费，NPS低，作业反馈慢、个性化不足，如何干预挽单\\\"}\"<br/>        }<br/>      },<br/>      {<br/>        \"id\": \"call_01_dmh3s0u128o85e78xqjkg64h\",<br/>        \"type\": \"function\",<br/>        \"function\": {<br/>          \"name\": \"dataset_86233d1a_bddf_4a15_a229_c90b6a061c57\",<br/>          \"arguments\": \"{\\\"query\\\": \\\"数学课程体验差，直播听懂课后不会做，需要增加答疑和针对性练习，退费犹豫干预建议\\\"}\"<br/>        }<br/>      }<br/>    ]<br/>  },<br/>  {<br/>    \"role\": \"tool\",<br/>    \"content\": \"话术一\\nxx妈妈您好，我是孩子的二讲老师，刚才看到您提交了退费申请，心里还挺着急的，赶紧跟您打个电话聊聊。其实特别能理解您的顾虑——这两个月二讲老师确实调整了两次，孩子刚适应张老师的节奏，又要重新熟悉[本报告截断，原文见证据文件]\",<br/>    \"tool_call_id\": \"call_00_ql1i01jf80olhguk1a2gk29r\"<br/>  },<br/>  {<br/>    \"role\": \"tool\",<br/>    \"content\": \"序号: 26;一级分类: 课程适配类;二极分类: 分层教学缺失;建议话术: XX妈妈/爸爸，我完全理解您的顾虑。您希望孩子能在适合他水平的课程里学习，这对学习效果确实至关重要。您能具体说说孩子最近在我[本报告截断，原文见证据文件]\",<br/>    \"tool_call_id\": \"call_01_dmh3s0u128o85e78xqjkg64h\"<br/>  }<br/>]</code></pre><p id=\"doxcnIpFYTBhRQ8Ulek1cEeFN6g\">**证据边界**：这里证实“检索节点及其result绑定到LLM context”，没有生产工作流该次LiteLLM实收。两个保存的prompt_template都不含显式#context#或检索节点变量占位符。不能仅凭context.enabled=true就断言最终插入了多少话术或以哪个角色/包装插入；Dify运行时是否自动加入context、是否必须模板引用，仍须以对应版本实现或真实工作流实收确认。因此本报告不伪造生产messages。此前把context配置直接当作已观测最终注入的说法应限定为配置意图。</p></fragment>",
+      "document_id": "EWI6dsdvPokck0xy89ccJDuEnhg",
+      "revision_id": 28
+    }
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.70",
+      "latest": "1.0.100",
+      "message": "lark-cli 1.0.100 available, current 1.0.70, run: lark-cli update"
+    }
+  }
+}

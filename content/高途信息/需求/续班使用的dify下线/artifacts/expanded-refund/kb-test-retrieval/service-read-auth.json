@@ -1,0 +1,5 @@
+{
+  "code": "unauthorized",
+  "message": "Authorization header must be provided and start with 'Bearer'",
+  "status": 401
+}

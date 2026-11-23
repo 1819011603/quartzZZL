@@ -10,6 +10,12 @@ repos:
 updated: 2026-11-23
 tags: [需求]
 ---
+> 2026-11-24 机制与方案更新：Dify平台继续存在，可优先评估复用其独立检索API；旧文“必须自建/结构化过滤等价/平台无可用检索”的推断不再作为结论。生产前置检索与TEST废弃工具多轮不得混用。详见 artifacts/expanded-refund/kb-platform-reuse-plan.md。
+
+
+> **2026-11-24 最新裁决**：允许合理格式差异，以核心指令、业务数据、约束及业务作用保留为准。已有单次场景样本可接受TEST替换；素养NPS实收已补齐。历史“不完全一致”仅是字面差异记录，不代表不通过；4个知识库应用仍保留Dify。详见 [最新逐场景裁决](artifacts/expanded-scope/semantic-acceptance.md)。
+
+
 
 # 续班使用的dify下线
 
@@ -142,3 +148,7 @@ TEST 可替换场景的实际生效配置、版本和 trace 汇总见 [TEST交�
 可支持TEST单次替换试验：画像、摘要、SOP V2、修正后的分层、课程体验、NPS本模板、修正后的素养服务建议本模板。根因弱样本与旅程指令差异不能列业务验收通过。生产学部与流程准入未全验，尤其素养TEST一次不代表生产可去掉检索。
 
 详见[调用次数与证据](artifacts/expanded-scope/call-count-evidence.md)、[原材料对照](artifacts/expanded-renewal/source-scope.md)、[生产与废弃绑定](artifacts/expanded-refund/deprecated-binding.md)。本次未改路由/代码/生产；知识库保留决定已落实，未建设替代检索。
+
+
+## 知识库测试进展（2026-11-24）
+隔离Console检索→TEST模型生成已跑通，长期Service API凭证与原库权限尚缺，非正式替换；见 [实际结果与边界](artifacts/expanded-refund/kb-test-run-result.md)。

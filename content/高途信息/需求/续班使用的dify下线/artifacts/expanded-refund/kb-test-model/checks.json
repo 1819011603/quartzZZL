@@ -1,0 +1,11 @@
+{
+  "messages_exact_equal": true,
+  "retrieved_records": 4,
+  "context_chars": 2223,
+  "output_fields": [
+    "suggestion",
+    "recallSuccessRate",
+    "recallReason"
+  ],
+  "trace": "74955599-a191-4f56-92d6-f63eaaa9aca9.0.3"
+}

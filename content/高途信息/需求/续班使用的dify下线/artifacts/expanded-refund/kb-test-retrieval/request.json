@@ -1,0 +1,9 @@
+{
+  "query": "退费直接原因:家长认为答疑反馈慢，孩子课后不会做，正在犹豫是否退费 退费原因分类:服务不满意-沟通答疑及时性",
+  "retrieval_model": {
+    "search_method": "keyword_search",
+    "reranking_enable": false,
+    "top_k": 4,
+    "score_threshold_enabled": false
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "code": "forbidden",
+  "message": "Unable to verify space permissions for this dataset.",
+  "status": 403
+}

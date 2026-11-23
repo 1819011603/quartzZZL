@@ -1,0 +1,17 @@
+HTTP/1.1 200 Connection established
+
+HTTP/2 403 
+date: Mon, 23 Nov 2026 17:55:18 GMT
+content-type: application/json
+server: nginx
+access-control-allow-origin: https://os.baijia.com
+access-control-expose-headers: X-Env, X-Version
+access-control-allow-credentials: true
+x-version: 1.10.0
+x-env: production
+gapm-traceid: 136be5e2-e043-47ec-927e-609fc2e953d3.0.1
+gapm-appid: dify-api
+content-length: 99
+x-agent-cookie-refreshed: 1
+x-agent-cookie-diagnosis: still-700-but-cookies-not-actually-refreshed (Cookie 未变化); backend-appid=dify-api; will-retry-next-time
+

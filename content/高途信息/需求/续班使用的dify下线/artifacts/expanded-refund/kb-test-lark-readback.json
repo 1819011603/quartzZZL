@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"keyword\" keyword=\"74955599|长期服务账号|完整tools循环|经济|economy关键词\"><p id=\"doxcnmJQ28WwUwqTC5yvYL9tEQg\">真实入口及下游共用trace：74955599-a191-4f56-92d6-f63eaaa9aca9.0.3。TEST SLS可查到一条LiteLLM请求；实收messages与提交messages逐字段相同，证明检索内容实际进入模型。TEST TLS未命中。原始请求、响应、响应头、实收及检查在kb-test-model目录；检索请求响应与资源记录在kb-test-retrieval目录。</p><p id=\"doxcnqfV3CCdlCx9oawMjxSJffd\">完成TEST模型调用后才核查生产条件：平台公开Service API base为https://dify-open.baijia.com/dify/api/v1；只读接口无Bearer返回401，说明存在鉴权要求，不能证明已有可用凭证。当前工作区dataset API key列表为空，原生产dataset详情返回403（Unable to verify space permissions for this dataset）。因此当前只证明Console登录态可以操作隔离库，长期服务账号访问生产知识库尚未就绪。未创建共享workspace key，未修改生产权限、配置、路由，也未触发生产检索或业务推理。</p><p id=\"doxcnnBDLcVGxTQT85QghCWUDxf\">限制明确：economy关键词检索不等于生产向量/高质量检索，同query命中与排名未验证；此为本地编排+TEST现有访问器试验，不是已部署的自动检索adapter。问题建议agent的完整tools循环本轮没做，不能用前置检索成功替代该机制验证。旧生产工作流context.enabled虽为true，但无显式引用；可见源码版本未对应公司镜像，实际旧侧自动注入仍未确认（kb-context-source-check.md）。新链路显式注入已验证，不冒充旧生产context验证。</p></fragment>",
+      "document_id": "EWI6dsdvPokck0xy89ccJDuEnhg",
+      "revision_id": 29
+    }
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.70",
+      "latest": "1.0.100",
+      "message": "lark-cli 1.0.100 available, current 1.0.70, run: lark-cli update"
+    }
+  }
+}
