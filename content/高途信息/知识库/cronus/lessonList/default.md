@@ -31,3 +31,13 @@
 - [POST /clazz/lesson/parentsMeeting/list](https://qingzhou.baijia.com/#/cloud/apiDoc/search/detail?interfaceId=30646&appId=student-center&branchName=release)
 - [POST /clazz/lesson/getNewLiveUrl](https://qingzhou.baijia.com/#/cloud/apiDoc/search/detail?interfaceId=49401&appId=student-center&branchName=release)
 - [POST /clazz/lesson/getCourseUrl](https://qingzhou.baijia.com/#/cloud/apiDoc/search/detail?interfaceId=30650&appId=student-center&branchName=release)
+
+## 数据源（页面读什么表）
+
+| 层 | 对象 | 说明 |
+|---|---|---|
+| 页面直读 | ES 索引 `subclazz_parents_meeting_index`（student-serve 集群） | 大班课 tab 对应 `subclazz_lesson_index`；均由 student-data 实时同步写入（`SubclazzLessonEsSyncService`） |
+| 业务底表 | `gaotu.parents_metting`（gaotu 库 / gaotu-center-prod 集群） | 小灶课课节主表：`subclazz_number` 关联辅导班、`number`=课节编号、`type` 1家长会/2答疑/3 1V6答疑/4自习室 |
+| 业务底表 | `gaotu.parents_meeting_student`（同库） | 小灶课学员维度表 |
+
+> 源头业务方是 teacher-tool（教务后台，`com.gaotu.teacher.tool.api.manage.subclazz.feign`），student-data 经 ACL 拉取并落 ES/本地镜像；两表在数仓侧（gaotu_etl_polar、gaotu-adb-data-prod 集群）有同名表登记。2026-11-23 验证：`parents_metting` 约 276 万行、`parents_meeting_student` 约 7910 万行，均持续写入。
