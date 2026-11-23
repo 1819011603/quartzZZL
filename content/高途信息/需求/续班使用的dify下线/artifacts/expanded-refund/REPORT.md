@@ -24,3 +24,25 @@ Dify 与网关均能读出班级、学员、老师、时间、原话及体验/NP
 ## 风险结论
 
 迁移主流程在 TEST 五场景均返回成功且语义字段可解析；主要风险是旧 Dify 工作流可能依赖工具/知识库/多轮上下文，而当前 compare 响应未暴露这些中间交互，需保留为未覆盖项。另有生产 10 变体未逐 app 验证、真实沟通 ID/跨班级数据未覆盖、模型输出随机性和 Dify think/网关纯 JSON 格式差异。
+
+## LiteLLM TEST 实收日志（补证）
+
+按网关响应 messageId 反查下游 TID，完整 SLS 原文保存为 `llm-full-*.log`。五条均有 LiteLLM `Chat_completion request` 与 `Response received by LiteLLM`，请求均为 `roles=[system,user]`、无 `tools` 字段、无 tool message；响应中 `tool_calls=null` 只是 OpenAI response 字段，不能证明发生工具调用。请求参数如下：
+
+| messageId | LiteLLM TID | request model | max_tokens | temperature | system/user 长度 |
+|---|---|---|---:|---:|---:|
+| c9335c5b… | bfd44413-31f5-493d-904b-e670783ff2c4.0.3 | deepseek-flash（响应重定向 deepseek-v4.1-flash） | 8192 | 未传 | 3290/302 |
+| c2512c21… | e02d7092-ee55-4e73-b731-b6f31ef2fb6e.0.3 | deepseek-flash（响应重定向 deepseek-v4.1-flash） | 8192 | 未传 | 2621/302 |
+| fa98c35e… | d2003cc1-b573-4e1c-8918-d3a4d162fe62.0.3 | deepseek-flash（响应重定向 deepseek-v4.1-flash） | 8192 | 未传 | 473/302 |
+| 419e58d2… | 81e849b4-d461-4fd0-910a-154368d68bc0.0.3 | deepseek-flash（响应重定向 deepseek-v4.1-flash） | 8192 | 未传 | 1613/302 |
+| 7dbd83e7… | 5e258635-6bba-4358-bb49-8c6017142140.0.3 | deepseek-flash（响应重定向 deepseek-v4.1-flash） | 8192 | 0.7 | 1613/302 |
+
+system prompt SHA-256 前 16 位依次为 `5e4cdf747536288a`（旅程）、`cd46c259f2fc4518`（课程体验）、`ad64c97078da1d28`（NPS）、`d0e57bd388f5dede`（降退费/素养服务，两者相同）。这确认网关实际收到应用级完整提示词；请求层没有 Dify 多轮工具调用或 tool 消息。旧侧现已按完整TID取得LiteLLM请求，逐字段对照以原始日志为依据。
+
+## 当前原始日志核对结论
+
+主Worker直接解析原始日志：降退费 `81e849b4-d461-4fd0-910a-154368d68bc0.0.3` 有两轮请求，第二轮回灌2条tool内容，长度1363/1152；新路无tools，确认检索遗漏。
+
+退费旅程 `prod-tid-cc31e065-full.log` 只有1条LiteLLM请求，无tools，system为旅程指令。此前把降退费两轮证据用于旅程的结论错误，已删除。课程体验、NPS、素养服务建议各已取得1条旧侧请求，当前样本无tools；不外推全部线上流量。
+
+旧侧完整请求已取得，不存在此前所称的已确认日志字段缺失。素养旧侧仅system，新侧system+user；精确正文与参数差异正在由原始日志独立提取，不以角色数量判断指令丢失。

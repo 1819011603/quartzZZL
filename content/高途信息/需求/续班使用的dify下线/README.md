@@ -78,6 +78,12 @@ prod `ees_data.ai_agent`（`platform_type=1`）：
 
 test 环境对应应用见 [`verify.md`](verify.md)。
 
+当前完整结论见 [迁移审查交付](artifacts/expanded-scope/review-result.md)。
+
+## 已确认的迁移阻断
+
+降退费服务建议旧路实际两轮调用话术库，迁移单次 completion 缺少检索回灌，当前非对等。证据：[检索遗漏](artifacts/expanded-refund/confirmed-retrieval-gap.json)，trace `81e849b4-d461-4fd0-910a-154368d68bc0.0.3`。其他退费场景仍在核对，不外推。
+
 ## 现在什么情况
 
 | | |
@@ -86,7 +92,9 @@ test 环境对应应用见 [`verify.md`](verify.md)。
 | 进度 | T 6/14 · R 0/0 · C 0/0 |
 | 部署泳道 | `student-data=test-gtbg-dev-1`，commit `91012878`，流水线 `1360042` |
 | 当前卡点 | 扩大场景验证进行中；需合流 LiteLLM 实收差异、学部变体与工作流处理证据，尚不能判整体对等 |
-| 最近更新 | 2026-11-23：两例实收提示词/参数差异已核对；TEST 画像/摘要共享 agent 的 thinking.disabled 已修正并复验。其余场景正在验证；详细差异见 [审查报告](artifacts/expanded-diff/report.md)，续接见 [交接](artifacts/expanded-scope/handoff.md)。 |
+| 最近更新 | 2026-11-23：两例实收提示词/参数差异已核对；TEST 画像/摘要 thinking.disabled、分层 text 格式已修正复验；SOP V2长指令逐字一致。退费逐字段实收已核对，降退费检索遗漏及模板残留正在处理；详细差异见 [审查报告](artifacts/expanded-diff/report.md)，续接见 [交接](artifacts/expanded-scope/handoff.md)。 |
+
+完整逐点状态见 [覆盖与迁移实践](artifacts/expanded-scope/coverage.md)。
 
 ## 下一步
 

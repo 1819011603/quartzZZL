@@ -1,0 +1,48 @@
+COMMAND ['git', '-C', '/private/tmp/student-data-xuban-review-20261123', 'show', 'ec295156c', '--format=fuller', '--', 'student-data-service/src/main/java/com/gaotu/student/data/domain/refundless/model/AiReasonTutoringResult.java']
+commit ec295156c85f54c3a46c8b4668fc0d4039acb8cf
+Author:     masheng <masheng@gaotu.cn>
+AuthorDate: Mon Oct 27 14:19:29 2025 +0800
+Commit:     masheng <masheng@gaotu.cn>
+CommitDate: Tue Oct 28 09:10:41 2025 +0800
+
+    feat: 退费旅程添加返回实体字段
+
+diff --git a/student-data-service/src/main/java/com/gaotu/student/data/domain/refundless/model/AiReasonTutoringResult.java b/student-data-service/src/main/java/com/gaotu/student/data/domain/refundless/model/AiReasonTutoringResult.java
+index a550d5036..91ca860eb 100644
+--- a/student-data-service/src/main/java/com/gaotu/student/data/domain/refundless/model/AiReasonTutoringResult.java
++++ b/student-data-service/src/main/java/com/gaotu/student/data/domain/refundless/model/AiReasonTutoringResult.java
+@@ -1,11 +1,11 @@
+ package com.gaotu.student.data.domain.refundless.model;
+ 
+-import java.util.List;
+-
+ import io.swagger.annotations.ApiModel;
+ import io.swagger.annotations.ApiModelProperty;
+ import lombok.Data;
+ 
++import java.util.List;
++
+ /**
+  * @author liujialiang@gaotu.cn
+  * @description 退费旅程分析
+@@ -15,9 +15,12 @@ import lombok.Data;
+ @Data
+ @ApiModel
+ public class AiReasonTutoringResult {
++
+     // 旅程总结
+     @ApiModelProperty("退费旅程总结(300字以内)")
+     private String tutoringSummary;
+     @ApiModelProperty("用户退费旅程（最多6个）")
+     private List<AiReasonTutoringItem> tutoringItems;
++    @ApiModelProperty("已解决退费原因列表")
++    private List<AiResolvedRefundReasonItem> resolvedRefundReasonList;
+ }
+
+exit=0
+
+COMMAND ['git', '-C', '/private/tmp/student-data-xuban-review-20261123', 'diff', '--stat', '3e2b681fa', '91012878', '--', 'student-data-service/src/main/java/com/gaotu/student/data/domain/refundless']
+
+exit=0
+
+ec295156c ancestor of pre-migration base 3e2b681fa exit=0

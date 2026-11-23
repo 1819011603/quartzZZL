@@ -1,0 +1,38 @@
+{
+  "id": "chatcmpl-69db3aad09c8402a9c508b5c4af293fc",
+  "created": 1795433344,
+  "model": "litellm_proxy/doubao-seed-2.0-lite",
+  "object": "chat.completion",
+  "system_fingerprint": null,
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "```\n该学员是同科目新学员，进班服务时长108天，非续班期正式课完成度仅0.32，远低于平均水平。近7天微信互动度极低，没有通话互动，未预报名，也没有任何同意续班的相关反馈，整体学习参与度差，暂无正向续班动作。\n```",
+        "role": "assistant",
+        "tool_calls": null,
+        "function_call": null,
+        "reasoning_content": "\n用户现在需要输出D分层也就是续班概率低的原因，目前已完成D层学员特征梳理，整理出的结论显示：该学员为同科目新学员，进班108天，非续班期课节完成度远低于平均，近7天互动极少，无预报名及续班反馈，参与度低暂无正向续班动作。\n\n已梳理完成的D层学员特征表述经精简核对确认，所有核心信息均匹配高权重判定指标，判定逻辑无误。\n",
+        "refusal": null,
+        "annotations": null
+      }
+    }
+  ],
+  "usage": {
+    "completion_tokens": 458,
+    "prompt_tokens": 4248,
+    "total_tokens": 4706,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 380,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cached_tokens": null
+    }
+  },
+  "service_tier": null
+}

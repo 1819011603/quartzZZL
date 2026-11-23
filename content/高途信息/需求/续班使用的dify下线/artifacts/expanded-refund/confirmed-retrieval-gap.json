@@ -1,0 +1,35 @@
+{
+  "trace": "81e849b4-d461-4fd0-910a-154368d68bc0.0.3",
+  "old_requests": [
+    {
+      "model": "deepseek/DeepSeek-R1-250528",
+      "roles": [
+        "system",
+        "user"
+      ],
+      "tools": [
+        "dataset_86233d1a_bddf_4a15_a229_c90b6a061c57"
+      ],
+      "tool_result_lengths": []
+    },
+    {
+      "model": "deepseek/DeepSeek-R1-250528",
+      "roles": [
+        "system",
+        "user",
+        "assistant",
+        "tool",
+        "tool"
+      ],
+      "tools": [
+        "dataset_86233d1a_bddf_4a15_a229_c90b6a061c57"
+      ],
+      "tool_result_lengths": [
+        1363,
+        1152
+      ]
+    }
+  ],
+  "new_request": "llm-full-419e58d2.log: system,user, no tools",
+  "conclusion": "旧路真实检索与回灌，新路缺失，非对等"
+}

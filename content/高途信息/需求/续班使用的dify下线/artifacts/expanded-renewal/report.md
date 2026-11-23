@@ -3,7 +3,7 @@
 基线91012878d，test-gtbg-dev-1，只读worktree /private/tmp/student-data-xuban-review-20261123。未改代码、Apollo或业务库。
 
 ## 结论
-画像、SOP、预测分层原因均完成非空样本双路调用和LiteLLM实收核对。分层强制JSON格式与提示词直接输出原因冲突，空/有效样本均复现，不能解释为输出随机性。需主Worker决定修正分层override或下游取值解析。
+画像、SOP、预测分层原因均完成非空样本双路调用和LiteLLM实收核对。分层强制JSON格式与提示词直接输出原因冲突，空/有效样本均复现，不能解释为输出随机性。分层已通过TEST配置修正并复验，见 tier-fix.md 与 thinking-followup.md；以下初始响应只用于说明修正依据。
 
 |场景|traceId|覆盖|
 |-|-|-|
@@ -17,7 +17,7 @@
 ## 提示词和参数
 所有三场景新路system/user正文均逐字包含于旧路user包装内；具体差异见各*-prompt.diff及received.json。旧路为一条user消息，内部用伪JSON书写system/user；新路为真正system/user消息，角色权重改变。伪JSON内部换行和引号未转义，不能严格json.loads解析。
 
-旧路均model=doubao/Doubao-1-5-pro-32k、stream=true、有user；新路model=doubao-seed-2-0-lite-260428、max_tokens=8192、stop=[]、response_format=json_object，无显式stream/user。画像新路thinking=disabled，SOP和分层未显式thinking。旧模型别名结合redirect日志判断，不能只看名字认定不同模型。未传参数也不等于不存在路由或供应商默认值。
+旧路画像/分层 model=doubao/Doubao-1-5-pro-32k；SOP model=doubao/Doubao-Seed-1-6、stream=true、有user；新路model=doubao-seed-2-0-lite-260428、max_tokens=8192、stop=[]、response_format=json_object，无显式stream/user。画像新路thinking=disabled，SOP和分层未显式thinking。旧模型别名结合redirect日志判断，不能只看名字认定不同模型。未传参数也不等于不存在路由或供应商默认值。
 
 ## 结构、语义与下游风险
 画像两路均返回renewalInterest/renewalResistance/portraitSummary，识别物理学习困难、满意度7/7/8、续班仍有疑虑。单次措辞与摘要侧重不同，未证明质量统计相等。

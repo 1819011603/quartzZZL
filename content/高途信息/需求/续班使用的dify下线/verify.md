@@ -279,7 +279,25 @@ Dify 的知识库检索必须保留；其他应用的工具、工作流、参数
 ## 当前新增缺口与处置（扩大验证）
 
 - PROD DMS 实查 `ai_application.gateway_core_prompt` 返回 0 行，当前缺列；发布前必须先完成 DDL，不能靠迁移开关关闭规避。证据：[生产表结构查询](artifacts/expanded-scope/prod-ddl-check.txt)。本次生产只读。
-- 画像、SOP compare、分层有效样本已取 LiteLLM 双路请求，见 [续班报告](artifacts/expanded-renewal/report.md)。分层被强制 JSON 与直接原因文本契约冲突，空/有效样本均复现，TEST 配置修正及同入口复验进行中，尚不能写已修好。
-- SOP 真正业务入口 V2 与 compare 消息结构不同，正在补验；compare 不算真实业务入口通过。
-- 退费五场景已有双路响应，但 LiteLLM 实收请求与工具执行证据尚未补齐；不能用 code=0 或 answer 中工具措辞判断等价或实际调用工具。
+- 画像、SOP compare、分层有效样本已取 LiteLLM 双路请求，见 [续班报告](artifacts/expanded-renewal/report.md)。分层被强制 JSON 与直接原因文本契约冲突，空/有效样本均复现，TEST 格式配置已修正并同入口复验，见 [分层修正](artifacts/expanded-renewal/tier-fix.md)：trace `dabc87b7-0a58-4682-ae04-e6cfa2b3224f.0.3`，releaseKey `20261123192847-188a49b33afd47bc`。实收 text，返回原因文本，messages 与修正前相同；未触发 MQ/业务落库。
+- SOP V2 已用真实历史 fixture 双路重放：13,647 字单 user 逐字一致，两侧10项SOP；见 [V2报告](artifacts/expanded-renewal/sop-real-entry.md)。旧 Seed-1.6 与新侧均有 reasoning，不套普通 compare 的1.5别名结论。未覆盖外围部门选择、知识表实时读取、去重和档案写回。
+- 退费五场景双侧LiteLLM请求已取得。降退费trace 81e849b4-d461-4fd0-910a-154368d68bc0.0.3真实两轮dataset检索回灌，新侧遗漏；旅程原始日志无tools，不采纳子报告误用的降退费证据。精确差异与最小处理方案仍在合流。
 - 静态风险适用性见 [核对报告](artifacts/expanded-diff/risk-applicability.md)：当前未发现 stream=true、TEST 缺列或六退费提示词为空，不据潜在风险盲改代码。
+
+## 分层最终TEST参数
+
+agent262172718139452416保留response_format=text，并补thinking.disabled；发布releaseKey `20261123193207-188aa6ecfba69670`。同有效样本复验trace `7a05052d-9094-4a00-aa88-bf44dcf0eb61.0.3`：实收disabled，stop，无reasoning_content，reasoning_tokens=null。其余agent完整map回读未变。证据：[思考参数复验](artifacts/expanded-renewal/thinking-followup.md)。未触发业务MQ或原因落库。
+
+SOP普通compare及V2旧路均为Seed-1.6且有推理，本次未改SOP配置；原“旧路均1.5”已纠正。
+
+## 退费精确输入差异
+
+[五场景逐字段对照](artifacts/expanded-refund/report-exact.md)已按相同完整TID配对，旧/新轮次分别1/1、1/1、1/1、2/1、1/1。前四例业务user302字相等；素养业务正文在旧system中，迁移到新user，不能误判旧路缺数据。
+
+- 旅程新指令要求已解决退费原因字段；该字段在2025年提交ec295156c已存在，refundless本次diff为空。保留既有字段，不修改历史保存逻辑；明确当前旧Dify与新模板并非完全相同。见 [契约归属](artifacts/expanded-renewal/journey-contract.md)。
+- 课程体验/NPS实质指令保留，去掉旧标签并提升到真实system，角色语义有变。
+- 降退费确认漏dataset检索；新侧另有Dify模板残留。
+- 素养旧单system、新system+user，温度均0.7；未见检索工具，亦有模板残留。
+- 降退费与素养的{{#sys.query#}}未展开已在LiteLLM实收确认，TEST提示词已最小修正并同输入复验；见 [模板修正](artifacts/expanded-refund/template-fix.md)，不代表检索遗漏解决。
+
+当前汇总以 [审查交付](artifacts/expanded-scope/review-result.md) 为准；两行测试提示词已独立回读，最终trace为25046ce3-eb13-43e3-88ae-78859fd34e33.0.3及cd3eed1b-00db-4c9d-bdd4-a4cf7ad22c33.0.3。

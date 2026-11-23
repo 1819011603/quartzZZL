@@ -15,18 +15,27 @@ TEST仅agent255107338300556288的params补thinking.disabled，已发布回读，
 - 已完成独立审查见expanded-diff/report.md：续班拆出flat后system466/user1493字逐字一致，实际角色由单user变system+user；退费组合system3280→3272字，旧标签去除、长指令及输出约束提升至真实system。逐行diff/参数表均保存。
 - 两例响应存在共有风险：续班两侧写多个用户，违背提示词；退费无分类清单的弱样本旧category=1-1、新=1-11，不能算业务枚举通过。不能归因迁移，也不能继续称整体质量通过。
 
-## 子任务（保留复用，勿重复创建）
-- W1-073b38：运行中，负责用户画像-test/服务SOP分析/预测分层原因，双路实收/响应/有效样本，写artifacts/expanded-renewal/。已见trace e3197197-27eb-4b23-8b1e-2f8b83d16ff5.0.3查询进展，尚无最终报告。
-- W1-d759ca：运行中，负责退费旅程/体验/NPS/降退费/素养服务建议，写artifacts/expanded-refund/，正执行/tmp/run_refund_compare.py。已要求核对学部变体映射，不得把6个TEST等同生产10个。
-- W1-d5f701：完成且可复用，精确两例diff及11文件只读审查。报告已读采用；result=/Users/gaotu/.local/feishu-bot/logs/managed/subagents/W1-d5f701/result-1.json。
-子任务不改公共Apollo/代码/README/verify；主Worker负责必要修正与整合。
+## 当前续接状态（本轮更新）
 
-## 待做与合流点
-1. 接收两条运行验证报告，按实际完成/失败/未覆盖逐场景覆盖表；不足有效样本或学部模板差异要定向补，不能空数据算通过。
-2. 独立审查风险需核实适用性：extraParams允许stream=true但客户端解析JSON；显式prompt重载不加gatewayCorePrompt；新列DDL无条件依赖；空gatewayCorePrompt回退标签；compare两次动态取数可能不冻结。它们当前是静态风险，修代码前必须真实运行证据。
-3. 我已查到RefundReasoningService.java:214调用syncRequestTask(traceToken, command, Maps.newHashMap(), gson.toJson(context))；第四参数是extraInfo，不是显式prompt，勿误判为缺system的重载。需继续核对调用图。
-4. 基于场景报告判断具体缺陷再最小改动/同入口复验；保留共有质量风险、不擅自扩大业务规则。
-5. 更新README/verify/tasks的当前结论（原文件有多轮互相覆盖的陈旧表述，应收敛），明确可迁/不可直接迁/未覆盖与适用最佳实践。勿将提供商HTTP缺观测用作LiteLLM层不能对比借口。
+- 画像/摘要thinking.disabled已有复验；分层已修response_format=text及thinking.disabled，最终releaseKey 20261123193207-188aa6ecfba69670，trace 7a05052d-9094-4a00-aa88-bf44dcf0eb61.0.3。详见expanded-renewal/tier-fix.md、thinking-followup.md。没有代码提交/生产修改。
+- SOP普通compare和真实V2旧模型均Seed-1.6，两侧都有reasoning，不改thinking。原report“旧路均1.5”已纠正。V2 13647字符单user逐字一致，10项SOP；不覆盖generate外围业务，详见sop-real-entry.md。
+- PROD DMS SHOW COLUMNS查gateway_core_prompt返回0行，发布前必须加列，本次生产只读。证据prod-ddl-check.txt。
+- README/tasks/verify已纠正整体无损与旧部署结论，覆盖/实践见coverage.md。归档审计无ERROR，仍有篇幅/长行WARN。
 
-## 在途操作
-无主Worker后台构建或业务请求；两子Agent仍运行且各自管理业务compare/日志。未发停止，不取消其工作。此次按owner上下文80%指令交接，不是任务完成。
+## 在途与剩余
+
+- W1-d759ca：继续退费5场景LiteLLM实收。已由messageId找回trace并保存TEST llm-full日志；c9335c5b恰100条需聚焦查询避免截断。继续查PROD旧侧全部轮次/tools/tool_calls及学部NPS变体，不以answer工具措辞断言执行。勿重复成功业务调用。
+- W1-073b38：续班学部变体核对，当前配置/模板对照与TEST代表边界；此前SOP与分层验证无需重做。
+- W1-d5f701：已完成thinking后续修正，无在途写操作。可复用但勿重派既有检查。
+
+合流剩余报告，按实际差异处理确证问题并复验；完整覆盖表与风险文档尚未最终收敛。不能标整体对等，也不能因子任务仍在工作而丢弃它们的产物。
+
+## 最新增量（继续前优先采用）
+
+退费精确日志报告为expanded-refund/report-exact.md：仅降退费81e两轮dataset工具，旅程无tools。旧报告错误已纠正；五场景完整旧请求均已取得，不再有“旧请求日志缺失”阻塞。旅程有新增resolvedRefundReasonList要求，正在核实历史归属。
+
+在途：W1-d5f701负责TEST降退费/素养两应用gateway_core_prompt残留{{#sys.query#}}最小修正和复验，唯一TEST提示词写负责人；W1-073b38只读核实旅程新增字段归属；W1-d759ca只读Dify dataset数据及检索规则可得性。检索遗漏尚未修复，不把模板清理当检索补齐，不将可能缺数据当已证实外部阻塞。生产不改。
+
+## 当前合流状态
+
+三个原子任务均已交付，无在途构建/业务请求/写操作。模板修正已完成，见expanded-refund/template-fix.md；dataset已完整取得69分段，Teable直读403。当前完整汇总review-result.md，不能套用上方旧在途状态。待所有者回答已提出的范围问题：本轮降退费保留Dify或继续建设独立检索。未据建议修改路由，未将迁移标完成。

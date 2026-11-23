@@ -1,0 +1,68 @@
+{
+  "1": {
+    "trace": "315c294d-dbc3-4d8f-adc6-e036ad96d1e1.0.3",
+    "roles": [
+      "user"
+    ],
+    "promptEqual": true,
+    "chars": 13647,
+    "params": {
+      "model": "doubao/Doubao-Seed-1-6",
+      "stream": true,
+      "user": "aad12f3c-2c87-4a43-b0cd-53112cf6d22a"
+    },
+    "usage": [
+      {
+        "completion_tokens": 2717,
+        "prompt_tokens": 7646,
+        "total_tokens": 10363,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 1764,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": null
+        },
+        "cost": 0.0137424
+      }
+    ],
+    "sopItems": 10
+  },
+  "2": {
+    "trace": "2b757fa1-ac59-4cbd-aac5-1260f6bcba8a.0.3",
+    "roles": [
+      "user"
+    ],
+    "promptEqual": true,
+    "chars": 13647,
+    "params": {
+      "response_format": {
+        "type": "json_object"
+      },
+      "stop": [],
+      "max_tokens": 8192,
+      "model": "doubao-seed-2-0-lite-260428"
+    },
+    "usage": [
+      {
+        "completion_tokens": 2782,
+        "prompt_tokens": 7777,
+        "total_tokens": 10559,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 1896,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": null
+        }
+      }
+    ],
+    "sopItems": 10
+  }
+}
