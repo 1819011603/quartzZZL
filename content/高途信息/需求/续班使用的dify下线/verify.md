@@ -2,7 +2,15 @@
 title: 续班使用的dify下线 · 验证手册
 tags: [需求, 验证]
 ---
-## 当前实收结果（56b53f3c5，2026-11-24）
+## 旅程严格对齐最终结果（2026-11-24）
+
+最新要求覆盖“旅程保留增强system例外”：仅TEST应用255733517892204544的gateway_core_prompt从2482改2150字，生成器追加换行后与旧实收2151字system相等。新trace `b83e29de-f629-4a5e-b864-588da89e26b4.0.3` 的完整messages、system、user均逐字相等，业务answer等于下游最终content，finish_reason=stop。其余七例及SOP证据复用，八TEST场景现均完整messages相等。
+
+这是新网关链路配置数据修正，不是回切旧Dify应用：同trace GAPM有student-data outbound `/v1/chat/completions`，event为`litellm_proxy/deepseek-v4.1-flash`，与LiteLLM实收相互印证。代码仍56b53f3c5，无新commit或部署，未改路由/其他应用。移除的是该TEST提示词的resolved增强要求；旅程最终DTO未保存或强校验该字段，另一沟通分析链同名字段未改。
+
+证据：[严格断言](artifacts/comparison/format-runs/56b53f3c5-journey-strict/旅程/strict-assertions.json)、[新链路证据](artifacts/comparison/format-runs/56b53f3c5-journey-strict/旅程/new-chain-evidence.json)、[契约影响](artifacts/comparison/journey-strict-impact.md)。13正式应用无新增格式类别，但4个学部实例未独立实收；不将八TEST样本称为全部生产验证。四知识库继续Dify，无生产修改。
+
+## 前一轮实收记录（56b53f3c5；旅程例外已被上方严格结果覆盖）
 
 TEST/test-gtbg-dev-1流水线1361114已部署UP，八场景新侧调用及LiteLLM实收核验完成：七例完整messages逐字相等；旅程user逐字相等，system恰等当前2482字模板加换行，保留resolvedRefundReasonList增强，与历史旧模板不同，不称完全相等。SOP V2复用既有完整输入一致证据。八业务answer均逐字等于下游最终content且stop；原9项model/platform/params覆盖完全未变。
 
@@ -340,7 +348,7 @@ SOP普通compare及V2旧路均为Seed-1.6且有推理，本次未改SOP配置；
 
 最终7个网关覆盖条目覆盖8类场景，配置发布及trace见 [TEST交付](artifacts/expanded-scope/test-replacement-delivery.md)。这代表测试环境生效，不代表生产13个应用全部通过。
 
-## 当前格式裁决与回读证据
+## 前轮格式裁决与回读证据（旅程以文首严格对齐结果为准）
 
 56b53f3c5已部署UP，八TEST场景实收完成：画像、摘要、分层、根因、课程体验、精品NPS、素养NPS完整messages逐字相等；旅程user逐字相等，system保留当前增强模板，具体差异完整列在原表。SOP V2复用既有输入相等证据。素养NPS已有本轮双侧基准/新侧实收，早期“无双侧实收”判断已被后续证据覆盖。
 

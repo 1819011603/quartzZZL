@@ -1,0 +1,15 @@
+{
+  "trace": "b83e29de-f629-4a5e-b864-588da89e26b4.0.3",
+  "gateway_event": "litellm_proxy/deepseek-v4.1-flash",
+  "outbound_path": "/v1/chat/completions",
+  "log_evidence": [
+    {
+      "service": "arch-gapm-alarm-service",
+      "message": "2026-11-24 13:13:06.089 INFO  [AggregateStatCache:52][consumer-0-C-1]  - [TID: ] SpanStat聚合统计结束: stat:SpanStatDTO(type=slow, key=student-data___http_call___/v1/chat/completions___4T, count=1, hour=13, minute=12, traceId=b83e29de-f629-4a5e-b864-588da89e26b4.0.3, upstreamServiceName=), type: slow, lastCount: SpanStatValueDTO(count=1, traceId=b83e29de-f629-4a5e-b864-588da89e26b4.0.3, upstreamServiceName=), currCount: SpanStatValueDTO(count=1, traceId=b83e29de-f629-4a5e-b864-588da89e26b4.0.3, upstreamServiceName=)"
+    },
+    {
+      "service": "arch-gapm-alarm-service",
+      "message": "2026-11-24 13:13:06.014 INFO  [GapmKafkaProducer:17][scheduling-1]  - [TID: ] topic:gapm_alarm_stat_dev,  partitionKey:student-data___http_call___/v1/chat/completions, msg:{\"type\":\"slow\",\"key\":\"student-data___http_call___/v1/chat/completions___4T\",\"count\":\"1\",\"hour\":13,\"minute\":12,\"traceId\":\"b83e29de-f629-4a5e-b864-588da89e26b4.0.3\",\"upstreamServiceName\":\"\"}"
+    }
+  ]
+}

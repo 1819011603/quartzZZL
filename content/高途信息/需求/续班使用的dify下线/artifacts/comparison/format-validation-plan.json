@@ -76,14 +76,15 @@
     {
       "name": "旅程",
       "old_trace": "bfd44413-31f5-493d-904b-e670783ff2c4.0.3",
-      "status": "ready",
-      "warnings": [
-        "旧TEST系统模板落后生产2482字模板；保留resolved字段/已解决退费原因，不为字面相等删除；格式与模板冲突分档报告"
-      ],
+      "status": "verified_strict_messages_equal",
+      "warnings": [],
       "old_messages": "format-samples/旅程-old-messages.json",
       "old_messages_source": "pairs.json sides[0].request.messages (historical actual LiteLLM)",
       "input_source": "/tmp/run_refund_compare.py literal q and context (copied, script not executed)",
-      "request": "format-samples/旅程-quick-request.json"
+      "request": "format-samples/旅程-quick-request.json",
+      "latest_trace": "b83e29de-f629-4a5e-b864-588da89e26b4.0.3",
+      "latest_evidence": "format-runs/56b53f3c5-journey-strict/旅程/strict-assertions.json",
+      "note": "TEST提示词数据修正，system/user均对齐旧实收；新网关执行，非回切；无新commit部署。"
     },
     {
       "name": "课程体验",

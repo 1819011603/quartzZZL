@@ -1,0 +1,12 @@
+{
+  "messages_exact": true,
+  "system_exact": true,
+  "user_exact": true,
+  "gateway_event": "litellm_proxy/deepseek-v4.1-flash",
+  "answer_equals_content": true,
+  "finish_reason": "stop",
+  "trace": "b83e29de-f629-4a5e-b864-588da89e26b4.0.3",
+  "commit": "56b53f3c5",
+  "env": "test-gtbg-dev-1",
+  "config_application": "255733517892204544"
+}

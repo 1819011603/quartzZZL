@@ -7,7 +7,15 @@ tags: [需求, 任务]
 
 > 状态：`待办` `进行中` `已完成` `阻塞` `已取消`
 
-## 当前实收结果（56b53f3c5，2026-11-24）
+## 旅程严格对齐最终结果（2026-11-24）
+
+最新要求覆盖“旅程保留增强system例外”：仅TEST应用255733517892204544的gateway_core_prompt从2482改2150字，生成器追加换行后与旧实收2151字system相等。新trace `b83e29de-f629-4a5e-b864-588da89e26b4.0.3` 的完整messages、system、user均逐字相等，业务answer等于下游最终content，finish_reason=stop。其余七例及SOP证据复用，八TEST场景现均完整messages相等。
+
+这是新网关链路配置数据修正，不是回切旧Dify应用：同trace GAPM有student-data outbound `/v1/chat/completions`，event为`litellm_proxy/deepseek-v4.1-flash`，与LiteLLM实收相互印证。代码仍56b53f3c5，无新commit或部署，未改路由/其他应用。移除的是该TEST提示词的resolved增强要求；旅程最终DTO未保存或强校验该字段，另一沟通分析链同名字段未改。
+
+证据：[严格断言](artifacts/comparison/format-runs/56b53f3c5-journey-strict/旅程/strict-assertions.json)、[新链路证据](artifacts/comparison/format-runs/56b53f3c5-journey-strict/旅程/new-chain-evidence.json)、[契约影响](artifacts/comparison/journey-strict-impact.md)。13正式应用无新增格式类别，但4个学部实例未独立实收；不将八TEST样本称为全部生产验证。四知识库继续Dify，无生产修改。
+
+## 前一轮实收记录（56b53f3c5；旅程例外已被上方严格结果覆盖）
 
 TEST/test-gtbg-dev-1流水线1361114已部署UP，八场景新侧调用及LiteLLM实收核验完成：七例完整messages逐字相等；旅程user逐字相等，system恰等当前2482字模板加换行，保留resolvedRefundReasonList增强，与历史旧模板不同，不称完全相等。SOP V2复用既有完整输入一致证据。八业务answer均逐字等于下游最终content且stop；原9项model/platform/params覆盖完全未变。
 
@@ -38,7 +46,7 @@ TEST/test-gtbg-dev-1流水线1361114已部署UP，八场景新侧调用及LiteLL
 | T-02 | 定切换粒度与测试环境首个试点应用 | 已完成 | — | 粒度 `ai_agent`；试点 `用户画像/沟通摘要-test`(255107338300556288)；复用 `LlmGatewayAccessor` |
 | T-03 | Apollo 新增按应用链路开关并落地（命中走 LLM 网关 `gps-ai`） | 已完成 | — | 现为 `ai.agent.accessor.override.map`（`{name,platformType,model,params}`）+ `AiApplicationExecutor` 接入（commit `f0c58aaf`）；TEST Apollo 已发布 |
 | T-04 | 测试环境切一个试点应用并验证功能 | 已完成 | — | 试点 `沟通摘要-test`：开关开=网关/关=Dify、模型=按应用指定、`params` 生效，均实测通过 |
-| T-05 | 全量切换剩余续班 + 退费 Dify 应用并逐个验证 | 进行中 | — | 历史TEST样本保留；56b53f3c5已部署UP并完成八TEST实收：七例完整相等，旅程user相等/system保留增强版本差异，SOP复用。4知识库保留Dify；13项按对应旧格式验收，不能以语义近似收尾 |
+| T-05 | 全量切换剩余续班 + 退费 Dify 应用并逐个验证 | 进行中 | — | 历史TEST样本保留；56b53f3c5已部署UP并完成八TEST实收：八例完整messages相等（旅程已补严格system对齐），SOP复用。4知识库保留Dify；13项按对应旧格式验收，不能以语义近似收尾 |
 | T-06 | 代码切换：收口 / 移除 Dify 路径 | 待办 | T-05 | 功能替换稳定后再做 |
 | T-07 | 每应用模型一一对应：按应用配 `model`/`params` + 网关加路由 | 已完成 | — | 映射全定：Doubao 旧系列→`doubao-seed-2-0-lite-260428`、R1→`deepseek-v4.1-flash-1017`；gps-ai test 加 2 条路由（37268/37270）；prod 路由已提工单 5546/5547 |
 | T-08 | 退费提示词从 Dify 迁到 student-data（新链路用） | 已完成 | — | **test 已迁并复验**；承载列为 `ai_application.gateway_core_prompt`，prod 待迁 |
