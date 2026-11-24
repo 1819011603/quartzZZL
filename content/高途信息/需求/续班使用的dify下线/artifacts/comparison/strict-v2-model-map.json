@@ -1,0 +1,717 @@
+{
+  "read_at": "2026-11-24T14:18:15.598466",
+  "control": {
+    "prod": {
+      "source": "GET https://tech.baijia.com/llm-gateway/admin/config/all?env=prod",
+      "version": 35941,
+      "models": [
+        {
+          "modelCode": "deepseek/DeepSeek-R1-250528",
+          "deleted": false,
+          "redirectToModelCode": "deepseek-flash",
+          "deployments": [
+            {
+              "id": "2183",
+              "modelParam": "litellm_proxy/deepseek-v4-flash",
+              "mode": "chat",
+              "supplier": "Tencent Cloud",
+              "order": 0,
+              "weight": 100,
+              "defaultParams": {
+                "thinking": {
+                  "type": "object",
+                  "value": {
+                    "type": "enabled"
+                  },
+                  "force": false
+                }
+              }
+            }
+          ]
+        },
+        {
+          "modelCode": "doubao/Doubao-1-5-pro-32k",
+          "deleted": false,
+          "redirectToModelCode": "doubao-seed-2-0-lite-260428",
+          "redirectDefaultParams": {
+            "thinking": {
+              "type": "object",
+              "value": {
+                "type": "disabled"
+              },
+              "force": true
+            }
+          },
+          "deployments": [
+            {
+              "id": "1249",
+              "modelParam": "volcengine/ep-20250219161821-75rs8",
+              "mode": "chat",
+              "supplier": "Volcano Engine",
+              "order": 1,
+              "weight": 50,
+              "defaultParams": {}
+            },
+            {
+              "id": "1984",
+              "modelParam": "litellm_proxy/doubao-1-5-pro-32k-250115",
+              "mode": "chat",
+              "supplier": "sophnet",
+              "order": 0,
+              "weight": 50,
+              "defaultParams": {}
+            }
+          ]
+        },
+        {
+          "modelCode": "doubao/Doubao-Seed-1-6",
+          "deleted": false,
+          "redirectToModelCode": "doubao-seed-2-0-lite-260428",
+          "deployments": [
+            {
+              "id": "1240",
+              "modelParam": "volcengine/ep-20250620140222-8nmsh",
+              "mode": "chat",
+              "supplier": "Volcano Engine",
+              "order": 1,
+              "weight": 40,
+              "defaultParams": {}
+            },
+            {
+              "id": "1472",
+              "modelParam": "volcengine/ep-20251219101458-pn2ff",
+              "mode": "chat",
+              "supplier": "Volcano Engine",
+              "order": 1,
+              "weight": 40,
+              "defaultParams": {}
+            },
+            {
+              "id": "1983",
+              "modelParam": "volcengine/doubao-seed-1-6-250615",
+              "mode": "chat",
+              "supplier": "sophnet",
+              "order": 0,
+              "weight": 20,
+              "defaultParams": {}
+            }
+          ]
+        },
+        {
+          "modelCode": "doubao-seed-2-0-lite-260428",
+          "deleted": false,
+          "redirectToModelCode": "",
+          "deployments": [
+            {
+              "id": "1880",
+              "modelParam": "litellm_proxy/ep-20260508155629-tkjvf",
+              "mode": "chat",
+              "supplier": "Volcano Engine",
+              "order": 2,
+              "weight": 30,
+              "defaultParams": {}
+            },
+            {
+              "id": "2257",
+              "modelParam": "litellm_proxy/ep-20260721112117-79txh",
+              "mode": "chat",
+              "supplier": "Volcano Engine",
+              "order": 2,
+              "weight": 30,
+              "defaultParams": {}
+            },
+            {
+              "id": "2258",
+              "modelParam": "litellm_proxy/ep-20260721112145-4sdqz",
+              "mode": "chat",
+              "supplier": "Volcano Engine",
+              "order": 2,
+              "weight": 30,
+              "defaultParams": {}
+            },
+            {
+              "id": "2337",
+              "modelParam": "litellm_proxy/doubao-seed-2.0-lite",
+              "mode": "chat",
+              "supplier": "qiniu",
+              "order": 1,
+              "weight": 90,
+              "defaultParams": {}
+            }
+          ]
+        },
+        {
+          "modelCode": "deepseek-v4-flash-0731",
+          "deleted": false,
+          "redirectToModelCode": "deepseek-flash",
+          "deployments": [
+            {
+              "id": "2338",
+              "modelParam": "litellm_proxy/deepseek-v4-flash-202605",
+              "mode": "chat",
+              "supplier": "Tencent Cloud",
+              "order": 1,
+              "weight": 100,
+              "defaultParams": {}
+            },
+            {
+              "id": "2749",
+              "modelParam": "litellm_proxy/deepseek-v4.1-flash",
+              "mode": "chat",
+              "supplier": "Tencent Cloud",
+              "order": 0,
+              "weight": 100,
+              "defaultParams": {}
+            }
+          ]
+        },
+        {
+          "modelCode": "deepseek-flash",
+          "deleted": false,
+          "redirectToModelCode": "",
+          "deployments": [
+            {
+              "id": "2750",
+              "modelParam": "litellm_proxy/deepseek-v4.1-flash",
+              "mode": "chat",
+              "supplier": "Tencent Cloud",
+              "order": 0,
+              "weight": 100,
+              "defaultParams": {}
+            },
+            {
+              "id": "2920",
+              "modelParam": "litellm_proxy/deepseek/deepseek-flash",
+              "mode": "chat",
+              "supplier": "Tencent Cloud",
+              "order": 1,
+              "weight": 100,
+              "defaultParams": {}
+            },
+            {
+              "id": "2921",
+              "modelParam": "litellm_proxy/ep_wuxzxwds4_ds-v4-1-flash",
+              "mode": "chat",
+              "supplier": "Baidu Cloud",
+              "order": 0,
+              "weight": 30,
+              "defaultParams": {}
+            }
+          ]
+        }
+      ],
+      "callers": [
+        {
+          "caller": "gps-ai",
+          "status": "normal",
+          "nid": "baijia.gt.jiaoyan.ees-be.student-data-gps",
+          "routes": [
+            {
+              "modelCode": "doubao-seed-2-0-lite-260428",
+              "defaultParams": {},
+              "timeout": 600,
+              "numRetries": 1
+            },
+            {
+              "modelCode": "deepseek-v4-flash-0731",
+              "defaultParams": {
+                "response_format": {
+                  "type": "object",
+                  "value": {
+                    "type": "json_object"
+                  },
+                  "force": false
+                }
+              },
+              "timeout": 600,
+              "numRetries": 1
+            }
+          ]
+        },
+        {
+          "caller": "caller_0167",
+          "status": "normal",
+          "nid": "baijia.base-tech.ai.teable.dify-api",
+          "routes": [
+            {
+              "modelCode": "doubao/Doubao-Seed-1-6",
+              "timeout": 600,
+              "numRetries": 2
+            },
+            {
+              "modelCode": "doubao/Doubao-1-5-pro-32k",
+              "timeout": 600,
+              "numRetries": 2
+            },
+            {
+              "modelCode": "deepseek/DeepSeek-R1-250528",
+              "timeout": 600,
+              "numRetries": 2
+            }
+          ]
+        }
+      ]
+    },
+    "test": {
+      "source": "GET https://tech.baijia.com/llm-gateway/admin/config/all?env=test",
+      "version": 35943,
+      "models": [
+        {
+          "modelCode": "deepseek/DeepSeek-R1-250528",
+          "deleted": false,
+          "redirectToModelCode": "deepseek-flash",
+          "deployments": [
+            {
+              "id": "2183",
+              "modelParam": "litellm_proxy/deepseek-v4-flash",
+              "mode": "chat",
+              "supplier": "Tencent Cloud",
+              "order": 0,
+              "weight": 100,
+              "defaultParams": {
+                "thinking": {
+                  "type": "object",
+                  "value": {
+                    "type": "enabled"
+                  },
+                  "force": false
+                }
+              }
+            }
+          ]
+        },
+        {
+          "modelCode": "doubao/Doubao-1-5-pro-32k",
+          "deleted": false,
+          "redirectToModelCode": "doubao-seed-2-0-lite-260428",
+          "redirectDefaultParams": {
+            "thinking": {
+              "type": "object",
+              "value": {
+                "type": "disabled"
+              },
+              "force": true
+            }
+          },
+          "deployments": [
+            {
+              "id": "1249",
+              "modelParam": "volcengine/ep-20250219161821-75rs8",
+              "mode": "chat",
+              "supplier": "Volcano Engine",
+              "order": 1,
+              "weight": 50,
+              "defaultParams": {}
+            },
+            {
+              "id": "1984",
+              "modelParam": "litellm_proxy/doubao-1-5-pro-32k-250115",
+              "mode": "chat",
+              "supplier": "sophnet",
+              "order": 0,
+              "weight": 50,
+              "defaultParams": {}
+            }
+          ]
+        },
+        {
+          "modelCode": "doubao/Doubao-Seed-1-6",
+          "deleted": false,
+          "redirectToModelCode": "doubao-seed-2-0-lite-260428",
+          "deployments": [
+            {
+              "id": "1240",
+              "modelParam": "volcengine/ep-20250620140222-8nmsh",
+              "mode": "chat",
+              "supplier": "Volcano Engine",
+              "order": 1,
+              "weight": 40,
+              "defaultParams": {}
+            },
+            {
+              "id": "1472",
+              "modelParam": "volcengine/ep-20251219101458-pn2ff",
+              "mode": "chat",
+              "supplier": "Volcano Engine",
+              "order": 1,
+              "weight": 40,
+              "defaultParams": {}
+            },
+            {
+              "id": "1983",
+              "modelParam": "volcengine/doubao-seed-1-6-250615",
+              "mode": "chat",
+              "supplier": "sophnet",
+              "order": 0,
+              "weight": 20,
+              "defaultParams": {}
+            }
+          ]
+        },
+        {
+          "modelCode": "doubao-seed-2-0-lite-260428",
+          "deleted": false,
+          "redirectToModelCode": "",
+          "deployments": [
+            {
+              "id": "1880",
+              "modelParam": "litellm_proxy/ep-20260508155629-tkjvf",
+              "mode": "chat",
+              "supplier": "Volcano Engine",
+              "order": 2,
+              "weight": 30,
+              "defaultParams": {}
+            },
+            {
+              "id": "2257",
+              "modelParam": "litellm_proxy/ep-20260721112117-79txh",
+              "mode": "chat",
+              "supplier": "Volcano Engine",
+              "order": 2,
+              "weight": 30,
+              "defaultParams": {}
+            },
+            {
+              "id": "2258",
+              "modelParam": "litellm_proxy/ep-20260721112145-4sdqz",
+              "mode": "chat",
+              "supplier": "Volcano Engine",
+              "order": 2,
+              "weight": 30,
+              "defaultParams": {}
+            },
+            {
+              "id": "2337",
+              "modelParam": "litellm_proxy/doubao-seed-2.0-lite",
+              "mode": "chat",
+              "supplier": "qiniu",
+              "order": 1,
+              "weight": 90,
+              "defaultParams": {}
+            }
+          ]
+        },
+        {
+          "modelCode": "deepseek-v4-flash-0731",
+          "deleted": false,
+          "redirectToModelCode": "deepseek-flash",
+          "deployments": [
+            {
+              "id": "2338",
+              "modelParam": "litellm_proxy/deepseek-v4-flash-202605",
+              "mode": "chat",
+              "supplier": "Tencent Cloud",
+              "order": 1,
+              "weight": 100,
+              "defaultParams": {}
+            },
+            {
+              "id": "2749",
+              "modelParam": "litellm_proxy/deepseek-v4.1-flash",
+              "mode": "chat",
+              "supplier": "Tencent Cloud",
+              "order": 0,
+              "weight": 100,
+              "defaultParams": {}
+            }
+          ]
+        },
+        {
+          "modelCode": "deepseek-flash",
+          "deleted": false,
+          "redirectToModelCode": "",
+          "deployments": [
+            {
+              "id": "2750",
+              "modelParam": "litellm_proxy/deepseek-v4.1-flash",
+              "mode": "chat",
+              "supplier": "Tencent Cloud",
+              "order": 0,
+              "weight": 100,
+              "defaultParams": {}
+            },
+            {
+              "id": "2920",
+              "modelParam": "litellm_proxy/deepseek/deepseek-flash",
+              "mode": "chat",
+              "supplier": "Tencent Cloud",
+              "order": 1,
+              "weight": 100,
+              "defaultParams": {}
+            },
+            {
+              "id": "2921",
+              "modelParam": "litellm_proxy/ep_wuxzxwds4_ds-v4-1-flash",
+              "mode": "chat",
+              "supplier": "Baidu Cloud",
+              "order": 0,
+              "weight": 30,
+              "defaultParams": {}
+            }
+          ]
+        }
+      ],
+      "callers": [
+        {
+          "caller": "gps-ai",
+          "status": "normal",
+          "nid": "baijia.gt.jiaoyan.ees-be.student-data-gps",
+          "routes": [
+            {
+              "modelCode": "deepseek-flash",
+              "defaultParams": {},
+              "timeout": 600,
+              "numRetries": 1
+            },
+            {
+              "modelCode": "doubao-seed-2-0-lite-260428",
+              "defaultParams": {},
+              "timeout": 600,
+              "numRetries": 1
+            },
+            {
+              "modelCode": "deepseek-v4-flash-0731",
+              "defaultParams": {},
+              "timeout": 600,
+              "numRetries": 1
+            }
+          ]
+        },
+        {
+          "caller": "caller_0167",
+          "status": "normal",
+          "nid": "baijia.base-tech.ai.teable.dify-api",
+          "routes": [
+            {
+              "modelCode": "deepseek/DeepSeek-R1-250528",
+              "timeout": 600,
+              "numRetries": 2
+            },
+            {
+              "modelCode": "doubao/Doubao-Seed-1-6",
+              "timeout": 600,
+              "numRetries": 2
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "scene": "画像",
+      "old_trace": "2a9ff650-ba6f-4bf2-93f8-88034f864c93.0.3",
+      "expected_non_messages": {
+        "model": "doubao/Doubao-1-5-pro-32k",
+        "stream": true
+      },
+      "must_omit": [
+        "max_tokens",
+        "thinking",
+        "enable_thinking",
+        "stop"
+      ],
+      "messages_baseline": "artifacts/comparison/format-samples/画像-old-messages.json",
+      "messages_sha256": "92ccd7eae82be8960be3a208b48050426a979c7486ed9e181742e3123b9044eb",
+      "billing": "旧user不硬编码到请求；正确身份来源由主Worker核实后填x-tech-ai-user-id",
+      "response_format_exception": "owner允许业务所需json_object独立新增；非JSON分层保留text裁决"
+    },
+    {
+      "scene": "SOP V2",
+      "old_trace": "315c294d-dbc3-4d8f-adc6-e036ad96d1e1.0.3",
+      "expected_non_messages": {
+        "model": "doubao/Doubao-Seed-1-6",
+        "stream": true
+      },
+      "must_omit": [
+        "max_tokens",
+        "thinking",
+        "enable_thinking",
+        "stop"
+      ],
+      "messages_baseline": "artifacts/comparison/format-samples/SOP V2-old-messages.json",
+      "messages_sha256": "6f157f842b54812b6b252e2e48d90c1aef749aa338f6f7458e30eae2b8562bc8",
+      "billing": "旧user不硬编码到请求；正确身份来源由主Worker核实后填x-tech-ai-user-id",
+      "response_format_exception": "owner允许业务所需json_object独立新增；非JSON分层保留text裁决"
+    },
+    {
+      "scene": "分层修正后",
+      "old_trace": "3c9e6b70-e6f3-4f95-883b-14408cdafc2b.0.3",
+      "expected_non_messages": {
+        "model": "doubao/Doubao-1-5-pro-32k",
+        "stream": true
+      },
+      "must_omit": [
+        "max_tokens",
+        "thinking",
+        "enable_thinking",
+        "stop"
+      ],
+      "messages_baseline": "artifacts/comparison/format-samples/分层修正后-old-messages.json",
+      "messages_sha256": "c4f0f94f57a2f2d00f9fc26dc00b3f0fdd90cd17139825c5d73ac258bb453dc5",
+      "billing": "旧user不硬编码到请求；正确身份来源由主Worker核实后填x-tech-ai-user-id",
+      "response_format_exception": "owner允许业务所需json_object独立新增；非JSON分层保留text裁决"
+    },
+    {
+      "scene": "素养NPS",
+      "old_trace": "8c802dc4-ed69-4533-b63a-3851e20bb83d.0.3",
+      "expected_non_messages": {
+        "model": "deepseek-v4-flash-0731",
+        "stream": true,
+        "thinking": {
+          "type": "enabled"
+        }
+      },
+      "must_omit": [
+        "max_tokens",
+        "enable_thinking",
+        "stop"
+      ],
+      "messages_baseline": "artifacts/comparison/format-samples/素养NPS-old-messages.json",
+      "messages_sha256": "8f778e40eb2fc2015e69b61f241fedb12516057e93dfdc843fcdb4f906f36f3e",
+      "billing": "旧user不硬编码到请求；正确身份来源由主Worker核实后填x-tech-ai-user-id",
+      "response_format_exception": "owner允许业务所需json_object独立新增；非JSON分层保留text裁决"
+    },
+    {
+      "scene": "摘要",
+      "old_trace": "15760243-f225-4246-a103-c9565c2652ba.0.3",
+      "expected_non_messages": {
+        "model": "doubao/Doubao-1-5-pro-32k",
+        "stream": true
+      },
+      "must_omit": [
+        "max_tokens",
+        "thinking",
+        "enable_thinking",
+        "stop"
+      ],
+      "messages_baseline": "artifacts/comparison/format-samples/摘要-old-messages.json",
+      "messages_sha256": "21ca378f724557fcfd9c5460d4e33f5d1e8dd69571dca46d76e33dcc8d854293",
+      "billing": "旧user不硬编码到请求；正确身份来源由主Worker核实后填x-tech-ai-user-id",
+      "response_format_exception": "owner允许业务所需json_object独立新增；非JSON分层保留text裁决"
+    },
+    {
+      "scene": "退费根因",
+      "old_trace": "a32fe4b6-6269-4882-8d39-81c76f8ca23e.0.3",
+      "expected_non_messages": {
+        "model": "deepseek/DeepSeek-R1-250528",
+        "stream": true
+      },
+      "must_omit": [
+        "max_tokens",
+        "thinking",
+        "enable_thinking",
+        "stop"
+      ],
+      "messages_baseline": "artifacts/comparison/format-samples/退费根因-old-messages.json",
+      "messages_sha256": "339f40916c4237f435cba9f8117b0127107ff55bccc3fb92e9a7ef97d7f5f45c",
+      "billing": "旧user不硬编码到请求；正确身份来源由主Worker核实后填x-tech-ai-user-id",
+      "response_format_exception": "owner允许业务所需json_object独立新增；非JSON分层保留text裁决"
+    },
+    {
+      "scene": "旅程",
+      "old_trace": "bfd44413-31f5-493d-904b-e670783ff2c4.0.3",
+      "expected_non_messages": {
+        "model": "deepseek/DeepSeek-R1-250528",
+        "stream": true
+      },
+      "must_omit": [
+        "max_tokens",
+        "thinking",
+        "enable_thinking",
+        "stop"
+      ],
+      "messages_baseline": "artifacts/comparison/format-samples/旅程-old-messages.json",
+      "messages_sha256": "912c1bc5bb7fe14cfa1055312cb3c206dfa23d29cd26b44bb99e69a8188c6db8",
+      "billing": "旧user不硬编码到请求；正确身份来源由主Worker核实后填x-tech-ai-user-id",
+      "response_format_exception": "owner允许业务所需json_object独立新增；非JSON分层保留text裁决"
+    },
+    {
+      "scene": "课程体验",
+      "old_trace": "e02d7092-ee55-4e73-b731-b6f31ef2fb6e.0.3",
+      "expected_non_messages": {
+        "model": "deepseek/DeepSeek-R1-250528",
+        "stream": true
+      },
+      "must_omit": [
+        "max_tokens",
+        "thinking",
+        "enable_thinking",
+        "stop"
+      ],
+      "messages_baseline": "artifacts/comparison/format-samples/课程体验-old-messages.json",
+      "messages_sha256": "1fc92ad21d0c849eedd1d74d3a78e9df62ad3b2f0c7ec2dbfcb5a1644b5088d4",
+      "billing": "旧user不硬编码到请求；正确身份来源由主Worker核实后填x-tech-ai-user-id",
+      "response_format_exception": "owner允许业务所需json_object独立新增；非JSON分层保留text裁决"
+    },
+    {
+      "scene": "NPS",
+      "old_trace": "d2003cc1-b573-4e1c-8918-d3a4d162fe62.0.3",
+      "expected_non_messages": {
+        "model": "deepseek/DeepSeek-R1-250528",
+        "stream": true
+      },
+      "must_omit": [
+        "max_tokens",
+        "thinking",
+        "enable_thinking",
+        "stop"
+      ],
+      "messages_baseline": "artifacts/comparison/format-samples/NPS-old-messages.json",
+      "messages_sha256": "37790c47fcfa3a117b21b8c75bff2fd24fc08e2068ef3e9eb4be8fc03b8f74b5",
+      "billing": "旧user不硬编码到请求；正确身份来源由主Worker核实后填x-tech-ai-user-id",
+      "response_format_exception": "owner允许业务所需json_object独立新增；非JSON分层保留text裁决"
+    }
+  ],
+  "runtime_evidence": [
+    "artifacts/trace-recheck-20261123/model-redirect-evidence.json",
+    "artifacts/expanded-renewal/complete-pairs.json",
+    "artifacts/comparison/model-param-audit.json"
+  ],
+  "test_alias_status": {
+    "deepseek-v4-flash-0731": "gps-ai有明确旧别名路由",
+    "other_three": "按已查部署源码与控制面，三个旧别名被原始model授权挡住，目标路由不能替代；需要TEST gps-ai新增三个旧别名路由。素养NPS旧别名已有。"
+  },
+  "boundary": "控制面存在与无生成的路由检查，不等于新caller实际调用成功；不证明同供应商部署",
+  "mutations": false,
+  "authorization_order_verified": {
+    "pod": "litellm-69797d7f6-69rtm",
+    "ip": "10.255.161.138",
+    "env": "test",
+    "source_root": "/usr/local/lib/python3.11/site-packages/litellm",
+    "order": [
+      "proxy_server.py:3385 control_plane_api_key_auth_builder(validate_route=True, request_data=data)",
+      "auth/user_api_key_auth.py:385 admin bypass else exact route model comparison; absent ->403",
+      "proxy_server.py:3430 apply_model_redirect_routing"
+    ],
+    "caller": {
+      "caller": "gps-ai",
+      "admin": false,
+      "status": "normal",
+      "routes": [
+        "claude-opus-5-5",
+        "claude-sonnet-5-5",
+        "deepseek-flash",
+        "coding/deepseek-v4.1-flash",
+        "deepseek-v4.1-flash-1017",
+        "doubao-seed-2-0-lite-260428",
+        "deepseek-v4-flash-0731",
+        "coding/gpt-6-astra",
+        "gpt-5.2",
+        "gpt-5.5",
+        "gpt-5.6-luna",
+        "gpt-5.6-terra",
+        "gpt-5.6-sol",
+        "claude-sonnet-5"
+      ]
+    },
+    "needed_test_routes": [
+      "doubao/Doubao-1-5-pro-32k",
+      "doubao/Doubao-Seed-1-6",
+      "deepseek/DeepSeek-R1-250528"
+    ],
+    "conclusion": "按已查部署源码与控制面，三个旧别名被原始model授权挡住，目标路由不能替代；需要TEST gps-ai新增三个旧别名路由。素养NPS旧别名已有。",
+    "limits": "未触发任何生成或实际403探测；核查一个TEST pod，未验证其余副本源码一致；路由变更后仍需实际调用验证",
+    "evidence_directory": "artifacts/comparison/strict-v2-auth-evidence"
+  }
+}

@@ -1,3 +1,5 @@
+> 2026-11-24新证据纠正：当前原库86233的Console列表和详情均成功，关联空间包括spcAm3oupwKuWRMD8UV及旧spcz空间；下文403/凭据结论仅适用于当时身份和请求，不能概括当前原库不可见或所有生产token不存在。Console可见仍不等于Service API授权。详见[新事实](../comparison/kb-console-current/fact-correction.md)及[路由核查](../comparison/kb-console-route-review.md)。
+
 # 权限现场与真正TEST Service API接通
 
 2026-11-24。本轮读取PROD Pod dify-api-78886c7f97-8lhxw（10.243.8.88）和TEST Pod dify-api-84cf56596c-zbl8j（10.255.160.7）；代码根/apps/srv/instance。生产未写配置/权限/表、未检索或推理。

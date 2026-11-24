@@ -1,0 +1,56 @@
+sed -n "3368,3420p" /usr/local/lib/python3.11/site-packages/litellm/proxy/proxy_server.py
+[root@litellm-69797d7f6-69rtm instance]# sed -n "3368,3420p" /usr/local/lib/python3.11/site-packages/litellm/proxy/proxy_server.py
+        if data and "claude" in data.get("model", ""):
+            try:
+                claude_model_alias_map_str = get_apollo_config(
+                    'claude.model.alias.map.str',
+                    namespace='application',
+                    default_val='{}'
+                )
+
+                claude_model_alias_map = json.loads(claude_model_alias_map_str)
+
+                if claude_model_alias_map and claude_model_alias_map.get(data.get("model", "")):
+                    data["model"] = claude_model_alias_map.get(data.get("model", ""))
+                    verbose_proxy_logger.info("claude model alias")
+            except Exception as e:
+                verbose_proxy_logger.error(f"Error parsing claude.model.alias.map.str: {str(e)}")
+
+        api_key = request.headers.get("authorization") or ""
+
+        user_api_key_dict = await control_plane_api_key_auth_builder(
+            request=request,
+            api_key=api_key,
+            request_data=data,
+            validate_route=True,
+        )
+
+        request_body_str, request_body_size = format_request_body_for_log(data)
+        verbose_proxy_logger.info(
+            "Chat_completion request from {} received by LiteLLM (body size: {} bytes):\n{}".format(
+                user_api_key_dict.team_alias,
+                request_body_size,
+                request_body_str),
+        )
+
+        data = await add_litellm_data_to_request(
+            data=data,
+            request=request,
+            general_settings=general_settings,
+            user_api_key_dict=user_api_key_dict,
+            version=version,
+            proxy_config=proxy_config,
+        )
+
+        data["model"] = (
+            general_settings.get("completion_model", None)  # server default
+            or user_model  # model name passed via cli args
+            or model  # for azure deployments
+            or data.get("model")  # default passed in http request
+        )
+        if not data["model"]:
+            # 非 admin caller 在鉴权层(validate_route)就会被 400 拦住;admin 绕过
+            # 该检查会走到这里,原先 data["model"] 硬取值直接 KeyError → 兜底 500
+            raise ProxyException(
+                message=(
+[root@litellm-69797d7f6-69rtm instance]# 

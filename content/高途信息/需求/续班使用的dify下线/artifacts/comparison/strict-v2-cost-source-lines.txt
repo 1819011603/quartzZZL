@@ -1,0 +1,58 @@
+grep -R -n --include="*.py" "x-tech-ai-user-id\|run_user" core services controllers/service_api | head -55
+root@dify-api-78886c7f97-8lhxw:/apps/srv/instance# root@dify-api-78886c7f97-8lhxw:/apps/srv/instance# grep -R -n --include="*.py" "x-tech-ai-user-id\|run_user" core services controllers/service_api | head -55
+core/plugin/utils/converter.py:37:        run_user=getattr(g, 'run_user', None),
+core/app/entities/app_invoke_entities.py:123:    run_user: Optional[Employee] = None
+core/app/apps/agent_chat/app_generator.py:163:        # 处理 run_user 参数
+core/app/apps/agent_chat/app_generator.py:164:        run_user = self._prepare_run_user(user=user, args=args, invoke_from=invoke_from)
+core/app/apps/agent_chat/app_generator.py:165:        g.run_user = run_user
+core/app/apps/agent_chat/app_generator.py:190:            run_user=run_user,
+core/app/apps/agent_chat/app_runner.py:173:        # 注入 run_user 和 nid 到 credentials 的 extra_headers 中
+core/app/apps/agent_chat/app_runner.py:180:            run_user=application_generate_entity.run_user,
+core/app/apps/chat/app_generator.py:162:            run_user=self._prepare_run_user(user=user, args=args, invoke_from=invoke_from),
+core/app/apps/chat/app_runner.py:214:            run_user=application_generate_entity.run_user,
+core/app/apps/advanced_chat/app_generator.py:162:        # 处理 run_user 参数
+core/app/apps/advanced_chat/app_generator.py:163:        run_user = self._prepare_run_user(user=user, args=args, invoke_from=invoke_from)
+core/app/apps/advanced_chat/app_generator.py:164:        g.run_user = run_user
+core/app/apps/advanced_chat/app_generator.py:188:            run_user=run_user,
+core/app/apps/advanced_chat/app_runner.py:96:            run_user=self.application_generate_entity.run_user,
+core/app/apps/workflow/app_generator.py:161:        # 处理 run_user 参数
+core/app/apps/workflow/app_generator.py:162:        run_user = self._prepare_run_user(user=user, args=args, invoke_from=invoke_from)
+core/app/apps/workflow/app_generator.py:163:        g.run_user = run_user
+core/app/apps/workflow/app_generator.py:183:            run_user=run_user,
+core/app/apps/workflow/app_generator.py:365:            run_user=self._prepare_run_user(user=user, args=args, invoke_from=InvokeFrom.DEBUGGER) if isinstance(user, Account) else None,
+core/app/apps/workflow/app_runner.py:73:            run_user=self.application_generate_entity.run_user,
+core/app/apps/completion/app_generator.py:145:            run_user=self._prepare_run_user(user=user, args=args, invoke_from=invoke_from),
+core/app/apps/completion/app_generator.py:313:            run_user=self._prepare_run_user(user=user, args={}, invoke_from=invoke_from),
+core/app/apps/completion/app_runner.py:171:            run_user=application_generate_entity.run_user,
+core/app/apps/base_app_generator.py:210:    def _prepare_run_user(
+core/app/apps/base_app_generator.py:218:        准备 run_user 参数
+core/app/apps/base_app_generator.py:238:            # API运行，从请求体中解析 run_user 参数
+core/app/apps/base_app_generator.py:239:            run_user_data = args.get("run_user")
+core/app/apps/base_app_generator.py:240:            if run_user_data and isinstance(run_user_data, dict):
+core/app/apps/base_app_generator.py:242:                if run_user_data.get("id") or run_user_data.get("email") or run_user_data.get("name"):
+core/app/apps/base_app_generator.py:243:                    return employee_manager.build_employee_from_mapping(run_user_data, force_check=True)
+core/app/apps/base_app_generator.py:245:                    error_msg = "run_user 参数不完整, 至少包含 id、email、name 中的一个:" + json.dumps(run_user_data)
+core/app/apps/base_app_generator.py:247:            # 从工作流工具来的调用，有可能invoke_from == InvokeFrom.SERVICE_API，但是有run_user参数
+core/model_manager.py:353:        identity_keys = {"x-tech-ai-user-id", "x-tech-ai-nid"}
+core/helper/billing_helper.py:18:    run_user: Union[Employee, dict, None] = None,
+core/helper/billing_helper.py:23:    根据 billing_type 注入 run_user 和 nid 到 credentials 的 extra_headers 中
+core/helper/billing_helper.py:27:        billing_type: 计费类型，"run_user" 只传递 run_user，"nid" 只传递 nid，其他值两个都传递
+core/helper/billing_helper.py:28:        run_user: 运行用户，可以是 Employee 对象或 dict
+core/helper/billing_helper.py:40:    # 确定是否需要传递 run_user 和 nid
+core/helper/billing_helper.py:41:    should_pass_run_user = False
+core/helper/billing_helper.py:44:    if billing_type == "run_user":
+core/helper/billing_helper.py:45:        # 只传递 run_user
+core/helper/billing_helper.py:46:        should_pass_run_user = True
+core/helper/billing_helper.py:52:        should_pass_run_user = True
+core/helper/billing_helper.py:55:    # 处理 run_user
+core/helper/billing_helper.py:56:    if should_pass_run_user and run_user:
+core/helper/billing_helper.py:61:        # 提取 run_user 的 name 值
+core/helper/billing_helper.py:62:        run_user_name = None
+core/helper/billing_helper.py:63:        if isinstance(run_user, Employee):
+core/helper/billing_helper.py:65:            run_user_name = run_user.name
+core/helper/billing_helper.py:66:        elif isinstance(run_user, dict):
+core/helper/billing_helper.py:68:            run_user_name = run_user.get("name")
+core/helper/billing_helper.py:70:        # 将 run_user 的 name 添加到 extra_headers，使用 x-tech-ai-user-id 作为 key
+core/helper/billing_helper.py:71:        if run_user_name and str(run_user_name).strip():
+core/helper/billing_helper.py:72:            headers["x-tech-ai-user-id"] = str(run_user_name).strip()
+root@dify-api-78886c7f97-8lhxw:/apps/srv/instance# 

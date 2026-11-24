@@ -1,0 +1,16 @@
+{
+  "caller": "gps-ai",
+  "modelName": "doubao/Doubao-1-5-pro-32k",
+  "modelCode": "doubao/Doubao-1-5-pro-32k",
+  "timeout": 600,
+  "numRetries": 1,
+  "fallback": false,
+  "useCache": false,
+  "moderation": false,
+  "promptModeration": false,
+  "responseModeration": false,
+  "appIds": [],
+  "defaultParams": {},
+  "env": "test",
+  "applyReason": "Dify迁移旧模型名严格对齐"
+}

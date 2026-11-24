@@ -1,0 +1,29 @@
+{
+  "workflow_id": "11173315-3754-478e-83eb-d3bf162880c1",
+  "version": "2026-09-21 06:33:31.703225",
+  "nodes": [
+    {
+      "dataset_ids": [
+        "86233d1a-bddf-4a15-a229-c90b6a061c57"
+      ],
+      "desc": "",
+      "multiple_retrieval_config": {
+        "reranking_enable": false,
+        "reranking_mode": "reranking_model",
+        "reranking_model": {
+          "model": "gte-rerank-v2",
+          "provider": "langgenius/tongyi/tongyi"
+        },
+        "top_k": 4
+      },
+      "query_variable_selector": [
+        "1760511521805",
+        "refundReason"
+      ],
+      "retrieval_mode": "multiple",
+      "selected": false,
+      "title": "知识检索",
+      "type": "knowledge-retrieval"
+    }
+  ]
+}

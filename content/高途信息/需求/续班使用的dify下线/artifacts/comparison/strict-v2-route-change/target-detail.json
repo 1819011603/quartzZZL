@@ -1,0 +1,19 @@
+{
+  "data": {
+    "id": 37277,
+    "caller": "gps-ai",
+    "modelName": "DeepSeek-V4.1-Flash",
+    "modelCode": "deepseek-flash",
+    "timeout": 600,
+    "numRetries": 1,
+    "fallback": false,
+    "useCache": false,
+    "moderation": false,
+    "promptModeration": false,
+    "responseModeration": false,
+    "appIds": [],
+    "defaultParams": {}
+  },
+  "code": 200,
+  "msg": "success"
+}

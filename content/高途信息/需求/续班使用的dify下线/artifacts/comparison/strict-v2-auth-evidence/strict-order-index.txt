@@ -1,0 +1,35 @@
+grep -nE "redirect|route|permission|allowed|auth" /usr/local/lib/python3.11/site-packages/litellm/proxy/litellm_pre_call_utils.py
+[root@litellm-69797d7f6-69rtm instance]# grep -nE "redirect|route|permission|allowed|auth" /usr/local/lib/python3.11/site-packages/litellm/proxy/litellm_pre_call_utils.py
+32:            get_control_plane_caller_route_config,
+33:            get_control_plane_model_redirect_target,
+69:    # images/edits 走 router factory 路径(_ageneric_api_call_with_fallbacks),
+70:    # router 只往 kwargs["litellm_metadata"] 写 deployment/model_info;proxy 若写
+71:    # data["metadata"],router 的 setdefault 会在 **data 浅拷贝里新建 key,端点
+86:    if any(route in request.url.path for route in LITELLM_METADATA_ROUTES):
+232:        "authorization",
+507:    from litellm.proxy.proxy_server import llm_router, premium_user
+662:        "authorization", None
+675:    if user_api_key_dict.allowed_model_region is not None:
+676:        data["allowed_model_region"] = user_api_key_dict.allowed_model_region
+703:    if llm_router and llm_router.enable_tag_filtering is True:
+885:# (apply_model_redirect_routing) 也写同一个键 —— 键名保留不改是为了让所有既有读取方
+886:# (router.py:1140 / caching.py:624 / moderation_guardrail.py:2062 等) 零改动继续生效。
+895:# apply_model_redirect_routing 的改写分支；get_control_plane_model_redirect_target
+897:# None，否则会把源模型的 redirect_default_params 错误注入到未被重定向的请求上。
+898:# 只在 apply_model_redirect_routing 真正改写了 data["model"] 之后才写入。
+899:REDIRECTED_FROM_METADATA_KEY = "redirected_from_model"
+934:    条件覆盖该键，最终取到的会是中间跳的模型名，导致 caller_route 查找与催迁移口径
+957:    # 两个键都查，且 litellm_metadata 优先：读取方(限流成功回调、router、prometheus)
+968:def get_redirected_from_metadata(kwargs: dict) -> Optional[str]:
+1004:        user_api_key_dict (UserAPIKeyAuth): User API key authentication information
+1022:        route_config = get_control_plane_caller_route_config(caller, current_model)
+1023:        if not route_config or not route_config.gray:
+1026:        gray_config = route_config.gray
+1073:async def apply_model_redirect_routing(
+1082:    只要控制面给 a 声明了 redirect_to_model_code 就生效。
+1090:    litellm 侧不重复校验 —— 控制面下发的 redirect_to_model_code 只会出现在 chat 模型上。
+1102:    原始请求名写入 metadata，caller_route 查找与催迁移仍按 a 进行。
+1117:        target_model = get_control_plane_model_redirect_target(current_model)
+1137:            f"Model redirect applied: caller={getattr(user_api_key_dict, 'team_alias', None)}, "
+1144:        verbose_proxy_logger.error(f"Exception occurred during model redirect routing: {e}")
+[root@litellm-69797d7f6-69rtm instance]# 

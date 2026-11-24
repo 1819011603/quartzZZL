@@ -1,0 +1,47 @@
+sed -n "3340,3368p;3420,3434p" /usr/local/lib/python3.11/site-packages/litellm/proxy/proxy_server.py
+[root@litellm-69797d7f6-69rtm instance]# sed -n "3340,3368p;3420,3434p" /usr/local/lib/python3.11/site-packages/litellm/proxy/proxy_server.py
+    Follows the exact same API spec as `OpenAI's Chat API https://platform.openai.com/docs/api-reference/chat`
+
+    ```bash
+    curl -X POST http://localhost:4000/v1/chat/completions \
+
+    -H "Content-Type: application/json" \
+
+    -H "Authorization: Bearer sk-1234" \
+
+    -d '{
+        "model": "gpt-4o",
+        "messages": [
+            {
+                "role": "user",
+                "content": "Hello!"
+            }
+        ]
+    }'
+    ```
+
+    """
+    global general_settings, user_debug, proxy_logging_obj, llm_model_list
+
+    data = {}
+    user_api_key_dict = {}
+    try:
+        data = await _read_request_body(request=request)
+
+        if data and "claude" in data.get("model", ""):
+                message=(
+                    "Model parameter is empty or missing. Please ensure the request "
+                    "body is valid JSON and contains a non-empty 'model' field."
+                ),
+                type=ProxyErrorTypes.caller_model_access_denied,
+                param="model",
+                code=status.HTTP_400_BAD_REQUEST,
+            )
+
+        data = await apply_model_gray_routing(data=data, user_api_key_dict=user_api_key_dict, request=request)
+        data = await apply_model_redirect_routing(data=data, user_api_key_dict=user_api_key_dict, request=request)
+
+        global user_temperature, user_request_timeout, user_max_tokens, user_api_base
+        # override with user settings, these are params passed via cli
+        if user_temperature:
+[root@litellm-69797d7f6-69rtm instance]# 

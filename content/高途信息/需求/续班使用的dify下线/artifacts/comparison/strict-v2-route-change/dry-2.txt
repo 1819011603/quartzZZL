@@ -1,0 +1,17 @@
+[dry-run] 未提交，将发送以下请求体（加 --confirm 提交）:
+{
+  "caller": "gps-ai",
+  "modelName": "deepseek/DeepSeek-R1-250528",
+  "modelCode": "deepseek/DeepSeek-R1-250528",
+  "timeout": 600,
+  "numRetries": 1,
+  "fallback": false,
+  "useCache": false,
+  "moderation": false,
+  "promptModeration": false,
+  "responseModeration": false,
+  "appIds": [],
+  "defaultParams": {},
+  "env": "test",
+  "applyReason": "Dify迁移旧模型名严格对齐"
+}

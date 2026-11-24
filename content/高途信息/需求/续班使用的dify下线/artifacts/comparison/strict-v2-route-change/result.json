@@ -1,0 +1,24 @@
+{
+  "complete": false,
+  "existing_routes_unchanged": true,
+  "route_count": 14,
+  "created_route_ids": [],
+  "failures": [
+    {
+      "code": 500,
+      "msg": "模型不存在或已下线: doubao/Doubao-1-5-pro-32k"
+    },
+    {
+      "code": 500,
+      "msg": "模型不存在或已下线: doubao/Doubao-Seed-1-6"
+    },
+    {
+      "code": 500,
+      "msg": "模型不存在或已下线: deepseek/DeepSeek-R1-250528"
+    }
+  ],
+  "endpoint": "POST https://ai.baijia.com/llm-gateway/admin/callerRoute/save",
+  "portal": "https://tech.baijia.com/ai-service/access/gps-ai/route",
+  "rollback": "未新增成功；回读原14条完全一致，无需回退。后续若新增成功，仅删除新建ID，不改原有路由。",
+  "blocker": "标准save拒绝三个已下线旧别名；需平台支持为重定向源模型创建TEST caller路由，不能通过现有保存接口完成。"
+}

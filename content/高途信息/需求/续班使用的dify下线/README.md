@@ -14,11 +14,31 @@ tags: [需求]
 # 续班Dify迁移：当前验证结果
 
 
+## 最新五项要求（strict-v2，覆盖此前参数保留口径）
+
+以下为当前工作契约；下方既有验证保留为历史成果，不能据此继续保留与最新要求冲突的参数。本段仅登记需求/状态，不代表前四项新实施已完成。
+
+|项|当前要求|本轮状态/边界|
+|---|---|---|
+|1 参数|response_format需要json_object可单独新增；max_tokens、stream、thinking按旧实收严格对齐，旧没有则不写|待负责实现者完成TEST代码/配置及实收；覆盖此前8192/非流式/显式thinking保留差异口径，区分入口实收与后续路由注入|
+|2 费用身份|新链路必须带x-tech-ai-user-id用于分钱，追溯旧Dify真实来源并正确传递|已核实旧费用头来自强制查询后的Account.name，旧user UUID来自EndUser.id，两者不同；gongxuemeng样本映射已核实；各应用缺省费用主体不同，已取证，Java合流与TEST头实收仍待完成，见[身份取证](artifacts/comparison/strict-v2-cost-identity.md)|
+|3 模型|model必须对齐，查清旧别名到真实目标映射并入表|允许只读线上配置/容器；PROD/TEST旧名映射已只读核实，见[模型证据](artifacts/comparison/strict-v2-model-map.md)；已证先按旧名鉴权再redirect；三条旧别名授权被管理入口拒绝（模型不存在或已下线），原14路由回读未变，严格旧名实收受阻，见[失败与回读](artifacts/comparison/strict-v2-route-change/report.md)|
+|4 messages|保持system/user内容、角色、顺序、包装严格相等，不回切Dify|已有成果复用；本轮受参数/实现影响部分需复验，输出不要求相同|
+|5 降退费tools|调查正式工作流及工具执行机制，给迁移方案|只读方案已完成：[tools与检索契约](artifacts/comparison/strict-v2-tools-plan.md)。正式降退费优先固定前置检索；仅tools声明不足，四知识库不自动切换|
+
+生产只读，不改数据/代码/配置/路由/权限，不生成或上线；前四项由主Worker统筹TEST实施，第五项只调查方案。原库Console当前可读不等于Service API身份已获权；旧401/403不再泛化。
+
+## 知识库列表最新事实
+
+2026-11-24知识库列表纠正：本次Console列表total=2、has_more=false，与截图一致，分别是TEST-dify-migration-20261124-isolated（30a822a4-32f5-49e8-b497-eaad5f8280de，economy、app_count=0）和降退费服务建议话术库（86233d1a-bddf-4a15-a229-c90b6a061c57，high_quality）；原库列表及详情均成功，当前关联spcAm3oupwKuWRMD8UV与spczjG62GXkZ0ZSOBYS两个空间，旧“当前不可见/必须先给旧空间授权”已不适用。响应x-env=production、gapm-appid=dify-api支持生产标识API，两个test头和Cookie的优先级尚无证据，不能按名称或头认定TEST；共享平台30a822库也不是Java E2E的test-dify-open独立TEST库0105aec9，内容、索引和服务身份未证对等。related-apps五条按UUID去重为三个应用（含正式高中/素养workflow及废弃agent）；素养发布工作流确实绑定原86233库，并使用top_k=4、rerank=false，不能误套库级top_k=3、rerank=true、full_text_search默认。当前无需因旧403直接换库或改权限；仍需核实的是后端Service API对应token的身份、tenant及空间授权，Console Cookie可见不能替代Bearer授权，历史401只说明当次TEST token对该目标无效，不证明所有生产token不存在。本轮仅只读核查，未检索生成或修改凭据、权限、路由，四知识库应用继续Dify。
+
+证据：[本次只读列表](artifacts/comparison/kb-console-current/request-evidence.json)、[路由边界核查](artifacts/comparison/kb-console-route-review.md)。
+
 ## 三参数最终收尾（2026-11-24）
 
 TEST新链路9个样本（含SOP真实V2）均完成最新实收：stop字段删除后与旧请求省略一致，完整messages仍相等，finish_reason均stop。根因和旅程同时删除enable_thinking，旧新请求均省略；删除后仍分别有1070/1812 reasoning tokens，直接说明删除不等于关闭思考，供应商有效默认仍未验证。
 
-response_format按具体约束保留差异：画像/摘要/SOP保留JSON输出约束（不声称参数本身必不可缺）；分层保留已修复实际落值冲突的text。此项是明确保留，非笼统待建议。stop与两项enable_thinking请求省略已落实，不再停于建议。max_tokens/stream/user原边界不重开。
+response_format按具体约束保留差异：画像/摘要/SOP保留JSON输出约束（不声称参数本身必不可缺）；分层保留已修复实际落值冲突的text。此项是明确保留，非笼统待建议。stop与两项enable_thinking请求省略已落实，不再停于建议。此历史验证不覆盖最新strict-v2：max_tokens/stream/费用身份须按顶部新契约继续对齐。
 
 发布releaseKey `20261124134541-188aa6ecfba696dc`、`20261124134735-188a49b33afd483d`已完整回读。原飞书9场景表新请求和完整最终输出已更新，另外两知识库历史表原样保留；无新代码部署或生产修改，4知识库继续Dify。13正式应用不是13生产实例独立实收。
 

@@ -1,0 +1,93 @@
+{
+  "environment": "prod",
+  "pod": "dify-api-78886c7f97-8lhxw",
+  "transaction": "SET TRANSACTION READ ONLY; rollback",
+  "account": {
+    "id": "202332",
+    "name": "gongxuemeng",
+    "email": "gongxuemeng@gaotu.cn"
+  },
+  "applicationTokenCreatorGroups": [
+    {
+      "id": "fb2db0ac-d837-43d6-a1ab-8e7b46e06bfa",
+      "name": "【TEST】素养NPS迁移对照",
+      "created_by": "151350",
+      "cost_name": "zhangzeling",
+      "email": "zhangzeling@gaotu.cn",
+      "token_count": 1
+    },
+    {
+      "id": "3d398bdf-622e-42f8-a5f3-d5543495421b",
+      "name": "【素养】课程NPS分析",
+      "created_by": "59927",
+      "cost_name": "liujialiang",
+      "email": "liujialiang@gaotu.cn",
+      "token_count": 1
+    },
+    {
+      "id": "3d398bdf-622e-42f8-a5f3-d5543495421b",
+      "name": "【素养】课程NPS分析",
+      "created_by": "200885",
+      "cost_name": "huangshishuai",
+      "email": "huangshishuai@gaotu.cn",
+      "token_count": 1
+    },
+    {
+      "id": "446dd984-ea29-4da4-b48f-e25993590a50",
+      "name": "【高中】课程NPS分析",
+      "created_by": "59927",
+      "cost_name": "liujialiang",
+      "email": "liujialiang@gaotu.cn",
+      "token_count": 2
+    },
+    {
+      "id": "626f88c9-6d79-4a80-b941-4f65a1497a23",
+      "name": "【高中】课程体验退费分析",
+      "created_by": "59927",
+      "cost_name": "liujialiang",
+      "email": "liujialiang@gaotu.cn",
+      "token_count": 2
+    },
+    {
+      "id": "277d1192-f8bd-4b3e-b4a8-235b5773bedd",
+      "name": "【高中】退费根因分析",
+      "created_by": "59927",
+      "cost_name": "liujialiang",
+      "email": "liujialiang@gaotu.cn",
+      "token_count": 2
+    },
+    {
+      "id": "3efa158f-2ee6-4b39-b9ca-a064c34310b2",
+      "name": "服务SOP分析",
+      "created_by": "125062",
+      "cost_name": "chenzexin",
+      "email": "chenzexin@gaotu.cn",
+      "token_count": 2
+    },
+    {
+      "id": "1114ea4e-e5c2-448d-9770-6d9bf63a3780",
+      "name": "续班AI-用户画像&沟通摘要-test",
+      "created_by": "52761",
+      "cost_name": "masheng",
+      "email": "masheng@gaotu.cn",
+      "token_count": 2
+    },
+    {
+      "id": "b3b6b157-30b9-4155-8eed-3992886b3302",
+      "name": "退费旅程分析",
+      "created_by": "59927",
+      "cost_name": "liujialiang",
+      "email": "liujialiang@gaotu.cn",
+      "token_count": 2
+    },
+    {
+      "id": "485fff93-035e-4146-9dd2-5883eb56eb2e",
+      "name": "预测分层原因-test",
+      "created_by": "131789",
+      "cost_name": "wangwei53",
+      "email": "wangwei53@gaotu.cn",
+      "token_count": 1
+    }
+  ],
+  "credentialValuesSelected": false
+}

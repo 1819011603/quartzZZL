@@ -1,0 +1,74 @@
+sed -n "360,430p" /usr/local/lib/python3.11/site-packages/litellm/proxy/auth/user_api_key_auth.py
+[root@litellm-69797d7f6-69rtm instance]# sed -n "360,430p" /usr/local/lib/python3.11/site-packages/litellm/proxy/auth/user_api_key_auth.py
+    if not caller_config:
+        verbose_proxy_logger.info("Caller config not found for api_key: {}".format(token))
+        raise ProxyException(
+            message="Authentication Error, Invalid api_key passed. Please check your configuration in Tech platform(https://tech.baijia.com/ai-service/access)" ,
+            type=ProxyErrorTypes.auth_error,
+            param=None,
+            code=status.HTTP_401_UNAUTHORIZED,
+        )
+    
+    # 检查caller状态是否为caller_overextended
+    if caller_config.status == "caller_overextended":
+        verbose_proxy_logger.info("{} is overextended, access blocked due to budget limits".format(caller_config.caller))
+        raise ProxyException(
+            message="Budget Exceeded Error, {} has exceeded budget limits and access is restricted. Please check your usage limits in TECH platform(https://tech.baijia.com/ai-service/access)".format(caller_config.caller),
+            type=ProxyErrorTypes.budget_exceeded,
+            param=None,
+            code=status.HTTP_403_FORBIDDEN,
+        )
+
+    user_api_key_auth_obj = await _return_user_api_key_auth_obj(
+        user_obj=None,
+        api_key=token,
+        parent_otel_span=parent_otel_span,
+        valid_token_dict={"team_id": caller_config.caller, "team_alias": caller_config.caller, "team_nid": caller_config.nid},
+    )
+
+    if caller_config.admin or not validate_route:
+        return user_api_key_auth_obj
+    else:
+        for _route_config in caller_config.route_list:
+            if _route_config.model_code == model:
+                return user_api_key_auth_obj
+
+    if not model:
+        verbose_proxy_logger.info(
+            f"Model parameter is empty or missing for {caller_config.caller}. "
+            f"Possible causes: (1) request body did not include 'model' field; "
+            f"(2) request body is not valid JSON (parsing failed and fell back to empty dict)."
+        )
+        raise ProxyException(
+            message=(
+                "Model parameter is empty or missing. "
+                "Please ensure the request body is valid JSON and contains a non-empty 'model' field."
+            ),
+            type=ProxyErrorTypes.caller_model_access_denied,
+            param="model",
+            code=status.HTTP_400_BAD_REQUEST,
+        )
+    else:
+        verbose_proxy_logger.info(f"Model {model} is not allowed for {caller_config.caller}")
+        raise ProxyException(
+            message=f"Model {model} is not allowed for {caller_config.caller}. Please check your configuration in Tech platform(https://tech.baijia.com/ai-service/access/{caller_config.caller}/route).",
+            type=ProxyErrorTypes.caller_model_access_denied,
+            param="model",
+            code=status.HTTP_403_FORBIDDEN,
+        )
+
+
+async def user_api_key_auth_validate_route(
+    request: Request,
+    api_key: str = fastapi.Security(api_key_header),
+
+    azure_api_key_header: str = fastapi.Security(azure_api_key_header),
+    anthropic_api_key_header: Optional[str] = fastapi.Security(
+        anthropic_api_key_header
+    ),
+    google_ai_studio_api_key_header: Optional[str] = fastapi.Security(
+        google_ai_studio_api_key_header
+    ),
+) -> UserAPIKeyAuth:
+    return await user_api_key_auth(
+[root@litellm-69797d7f6-69rtm instance]# 
