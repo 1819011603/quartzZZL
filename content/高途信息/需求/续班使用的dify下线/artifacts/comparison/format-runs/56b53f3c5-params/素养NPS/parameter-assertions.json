@@ -1,0 +1,8 @@
+{
+  "trace": "42399367-6e72-4a2f-839c-e42f486b0da2.0.3",
+  "thinking_equals_old": true,
+  "messages_equal": true,
+  "only_added_thinking": true,
+  "response_model": "litellm_proxy/deepseek-v4.1-flash",
+  "finish_reason": "stop"
+}

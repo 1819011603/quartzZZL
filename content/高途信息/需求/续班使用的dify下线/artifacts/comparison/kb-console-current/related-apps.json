@@ -1,0 +1,60 @@
+{
+  "data": [
+    {
+      "id": "spcAm3oupwKuWRMD8UV_5c7ac7f6-af1d-4120-91a5-9a6485fd3d99",
+      "space_id": "spcAm3oupwKuWRMD8UV",
+      "name": "【高中】降退费服务建议分析工作流",
+      "description": "精品班学部——服务建议分析",
+      "mode": "advanced-chat",
+      "icon_type": "emoji",
+      "icon": "🤖",
+      "icon_background": "#FFEAD5",
+      "icon_url": null
+    },
+    {
+      "id": "spczjG62GXkZ0ZSOBYS_5c7ac7f6-af1d-4120-91a5-9a6485fd3d99",
+      "space_id": "spczjG62GXkZ0ZSOBYS",
+      "name": "【高中】降退费服务建议分析工作流",
+      "description": "精品班学部——服务建议分析",
+      "mode": "advanced-chat",
+      "icon_type": "emoji",
+      "icon": "🤖",
+      "icon_background": "#FFEAD5",
+      "icon_url": null
+    },
+    {
+      "id": "spcAm3oupwKuWRMD8UV_c76ff517-b2a6-4476-8171-92af9364e344",
+      "space_id": "spcAm3oupwKuWRMD8UV",
+      "name": "【废弃】降退费服务建议",
+      "description": "精品班学部——降退费服务建议",
+      "mode": "agent-chat",
+      "icon_type": "emoji",
+      "icon": "🤖",
+      "icon_background": "#FFEAD5",
+      "icon_url": null
+    },
+    {
+      "id": "spczjG62GXkZ0ZSOBYS_c76ff517-b2a6-4476-8171-92af9364e344",
+      "space_id": "spczjG62GXkZ0ZSOBYS",
+      "name": "【废弃】降退费服务建议",
+      "description": "精品班学部——降退费服务建议",
+      "mode": "agent-chat",
+      "icon_type": "emoji",
+      "icon": "🤖",
+      "icon_background": "#FFEAD5",
+      "icon_url": null
+    },
+    {
+      "id": "spczjG62GXkZ0ZSOBYS_1043df8c-f3d3-44b3-accd-ec2051c0c4a3",
+      "space_id": "spczjG62GXkZ0ZSOBYS",
+      "name": "[素养]降退费服务建议分析工作流",
+      "description": "精品班学部——服务建议分析",
+      "mode": "advanced-chat",
+      "icon_type": "emoji",
+      "icon": "🤖",
+      "icon_background": "#FFEAD5",
+      "icon_url": null
+    }
+  ],
+  "total": 5
+}

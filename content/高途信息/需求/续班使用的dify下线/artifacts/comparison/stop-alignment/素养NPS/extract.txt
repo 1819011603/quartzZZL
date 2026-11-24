@@ -1,0 +1,3 @@
+exact_messages_equal True
+warnings []
+actual artifacts/comparison/stop-alignment/素养NPS/sls.messages.json

@@ -1,0 +1,8 @@
+{
+  "commit": "56b53f3c5-params",
+  "case": "素养NPS",
+  "mode": "quick",
+  "trace": "42399367-6e72-4a2f-839c-e42f486b0da2.0.3",
+  "curl_exit": 0,
+  "request_source": "format-samples/素养NPS-quick-request.json"
+}

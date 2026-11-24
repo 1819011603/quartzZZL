@@ -1,0 +1,1 @@
+{"code":0,"data":{"com.gaotu.student.data.domain.ai.manager.service.impl.AiApplicationTestServiceImpl#quickTestAiApplication":{"event":"litellm_proxy/doubao-seed-2.0-lite","messageId":"chatcmpl-63dd51106ded40c0943e58cfd105a8a5","answer":"该学员是同科目新学员，已接受二讲108天服务，走读。非续班期课节完成度仅31.82%，低于平均水平，近7天微信互动频率远低于平均，无预报名记录，小灶课几乎无学习时长，没有产生过同意续班的意向反馈，整体续班意愿很低。\n```"}},"msg":""}

@@ -1,0 +1,14 @@
+{
+  "serviceNameAndMethodName": "com.gaotu.student.data.domain.ai.manager.service.impl.AiApplicationTestServiceImpl#quickTestAiApplication",
+  "params": [
+    "预测分层原因",
+    "",
+    "test",
+    {
+      "clazzNumber": "500775385189890048",
+      "userId": "6761113627",
+      "commTag": 0,
+      "subClazzNumber": "31298462823089024"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/续班使用的dify下线/artifacts/comparison/validate_format.py", line 52, in <module>
+    actual=extract(a.log)
+  File "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/续班使用的dify下线/artifacts/comparison/validate_format.py", line 49, in extract
+    assert len(requests)==1 and len(responses)==1,'need exactly one full request AND response; inspect rounds/missing logs'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: need exactly one full request AND response; inspect rounds/missing logs

@@ -1,0 +1,67 @@
+[
+  {
+    "modelCode": "doubao/Doubao-1-5-pro-32k",
+    "redirect": "doubao-seed-2-0-lite-260428",
+    "redirectDefaultParams": {
+      "thinking": {
+        "type": "object",
+        "value": {
+          "type": "disabled"
+        },
+        "force": true
+      }
+    },
+    "deployments": [
+      {
+        "modelParam": "volcengine/ep-20250219161821-75rs8",
+        "defaultParams": {}
+      },
+      {
+        "modelParam": "litellm_proxy/doubao-1-5-pro-32k-250115",
+        "defaultParams": {}
+      }
+    ]
+  },
+  {
+    "modelCode": "doubao-seed-2-0-lite-260428",
+    "redirect": "",
+    "redirectDefaultParams": null,
+    "deployments": [
+      {
+        "modelParam": "litellm_proxy/ep-20260508155629-tkjvf",
+        "defaultParams": {}
+      },
+      {
+        "modelParam": "litellm_proxy/ep-20260721112117-79txh",
+        "defaultParams": {}
+      },
+      {
+        "modelParam": "litellm_proxy/ep-20260721112145-4sdqz",
+        "defaultParams": {}
+      },
+      {
+        "modelParam": "litellm_proxy/doubao-seed-2.0-lite",
+        "defaultParams": {}
+      }
+    ]
+  },
+  {
+    "modelCode": "deepseek-flash",
+    "redirect": "",
+    "redirectDefaultParams": null,
+    "deployments": [
+      {
+        "modelParam": "litellm_proxy/deepseek-v4.1-flash",
+        "defaultParams": {}
+      },
+      {
+        "modelParam": "litellm_proxy/deepseek/deepseek-flash",
+        "defaultParams": {}
+      },
+      {
+        "modelParam": "litellm_proxy/ep_wuxzxwds4_ds-v4-1-flash",
+        "defaultParams": {}
+      }
+    ]
+  }
+]

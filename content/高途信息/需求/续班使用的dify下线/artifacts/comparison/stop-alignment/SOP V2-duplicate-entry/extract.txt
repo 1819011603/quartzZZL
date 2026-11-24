@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/续班使用的dify下线/artifacts/comparison/validate_format.py", line 52, in <module>
+    actual=extract(a.log)
+  File "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/续班使用的dify下线/artifacts/comparison/validate_format.py", line 37, in extract
+    text=path.read_text();start=text.find('[{');assert start>=0,'full JSON rows required'
+                                                       ^^^^^^^^
+AssertionError: full JSON rows required

@@ -1,0 +1,15 @@
+{
+  "url": "https://os.baijia.com/dify/api/console/api/datasets?page=1",
+  "headers": {
+    "ingress-traffic-env": "test-gtbg-dev-2",
+    "traffic-env": "test-eco-8"
+  },
+  "authentication": "existing local cookie injector; no credentials recorded",
+  "response": {
+    "x-env": "production",
+    "gapm-appid": "dify-api",
+    "gapm-traceid": "392de8bc-4b9b-4960-8778-5b1bf81d7f1c.0.1"
+  },
+  "total": 2,
+  "has_more": false
+}

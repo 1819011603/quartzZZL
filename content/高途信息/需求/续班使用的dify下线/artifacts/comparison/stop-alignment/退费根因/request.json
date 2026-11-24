@@ -1,0 +1,9 @@
+{
+  "params": [
+    "退费根因分析",
+    "测试样本：家长表示课程时间与学校晚自习冲突，无法参加直播，申请退费。",
+    "test",
+    {}
+  ],
+  "serviceNameAndMethodName": "com.gaotu.student.data.domain.ai.manager.service.impl.AiApplicationTestServiceImpl#quickTestAiApplication"
+}

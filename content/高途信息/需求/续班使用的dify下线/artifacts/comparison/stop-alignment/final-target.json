@@ -1,0 +1,80 @@
+{
+  "255107338300556288": {
+    "name": "用户画像/沟通摘要-test",
+    "platformType": 2,
+    "model": "doubao-seed-2-0-lite-260428",
+    "params": {
+      "response_format": {
+        "type": "json_object"
+      },
+      "thinking": {
+        "type": "disabled"
+      }
+    }
+  },
+  "256325360053917696": {
+    "name": "服务SOP分析",
+    "platformType": 2,
+    "model": "doubao-seed-2-0-lite-260428",
+    "params": {
+      "response_format": {
+        "type": "json_object"
+      }
+    }
+  },
+  "262172718139452416": {
+    "name": "预测分层原因",
+    "platformType": 2,
+    "model": "doubao-seed-2-0-lite-260428",
+    "params": {
+      "response_format": {
+        "type": "text"
+      },
+      "thinking": {
+        "type": "disabled"
+      }
+    }
+  },
+  "255733061835044864": {
+    "name": "退费旅程分析",
+    "platformType": 2,
+    "model": "deepseek-flash",
+    "params": {}
+  },
+  "255742622136547328": {
+    "name": "退费课程体验分析",
+    "platformType": 2,
+    "model": "deepseek-flash",
+    "params": {}
+  },
+  "255743333766281216": {
+    "name": "退费根因分析",
+    "platformType": 2,
+    "model": "deepseek-flash",
+    "params": {}
+  },
+  "255743847351465984": {
+    "name": "退费NPS分析",
+    "platformType": 2,
+    "model": "deepseek-flash",
+    "params": {}
+  },
+  "7530633600362872933": {
+    "name": "退费NPS分析-素养TEST迁移副本",
+    "platformType": 2,
+    "model": "deepseek-flash",
+    "params": {
+      "thinking": {
+        "type": "enabled"
+      }
+    }
+  },
+  "1795457739670155": {
+    "name": "TEST-KB-ServiceAPI-20261124",
+    "platformType": 2,
+    "model": "deepseek-flash",
+    "params": {
+      "stop": []
+    }
+  }
+}

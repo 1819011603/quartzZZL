@@ -7,6 +7,17 @@ tags: [需求, 任务]
 
 > 状态：`待办` `进行中` `已完成` `阻塞` `已取消`
 
+## 三参数最终收尾（2026-11-24）
+
+TEST新链路9个样本（含SOP真实V2）均完成最新实收：stop字段删除后与旧请求省略一致，完整messages仍相等，finish_reason均stop。根因和旅程同时删除enable_thinking，旧新请求均省略；删除后仍分别有1070/1812 reasoning tokens，直接说明删除不等于关闭思考，供应商有效默认仍未验证。
+
+response_format按具体约束保留差异：画像/摘要/SOP保留JSON输出约束（不声称参数本身必不可缺）；分层保留已修复实际落值冲突的text。此项是明确保留，非笼统待建议。stop与两项enable_thinking请求省略已落实，不再停于建议。max_tokens/stream/user原边界不重开。
+
+发布releaseKey `20261124134541-188aa6ecfba696dc`、`20261124134735-188a49b33afd483d`已完整回读。原飞书9场景表新请求和完整最终输出已更新，另外两知识库历史表原样保留；无新代码部署或生产修改，4知识库继续Dify。13正式应用不是13生产实例独立实收。
+
+证据：[9例统一结果](artifacts/comparison/stop-alignment/summary.json)、[执行报告](artifacts/comparison/stop-alignment/report.md)、[最终配置回读](artifacts/comparison/stop-alignment/final-readback.txt)、[两参数裁决](artifacts/comparison/parameter-final-decisions.md)、[原表回读核验](artifacts/comparison/stop-alignment/doc-verification.json)。
+
+
 ## 旅程严格对齐最终结果（2026-11-24）
 
 最新要求覆盖“旅程保留增强system例外”：仅TEST应用255733517892204544的gateway_core_prompt从2482改2150字，生成器追加换行后与旧实收2151字system相等。新trace `b83e29de-f629-4a5e-b864-588da89e26b4.0.3` 的完整messages、system、user均逐字相等，业务answer等于下游最终content，finish_reason=stop。其余七例及SOP证据复用，八TEST场景现均完整messages相等。

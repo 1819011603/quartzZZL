@@ -1,0 +1,1132 @@
+{
+  "scope": "13正式非KB应用；9个类型样本（8当前TEST+SOP历史），不是13生产应用独立实收",
+  "applications": [
+    {
+      "application": "用户画像",
+      "sample": "画像",
+      "coverage": "TEST同类样本，不能外推生产参数"
+    },
+    {
+      "application": "沟通摘要",
+      "sample": "摘要",
+      "coverage": "TEST同类样本，不能外推生产参数"
+    },
+    {
+      "application": "服务SOP分析",
+      "sample": "SOP V2",
+      "coverage": "TEST同类样本，不能外推生产参数"
+    },
+    {
+      "application": "分层原因高中",
+      "sample": "分层修正后",
+      "coverage": "TEST同类样本，不能外推生产参数"
+    },
+    {
+      "application": "分层原因素养",
+      "sample": null,
+      "coverage": "无独立实收；参数未知"
+    },
+    {
+      "application": "根因精品",
+      "sample": "退费根因",
+      "coverage": "TEST同类样本，不能外推生产参数"
+    },
+    {
+      "application": "根因素养",
+      "sample": null,
+      "coverage": "无独立实收；参数未知"
+    },
+    {
+      "application": "旅程精品",
+      "sample": "旅程",
+      "coverage": "TEST同类样本，不能外推生产参数"
+    },
+    {
+      "application": "旅程素养",
+      "sample": null,
+      "coverage": "无独立实收；参数未知"
+    },
+    {
+      "application": "体验精品",
+      "sample": "课程体验",
+      "coverage": "TEST同类样本，不能外推生产参数"
+    },
+    {
+      "application": "体验素养",
+      "sample": null,
+      "coverage": "无独立实收；参数未知"
+    },
+    {
+      "application": "NPS精品",
+      "sample": "NPS",
+      "coverage": "TEST同类样本，不能外推生产参数"
+    },
+    {
+      "application": "NPS素养",
+      "sample": "素养NPS",
+      "coverage": "TEST同类样本，不能外推生产参数"
+    }
+  ],
+  "samples": [
+    {
+      "sample": "画像",
+      "old_trace": "2a9ff650-ba6f-4bf2-93f8-88034f864c93.0.3",
+      "new_trace": "dd182d47-b845-4135-80f2-f13575803a7e.0.3",
+      "new_source": "artifacts/comparison/format-runs/56b53f3c5/画像/trace-full.received.json",
+      "reuse_historical": false,
+      "old_returned_model_evidence": [
+        {
+          "model": "doubao-seed-2.0-lite",
+          "source": "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/续班使用的dify下线/artifacts/expanded-renewal/profile-prod-logs.json",
+          "trace": "2a9ff650-ba6f-4bf2-93f8-88034f864c93.0.3",
+          "aggregate_source": "artifacts/expanded-renewal/complete-pairs.json",
+          "raw_file_exists": true,
+          "raw_trace_and_model_present": true
+        }
+      ],
+      "new_returned_model_evidence": [
+        {
+          "model": "litellm_proxy/doubao-seed-2.0-lite",
+          "source": "artifacts/comparison/format-runs/56b53f3c5/画像/trace-full.received.json"
+        }
+      ],
+      "parameters": [
+        {
+          "key": "max_tokens",
+          "old": {
+            "present": false,
+            "value": null
+          },
+          "new": {
+            "present": true,
+            "value": 8192
+          },
+          "equal": false,
+          "assessment": "显式差异；未传不代表默认值相同或不同"
+        },
+        {
+          "key": "model",
+          "old": {
+            "present": true,
+            "value": "doubao/Doubao-1-5-pro-32k"
+          },
+          "new": {
+            "present": true,
+            "value": "doubao-seed-2-0-lite-260428"
+          },
+          "equal": false,
+          "assessment": "别名差异须结合重定向快照；不能证明每次同部署"
+        },
+        {
+          "key": "response_format",
+          "old": {
+            "present": false,
+            "value": null
+          },
+          "new": {
+            "present": true,
+            "value": {
+              "type": "json_object"
+            }
+          },
+          "equal": false,
+          "assessment": "显式差异；未传不代表默认值相同或不同"
+        },
+        {
+          "key": "stop",
+          "old": {
+            "present": false,
+            "value": null
+          },
+          "new": {
+            "present": true,
+            "value": []
+          },
+          "equal": false,
+          "assessment": "显式差异；未传不代表默认值相同或不同"
+        },
+        {
+          "key": "stream",
+          "old": {
+            "present": true,
+            "value": true
+          },
+          "new": {
+            "present": false,
+            "value": null
+          },
+          "equal": false,
+          "assessment": "旧stream=true，新未传；当前同步响应链路不应仅改参数为true"
+        },
+        {
+          "key": "thinking",
+          "old": {
+            "present": false,
+            "value": null
+          },
+          "new": {
+            "present": true,
+            "value": {
+              "type": "disabled"
+            }
+          },
+          "equal": false,
+          "assessment": "豆包旧别名重定向force注入thinking.disabled有控制面及日志证据；显式传参差异不等于有效thinking不同。"
+        },
+        {
+          "key": "user",
+          "old": {
+            "present": true,
+            "value": "e4763467-0f1a-4a09-92f1-e4471db27940"
+          },
+          "new": {
+            "present": false,
+            "value": null
+          },
+          "equal": false,
+          "assessment": "旧Dify用户标识不应盲目复制为新侧固定用户"
+        }
+      ]
+    },
+    {
+      "sample": "SOP V2",
+      "old_trace": "315c294d-dbc3-4d8f-adc6-e036ad96d1e1.0.3",
+      "new_trace": "2b757fa1-ac59-4cbd-aac5-1260f6bcba8a.0.3",
+      "new_source": "artifacts/comparison/pairs.json sides[1]",
+      "reuse_historical": true,
+      "old_returned_model_evidence": [
+        {
+          "model": "doubao-seed-2.0-lite",
+          "source": "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/续班使用的dify下线/artifacts/expanded-renewal/sop-v2-1-logs.txt",
+          "trace": "315c294d-dbc3-4d8f-adc6-e036ad96d1e1.0.3",
+          "aggregate_source": "artifacts/expanded-renewal/complete-pairs.json",
+          "raw_file_exists": true,
+          "raw_trace_and_model_present": true
+        }
+      ],
+      "new_returned_model_evidence": [
+        {
+          "model": "litellm_proxy/doubao-seed-2.0-lite",
+          "source": "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/续班使用的dify下线/artifacts/expanded-renewal/sop-v2-2-logs.txt",
+          "trace": "2b757fa1-ac59-4cbd-aac5-1260f6bcba8a.0.3"
+        }
+      ],
+      "parameters": [
+        {
+          "key": "max_tokens",
+          "old": {
+            "present": false,
+            "value": null
+          },
+          "new": {
+            "present": true,
+            "value": 8192
+          },
+          "equal": false,
+          "assessment": "显式差异；未传不代表默认值相同或不同"
+        },
+        {
+          "key": "model",
+          "old": {
+            "present": true,
+            "value": "doubao/Doubao-Seed-1-6"
+          },
+          "new": {
+            "present": true,
+            "value": "doubao-seed-2-0-lite-260428"
+          },
+          "equal": false,
+          "assessment": "别名差异须结合重定向快照；不能证明每次同部署"
+        },
+        {
+          "key": "response_format",
+          "old": {
+            "present": false,
+            "value": null
+          },
+          "new": {
+            "present": true,
+            "value": {
+              "type": "json_object"
+            }
+          },
+          "equal": false,
+          "assessment": "显式差异；未传不代表默认值相同或不同"
+        },
+        {
+          "key": "stop",
+          "old": {
+            "present": false,
+            "value": null
+          },
+          "new": {
+            "present": true,
+            "value": []
+          },
+          "equal": false,
+          "assessment": "显式差异；未传不代表默认值相同或不同"
+        },
+        {
+          "key": "stream",
+          "old": {
+            "present": true,
+            "value": true
+          },
+          "new": {
+            "present": false,
+            "value": null
+          },
+          "equal": false,
+          "assessment": "旧stream=true，新未传；当前同步响应链路不应仅改参数为true"
+        },
+        {
+          "key": "user",
+          "old": {
+            "present": true,
+            "value": "aad12f3c-2c87-4a43-b0cd-53112cf6d22a"
+          },
+          "new": {
+            "present": false,
+            "value": null
+          },
+          "equal": false,
+          "assessment": "旧Dify用户标识不应盲目复制为新侧固定用户"
+        }
+      ]
+    },
+    {
+      "sample": "分层修正后",
+      "old_trace": "3c9e6b70-e6f3-4f95-883b-14408cdafc2b.0.3",
+      "new_trace": "e604b357-f357-4997-b28b-f3192b531eb8.0.3",
+      "new_source": "artifacts/comparison/format-runs/56b53f3c5/分层修正后/trace-full.received.json",
+      "reuse_historical": false,
+      "old_returned_model_evidence": [
+        {
+          "model": "doubao-seed-2.0-lite",
+          "source": "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/续班使用的dify下线/artifacts/expanded-renewal/tier-valid-prod-logs.json",
+          "trace": "3c9e6b70-e6f3-4f95-883b-14408cdafc2b.0.3",
+          "aggregate_source": "artifacts/expanded-renewal/complete-pairs.json",
+          "raw_file_exists": true,
+          "raw_trace_and_model_present": true
+        }
+      ],
+      "new_returned_model_evidence": [
+        {
+          "model": "litellm_proxy/doubao-seed-2.0-lite",
+          "source": "artifacts/comparison/format-runs/56b53f3c5/分层修正后/trace-full.received.json"
+        }
+      ],
+      "parameters": [
+        {
+          "key": "max_tokens",
+          "old": {
+            "present": false,
+            "value": null
+          },
+          "new": {
+            "present": true,
+            "value": 8192
+          },
+          "equal": false,
+          "assessment": "显式差异；未传不代表默认值相同或不同"
+        },
+        {
+          "key": "model",
+          "old": {
+            "present": true,
+            "value": "doubao/Doubao-1-5-pro-32k"
+          },
+          "new": {
+            "present": true,
+            "value": "doubao-seed-2-0-lite-260428"
+          },
+          "equal": false,
+          "assessment": "别名差异须结合重定向快照；不能证明每次同部署"
+        },
+        {
+          "key": "response_format",
+          "old": {
+            "present": false,
+            "value": null
+          },
+          "new": {
+            "present": true,
+            "value": {
+              "type": "text"
+            }
+          },
+          "equal": false,
+          "assessment": "保持text：非JSON输出协议冲突，不盲目恢复JSON"
+        },
+        {
+          "key": "stop",
+          "old": {
+            "present": false,
+            "value": null
+          },
+          "new": {
+            "present": true,
+            "value": []
+          },
+          "equal": false,
+          "assessment": "显式差异；未传不代表默认值相同或不同"
+        },
+        {
+          "key": "stream",
+          "old": {
+            "present": true,
+            "value": true
+          },
+          "new": {
+            "present": false,
+            "value": null
+          },
+          "equal": false,
+          "assessment": "旧stream=true，新未传；当前同步响应链路不应仅改参数为true"
+        },
+        {
+          "key": "thinking",
+          "old": {
+            "present": false,
+            "value": null
+          },
+          "new": {
+            "present": true,
+            "value": {
+              "type": "disabled"
+            }
+          },
+          "equal": false,
+          "assessment": "豆包旧别名重定向force注入thinking.disabled有控制面及日志证据；显式传参差异不等于有效thinking不同。"
+        },
+        {
+          "key": "user",
+          "old": {
+            "present": true,
+            "value": "b1d3615e-1921-4281-88f0-b3ec598bb0d5"
+          },
+          "new": {
+            "present": false,
+            "value": null
+          },
+          "equal": false,
+          "assessment": "旧Dify用户标识不应盲目复制为新侧固定用户"
+        }
+      ]
+    },
+    {
+      "sample": "素养NPS",
+      "old_trace": "8c802dc4-ed69-4533-b63a-3851e20bb83d.0.3",
+      "new_trace": "5a814ae8-b8ae-4450-ada4-895a41d53463.0.3",
+      "new_source": "artifacts/comparison/format-runs/56b53f3c5/素养NPS/trace-full.received.json",
+      "reuse_historical": false,
+      "old_returned_model_evidence": [
+        {
+          "model": "ep_wuxzxwds4_ds-v4-1-flash",
+          "source": "/private/tmp/w1-suyang-chain-prod.txt",
+          "trace": "8c802dc4-ed69-4533-b63a-3851e20bb83d.0.3",
+          "aggregate_source": "artifacts/expanded-renewal/complete-pairs.json",
+          "raw_file_exists": true,
+          "raw_trace_and_model_present": true
+        }
+      ],
+      "new_returned_model_evidence": [
+        {
+          "model": "litellm_proxy/deepseek-v4.1-flash",
+          "source": "artifacts/comparison/format-runs/56b53f3c5/素养NPS/trace-full.received.json"
+        }
+      ],
+      "parameters": [
+        {
+          "key": "max_tokens",
+          "old": {
+            "present": false,
+            "value": null
+          },
+          "new": {
+            "present": true,
+            "value": 8192
+          },
+          "equal": false,
+          "assessment": "显式差异；未传不代表默认值相同或不同"
+        },
+        {
+          "key": "model",
+          "old": {
+            "present": true,
+            "value": "deepseek-v4-flash-0731"
+          },
+          "new": {
+            "present": true,
+            "value": "deepseek-flash"
+          },
+          "equal": false,
+          "assessment": "别名差异须结合重定向快照；不能证明每次同部署"
+        },
+        {
+          "key": "stop",
+          "old": {
+            "present": false,
+            "value": null
+          },
+          "new": {
+            "present": true,
+            "value": []
+          },
+          "equal": false,
+          "assessment": "显式差异；未传不代表默认值相同或不同"
+        },
+        {
+          "key": "stream",
+          "old": {
+            "present": true,
+            "value": true
+          },
+          "new": {
+            "present": false,
+            "value": null
+          },
+          "equal": false,
+          "assessment": "旧stream=true，新未传；当前同步响应链路不应仅改参数为true"
+        },
+        {
+          "key": "thinking",
+          "old": {
+            "present": true,
+            "value": {
+              "type": "enabled"
+            }
+          },
+          "new": {
+            "present": false,
+            "value": null
+          },
+          "equal": false,
+          "assessment": "DeepSeek素养NPS旧显式thinking.enabled，本次56b53f3c5新侧未传thinking；有效默认未知。主Worker仅安排此项配置enabled，本审计不冒称配置后实收已验证。"
+        },
+        {
+          "key": "user",
+          "old": {
+            "present": true,
+            "value": "c3fec88f-c18e-4c89-8ddb-3e2217928de3"
+          },
+          "new": {
+            "present": false,
+            "value": null
+          },
+          "equal": false,
+          "assessment": "旧Dify用户标识不应盲目复制为新侧固定用户"
+        }
+      ]
+    },
+    {
+      "sample": "摘要",
+      "old_trace": "15760243-f225-4246-a103-c9565c2652ba.0.3",
+      "new_trace": "62b40ff1-972a-4906-bd24-28e9486d4aa5.0.3",
+      "new_source": "artifacts/comparison/format-runs/56b53f3c5/摘要/trace-full.received.json",
+      "reuse_historical": false,
+      "old_returned_model_evidence": [
+        {
+          "model": "doubao-seed-2.0-lite",
+          "source": "/private/tmp/compare-renewal-prod-llm.json",
+          "trace": "15760243-f225-4246-a103-c9565c2652ba.0.3",
+          "aggregate_source": "artifacts/expanded-renewal/complete-pairs.json",
+          "raw_file_exists": true,
+          "raw_trace_and_model_present": true
+        }
+      ],
+      "new_returned_model_evidence": [
+        {
+          "model": "litellm_proxy/doubao-seed-2.0-lite",
+          "source": "artifacts/comparison/format-runs/56b53f3c5/摘要/trace-full.received.json"
+        }
+      ],
+      "parameters": [
+        {
+          "key": "max_tokens",
+          "old": {
+            "present": false,
+            "value": null
+          },
+          "new": {
+            "present": true,
+            "value": 8192
+          },
+          "equal": false,
+          "assessment": "显式差异；未传不代表默认值相同或不同"
+        },
+        {
+          "key": "model",
+          "old": {
+            "present": true,
+            "value": "doubao/Doubao-1-5-pro-32k"
+          },
+          "new": {
+            "present": true,
+            "value": "doubao-seed-2-0-lite-260428"
+          },
+          "equal": false,
+          "assessment": "别名差异须结合重定向快照；不能证明每次同部署"
+        },
+        {
+          "key": "response_format",
+          "old": {
+            "present": false,
+            "value": null
+          },
+          "new": {
+            "present": true,
+            "value": {
+              "type": "json_object"
+            }
+          },
+          "equal": false,
+          "assessment": "显式差异；未传不代表默认值相同或不同"
+        },
+        {
+          "key": "stop",
+          "old": {
+            "present": false,
+            "value": null
+          },
+          "new": {
+            "present": true,
+            "value": []
+          },
+          "equal": false,
+          "assessment": "显式差异；未传不代表默认值相同或不同"
+        },
+        {
+          "key": "stream",
+          "old": {
+            "present": true,
+            "value": true
+          },
+          "new": {
+            "present": false,
+            "value": null
+          },
+          "equal": false,
+          "assessment": "旧stream=true，新未传；当前同步响应链路不应仅改参数为true"
+        },
+        {
+          "key": "thinking",
+          "old": {
+            "present": false,
+            "value": null
+          },
+          "new": {
+            "present": true,
+            "value": {
+              "type": "disabled"
+            }
+          },
+          "equal": false,
+          "assessment": "豆包旧别名重定向force注入thinking.disabled有控制面及日志证据；显式传参差异不等于有效thinking不同。"
+        },
+        {
+          "key": "user",
+          "old": {
+            "present": true,
+            "value": "e4763467-0f1a-4a09-92f1-e4471db27940"
+          },
+          "new": {
+            "present": false,
+            "value": null
+          },
+          "equal": false,
+          "assessment": "旧Dify用户标识不应盲目复制为新侧固定用户"
+        }
+      ]
+    },
+    {
+      "sample": "退费根因",
+      "old_trace": "a32fe4b6-6269-4882-8d39-81c76f8ca23e.0.3",
+      "new_trace": "f33b2e1d-019e-42d1-b97f-13e98c78c612.0.3",
+      "new_source": "artifacts/comparison/format-runs/56b53f3c5/退费根因/sls.received.json",
+      "reuse_historical": false,
+      "old_returned_model_evidence": [
+        {
+          "model": "deepseek-v4.1-flash",
+          "source": "/private/tmp/compare-refund-prod-llm.json",
+          "trace": "a32fe4b6-6269-4882-8d39-81c76f8ca23e.0.3",
+          "aggregate_source": "artifacts/expanded-renewal/complete-pairs.json",
+          "raw_file_exists": true,
+          "raw_trace_and_model_present": true
+        }
+      ],
+      "new_returned_model_evidence": [
+        {
+          "model": "litellm_proxy/deepseek-v4.1-flash",
+          "source": "artifacts/comparison/format-runs/56b53f3c5/退费根因/sls.received.json"
+        }
+      ],
+      "parameters": [
+        {
+          "key": "enable_thinking",
+          "old": {
+            "present": false,
+            "value": null
+          },
+          "new": {
+            "present": true,
+            "value": true
+          },
+          "equal": false,
+          "assessment": "DeepSeek场景：不适用豆包force disabled结论；thinking与enable_thinking为不同字段，是否转换/优先级及有效默认须独立证据，不能认定等价。"
+        },
+        {
+          "key": "max_tokens",
+          "old": {
+            "present": false,
+            "value": null
+          },
+          "new": {
+            "present": true,
+            "value": 8192
+          },
+          "equal": false,
+          "assessment": "显式差异；未传不代表默认值相同或不同"
+        },
+        {
+          "key": "model",
+          "old": {
+            "present": true,
+            "value": "deepseek/DeepSeek-R1-250528"
+          },
+          "new": {
+            "present": true,
+            "value": "deepseek-flash"
+          },
+          "equal": false,
+          "assessment": "别名差异须结合重定向快照；不能证明每次同部署"
+        },
+        {
+          "key": "stop",
+          "old": {
+            "present": false,
+            "value": null
+          },
+          "new": {
+            "present": true,
+            "value": []
+          },
+          "equal": false,
+          "assessment": "显式差异；未传不代表默认值相同或不同"
+        },
+        {
+          "key": "stream",
+          "old": {
+            "present": true,
+            "value": true
+          },
+          "new": {
+            "present": false,
+            "value": null
+          },
+          "equal": false,
+          "assessment": "旧stream=true，新未传；当前同步响应链路不应仅改参数为true"
+        },
+        {
+          "key": "user",
+          "old": {
+            "present": true,
+            "value": "138a7353-4436-4c96-b627-4b94bd88eadf"
+          },
+          "new": {
+            "present": false,
+            "value": null
+          },
+          "equal": false,
+          "assessment": "旧Dify用户标识不应盲目复制为新侧固定用户"
+        }
+      ]
+    },
+    {
+      "sample": "旅程",
+      "old_trace": "bfd44413-31f5-493d-904b-e670783ff2c4.0.3",
+      "new_trace": "b83e29de-f629-4a5e-b864-588da89e26b4.0.3",
+      "new_source": "artifacts/comparison/format-runs/56b53f3c5-journey-strict/旅程/sls.received.json",
+      "reuse_historical": false,
+      "old_returned_model_evidence": [
+        {
+          "model": "litellm_proxy/deepseek-v4.1-flash",
+          "source": "artifacts/expanded-refund/llm-c9335c5b-42d6-4418-839e-760e051ce0d0.log"
+        },
+        {
+          "model": "litellm_proxy/deepseek-v4.1-flash",
+          "source": "artifacts/expanded-refund/llm-full-c9335c5b.log"
+        }
+      ],
+      "new_returned_model_evidence": [
+        {
+          "model": "litellm_proxy/deepseek-v4.1-flash",
+          "source": "artifacts/comparison/format-runs/56b53f3c5-journey-strict/旅程/sls.received.json"
+        }
+      ],
+      "parameters": [
+        {
+          "key": "enable_thinking",
+          "old": {
+            "present": false,
+            "value": null
+          },
+          "new": {
+            "present": true,
+            "value": true
+          },
+          "equal": false,
+          "assessment": "DeepSeek场景：不适用豆包force disabled结论；thinking与enable_thinking为不同字段，是否转换/优先级及有效默认须独立证据，不能认定等价。"
+        },
+        {
+          "key": "max_tokens",
+          "old": {
+            "present": false,
+            "value": null
+          },
+          "new": {
+            "present": true,
+            "value": 8192
+          },
+          "equal": false,
+          "assessment": "显式差异；未传不代表默认值相同或不同"
+        },
+        {
+          "key": "model",
+          "old": {
+            "present": true,
+            "value": "deepseek/DeepSeek-R1-250528"
+          },
+          "new": {
+            "present": true,
+            "value": "deepseek-flash"
+          },
+          "equal": false,
+          "assessment": "别名差异须结合重定向快照；不能证明每次同部署"
+        },
+        {
+          "key": "stop",
+          "old": {
+            "present": false,
+            "value": null
+          },
+          "new": {
+            "present": true,
+            "value": []
+          },
+          "equal": false,
+          "assessment": "显式差异；未传不代表默认值相同或不同"
+        },
+        {
+          "key": "stream",
+          "old": {
+            "present": true,
+            "value": true
+          },
+          "new": {
+            "present": false,
+            "value": null
+          },
+          "equal": false,
+          "assessment": "旧stream=true，新未传；当前同步响应链路不应仅改参数为true"
+        },
+        {
+          "key": "user",
+          "old": {
+            "present": true,
+            "value": "ad7b115e-08f6-44b7-80fd-222057e85cf9"
+          },
+          "new": {
+            "present": false,
+            "value": null
+          },
+          "equal": false,
+          "assessment": "旧Dify用户标识不应盲目复制为新侧固定用户"
+        }
+      ]
+    },
+    {
+      "sample": "课程体验",
+      "old_trace": "e02d7092-ee55-4e73-b731-b6f31ef2fb6e.0.3",
+      "new_trace": "6c006207-ade9-4800-b40a-a0db181b4c9c.0.3",
+      "new_source": "artifacts/comparison/format-runs/56b53f3c5/课程体验/sls.received.json",
+      "reuse_historical": false,
+      "old_returned_model_evidence": [
+        {
+          "model": "litellm_proxy/deepseek-v4.1-flash",
+          "source": "artifacts/expanded-refund/llm-full-c2512c21.log"
+        },
+        {
+          "model": "litellm_proxy/deepseek-v4.1-flash",
+          "source": "artifacts/expanded-refund/llm-c2512c21-8fea-48e7-b3e0-aaf9629cc7f4.log"
+        },
+        {
+          "model": "litellm_proxy/deepseek-v4.1-flash",
+          "source": "artifacts/comparison/format-offline-check/historical-test.log"
+        }
+      ],
+      "new_returned_model_evidence": [
+        {
+          "model": "litellm_proxy/deepseek-v4.1-flash",
+          "source": "artifacts/comparison/format-runs/56b53f3c5/课程体验/sls.received.json"
+        }
+      ],
+      "parameters": [
+        {
+          "key": "max_tokens",
+          "old": {
+            "present": false,
+            "value": null
+          },
+          "new": {
+            "present": true,
+            "value": 8192
+          },
+          "equal": false,
+          "assessment": "显式差异；未传不代表默认值相同或不同"
+        },
+        {
+          "key": "model",
+          "old": {
+            "present": true,
+            "value": "deepseek/DeepSeek-R1-250528"
+          },
+          "new": {
+            "present": true,
+            "value": "deepseek-flash"
+          },
+          "equal": false,
+          "assessment": "别名差异须结合重定向快照；不能证明每次同部署"
+        },
+        {
+          "key": "stop",
+          "old": {
+            "present": false,
+            "value": null
+          },
+          "new": {
+            "present": true,
+            "value": []
+          },
+          "equal": false,
+          "assessment": "显式差异；未传不代表默认值相同或不同"
+        },
+        {
+          "key": "stream",
+          "old": {
+            "present": true,
+            "value": true
+          },
+          "new": {
+            "present": false,
+            "value": null
+          },
+          "equal": false,
+          "assessment": "旧stream=true，新未传；当前同步响应链路不应仅改参数为true"
+        },
+        {
+          "key": "user",
+          "old": {
+            "present": true,
+            "value": "b76f6171-90d1-4eb6-bb30-93f2afd581cb"
+          },
+          "new": {
+            "present": false,
+            "value": null
+          },
+          "equal": false,
+          "assessment": "旧Dify用户标识不应盲目复制为新侧固定用户"
+        }
+      ]
+    },
+    {
+      "sample": "NPS",
+      "old_trace": "d2003cc1-b573-4e1c-8918-d3a4d162fe62.0.3",
+      "new_trace": "b7f98851-b9b7-4395-89f9-39a63bbaeeef.0.3",
+      "new_source": "artifacts/comparison/format-runs/56b53f3c5/NPS/sls.received.json",
+      "reuse_historical": false,
+      "old_returned_model_evidence": [
+        {
+          "model": "litellm_proxy/deepseek-v4.1-flash",
+          "source": "artifacts/expanded-refund/llm-full-fa98c35e.log"
+        },
+        {
+          "model": "litellm_proxy/deepseek-v4.1-flash",
+          "source": "artifacts/expanded-refund/llm-fa98c35e-5d23-4b47-9e53-4f9773a64b1d.log"
+        }
+      ],
+      "new_returned_model_evidence": [
+        {
+          "model": "litellm_proxy/deepseek-v4.1-flash",
+          "source": "artifacts/comparison/format-runs/56b53f3c5/NPS/sls.received.json"
+        }
+      ],
+      "parameters": [
+        {
+          "key": "max_tokens",
+          "old": {
+            "present": false,
+            "value": null
+          },
+          "new": {
+            "present": true,
+            "value": 8192
+          },
+          "equal": false,
+          "assessment": "显式差异；未传不代表默认值相同或不同"
+        },
+        {
+          "key": "model",
+          "old": {
+            "present": true,
+            "value": "deepseek/DeepSeek-R1-250528"
+          },
+          "new": {
+            "present": true,
+            "value": "deepseek-flash"
+          },
+          "equal": false,
+          "assessment": "别名差异须结合重定向快照；不能证明每次同部署"
+        },
+        {
+          "key": "stop",
+          "old": {
+            "present": false,
+            "value": null
+          },
+          "new": {
+            "present": true,
+            "value": []
+          },
+          "equal": false,
+          "assessment": "显式差异；未传不代表默认值相同或不同"
+        },
+        {
+          "key": "stream",
+          "old": {
+            "present": true,
+            "value": true
+          },
+          "new": {
+            "present": false,
+            "value": null
+          },
+          "equal": false,
+          "assessment": "旧stream=true，新未传；当前同步响应链路不应仅改参数为true"
+        },
+        {
+          "key": "user",
+          "old": {
+            "present": true,
+            "value": "66dfce4b-7349-43fc-a8a6-332ae76fdecb"
+          },
+          "new": {
+            "present": false,
+            "value": null
+          },
+          "equal": false,
+          "assessment": "旧Dify用户标识不应盲目复制为新侧固定用户"
+        }
+      ]
+    }
+  ],
+  "route_evidence": [
+    "artifacts/llm-gateway-model-mapping.md",
+    "artifacts/trace-recheck-20261123/model-redirect-evidence.json",
+    "artifacts/trace-recheck-20261123/dify-thinking-redirect.json"
+  ],
+  "configuration_evidence": "artifacts/comparison/format-apollo-before.json: per-agent model/params; snapshot, not fresh configuration read",
+  "excluded_kb_agents": [
+    "256918735665808384",
+    "256918818763359232",
+    "261424592068814848",
+    "256995156763347968"
+  ],
+  "changes_made": false,
+  "current_test_control_evidence": {
+    "sources": [
+      "artifacts/comparison/parameter-control-test-safe.json",
+      "artifacts/comparison/parameter-defaults-test-safe.json"
+    ],
+    "defaults": [
+      {
+        "modelCode": "doubao/Doubao-1-5-pro-32k",
+        "redirect": "doubao-seed-2-0-lite-260428",
+        "redirectDefaultParams": {
+          "thinking": {
+            "type": "object",
+            "value": {
+              "type": "disabled"
+            },
+            "force": true
+          }
+        },
+        "deployments": [
+          {
+            "modelParam": "volcengine/ep-20250219161821-75rs8",
+            "defaultParams": {}
+          },
+          {
+            "modelParam": "litellm_proxy/doubao-1-5-pro-32k-250115",
+            "defaultParams": {}
+          }
+        ]
+      },
+      {
+        "modelCode": "doubao-seed-2-0-lite-260428",
+        "redirect": "",
+        "redirectDefaultParams": null,
+        "deployments": [
+          {
+            "modelParam": "litellm_proxy/ep-20260508155629-tkjvf",
+            "defaultParams": {}
+          },
+          {
+            "modelParam": "litellm_proxy/ep-20260721112117-79txh",
+            "defaultParams": {}
+          },
+          {
+            "modelParam": "litellm_proxy/ep-20260721112145-4sdqz",
+            "defaultParams": {}
+          },
+          {
+            "modelParam": "litellm_proxy/doubao-seed-2.0-lite",
+            "defaultParams": {}
+          }
+        ]
+      },
+      {
+        "modelCode": "deepseek-flash",
+        "redirect": "",
+        "redirectDefaultParams": null,
+        "deployments": [
+          {
+            "modelParam": "litellm_proxy/deepseek-v4.1-flash",
+            "defaultParams": {}
+          },
+          {
+            "modelParam": "litellm_proxy/deepseek/deepseek-flash",
+            "defaultParams": {}
+          },
+          {
+            "modelParam": "litellm_proxy/ep_wuxzxwds4_ds-v4-1-flash",
+            "defaultParams": {}
+          }
+        ]
+      }
+    ],
+    "interpretation": "Doubao1.5重定向force thinking.disabled；目标部署defaultParams={}仅证明此层未配置默认值，不证明供应商/SDK默认，不证明同一供应商部署。返回model不能推出同部署。"
+  },
+  "audit_correction": {
+    "old_model_completed": [
+      "画像",
+      "SOP V2",
+      "分层修正后",
+      "素养NPS",
+      "摘要",
+      "退费根因"
+    ],
+    "configuration_action": "仅素养NPS thinking.enabled由主Worker处理，其余保留；本报告仍对应既有实收版本",
+    "note": "旧6组此前仅日志索引遗漏，已补完整聚合与原始来源，非实际证据缺失"
+  }
+}

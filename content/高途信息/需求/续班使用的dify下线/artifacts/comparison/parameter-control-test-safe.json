@@ -1,0 +1,26 @@
+[
+  {
+    "modelCode": "deepseek/DeepSeek-R1-250528",
+    "redirectToModelCode": "deepseek-flash"
+  },
+  {
+    "modelCode": "doubao/Doubao-1-5-pro-32k",
+    "redirectToModelCode": "doubao-seed-2-0-lite-260428"
+  },
+  {
+    "modelCode": "doubao/Doubao-Seed-1-6",
+    "redirectToModelCode": "doubao-seed-2-0-lite-260428"
+  },
+  {
+    "modelCode": "doubao-seed-2-0-lite-260428",
+    "redirectToModelCode": ""
+  },
+  {
+    "modelCode": "deepseek-v4-flash-0731",
+    "redirectToModelCode": "deepseek-flash"
+  },
+  {
+    "modelCode": "deepseek-flash",
+    "redirectToModelCode": ""
+  }
+]

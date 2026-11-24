@@ -1,0 +1,77 @@
+{
+  "id": "86233d1a-bddf-4a15-a229-c90b6a061c57",
+  "name": "降退费服务建议话术库",
+  "description": "降退费服务建议话术库，根据根因分类匹配对应的服务建议话术",
+  "provider": "vendor",
+  "permission": "only_me",
+  "data_source_type": "teable_import",
+  "indexing_technique": "high_quality",
+  "app_count": 5,
+  "document_count": 1,
+  "word_count": 24852,
+  "created_by": "59927",
+  "created_at": 1757910613,
+  "updated_by": "59927",
+  "updated_at": 1760606265,
+  "embedding_model": "text-embedding-v4",
+  "embedding_model_provider": "langgenius/tongyi/tongyi",
+  "embedding_available": true,
+  "retrieval_model_dict": {
+    "search_method": "full_text_search",
+    "reranking_enable": true,
+    "reranking_mode": "reranking_model",
+    "reranking_model": {
+      "reranking_provider_name": "langgenius/tongyi/tongyi",
+      "reranking_model_name": "gte-rerank-v2"
+    },
+    "weights": {
+      "weight_type": "customized",
+      "keyword_setting": {
+        "keyword_weight": 0.3
+      },
+      "vector_setting": {
+        "vector_weight": 0.7,
+        "embedding_model_name": "text-embedding-v4",
+        "embedding_provider_name": "langgenius/tongyi/tongyi"
+      }
+    },
+    "top_k": 3,
+    "score_threshold_enabled": true,
+    "score_threshold": 0.15
+  },
+  "tags": [],
+  "doc_form": "text_model",
+  "external_knowledge_info": {
+    "external_knowledge_id": null,
+    "external_knowledge_api_id": null,
+    "external_knowledge_api_name": null,
+    "external_knowledge_api_endpoint": null
+  },
+  "external_retrieval_model": {
+    "top_k": 3,
+    "score_threshold": 0.15,
+    "score_threshold_enabled": true
+  },
+  "doc_metadata": [],
+  "built_in_field_enabled": false,
+  "pipeline_id": null,
+  "runtime_mode": "general",
+  "chunk_structure": null,
+  "icon_info": {
+    "icon_type": null,
+    "icon": null,
+    "icon_background": null,
+    "icon_url": null
+  },
+  "is_published": false,
+  "total_documents": 1,
+  "total_available_documents": 1,
+  "enable_api": true,
+  "space_ids": [
+    "spcAm3oupwKuWRMD8UV",
+    "spczjG62GXkZ0ZSOBYS"
+  ],
+  "partial_member_list": [],
+  "edit_permission": 0,
+  "delete_permission": 0
+}
