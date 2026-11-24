@@ -1,0 +1,30 @@
+{
+  "ok": true,
+  "data": 1362995,
+  "code": 200,
+  "msg": "success",
+  "resolution": {
+    "findServiceCode": {
+      "found": true,
+      "source": "builtin",
+      "serviceCode": "baijia.gaotu.Business.operation-workbench.student-data"
+    },
+    "pipelineTemplateId": 1,
+    "getEnvId": {
+      "found": true,
+      "subEnv": "test-gtbg-dev-1",
+      "envInfoId": 313,
+      "envName": "",
+      "logicEnv": "dev"
+    }
+  },
+  "serviceCode": "baijia.gaotu.Business.operation-workbench.student-data",
+  "envInfoId": 313,
+  "pipelineTemplateId": 1,
+  "pollCmd": "/Users/gaotu/.local/feishu-bot/venv/bin/python /Users/gaotu/.claude/skills/deploy-image/poll_pipeline.py --pipeline-id 1362995 --service-code baijia.gaotu.Business.operation-workbench.student-data --pipeline-template-id 1 --sub-env test-gtbg-dev-1 --namespace test-gtbg-dev-1 --pod-environment dev",
+  "poll": {
+    "launched": true,
+    "pid": 29016,
+    "logFile": "/var/folders/fn/g8y_kqcx68zggzsfknmzdkrm0000gn/T/qingzhou_poll_1362995.log"
+  }
+}

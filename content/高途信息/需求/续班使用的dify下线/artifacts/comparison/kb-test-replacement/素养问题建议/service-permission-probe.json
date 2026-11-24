@@ -1,0 +1,23 @@
+{
+  "http": 403,
+  "dataset_id": "a195df23-ba87-4ecb-b9f3-7d1c3a5a9b22",
+  "request": {
+    "query": "答疑反馈慢",
+    "retrieval_model": {
+      "search_method": "full_text_search",
+      "reranking_enable": false,
+      "top_k": 1,
+      "score_threshold_enabled": false
+    }
+  },
+  "headers": {
+    "X-Env": "production",
+    "GAPM-TraceID": "b89487b5-2352-4414-a015-c47d100452ec.0.1"
+  },
+  "error": {
+    "code": "forbidden",
+    "message": "您没有权限查询此知识库",
+    "status": 403
+  },
+  "record_count": 0
+}

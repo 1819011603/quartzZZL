@@ -1,0 +1,51 @@
+[
+  {
+    "scene": "高中降退费",
+    "new_trace": "dcec0f6e-0074-4169-b3b1-323e98187ba8.0.3",
+    "messages_equal": true,
+    "parameters_equal": true,
+    "new_parameters": {
+      "stream": true,
+      "temperature": 0.7,
+      "model": "deepseek-flash"
+    },
+    "usage": {
+      "completion_tokens": 1706,
+      "prompt_tokens": 952,
+      "cost": 0.0041547456,
+      "completion_tokens_details": {
+        "reasoning_tokens": 1509
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 896
+      },
+      "total_tokens": 2658
+    }
+  },
+  {
+    "scene": "素养降退费",
+    "new_trace": "e04638d2-48f8-4937-a9e2-8102755c45ce.0.3",
+    "messages_equal": true,
+    "parameters_equal": true,
+    "new_parameters": {
+      "stream": true,
+      "temperature": 0.7,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "enabled"
+      }
+    },
+    "usage": {
+      "completion_tokens": 3145,
+      "prompt_tokens": 953,
+      "cost": 0.0080831056,
+      "completion_tokens_details": {
+        "reasoning_tokens": 2953
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 896
+      },
+      "total_tokens": 4098
+    }
+  }
+]

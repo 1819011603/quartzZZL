@@ -1,32 +1,24 @@
-# TEST知识库替换实验（进行中）
+# TEST知识库替换结果：2项通过，2项受阻
 
-基线263ba48ad2e476e7092093d36414280dddef2ed6d，worktree干净。生产仅配置只读及已授权原库检索；生成在TEST。已复用现有私有dataset凭据，不重复创建。
+当前代码47b3dcb7e已提交推送并部署TEST。四生产应用继续Dify，无在途操作。
 
-|对象|旧机制|当前新实现差距|本轮验收|
-|---|---|---|---|
-|精品降退费|advanced-chat固定code→检索→LLM→answer|已有隔离入口仅追加片段到user，不是旧工作流完整消息模板|同输入实际旧新messages/参数及检索证据|
-|素养降退费|同图结构，使用自身模板|同上，不先假设模板相同|独立实收或明确等价依据|
-|高中问题建议|agent-chat/function_call＋dataset|当前无有界工具执行循环|实际tools调用及tool结果循环对照|
-|素养问题建议|同类agent但学部配置独立|同上|不能用固定工作流证据替代|
+## 47b3dcb7两项workflow新旧实收结果
 
-历史发现待本轮原样TEST复验：降退费LLM context绑定检索结果，但模板没有context占位符；严格复刻可能不消费知识。保留线上system/角色/参数，不擅自将增强拼接称为等价。既有12例不重跑。
+流水线1362995部署成功，新Pod student-data-5ffb5bdc94-fn6f6/10.218.236.246 Running/Eureka UP，实际commit47b3dcb7。同一业务query/同TEST库，新Java入口完成真实检索→模板渲染→网关生成，两项返回完整answer及usage。高中trace dcec0f6e-0074-4169-b3b1-323e98187ba8.0.3；素养trace e04638d2-48f8-4937-a9e2-8102755c45ce.0.3。完整旧新messages及参数断言见workflow-comparison.json及各目录old/new-llm-received.json；这是保留旧模板未消费context的严格对照，不是知识使用增强。
 
-现有DifyDatasetGatewayTestService仅检索后追加“##知识库检索结果”并执行普通动态prompt，未设置RunUser。当前只完成现状取证与TEST应用/库盘点，无代码、部署或新业务生成，本报告不表示替换已通过。
+当前head AICR任务2403已创建后取消，非通过，无findings可处理；证据aicr-current.log。
 
-## 已完成旧侧真实前置实验
+两问题建议独立配置已读：业务应用高中256919247659254784、素养256919351674848256；Dify pre_prompt均空、max_iteration=1，业务prompt来自prompt_config各1517字。高中dataset5b040e52-8041-48af-b7d3-acefc14bc130且rerank=true；素养dataseta195df23-ba87-4ecb-b9f3-7d1c3a5a9b22且rerank=false。各自Console dataset详情实际返回Unable to verify space permissions，见对应prod-dataset.json，未用降退费库冒充，尚待正常Service API权限核实与旧agent复制工具循环实验。
 
-两项正式线上发布workflow已分别只读取得，复制为TEST advanced-chat应用并发布。唯二环境替换：旧模型改已确认deepseek-flash、dataset绑定既有TEST隔离库0105aec9；不宣称该库索引与生产对等。统一输入见kb-test-replacement/shared-business-input.txt。
+## 两问题建议正式库权限实测
 
-两项调用均HTTP200/event=message，code、knowledge-retrieval、LLM、answer全部succeeded，检索各4片段。node-executions.process_data.prompts提供完整实际LLM消息；两者都是单system，检索片段未进入prompt，确认旧模板context未消费问题，不能用新追加片段入口冒称严格复刻。高中temperature=0.7，素养另有enable_thinking=true，必须分开参数。
+已用本人的有效生产dataset key从本机受控Service API分别查询两个指定库，具体HTTP/code/trace见各目录service-permission-probe.json。这不同于降退费原库86233已验证通过；不得拿别的库片段完成旧新对照。若查询拒绝，在取得相应库的正常查询权限或获授权原库导出内容前，不能完成这两项真实语料旧agent工具调用对照，不借他人身份/凭据提权。
 
-证据old-workflow-summary.json及各场景prod-published.json、test-draft-request.json、old-request/response、old-node-executions.json、old-actual-messages.json。
 
-## 续接（上下文交接，不是业务阻塞）
+## 未完成与具体条件
 
-- 本轮无代码修改/commit/部署，worktree仍263ba48a干净。TEST两个workflow应用已创建发布，不能重复创建；id在old-workflow-summary.json。TEST app key安全存.codex/private/dify-dataset-migration下对应场景-test-app-key.json，0600，不入归档。
-- 新侧DifyDatasetGatewayTestService需最小支持固定workflow消息契约（原因提取、检索、按旧system模板渲染，不无条件附加知识；显式context增强另列实验），RunUser取现有SubClazzHelper真实来源。修改前已有真实前置证据。
-- 接下来取得两旧侧LiteLLM实收非messages参数：入口response headers/EndUser或workflowRun关联；持久化prompts已可用，不要重跑旧业务。
-- 对同一TEST库同输入配置Java新入口并实跑，比较完整messages及指定参数；修正/测试后一次commit+push+TEST部署，再定向复验。
-- 高中/素养问题建议agent场景尚未读取完整线上独立发布配置、未复制运行；需要保留tool schema/tool调用/tool结果与有界循环，不复用废弃降退费agent当基准。
-- source skills已读requirement-docs/student-data-dev/dev-anti-rework、git-branch-convention；原仓库AGENTS.md已定位并读前65行，编码前读完整。worktree无AGENTS，适用原仓库规范。不创建子agent。
-- 可复用脚本/tmp/kb_workflow_copy.py、kb_workflow_publish.py、kb_workflow_run.py、kb_collect_old.py。publish脚本不具备key创建幂等性，不可重跑；run脚本有response存在跳过。所有当前操作已结束，无在途句柄。
+高中问题建议库5b040e52及素养问题建议库a195df23使用本人有效key均HTTP403，错误为“您没有权限查询此知识库”。需这两个库的正常查询权限或获授权原库内容后继续真实语料工具循环对照。工具循环替换尚未实现验证，不把两workflow成功推广到四场景。
+
+## 已验证边界
+
+两workflow以同业务输入、同隔离TEST库和已确认替代模型deepseek-flash对照，完整messages及参数相等；检索成功但旧模板未消费context，新侧保留该行为。不是生产索引召回等价或知识使用增强。4项JUnit及编译通过，AICR2403取消无findings。完整旧新请求和输出已同步飞书revision151，回读见doc-readback.json。过程证据移至implementation-history.md，仅供追溯，不作为当前状态。
