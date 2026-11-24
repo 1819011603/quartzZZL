@@ -1,0 +1,8 @@
+{
+  "podName": "student-data-5f688c5bfb-xgx76",
+  "podIP": "10.218.249.191",
+  "namespace": "test-gtbg-dev-1",
+  "status": "Running",
+  "imageName": "feature-xuban-dify-offline-263ba48a-20261124152047",
+  "eurekaStatus": "UP"
+}

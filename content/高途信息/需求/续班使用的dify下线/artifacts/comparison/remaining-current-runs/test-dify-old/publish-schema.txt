@@ -1,0 +1,11 @@
+grep -n -E 'def post|add_argument|add_resource|require_permissions|check_space_admin' /apps/srv/instance/controllers/console/app/app_publish.py
+root@dify-api-659675959b-bl78k:/apps/srv/instance# grep -n -E 'def post|add_argument|add_resource|require_permissions|check_space_admin' /apps/srv/instance/controllers/console/app/app_publish.py
+16:from extensions.ext_permission import PermissionTag, require_permissions
+22:from services.gt_app_permission import check_space_admin_permission
+450:    @require_permissions(PermissionTag.AGENT_MANAGE)
+452:    def post(self, app_model) -> dict[str, list[dict[str, Any]]]:
+467:        parser.add_argument('platform_list', type=list, required=True, location='json')
+468:        parser.add_argument('version', type=str, required=True, location='json')
+595:        has_permission = check_space_admin_permission(current_user, space_id)
+785:api.add_resource(AppPublishApi, '/apps/<string:app_id>/app-publish') 
+root@dify-api-659675959b-bl78k:/apps/srv/instance# 

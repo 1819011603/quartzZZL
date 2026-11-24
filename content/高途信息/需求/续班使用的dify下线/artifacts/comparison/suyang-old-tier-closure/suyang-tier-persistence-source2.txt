@@ -1,0 +1,39 @@
+sed -n '280,330p' /apps/srv/instance/controllers/console/app/message.py; grep -n -E 'message_detail_fields|message.*Raw|prompt' /apps/srv/instance/fields/conversation_fields.py; grep -n -E 'message.message =|message=|prompt_messages' /apps/srv/instance/core/app/task_pipeline/message_cycle_manage.py | head -25
+root@dify-api-659675959b-bl78k:/apps/srv/instance# sed -n '280,330p' /apps/srv/instance/controllers/console/app/message.py; grep -n -E 'message_detail_fields|message.*Raw|prompt' /apps/srv/instance/fields/conversation_fields.py; grep -n -E 'message.message =|message=|prompt_messages' /apps/srv/instance/core/app/task_pipeline/message_cycle_manage.py | head -25
+
+        return {"data": questions}
+
+
+@console_ns.route("/apps/<string:app_id>/messages/<uuid:message_id>")
+class MessageApi(Resource):
+    @api.doc("get_message")
+    @api.doc(description="Get message details by ID")
+    @api.doc(params={"app_id": "Application ID", "message_id": "Message ID"})
+    @api.response(200, "Message retrieved successfully", message_detail_fields)
+    @api.response(404, "Message not found")
+    @get_app_model
+    @setup_required
+    @login_required
+    @account_initialization_required
+    @marshal_with(message_detail_fields)
+    def get(self, app_model, message_id: str):
+        message_id = str(message_id)
+
+        message = db.session.query(Message).where(Message.id == message_id, Message.app_id == app_model.id).first()
+
+        if not message:
+            raise NotFound("Message Not Exists.")
+
+        return message
+
+
+# api.add_resource(MessageAnnotationApi, "/apps/<uuid:app_id>/annotations")70:message_detail_fields = {
+75:    "message": fields.Raw,
+103:    "pre_prompt": fields.String,
+109:    "pre_prompt": fields.String,
+112:simple_message_detail_fields = {
+134:    "message": fields.Nested(simple_message_detail_fields, attribute="first_message"),
+145:conversation_message_detail_fields = {
+153:    "message": fields.Nested(message_detail_fields, attribute="first_message"),
+grep: /apps/srv/instance/core/app/task_pipeline/message_cycle_manage.py: No such file or directory
+root@dify-api-659675959b-bl78k:/apps/srv/instance# 

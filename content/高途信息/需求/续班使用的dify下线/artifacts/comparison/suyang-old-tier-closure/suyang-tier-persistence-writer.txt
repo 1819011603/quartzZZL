@@ -1,0 +1,35 @@
+grep -R -n -E 'message.message =|message.message=|message=prompt|message =.*prompt' /apps/srv/instance/core/app /apps/srv/instance/core/agent | head -30; grep -n -A8 'def message' /apps/srv/instance/models/model.py | head -30
+root@dify-api-659675959b-bl78k:/apps/srv/instance# grep -R -n -E 'message.message =|message.message=|message=prompt|message =.*prompt' /apps/srv/instance/core/app /apps/srv/instance/core/agent | head -30; grep -n -A8 'def message' /apps/srv/instance/models/model.py | head -30
+/apps/srv/instance/core/app/task_pipeline/easy_ui_based_generate_task_pipeline.py:382:        message.message = PromptMessageUtil.prompt_messages_to_prompt_for_saving(
+/apps/srv/instance/core/agent/fc_agent_runner.py:490:            system_message = next((message for message in self.history_prompt_messages 
+/apps/srv/instance/core/agent/cot_chat_agent_runner.py:80:        system_message = self._organize_system_prompt()
+875:    def message_count(self):
+876-        return db.session.query(Message).where(Message.conversation_id == self.id).count()
+877-
+878-    @property
+879-    def user_feedback_stats(self):
+880-        like = (
+881-            db.session.query(MessageFeedback)
+882-            .where(
+883-                MessageFeedback.conversation_id == self.id,
+--
+1267:    def message_metadata_dict(self) -> dict[str, Any]:
+1268-        return json.loads(self.message_metadata) if self.message_metadata else {}
+1269-
+1270-    @property
+1271-    def agent_thoughts(self) -> list["MessageAgentThought"]:
+1272-        return (
+1273-            db.session.query(MessageAgentThought)
+1274-            .where(MessageAgentThought.message_id == self.id)
+1275-            .order_by(MessageAgentThought.position.asc())
+--
+1284:    def message_files(self) -> list[dict[str, Any]]:
+1285-        from factories import file_factory
+1286-
+1287-        message_files = db.session.scalars(select(MessageFile).where(MessageFile.message_id == self.id)).all()
+1288-        current_app = db.session.query(App).where(App.id == self.app_id).first()
+1289-        if not current_app:
+1290-            raise ValueError(f"App {self.app_id} not found")
+1291-
+1292-        files: list[File] = []
+root@dify-api-659675959b-bl78k:/apps/srv/instance# 

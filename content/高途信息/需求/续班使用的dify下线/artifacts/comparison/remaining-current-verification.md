@@ -66,3 +66,23 @@ Apollo：https://apollo-portal.baijia.com/config.html#/appid=student-data&env=TE
 - 未调用生产生成、未改生产配置，四知识库仍Dify。无新增代码、无部署、无飞书修改。
 
 剩余强证据缺口：四素养对应旧Dify独立实际messages（当前没有），自动业务老师来源链与当前Pod镜像SHA强绑定。禁止用再次成功生成代替这些证据。
+
+## 最后续接：真正TEST旧链路与自动老师来源
+
+- 当前Pod版本缺口由主Worker闭合，引用 `../current-version-readback.json`（相对本报告应为 `current-version-readback.json`），不再列本子任务缺口。
+- 当前业务Helper真实查询：`SubClazzHelper#getRunUserByClazzAndUser(500775385189890048,7404351741)` 返回 `gongxuemeng@gaotu.cn`，trace `22169ac0-fb3e-458c-9123-451714b206ca.0.3`；证据remaining-current-runs/auto-teacher-current.json。263ba48a AiSopAnalysisGenerator.java:140自动调用此Helper并将RunUser交syncRequestTaskV2。结合之前费用头实收闭合“业务老师来源→传递”分段证据，未声称本轮一次完整SOP业务触发全链追踪。
+
+|旧素养独立样本|实际结果|具体剩余条件|
+|---|---|---|
+|分层|真正TEST新建应用、复制原model_config、版本1发布到TEST ai-base；Service API 200、message和usage成功，trace 35415105-3ce2-4716-9ab8-94e7fb1cc087.0.3|该trace TEST SLS/TLS无LiteLLM完整实收；插件invoke请求日志在约10240字符截断，不能逐字比较全messages|
+|根因|创建成功，复制原model_config时HTTP400|model.name must be in the specified model list；原deepseek-v4-flash-0731不可选|
+|旅程|创建成功，复制原model_config时HTTP400|同上，独立请求证据已保存|
+|体验|创建成功，复制原model_config时HTTP400|同上，独立请求证据已保存|
+
+证据目录 remaining-current-runs/test-dify-old/，summary.json、各configure.json、tier-response.json、tier-publish.json。Console响应x-env=test；真实TEST Pod dify-api-659675959b-bl78k。没有向os生产Console复制/写入，没有修改模型名/路由以凑通过；三个未配置完成的TEST草稿保留，分层TEST应用已发布。仅TEST创建了当前身份自己的应用key，key文件留/tmp权限0600，未入归档。未联系他人/发布飞书渠道。
+
+现在真正外部缺口是TEST Dify可用模型列表不接受三个旧配置模型，及分层完整下游请求日志不可得；不再把“归档没有”本身当阻塞。补齐需要正常TEST模型提供者注册/授权（主Worker决定，当前不改model边界内不可实施），分层需要可关联且不截断的下游请求观测。所有本轮调用已结束。
+
+## 素养分层旧messages缺口已闭合（覆盖此前日志截断阻塞）
+
+只读同messageId的真正TEST Console详情取得完整持久化prompt，单user 8414字，与新LiteLLM实收逐字相等。当前TEST源码证明来源为本次llm_result.prompt_messages，纯文本保存不截断。详见[suyang-old-tier-evidence-closure.md](suyang-old-tier-evidence-closure.md)。本轮无新生成、配置修改；素养分层不再列剩余阻塞。三项模型名单问题不属本轮范围。

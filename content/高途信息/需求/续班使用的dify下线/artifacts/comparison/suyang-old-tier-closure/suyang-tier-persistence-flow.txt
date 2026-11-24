@@ -1,0 +1,35 @@
+sed -n '365,395p' /apps/srv/instance/core/app/task_pipeline/easy_ui_based_generate_task_pipeline.py; grep -R -n 'def prompt_messages_to_prompt_for_saving' /apps/srv/instance/core | head -5
+root@dify-api-659675959b-bl78k:/apps/srv/instance# sed -n '365,395p' /apps/srv/instance/core/app/task_pipeline/easy_ui_based_generate_task_pipeline.py; grep -R -n 'def prompt_messages_to_prompt_for_saving' /apps/srv/instance/core | head -5
+    def _save_message(self, *, session: Session, trace_manager: TraceQueueManager | None = None):
+        """
+        Save message.
+        :return:
+        """
+        llm_result = self._task_state.llm_result
+        usage = llm_result.usage
+
+        message_stmt = select(Message).where(Message.id == self._message_id)
+        message = session.scalar(message_stmt)
+        if not message:
+            raise ValueError(f"message {self._message_id} not found")
+        conversation_stmt = select(Conversation).where(Conversation.id == self._conversation_id)
+        conversation = session.scalar(conversation_stmt)
+        if not conversation:
+            raise ValueError(f"Conversation {self._conversation_id} not found")
+
+        message.message = PromptMessageUtil.prompt_messages_to_prompt_for_saving(
+            self._model_config.mode, self._task_state.llm_result.prompt_messages
+        )
+        message.message_tokens = usage.prompt_tokens
+        message.message_unit_price = usage.prompt_unit_price
+        message.message_price_unit = usage.prompt_price_unit
+        message.answer = (
+            PromptTemplateParser.remove_template_variables(cast(str, llm_result.message.content).strip())
+            if llm_result.message.content
+            else ""
+        )
+        message.updated_at = naive_utc_now()
+        message.answer_tokens = usage.completion_tokens
+        message.answer_unit_price = usage.completion_unit_price
+/apps/srv/instance/core/prompt/utils/prompt_message_util.py:18:    def prompt_messages_to_prompt_for_saving(model_mode: str, prompt_messages: Sequence[PromptMessage]):
+root@dify-api-659675959b-bl78k:/apps/srv/instance# 

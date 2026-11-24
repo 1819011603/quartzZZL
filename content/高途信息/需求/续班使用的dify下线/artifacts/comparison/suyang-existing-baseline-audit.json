@@ -1,0 +1,38 @@
+[
+  {
+    "scene": "素养根因",
+    "config_system_chars": 2254,
+    "new_system_equals_config_plus_newline": true,
+    "new_messages_equal_historical_other_department": true,
+    "historical_other_department_trace": "a32fe4b6-6269-4882-8d39-81c76f8ca23e.0.3",
+    "new_roles": [
+      "system",
+      "user"
+    ],
+    "old_independent_runtime": false
+  },
+  {
+    "scene": "素养旅程",
+    "config_system_chars": 2482,
+    "new_system_equals_config_plus_newline": true,
+    "new_messages_equal_historical_other_department": false,
+    "historical_other_department_trace": "bfd44413-31f5-493d-904b-e670783ff2c4.0.3",
+    "new_roles": [
+      "system",
+      "user"
+    ],
+    "old_independent_runtime": false
+  },
+  {
+    "scene": "素养体验",
+    "config_system_chars": 2381,
+    "new_system_equals_config_plus_newline": true,
+    "new_messages_equal_historical_other_department": false,
+    "historical_other_department_trace": "e02d7092-ee55-4e73-b731-b6f31ef2fb6e.0.3",
+    "new_roles": [
+      "system",
+      "user"
+    ],
+    "old_independent_runtime": false
+  }
+]

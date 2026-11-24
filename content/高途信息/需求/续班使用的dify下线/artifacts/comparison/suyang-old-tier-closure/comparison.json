@@ -1,0 +1,13 @@
+{
+  "equal": true,
+  "old_message_id": "a896fdcc-cd9b-4642-998a-4ed013ab3314",
+  "conversation_id": "30550944-16b8-44f1-9177-3cfec6c16261",
+  "old_trace": "35415105-3ce2-4716-9ab8-94e7fb1cc087.0.3",
+  "new_trace": "9a5b2c21-e465-45fb-b0c4-e24f46a18140.0.3",
+  "lengths": [
+    8414
+  ],
+  "sha256": [
+    "3f248fde80e0003f1bc60e6331ca1252dd0eae49a606cf4442862ee301bddc2f"
+  ]
+}

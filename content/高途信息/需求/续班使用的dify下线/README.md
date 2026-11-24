@@ -96,3 +96,15 @@ revision56及91012878阶段曾记录“仅SOP user相等、其他场景包装不
 ## 正式知识库当前接入条件（2026-11-24补查）
 
 原库可见、enable_api=true，关联本人owner的续班AI空间；旧403不再是当前阻塞。本人正常Console生产dataset key列表实际为0条，正式Service检索缺当前调用主体获授权的生产dataset凭据。本轮不创建生产key或使用他人key，未发起生产生成。证据与trace见[当前接入条件](artifacts/comparison/remaining-kb-access.md)。
+
+## 当前剩余项推进结果（2026-11-24最终补验）
+
+本轮已完成八历史场景当前版本参数修正与同入口复验，以及四素养独立TEST应用的格式修正和复验，共12例均成功；另素养NPS既有证据复用。八例完整messages已由主Worker直接对照旧基线复算相等。当前Pod镜像263ba48a已回读。模型及callerRoute未改，无代码改动或新增部署。
+
+四素养旧对照已实际尝试：分层旧Dify成功，但完整请求日志截断；根因/旅程/体验旧配置被TEST Dify原模型名单校验HTTP400拒绝。生产知识库原库可见、API启用，当前本人正常dataset key列表为0，缺获授权的生产Service凭据。上述条件未解决前不能称整体等价。老师Helper真实查询与RunUser传递已分段验证，不称全部业务入口端到端回放。
+
+证据：[详细逐场景结果](artifacts/comparison/remaining-current-verification.md)、[版本回读](artifacts/comparison/current-version-readback.json)、[知识库条件](artifacts/comparison/remaining-kb-access.md)。TEST新样本及配置保留；旧分层TEST应用已发布，三旧应用未配置完成草稿保留，当前身份TEST key仅本机0600保存。所有调用和监听已结束，无在途任务。生产未修改、生成、切换或上线。
+
+## 素养旧基准补证纠正
+
+素养分层已通过同messageId的TEST Dify完整持久化prompt闭合旧新messages逐字对照（8414字）；此前将日志截断列为外部阻塞过早，现已移除。本轮仅只读，无新生成。三项退费素养新system均与各自Dify模板加换行相等，根因完整messages另与精品旧样本相等；这些不能替代素养独立旧执行。旅程模板版本与体验user后处理差异使历史样本不能直接借作全量基准。详见[分层闭合](artifacts/comparison/suyang-old-tier-evidence-closure.md)、[既有基准适用性](artifacts/comparison/suyang-existing-baseline-audit.md)。

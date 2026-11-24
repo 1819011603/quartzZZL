@@ -1,0 +1,20 @@
+{
+  "url": "https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service",
+  "trafficEnv": "test-gtbg-dev-1",
+  "httpStatus": 200,
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.student.data.domain.ai.helper.SubClazzHelper#getRunUserByClazzAndUser",
+    "params": [
+      "500775385189890048",
+      "7404351741"
+    ]
+  },
+  "curl": "curl -sk \\\n  -x \"${AGENT_PROXY_URL:-http://127.0.0.1:8888}\" \\\n  'https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-1' \\\n  -H 'identification: microLessonStudent' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.student.data.domain.ai.helper.SubClazzHelper#getRunUserByClazzAndUser\", \"params\": [\"500775385189890048\", \"7404351741\"]}'",
+  "traceId": "22169ac0-fb3e-458c-9123-451714b206ca.0.3",
+  "gapmApp": "student-data",
+  "identification": "microLessonStudent",
+  "rvoCode": 0,
+  "result": {
+    "email": "gongxuemeng@gaotu.cn"
+  }
+}

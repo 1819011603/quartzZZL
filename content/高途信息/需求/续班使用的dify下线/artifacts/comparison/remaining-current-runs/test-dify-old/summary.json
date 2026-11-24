@@ -1,0 +1,43 @@
+{
+  "true_test_console": "https://test-os.baijia.com/dify/api",
+  "true_test_service": "https://test-dify-open.baijia.com/dify/api/v1",
+  "tier": {
+    "app_id": "spcynF7tYh4ROXnG8Xg_b3577d0a-7120-4ea6-8f9a-f8d440e299fa",
+    "trace": "35415105-3ce2-4716-9ab8-94e7fb1cc087.0.3",
+    "http": 200,
+    "complete_llm_request_captured": false,
+    "plugin_request_truncated_at": 10240
+  },
+  "blocked": [
+    {
+      "scene": "素养根因",
+      "http": 400,
+      "response": {
+        "code": "invalid_param",
+        "message": "model.name must be in the specified model list",
+        "status": 400
+      },
+      "model": "deepseek-v4-flash-0731"
+    },
+    {
+      "scene": "素养旅程",
+      "http": 400,
+      "response": {
+        "code": "invalid_param",
+        "message": "model.name must be in the specified model list",
+        "status": 400
+      },
+      "model": "deepseek-v4-flash-0731"
+    },
+    {
+      "scene": "素养体验",
+      "http": 400,
+      "response": {
+        "code": "invalid_param",
+        "message": "model.name must be in the specified model list",
+        "status": 400
+      },
+      "model": "deepseek-v4-flash-0731"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+HTTP/1.1 200 Connection established
+
+HTTP/2 200 
+server: nginx
+date: Tue, 24 Nov 2026 11:30:42 GMT
+content-type: application/json
+content-length: 90
+access-control-allow-origin: https://test-os.baijia.com
+access-control-expose-headers: X-Env, X-Version
+access-control-allow-credentials: true
+x-version: 1.10.0
+x-env: test
+gapm-traceid: 74db8dcd-b0b4-49e5-a66c-901f088d335b.0.3
+gapm-appid: dify-api
+access-control-allow-origin: *
+access-control-allow-methods: GET, POST, OPTIONS, HEAD
+access-control-allow-headers: *
+cache-control: no-store
+
