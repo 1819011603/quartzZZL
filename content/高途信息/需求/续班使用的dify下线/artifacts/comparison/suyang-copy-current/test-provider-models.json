@@ -1,0 +1,1106 @@
+{
+    "data": [
+        {
+            "id": "7e5ed21c-2086-4816-9582-4026ad02e9aa",
+            "model": "text-embedding-3-large",
+            "label": {
+                "zh_Hans": "text-embedding-3-large",
+                "en_US": "text-embedding-3-large"
+            },
+            "model_type": "text-embedding",
+            "features": null,
+            "fetch_from": "customizable-model",
+            "model_properties": {
+                "context_size": 4096,
+                "max_chunks": 1
+            },
+            "deprecated": false,
+            "status": "disabled",
+            "load_balancing_enabled": false,
+            "has_invalid_load_balancing_configs": false,
+            "gt_configs": {
+                "description": "6777",
+                "model_provider": "OpenAI",
+                "model_provider_icon": "https:\/\/gh-fe.oss-cn-beijing.aliyuncs.com\/ai-base\/model\/openai.png"
+            },
+            "tags": [
+                {
+                    "id": "54051ae0-cba4-4b35-80bf-628f4adc2d25",
+                    "name": "\u5de5\u5177\u8c03\u7528"
+                },
+                {
+                    "id": "e414c6e9-74c6-47a3-8cbf-41cfcd99a32c",
+                    "name": "\u8054\u7f51\u641c\u7d22"
+                }
+            ],
+            "order_num": 1,
+            "plugin_deprecated": false,
+            "provider": {
+                "provider": "langgenius\/openai_api_compatible\/openai_api_compatible",
+                "label": {
+                    "zh_Hans": "OpenAI-API-compatible",
+                    "en_US": "OpenAI-API-compatible"
+                },
+                "icon_small": {
+                    "zh_Hans": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/zh_Hans",
+                    "en_US": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/en_US"
+                },
+                "icon_large": null,
+                "supported_model_types": [
+                    "llm",
+                    "rerank",
+                    "text-embedding",
+                    "speech2text",
+                    "tts"
+                ],
+                "models": [],
+                "tenant_id": "550e8400-e29b-41d4-a716-446655440000"
+            }
+        },
+        {
+            "id": "1d0e2a56-e735-44bc-a69a-b978d1ccce19",
+            "model": "doubao\/Doubao-Seed-1-6",
+            "label": {
+                "zh_Hans": "Doubao-Seed-1-6-modified666",
+                "en_US": "Doubao-Seed-1-6-modified666"
+            },
+            "model_type": "llm",
+            "features": [
+                "multi-tool-call",
+                "stream-tool-call",
+                "vision",
+                "structured-output"
+            ],
+            "fetch_from": "customizable-model",
+            "model_properties": {
+                "context_size": 256000,
+                "mode": "chat"
+            },
+            "deprecated": false,
+            "status": "active",
+            "load_balancing_enabled": false,
+            "has_invalid_load_balancing_configs": false,
+            "gt_configs": {
+                "description": "test1",
+                "model_provider": "\u8c46\u5305\u5927\u6a21\u578b",
+                "model_provider_icon": "https:\/\/gh-fe.oss-cn-beijing.aliyuncs.com\/ai-base\/model\/doubao-color.png"
+            },
+            "tags": [
+                {
+                    "id": "e70a5668-2a3c-4123-b5cd-17ca345cdd31",
+                    "name": "\u6df1\u5ea6\u601d\u8003"
+                },
+                {
+                    "id": "f60119da-4001-471a-8719-f84b0f040354",
+                    "name": "\u56fe\u7247\u7406\u89e3"
+                },
+                {
+                    "id": "e414c6e9-74c6-47a3-8cbf-41cfcd99a32c",
+                    "name": "\u8054\u7f51\u641c\u7d22"
+                },
+                {
+                    "id": "54051ae0-cba4-4b35-80bf-628f4adc2d25",
+                    "name": "\u5de5\u5177\u8c03\u7528"
+                }
+            ],
+            "order_num": 2,
+            "plugin_deprecated": false,
+            "provider": {
+                "provider": "langgenius\/openai_api_compatible\/openai_api_compatible",
+                "label": {
+                    "zh_Hans": "OpenAI-API-compatible",
+                    "en_US": "OpenAI-API-compatible"
+                },
+                "icon_small": {
+                    "zh_Hans": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/zh_Hans",
+                    "en_US": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/en_US"
+                },
+                "icon_large": null,
+                "supported_model_types": [
+                    "llm",
+                    "rerank",
+                    "text-embedding",
+                    "speech2text",
+                    "tts"
+                ],
+                "models": [],
+                "tenant_id": "550e8400-e29b-41d4-a716-446655440000"
+            }
+        },
+        {
+            "id": "5148b160-804a-4bd1-8292-32e3977e4fb6",
+            "model": "deepseek\/DeepSeek-R1-Internet",
+            "label": {
+                "zh_Hans": "DeepSeek-R1-Internet",
+                "en_US": "DeepSeek-R1-Internet"
+            },
+            "model_type": "llm",
+            "features": [
+                "multi-tool-call",
+                "stream-tool-call",
+                "structured-output"
+            ],
+            "fetch_from": "customizable-model",
+            "model_properties": {
+                "context_size": 96000,
+                "mode": "chat"
+            },
+            "deprecated": false,
+            "status": "active",
+            "load_balancing_enabled": false,
+            "has_invalid_load_balancing_configs": false,
+            "gt_configs": {
+                "description": "deepseek-r1\u8054\u7f51\u641c\u7d22\u53d1\u751f\u7684\u53d1\u751f\u53d1\u751f\u7684\u53d1\u751f",
+                "model_provider": "deepseek",
+                "model_provider_icon": "https:\/\/gh-fe.oss-cn-beijing.aliyuncs.com\/ai-base\/model\/deepseek-color.png"
+            },
+            "tags": [
+                {
+                    "id": "e414c6e9-74c6-47a3-8cbf-41cfcd99a32c",
+                    "name": "\u8054\u7f51\u641c\u7d22"
+                }
+            ],
+            "order_num": 3,
+            "plugin_deprecated": false,
+            "provider": {
+                "provider": "langgenius\/openai_api_compatible\/openai_api_compatible",
+                "label": {
+                    "zh_Hans": "OpenAI-API-compatible",
+                    "en_US": "OpenAI-API-compatible"
+                },
+                "icon_small": {
+                    "zh_Hans": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/zh_Hans",
+                    "en_US": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/en_US"
+                },
+                "icon_large": null,
+                "supported_model_types": [
+                    "llm",
+                    "rerank",
+                    "text-embedding",
+                    "speech2text",
+                    "tts"
+                ],
+                "models": [],
+                "tenant_id": "550e8400-e29b-41d4-a716-446655440000"
+            }
+        },
+        {
+            "id": "4e49491f-aab5-48d5-8c4d-5baef1c9175a",
+            "model": "deepseek\/DeepSeek-V3-Internet",
+            "label": {
+                "zh_Hans": "DeepSeek-V3-Internet",
+                "en_US": "DeepSeek-V3-Internet"
+            },
+            "model_type": "llm",
+            "features": [
+                "multi-tool-call",
+                "stream-tool-call",
+                "structured-output"
+            ],
+            "fetch_from": "customizable-model",
+            "model_properties": {
+                "context_size": 96000,
+                "mode": "chat"
+            },
+            "deprecated": false,
+            "status": "active",
+            "load_balancing_enabled": false,
+            "has_invalid_load_balancing_configs": false,
+            "gt_configs": {
+                "description": "DeepSeek-V3-Internet",
+                "model_provider": "deepseek",
+                "model_provider_icon": "https:\/\/gh-fe.oss-cn-beijing.aliyuncs.com\/ai-base\/model\/deepseek-color.png"
+            },
+            "tags": [
+                {
+                    "id": "e414c6e9-74c6-47a3-8cbf-41cfcd99a32c",
+                    "name": "\u8054\u7f51\u641c\u7d22"
+                }
+            ],
+            "order_num": 4,
+            "plugin_deprecated": false,
+            "provider": {
+                "provider": "langgenius\/openai_api_compatible\/openai_api_compatible",
+                "label": {
+                    "zh_Hans": "OpenAI-API-compatible",
+                    "en_US": "OpenAI-API-compatible"
+                },
+                "icon_small": {
+                    "zh_Hans": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/zh_Hans",
+                    "en_US": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/en_US"
+                },
+                "icon_large": null,
+                "supported_model_types": [
+                    "llm",
+                    "rerank",
+                    "text-embedding",
+                    "speech2text",
+                    "tts"
+                ],
+                "models": [],
+                "tenant_id": "550e8400-e29b-41d4-a716-446655440000"
+            }
+        },
+        {
+            "id": "edde8692-7c3b-4aa9-8de4-54477829f65f",
+            "model": "gpt-4.1",
+            "label": {
+                "zh_Hans": "gpt-4.1",
+                "en_US": "gpt-4.1"
+            },
+            "model_type": "llm",
+            "features": [
+                "tool-call",
+                "stream-tool-call",
+                "vision",
+                "structured-output"
+            ],
+            "fetch_from": "customizable-model",
+            "model_properties": {
+                "context_size": 1047576,
+                "mode": "chat"
+            },
+            "deprecated": false,
+            "status": "active",
+            "load_balancing_enabled": false,
+            "has_invalid_load_balancing_configs": false,
+            "gt_configs": {
+                "description": "\u6a21\u578b\u4e3b\u8981\u7528\u4e8e\u6a21\u578b\u4e3b\u8981\u7528\u4e8e\u6a21\u578b\u4e3b\u8981\u7528\u4e8e\u6a21\u578b\u4e3b\u8981\u7528\u4e8e\u6a21\u578b\u4e3b\u8981\u7528\u4e8e\u6a21\u578b\u4e3b\u8981\u7528\u4e8e\u6a21\u578b\u4e3b\u8981\u7528\u4e8e\u6a21\u578b\u4e3b\u8981\u7528\u4e8e\u6a21\u578b\u4e3b\u8981\u7528\u4e8e\u6a21\u578b\u4e3b\u8981\u7528\u4e8e\u6a21\u578b\u4e3b\u8981\u7528\u4e8e\u6a21\u578b\u4e3b\u8981\u7528\u4e8e\u6a21\u578b\u4e3b\u8981\u7528\u4e8e\u6a21\u578b\u4e3b\u8981\u7528\u4e8e\u6a21\u578b\u4e3b\u8981\u7528\u4e8e\u6a21\u578b\u4e3b\u8981\u7528\u4e8e\u6a21\u578b\u4e3b\u8981\u7528\u4e8e",
+                "model_provider": "deepseek",
+                "model_provider_icon": "https:\/\/gh-fe.oss-cn-beijing.aliyuncs.com\/ai-base\/model\/deepseek-color.png"
+            },
+            "tags": [
+                {
+                    "id": "54051ae0-cba4-4b35-80bf-628f4adc2d25",
+                    "name": "\u5de5\u5177\u8c03\u7528"
+                }
+            ],
+            "order_num": 5,
+            "plugin_deprecated": false,
+            "provider": {
+                "provider": "langgenius\/openai_api_compatible\/openai_api_compatible",
+                "label": {
+                    "zh_Hans": "OpenAI-API-compatible",
+                    "en_US": "OpenAI-API-compatible"
+                },
+                "icon_small": {
+                    "zh_Hans": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/zh_Hans",
+                    "en_US": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/en_US"
+                },
+                "icon_large": null,
+                "supported_model_types": [
+                    "llm",
+                    "rerank",
+                    "text-embedding",
+                    "speech2text",
+                    "tts"
+                ],
+                "models": [],
+                "tenant_id": "550e8400-e29b-41d4-a716-446655440000"
+            }
+        },
+        {
+            "id": "64defb06-493d-463d-a6ce-0f6fc4f39a4b",
+            "model": "gpt-4o",
+            "label": {
+                "zh_Hans": "gpt-4o",
+                "en_US": "gpt-4o"
+            },
+            "model_type": "llm",
+            "features": [
+                "multi-tool-call",
+                "stream-tool-call",
+                "vision",
+                "structured-output"
+            ],
+            "fetch_from": "customizable-model",
+            "model_properties": {
+                "context_size": 128000,
+                "mode": "chat"
+            },
+            "deprecated": false,
+            "status": "active",
+            "load_balancing_enabled": false,
+            "has_invalid_load_balancing_configs": false,
+            "gt_configs": {
+                "description": "\u8fd9\u4e2a\u6a21\u578b\u4e3b\u8981\u662f\u95f2\u804a\u7b49\u573a\u666f\uff0c\u9002\u5408\u5ba2\u670d",
+                "model_provider": "OpenAI",
+                "model_provider_icon": "https:\/\/gh-fe.oss-cn-beijing.aliyuncs.com\/ai-base\/model\/openai.png"
+            },
+            "tags": [
+                {
+                    "id": "e414c6e9-74c6-47a3-8cbf-41cfcd99a32c",
+                    "name": "\u8054\u7f51\u641c\u7d22"
+                },
+                {
+                    "id": "54051ae0-cba4-4b35-80bf-628f4adc2d25",
+                    "name": "\u5de5\u5177\u8c03\u7528"
+                },
+                {
+                    "id": "f60119da-4001-471a-8719-f84b0f040354",
+                    "name": "\u56fe\u7247\u7406\u89e3"
+                },
+                {
+                    "id": "e70a5668-2a3c-4123-b5cd-17ca345cdd31",
+                    "name": "\u6df1\u5ea6\u601d\u8003"
+                }
+            ],
+            "order_num": 6,
+            "plugin_deprecated": false,
+            "provider": {
+                "provider": "langgenius\/openai_api_compatible\/openai_api_compatible",
+                "label": {
+                    "zh_Hans": "OpenAI-API-compatible",
+                    "en_US": "OpenAI-API-compatible"
+                },
+                "icon_small": {
+                    "zh_Hans": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/zh_Hans",
+                    "en_US": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/en_US"
+                },
+                "icon_large": null,
+                "supported_model_types": [
+                    "llm",
+                    "rerank",
+                    "text-embedding",
+                    "speech2text",
+                    "tts"
+                ],
+                "models": [],
+                "tenant_id": "550e8400-e29b-41d4-a716-446655440000"
+            }
+        },
+        {
+            "id": "47b66d7f-1771-4c73-aa17-9682921c5ead",
+            "model": "doubao\/Doubao-Seed-1-6-flash",
+            "label": {
+                "zh_Hans": "Doubao-Seed-1-6-flash",
+                "en_US": "Doubao-Seed-1-6-flash"
+            },
+            "model_type": "llm",
+            "features": [
+                "multi-tool-call",
+                "stream-tool-call",
+                "vision",
+                "agent-thought",
+                "structured-output"
+            ],
+            "fetch_from": "customizable-model",
+            "model_properties": {
+                "context_size": 4096,
+                "mode": "chat"
+            },
+            "deprecated": false,
+            "status": "active",
+            "load_balancing_enabled": false,
+            "has_invalid_load_balancing_configs": false,
+            "gt_configs": {
+                "description": "doubao-seed-1-6-flash-250615\uff0c\u63a8\u7406\u901f\u5ea6\u6781\u81f4\u7684\u591a\u6a21\u6001\u6df1\u5ea6\u601d\u8003\u6a21\u578b\uff0cTPOT\u4ec5\u970010ms\uff1b \u540c\u65f6\u652f\u6301\u6587\u672c\u548c\u89c6\u89c9\u7406\u89e3\uff0c\u6587\u672c\u7406\u89e3\u80fd\u529b\u8d85\u8fc7\u4e0a\u4e00\u4ee3lite\uff0c\u89c6\u89c9\u7406\u89e3\u6bd4\u80a9\u53cb\u5546pro\u7cfb\u5217\u6a21\u578b\u3002\u652f\u6301 256k \u4e0a\u4e0b\u6587\u7a97\u53e3\uff0c\u8f93\u51fa\u957f\u5ea6\u652f\u6301\u6700\u5927 16k tokens\u3002\u3010\u8ba1\u8d39\u3011\u8f93\u5165: 0.15\u5143\/\u767e\u4e07token, \u8f93\u51fa: 1.5\u5143\/\u767e\u4e07token",
+                "model_provider": "\u8c46\u5305\u5927\u6a21\u578b",
+                "model_provider_icon": "https:\/\/gh-fe.oss-cn-beijing.aliyuncs.com\/ai-base\/model\/doubao-color.png"
+            },
+            "tags": [
+                {
+                    "id": "e70a5668-2a3c-4123-b5cd-17ca345cdd31",
+                    "name": "\u6df1\u5ea6\u601d\u8003"
+                }
+            ],
+            "order_num": 7,
+            "plugin_deprecated": false,
+            "provider": {
+                "provider": "langgenius\/openai_api_compatible\/openai_api_compatible",
+                "label": {
+                    "zh_Hans": "OpenAI-API-compatible",
+                    "en_US": "OpenAI-API-compatible"
+                },
+                "icon_small": {
+                    "zh_Hans": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/zh_Hans",
+                    "en_US": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/en_US"
+                },
+                "icon_large": null,
+                "supported_model_types": [
+                    "llm",
+                    "rerank",
+                    "text-embedding",
+                    "speech2text",
+                    "tts"
+                ],
+                "models": [],
+                "tenant_id": "550e8400-e29b-41d4-a716-446655440000"
+            }
+        },
+        {
+            "id": "7ca0adbd-a923-426f-b8da-caa99c1292d1",
+            "model": "gpt-5",
+            "label": {
+                "zh_Hans": "gpt-5",
+                "en_US": "gpt-5"
+            },
+            "model_type": "llm",
+            "features": [
+                "multi-tool-call",
+                "stream-tool-call",
+                "vision",
+                "structured-output"
+            ],
+            "fetch_from": "customizable-model",
+            "model_properties": {
+                "context_size": 400000,
+                "mode": "chat"
+            },
+            "deprecated": false,
+            "status": "active",
+            "load_balancing_enabled": false,
+            "has_invalid_load_balancing_configs": false,
+            "gt_configs": {
+                "description": "gpt-5",
+                "model_provider": "OpenAI",
+                "model_provider_icon": "https:\/\/gh-fe.oss-cn-beijing.aliyuncs.com\/ai-base\/model\/openai.png"
+            },
+            "tags": [
+                {
+                    "id": "54051ae0-cba4-4b35-80bf-628f4adc2d25",
+                    "name": "\u5de5\u5177\u8c03\u7528"
+                },
+                {
+                    "id": "f60119da-4001-471a-8719-f84b0f040354",
+                    "name": "\u56fe\u7247\u7406\u89e3"
+                }
+            ],
+            "order_num": 8,
+            "plugin_deprecated": false,
+            "provider": {
+                "provider": "langgenius\/openai_api_compatible\/openai_api_compatible",
+                "label": {
+                    "zh_Hans": "OpenAI-API-compatible",
+                    "en_US": "OpenAI-API-compatible"
+                },
+                "icon_small": {
+                    "zh_Hans": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/zh_Hans",
+                    "en_US": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/en_US"
+                },
+                "icon_large": null,
+                "supported_model_types": [
+                    "llm",
+                    "rerank",
+                    "text-embedding",
+                    "speech2text",
+                    "tts"
+                ],
+                "models": [],
+                "tenant_id": "550e8400-e29b-41d4-a716-446655440000"
+            }
+        },
+        {
+            "id": "af3b4dbc-fe05-4add-8419-4ef2f8de3f16",
+            "model": "text-embedding-3-small",
+            "label": {
+                "zh_Hans": "text-embedding-3-small",
+                "en_US": "text-embedding-3-small"
+            },
+            "model_type": "text-embedding",
+            "features": null,
+            "fetch_from": "customizable-model",
+            "model_properties": {
+                "context_size": 4096,
+                "max_chunks": 1
+            },
+            "deprecated": true,
+            "status": "disabled",
+            "load_balancing_enabled": false,
+            "has_invalid_load_balancing_configs": false,
+            "gt_configs": {
+                "description": "test",
+                "model_provider": "deepseek",
+                "model_provider_icon": "https:\/\/gh-fe.oss-cn-beijing.aliyuncs.com\/ai-base\/model\/deepseek-color.png"
+            },
+            "tags": [
+                {
+                    "id": "54051ae0-cba4-4b35-80bf-628f4adc2d25",
+                    "name": "\u5de5\u5177\u8c03\u7528"
+                },
+                {
+                    "id": "e414c6e9-74c6-47a3-8cbf-41cfcd99a32c",
+                    "name": "\u8054\u7f51\u641c\u7d22"
+                }
+            ],
+            "order_num": 9,
+            "plugin_deprecated": false,
+            "provider": {
+                "provider": "langgenius\/openai_api_compatible\/openai_api_compatible",
+                "label": {
+                    "zh_Hans": "OpenAI-API-compatible",
+                    "en_US": "OpenAI-API-compatible"
+                },
+                "icon_small": {
+                    "zh_Hans": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/zh_Hans",
+                    "en_US": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/en_US"
+                },
+                "icon_large": null,
+                "supported_model_types": [
+                    "llm",
+                    "rerank",
+                    "text-embedding",
+                    "speech2text",
+                    "tts"
+                ],
+                "models": [],
+                "tenant_id": "550e8400-e29b-41d4-a716-446655440000"
+            }
+        },
+        {
+            "id": "6c3ec811-479f-4b3d-968c-20f1d31a7253",
+            "model": "doubao\/Doubao-1-5-pro-32k",
+            "label": {
+                "zh_Hans": "\u8c46\u5305-1.5-pro-32k",
+                "en_US": "\u8c46\u5305-1.5-pro-32k"
+            },
+            "model_type": "llm",
+            "features": [
+                "multi-tool-call",
+                "stream-tool-call",
+                "vision",
+                "structured-output"
+            ],
+            "fetch_from": "customizable-model",
+            "model_properties": {
+                "context_size": 128000,
+                "mode": "chat"
+            },
+            "deprecated": true,
+            "status": "active",
+            "load_balancing_enabled": false,
+            "has_invalid_load_balancing_configs": false,
+            "gt_configs": {
+                "description": "Doubao-1.5-pro-32k\uff0c\u5168\u65b0\u4e00\u4ee3\u4e3b\u529b\u6a21\u578b\uff0c\u6027\u80fd\u5168\u9762\u5347\u7ea7\uff0c\u5728\u77e5\u8bc6\u3001\u4ee3\u7801\u3001\u63a8\u7406\u3001\u7b49\u65b9\u9762\u8868\u73b0\u5353\u8d8a\u3002\u652f\u630132k\u4e0a\u4e0b\u6587\u7a97\u53e3\uff0c\u8f93\u51fa\u957f\u5ea6\u652f\u6301\u6700\u592712k tokens\u3002\u3010\u8ba1\u8d39\u3011\u8f93\u5165: 0.8\u5143\/\u767e\u4e07token, \u8f93\u51fa: 2\u5143\/\u767e\u4e07token",
+                "model_provider": "\u8c46\u5305\u5927\u6a21\u578b",
+                "model_provider_icon": "https:\/\/gh-fe.oss-cn-beijing.aliyuncs.com\/ai-base\/model\/doubao-color.png"
+            },
+            "tags": [
+                {
+                    "id": "54051ae0-cba4-4b35-80bf-628f4adc2d25",
+                    "name": "\u5de5\u5177\u8c03\u7528"
+                }
+            ],
+            "order_num": 10,
+            "plugin_deprecated": false,
+            "provider": {
+                "provider": "langgenius\/openai_api_compatible\/openai_api_compatible",
+                "label": {
+                    "zh_Hans": "OpenAI-API-compatible",
+                    "en_US": "OpenAI-API-compatible"
+                },
+                "icon_small": {
+                    "zh_Hans": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/zh_Hans",
+                    "en_US": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/en_US"
+                },
+                "icon_large": null,
+                "supported_model_types": [
+                    "llm",
+                    "rerank",
+                    "text-embedding",
+                    "speech2text",
+                    "tts"
+                ],
+                "models": [],
+                "tenant_id": "550e8400-e29b-41d4-a716-446655440000"
+            }
+        },
+        {
+            "id": "8223fc96-218e-4631-a46b-8d6abb22babd",
+            "model": "claude-4.5-sonnet",
+            "label": {
+                "zh_Hans": "Claude Sonnet 4.5",
+                "en_US": "Claude Sonnet 4.5"
+            },
+            "model_type": "llm",
+            "features": [
+                "multi-tool-call",
+                "stream-tool-call",
+                "vision",
+                "agent-thought",
+                "structured-output"
+            ],
+            "fetch_from": "customizable-model",
+            "model_properties": {
+                "context_size": 200000,
+                "mode": "chat"
+            },
+            "deprecated": true,
+            "status": "active",
+            "load_balancing_enabled": false,
+            "has_invalid_load_balancing_configs": false,
+            "gt_configs": {
+                "description": "Claude Sonnet 4.5 \u662f\u6211\u4eec\u6784\u5efa\u590d\u6742\u4ee3\u7406\u7684\u6700\u4f73\u6a21\u578b\uff0c\u80fd\u591f\u72ec\u7acb\u5de5\u4f5c\u8f83\u957f\u65f6\u95f4\u3002\u5b83\u5728\u7f16\u7801\u80fd\u529b\u65b9\u9762\u63a8\u8fdb\u4e86\u524d\u6cbf\u6280\u672f\uff0c\u5728\u7535\u8111\u4f7f\u7528\u65b9\u9762\u5177\u5907\u6700\u5148\u8fdb\u7684\u6027\u80fd\uff0c\u5e76\u4e14\u5728\u4e3a\u91d1\u878d\u5206\u6790\u3001\u7f51\u7edc\u5b89\u5168\u548c\u7814\u7a76\u5e94\u7528\u63d0\u4f9b\u4ee3\u7406\u652f\u63f4\u65b9\u9762\u8868\u73b0\u51fa\u8272\u3002\u8f93\u5165: 3\u7f8e\u5143\/\u767e\u4e07token, \u8f93\u51fa: 15\u7f8e\u5143\/\u767e\u4e07token",
+                "model_provider": "Anthropic",
+                "model_provider_icon": "https:\/\/gh-fe.oss-cn-beijing.aliyuncs.com\/ai-base\/model\/claude.svg"
+            },
+            "tags": [
+                {
+                    "id": "e70a5668-2a3c-4123-b5cd-17ca345cdd31",
+                    "name": "\u6df1\u5ea6\u601d\u8003"
+                },
+                {
+                    "id": "f60119da-4001-471a-8719-f84b0f040354",
+                    "name": "\u56fe\u7247\u7406\u89e3"
+                }
+            ],
+            "order_num": 11,
+            "plugin_deprecated": false,
+            "provider": {
+                "provider": "langgenius\/openai_api_compatible\/openai_api_compatible",
+                "label": {
+                    "zh_Hans": "OpenAI-API-compatible",
+                    "en_US": "OpenAI-API-compatible"
+                },
+                "icon_small": {
+                    "zh_Hans": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/zh_Hans",
+                    "en_US": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/en_US"
+                },
+                "icon_large": null,
+                "supported_model_types": [
+                    "llm",
+                    "rerank",
+                    "text-embedding",
+                    "speech2text",
+                    "tts"
+                ],
+                "models": [],
+                "tenant_id": "550e8400-e29b-41d4-a716-446655440000"
+            }
+        },
+        {
+            "id": "6403c588-38be-4ec9-aff0-8a1013690d56",
+            "model": "gemini-3-pro",
+            "label": {
+                "zh_Hans": "gemini-3-pro",
+                "en_US": "gemini-3-pro"
+            },
+            "model_type": "llm",
+            "features": [
+                "multi-tool-call",
+                "stream-tool-call",
+                "vision",
+                "agent-thought",
+                "structured-output"
+            ],
+            "fetch_from": "customizable-model",
+            "model_properties": {
+                "context_size": 4096,
+                "mode": "chat"
+            },
+            "deprecated": true,
+            "status": "active",
+            "load_balancing_enabled": false,
+            "has_invalid_load_balancing_configs": false,
+            "gt_configs": {
+                "description": "112",
+                "model_provider": "Gemini",
+                "model_provider_icon": "https:\/\/gh-fe.oss-cn-beijing.aliyuncs.com\/ai-base\/model\/gemini-color.png"
+            },
+            "tags": [
+                {
+                    "id": "54051ae0-cba4-4b35-80bf-628f4adc2d25",
+                    "name": "\u5de5\u5177\u8c03\u7528"
+                }
+            ],
+            "order_num": 12,
+            "plugin_deprecated": false,
+            "provider": {
+                "provider": "langgenius\/openai_api_compatible\/openai_api_compatible",
+                "label": {
+                    "zh_Hans": "OpenAI-API-compatible",
+                    "en_US": "OpenAI-API-compatible"
+                },
+                "icon_small": {
+                    "zh_Hans": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/zh_Hans",
+                    "en_US": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/en_US"
+                },
+                "icon_large": null,
+                "supported_model_types": [
+                    "llm",
+                    "rerank",
+                    "text-embedding",
+                    "speech2text",
+                    "tts"
+                ],
+                "models": [],
+                "tenant_id": "550e8400-e29b-41d4-a716-446655440000"
+            }
+        },
+        {
+            "id": "4eab26cf-3ed6-49fb-8b81-971d9f4cfe54",
+            "model": "claude-4.5-opus",
+            "label": {
+                "zh_Hans": "Claude Opus 4.5",
+                "en_US": "Claude Opus 4.5"
+            },
+            "model_type": "llm",
+            "features": [
+                "multi-tool-call",
+                "stream-tool-call",
+                "vision",
+                "agent-thought",
+                "structured-output"
+            ],
+            "fetch_from": "customizable-model",
+            "model_properties": {
+                "context_size": 200000,
+                "mode": "chat"
+            },
+            "deprecated": true,
+            "status": "active",
+            "load_balancing_enabled": false,
+            "has_invalid_load_balancing_configs": false,
+            "gt_configs": {
+                "description": "\u8be5\u6a21\u578b\u667a\u80fd\u9ad8\u6548\uff0c\u662f\u5168\u7403\u5728\u7f16\u7801\u3001\u667a\u80fd\u4f53\u53ca\u8ba1\u7b97\u673a\u64cd\u4f5c\u9886\u57df\u7684\u9876\u5c16\u6a21\u578b\uff0c\u540c\u65f6\u5728\u6df1\u5ea6\u7814\u7a76\u3001\u5e7b\u706f\u7247\u5904\u7406\u3001\u7535\u5b50\u8868\u683c\u64cd\u4f5c\u7b49\u65e5\u5e38\u4efb\u52a1\u4e2d\u8868\u73b0\u4e5f\u663e\u8457\u66f4\u4f18\u3002Opus 4.5 \u6807\u5fd7\u7740\u4eba\u5de5\u667a\u80fd\u7cfb\u7edf\u80fd\u529b\u7684\u4e00\u5927\u8fdb\u6b65\uff0c\u4e5f\u9884\u793a\u7740\u5de5\u4f5c\u65b9\u5f0f\u5c06\u8fce\u6765\u66f4\u4e3a\u6df1\u8fdc\u7684\u53d8\u9769\u3002\u8f93\u5165: 5\u7f8e\u5143\/\u767e\u4e07token, \u8f93\u51fa: 25\u7f8e\u5143\/\u767e\u4e07token\uff1b",
+                "model_provider": "Anthropic",
+                "model_provider_icon": "https:\/\/gh-fe.oss-cn-beijing.aliyuncs.com\/ai-base\/model\/claude.svg"
+            },
+            "tags": [
+                {
+                    "id": "e70a5668-2a3c-4123-b5cd-17ca345cdd31",
+                    "name": "\u6df1\u5ea6\u601d\u8003"
+                },
+                {
+                    "id": "f60119da-4001-471a-8719-f84b0f040354",
+                    "name": "\u56fe\u7247\u7406\u89e3"
+                }
+            ],
+            "order_num": 13,
+            "plugin_deprecated": false,
+            "provider": {
+                "provider": "langgenius\/openai_api_compatible\/openai_api_compatible",
+                "label": {
+                    "zh_Hans": "OpenAI-API-compatible",
+                    "en_US": "OpenAI-API-compatible"
+                },
+                "icon_small": {
+                    "zh_Hans": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/zh_Hans",
+                    "en_US": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/en_US"
+                },
+                "icon_large": null,
+                "supported_model_types": [
+                    "llm",
+                    "rerank",
+                    "text-embedding",
+                    "speech2text",
+                    "tts"
+                ],
+                "models": [],
+                "tenant_id": "550e8400-e29b-41d4-a716-446655440000"
+            }
+        },
+        {
+            "id": "9895e6b7-0c7f-4c3f-a4d9-6edd363562b8",
+            "model": "gemini-2.5-flash-image",
+            "label": {
+                "zh_Hans": "gemini-2.5-flash-image",
+                "en_US": "gemini-2.5-flash-image"
+            },
+            "model_type": "llm",
+            "features": [
+                "multi-tool-call",
+                "agent-thought"
+            ],
+            "fetch_from": "customizable-model",
+            "model_properties": {
+                "context_size": 4096,
+                "mode": "chat"
+            },
+            "deprecated": false,
+            "status": "active",
+            "load_balancing_enabled": false,
+            "has_invalid_load_balancing_configs": false,
+            "gt_configs": {
+                "description": "gemini-2.5-flash-image",
+                "model_provider": "Gemini",
+                "model_provider_icon": "https:\/\/gh-fe.oss-cn-beijing.aliyuncs.com\/ai-base\/model\/gemini-color.png"
+            },
+            "tags": [
+                {
+                    "id": "54051ae0-cba4-4b35-80bf-628f4adc2d25",
+                    "name": "\u5de5\u5177\u8c03\u7528"
+                },
+                {
+                    "id": "e70a5668-2a3c-4123-b5cd-17ca345cdd31",
+                    "name": "\u6df1\u5ea6\u601d\u8003"
+                },
+                {
+                    "id": "e414c6e9-74c6-47a3-8cbf-41cfcd99a32c",
+                    "name": "\u8054\u7f51\u641c\u7d22"
+                },
+                {
+                    "id": "f60119da-4001-471a-8719-f84b0f040354",
+                    "name": "\u56fe\u7247\u7406\u89e3"
+                }
+            ],
+            "order_num": 14,
+            "plugin_deprecated": false,
+            "provider": {
+                "provider": "langgenius\/openai_api_compatible\/openai_api_compatible",
+                "label": {
+                    "zh_Hans": "OpenAI-API-compatible",
+                    "en_US": "OpenAI-API-compatible"
+                },
+                "icon_small": {
+                    "zh_Hans": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/zh_Hans",
+                    "en_US": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/en_US"
+                },
+                "icon_large": null,
+                "supported_model_types": [
+                    "llm",
+                    "rerank",
+                    "text-embedding",
+                    "speech2text",
+                    "tts"
+                ],
+                "models": [],
+                "tenant_id": "550e8400-e29b-41d4-a716-446655440000"
+            }
+        },
+        {
+            "id": "23d84f18-ff42-4250-b761-932cd952b36c",
+            "model": "claude-4.5-haiku",
+            "label": {
+                "zh_Hans": "Claude Haiku 4.5",
+                "en_US": "Claude Haiku 4.5"
+            },
+            "model_type": "llm",
+            "features": [
+                "multi-tool-call",
+                "stream-tool-call",
+                "vision",
+                "agent-thought",
+                "structured-output"
+            ],
+            "fetch_from": "customizable-model",
+            "model_properties": {
+                "context_size": 200000,
+                "mode": "chat"
+            },
+            "deprecated": true,
+            "status": "active",
+            "load_balancing_enabled": false,
+            "has_invalid_load_balancing_configs": false,
+            "gt_configs": {
+                "description": "Claude Haiku 4.5 \u5728\u5404\u79cd\u5e94\u7528\u573a\u666f\u4e2d\u90fd\u80fd\u63d0\u4f9b\u63a5\u8fd1\u524d\u6cbf\u7684\u6027\u80fd\uff0c\u662f\u5168\u7403\u6700\u51fa\u8272\u7684\u7f16\u7801\u6a21\u578b\u4e4b\u4e00\uff0c\u5728\u901f\u5ea6\u548c\u6210\u672c\u65b9\u9762\u4e5f\u8fbe\u5230\u4e86\u7406\u60f3\u7684\u5e73\u8861\uff0c\u53ef\u4e3a\u514d\u8d39\u4ea7\u54c1\u548c\u5927\u6279\u91cf\u7528\u6237\u4f53\u9a8c\u63d0\u4f9b\u52a9\u529b\u3002\u8f93\u5165: 1\u7f8e\u5143\/\u767e\u4e07token, \u8f93\u51fa: 5\u7f8e\u5143\/\u767e\u4e07token",
+                "model_provider": "Anthropic",
+                "model_provider_icon": "https:\/\/gh-fe.oss-cn-beijing.aliyuncs.com\/ai-base\/model\/claude.svg"
+            },
+            "tags": [
+                {
+                    "id": "f60119da-4001-471a-8719-f84b0f040354",
+                    "name": "\u56fe\u7247\u7406\u89e3"
+                },
+                {
+                    "id": "e70a5668-2a3c-4123-b5cd-17ca345cdd31",
+                    "name": "\u6df1\u5ea6\u601d\u8003"
+                }
+            ],
+            "order_num": 15,
+            "plugin_deprecated": false,
+            "provider": {
+                "provider": "langgenius\/openai_api_compatible\/openai_api_compatible",
+                "label": {
+                    "zh_Hans": "OpenAI-API-compatible",
+                    "en_US": "OpenAI-API-compatible"
+                },
+                "icon_small": {
+                    "zh_Hans": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/zh_Hans",
+                    "en_US": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/en_US"
+                },
+                "icon_large": null,
+                "supported_model_types": [
+                    "llm",
+                    "rerank",
+                    "text-embedding",
+                    "speech2text",
+                    "tts"
+                ],
+                "models": [],
+                "tenant_id": "550e8400-e29b-41d4-a716-446655440000"
+            }
+        },
+        {
+            "id": "f5165194-649f-404b-bbe8-37235d64547f",
+            "model": "claude-4.1-opus",
+            "label": {
+                "zh_Hans": "claude-4.1-opus",
+                "en_US": "claude-4.1-opus"
+            },
+            "model_type": "llm",
+            "features": [
+                "multi-tool-call",
+                "stream-tool-call",
+                "vision",
+                "structured-output"
+            ],
+            "fetch_from": "customizable-model",
+            "model_properties": {
+                "context_size": 200000,
+                "mode": "chat"
+            },
+            "deprecated": true,
+            "status": "active",
+            "load_balancing_enabled": false,
+            "has_invalid_load_balancing_configs": false,
+            "gt_configs": {
+                "description": "claude-4.1-opus",
+                "model_provider": "Anthropic",
+                "model_provider_icon": "https:\/\/gh-fe.oss-cn-beijing.aliyuncs.com\/ai-base\/model\/claude.svg"
+            },
+            "tags": [
+                {
+                    "id": "e70a5668-2a3c-4123-b5cd-17ca345cdd31",
+                    "name": "\u6df1\u5ea6\u601d\u8003"
+                },
+                {
+                    "id": "f60119da-4001-471a-8719-f84b0f040354",
+                    "name": "\u56fe\u7247\u7406\u89e3"
+                },
+                {
+                    "id": "54051ae0-cba4-4b35-80bf-628f4adc2d25",
+                    "name": "\u5de5\u5177\u8c03\u7528"
+                }
+            ],
+            "order_num": 16,
+            "plugin_deprecated": false,
+            "provider": {
+                "provider": "langgenius\/openai_api_compatible\/openai_api_compatible",
+                "label": {
+                    "zh_Hans": "OpenAI-API-compatible",
+                    "en_US": "OpenAI-API-compatible"
+                },
+                "icon_small": {
+                    "zh_Hans": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/zh_Hans",
+                    "en_US": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/en_US"
+                },
+                "icon_large": null,
+                "supported_model_types": [
+                    "llm",
+                    "rerank",
+                    "text-embedding",
+                    "speech2text",
+                    "tts"
+                ],
+                "models": [],
+                "tenant_id": "550e8400-e29b-41d4-a716-446655440000"
+            }
+        },
+        {
+            "id": "92479a66-c16e-4841-8269-06ee37b7f85b",
+            "model": "gemini-2.5-pro",
+            "label": {
+                "zh_Hans": "gemini-2.5-pro",
+                "en_US": "gemini-2.5-pro"
+            },
+            "model_type": "llm",
+            "features": [
+                "tool-call",
+                "stream-tool-call",
+                "vision",
+                "structured-output"
+            ],
+            "fetch_from": "customizable-model",
+            "model_properties": {
+                "context_size": 1048576,
+                "mode": "chat"
+            },
+            "deprecated": true,
+            "status": "active",
+            "load_balancing_enabled": false,
+            "has_invalid_load_balancing_configs": false,
+            "gt_configs": {
+                "description": "gemini-2.5-pro",
+                "model_provider": "Gemini",
+                "model_provider_icon": "https:\/\/gh-fe.oss-cn-beijing.aliyuncs.com\/ai-base\/model\/gemini-color.png"
+            },
+            "tags": [
+                {
+                    "id": "54051ae0-cba4-4b35-80bf-628f4adc2d25",
+                    "name": "\u5de5\u5177\u8c03\u7528"
+                },
+                {
+                    "id": "f60119da-4001-471a-8719-f84b0f040354",
+                    "name": "\u56fe\u7247\u7406\u89e3"
+                }
+            ],
+            "order_num": 17,
+            "plugin_deprecated": false,
+            "provider": {
+                "provider": "langgenius\/openai_api_compatible\/openai_api_compatible",
+                "label": {
+                    "zh_Hans": "OpenAI-API-compatible",
+                    "en_US": "OpenAI-API-compatible"
+                },
+                "icon_small": {
+                    "zh_Hans": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/zh_Hans",
+                    "en_US": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/en_US"
+                },
+                "icon_large": null,
+                "supported_model_types": [
+                    "llm",
+                    "rerank",
+                    "text-embedding",
+                    "speech2text",
+                    "tts"
+                ],
+                "models": [],
+                "tenant_id": "550e8400-e29b-41d4-a716-446655440000"
+            }
+        },
+        {
+            "id": "cc9c320c-f6d4-457a-b481-6346fd7bf271",
+            "model": "doubao\/doubao-seed-2-0-mini-260215",
+            "label": {
+                "zh_Hans": "Doubao-Seed-2.0-mini 260215",
+                "en_US": "Doubao-Seed-2.0-mini 260215"
+            },
+            "model_type": "llm",
+            "features": [],
+            "fetch_from": "customizable-model",
+            "model_properties": {
+                "context_size": 4096,
+                "mode": "chat"
+            },
+            "deprecated": false,
+            "status": "active",
+            "load_balancing_enabled": false,
+            "has_invalid_load_balancing_configs": false,
+            "gt_configs": {
+                "description": "\u9762\u5411\u9ad8\u9891\u4f01\u4e1a\u573a\u666f\u517c\u987e\u6027\u80fd\u4e0e\u6210\u672c\u7684\u5747\u8861\u578b\u6a21\u578b\uff0c\u7efc\u5408\u80fd\u529b\u8d85\u8d8a\u4e0a\u4e00\u4ee3Doubao-Seed-1.8\u3002\u80dc\u4efb\u975e\u7ed3\u6784\u5316\u4fe1\u606f\u5904\u7406\u3001\u5185\u5bb9\u521b\u4f5c\u3001\u641c\u7d22\u63a8\u8350\u3001\u6570\u636e\u5206\u6790\u7b49\u751f\u4ea7\u578b\u5de5\u4f5c\uff0c\u652f\u6301\u957f\u4e0a\u4e0b\u6587\u3001\u591a\u6e90\u4fe1\u606f\u878d\u5408\u3001\u591a\u6b65\u6307\u4ee4\u6267\u884c\u4e0e\u9ad8\u4fdd\u771f\u7ed3\u6784\u5316\u8f93\u51fa\u3002\u5728\u4fdd\u969c\u7a33\u5b9a\u6548\u679c\u7684\u540c\u65f6\u663e\u8457\u4f18\u5316\u6210\u672c\u3002\n\n\u8f93\u5165: 0.81\u5143\/\u767e\u4e07token, \u8f93\u51fa: 4.86\u5143\/\u767e\u4e07token",
+                "model_provider": "\u8c46\u5305\u5927\u6a21\u578b",
+                "model_provider_icon": "https:\/\/gh-fe.oss-cn-beijing.aliyuncs.com\/ai-base\/model\/doubao-color.png"
+            },
+            "tags": [
+                {
+                    "id": "54051ae0-cba4-4b35-80bf-628f4adc2d25",
+                    "name": "\u5de5\u5177\u8c03\u7528"
+                }
+            ],
+            "order_num": 18,
+            "plugin_deprecated": false,
+            "provider": {
+                "provider": "langgenius\/openai_api_compatible\/openai_api_compatible",
+                "label": {
+                    "zh_Hans": "OpenAI-API-compatible",
+                    "en_US": "OpenAI-API-compatible"
+                },
+                "icon_small": {
+                    "zh_Hans": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/zh_Hans",
+                    "en_US": "https:\/\/test-os.baijia.com\/dify\/api\/console\/api\/workspaces\/550e8400-e29b-41d4-a716-446655440000\/model-providers\/langgenius\/openai_api_compatible\/openai_api_compatible\/icon_small\/en_US"
+                },
+                "icon_large": null,
+                "supported_model_types": [
+                    "llm",
+                    "rerank",
+                    "text-embedding",
+                    "speech2text",
+                    "tts"
+                ],
+                "models": [],
+                "tenant_id": "550e8400-e29b-41d4-a716-446655440000"
+            }
+        }
+    ]
+}

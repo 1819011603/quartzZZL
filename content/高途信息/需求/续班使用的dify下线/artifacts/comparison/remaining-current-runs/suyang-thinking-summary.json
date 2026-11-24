@@ -1,0 +1,65 @@
+[
+  {
+    "scene": "素养根因",
+    "trace": "1b812e6a-3ef7-4399-b2e4-47b2d5f88b15.0.3",
+    "messages_equal": false,
+    "stream": true,
+    "max_tokens_absent": true,
+    "thinking_absent": false,
+    "model": "deepseek-flash",
+    "usage": {
+      "completion_tokens": 1637,
+      "prompt_tokens": 1468,
+      "cost": 0.003809088,
+      "completion_tokens_details": {
+        "reasoning_tokens": 1347
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 1280
+      },
+      "total_tokens": 3105
+    }
+  },
+  {
+    "scene": "素养旅程",
+    "trace": "7c633ac1-66ed-4e74-9634-ab8ce0bcf9cb.0.3",
+    "messages_equal": false,
+    "stream": true,
+    "max_tokens_absent": true,
+    "thinking_absent": false,
+    "model": "deepseek-flash",
+    "usage": {
+      "completion_tokens": 2485,
+      "prompt_tokens": 1588,
+      "cost": 0.0065606399999999995,
+      "completion_tokens_details": {
+        "reasoning_tokens": 2015
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 4073
+    }
+  },
+  {
+    "scene": "素养体验",
+    "trace": "f018e314-4756-49c3-9660-7c2b6d216317.0.3",
+    "messages_equal": false,
+    "stream": true,
+    "max_tokens_absent": true,
+    "thinking_absent": false,
+    "model": "deepseek-flash",
+    "usage": {
+      "completion_tokens": 3245,
+      "prompt_tokens": 1701,
+      "cost": 0.0082812304,
+      "completion_tokens_details": {
+        "reasoning_tokens": 3027
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 1664
+      },
+      "total_tokens": 4946
+    }
+  }
+]

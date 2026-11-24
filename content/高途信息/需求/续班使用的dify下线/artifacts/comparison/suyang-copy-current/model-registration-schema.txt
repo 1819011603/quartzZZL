@@ -1,0 +1,87 @@
+root@dify-api-659675959b-bl78k:/apps/srv/instance# sed -n '136,220p' /apps/srv/instance/controllers/console/workspace/models.py
+@console_ns.route("/workspaces/current/model-providers/<path:provider>/models")
+class ModelProviderModelApi(Resource):
+    @setup_required
+    @login_required
+    @account_initialization_required
+    def get(self, provider):
+        _, tenant_id = current_account_with_tenant()
+
+        model_provider_service = ModelProviderService()
+        models = model_provider_service.get_models_by_provider(tenant_id=tenant_id, provider=provider)
+
+        # 收集所有provider_model_ids，用于批量查询标签
+        all_provider_model_ids = []
+        for model in models:
+            provider_model_id = model.id
+            if provider_model_id:
+                all_provider_model_ids.append(provider_model_id)
+
+        # 批量查询所有标签
+        all_tags_map = TagService.get_tags_by_target_ids(
+            tag_type="provider_model",
+            current_tenant_id=tenant_id,
+            target_ids=all_provider_model_ids
+        )
+
+        # 为每个模型添加tags字段
+        for model in models:
+            tags = []
+            provider_model_id = model.id
+            if provider_model_id and provider_model_id in all_tags_map:
+                tags = all_tags_map[provider_model_id]
+            
+            model.tags = [
+                {"id": tag.id, "name": tag.name}
+                for tag in tags
+            ]
+
+        return jsonable_encoder({"data": models})
+
+    @api.expect(parser_post_models)
+    @setup_required
+    @login_required
+    @account_initialization_required
+    @require_permissions([PermissionTag.MODEL_MANAGE])
+    def post(self, provider: str):
+        # To save the model's load balance configs
+        current_user, tenant_id = current_account_with_tenant()
+
+        if not current_user.is_admin_or_owner:
+            raise Forbidden()
+        args = parser_post_models.parse_args()
+
+        if args.get("config_from", "") == "custom-model":
+            if not args.get("credential_id"):
+                raise ValueError("credential_id is required when configuring a custom-model")
+            service = ModelProviderService()
+            service.switch_active_custom_model_credential(
+                tenant_id=tenant_id,
+                provider=provider,
+                model_type=args["model_type"],
+                model=args["model"],
+                credential_id=args["credential_id"],
+            )
+
+        model_load_balancing_service = ModelLoadBalancingService()
+
+        if "load_balancing" in args and args["load_balancing"] and "configs" in args["load_balancing"]:
+            # save load balancing configs
+            model_load_balancing_service.update_load_balancing_configs(
+                tenant_id=tenant_id,
+                provider=provider,
+                model=args["model"],
+                model_type=args["model_type"],
+                configs=args["load_balancing"]["configs"],
+                config_from=args.get("config_from", ""),
+            )
+
+            if args.get("load_balancing", {}).get("enabled"):
+                model_load_balancing_service.enable_model_load_balancing(
+                    tenant_id=tenant_id, provider=provider, model=args["model"], model_type=args["model_type"]
+                )
+            else:
+                model_load_balancing_service.disable_model_load_balancing(
+                    tenant_id=tenant_id, provider=provider, model=args["model"], model_type=args["model_type"]
+                )
+root@dify-api-659675959b-bl78k:/apps/srv/instance# 

@@ -1,0 +1,207 @@
+{
+  "id": "spcynF7tYh4ROXnG8Xg_9ee84ee2-d1db-4591-b09b-93eaa2c17bd4",
+  "name": "TEST素养根因旧链路独立验证20261124",
+  "description": "",
+  "mode": "agent-chat",
+  "icon_type": "emoji",
+  "icon": "🤖",
+  "icon_background": "#FFEAD5",
+  "icon_url": null,
+  "enable_site": true,
+  "enable_api": true,
+  "model_config": {
+    "opening_statement": "",
+    "suggested_questions": [],
+    "suggested_questions_after_answer": {
+      "enabled": true
+    },
+    "speech_to_text": {
+      "enabled": true
+    },
+    "text_to_speech": {
+      "enabled": false,
+      "language": "",
+      "voice": ""
+    },
+    "retriever_resource": {
+      "enabled": true
+    },
+    "annotation_reply": {
+      "enabled": false
+    },
+    "more_like_this": {
+      "enabled": false
+    },
+    "sensitive_word_avoidance": {
+      "configs": [],
+      "enabled": false,
+      "type": ""
+    },
+    "external_data_tools": [],
+    "model": {
+      "provider": "langgenius/openai_api_compatible/openai_api_compatible",
+      "name": "deepseek-flash",
+      "mode": "chat",
+      "completion_params": {
+        "enable_thinking": true,
+        "stop": []
+      }
+    },
+    "user_input_form": [],
+    "dataset_query_variable": "",
+    "pre_prompt": "##任务背景\n分析客户在我司的沟通数据、学习数据、对课程老师的评价数据，输出本课程潜在退费原因\n\n##技能\n- 教育心理学：理解学生的心理特点\n- 十年在线教育课程辅导经验\n- 深入了解中国K12阶段学生的学习习惯\n\n ##角色\n- 分析专家：善于通过信息挖掘退费风险\n- 总结表达大师\n\n## 注意事项\n- 是否去掉对应的退费原因分类：和已解决退费原因分类做对比\n        - 第一步判断：当前的退费原因分类是否含有已解决退费原因分类，如果不含，则可忽略，如果含有进行第二步判断\n        - 第二步判断：已解决的退费原因分类发生的时间是否早于对应的退费原因分类沟通时间，如果早于则可忽略，如果晚于则需要去掉对应的退费原因分类\n- 注意输入的数据区分本班级和其他班级，其他班级的做参考，不可把其他班级的原因输出\n- 尤其注意：本班级未开课时不会出现课程堆积，如果未开课的退费原因已有课程堆积需要移除对应的分类\n      则移除课程堆积分类\n\n## 输出要求\n- 注意对可能的退费原因进行追问和验证，挖掘到最根本的原因，给出的判断依据要细节丰富，描述全面\n- 让老师不需要查看其他各处信息就能了解到用户退费全貌，比如给出学生/家长/老师的原话。如果出现无法判断的矛盾点，或有其他需要进一步探查分析的信息，在备注中列出。注意语言表述自然通顺易于理解。\n- 注意：是本班课的退费根因，一定不要分析其他班级的退费问题\n- 注意同时需要参考老师手工填写的退费原因\n- 最多输出6个主要退费原因：原因调取分类结合数据源进行分类\n    - 总结：200字以内\n    - 每个退费原因分类： \n        - 每个分类下：总结退费意向总结/关键词，150字以内\n        - 每个分类下：该退费意向分类的原因：沟通时间、客户原文、老师（名称+原文）\n        - 每个分类下：是否是核心原因，根据输入的内容去判断是否是核心根因，最多1-2个，枚举值是、否\n        - 核心原因：根据输入的内容去判断最核心的退费根因，最多1-2个，枚举值是、否\n        - 分类判断数据源：展示对应的沟通数据、课程体验、nps(1代表沟通数据、2代表课程体验、3代表nps)\n        - 分类判断依据：按照沟通数据、课程体验、nps分别获取如下数据：\n             - 沟通数据：提取沟通时间、客户原文、老师（名称+原文）\n             - 课程体验：提取展示对应的判断源数据\n             - nps：提取对应的判断源数据\n## 输出格式\n1、你最终将严格按照以下json格式输出结果， 输出字段上无需添加字数限制说明\n2. 字段说明\n - keywords: 退费分析总结关键字\n - coreReason: 是否为核心原因枚举（是和否）\n - reasonJudgeType：分类判断数据源枚举 (1代表沟通数据、2代表课程体验、3代表nps)\n - reasonJudgeCommOriginalList：如果分类判断数据源是”沟通数据“，则这个字段返回分类判断的原文依据, 是list结构， 如果分类判断数据源是”沟通数据“，则这个字段返回分类判断的原文依据\n- reasonJudgeNpsOrExperienceOriginal：如果分类判断数据源是“课程体验或者nps”，则这个字段返回分类判断的原文依据\n\n```json\n{\n    \"directReason\": \"退费直接原因\",\n    \"rationales\": [\n        {\n            \"category\": \"退费根因分类route（对应分类中的code，例如 1-11）\"，\n            \"categoryName\": \"二级分类名称\"，\n            \"refundSummary\": \"退费分析总结\"\n            \"keywords\":[\"关键词1\"， 关键词2\"],\n            \"originalText\": \"沟通时间、客户原文、老师（名称+原文）\",\n            \"coreReason\": \"是否为核心原因\",\n            \"reasonJudgeType\": \"分类判断数据源\",\n            \"reasonJudgeCommOriginalList\": [\n                        {  \n                          \"communicateId\": \"沟通记录ID\",\n                          \"chatTime\": \"发生该退费倾向的沟通时间，格式：yyyy-MM-dd HH:mm:ss\",\n                          \"customerWords\": \"退费相关沟通中用户原话\", \n                          \"teacherWords\": \"退费相关沟通中老师应答原话\" \n                        }\n             ],\n            \"reasonJudgeNpsOrExperienceOriginal\":\"\"\n        }\n    ]\n}\n```",
+    "gt_configs": {},
+    "agent_mode": {
+      "max_iteration": 5,
+      "enabled": true,
+      "prompt": null,
+      "strategy": "function_call",
+      "tools": []
+    },
+    "prompt_type": "simple",
+    "chat_prompt_config": {
+      "prompt": [
+        {
+          "role": "system",
+          "text": ""
+        }
+      ]
+    },
+    "completion_prompt_config": {
+      "prompt": {
+        "text": ""
+      },
+      "conversation_histories_role": {
+        "user_prefix": "",
+        "assistant_prefix": ""
+      }
+    },
+    "dataset_configs": {
+      "retrieval_model": "multiple",
+      "datasets": {
+        "datasets": []
+      },
+      "reranking_enable": false,
+      "top_k": 4
+    },
+    "file_upload": {
+      "image": {
+        "detail": "high",
+        "enabled": true,
+        "number_limits": 3,
+        "transfer_methods": [
+          "remote_url",
+          "local_file"
+        ]
+      },
+      "enabled": true,
+      "allowed_file_types": [
+        "image",
+        "document"
+      ],
+      "allowed_file_extensions": [
+        ".JPEG",
+        ".GIF",
+        ".JPG",
+        ".PNG",
+        ".GIF",
+        ".WEBP",
+        ".JPG",
+        ".PNG",
+        ".SVG",
+        ".SVG",
+        ".WEBP",
+        ".JPEG",
+        ".PDF",
+        ".MARKDOWN",
+        ".mdx",
+        ".HTML",
+        ".MD",
+        ".doc",
+        ".CSV",
+        ".docx",
+        ".DOCX",
+        ".htm",
+        ".html",
+        ".HTM",
+        ".csv",
+        ".vtt",
+        ".md",
+        ".TXT",
+        ".MDX",
+        ".xlsx",
+        ".properties",
+        ".pdf",
+        ".XLSX",
+        ".xls",
+        ".XLS",
+        ".DOC",
+        ".markdown",
+        ".PROPERTIES",
+        ".txt",
+        ".VTT"
+      ],
+      "allowed_file_upload_methods": [
+        "remote_url",
+        "local_file"
+      ],
+      "number_limits": 3,
+      "need_parse_file_types": [
+        "document"
+      ],
+      "file_size_limits": {
+        "image": 10,
+        "document": 5
+      }
+    },
+    "created_by": "177071",
+    "created_at": 1795533171,
+    "updated_by": "177071",
+    "updated_at": 1795533171
+  },
+  "workflow": null,
+  "api_base_url": "https://test-dify-open.baijia.com/dify/api/v1",
+  "use_icon_as_answer_icon": false,
+  "api_max_active_requests": 50,
+  "created_by": "177071",
+  "created_at": 1795520312,
+  "updated_by": "177071",
+  "updated_at": 1795533172,
+  "deleted_tools": [],
+  "access_mode": null,
+  "tags": [],
+  "site": {
+    "access_token": "CVy6IJbPQuLAjydw",
+    "code": "CVy6IJbPQuLAjydw",
+    "title": "TEST素养根因旧链路独立验证20261124",
+    "icon_type": "emoji",
+    "icon": "🤖",
+    "icon_background": "#FFEAD5",
+    "icon_url": null,
+    "description": null,
+    "default_language": "zh-Hans",
+    "chat_color_theme": null,
+    "chat_color_theme_inverted": false,
+    "customize_domain": null,
+    "copyright": null,
+    "privacy_policy": null,
+    "custom_disclaimer": "",
+    "customize_token_strategy": "not_allow",
+    "prompt_public": false,
+    "app_base_url": "https://test-os.baijia.com",
+    "show_workflow_steps": true,
+    "use_icon_as_answer_icon": false,
+    "created_by": "177071",
+    "created_at": 1795520313,
+    "updated_by": "177071",
+    "updated_at": 1795520313
+  },
+  "space_id": "spcynF7tYh4ROXnG8Xg",
+  "edit_permission": 1,
+  "admin_permission": 1,
+  "version": 1,
+  "space_type": "PERSONAL",
+  "publish_permission": 1,
+  "scene_template_permission": 1,
+  "publish_tool_permission": 1
+}

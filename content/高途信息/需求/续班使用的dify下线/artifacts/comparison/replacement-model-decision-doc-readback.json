@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"keyword\" keyword=\"owner已明确使用替代模型\"><excerpt top-block-id=\"doxcnbkWnS0T0s0xj9F7oLOfd3e\"><table id=\"doxcnbkWnS0T0s0xj9F7oLOfd3e\"><thead><tr><th vertical-align=\"top\"><p id=\"doxcnflsxqq8RYzyaXEq587t43f\">事项</p></th><th vertical-align=\"top\"><p id=\"doxcnPUa75X5i5Lc2g3koLbsjqh\">现在已知</p></th><th vertical-align=\"top\"><p id=\"doxcnFkihwYVD9R85CyoFtHgcPd\">真正缺少</p></th><th vertical-align=\"top\"><p id=\"doxcnGSuZQ0O6XE06ixfM1B8rUf\">影响 / 下一步条件</p></th></tr></thead><tbody><tr><td vertical-align=\"top\"><p id=\"doxcnxdwpwxDTexQGlTzSGEW6Vc\">素养根因、旅程、课程体验</p></td><td vertical-align=\"top\"><p id=\"doxcn5ROOCnUflDMG0rFk6849wg\">新链路已成功；模板已核对。根因messages与精品历史样本相等。</p></td><td vertical-align=\"top\"><p id=\"doxcniSjQFqB1laXQdiipfL8zrd\">根因、旅程、体验各自旧Dify应用的独立实际messages实收；旅程/体验历史样本版本也不同。</p></td><td vertical-align=\"top\"><p id=\"doxcno5AzdJsWkfIcc0BIuuV5ud\">尚未完成三项独立旧新对照。owner已明确使用替代模型：deepseek-v4-flash-0731映射到deepseek-flash（部署标识deepseek-v4.1-flash）。复用现有TEST应用配置和验证，不再等待恢复旧模型名；结果须标注替代模型及参数差异。</p></td></tr></tbody></table></excerpt></fragment>",
+      "document_id": "EWI6dsdvPokck0xy89ccJDuEnhg",
+      "revision_id": 123
+    }
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.70",
+      "latest": "1.0.100",
+      "message": "lark-cli 1.0.100 available, current 1.0.70, run: lark-cli update"
+    }
+  }
+}

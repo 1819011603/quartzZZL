@@ -1,0 +1,122 @@
+[
+  {
+    "scene": "素养根因",
+    "trace": "7905ec1b-e7b6-4f7e-826a-09abc2401963.0.3",
+    "message_id": "a936635a-4c4d-49f2-9405-dbfb3e807753",
+    "persisted_messages_equal": true,
+    "llm_received": true,
+    "old_non_messages": {
+      "model": "deepseek-flash",
+      "stream": true,
+      "thinking": {
+        "type": "enabled"
+      }
+    },
+    "new_non_messages": {
+      "stream": true,
+      "model": "deepseek-flash"
+    },
+    "model_readback": {
+      "provider": "langgenius/openai_api_compatible/openai_api_compatible",
+      "name": "deepseek-flash",
+      "mode": "chat",
+      "completion_params": {
+        "enable_thinking": true,
+        "stop": []
+      }
+    },
+    "llm_trace": "c9a92c1d-d766-4982-a6d9-700ba4c45e48.0.3",
+    "end_user_id": "b66b8bb3-cb15-4685-9b5d-8cbdc9b62c30",
+    "llm_messages_equal": true,
+    "final_new_trace": "1b812e6a-3ef7-4399-b2e4-47b2d5f88b15.0.3",
+    "final_messages_equal": true,
+    "final_parameters_equal": true,
+    "final_parameters": {
+      "stream": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "enabled"
+      }
+    }
+  },
+  {
+    "scene": "素养旅程",
+    "trace": "3882b435-710f-4b9a-95ad-c133230a3db2.0.3",
+    "message_id": "c131c942-babe-49d4-8c38-7b9f0c606bbb",
+    "persisted_messages_equal": true,
+    "llm_received": true,
+    "old_non_messages": {
+      "model": "deepseek-flash",
+      "stream": true,
+      "thinking": {
+        "type": "enabled"
+      }
+    },
+    "new_non_messages": {
+      "stream": true,
+      "model": "deepseek-flash"
+    },
+    "model_readback": {
+      "provider": "langgenius/openai_api_compatible/openai_api_compatible",
+      "name": "deepseek-flash",
+      "mode": "chat",
+      "completion_params": {
+        "enable_thinking": true,
+        "stop": []
+      }
+    },
+    "llm_trace": "130df5c1-0813-4fd0-9a86-325e5e2077ee.0.3",
+    "end_user_id": "ce98a2c7-8907-42e2-9ae7-d59a2d83e5f0",
+    "llm_messages_equal": true,
+    "final_new_trace": "7c633ac1-66ed-4e74-9634-ab8ce0bcf9cb.0.3",
+    "final_messages_equal": true,
+    "final_parameters_equal": true,
+    "final_parameters": {
+      "stream": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "enabled"
+      }
+    }
+  },
+  {
+    "scene": "素养体验",
+    "trace": "23854005-9901-439b-ba74-699ddd8edfff.0.3",
+    "message_id": "bd594415-56b1-49af-9517-8bba20cbd37c",
+    "persisted_messages_equal": true,
+    "llm_received": true,
+    "old_non_messages": {
+      "model": "deepseek-flash",
+      "stream": true,
+      "thinking": {
+        "type": "enabled"
+      }
+    },
+    "new_non_messages": {
+      "stream": true,
+      "model": "deepseek-flash"
+    },
+    "model_readback": {
+      "provider": "langgenius/openai_api_compatible/openai_api_compatible",
+      "name": "deepseek-flash",
+      "mode": "chat",
+      "completion_params": {
+        "enable_thinking": true,
+        "stop": []
+      }
+    },
+    "llm_trace": "61d3107e-f6b6-4fbe-ac11-5e83de9a6a9d.0.3",
+    "end_user_id": "b5da6eec-7864-43da-b810-ff7ab4ad8ade",
+    "llm_messages_equal": true,
+    "final_new_trace": "f018e314-4756-49c3-9660-7c2b6d216317.0.3",
+    "final_messages_equal": true,
+    "final_parameters_equal": true,
+    "final_parameters": {
+      "stream": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "enabled"
+      }
+    }
+  }
+]

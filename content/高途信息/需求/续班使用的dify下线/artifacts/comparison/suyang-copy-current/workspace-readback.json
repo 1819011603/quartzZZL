@@ -1,0 +1,11 @@
+{
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "\u5171\u4eab\u5de5\u4f5c\u7a7a\u95f4",
+    "plan": "basic",
+    "status": "normal",
+    "created_at": 1748434787,
+    "role": "owner",
+    "in_trial": null,
+    "trial_end_reason": null,
+    "custom_config": null
+}

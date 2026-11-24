@@ -1,0 +1,41 @@
+[
+  {
+    "scene": "素养根因",
+    "app_id": "spcynF7tYh4ROXnG8Xg_9ee84ee2-d1db-4591-b09b-93eaa2c17bd4",
+    "prod_model": "deepseek-v4-flash-0731",
+    "requested_model": "deepseek-flash",
+    "readback_model": "doubao/doubao-seed-2-0-mini-260215",
+    "only_model_name_changed": true,
+    "error": {
+      "code": "invalid_param",
+      "message": "model.name must be in the specified model list",
+      "status": 400
+    }
+  },
+  {
+    "scene": "素养旅程",
+    "app_id": "spcynF7tYh4ROXnG8Xg_1efb6874-d685-48ef-b3b5-0e5f2f77467f",
+    "prod_model": "deepseek-v4-flash-0731",
+    "requested_model": "deepseek-flash",
+    "readback_model": "doubao/doubao-seed-2-0-mini-260215",
+    "only_model_name_changed": true,
+    "error": {
+      "code": "invalid_param",
+      "message": "model.name must be in the specified model list",
+      "status": 400
+    }
+  },
+  {
+    "scene": "素养体验",
+    "app_id": "spcynF7tYh4ROXnG8Xg_82fa8eaa-620c-4224-8e73-69ca7d275f22",
+    "prod_model": "deepseek-v4-flash-0731",
+    "requested_model": "deepseek-flash",
+    "readback_model": "doubao/doubao-seed-2-0-mini-260215",
+    "only_model_name_changed": true,
+    "error": {
+      "code": "invalid_param",
+      "message": "model.name must be in the specified model list",
+      "status": 400
+    }
+  }
+]

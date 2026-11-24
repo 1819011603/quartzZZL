@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"keyword\" keyword=\"三项素养最新补证|旧新TEST对照已验证|本项无外部阻塞|逐场景覆盖\"><excerpt top-block-id=\"doxcnbkWnS0T0s0xj9F7oLOfd3e\"><table id=\"doxcnbkWnS0T0s0xj9F7oLOfd3e\"><thead><tr><th vertical-align=\"top\"><p id=\"doxcnflsxqq8RYzyaXEq587t43f\">事项</p></th><th vertical-align=\"top\"><p id=\"doxcnPUa75X5i5Lc2g3koLbsjqh\">现在已知</p></th><th vertical-align=\"top\"><p id=\"doxcnFkihwYVD9R85CyoFtHgcPd\">真正缺少</p></th><th vertical-align=\"top\"><p id=\"doxcnGSuZQ0O6XE06ixfM1B8rUf\">影响 / 下一步条件</p></th></tr></thead><tbody><tr><td vertical-align=\"top\"><p id=\"doxcnxdwpwxDTexQGlTzSGEW6Vc\">素养根因、旅程、课程体验</p></td><td vertical-align=\"top\"><p id=\"doxcn5ROOCnUflDMG0rFk6849wg\">新链路已成功；模板已核对。根因messages与精品历史样本相等。</p></td><td vertical-align=\"top\"><p id=\"doxcnQRqGusWnUnEetPmRtPYvCe\">三项独立旧Dify及新LiteLLM实收已取得；本项无外部阻塞。</p></td><td vertical-align=\"top\"><p id=\"doxcnlpbdWTyS51ZZf1QsDLNzrf\">已使用替代模型deepseek-flash完成三项对照。发现并修正Dify enable_thinking转thinking.enabled的差异，TEST发布20261124231941-188a6f5d9e0ed672已回读。不是旧名称原样回放。</p></td></tr></tbody></table></excerpt><p id=\"doxcnQBjUQw0x16wyHTYoPuYxrb\"><b>逐场景覆盖：</b>TEST版本263ba48a，既有12例成功证据保留。八历史场景及素养分层messages已对齐；素养根因、旅程、体验现已补齐独立旧Dify与新LiteLLM实收，messages及指定参数相等。三项采用deepseek-flash替代模型和合成输入，非旧名称原样回放、非真实素养学员全量验证。费用身份仍为分段证据；四正式知识库继续Dify。</p><p id=\"doxcnsCCb6eDOr33xBYjsMvMzHc\"><b>三项素养最新补证：</b>TEST版本263ba48a；旧新完整messages及指定参数相等，Dify user UUID除外。仅三项独立agent补thinking.enabled，精品场景未变。替代模型、合成输入验证，不要求随机输出相等。</p><excerpt top-block-id=\"doxcnTqz7PVaQerjzun5XaZi0Rh\"><table id=\"doxcnTqz7PVaQerjzun5XaZi0Rh\"><thead><tr><th vertical-align=\"top\"><p id=\"doxcn8O0t8fK1yd2A3mRTxWWWhe\">业务场景</p></th><th vertical-align=\"top\"><p id=\"doxcnnXrGHxYogykiLDgRhB6Zrh\">状态</p></th><th vertical-align=\"top\"><p id=\"doxcnV3gjEB8OctAbUOqlzx3yVe\">已验证范围</p></th><th vertical-align=\"top\"><p id=\"doxcn7auIWhgJJbwzFfOyxCNmNc\">剩余内容 / 边界</p></th></tr></thead><tbody><tr><td vertical-align=\"top\"><p id=\"doxcnQFOTSOvTrQTUgQ7cZzpPNc\">退费根因素养</p></td><td vertical-align=\"top\"><p id=\"doxcnXNxzs5Po7mWubhR87hfWRb\">旧新TEST对照已验证</p></td><td vertical-align=\"top\"><p id=\"doxcnflpZRuIF186cPbmHXkXqug\">独立TEST配置、格式、参数、费用头及返回成功</p></td><td vertical-align=\"top\"><p id=\"doxcn5X1hisZZ3FUWVYR9KoOmSg\">已注册TEST deepseek-flash并发布运行；旧新完整messages逐字相等，model/stream/thinking及max_tokens/stop省略一致（不含Dify user UUID）。替代模型、合成输入验证；非生产全量。</p></td></tr><tr><td vertical-align=\"top\"><p id=\"doxcnhyDznlCMp9SpD4lA8nihqj\">退费旅程素养</p></td><td vertical-align=\"top\"><p id=\"doxcnsJVIutfli8XPg2E0ZDZUQb\">旧新TEST对照已验证</p></td><td vertical-align=\"top\"><p id=\"doxcnsofKh8vQ0EzgJ9UqjdB75f\">独立TEST配置、格式、参数、费用头及返回成功</p></td><td vertical-align=\"top\"><p id=\"doxcnk9ZwZcyQhs1FxrMaWtx8xb\">已注册TEST deepseek-flash并发布运行；旧新完整messages逐字相等，model/stream/thinking及max_tokens/stop省略一致（不含Dify user UUID）。替代模型、合成输入验证；非生产全量。</p></td></tr><tr><td vertical-align=\"top\"><p id=\"doxcnxeZT89yDI1LLK8HvaI9XPe\">课程体验素养</p></td><td vertical-align=\"top\"><p id=\"doxcnW1cxYdAtnRKLXtj01p8xXg\">旧新TEST对照已验证</p></td><td vertical-align=\"top\"><p id=\"doxcncnHnhqXSYRlcSYwc1aQdCf\">独立TEST配置、格式、参数、费用头及返回成功</p></td><td vertical-align=\"top\"><p id=\"doxcnQWW6R3Eopw8YfDSAuq7A9e\">已注册TEST deepseek-flash并发布运行；旧新完整messages逐字相等，model/stream/thinking及max_tokens/stop省略一致（不含Dify user UUID）。替代模型、合成输入验证；非生产全量。</p></td></tr></tbody></table></excerpt></fragment>",
+      "document_id": "EWI6dsdvPokck0xy89ccJDuEnhg",
+      "revision_id": 132
+    }
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.70",
+      "latest": "1.0.100",
+      "message": "lark-cli 1.0.100 available, current 1.0.70, run: lark-cli update"
+    }
+  }
+}

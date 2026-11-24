@@ -86,3 +86,23 @@ Apollo：https://apollo-portal.baijia.com/config.html#/appid=student-data&env=TE
 ## 素养分层旧messages缺口已闭合（覆盖此前日志截断阻塞）
 
 只读同messageId的真正TEST Console详情取得完整持久化prompt，单user 8414字，与新LiteLLM实收逐字相等。当前TEST源码证明来源为本次llm_result.prompt_messages，纯文本保存不截断。详见[suyang-old-tier-evidence-closure.md](suyang-old-tier-evidence-closure.md)。本轮无新生成、配置修改；素养分层不再列剩余阻塞。三项模型名单问题不属本轮范围。
+
+
+## 最新授权覆盖：三项改用替代模型验证
+
+owner已明确旧模型被替换，直接使用替换后的模型配置已有TEST应用。此前“需管理员恢复旧模型注册”不再是当前阻塞；历史HTTP400保留作为原名称配置失败证据。映射为deepseek-v4-flash-0731 → deepseek-flash，部署标识deepseek-v4.1-flash。三项配置及独立对照正在执行，尚无本轮成功结论；必须保留提示词、角色顺序并记录参数差异。
+
+
+## 三项素养替代模型最终结果（2026-11-24）
+
+|场景|TEST结果|最终新trace|
+|---|---|---|
+|素养根因|旧新完整messages及指定参数相等|`1b812e6a-3ef7-4399-b2e4-47b2d5f88b15.0.3`|
+|素养旅程|旧新完整messages及指定参数相等|`7c633ac1-66ed-4e74-9634-ab8ce0bcf9cb.0.3`|
+|素养体验|旧新完整messages及指定参数相等|`f018e314-4756-49c3-9660-7c2b6d216317.0.3`|
+
+已正常注册TEST deepseek-flash并复用三个旧Dify应用发布运行，不再等待管理员恢复旧名称。实收发现Dify把enable_thinking=true转成thinking.enabled；仅为三个素养TEST应用新增独立agent覆盖并复验，发布20261124231941-188a6f5d9e0ed672已回读。代码版本沿用263ba48a，无新代码部署。
+
+边界：替代模型、合成输入的TEST独立对照；非旧名称原样回放或全部生产验证。比较model、stream、thinking和max_tokens/stop省略，Dify EndUser UUID不复制到新侧；随机输出不要求逐字一致。四正式知识库继续Dify，正式生产dataset Service API接入仍未验证；费用身份沿用分段证据，不追计费。
+
+证据：[三项完整报告](suyang-copy-verification.md)、[逐项断言](suyang-copy-current/final-summary.json)。当前三项无外部阻塞、无在途操作。TEST应用、模型注册及独立配置保留用于复验。
