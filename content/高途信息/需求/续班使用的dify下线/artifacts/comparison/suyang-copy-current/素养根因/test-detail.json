@@ -1,0 +1,144 @@
+{
+    "id": "spcynF7tYh4ROXnG8Xg_9ee84ee2-d1db-4591-b09b-93eaa2c17bd4",
+    "name": "TEST\u7d20\u517b\u6839\u56e0\u65e7\u94fe\u8def\u72ec\u7acb\u9a8c\u8bc120261124",
+    "description": "",
+    "mode": "agent-chat",
+    "icon_type": "emoji",
+    "icon": "\ud83e\udd16",
+    "icon_background": "#FFEAD5",
+    "icon_url": null,
+    "enable_site": true,
+    "enable_api": true,
+    "model_config": {
+        "opening_statement": null,
+        "suggested_questions": [],
+        "suggested_questions_after_answer": {
+            "enabled": false
+        },
+        "speech_to_text": {
+            "enabled": false
+        },
+        "text_to_speech": {
+            "enabled": false
+        },
+        "retriever_resource": {
+            "enabled": true
+        },
+        "annotation_reply": {
+            "enabled": false
+        },
+        "more_like_this": {
+            "enabled": false
+        },
+        "sensitive_word_avoidance": {
+            "enabled": false,
+            "type": "",
+            "configs": []
+        },
+        "external_data_tools": [],
+        "model": {
+            "provider": "langgenius\/openai_api_compatible\/openai_api_compatible",
+            "name": "doubao\/doubao-seed-2-0-mini-260215",
+            "mode": "chat",
+            "completion_params": {}
+        },
+        "user_input_form": [],
+        "dataset_query_variable": null,
+        "pre_prompt": null,
+        "gt_configs": null,
+        "agent_mode": {
+            "enabled": false,
+            "strategy": null,
+            "tools": [],
+            "prompt": null
+        },
+        "prompt_type": "simple",
+        "chat_prompt_config": {},
+        "completion_prompt_config": {},
+        "dataset_configs": {
+            "retrieval_model": "multiple"
+        },
+        "file_upload": {
+            "image": {
+                "enabled": true,
+                "number_limits": 20,
+                "detail": "high",
+                "transfer_methods": [
+                    "remote_url",
+                    "local_file"
+                ]
+            },
+            "allowed_file_types": [
+                "image",
+                "video"
+            ],
+            "allowed_file_extensions": [
+                ".JPG",
+                ".JPEG",
+                ".PNG",
+                ".GIF",
+                ".WEBP",
+                ".SVG",
+                ".MP4",
+                ".MOV",
+                ".MPEG",
+                ".WEBM"
+            ],
+            "allowed_file_upload_methods": [
+                "remote_url",
+                "local_file"
+            ],
+            "enabled": true,
+            "number_limits": 20
+        },
+        "created_by": "177071",
+        "created_at": 1795520312,
+        "updated_by": "177071",
+        "updated_at": 1795531406
+    },
+    "workflow": null,
+    "api_base_url": "https:\/\/test-dify-open.baijia.com\/dify\/api\/v1",
+    "use_icon_as_answer_icon": false,
+    "api_max_active_requests": 50,
+    "created_by": "177071",
+    "created_at": 1795520312,
+    "updated_by": "177071",
+    "updated_at": 1795520311,
+    "deleted_tools": [],
+    "access_mode": null,
+    "tags": [],
+    "site": {
+        "access_token": "CVy6IJbPQuLAjydw",
+        "code": "CVy6IJbPQuLAjydw",
+        "title": "TEST\u7d20\u517b\u6839\u56e0\u65e7\u94fe\u8def\u72ec\u7acb\u9a8c\u8bc120261124",
+        "icon_type": "emoji",
+        "icon": "\ud83e\udd16",
+        "icon_background": "#FFEAD5",
+        "icon_url": null,
+        "description": null,
+        "default_language": "zh-Hans",
+        "chat_color_theme": null,
+        "chat_color_theme_inverted": false,
+        "customize_domain": null,
+        "copyright": null,
+        "privacy_policy": null,
+        "custom_disclaimer": "",
+        "customize_token_strategy": "not_allow",
+        "prompt_public": false,
+        "app_base_url": "https:\/\/test-os.baijia.com",
+        "show_workflow_steps": true,
+        "use_icon_as_answer_icon": false,
+        "created_by": "177071",
+        "created_at": 1795520313,
+        "updated_by": "177071",
+        "updated_at": 1795520313
+    },
+    "space_id": "spcynF7tYh4ROXnG8Xg",
+    "edit_permission": 1,
+    "admin_permission": 1,
+    "version": 0,
+    "space_type": "PERSONAL",
+    "publish_permission": 1,
+    "scene_template_permission": 1,
+    "publish_tool_permission": 1
+}

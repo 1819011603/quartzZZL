@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"keyword\" keyword=\"三个TEST旧Dify应用已存在\"><excerpt top-block-id=\"doxcnTqz7PVaQerjzun5XaZi0Rh\"><table id=\"doxcnTqz7PVaQerjzun5XaZi0Rh\"><thead><tr><th vertical-align=\"top\"><p id=\"doxcn8O0t8fK1yd2A3mRTxWWWhe\">业务场景</p></th><th vertical-align=\"top\"><p id=\"doxcnnXrGHxYogykiLDgRhB6Zrh\">状态</p></th><th vertical-align=\"top\"><p id=\"doxcnV3gjEB8OctAbUOqlzx3yVe\">已验证范围</p></th><th vertical-align=\"top\"><p id=\"doxcn7auIWhgJJbwzFfOyxCNmNc\">剩余内容 / 边界</p></th></tr></thead><tbody><tr><td vertical-align=\"top\"><p id=\"doxcnQFOTSOvTrQTUgQ7cZzpPNc\">退费根因素养</p></td><td vertical-align=\"top\"><p id=\"doxcnyXU5qzqvLRCr2LYbFT13Yd\">新链路已验证</p></td><td vertical-align=\"top\"><p id=\"doxcnflpZRuIF186cPbmHXkXqug\">独立TEST配置、格式、参数、费用头及返回成功</p></td><td vertical-align=\"top\"><p id=\"doxcn5X1hisZZ3FUWVYR9KoOmSg\">旧三个TEST旧Dify应用已存在；复制线上原配置时，TEST模型列表拒绝 deepseek-v4-flash-0731（400）；旧新逐字对照未完成</p></td></tr><tr><td vertical-align=\"top\"><p id=\"doxcnhyDznlCMp9SpD4lA8nihqj\">退费旅程素养</p></td><td vertical-align=\"top\"><p id=\"doxcnjCugVWyqFQqt3lf9gdVTUb\">新链路已验证</p></td><td vertical-align=\"top\"><p id=\"doxcnsofKh8vQ0EzgJ9UqjdB75f\">独立TEST配置、格式、参数、费用头及返回成功</p></td><td vertical-align=\"top\"><p id=\"doxcnk9ZwZcyQhs1FxrMaWtx8xb\">旧三个TEST旧Dify应用已存在；复制线上原配置时，TEST模型列表拒绝 deepseek-v4-flash-0731（400）；旧新逐字对照未完成</p></td></tr><tr><td vertical-align=\"top\"><p id=\"doxcnxeZT89yDI1LLK8HvaI9XPe\">课程体验素养</p></td><td vertical-align=\"top\"><p id=\"doxcnlJA99DcYBurGHjSEYOv9wf\">新链路已验证</p></td><td vertical-align=\"top\"><p id=\"doxcncnHnhqXSYRlcSYwc1aQdCf\">独立TEST配置、格式、参数、费用头及返回成功</p></td><td vertical-align=\"top\"><p id=\"doxcnQWW6R3Eopw8YfDSAuq7A9e\">旧三个TEST旧Dify应用已存在；复制线上原配置时，TEST模型列表拒绝 deepseek-v4-flash-0731（400）；旧新逐字对照未完成</p></td></tr></tbody></table></excerpt></fragment>",
+      "document_id": "EWI6dsdvPokck0xy89ccJDuEnhg",
+      "revision_id": 122
+    }
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.70",
+      "latest": "1.0.100",
+      "message": "lark-cli 1.0.100 available, current 1.0.70, run: lark-cli update"
+    }
+  }
+}

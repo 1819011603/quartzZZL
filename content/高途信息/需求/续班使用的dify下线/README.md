@@ -108,3 +108,7 @@ revision56及91012878阶段曾记录“仅SOP user相等、其他场景包装不
 ## 素养旧基准补证纠正
 
 素养分层已通过同messageId的TEST Dify完整持久化prompt闭合旧新messages逐字对照（8414字）；此前将日志截断列为外部阻塞过早，现已移除。本轮仅只读，无新生成。三项退费素养新system均与各自Dify模板加换行相等，根因完整messages另与精品旧样本相等；这些不能替代素养独立旧执行。旅程模板版本与体验user后处理差异使历史样本不能直接借作全量基准。详见[分层闭合](artifacts/comparison/suyang-old-tier-evidence-closure.md)、[既有基准适用性](artifacts/comparison/suyang-existing-baseline-audit.md)。
+
+## TEST旧Dify应用状态补充（2026-11-24）
+
+素养根因、素养旅程、素养体验三个TEST旧Dify应用均已创建存在；此前HTTP400不是应用不存在，而是复制线上原配置时，TEST模型名单拒绝原模型 `deepseek-v4-flash-0731`（`model.name must be in the specified model list`）。本轮按线上只读配置回读，三个线上对应应用均存在且原模型仍为该名称；TEST当前模型列表不包含该名称，单纯复制/重建应用不能补齐模型提供者配置。未改线上、未换模型绕过、未生产生成。
