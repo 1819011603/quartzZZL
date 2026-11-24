@@ -80,6 +80,17 @@
 | 听课情况筛选 | `getListBeginClazzLessons` | `/component/student-center/studentClazz/listBeginClazzLessons` | `src/services/clazzRosterOL.js:310` | student-center | `/studentClazz/listBeginClazzLessons` | 获取该班级已开课课节 [129972] | `ListenStatusFilter`/`LiveAnswerStatusFilter`/`ExerciseStatusFilter` 课节下拉 |
 | 线上考试筛选 | `getListAllExam` | `/component/student-center/studentClazz/listAllExam` | `src/services/clazzRosterOL.js:334` | student-center | `/studentClazz/listAllExam` | 获取班级下所有考试 [129973] | `ExamStatusFilter` 考试下拉 |
 
+### 6. 左侧班级 / 期切换列表（「搜索班级/期」下拉）
+
+> 页面左侧班级导航列表 = `ClazzAndPeriodSearch`（`@coeus/business` 共享组件，页面经 `src/pages/clazzRosterOnLine/components/ClazzPeriodSearch/index.js` 包 `@/components/ClazzAndPeriodSearch`）；下拉面板含 维度(按班/按期)/状态(行课中/未开课/已结课)/类型(公开课/体验课/专题课/系列课)/范围(本人带班) 筛选。包源码本地未落库，path 以同构本地副本 iris `ClazzAndPeriodSearchBase/service.js` 为证。
+
+| 触发 | 前端方法 | 前端调用路径 | 后端服务 | 后端 path | 接口名 | 说明 |
+|---|---|---|---|---|---|---|
+| 按班查看 / 搜索班级 | `ClazzAndPeriodSearch`（组件内联 api） | `/component/student-center/filter/clazz/list` | student-center | `/filter/clazz/list` | [POST]/clazz/list [38824] | 左侧班级列表（`FilterComponentController#filterClazzList`，另可配 `config`/`status`/`type`/`range`）。**页面接口，无 Feign**：走登录态做本人带班/权限过滤，release 分支不存在 `/feign/filter/clazz/list`（`FilterComponentClient` 仅按期，2026-11-24 核实） |
+| 按期查看 / 搜索期 | 同上 | `/component/student-center/filter/period/list` | student-center | `/filter/period/list` | [POST]/period/list [38822] | 左侧期列表；后端 `LoginInfoUtils` 取 accountId 过滤本人带班期。有 Feign：`/feign/filter/period/list` [492537]（`FilterComponentClient`） |
+
+> 小班课花名册同组件调 `/smallClazz/filter/clazz/list` [2044937]，见 [microClazzRoster/default.md](../microClazzRoster/default.md)。其他页面模糊搜班级另有 `/studentClazz/searchClazzListInfo`（`CustomSearch/SearchClazzAndSubclazz`）。
+
 > 共享组件（`@coeus/render` schema、`@coeus/business` 的 `ExamScoreSubmit`、`@coeus/feature`、`BatchActionBar`、`OperateButton`、`Attendance`、`LastFollowContentEdit`、`EditWrapper`、`WechatBatchSending`、`ClazzAndPeriodSearch`、`AccountNameFilter`、`PagerToolTip`、`HaboTabStayReport`、`@gaotu/reach-widget`、`@feitu/wecom` 等）另有接口，被多页面复用，待单独归档。学员档案抽屉见 `@/pages/StudentProfile`。
 
 ## 青舟接口详情页
@@ -90,3 +101,6 @@
 - [POST /studentClazz/largeClazzList/views/count](https://qingzhou.baijia.com/#/cloud/apiDoc/search/detail?interfaceId=220890&appId=student-center&branchName=release)
 - [GET /study/data/gray](https://qingzhou.baijia.com/#/cloud/apiDoc/search/detail?interfaceId=47244&appId=student-center&branchName=release)
 - [GET /report/roster/power](https://qingzhou.baijia.com/#/cloud/apiDoc/search/detail?interfaceId=43800&appId=teacher-tool&branchName=release)
+- [POST /filter/clazz/list](https://qingzhou.baijia.com/#/cloud/apiDoc/search/detail?interfaceId=38824&appId=student-center&branchName=release)（左侧班级列表，页面接口）
+- [POST /filter/period/list](https://qingzhou.baijia.com/#/cloud/apiDoc/search/detail?interfaceId=38822&appId=student-center&branchName=release)（左侧期列表，页面接口）
+- [POST /feign/filter/period/list](https://qingzhou.baijia.com/#/cloud/apiDoc/search/detail?interfaceId=492537&appId=student-center&branchName=release)（按期 Feign；按班无 Feign）
