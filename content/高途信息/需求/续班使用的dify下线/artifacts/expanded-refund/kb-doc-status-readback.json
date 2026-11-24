@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"keyword\" keyword=\"6909717c|188aa6ecfba6968e|Access token is invalid|素养NPS已补齐\"><p id=\"doxcnLnRs6cAn8KBKQlZjZpme3g\">最新裁决：按核心指令、数据和业务作用保留的口径，已有单次场景样本可接受TEST替换（详见第11节）；以下“不一致”仅描述字面差异，不作为不通过理由。SOP V2完整messages一致；画像、摘要、分层拆出的指令和业务正文逐字一致，但实际角色/包装不同。退费根因、体验、精品NPS保留正文和核心指令，仍有标签、换行、指令位置差异；旅程另有旧TEST与当前生产模板版本差异。素养NPS已补齐双侧实收：正文一致，主指令末尾换行及user包装、通用指令存在差异，完整messages不相同。</p><p id=\"doxcnoR4M6483Z19qWx2kleIlle\">当前已完成隔离Console检索与TEST模型、正式TEST Bearer检索。Java接入commit87124f42，阈值修正6909717c；流水线1360348已由主Worker确认Eureka UP，新Java入口端到端验证正在执行，尚不宣称成功。旧手工trace不得替代Java证据。</p><p id=\"doxcn871Pd39y64PPpYbhQ95usf\">2026-11-24最新受控验证：使用已获授权的TEST凭据向真实生产base dify-open.baijia.com及原dataset86233d1a-bddf-4a15-a229-c90b6a061c57请求retrieve，返回401 Access token is invalid。说明只去掉域名中的test并改dataset不足，仍需匹配环境的获授权生产服务身份；该401不能替代或推翻Console空间403证据。没有使用他人key、创建生产key或调用生产模型。等待原TEST Java端到端验证结束前，不修改同实例Apollo。</p><p id=\"doxcnczS47vUA8uPhPszWqBlsPh\">TEST配置交付：隔离agent1795457739670155/application1795457739670157，完整system1390字符；7个Retriever配置已发布TEST/default/application，releaseKey=20261124021612-188aa6ecfba6968e（发布回读证据，末位为8e）。原四个知识库应用正式路由未变。生产受控检索环境与凭证条件继续核实，Java端到端结果待追加。</p></fragment>",
+      "document_id": "EWI6dsdvPokck0xy89ccJDuEnhg",
+      "revision_id": 34
+    }
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.70",
+      "latest": "1.0.100",
+      "message": "lark-cli 1.0.100 available, current 1.0.70, run: lark-cli update"
+    }
+  }
+}

@@ -7,7 +7,7 @@ branches:
   - student-data:feature-xuban-dify-offline
 repos:
   - student-data
-updated: 2026-11-23
+updated: 2026-11-24
 tags: [需求]
 ---
 > 2026-11-24 机制与方案更新：Dify平台继续存在，可优先评估复用其独立检索API；旧文“必须自建/结构化过滤等价/平台无可用检索”的推断不再作为结论。生产前置检索与TEST废弃工具多轮不得混用。详见 artifacts/expanded-refund/kb-platform-reuse-plan.md。
@@ -100,9 +100,9 @@ test 环境对应应用见 [`verify.md`](verify.md)。
 |---|---|
 | 阶段 | 开发中 |
 | 进度 | T 6/14 · R 0/0 · C 0/0 |
-| 部署泳道 | `student-data=test-gtbg-dev-1`，commit `91012878`，流水线 `1360042` |
+| 部署泳道 | `student-data=test-gtbg-dev-1`，commit `6909717c`，流水线 `1360348`（主Worker确认Eureka UP；Java端到端验证进行中） |
 | 当前状态 | 已完成测试环境对等性审查与逐场景裁决；SOP V2输入一致，其余场景保留具体差异。生产只读，未授权发布 |
-| 最近更新 | 2026-11-23：TEST知识库场景已恢复Dify并复验；逐场景LiteLLM输入裁决已收束。SOP V2完整messages一致；画像/摘要/分层正文一致但角色包装不同；退费根因、旅程、课程体验、NPS精品均有明确差异；素养NPS缺双侧实收，不标通过。详见[审查交付](artifacts/expanded-scope/review-result.md)与[当前prompt交接](artifacts/expanded-scope/current-prompt-handoff.md)。 |
+| 最近更新 | 2026-11-23：TEST知识库场景已恢复Dify并复验；逐场景LiteLLM输入裁决已收束。SOP V2完整messages一致；画像/摘要/分层正文一致但角色包装不同；退费根因、旅程、课程体验、NPS精品均有明确差异；素养NPS副本已补双侧实收，按最新业务作用保留口径接受TEST替换。详见[审查交付](artifacts/expanded-scope/review-result.md)与[当前prompt交接](artifacts/expanded-scope/current-prompt-handoff.md)。 |
 
 完整逐点状态见 [覆盖与迁移实践](artifacts/expanded-scope/coverage.md)。
 
@@ -110,7 +110,7 @@ TEST 可替换场景的实际生效配置、版本和 trace 汇总见 [TEST交�
 
 ## 当前结论与剩余边界
 
-本轮已按所有者最新决定收束为 13 个无前置知识库的生产目标应用、8 类场景；问题建议高中/素养与降退费精品/素养共 4 个生产应用保留 Dify。SOP V2 在测试 fixture 上完整 messages 逐字段一致；画像、摘要、分层仅指令与业务正文逐字一致，角色包装不同；退费根因、旅程、课程体验、NPS 精品存在已定位的标签、位置、换行或模板版本差异；素养 NPS 没有旧/新双侧 LiteLLM 实收：已核对生产绑定、TEST 映射并完成本地模板生成；因 TEST 无素养旧 Dify 映射且不能用生产 key 发推理，保留未验证。详见 [素养 NPS 证据边界](artifacts/expanded-renewal/nps-suyang-evidence-boundary.md)。
+本轮已按所有者最新决定收束为 13 个无前置知识库的生产目标应用、8 类场景；问题建议高中/素养与降退费精品/素养共 4 个生产应用保留 Dify。SOP V2 在测试 fixture 上完整 messages 逐字段一致；画像、摘要、分层仅指令与业务正文逐字一致，角色包装不同；退费根因、旅程、课程体验、NPS 精品存在已定位的标签、位置、换行或模板版本差异；素养 NPS 已补齐TEST副本双侧LiteLLM实收，共用trace `8c802dc4-ed69-4533-b63a-3851e20bb83d.0.3`；业务正文一致，主指令末尾换行与user包装差异已定位，按最新口径接受TEST替换。见 [最新裁决](artifacts/expanded-scope/semantic-acceptance.md)。
 
 不一致的主要来源是旧 Dify 的 flat prompt 与网关真实 system/user 分层，以及 Dify 工作流/模板的额外处理；有正文保留证据的场景不因包装差异盲改。旅程当前生产模板的“已解决退费原因”字段属于既有合法增强，不能为对齐落后 TEST 模板删除。
 
@@ -151,4 +151,10 @@ TEST 可替换场景的实际生效配置、版本和 trace 汇总见 [TEST交�
 
 
 ## 知识库测试进展（2026-11-24）
-隔离Console检索→TEST模型生成已跑通，长期Service API凭证与原库权限尚缺，非正式替换；见 [实际结果与边界](artifacts/expanded-refund/kb-test-run-result.md)。
+隔离Console检索→TEST模型已跑通；随后真正TEST Service API已用TEST dataset Bearer成功检索4条话术（dataset `0105aec9-ef88-4a45-8f4a-fb1b5a3f12ce`），不再是“TEST服务凭证尚缺”。生产原库空间权限与服务身份仍需分别核实，不代表正式替换。
+
+代码 `87124f42` 新增TEST检索服务，`6909717c`补充检索阈值；流水线1360348已由主Worker确认Eureka UP。Java新入口端到端验证仍进行中，旧手工trace不能替代该结果。隔离agent/application为`1795457739670155`/`1795457739670157`，完整system1390字符；TEST/default/application实际releaseKey为`20261124021612-188aa6ecfba6968e`（以发布回读证据为准）。
+
+生产原dataset `86233d1a-bddf-4a15-a229-c90b6a061c57`关联空间`spczjG62GXkZ0ZSOBYS`；当前zhangzeling空间列表正常返回且不含目标空间，直接空间读取403。key列表按创建人过滤，个人可见0不等于生产没有key。最新授权允许生产知识库受控检索及必要TEST配置，生产数据/权限/配置/路由仍不写，生产模型不调用；域名/dataset环境假设正在核实，暂不宣称接通。见 [权限与服务接入](artifacts/expanded-refund/kb-service-auth-investigation.md)、[TEST配置交付](artifacts/expanded-refund/kb-service-config-delivery.md)。
+
+生产目标受控探测补证：真实生产域名+原dataset使用现有TEST dataset token返回401 `Access token is invalid`；尚无获授权生产凭据，不改TEST Apollo为已知无效组合。该错误与个人Console缺空间权限是不同层次。证据：[环境凭据探测](artifacts/expanded-refund/kb-test-retrieval/prod-target-test-credential-probe.json)。
