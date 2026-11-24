@@ -91,6 +91,8 @@
 
 > 小班课花名册同组件调 `/smallClazz/filter/clazz/list` [2044937]，见 [microClazzRoster/default.md](../microClazzRoster/default.md)。其他页面模糊搜班级另有 `/studentClazz/searchClazzListInfo`（`CustomSearch/SearchClazzAndSubclazz`）。
 
+> 按班列表无 Feign，但外部服务要「某人/某老师带的班」可引 `student-center-api` 的 `UserClazzClient`（contextId `student-center-userClazz`）：① `POST /feign/account/clazz/query`（`AccountClazzRequest{accountId, courseTypes, onlyOneself}` → `List<ClazzDto>{clazzNumber, clazzName, clazzBeginTime}`，权限逻辑同页面本人带班/权限过滤，查 `subclazz_search`）；② `POST /feign/teacher/clazz/query`（`TeacherClazzRequest{accountIds, courseTypes}`，按辅导/销售账号精确匹配）；③ `POST /feign/subclazz/query`（小班，`SubclazzInfoRequest{accountIds}` 按辅导/销售账号查 subclazzIndex）。与页面口径差异：**无「行课中/未开课/已结课」状态过滤，仅 courseTypes 一个筛选**，返回字段只有班号/班名/开课时间，条数上限 `teacherClazzSearchEsSize` / `teacherSubclazzSearchEsSize`；要页面同口径（视图筛选、状态）需新增 Feign，2026-11-24 核实（`UserClazzBiz` 实现，本地工作区）。
+
 > 共享组件（`@coeus/render` schema、`@coeus/business` 的 `ExamScoreSubmit`、`@coeus/feature`、`BatchActionBar`、`OperateButton`、`Attendance`、`LastFollowContentEdit`、`EditWrapper`、`WechatBatchSending`、`ClazzAndPeriodSearch`、`AccountNameFilter`、`PagerToolTip`、`HaboTabStayReport`、`@gaotu/reach-widget`、`@feitu/wecom` 等）另有接口，被多页面复用，待单独归档。学员档案抽屉见 `@/pages/StudentProfile`。
 
 ## 青舟接口详情页
