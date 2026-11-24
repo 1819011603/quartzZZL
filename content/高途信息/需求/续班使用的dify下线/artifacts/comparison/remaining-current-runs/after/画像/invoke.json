@@ -1,0 +1,46 @@
+{
+ "url": "https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service",
+ "trafficEnv": "test-gtbg-dev-1",
+ "httpStatus": 200,
+ "request": {
+  "serviceNameAndMethodName": "com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask",
+  "params": [
+   "remaining-c9767931-9c4b-45d9-9ce1-b022f56d0fa2",
+   {
+    "aiApplicationName": "用户画像-test",
+    "userQuery": "",
+    "userTag": "test",
+    "platformType": 2,
+    "runUser": {
+     "email": "gongxuemeng@gaotu.cn"
+    }
+   },
+   {
+    "clazzNumber": "500775385189890048",
+    "userId": "7404351741",
+    "commTag": 0
+   },
+   ""
+  ]
+ },
+ "curl": "curl -sk \\\n  -x \"${AGENT_PROXY_URL:-http://127.0.0.1:8888}\" \\\n  'https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-1' \\\n  -H 'identification: microLessonStudent' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask\", \"params\": [\"remaining-c9767931-9c4b-45d9-9ce1-b022f56d0fa2\", {\"aiApplicationName\": \"用户画像-test\", \"userQuery\": \"\", \"userTag\": \"test\", \"platformType\": 2, \"runUser\": {\"email\": \"gongxuemeng@gaotu.cn\"}}, {\"clazzNumber\": \"500775385189890048\", \"userId\": \"7404351741\", \"commTag\": 0}, \"\"]}'",
+ "traceId": "708865b6-5d42-41bf-b5c1-54635a17c682.0.3",
+ "gapmApp": "student-data",
+ "identification": "microLessonStudent",
+ "rvoCode": 0,
+ "result": {
+  "usage": {
+   "completion_tokens": 1324,
+   "prompt_tokens": 2333,
+   "cost": 0.00638526,
+   "completion_tokens_details": {
+    "reasoning_tokens": 1092
+   },
+   "prompt_tokens_details": {},
+   "total_tokens": 3657
+  },
+  "event": "litellm_proxy/doubao-seed-2.0-lite",
+  "messageId": "chatcmpl-6013ff53c83742399228d0b779e90c78",
+  "answer": "{\n    \"renewalInterest\": \"**来自对话**：无相关内容；\\n**来自问卷**：1、认可二讲老师同步学习反馈、督促作业完成、紧密家校沟通的服务； 2、希望获得查漏补缺小灶课、中考物理专题复习、真题训练、押题类课程助力冲刺重高\",\n    \"renewalResistance\": \"**来自对话**：无相关内容；\\n**来自问卷**：未明确表述阻碍续班的具体原因，仅表示有意向报名但存在待咨询的相关疑虑\",\n    \"portraitSummary\": \"学员为准中考生，物理学科当前存在课上听懂课后做题不准、学习主动性不足、学习效果不理想的问题。家长为报课人，对课程满意度打8分，二讲、主讲满意度均打7分。**家长续班意向为有意报名但需先咨询相关疑虑**，核心诉求是获得学习状态同步、学习习惯督促、针对性查漏补缺、中考物理专项复习等相关服务，助力孩子提升物理成绩冲刺重高。\"\n}"
+ }
+}

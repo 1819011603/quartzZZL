@@ -1,0 +1,70 @@
+{
+  "at": "2026-11-24T19:07:11.928453+08:00",
+  "requests": [
+    {
+      "name": "keys",
+      "path": "/dify/api/console/api/datasets/api-keys",
+      "http": 200,
+      "headers": {
+        "x-env": "production",
+        "gapm-appid": "dify-api",
+        "gapm-traceid": "6a412a65-e870-492e-91b4-e4e6479c8a21.0.1"
+      },
+      "count": 0,
+      "metadata": [],
+      "error": {}
+    },
+    {
+      "name": "spaces",
+      "path": "/api/dify/user/spacelist",
+      "http": 200,
+      "headers": {
+        "x-env": null,
+        "gapm-appid": "teable",
+        "gapm-traceid": "5b7fbd3a-ea34-4bcc-b489-5647d67fea1c.0.1"
+      },
+      "data": [
+        {
+          "id": "spcjE2Q2agjjjJ2GYZc",
+          "name": "张泽灵的空间",
+          "spaceType": "PERSONAL",
+          "role": "owner"
+        },
+        {
+          "id": "spcIHRmiYeOUfzoVvpu",
+          "name": "企业空间",
+          "spaceType": "ENTERPRISE",
+          "role": "commenter"
+        },
+        {
+          "id": "spcAm3oupwKuWRMD8UV",
+          "name": "续班AI",
+          "spaceType": "TEAM",
+          "role": "owner"
+        }
+      ]
+    },
+    {
+      "name": "dataset",
+      "path": "/dify/api/console/api/datasets/86233d1a-bddf-4a15-a229-c90b6a061c57",
+      "http": 200,
+      "headers": {
+        "x-env": "production",
+        "gapm-appid": "dify-api",
+        "gapm-traceid": "c1c61983-2dea-496c-9149-3811c13bd750.0.1"
+      },
+      "data": {
+        "id": "86233d1a-bddf-4a15-a229-c90b6a061c57",
+        "name": "降退费服务建议话术库",
+        "permission": "only_me",
+        "enable_api": true,
+        "space_ids": [
+          "spcAm3oupwKuWRMD8UV",
+          "spczjG62GXkZ0ZSOBYS"
+        ],
+        "indexing_technique": "high_quality"
+      },
+      "error": {}
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "expression": "watch com.gaotu.student.data.domain.ai.core.agentaccess.LlmGatewayAccessor jsonPost \"{params[1].get(\\\"x-tech-ai-user-id\\\"),params[2]}\" -x 3 -n 4",
+  "pod": "student-data-5f688c5bfb-xgx76",
+  "ip": "10.218.249.191",
+  "records": [
+    {
+      "index": 1,
+      "header_name": "x-tech-ai-user-id",
+      "header_value": "gongxuemeng",
+      "scene": "素养分层",
+      "trace": "9a5b2c21-e465-45fb-b0c4-e24f46a18140.0.3",
+      "exact_body_equal": true,
+      "similarity": 1.0,
+      "next_similarity": 0.04488816655057658,
+      "note": "乱码时以唯一最高body相似度关联；未直接捕获MDC trace"
+    },
+    {
+      "index": 2,
+      "header_name": "x-tech-ai-user-id",
+      "header_value": "gongxuemeng",
+      "scene": "素养根因",
+      "trace": "d246f038-63fb-42ce-894b-883f76c810e3.0.3",
+      "exact_body_equal": true,
+      "similarity": 1.0,
+      "next_similarity": 0.25615050651230103,
+      "note": "乱码时以唯一最高body相似度关联；未直接捕获MDC trace"
+    },
+    {
+      "index": 3,
+      "header_name": "x-tech-ai-user-id",
+      "header_value": "gongxuemeng",
+      "scene": "素养旅程",
+      "trace": "50868c24-9bbd-4252-bcc6-2bb2114d4ac6.0.3",
+      "exact_body_equal": true,
+      "similarity": 1.0,
+      "next_similarity": 0.29556490773713173,
+      "note": "乱码时以唯一最高body相似度关联；未直接捕获MDC trace"
+    },
+    {
+      "index": 4,
+      "header_name": "x-tech-ai-user-id",
+      "header_value": "gongxuemeng",
+      "scene": "素养体验",
+      "trace": "c078cba2-8609-4dbd-b993-5991397d6354.0.3",
+      "exact_body_equal": false,
+      "similarity": 0.9993366500829187,
+      "next_similarity": 0.287378640776699,
+      "note": "乱码时以唯一最高body相似度关联；未直接捕获MDC trace"
+    }
+  ]
+}

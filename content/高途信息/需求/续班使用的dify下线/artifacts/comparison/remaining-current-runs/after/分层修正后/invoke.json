@@ -1,0 +1,47 @@
+{
+ "url": "https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service",
+ "trafficEnv": "test-gtbg-dev-1",
+ "httpStatus": 200,
+ "request": {
+  "serviceNameAndMethodName": "com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask",
+  "params": [
+   "remaining-2c217026-3553-4355-bb2a-9dec5bf7923b",
+   {
+    "aiApplicationName": "预测分层原因",
+    "userQuery": "",
+    "userTag": "test",
+    "platformType": 2,
+    "runUser": {
+     "email": "gongxuemeng@gaotu.cn"
+    }
+   },
+   {
+    "clazzNumber": "500775385189890048",
+    "userId": "6761113627",
+    "commTag": 0,
+    "subClazzNumber": "31298462823089024"
+   },
+   ""
+  ]
+ },
+ "curl": "curl -sk \\\n  -x \"${AGENT_PROXY_URL:-http://127.0.0.1:8888}\" \\\n  'https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-1' \\\n  -H 'identification: microLessonStudent' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask\", \"params\": [\"remaining-2c217026-3553-4355-bb2a-9dec5bf7923b\", {\"aiApplicationName\": \"预测分层原因\", \"userQuery\": \"\", \"userTag\": \"test\", \"platformType\": 2, \"runUser\": {\"email\": \"gongxuemeng@gaotu.cn\"}}, {\"clazzNumber\": \"500775385189890048\", \"userId\": \"6761113627\", \"commTag\": 0, \"subClazzNumber\": \"31298462823089024\"}, \"\"]}'",
+ "traceId": "63916e95-985f-4407-9f8e-00ae2ae61438.0.3",
+ "gapmApp": "student-data",
+ "identification": "microLessonStudent",
+ "rvoCode": 0,
+ "result": {
+  "usage": {
+   "completion_tokens": 417,
+   "prompt_tokens": 4289,
+   "cost": 0.00333102,
+   "completion_tokens_details": {
+    "reasoning_tokens": 338
+   },
+   "prompt_tokens_details": {},
+   "total_tokens": 4706
+  },
+  "event": "litellm_proxy/doubao-seed-2.0-lite",
+  "messageId": "chatcmpl-e7443aeded124bdd92d0c0b7ae7c13c0",
+  "answer": "```\n学员是同科目新学员，入班服务已108天，非续班期正式课完成度仅31.8%，远低于平均水平，几乎没听小灶课。近7天和二讲的微信、通话互动频率极低，暂未预报名，无任何正向续班意向反馈，没有相关积极信号。\n```"
+ }
+}

@@ -1,0 +1,44 @@
+{
+  "url": "https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service",
+  "trafficEnv": "test-gtbg-dev-1",
+  "httpStatus": 200,
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask",
+    "params": [
+      "remaining-suyang-b3170994-0adb-47f0-ae8e-1f0dcd366682",
+      {
+        "aiApplicationName": "素养根因TEST独立验证20261124",
+        "userQuery": "测试样本：家长表示课程时间与学校晚自习冲突，无法参加直播，申请退费。",
+        "userTag": "test",
+        "platformType": 2,
+        "runUser": {
+          "email": "gongxuemeng@gaotu.cn"
+        }
+      },
+      {},
+      ""
+    ]
+  },
+  "curl": "curl -sk \\\n  -x \"${AGENT_PROXY_URL:-http://127.0.0.1:8888}\" \\\n  'https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-1' \\\n  -H 'identification: microLessonStudent' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask\", \"params\": [\"remaining-suyang-b3170994-0adb-47f0-ae8e-1f0dcd366682\", {\"aiApplicationName\": \"素养根因TEST独立验证20261124\", \"userQuery\": \"测试样本：家长表示课程时间与学校晚自习冲突，无法参加直播，申请退费。\", \"userTag\": \"test\", \"platformType\": 2, \"runUser\": {\"email\": \"gongxuemeng@gaotu.cn\"}}, {}, \"\"]}'",
+  "traceId": "d246f038-63fb-42ce-894b-883f76c810e3.0.3",
+  "gapmApp": "student-data",
+  "identification": "microLessonStudent",
+  "rvoCode": 0,
+  "result": {
+    "usage": {
+      "completion_tokens": 1476,
+      "prompt_tokens": 1468,
+      "cost": 0.0032940288,
+      "completion_tokens_details": {
+        "reasoning_tokens": 1189
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 1408
+      },
+      "total_tokens": 2944
+    },
+    "event": "litellm_proxy/deepseek-v4.1-flash",
+    "messageId": "7677b4d4-e2f3-498c-965e-57ca85b8e2b0",
+    "answer": "{\n  \"directReason\": \"家长表示课程时间与学校晚自习冲突，无法参加直播，申请退费。\",\n  \"rationales\": [\n    {\n      \"category\": \"时间冲突\",\n      \"categoryName\": \"课程时间与学校晚间安排冲突\",\n      \"refundSummary\": \"家长明确反馈本课程直播时间与学校晚自习冲突，导致学生无法参加直播学习，因此提出退费。该原因属于直接退费触发点，但当前信息有限，是否为核心根因需结合后续沟通验证是否存在可调班、回放补课等替代方案。\",\n      \"keywords\": [\n        \"时间冲突\",\n        \"晚自习\",\n        \"无法参加直播\",\n        \"申请退费\"\n      ],\n      \"originalText\": \"沟通时间：未提供；客户原文：家长表示课程时间与学校晚自习冲突，无法参加直播，申请退费；老师：未提供。\",\n      \"coreReason\": \"是\",\n      \"reasonJudgeType\": \"1\",\n      \"reasonJudgeCommOriginalList\": [\n        {\n          \"communicateId\": 0,\n          \"chatTime\": \"\",\n          \"customerWords\": \"课程时间与学校晚自习冲突，无法参加直播，申请退费。\",\n          \"teacherWords\": \"\"\n        }\n      ],\n      \"reasonJudgeNpsOrExperienceOriginal\": \"\"\n    }\n  ]\n}"
+  }
+}

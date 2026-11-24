@@ -1,0 +1,46 @@
+{
+ "url": "https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service",
+ "trafficEnv": "test-gtbg-dev-1",
+ "httpStatus": 200,
+ "request": {
+  "serviceNameAndMethodName": "com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask",
+  "params": [
+   "remaining-6ca3d458-44e5-4c8d-b00e-f207b6927cde",
+   {
+    "aiApplicationName": "沟通摘要-test",
+    "userQuery": "",
+    "userTag": "test",
+    "platformType": 2,
+    "runUser": {
+     "email": "gongxuemeng@gaotu.cn"
+    }
+   },
+   {
+    "clazzNumber": "500775385189890048",
+    "userId": "7404351741",
+    "commTag": 0
+   },
+   ""
+  ]
+ },
+ "curl": "curl -sk \\\n  -x \"${AGENT_PROXY_URL:-http://127.0.0.1:8888}\" \\\n  'https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-1' \\\n  -H 'identification: microLessonStudent' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask\", \"params\": [\"remaining-6ca3d458-44e5-4c8d-b00e-f207b6927cde\", {\"aiApplicationName\": \"沟通摘要-test\", \"userQuery\": \"\", \"userTag\": \"test\", \"platformType\": 2, \"runUser\": {\"email\": \"gongxuemeng@gaotu.cn\"}}, {\"clazzNumber\": \"500775385189890048\", \"userId\": \"7404351741\", \"commTag\": 0}, \"\"]}'",
+ "traceId": "9d831ba2-fc93-46d7-82ee-f1797aea5696.0.3",
+ "gapmApp": "student-data",
+ "identification": "microLessonStudent",
+ "rvoCode": 0,
+ "result": {
+  "usage": {
+   "completion_tokens": 931,
+   "prompt_tokens": 1424,
+   "cost": 0.00432264,
+   "completion_tokens_details": {
+    "reasoning_tokens": 736
+   },
+   "prompt_tokens_details": {},
+   "total_tokens": 2355
+  },
+  "event": "litellm_proxy/doubao-seed-2.0-lite",
+  "messageId": "chatcmpl-41c8df28c0c448abbf3bbcd184f4e732",
+  "answer": "{\n  \"commSummary\": \"围绕秋季课程相关事宜沟通，介绍语文设有双一流班、一本班两类班型，两类课程内容基本一致仅双一流班讲义额外增加拔高题，**需留意部分班型存在和已选课程、课外安排的时间冲突问题**，讲义将于23号开始发货。部分用户认可高途老师幽默风趣的授课风格、轻松的课堂氛围，明确确定续报秋季相关课程，部分用户同意帮忙留意有补课需求的同学有转介绍意向；部分用户存在教材版本和本地使用版本不一致、担心多科同时报读挤占休息时间易引发厌学情绪、对提前学习物理存疑的顾虑，还有用户因学习后成绩未提升、不认可当前老师授课节奏风格、报名时承诺的每周单独答疑和学习报告未落实等问题明确表示不续报，老师会在秋季开课前提醒确认最终选科。\"\n}"
+ }
+}

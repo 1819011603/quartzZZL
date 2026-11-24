@@ -1,0 +1,7 @@
+✅ 已发布 student-data / TEST / default / application
+releaseTitle: 20261124192509-release
+releaseKey: 20261124192510-188a49b33afd48a0
+操作人: zhangzeling
+
+本次发布的变更:
+  ~ llm.gateway.application-prompt-formats: {"255107395528688640": "USER_FLAT", "255551371814636544": "U -> {"255107395528688640":"USER_FLAT","255551371814636544":"USER

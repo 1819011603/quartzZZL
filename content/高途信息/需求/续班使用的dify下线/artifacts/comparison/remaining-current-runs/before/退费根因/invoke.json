@@ -1,0 +1,43 @@
+{
+ "url": "https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service",
+ "trafficEnv": "test-gtbg-dev-1",
+ "httpStatus": 200,
+ "request": {
+  "serviceNameAndMethodName": "com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask",
+  "params": [
+   "remaining-2d1db673-b229-4925-8dd3-6a0c395823b0",
+   {
+    "aiApplicationName": "退费根因分析",
+    "userQuery": "测试样本：家长表示课程时间与学校晚自习冲突，无法参加直播，申请退费。",
+    "userTag": "test",
+    "platformType": 2,
+    "runUser": {
+     "email": "gongxuemeng@gaotu.cn"
+    }
+   },
+   {},
+   ""
+  ]
+ },
+ "curl": "curl -sk \\\n  -x \"${AGENT_PROXY_URL:-http://127.0.0.1:8888}\" \\\n  'https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-1' \\\n  -H 'identification: microLessonStudent' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask\", \"params\": [\"remaining-2d1db673-b229-4925-8dd3-6a0c395823b0\", {\"aiApplicationName\": \"退费根因分析\", \"userQuery\": \"测试样本：家长表示课程时间与学校晚自习冲突，无法参加直播，申请退费。\", \"userTag\": \"test\", \"platformType\": 2, \"runUser\": {\"email\": \"gongxuemeng@gaotu.cn\"}}, {}, \"\"]}'",
+ "traceId": "29c9d721-be79-4bb0-b068-0cf8eab23270.0.3",
+ "gapmApp": "student-data",
+ "identification": "microLessonStudent",
+ "rvoCode": 0,
+ "result": {
+  "usage": {
+   "completion_tokens": 1995,
+   "prompt_tokens": 1468,
+   "completion_tokens_details": {
+    "reasoning_tokens": 1709
+   },
+   "prompt_tokens_details": {
+    "cached_tokens": 1408
+   },
+   "total_tokens": 3463
+  },
+  "event": "litellm_proxy/deepseek-v4.1-flash",
+  "messageId": "38b436c3-6e77-4a8e-b1de-f184506eb846",
+  "answer": "{\n  \"directReason\": \"课程时间与学校晚自习冲突，无法参加直播，家长申请退费。\",\n  \"rationales\": [\n    {\n      \"category\": \"1-1\",\n      \"categoryName\": \"课程时间冲突\",\n      \"refundSummary\": \"家长明确表示本课程直播时间与学校晚自习冲突，学生无法按时参加直播，导致课程参与受阻，产生退费意向。该原因属于客观时间安排冲突，若无法调整时间或提供有效回放、补课方案，退费风险较高。\",\n      \"keywords\": [\n        \"时间冲突\",\n        \"晚自习\",\n        \"无法参加直播\",\n        \"退费申请\"\n      ],\n      \"originalText\": \"沟通时间：未提供；客户原文：家长表示课程时间与学校晚自习冲突，无法参加直播，申请退费；老师：未提供应答原文\",\n      \"coreReason\": \"是\",\n      \"reasonJudgeType\": \"1\",\n      \"reasonJudgeCommOriginalList\": [\n        {\n          \"communicateId\": 0,\n          \"chatTime\": \"\",\n          \"customerWords\": \"家长表示课程时间与学校晚自习冲突，无法参加直播，申请退费。\",\n          \"teacherWords\": \"未提供老师应答原文\"\n        }\n      ],\n      \"reasonJudgeNpsOrExperienceOriginal\": \"\"\n    }\n  ]\n}"
+ }
+}

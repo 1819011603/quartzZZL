@@ -1,0 +1,43 @@
+{
+ "url": "https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service",
+ "trafficEnv": "test-gtbg-dev-1",
+ "httpStatus": 200,
+ "request": {
+  "serviceNameAndMethodName": "com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask",
+  "params": [
+   "remaining-835e4d27-30a3-4f56-80ea-e89b896dff0a",
+   {
+    "aiApplicationName": "用户画像-test",
+    "userQuery": "",
+    "userTag": "test",
+    "platformType": 2,
+    "runUser": {
+     "email": "gongxuemeng@gaotu.cn"
+    }
+   },
+   {
+    "clazzNumber": "500775385189890048",
+    "userId": "7404351741",
+    "commTag": 0
+   },
+   ""
+  ]
+ },
+ "curl": "curl -sk \\\n  -x \"${AGENT_PROXY_URL:-http://127.0.0.1:8888}\" \\\n  'https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-1' \\\n  -H 'identification: microLessonStudent' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask\", \"params\": [\"remaining-835e4d27-30a3-4f56-80ea-e89b896dff0a\", {\"aiApplicationName\": \"用户画像-test\", \"userQuery\": \"\", \"userTag\": \"test\", \"platformType\": 2, \"runUser\": {\"email\": \"gongxuemeng@gaotu.cn\"}}, {\"clazzNumber\": \"500775385189890048\", \"userId\": \"7404351741\", \"commTag\": 0}, \"\"]}'",
+ "traceId": "aeabbb14-2cfa-46cb-906d-efc2becadd9d.0.3",
+ "gapmApp": "student-data",
+ "identification": "microLessonStudent",
+ "rvoCode": 0,
+ "result": {
+  "usage": {
+   "completion_tokens": 237,
+   "prompt_tokens": 2329,
+   "completion_tokens_details": {},
+   "prompt_tokens_details": {},
+   "total_tokens": 2566
+  },
+  "event": "litellm_proxy/doubao-seed-2.0-lite",
+  "messageId": "chatcmpl-6ada01ed28054fd384fcc2cb2bacf1ec",
+  "answer": "{\n    \"renewalInterest\": \"**来自问卷**：1、认可二讲老师同步学习进展、督促学习、家校沟通到位的服务；2、对中考物理押题班、模考专题复习、真题训练等复习内容有需求；3、希望获得针对性查漏补缺小灶课、定期测评定位问题的学习支持\",\n    \"renewalResistance\": \"**来自问卷**：1、孩子存在课上听懂课后做题不对、学习主动性差的问题，学习效果不理想，家长报名仍有疑虑\",\n    \"portraitSummary\": \"学员是准中考生，学习物理时存在课上能听懂课后做题不对、学习习惯差缺乏主动性的问题，学习效果不理想。**家长有续班意向但存在疑虑需咨询老师**，对主讲、二讲满意度为7分，课程满意度为8分。核心诉求是希望获得学习状态同步、听课作业督促、针对性查漏补缺、定期测评、紧密家校沟通的支持，重点关注中考物理相关的押题、专题复习、真题训练类内容，助力孩子冲刺重高。\"\n}"
+ }
+}

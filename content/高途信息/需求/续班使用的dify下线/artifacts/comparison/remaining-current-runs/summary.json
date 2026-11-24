@@ -1,0 +1,162 @@
+[
+  {
+    "scene": "分层修正后",
+    "trace": "63916e95-985f-4407-9f8e-00ae2ae61438.0.3",
+    "messages_equal": true,
+    "stream": true,
+    "max_tokens_absent": true,
+    "thinking_absent": true,
+    "model": "doubao-seed-2-0-lite-260428",
+    "usage": {
+      "completion_tokens": 417,
+      "prompt_tokens": 4289,
+      "cost": 0.00333102,
+      "completion_tokens_details": {
+        "reasoning_tokens": 338
+      },
+      "prompt_tokens_details": {},
+      "total_tokens": 4706
+    }
+  },
+  {
+    "scene": "摘要",
+    "trace": "9d831ba2-fc93-46d7-82ee-f1797aea5696.0.3",
+    "messages_equal": true,
+    "stream": true,
+    "max_tokens_absent": true,
+    "thinking_absent": true,
+    "model": "doubao-seed-2-0-lite-260428",
+    "usage": {
+      "completion_tokens": 931,
+      "prompt_tokens": 1424,
+      "cost": 0.00432264,
+      "completion_tokens_details": {
+        "reasoning_tokens": 736
+      },
+      "prompt_tokens_details": {},
+      "total_tokens": 2355
+    }
+  },
+  {
+    "scene": "退费根因",
+    "trace": "aa02540f-30a8-40cd-816d-138168507e69.0.3",
+    "messages_equal": true,
+    "stream": true,
+    "max_tokens_absent": true,
+    "thinking_absent": true,
+    "model": "deepseek-flash",
+    "usage": {
+      "completion_tokens": 2053,
+      "prompt_tokens": 1468,
+      "cost": 0.0048580288,
+      "completion_tokens_details": {
+        "reasoning_tokens": 1764
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 1408
+      },
+      "total_tokens": 3521
+    }
+  },
+  {
+    "scene": "画像",
+    "trace": "708865b6-5d42-41bf-b5c1-54635a17c682.0.3",
+    "messages_equal": true,
+    "stream": true,
+    "max_tokens_absent": true,
+    "thinking_absent": true,
+    "model": "doubao-seed-2-0-lite-260428",
+    "usage": {
+      "completion_tokens": 1324,
+      "prompt_tokens": 2333,
+      "cost": 0.00638526,
+      "completion_tokens_details": {
+        "reasoning_tokens": 1092
+      },
+      "prompt_tokens_details": {},
+      "total_tokens": 3657
+    }
+  },
+  {
+    "scene": "NPS",
+    "trace": "db72f1f1-90c6-458a-a8f0-047bfdf501c1.0.3",
+    "messages_equal": true,
+    "stream": true,
+    "max_tokens_absent": true,
+    "thinking_absent": true,
+    "model": "deepseek-flash",
+    "usage": {
+      "completion_tokens": 1401,
+      "prompt_tokens": 542,
+      "cost": 0.0035334431999999995,
+      "completion_tokens_details": {
+        "reasoning_tokens": 1289
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 1943
+    }
+  },
+  {
+    "scene": "旅程",
+    "trace": "29931ca8-4a04-4b89-827e-e1accb0afa33.0.3",
+    "messages_equal": true,
+    "stream": true,
+    "max_tokens_absent": true,
+    "thinking_absent": true,
+    "model": "deepseek-flash",
+    "usage": {
+      "completion_tokens": 2749,
+      "prompt_tokens": 1743,
+      "cost": 0.0061120304,
+      "completion_tokens_details": {
+        "reasoning_tokens": 2219
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 1664
+      },
+      "total_tokens": 4492
+    }
+  },
+  {
+    "scene": "课程体验",
+    "trace": "3a622047-d7a6-469d-89f5-778770a36f1f.0.3",
+    "messages_equal": true,
+    "stream": true,
+    "max_tokens_absent": true,
+    "thinking_absent": true,
+    "model": "deepseek-flash",
+    "usage": {
+      "completion_tokens": 1633,
+      "prompt_tokens": 1799,
+      "cost": 0.0038235312,
+      "completion_tokens_details": {
+        "reasoning_tokens": 1395
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 1792
+      },
+      "total_tokens": 3432
+    }
+  },
+  {
+    "scene": "SOP V2",
+    "trace": "c2b1755e-1ceb-4859-8488-423c73f52b03.0.3",
+    "messages_equal": true,
+    "stream": true,
+    "max_tokens_absent": true,
+    "thinking_absent": true,
+    "model": "doubao-seed-2-0-lite-260428",
+    "usage": {
+      "completion_tokens": 2210,
+      "prompt_tokens": 7777,
+      "cost": 0.01115646,
+      "completion_tokens_details": {
+        "reasoning_tokens": 1302
+      },
+      "prompt_tokens_details": {},
+      "total_tokens": 9987
+    }
+  }
+]

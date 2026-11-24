@@ -1,0 +1,43 @@
+{
+ "url": "https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service",
+ "trafficEnv": "test-gtbg-dev-1",
+ "httpStatus": 200,
+ "request": {
+  "serviceNameAndMethodName": "com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask",
+  "params": [
+   "remaining-75f36b95-416e-4608-8573-e3ad775515bb",
+   {
+    "aiApplicationName": "沟通摘要-test",
+    "userQuery": "",
+    "userTag": "test",
+    "platformType": 2,
+    "runUser": {
+     "email": "gongxuemeng@gaotu.cn"
+    }
+   },
+   {
+    "clazzNumber": "500775385189890048",
+    "userId": "7404351741",
+    "commTag": 0
+   },
+   ""
+  ]
+ },
+ "curl": "curl -sk \\\n  -x \"${AGENT_PROXY_URL:-http://127.0.0.1:8888}\" \\\n  'https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-1' \\\n  -H 'identification: microLessonStudent' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask\", \"params\": [\"remaining-75f36b95-416e-4608-8573-e3ad775515bb\", {\"aiApplicationName\": \"沟通摘要-test\", \"userQuery\": \"\", \"userTag\": \"test\", \"platformType\": 2, \"runUser\": {\"email\": \"gongxuemeng@gaotu.cn\"}}, {\"clazzNumber\": \"500775385189890048\", \"userId\": \"7404351741\", \"commTag\": 0}, \"\"]}'",
+ "traceId": "9b5b7b35-ce32-4fc5-b50f-f5799aaf0e58.0.3",
+ "gapmApp": "student-data",
+ "identification": "microLessonStudent",
+ "rvoCode": 0,
+ "result": {
+  "usage": {
+   "completion_tokens": 254,
+   "prompt_tokens": 1420,
+   "completion_tokens_details": {},
+   "prompt_tokens_details": {},
+   "total_tokens": 1674
+  },
+  "event": "litellm_proxy/doubao-seed-2.0-lite",
+  "messageId": "chatcmpl-bbc8b72c2ce64880bc8e1d34774ac182",
+  "answer": "{\"commSummary\": \"沟通围绕秋季课程续报、班型选择等相关事宜展开，涉及多类情况：部分用户认可课程，认为老师**幽默风趣**、课堂氛围轻松，教学方法受肯定，部分明确续报秋季语文、英语、数学等科目，部分确认秋季课程的讲义发货、上课安排等事项，还有用户同意帮忙留意有补课需求的同学，有转介绍意向；也有用户存在各类顾虑与问题：核心顾虑包括**教材版本不一致**，担心全国版课程不匹配本地考情，担忧同时学习多科时间安排不过来孩子易厌学、对提前学物理有顾虑，**课程时间冲突**与篮球训练等课外安排撞期，学习一学期成绩未提升对报班效果存疑，不喜欢老师讲课风格觉得节奏快互动少易走神，不满报名时承诺的每周单独答疑和学习报告等服务未落实。用户还提出多项诉求，包括获取两个语文班型的相关信息、确认物理**课程内容设置**与班型安排规则、请老师在秋季开课前提醒确认最终学习科目，相关方同步了**秋季班班型选择**、**讲义发货**等相关安排。\"}"
+ }
+}

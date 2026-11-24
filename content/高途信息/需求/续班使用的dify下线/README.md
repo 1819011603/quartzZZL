@@ -92,3 +92,7 @@ TEST/test-gtbg-dev-1流水线1361114已部署UP，八场景新侧调用及LiteLL
 revision56及91012878阶段曾记录“仅SOP user相等、其他场景包装不同”，对应旧实现；本轮八场景格式修复已覆盖该历史差异，当前结论以上方实收表为准。[旧配对](artifacts/comparison/pairs.json)、[旧差异审计](artifacts/comparison/user-diff-audit.json)保留追溯，不充当最新结果。
 
 知识库Java隔离TEST接入6909717c已有独立成果，四个正式知识库应用仍保留Dify，不加入本轮格式迁移。生产凭据及空间授权调查见[接入证据](artifacts/expanded-refund/kb-service-e2e.md)和[权限调查](artifacts/expanded-refund/kb-service-auth-investigation.md)，不阻塞本轮非知识库格式结果。
+
+## 正式知识库当前接入条件（2026-11-24补查）
+
+原库可见、enable_api=true，关联本人owner的续班AI空间；旧403不再是当前阻塞。本人正常Console生产dataset key列表实际为0条，正式Service检索缺当前调用主体获授权的生产dataset凭据。本轮不创建生产key或使用他人key，未发起生产生成。证据与trace见[当前接入条件](artifacts/comparison/remaining-kb-access.md)。

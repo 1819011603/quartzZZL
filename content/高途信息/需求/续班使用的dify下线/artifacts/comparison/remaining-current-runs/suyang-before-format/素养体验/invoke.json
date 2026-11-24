@@ -1,0 +1,48 @@
+{
+  "url": "https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service",
+  "trafficEnv": "test-gtbg-dev-1",
+  "httpStatus": 200,
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask",
+    "params": [
+      "remaining-suyang-01d9d13e-c986-4989-a5e8-426b1e631fb0",
+      {
+        "aiApplicationName": "素养体验TEST独立验证20261124",
+        "userQuery": "班级号：500775385189890048；学员：李明（userId=7404351741），高中学部，春季数学班。主讲老师王老师，辅导老师陈老师。2026-11-18 19:20 家长与陈老师沟通：“孩子最近三次数学作业正确率从85%降到62%，直播课听懂但课后不会做；王老师回复说会在下节课加强例题，陈老师建议每天完成错题整理。”2026-11-20 20:10 家长再次说：“孩子觉得课程节奏快，互动少，最近考虑退费，给课程体验评分5/10；如果增加答疑和针对性练习可能继续。”家长NPS评分：3/10，原因是作业反馈慢、个性化不足。请结合班级、学员、时间、老师和原话分析，并给出结构化结果。",
+        "userTag": "test",
+        "platformType": 2,
+        "runUser": {
+          "email": "gongxuemeng@gaotu.cn"
+        }
+      },
+      {
+        "clazzNumber": "500775385189890048",
+        "userId": "7404351741",
+        "commTag": 0
+      },
+      ""
+    ]
+  },
+  "curl": "curl -sk \\\n  -x \"${AGENT_PROXY_URL:-http://127.0.0.1:8888}\" \\\n  'https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-1' \\\n  -H 'identification: microLessonStudent' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask\", \"params\": [\"remaining-suyang-01d9d13e-c986-4989-a5e8-426b1e631fb0\", {\"aiApplicationName\": \"素养体验TEST独立验证20261124\", \"userQuery\": \"班级号：500775385189890048；学员：李明（userId=7404351741），高中学部，春季数学班。主讲老师王老师，辅导老师陈老师。2026-11-18 19:20 家长与陈老师沟通：“孩子最近三次数学作业正确率从85%降到62%，直播课听懂但课后不会做；王老师回复说会在下节课加强例题，陈老师建议每天完成错题整理。”2026-11-20 20:10 家长再次说：“孩子觉得课程节奏快，互动少，最近考虑退费，给课程体验评分5/10；如果增加答疑和针对性练习可能继续。”家长NPS评分：3/10，原因是作业反馈慢、个性化不足。请结合班级、学员、时间、老师和原话分析，并给出结构化结果。\", \"userTag\": \"test\", \"platformType\": 2, \"runUser\": {\"email\": \"gongxuemeng@gaotu.cn\"}}, {\"clazzNumber\": \"500775385189890048\", \"userId\": \"7404351741\", \"commTag\": 0}, \"\"]}'",
+  "traceId": "991814c3-d009-421c-b269-7fd2874d52de.0.3",
+  "gapmApp": "student-data",
+  "identification": "microLessonStudent",
+  "rvoCode": 0,
+  "result": {
+    "usage": {
+      "completion_tokens": 3955,
+      "prompt_tokens": 1660,
+      "cost": 0.011307039999999999,
+      "completion_tokens_details": {
+        "reasoning_tokens": 3742
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 5615
+    },
+    "event": "litellm_proxy/deepseek-v4.1-flash",
+    "messageId": "cd10e927-8072-4760-a892-49c8c41376e8",
+    "answer": "- 学习整体总结：暂无听课学习数据；据沟通：本班家长11-18反馈三次数学作业正确率85%→62%，直播懂课后不会；11-20称节奏快、互动少、反馈慢、个性化不足，考虑退费，评分5/10、NPS 3/10。\n- 退本班级原因：11-20明确考虑退费，评分5/10、NPS 3/10，指向节奏快、互动少、作业反馈慢、个性化不足；深层为讲练脱节、二讲反馈/分层支持不足。王老师加例题、陈老师错题整理未消除顾虑，家长称增加答疑和针对性练习可能继续。\n- 本班级学习总结：11-18起三次数学作业正确率85%降至62%，直播听懂但课后不会；课程节奏快、互动少，作业反馈慢、个性化不足；11-20表达退费意向。\n- 其他班级总结：暂无其他班级听课学习数据，无法判断。"
+  }
+}

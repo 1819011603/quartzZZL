@@ -1,0 +1,8 @@
+  [0] student-data-6ff8559977-nflk5              status=Running eureka=UP ns=test-eco-1 ip=10.218.237.47
+  [1] student-data-65d87965bb-m5zbg              status=Running eureka=UP ns=test-eco-10 ip=10.218.249.5
+  [2] student-data-7c66bd848-np5dk               status=Running eureka=UP ns=test-eco-3 ip=10.218.248.54
+  [3] student-data-7766fbd5bf-glspr              status=Running eureka=UP ns=test-eco-5 ip=10.218.248.70
+  [4] student-data-9c864c656-z7bvj               status=Running eureka=UP ns=test-eco-8 ip=10.218.237.62
+  [5] student-data-6db7766579-4vjdg              status=Running eureka=UP ns=test-eco-9 ip=10.218.239.229
+  [6] student-data-5f688c5bfb-xgx76              status=Running eureka=UP ns=test-gtbg-dev-1 ip=10.218.249.191
+  [7] student-data-669b6cd9f-fstvr               status=Running eureka=UP ns=test-gtbg-dev-2 ip=10.218.249.162

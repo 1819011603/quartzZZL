@@ -1,0 +1,95 @@
+{
+  "expression": "watch com.gaotu.student.data.domain.ai.core.agentaccess.LlmGatewayAccessor jsonPost \"{params[1].get(\\\"x-tech-ai-user-id\\\"),params[2]}\" -x 3 -n 8",
+  "pod": "student-data-5f688c5bfb-xgx76",
+  "ip": "10.218.249.191",
+  "records": [
+    {
+      "index": 1,
+      "header_name": "x-tech-ai-user-id",
+      "header_value": "gongxuemeng",
+      "scene": "画像",
+      "trace": "708865b6-5d42-41bf-b5c1-54635a17c682.0.3",
+      "exact_body_equal": true,
+      "similarity": 1.0,
+      "next_similarity": 0.2623492483066248,
+      "note": "乱码时以唯一最高body相似度关联；未直接捕获MDC trace"
+    },
+    {
+      "index": 2,
+      "header_name": "x-tech-ai-user-id",
+      "header_value": "gongxuemeng",
+      "scene": "SOP V2",
+      "trace": "c2b1755e-1ceb-4859-8488-423c73f52b03.0.3",
+      "exact_body_equal": false,
+      "similarity": 0.9997354672310033,
+      "next_similarity": 0.4654704090871677,
+      "note": "乱码时以唯一最高body相似度关联；未直接捕获MDC trace"
+    },
+    {
+      "index": 3,
+      "header_name": "x-tech-ai-user-id",
+      "header_value": "gongxuemeng",
+      "scene": "分层修正后",
+      "trace": "63916e95-985f-4407-9f8e-00ae2ae61438.0.3",
+      "exact_body_equal": false,
+      "similarity": 0.9995641277105808,
+      "next_similarity": 0.4662935221005844,
+      "note": "乱码时以唯一最高body相似度关联；未直接捕获MDC trace"
+    },
+    {
+      "index": 4,
+      "header_name": "x-tech-ai-user-id",
+      "header_value": "gongxuemeng",
+      "scene": "摘要",
+      "trace": "9d831ba2-fc93-46d7-82ee-f1797aea5696.0.3",
+      "exact_body_equal": true,
+      "similarity": 1.0,
+      "next_similarity": 0.2613580042953907,
+      "note": "乱码时以唯一最高body相似度关联；未直接捕获MDC trace"
+    },
+    {
+      "index": 5,
+      "header_name": "x-tech-ai-user-id",
+      "header_value": "gongxuemeng",
+      "scene": "退费根因",
+      "trace": "aa02540f-30a8-40cd-816d-138168507e69.0.3",
+      "exact_body_equal": false,
+      "similarity": 0.9994662396583934,
+      "next_similarity": 0.35119047619047616,
+      "note": "乱码时以唯一最高body相似度关联；未直接捕获MDC trace"
+    },
+    {
+      "index": 6,
+      "header_name": "x-tech-ai-user-id",
+      "header_value": "gongxuemeng",
+      "scene": "旅程",
+      "trace": "29931ca8-4a04-4b89-827e-e1accb0afa33.0.3",
+      "exact_body_equal": true,
+      "similarity": 1.0,
+      "next_similarity": 0.35588633288227334,
+      "note": "乱码时以唯一最高body相似度关联；未直接捕获MDC trace"
+    },
+    {
+      "index": 7,
+      "header_name": "x-tech-ai-user-id",
+      "header_value": "gongxuemeng",
+      "scene": "课程体验",
+      "trace": "3a622047-d7a6-469d-89f5-778770a36f1f.0.3",
+      "exact_body_equal": false,
+      "similarity": 0.9993885661877102,
+      "next_similarity": 0.3774803876326719,
+      "note": "乱码时以唯一最高body相似度关联；未直接捕获MDC trace"
+    },
+    {
+      "index": 8,
+      "header_name": "x-tech-ai-user-id",
+      "header_value": "gongxuemeng",
+      "scene": "NPS",
+      "trace": "db72f1f1-90c6-458a-a8f0-047bfdf501c1.0.3",
+      "exact_body_equal": false,
+      "similarity": 0.9981185324553151,
+      "next_similarity": 0.3788647900323027,
+      "note": "乱码时以唯一最高body相似度关联；未直接捕获MDC trace"
+    }
+  ]
+}

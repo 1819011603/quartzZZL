@@ -1,0 +1,44 @@
+{
+ "url": "https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service",
+ "trafficEnv": "test-gtbg-dev-1",
+ "httpStatus": 200,
+ "request": {
+  "serviceNameAndMethodName": "com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask",
+  "params": [
+   "remaining-4ad06c54-0de9-4e04-add3-0615b8e99424",
+   {
+    "aiApplicationName": "预测分层原因",
+    "userQuery": "",
+    "userTag": "test",
+    "platformType": 2,
+    "runUser": {
+     "email": "gongxuemeng@gaotu.cn"
+    }
+   },
+   {
+    "clazzNumber": "500775385189890048",
+    "userId": "6761113627",
+    "commTag": 0,
+    "subClazzNumber": "31298462823089024"
+   },
+   ""
+  ]
+ },
+ "curl": "curl -sk \\\n  -x \"${AGENT_PROXY_URL:-http://127.0.0.1:8888}\" \\\n  'https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-1' \\\n  -H 'identification: microLessonStudent' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask\", \"params\": [\"remaining-4ad06c54-0de9-4e04-add3-0615b8e99424\", {\"aiApplicationName\": \"预测分层原因\", \"userQuery\": \"\", \"userTag\": \"test\", \"platformType\": 2, \"runUser\": {\"email\": \"gongxuemeng@gaotu.cn\"}}, {\"clazzNumber\": \"500775385189890048\", \"userId\": \"6761113627\", \"commTag\": 0, \"subClazzNumber\": \"31298462823089024\"}, \"\"]}'",
+ "traceId": "0fc06875-7f8b-406c-a9ab-23bb5ae1c948.0.3",
+ "gapmApp": "student-data",
+ "identification": "microLessonStudent",
+ "rvoCode": 0,
+ "result": {
+  "usage": {
+   "completion_tokens": 75,
+   "prompt_tokens": 4285,
+   "completion_tokens_details": {},
+   "prompt_tokens_details": {},
+   "total_tokens": 4360
+  },
+  "event": "litellm_proxy/doubao-seed-2.0-lite",
+  "messageId": "chatcmpl-b6916e1a5b244162915bd10b496484e0",
+  "answer": "学员为该科目新学员，已享受二讲服务108天，属于走读生。非续班期正式课节完成度仅31.82%，远低于平均水平；近7日微信互动频率处于较低水平，暂未预报名，没有任何续班相关正向反馈，也无小灶课听课记录。"
+ }
+}
