@@ -1,0 +1,11 @@
+{
+  "action": "created",
+  "http": 200,
+  "id": "361cfa66-495d-46c2-84f8-7ce87b54b83c",
+  "description": "续班迁移TEST受控检索-20261125",
+  "created_at": 1795536066,
+  "prior_key_count": 0,
+  "private_file": "/Users/gaotu/.codex/private/dify-dataset-migration/production-dataset-key.json",
+  "mode": "0o600",
+  "utc": "2026-11-24T16:01:05.541325+00:00"
+}

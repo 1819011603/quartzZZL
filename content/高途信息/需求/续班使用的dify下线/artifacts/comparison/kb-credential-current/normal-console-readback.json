@@ -1,0 +1,68 @@
+{
+  "utc": "2026-11-24T15:37:13.391787+00:00",
+  "results": [
+    {
+      "name": "profile",
+      "path": "/account/profile",
+      "http": 200,
+      "headers": {
+        "X-Env": "production",
+        "GAPM-TraceID": "ce4c5e65-2ddc-444d-b6c5-b446f7a0139f.0.1",
+        "GAPM-AppID": "dify-api"
+      },
+      "safe": {
+        "id": "151350",
+        "name": "zhangzeling",
+        "email": "zhangzeling@gaotu.cn"
+      }
+    },
+    {
+      "name": "workspace",
+      "path": "/workspaces/current",
+      "http": 200,
+      "headers": {
+        "X-Env": "production",
+        "GAPM-TraceID": "56146faa-934f-46c6-bd5e-4f1d1c668e69.0.1",
+        "GAPM-AppID": "dify-api"
+      },
+      "safe": {
+        "id": "550e8400-e29b-41d4-a716-446655440000",
+        "name": "共享工作空间",
+        "role": "owner"
+      }
+    },
+    {
+      "name": "keys",
+      "path": "/datasets/api-keys",
+      "http": 200,
+      "headers": {
+        "X-Env": "production",
+        "GAPM-TraceID": "c2578602-bbd4-4ffc-a844-c155289ff072.0.1",
+        "GAPM-AppID": "dify-api"
+      },
+      "safe": {
+        "count": 0,
+        "data": [],
+        "error": {}
+      }
+    },
+    {
+      "name": "dataset",
+      "path": "/datasets/86233d1a-bddf-4a15-a229-c90b6a061c57",
+      "http": 200,
+      "headers": {
+        "X-Env": "production",
+        "GAPM-TraceID": "e584eb84-bef5-41d5-9671-ac85f4e52da9.0.1",
+        "GAPM-AppID": "dify-api"
+      },
+      "safe": {
+        "id": "86233d1a-bddf-4a15-a229-c90b6a061c57",
+        "name": "降退费服务建议话术库",
+        "permission": "only_me",
+        "indexing_technique": "high_quality",
+        "created_by": "59927",
+        "enable_api": true
+      }
+    }
+  ]
+}

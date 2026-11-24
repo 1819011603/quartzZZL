@@ -1,0 +1,8 @@
+{
+  "http": 200,
+  "task_key_id": "361cfa66-495d-46c2-84f8-7ce87b54b83c",
+  "matched_count": 1,
+  "total_current_user_keys": 1,
+  "private_mode": "0o600",
+  "token_readback_matches": true
+}

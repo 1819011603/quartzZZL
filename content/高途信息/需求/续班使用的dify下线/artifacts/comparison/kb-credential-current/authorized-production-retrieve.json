@@ -1,0 +1,24 @@
+{
+  "source": "local TEST validation driver via authorized proxy; not student-data Pod",
+  "target_environment": "production",
+  "url": "https://dify-open.baijia.com/dify/api/v1/datasets/86233d1a-bddf-4a15-a229-c90b6a061c57/retrieve",
+  "request": {
+    "query": "退费直接原因:家长认为答疑反馈慢，孩子课后不会做，正在犹豫是否退费 退费原因分类:服务不满意-沟通答疑及时性",
+    "retrieval_model": {
+      "search_method": "keyword_search",
+      "reranking_enable": false,
+      "top_k": 4,
+      "score_threshold_enabled": false
+    }
+  },
+  "http": 200,
+  "headers": {
+    "X-Env": "production",
+    "GAPM-TraceID": "b2bc1689-d81f-4e5b-98ce-4940144f068a.0.1",
+    "GAPM-AppID": "dify-api"
+  },
+  "record_count": 0,
+  "records": [],
+  "error": {},
+  "unique_document_count": 0
+}

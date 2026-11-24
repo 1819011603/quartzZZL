@@ -1,0 +1,135 @@
+grep -n -A85 'class DatasetApiKey' /apps/srv/instance/controllers/console/datasets/datasets.py; grep -n -A45 'def validate_dataset_token' /apps/srv/instance/controllers/service_api/wraps.py
+root@dify-api-78886c7f97-8lhxw:/apps/srv/instance# grep -n -A85 'class DatasetApiKey' /apps/srv/instance/controllers/console/datasets/datasets.py; grep -n -A45 'def validate_dataset_token' /apps/srv/instance/controllers/service_api/wraps.py
+970:class DatasetApiKeyApi(Resource):
+971-    max_keys = 10
+972-    token_prefix = "dataset-"
+973-    resource_type = "dataset"
+974-
+975-    @api.doc("get_dataset_api_keys")
+976-    @api.doc(description="Get dataset API keys")
+977-    @api.response(200, "API keys retrieved successfully", api_key_list)
+978-    @setup_required
+979-    @login_required
+980-    @account_initialization_required
+981-    @require_permissions(PermissionTag.DATASET_MANAGE)
+982-    @marshal_with(api_key_list)
+983-    def get(self):
+984-        # 只查询当前用户创建的API keys
+985-        current_user, current_tenant_id = current_account_with_tenant()
+986-        keys = db.session.scalars(
+987-            select(ApiToken).where(
+988-                ApiToken.type == self.resource_type, 
+989-                ApiToken.tenant_id == current_tenant_id,
+990-                ApiToken.created_by == current_user.id
+991-            )
+992-        ).all()
+993-        return {"items": keys}
+994-
+995-    @setup_required
+996-    @login_required
+997-    @account_initialization_required
+998-    @require_permissions(PermissionTag.DATASET_MANAGE)
+999-    @marshal_with(api_key_fields)
+1000-    def post(self):
+1001-        # The role of the current user in the ta table must be admin or owner
+1002-        current_user, current_tenant_id = current_account_with_tenant()
+1003-        if not current_user.is_admin_or_owner:
+1004-            raise Forbidden()
+1005-
+1006-        # 解析请求参数
+1007-        parser = reqparse.RequestParser()
+1008-        parser.add_argument("description", type=str, location="json", required=False, default="")
+1009-        args = parser.parse_args()
+1010-
+1011-        # 限制每个用户创建的密钥数量，而不是整个租户
+1012-        current_key_count = (
+1013-            db.session.query(ApiToken)
+1014-            .where(
+1015-                ApiToken.type == self.resource_type,
+1016-                ApiToken.tenant_id == current_tenant_id,
+1017-                ApiToken.created_by == current_user.id
+1018-            )
+1019-            .count()
+1020-        )
+1021-
+1022-        if current_key_count >= self.max_keys:
+1023-            api.abort(
+1024-                400,
+1025-                message=f"Cannot create more than {self.max_keys} API keys for this resource type.",
+1026-                code="max_keys_exceeded",
+1027-            )
+1028-
+1029-        key = ApiToken.generate_api_key(self.token_prefix, 24)
+1030-        api_token = ApiToken()
+1031-        api_token.tenant_id = current_tenant_id
+1032-        api_token.token = key
+1033-        api_token.type = self.resource_type
+1034-        api_token.created_by = current_user.id  # 设置创建者
+1035-        api_token.description = args.get("description", "")  # 设置描述
+1036-        db.session.add(api_token)
+1037-        db.session.commit()
+1038-        return api_token, 200
+1039-
+1040-
+1041-@console_ns.route("/datasets/api-keys/<uuid:api_key_id>")
+1042-class DatasetApiDeleteApi(Resource):
+1043-    resource_type = "dataset"
+1044-
+1045-    @api.doc("delete_dataset_api_key")
+1046-    @api.doc(description="Delete dataset API key")
+1047-    @api.doc(params={"api_key_id": "API key ID"})
+1048-    @api.response(204, "API key deleted successfully")
+1049-    @setup_required
+1050-    @login_required
+1051-    @account_initialization_required
+1052-    @require_permissions(PermissionTag.DATASET_MANAGE)
+1053-    def delete(self, api_key_id):
+1054-        current_user, current_tenant_id = current_account_with_tenant()
+1055-        api_key_id = str(api_key_id)
+251:def validate_dataset_token(view: Callable[Concatenate[T, P], R] | None = None):
+252-    def decorator(view: Callable[Concatenate[T, P], R]):
+253-        @wraps(view)
+254-        def decorated(*args: P.args, **kwargs: P.kwargs):
+255-            # get url path dataset_id from positional args or kwargs
+256-            # Flask passes URL path parameters as positional arguments
+257-            dataset_id = None
+258-
+259-            # First try to get from kwargs (explicit parameter)
+260-            dataset_id = kwargs.get("dataset_id")
+261-
+262-            # If not in kwargs, try to extract from positional args
+263-            if not dataset_id and args:
+264-                # For class methods: args[0] is self, args[1] is dataset_id (if exists)
+265-                # Check if first arg is likely a class instance (has __dict__ or __class__)
+266-                if len(args) > 1 and hasattr(args[0], "__dict__"):
+267-                    # This is a class method, dataset_id should be in args[1]
+268-                    potential_id = args[1]
+269-                    # Validate it's a string-like UUID, not another object
+270-                    try:
+271-                        # Try to convert to string and check if it's a valid UUID format
+272-                        str_id = str(potential_id)
+273-                        # Basic check: UUIDs are 36 chars with hyphens
+274-                        if len(str_id) == 36 and str_id.count("-") == 4:
+275-                            dataset_id = str_id
+276-                    except:
+277-                        pass
+278-                elif len(args) > 0:
+279-                    # Not a class method, check if args[0] looks like a UUID
+280-                    potential_id = args[0]
+281-                    try:
+282-                        str_id = str(potential_id)
+283-                        if len(str_id) == 36 and str_id.count("-") == 4:
+284-                            dataset_id = str_id
+285-                    except:
+286-                        pass
+287-
+288-            # Validate dataset if dataset_id is provided
+289-            if dataset_id:
+290-                dataset_id = str(dataset_id)
+291-                dataset = db.session.query(Dataset).where(Dataset.id == dataset_id).first()
+292-                if not dataset:
+293-                    raise NotFound("Dataset not found.")
+294-                if not dataset.enable_api:
+295-                    raise Forbidden("Dataset api access is not enabled.")
+296-            api_token = validate_and_get_api_token("dataset")
+root@dify-api-78886c7f97-8lhxw:/apps/srv/instance# 

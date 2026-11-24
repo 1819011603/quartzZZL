@@ -1,0 +1,57 @@
+{
+  "source": "local TEST validation driver via authorized proxy; not student-data Pod",
+  "target_environment": "production",
+  "url": "https://dify-open.baijia.com/dify/api/v1/datasets/86233d1a-bddf-4a15-a229-c90b6a061c57/retrieve",
+  "request": {
+    "query": "答疑反馈慢",
+    "retrieval_model": {
+      "search_method": "full_text_search",
+      "reranking_enable": false,
+      "top_k": 4,
+      "score_threshold_enabled": false
+    }
+  },
+  "http": 200,
+  "headers": {
+    "X-Env": "production",
+    "GAPM-TraceID": "cbc61996-27a1-4263-b504-dea8a8ef1e14.0.1",
+    "GAPM-AppID": "dify-api"
+  },
+  "record_count": 4,
+  "records": [
+    {
+      "segment_id": "50eb1526-7090-4ba4-900b-75f126062f37",
+      "document_id": "ed0e3608-ca60-4007-bd00-b6e1d361d423",
+      "document_name": "刘家良的空间_降退费服务建议话术库_话术库_20250915043012",
+      "score": 0.36026230454444885,
+      "content_chars": 944,
+      "content_sha256": "e08348b1c93f9ebd209ab76e25837566e26d78e879e2e55999f62a91fd449cf7"
+    },
+    {
+      "segment_id": "27d5e57b-6e26-407f-bfe9-84abfbac287f",
+      "document_id": "ed0e3608-ca60-4007-bd00-b6e1d361d423",
+      "document_name": "刘家良的空间_降退费服务建议话术库_话术库_20250915043012",
+      "score": 0.35426095128059387,
+      "content_chars": 240,
+      "content_sha256": "c087bdc87597c55207de5720a3928b719300e8c05dee099d790007d3950e5723"
+    },
+    {
+      "segment_id": "7f584996-c00c-4ac3-8570-7ffc6f70899b",
+      "document_id": "ed0e3608-ca60-4007-bd00-b6e1d361d423",
+      "document_name": "刘家良的空间_降退费服务建议话术库_话术库_20250915043012",
+      "score": 0.34212878346443176,
+      "content_chars": 635,
+      "content_sha256": "0a4852578876a94570ba843b3511be7f3a8170723d7d705a557c8e8feea7f630"
+    },
+    {
+      "segment_id": "0abb6e77-00fb-4a30-8a67-99fe110ebbc6",
+      "document_id": "ed0e3608-ca60-4007-bd00-b6e1d361d423",
+      "document_name": "刘家良的空间_降退费服务建议话术库_话术库_20250915043012",
+      "score": 0.3280988931655884,
+      "content_chars": 694,
+      "content_sha256": "74a97fa308642d1a196479f564d100eabba32f5ae8f1ceab6914d58618801658"
+    }
+  ],
+  "error": {},
+  "unique_document_count": 1
+}

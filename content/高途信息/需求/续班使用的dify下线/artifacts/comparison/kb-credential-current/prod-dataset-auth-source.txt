@@ -1,0 +1,88 @@
+sed -n '280,315p' /apps/srv/instance/controllers/service_api/wraps.py; sed -n '404,452p' /apps/srv/instance/controllers/service_api/wraps.py
+root@dify-api-78886c7f97-8lhxw:/apps/srv/instance# sed -n '280,315p' /apps/srv/instance/controllers/service_api/wraps.py; sed -n '404,452p' /apps/srv/instance/controllers/service_api/wraps.py
+                    potential_id = args[0]
+                    try:
+                        str_id = str(potential_id)
+                        if len(str_id) == 36 and str_id.count("-") == 4:
+                            dataset_id = str_id
+                    except:
+                        pass
+
+            # Validate dataset if dataset_id is provided
+            if dataset_id:
+                dataset_id = str(dataset_id)
+                dataset = db.session.query(Dataset).where(Dataset.id == dataset_id).first()
+                if not dataset:
+                    raise NotFound("Dataset not found.")
+                if not dataset.enable_api:
+                    raise Forbidden("Dataset api access is not enabled.")
+            api_token = validate_and_get_api_token("dataset")
+            tenant_account_join = (
+                db.session.query(Tenant, TenantAccountJoin)
+                .where(Tenant.id == api_token.tenant_id)
+                .where(TenantAccountJoin.tenant_id == Tenant.id)
+                .where(TenantAccountJoin.role.in_(["owner"]))
+                .where(Tenant.status == TenantStatus.NORMAL)
+                .first()
+            )  # 使用 first() 而不是 one_or_none() 以处理多个 owner 的情况
+            if tenant_account_join:
+                tenant, ta = tenant_account_join
+                account = db.session.query(Account).where(Account.id == ta.account_id).first()
+                # Login admin
+                if account:
+                    account.current_tenant = tenant
+                    current_app.login_manager._update_request_context_with_user(account)  # type: ignore
+                    user_logged_in.send(current_app._get_current_object(), user=current_user)  # type: ignore
+                else:
+                    raise Unauthorized("Tenant owner account does not exist.")
+            else:
+def dataset_permission_check(operation_type='query'):
+    """知识库权限校验装饰器
+
+    Args:
+        operation_type: 操作类型，可选值为 'query'（查询）或 'modify'（修改，包括创建、更新、删除）
+    """
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            # 从参数中获取 dataset_id
+            dataset_id = kwargs.get('dataset_id')
+            if not dataset_id:
+                # 尝试从路径中获取
+                from flask import request
+                dataset_id = request.view_args.get('dataset_id')
+
+            if not dataset_id:
+                raise ValueError("找不到知识库ID")
+
+            # 获取当前API token的用户
+            creator_account = get_creator_from_api_token()
+
+            # 获取知识库信息
+            dataset_id_str = str(dataset_id)
+            dataset = DatasetService.get_dataset(dataset_id_str)
+            if dataset is None:
+                raise NotFound("知识库不存在")
+
+            # 根据操作类型选择权限校验逻辑
+            if operation_type == 'modify':
+                # 修改操作：检查创建人是否一致
+                if str(dataset.created_by) != str(creator_account.id):
+                    raise Forbidden("您没有权限修改此知识库")
+            else:
+                # 查询操作：检查空间权限
+                teable_client = get_teable_client()
+                user_spaces = teable_client.get_user_role_spaces(user=creator_account)
+                space_ids = [space.space_id for space in user_spaces] if user_spaces else []
+
+                if not DatasetService.check_dataset_in_spaces(dataset_id_str, space_ids):
+                    raise Forbidden("您没有权限查询此知识库")
+
+            # 权限校验通过，执行原始函数
+            return func(*args, **kwargs)
+        return wrapper
+    return decorator
+
+
+class DatasetApiResource(Resource):
+root@dify-api-78886c7f97-8lhxw:/apps/srv/instance# 
