@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"keyword\" keyword=\"3eaabb15|auto_use_current_version|最终输入独立|Access token is invalid\"><p id=\"doxcne942hrBYNkldeMrVwqUKhJ\">2026-11-24最终结果：Java接入87124f42、阈值修正6909717c，流水线1360348的TEST/test-gtbg-dev-1隔离样本端到端已成功。DifyDatasetGatewayTestService#retrieveAndComplete完成真实TEST Service API检索→上下文拼装→TEST模型生成；trace=3eaabb15-c22b-48f9-bcb4-7b0fd7783511.0.3，code=0，返回有效suggestion/recallSuccessRate/recallReason。此为新Java入口验证，不是旧手工trace。</p><p id=\"doxcnvcDHW2ViRodAKhsjzncVGc\">生产受控探测边界保留：真实base dify-open.baijia.com与原dataset86233d1a-bddf-4a15-a229-c90b6a061c57，使用现有TEST凭据返回401 Access token is invalid。仅去掉test并更换dataset不足；需匹配环境的有效生产授权凭据后，再核实该凭据主体的空间查询权限。个人Console空间403是另一个身份层面的已证事实，不能据此替代Service API权限验证。未借用他人key、创建生产key、调用生产模型或修改生产。</p><p id=\"doxcntNKrkHYyVYYSIGxBJoiiVg\">TEST交付：隔离agent1795457739670155/application1795457739670157；7个Retriever字段发布TEST/default/application，releaseKey=20261124021612-188aa6ecfba6968e。端到端阻塞根因为隔离应用引用不存在的prompt_config_history版本，仅将该TEST application的auto_use_current_version由0改1并回读，随后验证成功；没有新增代码部署或Apollo变化。原四个知识库应用正式路由不变，测试资源保留复现，所有监听已reset/stop，无在途。</p><p id=\"doxcnLsnSYqkxZsIpbew4onVTkb\">LiteLLM最终输入独立断言：system完整1390字符，SHA256=e24fb960acf9d089e68bc69a4372260e1e879840d70179414b77fce38d4c9ce2；完整业务query保留，真实Service API的4条片段逐条全部包含，each_chunk_present=[true,true,true,true]。证据：本地artifacts/expanded-refund/kb-e2e-input-assertions.json。结论仅限6909717c/test-gtbg-dev-1这个economy隔离样本，不代表生产4应用召回/生成等价或问题建议完整tools循环已通过；生产正式使用仍保留Dify。</p></fragment>",
+      "document_id": "EWI6dsdvPokck0xy89ccJDuEnhg",
+      "revision_id": 38
+    }
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.70",
+      "latest": "1.0.100",
+      "message": "lark-cli 1.0.100 available, current 1.0.70, run: lark-cli update"
+    }
+  }
+}

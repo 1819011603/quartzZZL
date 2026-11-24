@@ -100,7 +100,7 @@ test 环境对应应用见 [`verify.md`](verify.md)。
 |---|---|
 | 阶段 | 开发中 |
 | 进度 | T 6/14 · R 0/0 · C 0/0 |
-| 部署泳道 | `student-data=test-gtbg-dev-1`，commit `6909717c`，流水线 `1360348`（主Worker确认Eureka UP；Java端到端验证进行中） |
+| 部署泳道 | `student-data=test-gtbg-dev-1`，commit `6909717c`，流水线 `1360348`（主Worker确认Eureka UP；隔离样本Java端到端验证成功） |
 | 当前状态 | 已完成测试环境对等性审查与逐场景裁决；SOP V2输入一致，其余场景保留具体差异。生产只读，未授权发布 |
 | 最近更新 | 2026-11-23：TEST知识库场景已恢复Dify并复验；逐场景LiteLLM输入裁决已收束。SOP V2完整messages一致；画像/摘要/分层正文一致但角色包装不同；退费根因、旅程、课程体验、NPS精品均有明确差异；素养NPS副本已补双侧实收，按最新业务作用保留口径接受TEST替换。详见[审查交付](artifacts/expanded-scope/review-result.md)与[当前prompt交接](artifacts/expanded-scope/current-prompt-handoff.md)。 |
 
@@ -153,8 +153,23 @@ TEST 可替换场景的实际生效配置、版本和 trace 汇总见 [TEST交�
 ## 知识库测试进展（2026-11-24）
 隔离Console检索→TEST模型已跑通；随后真正TEST Service API已用TEST dataset Bearer成功检索4条话术（dataset `0105aec9-ef88-4a45-8f4a-fb1b5a3f12ce`），不再是“TEST服务凭证尚缺”。生产原库空间权限与服务身份仍需分别核实，不代表正式替换。
 
-代码 `87124f42` 新增TEST检索服务，`6909717c`补充检索阈值；流水线1360348已由主Worker确认Eureka UP。Java新入口端到端验证仍进行中，旧手工trace不能替代该结果。隔离agent/application为`1795457739670155`/`1795457739670157`，完整system1390字符；TEST/default/application实际releaseKey为`20261124021612-188aa6ecfba6968e`（以发布回读证据为准）。
+代码 `87124f42` 新增TEST检索服务，`6909717c`补充检索阈值；流水线1360348已由主Worker确认Eureka UP。Java新入口隔离样本端到端已成功：trace `3eaabb15-c22b-48f9-bcb4-7b0fd7783511.0.3`，code=0且suggestion/recallSuccessRate/recallReason均有效。不是复用旧手工trace。隔离agent/application为`1795457739670155`/`1795457739670157`，完整system1390字符；TEST/default/application实际releaseKey为`20261124021612-188aa6ecfba6968e`（以发布回读证据为准）。
 
-生产原dataset `86233d1a-bddf-4a15-a229-c90b6a061c57`关联空间`spczjG62GXkZ0ZSOBYS`；当前zhangzeling空间列表正常返回且不含目标空间，直接空间读取403。key列表按创建人过滤，个人可见0不等于生产没有key。最新授权允许生产知识库受控检索及必要TEST配置，生产数据/权限/配置/路由仍不写，生产模型不调用；域名/dataset环境假设正在核实，暂不宣称接通。见 [权限与服务接入](artifacts/expanded-refund/kb-service-auth-investigation.md)、[TEST配置交付](artifacts/expanded-refund/kb-service-config-delivery.md)。
+生产原dataset `86233d1a-bddf-4a15-a229-c90b6a061c57`关联空间`spczjG62GXkZ0ZSOBYS`；当前zhangzeling空间列表正常返回且不含目标空间，直接空间读取403。key列表按创建人过滤，个人可见0不等于生产没有key。最新授权允许生产知识库受控检索及必要TEST配置，生产数据/权限/配置/路由仍不写，生产模型不调用；真实生产域名与原dataset已受控探测：现有TEST凭据返回401，生产接通仍需匹配环境的有效授权凭据，再验证空间查询权限。见 [权限与服务接入](artifacts/expanded-refund/kb-service-auth-investigation.md)、[TEST配置交付](artifacts/expanded-refund/kb-service-config-delivery.md)。
 
 生产目标受控探测补证：真实生产域名+原dataset使用现有TEST dataset token返回401 `Access token is invalid`；尚无获授权生产凭据，不改TEST Apollo为已知无效组合。该错误与个人Console缺空间权限是不同层次。证据：[环境凭据探测](artifacts/expanded-refund/kb-test-retrieval/prod-target-test-credential-probe.json)。
+
+## Java知识库端到端最终结果（2026-11-24）
+
+`6909717c / test-gtbg-dev-1` 的 `DifyDatasetGatewayTestService#retrieveAndComplete` 已完成真正TEST Service API检索→上下文拼装→TEST模型生成。trace `3eaabb15-c22b-48f9-bcb4-7b0fd7783511.0.3`，响应code=0，返回有效suggestion/recallSuccessRate/recallReason。
+
+LiteLLM独立输入断言：system1390字符，SHA256=`e24fb960acf9d089e68bc69a4372260e1e879840d70179414b77fce38d4c9ce2`；完整业务query保留，真实Service API的4条片段逐条全部包含。证据：[端到端输入断言](artifacts/expanded-refund/kb-e2e-input-assertions.json)。
+
+过程中修复仅涉及隔离TEST application `1795457739670157`：引用的prompt_config_history版本不存在，`auto_use_current_version`从0改1并回读；没有因此增加代码部署或Apollo变更。代码版本仍6909717c，Apollo仍`20261124021612-188aa6ecfba6968e`。所有临时监听已reset/stop，无在途操作；隔离资源保留用于复现。
+
+本结果只证明该economy隔离样本端到端运行，不代表4个生产知识库应用检索或生成等价、问题建议完整tools循环通过或正式路由切换。生产域名/原dataset的TEST凭据探测401与个人Console空间403分开记录：需要生产有效授权凭据后，再验证该凭据主体的空间权限。生产未写数据、权限、配置或路由，未调用生产模型。
+
+## 凭据来源与生产检索边界（2026-11-24）
+本轮恢复后复核了 Dify 源码归档、生产/TEST 部署代码和只读运行证据。student-data 的 `ai_agent.access_key` 仅用于 Dify 应用 `/chat-messages`；知识库 `/datasets/{id}/retrieve` 要求 Dify `ApiToken(type=dataset)`，并继续校验 tenant、dataset scope、`enable_api` 与创建主体的 Teable 空间查询权限。Console Cookie 只代表 Console 登录态，不能替代 dataset Service API token。
+
+真实生产地址 `https://dify-open.baijia.com/dify/api/v1` 与原 dataset `86233d1a-bddf-4a15-a229-c90b6a061c57` 使用 TEST token 返回 `401 Access token is invalid`；这已确认是凭据环境/类型不匹配，不能据此推断生产 dataset 不存在。个人 Console 对关联空间 `spczjG62GXkZ0ZSOBYS` 返回 403，属于另一层空间授权证据。当前没有可安全用于该生产 dataset 的现存服务 token，未修改生产或触发生产生成。详细证据见 `artifacts/expanded-refund/kb-service-auth-investigation.md`。

@@ -24,12 +24,26 @@
 
 ## Pod/运行类核查
 
-2026-11-24继续用pod-terminal核查：当前TEST service `baijia.gaotu.Business.operation-workbench.student-data`列出的Running/UP Pod为 `student-data-867c48c996-pcd54`(10.255.166.59)、`student-data-6d4b796dc9-hgznq`(10.218.249.39)、`student-data-58ddf65fb6-ht5hl`(10.218.251.177)，此前trace目标10.218.237.104已不在当前Pod列表。当前抽查Pod `/apps/srv/instance/app.jar` 无 `DifyDatasetGatewayTestService`类，说明当前服务实例仍是旧镜像，不能用它读取87124f42的运行异常。
-
-因此本轮无法在已消失的目标实例上执行arthas throwExp；不是代码静态推断，而是运行Pod已被替换且当前Pod未包含新类。未重复部署。待主Worker已有部署流程将87124f42部署到TEST后，再从新Pod执行一次入口；届时ACL真实异常需在新实例日志/arthas读取。
+此前查询使用默认 test 环境，非目标 dev 泳道；其 Pod 列表不能证明目标实例消失，该推断已撤回。
 
 ## 目标泳道核实（补充）
 
 明确使用 `pod_term --env dev --pod-name student-data-7cd659b66-f478t`，该Pod为10.218.237.104、Running/Eureka UP，JVM参数含 `-Deureka.instance.metadataMap.trafficEnv=test-gtbg-dev-1`，即目标泳道已核实。Arthas `jad`确认运行类位置为 `app.jar!/BOOT-INF/lib/student-data-service-1.0.0.jar!/`，方法真实签名为六参数：`retrieveAndComplete(String,String,String,String,String,Object)`，与请求参数数量一致；此前“目标Pod消失/签名不匹配”均已推翻并保留本段证据。
 
 该Pod日志确认：09:30:47 Retriever调用后创建AI同步任务记录，解析override为agent1795457739670155、platformType=2、model=deepseek-flash；随后ACL仍统一报“未找到方法”。未取得目标方法throwExp（watch命令在等待期间被中断），因此AiApplicationExecutor内部失败原因仍未知。未改代码/配置，未重复业务调用。
+
+## 实际异常与修复
+
+Arthas watch 单次命中取得真实 NPE：`DynamicPromptGenerator.getAfterProcessorPrompt:167`，完整栈 `/tmp/kb-java-e2e/watch.txt`。隔离应用 `1795457739670157` 原 `auto_use_current_version=0` 指向历史版本 `1795457739670160`，实际 prompt_config_history 查询为0行，导致 promptConfigBO=null。已仅将该TEST隔离应用 auto_use_current_version 改1，独立连接回读确认；现用当前模板1795457739670159。无需代码修复或部署。watch已reset并stop。修复后同入口复验进行中，证据 fixed-headers.txt/fixed-response.json。
+
+## 最终验证结果（主Worker复核）
+
+6909717c / TEST test-gtbg-dev-1 已完成 Java自动检索→上下文拼装→TEST模型生成。成功trace：`3eaabb15-c22b-48f9-bcb4-7b0fd7783511.0.3`；入口code=0，返回suggestion、recallSuccessRate、recallReason。
+
+真实异常为隔离应用指定不存在的prompt_config_history版本，DynamicPromptGenerator.getAfterProcessorPrompt:167发生NPE，ACL吞掉异常。仅将TEST application 1795457739670157的auto_use_current_version从0改1并回读；无新增代码、部署或Apollo发布。
+
+主Worker独立解析已落盘LiteLLM请求：system 1390字及SHA256与配置完全一致；完整业务query保留；与独立Service API返回的4条segment逐条比较，全部完整包含。断言见kb-e2e-input-assertions.json；响应及日志见同目录kb-e2e-fixed-response.json、kb-e2e-litellm-fixed.json。
+
+该结果仅覆盖隔离TEST样本，不证明生产四个知识库应用等价，也不证明agent工具循环。生产真实地址与原dataset受控探测返回401，TEST凭据不适用；仍需生产有效授权服务凭据再验证目标空间权限，不能将401与此前个人Console空间403混同。未执行生产生成或生产写入。
+
+监听已reset并停止，无在途业务调用。隔离TEST数据、dataset及配置保留供复现，未清理；原4个知识库应用继续Dify。

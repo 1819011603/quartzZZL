@@ -1,0 +1,15 @@
+{
+  "traceId": "3eaabb15-c22b-48f9-bcb4-7b0fd7783511.0.3",
+  "commit": "6909717c",
+  "environment": "test-gtbg-dev-1",
+  "system_length": 1390,
+  "system_sha256": "e24fb960acf9d089e68bc69a4372260e1e879840d70179414b77fce38d4c9ce2",
+  "full_business_query_preserved": true,
+  "reference_chunks": 4,
+  "each_chunk_present": [
+    true,
+    true,
+    true,
+    true
+  ]
+}

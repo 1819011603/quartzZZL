@@ -53,3 +53,15 @@ TEST新key仅保存/tmp/kb-test-service-key.json（0600），报告不含值；�
 Service base：`https://test-dify-open.baijia.com/dify/api/v1`；POST `/datasets/0105aec9-ef88-4a45-8f4a-fb1b5a3f12ce/retrieve`。
 Headers：`Authorization: Bearer <TEST dataset token>`、`Content-Type: application/json`；本机仍经8888代理。此前实际HTTP请求未附traffic-env，落真正TEST Dify默认环境；后端student-data调用LLM的test-gtbg-dev-1是另一层泳道，不应混写成Dify泳道。
 Body沿用kb-test-retrieval/request.json；结果real-test-retrieve.json。密钥只保留/tmp/kb-test-service-key.json（0600）；字段token供同机获授权进程读取，不进报告。当前scope内权限调查已完成；生产授权缺口如上，未改生产。TEST服务凭据/隔离资源保留供主Worker集成，未重复检索。
+
+## 凭据来源链路最终核对（2026-11-24恢复后）
+
+本轮复用此前容器和源码证据，未重新读取或输出任何明文凭据：
+
+- **应用调用 key**：student-data 的 `ai_agent.access_key`，由 `AiApplicationExecutor` 放入 `AiModelCallOption.accessKey`；Dify 应用链路 `AiAgentAccessHelper` 将其作为 `/chat-messages` 的 Bearer。它属于应用级凭据，不能用于知识库 Service API。
+- **知识库 Service API 凭据**：Dify `ApiToken` 中 `type=dataset` 的 token，生产 `/datasets/{dataset_id}/retrieve` 先按 Bearer 查 token，再校验 tenant、dataset token scope/绑定、`enable_api` 及创建主体对应的 Teable 空间查询权限。Dify 源码归档 `controllers/service_api/wraps.py` 及生产/TEST 容器抽取代码均支持该链路。
+- **Console 登录态**：`os.baijia.com` 的 Cookie 仅用于 Console API/空间权限查询和 hit-testing；它不是 Service API Bearer，也不能代替 dataset token。此前隔离 Console 检索成功不等于后端 Service API 凭据可用。
+
+生产实际目标 `https://dify-open.baijia.com/dify/api/v1/datasets/86233d1a-bddf-4a15-a229-c90b6a061c57/retrieve` 使用 TEST dataset token 返回 401 `Access token is invalid`。因此此前“去掉 test 域名/更换 dataset 即可”的假设已被实测排除；当前缺口是生产环境、生产租户且具备该 dataset/Teable 空间 scope 的 dataset Service API token。个人 Console 身份对目标空间 `spczjG62GXkZ0ZSOBYS` 返回 403，已由 `/api/dify/user/spacelist` 和空间详情接口只读核实；这与 401 属于不同身份层，不能互相替代。
+
+本轮未修改生产凭据、权限、数据、配置或路由，未触发生产模型生成。没有找到可安全用于该生产 dataset 的现存授权 token，因此未进行第二次生产 POST；TEST Java 端到端成功证据继续复用 `3eaabb15-c22b-48f9-bcb4-7b0fd7783511.0.3`。
