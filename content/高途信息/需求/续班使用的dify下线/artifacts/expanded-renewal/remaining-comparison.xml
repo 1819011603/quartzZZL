@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<comparison generated="2026-11-24" source="expanded-renewal">
+  <pair name="profile" status="historical-real">
+    <trace>2a9ff650-ba6f-4bf2-93f8-88034f864c93.0.3</trace><old>profile-prod-received.json</old><new>profile-test-received.json</new>
+    <difference>业务字段保留；模型、JSON response_format、max_tokens、消息包装变化。</difference>
+  </pair>
+  <pair name="sop-v2" status="historical-real">
+    <old>sop-v2-1-received.json</old><new>sop-v2-2-received.json</new>
+    <difference>核心SOP评分保留；旧含think，新为纯JSON；模型与参数变化。</difference>
+  </pair>
+  <pair name="tier-valid" status="historical-real">
+    <old>tier-valid-prod-received.json</old><new>tier-valid-test-received.json</new>
+    <difference>完成度、互动、预报名等因果结论一致；输出格式和模型变化。</difference>
+  </pair>
+  <pair name="suyang-nps" status="test-copy-only">
+    <old>suyang-old-received.json</old><new>suyang-new-received.json</new>
+    <difference>business_exact_equal=true，full_messages_equal=false；缺生产同模板实收。</difference>
+  </pair>
+  <exclusion name="knowledge-base">仅迁移后隔离TEST trace，无旧侧配对。</exclusion>
+</comparison>

@@ -1,0 +1,66 @@
+<h2>五组LiteLLM原始响应核对补证</h2><p>本节覆盖91012878历史样本；以下直接读取同trace、service=litellm的Response received或Stream response日志。模型实际路由须看重定向日志，不能将请求别名不同认定为实际模型不同。旧业务answer可能拼入reasoning_content，以下只展示模型最终content，思考字段不展开。</p>
+<h3>旅程响应与入口回传核对</h3><table><tr><th>侧/时间/trace</th><th>LiteLLM实际输出</th><th>入口回传关系</th></tr>
+<tr><td>prod</td><td>已保存日志未找到可解析原始response</td><td>业务answer不替代</td></tr>
+<tr><td>test 2026-11-23 19:23:41,161 bfd44413-31f5-493d-904b-e670783ff2c4.0.3</td><td><pre><code>{
+  &quot;tutoringSummary&quot;: &quot;学员李明为高中学部春季数学班，主讲王老师，辅导陈老师。家长从2026-11-18反馈孩子三次数学作业正确率从85%降至62%，直播课听懂但课后不会做，陈老师建议错题整理、王老师承诺加强例题；2026-11-20家长进一步表示课程节奏快、互动少，已考虑退费，课程体验5/10，NPS 3/10，原因是作业反馈慢、个性化不足，并提出若增加答疑和针对性练习可能继续。退费意愿由潜在抱怨升级为犹豫权衡，核心风险集中在春季数学课程的个性化支持、作业反馈与互动体验，尚未出现坚决退费表述，暂无已解决退费原因记录。&quot;,
+  &quot;tutoringItems&quot;: [
+    {
+      &quot;communicateId&quot;: 0,
+      &quot;refundScore&quot;: 2,
+      &quot;chatTopic&quot;: &quot;潜在抱怨：数学作业正确率下降且课后不会做&quot;,
+      &quot;chatSummary&quot;: &quot;家长反馈孩子最近三次春季数学作业正确率从85%降到62%，直播课能听懂但课后不会做，已出现对学习效果的担忧和不满，暂未明确提出退费，属于潜在抱怨。&quot;,
+      &quot;chatTime&quot;: &quot;2026-11-18 19:20:00&quot;,
+      &quot;customerWords&quot;: &quot;孩子最近三次数学作业正确率从85%降到62%，直播课听懂但课后不会做。&quot;,
+      &quot;teacherWords&quot;: &quot;王老师回复说会在下节课加强例题，陈老师建议每天完成错题整理。&quot;
+    },
+    {
+      &quot;communicateId&quot;: 0,
+      &quot;refundScore&quot;: 3,
+      &quot;chatTopic&quot;: &quot;犹豫权衡：考虑退费并提出增加答疑和针对性练习条件&quot;,
+      &quot;chatSummary&quot;: &quot;家长认为春季数学课程节奏快、互动少，已考虑退费，课程体验5/10，NPS 3/10，原因是作业反馈慢、个性化不足；若增加答疑和针对性练习可能继续，属于犹豫权衡。&quot;,
+      &quot;chatTime&quot;: &quot;2026-11-20 20:10:00&quot;,
+      &quot;customerWords&quot;: &quot;孩子觉得课程节奏快，互动少，最近考虑退费，给课程体验评分5/10；如果增加答疑和针对性练习可能继续。家长NPS评分：3/10，原因是作业反馈慢、个性化不足。&quot;,
+      &quot;teacherWords&quot;: &quot;&quot;
+    }
+  ],
+  &quot;resolvedRefundReasonList&quot;: []
+}</code></pre></td><td>逐字相同</td></tr>
+</table>
+<h3>课程体验响应与入口回传核对</h3><table><tr><th>侧/时间/trace</th><th>LiteLLM实际输出</th><th>入口回传关系</th></tr>
+<tr><td>prod 2026-11-23 19:23:55,409 e02d7092-ee55-4e73-b731-b6f31ef2fb6e.0.3</td><td><pre><code>{&quot;courseExperienceSummary&quot;:&quot;高中学部春季数学班学员李明，2026-11-18家长反馈近三次数学作业正确率由85%降至62%，直播课听懂但课后不会做；王老师表示下节课加强例题，陈老师建议每天错题整理。2026-11-20家长反馈课程节奏快、互动少，作业反馈慢、个性化不足，体验评分5/10、NPS3/10，考虑退费，若增加答疑和针对性练习可能继续。&quot;,&quot;courseExperienceRefundReasonOriginal&quot;:&quot;家长原话：“孩子觉得课程节奏快，互动少，最近考虑退费，给课程体验评分5/10；如果增加答疑和针对性练习可能继续。”NPS评分3/10，原因是作业反馈慢、个性化不足；此前反馈：“孩子最近三次数学作业正确率从85%降到62%，直播课听懂但课后不会做”。&quot;}</code></pre></td><td>去思考段并去首尾空白后相同</td></tr>
+<tr><td>test 2026-11-23 19:24:25,904 e02d7092-ee55-4e73-b731-b6f31ef2fb6e.0.3</td><td><pre><code>{&quot;courseExperienceSummary&quot;:&quot;高中学部春季数学班（班级号500775385189890048，学员李明，主讲王老师，辅导陈老师）暂无完整听课练习数据。基于2026-11-18至11-20沟通：近三次数学作业正确率由85%降至62%，直播课听懂但课后不会做；课程节奏快、互动少，作业反馈慢、个性化不足；体验评分5/10、NPS3/10，已明确考虑退费，若增加答疑和针对性练习可能继续。退费表象为学习效果下滑、课后迁移与互动答疑不足；深层为个性化支持和反馈时效未达预期。关键节点：11-18、11-20。&quot;,&quot;courseExperienceRefundReasonOriginal&quot;:&quot;2026-11-18 19:20 家长与陈老师沟通：“孩子最近三次数学作业正确率从85%降到62%，直播课听懂但课后不会做；王老师回复说会在下节课加强例题，陈老师建议每天完成错题整理。”2026-11-20 20:10 家长再次说：“孩子觉得课程节奏快，互动少，最近考虑退费，给课程体验评分5/10；如果增加答疑和针对性练习可能继续。”家长NPS评分：3/10，原因是作业反馈慢、个性化不足。&quot;}</code></pre></td><td>逐字相同</td></tr>
+</table>
+<h3>NPS响应与入口回传核对</h3><table><tr><th>侧/时间/trace</th><th>LiteLLM实际输出</th><th>入口回传关系</th></tr>
+<tr><td>prod 2026-11-23 19:24:34,831 d2003cc1-b573-4e1c-8918-d3a4d162fe62.0.3</td><td><pre><code>总结本班级和其他班级NPS评价情况：  
+本班级分析：家长NPS 3/10，体验5/10，原因“作业反馈慢、个性化不足”；另反馈“课程节奏快，互动少”“直播课听懂但课后不会做”，正确率85%降至62%。其他班级分析：暂无其他班级NPS数据。  
+本班级退费潜在诱因推测：课后巩固、答疑与个性化练习不足，“最近考虑退费”；若“增加答疑和针对性练习可能继续”。</code></pre></td><td>去思考段并去首尾空白后相同</td></tr>
+<tr><td>test 2026-11-23 19:24:43,296 d2003cc1-b573-4e1c-8918-d3a4d162fe62.0.3</td><td><pre><code>- 总结本班级和其他班级nps评价情况：  
+本班级分析：家长NPS 3/10、体验5/10，因“作业反馈慢、个性化不足”；并称“节奏快，互动少”“考虑退费”。其他班级分析：暂无nps数据。  
+- 本班级退费潜在诱因推测：  
+①作业反馈慢、个性化不足；②“听懂但课后不会做”，正确率85%→62%，缺答疑/针对性练习；③“课程节奏快，互动少”。原文：“如果增加答疑和针对性练习可能继续。”</code></pre></td><td>逐字相同</td></tr>
+</table>
+<h3>降退费响应与入口回传核对</h3><table><tr><th>侧/时间/trace</th><th>LiteLLM实际输出</th><th>入口回传关系</th></tr>
+<tr><td>prod 2026-11-23 19:24:48,507 81e849b4-d461-4fd0-910a-154368d68bc0.0.3</td><td><pre><code>[{&quot;function&quot;: {&quot;arguments&quot;: &quot;{\&quot;query\&quot;: \&quot;孩子觉得课程节奏快、互动少，作业正确率下降，考虑退费，NPS低，作业反馈慢、个性化不足，如何干预挽单\&quot;}&quot;, &quot;name&quot;: &quot;dataset_86233d1a_bddf_4a15_a229_c90b6a061c57&quot;}, &quot;id&quot;: &quot;call_00_ql1i01jf80olhguk1a2gk29r&quot;, &quot;type&quot;: &quot;function&quot;}, {&quot;function&quot;: {&quot;arguments&quot;: &quot;{\&quot;query\&quot;: \&quot;数学课程体验差，直播听懂课后不会做，需要增加答疑和针对性练习，退费犹豫干预建议\&quot;}&quot;, &quot;name&quot;: &quot;dataset_86233d1a_bddf_4a15_a229_c90b6a061c57&quot;}, &quot;id&quot;: &quot;call_01_dmh3s0u128o85e78xqjkg64h&quot;, &quot;type&quot;: &quot;function&quot;}]</code></pre></td><td>不相等，不能作为原始输出替代</td></tr>
+<tr><td>prod 2026-11-23 19:24:56,789 81e849b4-d461-4fd0-910a-154368d68bc0.0.3</td><td><pre><code>{
+    &quot;suggestion&quot;: &quot;陈老师当天联系家长：先共情“节奏快、互动少、作业反馈慢确实让人着急，换我也担心”，不辩驳。随后给3个具体动作：①本周起王老师下节课增加例题精讲与课堂提问互动；②我每天带李明做5分钟错题整理，针对62%正确率的知识点补练；③每周日发一份学习报告（薄弱点+练习清单），并把答疑固定到每天19:30。约两周为观察期，期间每日微信反馈孩子进步，两周后仍无改善我协助退费。请家长先别急着退，给孩子一次调整机会。&quot;,
+    &quot;recallSuccessRate&quot;: &quot;中高&quot;,
+    &quot;recallReason&quot;: &quot;家长属犹豫权衡：NPS 3分、体验5分，抱怨节奏快互动少、作业反馈慢，但明确说“增加答疑和针对性练习可能继续”，并主动提出诉求，未坚决退费、未提交申请，挽回窗口仍在，改善方案直击其痛点，故成功率中高。&quot;
+}</code></pre></td><td>去思考段并去首尾空白后相同</td></tr>
+<tr><td>test 2026-11-23 19:25:14,758 81e849b4-d461-4fd0-910a-154368d68bc0.0.3</td><td><pre><code>{
+  &quot;suggestion&quot;: &quot;针对本班李明：陈老师24小时内电话共情，承认节奏快、互动少、反馈慢。与王老师协调本班下节课增例题和互动；本周给李明1次一对一答疑，每日3题针对性练习+错题整理，作业48小时内语音逐题反馈。话术：李明妈妈，孩子正确率从85%降到62%，是课后迁移没跟上。王老师下节课会加例题，我今晚挑3道同类题，明晚8点带他练，作业我48小时反馈。先试一周，看正确率变化。&quot;,
+  &quot;recallSuccessRate&quot;: &quot;中高&quot;,
+  &quot;recallReason&quot;: &quot;家长仅说考虑退费，未正式发起，属犹豫权衡；明确若增答疑和针对性练习可能继续，有留转余地。但NPS3、体验5、反馈慢、个性化不足，需快速响应，故干预成功中高。&quot;
+}</code></pre></td><td>逐字相同</td></tr>
+</table>
+<h3>素养建议响应与入口回传核对</h3><table><tr><th>侧/时间/trace</th><th>LiteLLM实际输出</th><th>入口回传关系</th></tr>
+<tr><td>prod 2026-11-23 19:25:33,719 5e258635-6bba-4358-bb49-8c6017142140.0.3</td><td><pre><code>{
+  &quot;suggestion&quot;: &quot;干预建议（未发起退费）：陈老师24小时内电话回应，先共情并承认作业反馈慢、个性化不足。为李明建错题本，每天15分钟，陈老师连续7天批改反馈；协调王老师本班直播增加2-3道例题和连麦互动，本周1次15分钟一对一答疑；设正确率62%→75%小目标，每周同步。话术：李明妈妈，您说的节奏快、互动少、反馈慢，我们马上调。本周我每天陪孩子整理错题并反馈，王老师课上加例题互动，周五看结果；两周无改善再一起商量。&quot;,
+  &quot;recallSuccessRate&quot;: &quot;中高&quot;,
+  &quot;recallReason&quot;: &quot;未明确发起退费；家长称增加答疑和针对性练习可能继续，属犹豫权衡。但NPS3/10、体验5/10，正确率85%降至62%，作业反馈慢、个性化不足、节奏快互动少，风险中高，故干预成功率中高。&quot;
+}</code></pre></td><td>去思考段并去首尾空白后相同</td></tr>
+<tr><td>test 2026-11-23 19:25:47,900 5e258635-6bba-4358-bb49-8c6017142140.0.3</td><td><pre><code>{
+  &quot;suggestion&quot;: &quot;陈老师24小时内私聊家长共情，先不谈退费：认可作业正确率从85%降到62%、课上懂课后卡的问题。立即为本班李明安排一次15分钟专属答疑，发3道针对薄弱点的分层练习；作业批改改为当天语音反馈；请王老师下节直播增加提问互动。约定两周后复盘，若体验提升再续读。话术：李明妈妈，我们先陪孩子调两周，您看效果再决定，好吗？&quot;,
+  &quot;recallSuccessRate&quot;: &quot;中高&quot;,
+  &quot;recallReason&quot;: &quot;家长尚未正式发起退费，属犹豫权衡，并明确“增加答疑和针对性练习可能继续”，可干预条件清晰；但NPS3、体验5、正确率下降，需24小时内响应，故中高。&quot;
+}</code></pre></td><td>逐字相同</td></tr>
+</table>

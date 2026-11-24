@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"keyword\" keyword=\"五组历史样本完整原文与版本说明|业务入口输出\"><h2 id=\"doxcnjPApu3M4rr4WgT4pU1Gmwc\">五组历史样本完整原文与版本说明</h2><p id=\"doxcnkqhCZRe4iSwxK0SVXY0EFd\">dify 业务入口输出；messageId=cc31e065-40a1-4292-958d-30eda7c277b7</p><p id=\"doxcnKPTv2U6OFj893FduFuZuLd\">gateway 业务入口输出；messageId=c9335c5b-42d6-4418-839e-760e051ce0d0</p><p id=\"doxcnkboFdlPOsXQVuBlDuNUeCh\">dify 业务入口输出；messageId=f5443e35-868e-4607-ad09-5b1cc573265d</p><p id=\"doxcn2RNNiQj5RYDSbPC78Bkmfd\">gateway 业务入口输出；messageId=c2512c21-8fea-48e7-b3e0-aaf9629cc7f4</p><p id=\"doxcnjtEQN9pn1cdSdFmnxf1aic\">dify 业务入口输出；messageId=2c46f2e3-d3ab-4d7c-b5ae-a7512886279d</p><p id=\"doxcnvVbXiYO88dJUQj6Ylyc4Ne\">gateway 业务入口输出；messageId=fa98c35e-5d23-4b47-9e53-4f9773a64b1d</p><p id=\"doxcn8dAdoFDeUFtdFLUcuzooCe\">dify 业务入口输出；messageId=2abf8686-086f-4fd1-b92e-43b3bf101189</p><p id=\"doxcnLYq64z8ZJR4suP6gaZWcAg\">gateway 业务入口输出；messageId=419e58d2-8b5f-49cb-998e-bb0b5c7e9096</p><p id=\"doxcn4A86cTLFoGsGjsXp14AAMc\">dify 业务入口输出；messageId=e1cc0e7d-a570-4b57-8273-1305e9297349</p><p id=\"doxcneZw1Ao9xwWkUWvLNCikoZ3\">gateway 业务入口输出；messageId=7dbd83e7-e8db-41c6-b7b6-806185e04371</p></fragment>",
+      "document_id": "EWI6dsdvPokck0xy89ccJDuEnhg",
+      "revision_id": 42
+    }
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.70",
+      "latest": "1.0.100",
+      "message": "lark-cli 1.0.100 available, current 1.0.70, run: lark-cli update"
+    }
+  }
+}

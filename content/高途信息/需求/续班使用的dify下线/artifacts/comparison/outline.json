@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"outline\"><outline><h1 id=\"doxcnyVYuTZh4cOdWvzvEWoOz7c\">先说明：我们在比较什么</h1><h1 id=\"doxcnrN5iSVb0nnwb2z8Wufu7ib\">阅读结论</h1><h1 id=\"doxcnbUxaUSCstueXIXeV2AaIzb\">逐场景对照</h1><h2 id=\"doxcn6V0f0C28dqCpjYv6A0XlPh\">1. 画像</h2><h2 id=\"doxcnP5J8OG8JTxI9obziO4x5bb\">2. SOP V2</h2><h2 id=\"doxcnpsE8zXm4jcevD6tOqEIeCg\">3. 分层修正后</h2><h2 id=\"doxcnrQWLUQZSIRhVnLXvJESlCf\">4. 素养NPS</h2><h2 id=\"doxcn2GwyTQb7YkMXEvQjhhwB6g\">5. 摘要</h2><h2 id=\"doxcnb7I2804ToTiuDU50E4nCfg\">6. 退费根因</h2><h2 id=\"doxcn1DucqleatvU3RxgKG8IY6F\">7. 旅程</h2><h2 id=\"doxcnMikDX5j2mUW8SCMZCprrVg\">8. 课程体验</h2><h2 id=\"doxcnWFVHKlwpJ3WUckNCwQE00d\">9. NPS</h2><h2 id=\"doxcnA6GW3C4qmEfCNvnbBltcHh\">10. 降退费</h2><h2 id=\"doxcnF8QTophqW80BiMEjL1Ufhp\">11. 素养建议</h2><h1 id=\"doxcnr77qBWOYFjovX81qJtgiGP\">附录：各组完整实收请求与最终输出</h1><h2 id=\"doxcn6u7chUF1d0QNS1NKisJu4d\">附录 1：画像</h2><h2 id=\"doxcnGym3wpQeGb6dlo6nheCQCb\">附录 2：SOP V2</h2><h2 id=\"doxcn7aPE0xNYCFpSftqUjzFSeh\">附录 3：分层修正后</h2><h2 id=\"doxcnnVcjngoMx3WxDDAxhz8pVg\">附录 4：素养NPS</h2><h2 id=\"doxcnPMuq1GtabQn1XrNiTRg2Qf\">附录 5：摘要</h2><h2 id=\"doxcnbrFI4a3GMfZnlSyfv87hvc\">附录 6：退费根因</h2><h2 id=\"doxcnfYV9K6eOCvT04XRMT4QRwg\">附录 7：旅程</h2><h2 id=\"doxcnCJazu4FneCpND0njhjZtWt\">附录 8：课程体验</h2><h2 id=\"doxcnWccEeEWg1NTi7QfSRzyrVf\">附录 9：NPS</h2><h2 id=\"doxcnYsHalkxztswmQ1lGElhnxe\">附录 10：降退费</h2><h2 id=\"doxcnehgtGXRdOkK0qt5fW0gfAg\">附录 11：素养建议</h2><h1 id=\"doxcnNpJuVmD04M0zEBiOJpv32b\">独立事项与证据边界</h1></outline></fragment>",
+      "document_id": "EWI6dsdvPokck0xy89ccJDuEnhg",
+      "revision_id": 52
+    }
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.70",
+      "latest": "1.0.100",
+      "message": "lark-cli 1.0.100 available, current 1.0.70, run: lark-cli update"
+    }
+  }
+}
