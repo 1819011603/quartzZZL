@@ -21,7 +21,7 @@ tags: [需求]
 |项|当前要求|本轮状态/边界|
 |---|---|---|
 |1 参数|response_format需要json_object可单独新增；max_tokens、stream、thinking按旧实收严格对齐，旧没有则不写|待负责实现者完成TEST代码/配置及实收；覆盖此前8192/非流式/显式thinking保留差异口径，区分入口实收与后续路由注入|
-|2 费用身份|新链路必须带x-tech-ai-user-id用于分钱，追溯旧Dify真实来源并正确传递|已核实旧费用头来自强制查询后的Account.name，旧user UUID来自EndUser.id，两者不同；**owner已最终纠正：禁止任何兜底/操作人身份**；身份必须来自业务RunUser，缺失不阻断调用但不写头并warn暴露。样本gongxuemeng链路已核实，代码263ba48a已部署TEST并完成真实老师回放trace `24d4ad82-a26f-4c7c-9bdd-9b350fcb7fbe.0.3`（SSE聚合+usage成功）；最下游header实收日志复核仍在途，见[身份取证](artifacts/comparison/strict-v2-cost-identity.md)|
+|2 费用身份|新链路必须带x-tech-ai-user-id用于分钱，追溯旧Dify真实来源并正确传递|已核实旧费用头来自强制查询后的Account.name，旧user UUID来自EndUser.id，两者不同；**owner已最终纠正：禁止任何兜底/操作人身份**；身份必须来自业务RunUser，缺失不阻断调用但不写头并warn暴露。样本gongxuemeng链路已核实，代码263ba48a已部署TEST并完成真实老师回放trace `24d4ad82-a26f-4c7c-9bdd-9b350fcb7fbe.0.3`（SSE聚合+usage成功）；发起侧Arthas已实证费用头=gongxuemeng且body严格对齐（trace 76d487c5/acc2dcbd，证据strict-v2-nps/）；缺身份负例trace 3637295b不阻断并返回usage；最下游litellm落账日志与warn日志检索仍受阻，见[身份取证](artifacts/comparison/strict-v2-cost-identity.md)|
 |3 模型|model必须对齐，查清旧别名到真实目标映射并入表|允许只读线上配置/容器；PROD/TEST旧名映射已只读核实，见[模型证据](artifacts/comparison/strict-v2-model-map.md)；已证先按旧名鉴权再redirect；三条旧别名授权被管理入口拒绝（模型不存在或已下线），原14路由回读未变，严格旧名实收受阻，见[失败与回读](artifacts/comparison/strict-v2-route-change/report.md)|
 |4 messages|保持system/user内容、角色、顺序、包装严格相等，不回切Dify|已有成果复用；本轮受参数/实现影响部分需复验，输出不要求相同|
 |5 降退费tools|调查正式工作流及工具执行机制，给迁移方案|只读方案已完成：[tools与检索契约](artifacts/comparison/strict-v2-tools-plan.md)。正式降退费优先固定前置检索；仅tools声明不足，四知识库不自动切换|

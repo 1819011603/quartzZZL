@@ -40,3 +40,19 @@ TEST gps-ai只有deepseek-v4-flash-0731具明确旧名route；三种其他旧名
 只读pod `litellm-69797d7f6-69rtm`（10.255.161.138）部署源码：proxy_server.py先调用control_plane_api_key_auth_builder(validate_route=True)，鉴权按原始model逐项匹配caller.route_list，非admin未命中返回403；之后才在3430行apply_model_redirect_routing。实时控制面gps-ai admin=false、status=normal，三种旧别名均未配置。故需要TEST gps-ai增加doubao/Doubao-1-5-pro-32k、doubao/Doubao-Seed-1-6、deepseek/DeepSeek-R1-250528路由；已有目标路由不足以代替。deepseek-v4-flash-0731已有明确路由。
 
 证据见strict-v2-auth-evidence/及JSON authorization_order_verified。本次不配置、不生成，结论为源码+配置推导，未主动产生403；新增后仍须实收校验。仅核查一个TEST副本，不声称全部副本/生产源码同版本。
+
+## 最终旧模型→新模型裁决（2026-11-24，只读控制面+运行证据）
+
+|旧请求model|重定向新model|目标实际部署（PROD/TEST一致）|运行证据/备注|
+|---|---|---|---|
+|doubao/Doubao-1-5-pro-32k|doubao-seed-2-0-lite-260428|litellm_proxy/ep-20260508155629-tkjvf、ep-20260721112117-79txh、ep-20260721112145-4sdqz、doubao-seed-2.0-lite|重定向force注入thinking.disabled；请求层仍应省略thinking|
+|doubao/Doubao-Seed-1-6|doubao-seed-2-0-lite-260428|同上|无重定向强制参数|
+|deepseek/DeepSeek-R1-250528|deepseek-flash|litellm_proxy/deepseek-v4.1-flash、deepseek/deepseek-flash、ep_wuxzxwds4_ds-v4-1-flash|多部署按网关选择；TEST素养NPS实跑返回deepseek-v4.1-flash（trace 24d4ad82）与ep_wuxzxwds4（trace 76d487c5）||
+|deepseek-v4-flash-0731|deepseek-flash|同上|素养NPS旧别名TEST已授权并实跑成功|
+
+来源：strict-v2-model-map.json（PROD/TEST控制面实时只读）+ 本轮真实调用；不需要保存或修改callerRoute。
+
+## AICR结果（2026-11-24）
+
+- f23459b3：task 2329已完成，FAIL，1 blocking/1 high/4 medium/9 low。blocking #59150指旧身份校验在createNotCalled后抛错会导致记录停留未调用；263ba48a已删除该抛错与兜底映射（缺失仅warn不阻断），按实现已消除，待新评审确认。
+- 263ba48a：推送后暂无AICR任务记录（查询时间15:5x），需后续复查。
