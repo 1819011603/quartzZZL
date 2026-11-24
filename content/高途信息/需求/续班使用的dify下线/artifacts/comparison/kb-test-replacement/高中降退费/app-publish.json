@@ -1,0 +1,14 @@
+{
+    "success_list": [
+        {
+            "platform": "ai-base",
+            "platform_name": "\u9ad8\u9014AI\u5de5\u4f5c\u53f0",
+            "description": "\u53ef\u5728AI\u5de5\u4f5c\u53f0\u4e2d\u76f4\u63a5\u4e0e\u673a\u5668\u4eba\u5bf9\u8bdd\uff01",
+            "url": "https:\/\/test-os.baijia.com\/run-app\/chat\/spcynF7tYh4ROXnG8Xg_071b1d42-4eb5-4a40-bfcb-ec2fd353d7c5?is_published=true",
+            "icon": "https:\/\/gh-fe.oss-cn-beijing.aliyuncs.com\/ai-base\/svg\/c-logo.svg",
+            "flow_type": "legacy",
+            "channel_config": {}
+        }
+    ],
+    "failed_list": []
+}

@@ -1,0 +1,329 @@
+{
+  "graph": {
+    "nodes": [
+      {
+        "id": "1760511277664",
+        "type": "custom",
+        "data": {
+          "type": "start",
+          "title": "开始",
+          "desc": "",
+          "variables": [],
+          "selected": false
+        },
+        "position": {
+          "x": 80,
+          "y": 282
+        },
+        "targetPosition": "left",
+        "sourcePosition": "right",
+        "positionAbsolute": {
+          "x": 80,
+          "y": 282
+        },
+        "width": 244,
+        "height": 87,
+        "selected": false
+      },
+      {
+        "id": "1760511521805",
+        "type": "custom",
+        "data": {
+          "type": "code",
+          "title": "代码执行",
+          "desc": "",
+          "variables": [
+            {
+              "variable": "arg1",
+              "value_selector": [
+                "sys",
+                "query"
+              ],
+              "value_type": "string",
+              "id": 0,
+              "chosen": false,
+              "selected": false
+            },
+            {
+              "variable": "arg2",
+              "value_selector": [
+                "sys",
+                "user_id"
+              ],
+              "value_type": "string",
+              "id": 1,
+              "chosen": false,
+              "selected": false
+            }
+          ],
+          "code_language": "python3",
+          "code": "import re\n\ndef main(arg1: str, arg2: str) -> dict:\n    # 正则提取 directReason（使用DOTALL使.匹配换行符）\n    directReason_match = re.search(r'\"directReason\":\\s*\"([^\"]+)\"', arg1, re.DOTALL)\n    directReason = directReason_match.group(1) if directReason_match else \"暂无\"\n    \n    # 正则提取所有的 categoryName\n    categoryNames = re.findall(r'\"categoryName\":\\s*\"([^\"]+)\"', arg1)\n    categoryNames = \", \".join(categoryNames) if categoryNames else \"暂无\"\n    return {\n        \"refundReason\": f\"退费直接原因:{directReason} 退费原因分类:{categoryNames}\" \n    }\n    ",
+          "outputs": {
+            "refundReason": {
+              "type": "string",
+              "children": null
+            }
+          },
+          "selected": false
+        },
+        "position": {
+          "x": 378.8195949828571,
+          "y": 282
+        },
+        "targetPosition": "left",
+        "sourcePosition": "right",
+        "positionAbsolute": {
+          "x": 378.8195949828571,
+          "y": 282
+        },
+        "width": 244,
+        "height": 114,
+        "selected": false
+      },
+      {
+        "id": "1760513220734",
+        "type": "custom",
+        "data": {
+          "type": "knowledge-retrieval",
+          "title": "知识检索",
+          "desc": "",
+          "query_variable_selector": [
+            "1760511521805",
+            "refundReason"
+          ],
+          "dataset_ids": [
+            "0105aec9-ef88-4a45-8f4a-fb1b5a3f12ce"
+          ],
+          "retrieval_mode": "multiple",
+          "multiple_retrieval_config": {
+            "top_k": 4,
+            "reranking_model": {
+              "provider": "langgenius/tongyi/tongyi",
+              "model": "gte-rerank-v2"
+            },
+            "reranking_mode": "reranking_model",
+            "reranking_enable": false
+          },
+          "selected": false
+        },
+        "position": {
+          "x": 682.7209181234458,
+          "y": 282
+        },
+        "targetPosition": "left",
+        "sourcePosition": "right",
+        "positionAbsolute": {
+          "x": 682.7209181234458,
+          "y": 282
+        },
+        "width": 244,
+        "height": 143,
+        "selected": false
+      },
+      {
+        "id": "1760513736021",
+        "type": "custom",
+        "data": {
+          "type": "llm",
+          "title": "大模型",
+          "desc": "",
+          "variables": [],
+          "model": {
+            "provider": "langgenius/openai_api_compatible/openai_api_compatible",
+            "name": "deepseek-flash",
+            "mode": "chat",
+            "completion_params": {
+              "temperature": 0.7
+            }
+          },
+          "prompt_template": [
+            {
+              "role": "system",
+              "text": "##任务背景\n分析客户在我司的沟通数据、学习数据、对课程老师的评价、话术库数据，输出本课程如何进行干预去降低退费\n\n##技能\n- 教育心理学：理解学生的心理特点\n- K12教育专家\n\n ##角色\n- 分析专家：善于通过信息挖掘退费风险\n- 总结表达大师\n\n##以下是输入内容\n -需要提供学员和对应班级、辅导班\n- 基于退费根因+退费旅程+话术库\n \n\n## 处理规则\n- 预测退费率：0-1退费风险越来越高\n- 需要区分：是否已经发起退费，发起退费前为干预建议，发起退费后为挽单建议，需要做处理\n-  注意：尤其注意区分本班级和其他班级，输出的内容均为本班级，其他班级的数据仅为参考一定不能产出其他班级的建议\n- 干预成功率：可分为高、中高、中、低4档，高、中高、中、低干预成功的概率越来越低\n- 干预成功率的原因：需要依据已知的退费旅程、nps评价、课程体验、退费潜在原因、退费分类、潜在退费风险、退费意愿等级，并给出以上能支撑的依据\n- 建议：依据已知的退费旅程、nps评价、课程体验、退费潜在原因、退费分类、潜在退费风险、干预成功率、干预成功建议、建议话术库、退费意愿等级，给二讲切实可落地执行的建议\n- 建议话术要做到易懂且老师可以操作执行，切忌不要用晦涩难懂的语言\n- 特别注意：建议仅针对当前班级，其他班级的建议、干预成功率一定一定不要提\n- 潜在退费意愿等级：根据输入内容判断退费意愿等级\n    - 坚决退费：去意已决，没有任何回旋余地。客户的目标非常明确，就是要求立即办理退费手续，对机构提供的任何解决方案（如换课、延期、补偿）都完全不感兴趣。【特殊情况，为了多退钱先调课调班然后再询问退费金额，属于坚决退费】\n    - 强烈倾向退费：有非常强烈的退费想法，但尚未到完全拒绝沟通的地步。内心已基本做出决定，但仍存在一丝疑虑或想听听机构的说法，机构给出的最后方案将是决定性的。\n    - 犹豫权衡：对课程或服务或亲子关系有明显的不满，且产生了退费的念头，但正处于犹豫和权衡的阶段。他们会主动抱怨，目的是希望问题得到解决，而非真正想退费。\n    - 潜在抱怨：目前没有主动提出退费，但已经积累了一些对课程/老师/孩子担忧或不满情绪或在学习过程中遇到了一些障碍。如果这些“小问题”得不到疏解，很可能升级为犹豫权衡【根据整体对话判断，如果家长只是了解下是否报课，但当前课程没有退费风险，则返回理由时需要提醒为购买前沟通犹豫点】\n    - 稳定满意：对课程质量、教学服务和学习效果都没有负面评价，没有任何退费的想法。是机构的忠诚用户和口碑传播者。【例如1：如果是正常的沟通，偶尔因为时间安排来不及听课然后去看回放且并没有抱怨的语气，这种属于稳定满意；例如2:例如课程进度跟不上想调课调班，这种也属于稳定满意】\n- 潜在退费的学科和学期：可以多个枚举值\n\n## 输出格式\n1、你最终将严格按照以下json格式输出结果\n```json\n{\n    \"suggestion\": \"挽单干预建议【不超过200字】\",\n    \"recallSuccessRate\": \"挽单成功率(枚举值：高/中高/中/低)\",\n    \"recallReason\": \"挽单干预成功率推理的依据【不超过100字】\"\n}\n```\n## 输入信息如下\n{{#sys.query#}}\n",
+              "id": "4709895d-2118-4ed1-9616-269c025e88a2"
+            }
+          ],
+          "context": {
+            "enabled": true,
+            "variable_selector": [
+              "1760513220734",
+              "result"
+            ]
+          },
+          "vision": {
+            "enabled": false
+          },
+          "selected": true,
+          "structured_output_enabled": false
+        },
+        "position": {
+          "x": 984,
+          "y": 282
+        },
+        "targetPosition": "left",
+        "sourcePosition": "right",
+        "positionAbsolute": {
+          "x": 984,
+          "y": 282
+        },
+        "width": 244,
+        "height": 141,
+        "selected": true
+      },
+      {
+        "id": "1760513958021",
+        "type": "custom",
+        "data": {
+          "type": "answer",
+          "title": "直接回复",
+          "desc": "",
+          "variables": [],
+          "answer": "{{#1760513736021.text#}}",
+          "selected": false
+        },
+        "position": {
+          "x": 1288,
+          "y": 282
+        },
+        "targetPosition": "left",
+        "sourcePosition": "right",
+        "positionAbsolute": {
+          "x": 1288,
+          "y": 282
+        },
+        "width": 244,
+        "height": 105,
+        "selected": false
+      }
+    ],
+    "edges": [
+      {
+        "id": "1760511277664-source-1760511521805-target",
+        "type": "custom",
+        "source": "1760511277664",
+        "target": "1760511521805",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "data": {
+          "sourceType": "start",
+          "targetType": "code",
+          "isInLoop": false
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "1760511521805-source-1760513220734-target",
+        "type": "custom",
+        "source": "1760511521805",
+        "target": "1760513220734",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "data": {
+          "sourceType": "code",
+          "targetType": "knowledge-retrieval",
+          "isInLoop": false
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "1760513220734--1760513736021-target",
+        "type": "custom",
+        "source": "1760513220734",
+        "sourceHandle": "source",
+        "target": "1760513736021",
+        "targetHandle": "target",
+        "data": {
+          "sourceType": "knowledge-retrieval",
+          "targetType": "llm",
+          "isInIteration": false,
+          "isInLoop": false
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "1760513736021--1760513958021-target",
+        "type": "custom",
+        "source": "1760513736021",
+        "sourceHandle": "source",
+        "target": "1760513958021",
+        "targetHandle": "target",
+        "data": {
+          "sourceType": "llm",
+          "targetType": "answer",
+          "isInIteration": false,
+          "isInLoop": false
+        },
+        "zIndex": 0
+      }
+    ],
+    "viewport": {
+      "x": -449.838100028544,
+      "y": -49.878732144264745,
+      "zoom": 1.009611919030626
+    }
+  },
+  "features": {
+    "opening_statement": "",
+    "suggested_questions": [],
+    "suggested_questions_after_answer": {
+      "enabled": false
+    },
+    "text_to_speech": {
+      "enabled": false,
+      "voice": "",
+      "language": ""
+    },
+    "speech_to_text": {
+      "enabled": false
+    },
+    "retriever_resource": {
+      "enabled": true
+    },
+    "sensitive_word_avoidance": {
+      "enabled": false
+    },
+    "file_upload": {
+      "image": {
+        "enabled": false,
+        "number_limits": 3,
+        "transfer_methods": [
+          "local_file",
+          "remote_url"
+        ]
+      },
+      "enabled": true,
+      "allowed_file_types": [
+        "image",
+        "video"
+      ],
+      "allowed_file_extensions": [
+        ".JPG",
+        ".JPEG",
+        ".PNG",
+        ".GIF",
+        ".WEBP",
+        ".SVG",
+        ".MP4",
+        ".MOV",
+        ".MPEG",
+        ".WEBM"
+      ],
+      "allowed_file_upload_methods": [
+        "remote_url",
+        "local_file"
+      ],
+      "number_limits": 3,
+      "fileUploadConfig": {
+        "file_size_limit": 200,
+        "batch_count_limit": 5,
+        "image_file_size_limit": 10,
+        "video_file_size_limit": 100,
+        "audio_file_size_limit": 50,
+        "workflow_file_upload_limit": 10
+      }
+    },
+    "gt_configs": {}
+  },
+  "environment_variables": [],
+  "conversation_variables": []
+}

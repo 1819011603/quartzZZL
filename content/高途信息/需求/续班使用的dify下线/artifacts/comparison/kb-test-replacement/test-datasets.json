@@ -1,0 +1,450 @@
+{
+    "data": [
+        {
+            "id": "0105aec9-ef88-4a45-8f4a-fb1b5a3f12ce",
+            "name": "TEST-service-retrieval-20261124",
+            "description": "\u9694\u79bb\u670d\u52a1\u68c0\u7d22\u9a8c\u8bc1",
+            "provider": "vendor",
+            "permission": "only_me",
+            "data_source_type": "upload_file",
+            "indexing_technique": "economy",
+            "app_count": 0,
+            "document_count": 1,
+            "word_count": 25208,
+            "created_by": "177071",
+            "created_at": 1795457253,
+            "updated_by": "177071",
+            "updated_at": 1795457280,
+            "embedding_model": null,
+            "embedding_model_provider": null,
+            "embedding_available": true,
+            "retrieval_model_dict": {
+                "search_method": "semantic_search",
+                "reranking_enable": false,
+                "reranking_mode": null,
+                "reranking_model": {
+                    "reranking_provider_name": "",
+                    "reranking_model_name": ""
+                },
+                "weights": null,
+                "top_k": 2,
+                "score_threshold_enabled": false,
+                "score_threshold": null
+            },
+            "tags": [],
+            "doc_form": "text_model",
+            "external_knowledge_info": {
+                "external_knowledge_id": null,
+                "external_knowledge_api_id": null,
+                "external_knowledge_api_name": null,
+                "external_knowledge_api_endpoint": null
+            },
+            "external_retrieval_model": {
+                "top_k": 2,
+                "score_threshold": 0.0,
+                "score_threshold_enabled": null
+            },
+            "doc_metadata": [],
+            "built_in_field_enabled": false,
+            "pipeline_id": null,
+            "runtime_mode": "general",
+            "chunk_structure": null,
+            "icon_info": {
+                "icon_type": null,
+                "icon": null,
+                "icon_background": null,
+                "icon_url": null
+            },
+            "is_published": false,
+            "total_documents": 1,
+            "total_available_documents": 1,
+            "enable_api": true,
+            "space_ids": [
+                "spcynF7tYh4ROXnG8Xg"
+            ],
+            "partial_member_list": [],
+            "edit_permission": 1,
+            "delete_permission": 1
+        },
+        {
+            "id": "8b7343c8-bdeb-483b-a34e-1b915c1c03b3",
+            "name": "1.10\u4f01\u4e1a\u7a7a\u95f4\u7236\u5b50\u6a21\u575701",
+            "description": "1.10\u4f01\u4e1a\u7a7a\u95f4\u7236\u5b50\u6a21\u575701",
+            "provider": "vendor",
+            "permission": "only_me",
+            "data_source_type": null,
+            "indexing_technique": "high_quality",
+            "app_count": 0,
+            "document_count": 1,
+            "word_count": 6972,
+            "created_by": "74940",
+            "created_at": 1768988369,
+            "updated_by": "74940",
+            "updated_at": 1769496174,
+            "embedding_model": "text-embedding-v4",
+            "embedding_model_provider": "langgenius\/tongyi\/tongyi",
+            "embedding_available": true,
+            "retrieval_model_dict": {
+                "search_method": "semantic_search",
+                "reranking_enable": true,
+                "reranking_mode": "reranking_model",
+                "reranking_model": {
+                    "reranking_provider_name": "langgenius\/tongyi\/tongyi",
+                    "reranking_model_name": "gte-rerank-v2"
+                },
+                "weights": {
+                    "weight_type": null,
+                    "keyword_setting": {
+                        "keyword_weight": 0.3
+                    },
+                    "vector_setting": {
+                        "vector_weight": 0.7,
+                        "embedding_model_name": "text-embedding-v4",
+                        "embedding_provider_name": "langgenius\/tongyi\/tongyi"
+                    }
+                },
+                "top_k": 3,
+                "score_threshold_enabled": false,
+                "score_threshold": 0.5
+            },
+            "tags": [],
+            "doc_form": "hierarchical_model",
+            "external_knowledge_info": {
+                "external_knowledge_id": null,
+                "external_knowledge_api_id": null,
+                "external_knowledge_api_name": null,
+                "external_knowledge_api_endpoint": null
+            },
+            "external_retrieval_model": {
+                "top_k": 3,
+                "score_threshold": 0.5,
+                "score_threshold_enabled": false
+            },
+            "doc_metadata": [],
+            "built_in_field_enabled": false,
+            "pipeline_id": "dee0a732-4539-49c2-be95-0cf885d7f866",
+            "runtime_mode": "rag_pipeline",
+            "chunk_structure": "hierarchical_model",
+            "icon_info": {
+                "icon_type": "emoji",
+                "icon": "\ud83d\udcd9",
+                "icon_background": "#FFF4ED",
+                "icon_url": null
+            },
+            "is_published": true,
+            "total_documents": 1,
+            "total_available_documents": 1,
+            "enable_api": true,
+            "space_ids": [
+                "spcFjimOTewVj4Z4TRm"
+            ],
+            "partial_member_list": [],
+            "edit_permission": 0,
+            "delete_permission": 0
+        },
+        {
+            "id": "d91e71c8-45a7-43dd-99a0-1b79196a1d8c",
+            "name": "AI\u57fa\u5ea7\u76f8\u5173\u7684\u4e00\u4e9b\u6587\u6863",
+            "description": "AI\u57fa\u5ea7\u76f8\u5173\u7684\u4e00\u4e9b\u6587\u6863",
+            "provider": "vendor",
+            "permission": "only_me",
+            "data_source_type": "feishu_import",
+            "indexing_technique": "high_quality",
+            "app_count": 1,
+            "document_count": 5,
+            "word_count": 5388,
+            "created_by": "27634",
+            "created_at": 1758505888,
+            "updated_by": "27634",
+            "updated_at": 1758509104,
+            "embedding_model": "text-embedding-v4",
+            "embedding_model_provider": "langgenius\/tongyi\/tongyi",
+            "embedding_available": true,
+            "retrieval_model_dict": {
+                "search_method": "semantic_search",
+                "reranking_enable": false,
+                "reranking_mode": null,
+                "reranking_model": {
+                    "reranking_provider_name": "",
+                    "reranking_model_name": ""
+                },
+                "weights": null,
+                "top_k": 2,
+                "score_threshold_enabled": false,
+                "score_threshold": null
+            },
+            "tags": [],
+            "doc_form": "text_model",
+            "external_knowledge_info": {
+                "external_knowledge_id": null,
+                "external_knowledge_api_id": null,
+                "external_knowledge_api_name": null,
+                "external_knowledge_api_endpoint": null
+            },
+            "external_retrieval_model": {
+                "top_k": 2,
+                "score_threshold": 0.0,
+                "score_threshold_enabled": null
+            },
+            "doc_metadata": [],
+            "built_in_field_enabled": false,
+            "pipeline_id": null,
+            "runtime_mode": "general",
+            "chunk_structure": null,
+            "icon_info": {
+                "icon_type": null,
+                "icon": null,
+                "icon_background": null,
+                "icon_url": null
+            },
+            "is_published": false,
+            "total_documents": 5,
+            "total_available_documents": 0,
+            "enable_api": true,
+            "space_ids": [
+                "spcFjimOTewVj4Z4TRm"
+            ],
+            "partial_member_list": [],
+            "edit_permission": 0,
+            "delete_permission": 0
+        },
+        {
+            "id": "2f6daffb-920a-455f-9147-036518ceb953",
+            "name": "\u5411\u6653\u4f1f's space_\u5206\u4eab\u7ed9songhan\u5f00\u6743\u9650\u77e9\u9635_\u8868\u683c 2_2025080",
+            "description": "useful for when you want to answer queries about the \u5411\u6653\u4f1f's space_\u5206\u4eab\u7ed9songhan\u5f00\u6743\u9650\u77e9\u9635_\u8868\u683c 2_20250808074442",
+            "provider": "vendor",
+            "permission": "only_me",
+            "data_source_type": "teable_import",
+            "indexing_technique": "high_quality",
+            "app_count": 2,
+            "document_count": 2,
+            "word_count": 0,
+            "created_by": "8144",
+            "created_at": 1754639081,
+            "updated_by": null,
+            "updated_at": 1754639081,
+            "embedding_model": "text-embedding-v4",
+            "embedding_model_provider": "langgenius\/tongyi\/tongyi",
+            "embedding_available": true,
+            "retrieval_model_dict": {
+                "search_method": "semantic_search",
+                "reranking_enable": true,
+                "reranking_mode": null,
+                "reranking_model": {
+                    "reranking_provider_name": "langgenius\/tongyi\/tongyi",
+                    "reranking_model_name": "gte-rerank-v2"
+                },
+                "weights": null,
+                "top_k": 3,
+                "score_threshold_enabled": false,
+                "score_threshold": 0.5
+            },
+            "tags": [],
+            "doc_form": "text_model",
+            "external_knowledge_info": {
+                "external_knowledge_id": null,
+                "external_knowledge_api_id": null,
+                "external_knowledge_api_name": null,
+                "external_knowledge_api_endpoint": null
+            },
+            "external_retrieval_model": {
+                "top_k": 3,
+                "score_threshold": 0.5,
+                "score_threshold_enabled": false
+            },
+            "doc_metadata": [],
+            "built_in_field_enabled": false,
+            "pipeline_id": null,
+            "runtime_mode": "general",
+            "chunk_structure": null,
+            "icon_info": {
+                "icon_type": null,
+                "icon": null,
+                "icon_background": null,
+                "icon_url": null
+            },
+            "is_published": false,
+            "total_documents": 2,
+            "total_available_documents": 2,
+            "enable_api": true,
+            "space_ids": [
+                "spcFjimOTewVj4Z4TRm"
+            ],
+            "partial_member_list": [],
+            "edit_permission": 0,
+            "delete_permission": 0
+        },
+        {
+            "id": "85b51d30-0c8f-4ca3-94d8-b8eee75d468c",
+            "name": "2023\u5e74\u6d59\u6c5f\u7701\u676d\u5dde\u5e02\u4e2d\u8003\u8bed\u6587\u6a21\u62df\u8bd5\u5377\uff082\u6708\u4efd\uff09",
+            "description": "useful for when you want to answer queries about the 2023\u5e74\u6d59\u6c5f\u7701\u676d\u5dde\u5e02\u4e2d\u8003\u8bed\u6587\u6a21\u62df\u8bd5\u5377\uff082\u6708\u4efd\uff09.doc",
+            "provider": "vendor",
+            "permission": "only_me",
+            "data_source_type": "upload_file",
+            "indexing_technique": "high_quality",
+            "app_count": 5,
+            "document_count": 1,
+            "word_count": 25715,
+            "created_by": "74940",
+            "created_at": 1753434319,
+            "updated_by": null,
+            "updated_at": 1753434319,
+            "embedding_model": "text-embedding-v4",
+            "embedding_model_provider": "langgenius\/tongyi\/tongyi",
+            "embedding_available": true,
+            "retrieval_model_dict": {
+                "search_method": "semantic_search",
+                "reranking_enable": true,
+                "reranking_mode": null,
+                "reranking_model": {
+                    "reranking_provider_name": "langgenius\/tongyi\/tongyi",
+                    "reranking_model_name": "gte-rerank-v2"
+                },
+                "weights": null,
+                "top_k": 3,
+                "score_threshold_enabled": false,
+                "score_threshold": 0.5
+            },
+            "tags": [],
+            "doc_form": "text_model",
+            "external_knowledge_info": {
+                "external_knowledge_id": null,
+                "external_knowledge_api_id": null,
+                "external_knowledge_api_name": null,
+                "external_knowledge_api_endpoint": null
+            },
+            "external_retrieval_model": {
+                "top_k": 3,
+                "score_threshold": 0.5,
+                "score_threshold_enabled": false
+            },
+            "doc_metadata": [],
+            "built_in_field_enabled": false,
+            "pipeline_id": null,
+            "runtime_mode": "general",
+            "chunk_structure": null,
+            "icon_info": {
+                "icon_type": null,
+                "icon": null,
+                "icon_background": null,
+                "icon_url": null
+            },
+            "is_published": false,
+            "total_documents": 1,
+            "total_available_documents": 1,
+            "enable_api": true,
+            "space_ids": [
+                "spcFjimOTewVj4Z4TRm"
+            ],
+            "partial_member_list": [],
+            "edit_permission": 0,
+            "delete_permission": 0
+        },
+        {
+            "id": "cdea20e6-58e6-48cf-9baf-9dde3a29748c",
+            "name": "5.0\u4f7f\u7528\u8868.csv...",
+            "description": "useful for when you want to answer queries about the 5.0\u4f7f\u7528\u8868.csv",
+            "provider": "vendor",
+            "permission": "only_me",
+            "data_source_type": "upload_file",
+            "indexing_technique": "high_quality",
+            "app_count": 1,
+            "document_count": 2,
+            "word_count": 5566,
+            "created_by": "8144",
+            "created_at": 1749178330,
+            "updated_by": null,
+            "updated_at": 1749178330,
+            "embedding_model": "text-embedding-3-small",
+            "embedding_model_provider": "langgenius\/openai_api_compatible\/openai_api_compatible",
+            "embedding_available": false,
+            "retrieval_model_dict": {
+                "search_method": "semantic_search",
+                "reranking_enable": false,
+                "reranking_mode": null,
+                "reranking_model": {
+                    "reranking_provider_name": "",
+                    "reranking_model_name": ""
+                },
+                "weights": null,
+                "top_k": 3,
+                "score_threshold_enabled": false,
+                "score_threshold": 0.5
+            },
+            "tags": [],
+            "doc_form": "text_model",
+            "external_knowledge_info": {
+                "external_knowledge_id": null,
+                "external_knowledge_api_id": null,
+                "external_knowledge_api_name": null,
+                "external_knowledge_api_endpoint": null
+            },
+            "external_retrieval_model": {
+                "top_k": 3,
+                "score_threshold": 0.5,
+                "score_threshold_enabled": false
+            },
+            "doc_metadata": [
+                {
+                    "id": "0c0a7fd2-7063-4c5e-94cb-eeded6cb313a",
+                    "name": "dsf_22",
+                    "type": "string"
+                },
+                {
+                    "id": "56f12ee9-a97e-4b64-90b5-6d5397f865d9",
+                    "name": "dfsdf",
+                    "type": "number"
+                },
+                {
+                    "id": "built-in",
+                    "name": "document_name",
+                    "type": "string"
+                },
+                {
+                    "id": "built-in",
+                    "name": "uploader",
+                    "type": "string"
+                },
+                {
+                    "id": "built-in",
+                    "name": "upload_date",
+                    "type": "time"
+                },
+                {
+                    "id": "built-in",
+                    "name": "last_update_date",
+                    "type": "time"
+                },
+                {
+                    "id": "built-in",
+                    "name": "source",
+                    "type": "string"
+                }
+            ],
+            "built_in_field_enabled": true,
+            "pipeline_id": null,
+            "runtime_mode": "general",
+            "chunk_structure": null,
+            "icon_info": {
+                "icon_type": null,
+                "icon": null,
+                "icon_background": null,
+                "icon_url": null
+            },
+            "is_published": false,
+            "total_documents": 2,
+            "total_available_documents": 0,
+            "enable_api": true,
+            "space_ids": [
+                "spcFjimOTewVj4Z4TRm"
+            ],
+            "partial_member_list": [],
+            "edit_permission": 0,
+            "delete_permission": 0
+        }
+    ],
+    "has_more": false,
+    "limit": 100,
+    "total": 6,
+    "page": 1
+}

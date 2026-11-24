@@ -1,0 +1,22 @@
+{
+    "id": "spcynF7tYh4ROXnG8Xg_071b1d42-4eb5-4a40-bfcb-ec2fd353d7c5",
+    "name": "TEST\u8fc1\u79fb\u66ff\u6362-\u9ad8\u4e2d\u964d\u9000\u8d39-20261125",
+    "description": "",
+    "mode": "advanced-chat",
+    "icon": "\ud83e\udd16",
+    "icon_url": null,
+    "icon_background": "#FFEAD5",
+    "enable_site": true,
+    "enable_api": true,
+    "model_config": null,
+    "workflow": null,
+    "tracing": null,
+    "use_icon_as_answer_icon": false,
+    "created_by": "177071",
+    "created_at": 1795538552,
+    "updated_by": "177071",
+    "updated_at": 1795538552,
+    "access_mode": null,
+    "tags": [],
+    "space_id": "spcynF7tYh4ROXnG8Xg"
+}
