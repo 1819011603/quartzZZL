@@ -1,0 +1,42 @@
+[
+  {
+    "scene": "退费根因",
+    "trace": "f33b2e1d-019e-42d1-b97f-13e98c78c612.0.3",
+    "messages_equal": true,
+    "response_present": true,
+    "request_messages_roles": [
+      "system",
+      "user"
+    ]
+  },
+  {
+    "scene": "旅程",
+    "trace": "32999155-127f-418b-b073-600b6b159b6a.0.3",
+    "messages_equal": false,
+    "response_present": true,
+    "request_messages_roles": [
+      "system",
+      "user"
+    ]
+  },
+  {
+    "scene": "课程体验",
+    "trace": "6c006207-ade9-4800-b40a-a0db181b4c9c.0.3",
+    "messages_equal": true,
+    "response_present": true,
+    "request_messages_roles": [
+      "system",
+      "user"
+    ]
+  },
+  {
+    "scene": "NPS",
+    "trace": "b7f98851-b9b7-4395-89f9-39a63bbaeeef.0.3",
+    "messages_equal": true,
+    "response_present": true,
+    "request_messages_roles": [
+      "system",
+      "user"
+    ]
+  }
+]

@@ -1,0 +1,5 @@
+{
+  "exact_equal": true,
+  "entries": 9,
+  "check": "model/platform/params override map unchanged"
+}

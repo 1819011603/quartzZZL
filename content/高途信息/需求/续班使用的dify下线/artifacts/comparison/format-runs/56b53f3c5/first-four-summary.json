@@ -1,0 +1,271 @@
+{
+  "cases": [
+    {
+      "case": "画像",
+      "commit": "56b53f3c5",
+      "environment": "test-gtbg-dev-1",
+      "trace": "dd182d47-b845-4135-80f2-f13575803a7e.0.3",
+      "exact_messages_equal": true,
+      "roles": [
+        "user"
+      ],
+      "message_characters": [
+        3494
+      ],
+      "data_difference": false,
+      "template_difference": false,
+      "parameter_differences": {
+        "user": {
+          "old": "e4763467-0f1a-4a09-92f1-e4471db27940",
+          "new": null
+        },
+        "stream": {
+          "old": true,
+          "new": null
+        },
+        "max_tokens": {
+          "old": null,
+          "new": 8192
+        },
+        "response_format": {
+          "old": null,
+          "new": {
+            "type": "json_object"
+          }
+        },
+        "model": {
+          "old": "doubao/Doubao-1-5-pro-32k",
+          "new": "doubao-seed-2-0-lite-260428"
+        },
+        "stop": {
+          "old": null,
+          "new": []
+        },
+        "thinking": {
+          "old": null,
+          "new": {
+            "type": "disabled"
+          }
+        }
+      },
+      "response_usage": {
+        "completion_tokens": 223,
+        "prompt_tokens": 2329,
+        "total_tokens": 2552,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": null,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": null
+        }
+      },
+      "response_has_choices": true,
+      "evidence": "artifacts/comparison/format-runs/56b53f3c5/画像/trace-full.received.json",
+      "raw_log": "artifacts/comparison/format-runs/56b53f3c5/画像/trace-full.log"
+    },
+    {
+      "case": "分层修正后",
+      "commit": "56b53f3c5",
+      "environment": "test-gtbg-dev-1",
+      "trace": "e604b357-f357-4997-b28b-f3192b531eb8.0.3",
+      "exact_messages_equal": true,
+      "roles": [
+        "user"
+      ],
+      "message_characters": [
+        8414
+      ],
+      "data_difference": false,
+      "template_difference": false,
+      "parameter_differences": {
+        "user": {
+          "old": "b1d3615e-1921-4281-88f0-b3ec598bb0d5",
+          "new": null
+        },
+        "stream": {
+          "old": true,
+          "new": null
+        },
+        "max_tokens": {
+          "old": null,
+          "new": 8192
+        },
+        "response_format": {
+          "old": null,
+          "new": {
+            "type": "text"
+          }
+        },
+        "model": {
+          "old": "doubao/Doubao-1-5-pro-32k",
+          "new": "doubao-seed-2-0-lite-260428"
+        },
+        "stop": {
+          "old": null,
+          "new": []
+        },
+        "thinking": {
+          "old": null,
+          "new": {
+            "type": "disabled"
+          }
+        }
+      },
+      "response_usage": {
+        "completion_tokens": 72,
+        "prompt_tokens": 4285,
+        "total_tokens": 4357,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": null,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": null
+        }
+      },
+      "response_has_choices": true,
+      "evidence": "artifacts/comparison/format-runs/56b53f3c5/分层修正后/trace-full.received.json",
+      "raw_log": "artifacts/comparison/format-runs/56b53f3c5/分层修正后/trace-full.log"
+    },
+    {
+      "case": "摘要",
+      "commit": "56b53f3c5",
+      "environment": "test-gtbg-dev-1",
+      "trace": "62b40ff1-972a-4906-bd24-28e9486d4aa5.0.3",
+      "exact_messages_equal": true,
+      "roles": [
+        "user"
+      ],
+      "message_characters": [
+        2057
+      ],
+      "data_difference": false,
+      "template_difference": false,
+      "parameter_differences": {
+        "user": {
+          "old": "e4763467-0f1a-4a09-92f1-e4471db27940",
+          "new": null
+        },
+        "stream": {
+          "old": true,
+          "new": null
+        },
+        "max_tokens": {
+          "old": null,
+          "new": 8192
+        },
+        "response_format": {
+          "old": null,
+          "new": {
+            "type": "json_object"
+          }
+        },
+        "model": {
+          "old": "doubao/Doubao-1-5-pro-32k",
+          "new": "doubao-seed-2-0-lite-260428"
+        },
+        "stop": {
+          "old": null,
+          "new": []
+        },
+        "thinking": {
+          "old": null,
+          "new": {
+            "type": "disabled"
+          }
+        }
+      },
+      "response_usage": {
+        "completion_tokens": 288,
+        "prompt_tokens": 1420,
+        "total_tokens": 1708,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": null,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": null
+        }
+      },
+      "response_has_choices": true,
+      "evidence": "artifacts/comparison/format-runs/56b53f3c5/摘要/trace-full.received.json",
+      "raw_log": "artifacts/comparison/format-runs/56b53f3c5/摘要/trace-full.log"
+    },
+    {
+      "case": "素养NPS",
+      "commit": "56b53f3c5",
+      "environment": "test-gtbg-dev-1",
+      "trace": "5a814ae8-b8ae-4450-ada4-895a41d53463.0.3",
+      "exact_messages_equal": true,
+      "roles": [
+        "system",
+        "user"
+      ],
+      "message_characters": [
+        322,
+        412
+      ],
+      "data_difference": false,
+      "template_difference": false,
+      "parameter_differences": {
+        "user": {
+          "old": "c3fec88f-c18e-4c89-8ddb-3e2217928de3",
+          "new": null
+        },
+        "stream": {
+          "old": true,
+          "new": null
+        },
+        "max_tokens": {
+          "old": null,
+          "new": 8192
+        },
+        "model": {
+          "old": "deepseek-v4-flash-0731",
+          "new": "deepseek-flash"
+        },
+        "stop": {
+          "old": null,
+          "new": []
+        },
+        "thinking": {
+          "old": {
+            "type": "enabled"
+          },
+          "new": null
+        }
+      },
+      "response_usage": {
+        "completion_tokens": 3330,
+        "prompt_tokens": 453,
+        "total_tokens": 3783,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 2058,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": 384
+        }
+      },
+      "response_has_choices": true,
+      "evidence": "artifacts/comparison/format-runs/56b53f3c5/素养NPS/trace-full.received.json",
+      "raw_log": "artifacts/comparison/format-runs/56b53f3c5/素养NPS/trace-full.log"
+    }
+  ],
+  "business_calls_by_this_task": 0,
+  "query_note": "service key index returns400; full trace query with client service filter used",
+  "scope": "four samples only; no production equivalence claim"
+}

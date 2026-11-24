@@ -1,0 +1,42 @@
+[
+  {
+    "name": "画像",
+    "trace": "dd182d47-b845-4135-80f2-f13575803a7e.0.3",
+    "messages_equal": true
+  },
+  {
+    "name": "分层修正后",
+    "trace": "e604b357-f357-4997-b28b-f3192b531eb8.0.3",
+    "messages_equal": true
+  },
+  {
+    "name": "素养NPS",
+    "trace": "5a814ae8-b8ae-4450-ada4-895a41d53463.0.3",
+    "messages_equal": true
+  },
+  {
+    "name": "摘要",
+    "trace": "62b40ff1-972a-4906-bd24-28e9486d4aa5.0.3",
+    "messages_equal": true
+  },
+  {
+    "name": "退费根因",
+    "trace": "f33b2e1d-019e-42d1-b97f-13e98c78c612.0.3",
+    "messages_equal": true
+  },
+  {
+    "name": "旅程",
+    "trace": "32999155-127f-418b-b073-600b6b159b6a.0.3",
+    "messages_equal": false
+  },
+  {
+    "name": "课程体验",
+    "trace": "6c006207-ade9-4800-b40a-a0db181b4c9c.0.3",
+    "messages_equal": true
+  },
+  {
+    "name": "NPS",
+    "trace": "b7f98851-b9b7-4395-89f9-39a63bbaeeef.0.3",
+    "messages_equal": true
+  }
+]

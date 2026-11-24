@@ -1,0 +1,92 @@
+{
+  "commit": "56b53f3c5",
+  "env": "test-gtbg-dev-1",
+  "results": [
+    {
+      "scene": "画像",
+      "trace": "dd182d47-b845-4135-80f2-f13575803a7e.0.3",
+      "messages_equal": true,
+      "roles": [
+        "user"
+      ],
+      "response_chars": 389,
+      "finish_reason": "stop"
+    },
+    {
+      "scene": "分层修正后",
+      "trace": "e604b357-f357-4997-b28b-f3192b531eb8.0.3",
+      "messages_equal": true,
+      "roles": [
+        "user"
+      ],
+      "response_chars": 97,
+      "finish_reason": "stop"
+    },
+    {
+      "scene": "素养NPS",
+      "trace": "5a814ae8-b8ae-4450-ada4-895a41d53463.0.3",
+      "messages_equal": true,
+      "roles": [
+        "system",
+        "user"
+      ],
+      "response_chars": 2128,
+      "finish_reason": "stop"
+    },
+    {
+      "scene": "摘要",
+      "trace": "62b40ff1-972a-4906-bd24-28e9486d4aa5.0.3",
+      "messages_equal": true,
+      "roles": [
+        "user"
+      ],
+      "response_chars": 477,
+      "finish_reason": "stop"
+    },
+    {
+      "scene": "退费根因",
+      "trace": "f33b2e1d-019e-42d1-b97f-13e98c78c612.0.3",
+      "messages_equal": true,
+      "roles": [
+        "system",
+        "user"
+      ],
+      "response_chars": 781,
+      "finish_reason": "stop"
+    },
+    {
+      "scene": "旅程",
+      "trace": "32999155-127f-418b-b073-600b6b159b6a.0.3",
+      "messages_equal": false,
+      "roles": [
+        "system",
+        "user"
+      ],
+      "response_chars": 1012,
+      "finish_reason": "stop"
+    },
+    {
+      "scene": "课程体验",
+      "trace": "6c006207-ade9-4800-b40a-a0db181b4c9c.0.3",
+      "messages_equal": true,
+      "roles": [
+        "system",
+        "user"
+      ],
+      "response_chars": 304,
+      "finish_reason": "stop"
+    },
+    {
+      "scene": "NPS",
+      "trace": "b7f98851-b9b7-4395-89f9-39a63bbaeeef.0.3",
+      "messages_equal": true,
+      "roles": [
+        "system",
+        "user"
+      ],
+      "response_chars": 169,
+      "finish_reason": "stop"
+    }
+  ],
+  "scope": "8 TEST样本；SOP既有证据复用；旅程保留当前模板增强；不代表13生产应用逐一实收"
+}

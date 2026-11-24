@@ -1,0 +1,8 @@
+{
+  "commit": "56b53f3c5",
+  "case": "课程体验",
+  "mode": "quick",
+  "trace": "6c006207-ade9-4800-b40a-a0db181b4c9c.0.3",
+  "curl_exit": 0,
+  "request_source": "format-samples/课程体验-quick-request.json"
+}

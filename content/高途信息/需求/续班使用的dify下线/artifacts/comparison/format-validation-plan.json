@@ -65,13 +65,13 @@
       "old_trace": "a32fe4b6-6269-4882-8d39-81c76f8ca23e.0.3",
       "status": "ready",
       "warnings": [
-        "新受控样本；旧基准必须取本次TEST compare旧侧实收，禁止使用历史messages。运行前核实TEST应用Dify绑定，不能指向生产应用。"
+        "仅新侧quickTest，禁止旧侧新推理；输入由历史实收正文重建。最终完整messages逐字等旧基准才证明本样本下游业务输入与格式一致，不证明原入口请求逐字段相同。"
       ],
       "old_messages": "format-samples/退费根因-old-messages.json",
       "old_messages_source": "pairs.json sides[0].request.messages (historical actual LiteLLM)",
-      "input_source": "new controlled synthetic input; NOT historical replay",
-      "request": "format-samples/退费根因-new-compare-request.json",
-      "mode": "compare_new_sample"
+      "input_source": "historical actual old user message business text reconstructed; not original API request replay",
+      "request": "format-samples/退费根因-quick-request.json",
+      "mode": "quick_reconstructed"
     },
     {
       "name": "旅程",

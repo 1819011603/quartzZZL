@@ -1,0 +1,8 @@
+{
+  "commit": "56b53f3c5",
+  "case": "NPS",
+  "mode": "quick",
+  "trace": "b7f98851-b9b7-4395-89f9-39a63bbaeeef.0.3",
+  "curl_exit": 0,
+  "request_source": "format-samples/NPS-quick-request.json"
+}

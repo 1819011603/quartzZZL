@@ -1,3 +1,5 @@
+# 历史下游响应交付状态
+
 ## 对照交付覆盖与证据缺口
 已保留五组91012878历史表，补充五组逐响应核对以及画像、SOP V2、修正后分层、素养NPS实际请求附录。新增结构化提取见remaining-actual.json；输出字段只取真实LiteLLM content/tool_calls，未拿业务answer补空。
 

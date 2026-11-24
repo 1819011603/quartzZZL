@@ -1,0 +1,8 @@
+{
+  "commit": "56b53f3c5",
+  "case": "旅程",
+  "mode": "quick",
+  "trace": "32999155-127f-418b-b073-600b6b159b6a.0.3",
+  "curl_exit": 0,
+  "request_source": "format-samples/旅程-quick-request.json"
+}

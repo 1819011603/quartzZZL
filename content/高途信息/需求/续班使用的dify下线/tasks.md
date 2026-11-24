@@ -7,6 +7,29 @@ tags: [需求, 任务]
 
 > 状态：`待办` `进行中` `已完成` `阻塞` `已取消`
 
+## 当前实收结果（56b53f3c5，2026-11-24）
+
+TEST/test-gtbg-dev-1流水线1361114已部署UP，八场景新侧调用及LiteLLM实收核验完成：七例完整messages逐字相等；旅程user逐字相等，system恰等当前2482字模板加换行，保留resolvedRefundReasonList增强，与历史旧模板不同，不称完全相等。SOP V2复用既有完整输入一致证据。八业务answer均逐字等于下游最终content且stop；原9项model/platform/params覆盖完全未变。
+
+13正式非知识库应用映射不等于八TEST样本覆盖全部生产应用；四知识库仍走Dify。本轮无生产修改；TEST新配置保留供后续验证，无临时监听或后台业务操作。
+
+|场景|新trace|完整messages|
+|---|---|---|
+|画像|`dd182d47-b845-4135-80f2-f13575803a7e.0.3`|逐字相等|
+|分层修正后|`e604b357-f357-4997-b28b-f3192b531eb8.0.3`|逐字相等|
+|素养NPS|`5a814ae8-b8ae-4450-ada4-895a41d53463.0.3`|逐字相等|
+|摘要|`62b40ff1-972a-4906-bd24-28e9486d4aa5.0.3`|逐字相等|
+|退费根因|`f33b2e1d-019e-42d1-b97f-13e98c78c612.0.3`|逐字相等|
+|旅程|`32999155-127f-418b-b073-600b6b159b6a.0.3`|user相等；system保留当前增强模板，与历史版本不同|
+|课程体验|`6c006207-ade9-4800-b40a-a0db181b4c9c.0.3`|逐字相等|
+|NPS|`b7f98851-b9b7-4395-89f9-39a63bbaeeef.0.3`|逐字相等|
+
+完整旧新请求、user/system、最终输出及差异直接更新于原飞书各场景表，新版列已替换，SOP及两历史知识库表保留；revision67回读11表151代码块逐字一致（还原展示换行）。
+
+证据：[统一结果](artifacts/comparison/format-runs/56b53f3c5/final-summary.json)、[业务响应回读](artifacts/comparison/format-runs/56b53f3c5/response-readback.json)、[覆盖配置未变](artifacts/comparison/format-overrides-preserved.json)、[部署UP](artifacts/comparison/format-deployment-ready.log)、[表格回读核验](artifacts/comparison/format-table-verification.json)。
+
+
+
 ## T- 开发任务
 
 | 编号 | 任务 | 状态 | 阻塞在哪 | 备注 |
@@ -15,13 +38,13 @@ tags: [需求, 任务]
 | T-02 | 定切换粒度与测试环境首个试点应用 | 已完成 | — | 粒度 `ai_agent`；试点 `用户画像/沟通摘要-test`(255107338300556288)；复用 `LlmGatewayAccessor` |
 | T-03 | Apollo 新增按应用链路开关并落地（命中走 LLM 网关 `gps-ai`） | 已完成 | — | 现为 `ai.agent.accessor.override.map`（`{name,platformType,model,params}`）+ `AiApplicationExecutor` 接入（commit `f0c58aaf`）；TEST Apollo 已发布 |
 | T-04 | 测试环境切一个试点应用并验证功能 | 已完成 | — | 试点 `沟通摘要-test`：开关开=网关/关=Dify、模型=按应用指定、`params` 生效，均实测通过 |
-| T-05 | 全量切换剩余续班 + 退费 Dify 应用并逐个验证 | 进行中 | — | TEST10应用样本及实收核对已完成；参数/模板修正已复验。所有者已决定4个知识库生产应用保留Dify；本轮只核13目标应用的prompt一致性；不能外推生产13应用通过 |
+| T-05 | 全量切换剩余续班 + 退费 Dify 应用并逐个验证 | 进行中 | — | 历史TEST样本保留；56b53f3c5已部署UP并完成八TEST实收：七例完整相等，旅程user相等/system保留增强版本差异，SOP复用。4知识库保留Dify；13项按对应旧格式验收，不能以语义近似收尾 |
 | T-06 | 代码切换：收口 / 移除 Dify 路径 | 待办 | T-05 | 功能替换稳定后再做 |
 | T-07 | 每应用模型一一对应：按应用配 `model`/`params` + 网关加路由 | 已完成 | — | 映射全定：Doubao 旧系列→`doubao-seed-2-0-lite-260428`、R1→`deepseek-v4.1-flash-1017`；gps-ai test 加 2 条路由（37268/37270）；prod 路由已提工单 5546/5547 |
 | T-08 | 退费提示词从 Dify 迁到 student-data（新链路用） | 已完成 | — | **test 已迁并复验**；承载列为 `ai_application.gateway_core_prompt`，prod 待迁 |
-| T-09 | prod Apollo：补 `params` 并发布 | 待办 | T-13 | **prod 现置空 `{}`（全走老链路）**；**代码上线后**再发正式配置（15 应用，退费 `deepseek-flash` + 各应用 params） |
+| T-09 | prod Apollo：补 `params` 并发布 | 待办 | T-13 | **prod 现置空 `{}`（全走老链路）**；**代码上线后**再发正式配置（现正式范围13个非知识库目标，须按应用映射另行核准；4知识库保留Dify） |
 | T-10 | 按应用定返回格式 | 进行中 | — | 分层原因应输出文本，强制 JSON 已在有效样本复现差异；TEST 已改 text 并同入口复验；其他场景格式仍结合完整覆盖判断，不套用续班统一 JSON |
-| T-11 | prod：`ai_application` 加 `gateway_core_prompt` 列 + 迁移退费提示词 | 待办 | — | 先提 DDL 工单加列（应用级，替代 prompt_config 方案）；再按 `ai_application.number` 写 10 条退费应用提示词（按学部取文件，NPS 素养≠精品） |
+| T-11 | prod：`ai_application` 加 `gateway_core_prompt` 列 + 迁移退费提示词 | 待办 | — | 先提 DDL 工单加列（应用级，替代 prompt_config 方案）；再按获准范围写8个非知识库退费应用提示词（按学部取文件，NPS 素养≠精品）；2个降退费建议继续Dify |
 | T-12 | prod 路由工单审批（gps-ai） | 待办 | — | 需 `doubao-seed-2-0-lite-260428`、**`deepseek-flash`**（替换已提的 5547 用 v4.1-1017） |
 | T-13 | prod 代码发布 | 待办 | T-11,T-12 | 合 release / 发版；发布后按应用逐个 `compare` 复验 |
 | T-14 | 迁移表 tab 状态同步（prod） | 待办 | T-13 | 表链接见 [`links.md`](links.md) |

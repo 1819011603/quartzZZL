@@ -1,0 +1,16 @@
+{
+  "test_agent": "255743333766281216",
+  "test_agent_name": "退费根因分析",
+  "status": 200,
+  "info": {
+    "name": "【高中】退费根因分析",
+    "description": "精品班学部——退费根因分析",
+    "tags": [],
+    "icon_type": "emoji",
+    "icon": "🤖",
+    "icon_background": "#FFEAD5",
+    "icon_url": null,
+    "mode": "agent-chat",
+    "author_name": "liujialiang"
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "revision": 67,
+  "checks": [
+    {
+      "name": "画像",
+      "code_blocks": 14,
+      "exact": true,
+      "reused": false
+    },
+    {
+      "name": "SOP V2",
+      "code_blocks": 13,
+      "exact": true,
+      "reused": true
+    },
+    {
+      "name": "分层修正后",
+      "code_blocks": 14,
+      "exact": true,
+      "reused": false
+    },
+    {
+      "name": "素养NPS",
+      "code_blocks": 14,
+      "exact": true,
+      "reused": false
+    },
+    {
+      "name": "摘要",
+      "code_blocks": 14,
+      "exact": true,
+      "reused": false
+    },
+    {
+      "name": "退费根因",
+      "code_blocks": 14,
+      "exact": true,
+      "reused": false
+    },
+    {
+      "name": "旅程",
+      "code_blocks": 14,
+      "exact": true,
+      "reused": false
+    },
+    {
+      "name": "课程体验",
+      "code_blocks": 14,
+      "exact": true,
+      "reused": false
+    },
+    {
+      "name": "NPS",
+      "code_blocks": 14,
+      "exact": true,
+      "reused": false
+    },
+    {
+      "name": "降退费",
+      "code_blocks": 13,
+      "exact": true,
+      "reused": true
+    },
+    {
+      "name": "素养建议",
+      "code_blocks": 13,
+      "exact": true,
+      "reused": true
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+HTTP/1.1 200 Connection established
+
+HTTP/2 200 
+server: nginx
+date: Tue, 24 Nov 2026 04:15:46 GMT
+content-type: application/json
+vary: Accept-Encoding
+gapm-traceid: 6c006207-ade9-4800-b40a-a0db181b4c9c.0.3
+access-control-expose-headers: GAPM-TraceID
+timing-allow-origin: *
+tid: 6c006207-ade9-4800-b40a-a0db181b4c9c.0.3
+gapm-appid: student-data
+set-cookie: CAS_AC_CURRENT_ROLE=gaotu_boss_admin_; Max-Age=315360000; Path=/
+access-control-allow-origin: *
+

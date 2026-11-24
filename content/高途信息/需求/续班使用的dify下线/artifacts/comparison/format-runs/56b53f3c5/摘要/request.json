@@ -1,0 +1,13 @@
+{
+  "params": [
+    "沟通摘要-test",
+    "",
+    "test",
+    {
+      "clazzNumber": "500775385189890048",
+      "userId": "7404351741",
+      "commTag": 0
+    }
+  ],
+  "serviceNameAndMethodName": "com.gaotu.student.data.domain.ai.manager.service.impl.AiApplicationTestServiceImpl#quickTestAiApplication"
+}

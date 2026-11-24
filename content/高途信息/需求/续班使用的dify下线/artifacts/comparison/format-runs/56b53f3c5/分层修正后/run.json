@@ -1,0 +1,8 @@
+{
+  "commit": "56b53f3c5",
+  "case": "分层修正后",
+  "mode": "quick",
+  "trace": "e604b357-f357-4997-b28b-f3192b531eb8.0.3",
+  "curl_exit": 0,
+  "request_source": "format-samples/分层修正后-quick-request.json"
+}

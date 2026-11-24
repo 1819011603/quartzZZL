@@ -1,0 +1,8 @@
+{
+  "commit": "56b53f3c5",
+  "case": "退费根因",
+  "mode": "quick_reconstructed",
+  "trace": "f33b2e1d-019e-42d1-b97f-13e98c78c612.0.3",
+  "curl_exit": 0,
+  "request_source": "format-samples/退费根因-quick-request.json"
+}

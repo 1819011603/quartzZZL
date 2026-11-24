@@ -2,11 +2,32 @@
 title: 续班使用的dify下线 · 验证手册
 tags: [需求, 验证]
 ---
-> **2026-11-24 最新裁决**：允许合理格式差异，以核心指令、业务数据、约束及业务作用保留为准。已有单次场景样本可接受TEST替换；素养NPS实收已补齐。历史“不完全一致”仅是字面差异记录，不代表不通过；4个知识库应用仍保留Dify。详见 [最新逐场景裁决](artifacts/expanded-scope/semantic-acceptance.md)。
+## 当前实收结果（56b53f3c5，2026-11-24）
+
+TEST/test-gtbg-dev-1流水线1361114已部署UP，八场景新侧调用及LiteLLM实收核验完成：七例完整messages逐字相等；旅程user逐字相等，system恰等当前2482字模板加换行，保留resolvedRefundReasonList增强，与历史旧模板不同，不称完全相等。SOP V2复用既有完整输入一致证据。八业务answer均逐字等于下游最终content且stop；原9项model/platform/params覆盖完全未变。
+
+13正式非知识库应用映射不等于八TEST样本覆盖全部生产应用；四知识库仍走Dify。本轮无生产修改；TEST新配置保留供后续验证，无临时监听或后台业务操作。
+
+|场景|新trace|完整messages|
+|---|---|---|
+|画像|`dd182d47-b845-4135-80f2-f13575803a7e.0.3`|逐字相等|
+|分层修正后|`e604b357-f357-4997-b28b-f3192b531eb8.0.3`|逐字相等|
+|素养NPS|`5a814ae8-b8ae-4450-ada4-895a41d53463.0.3`|逐字相等|
+|摘要|`62b40ff1-972a-4906-bd24-28e9486d4aa5.0.3`|逐字相等|
+|退费根因|`f33b2e1d-019e-42d1-b97f-13e98c78c612.0.3`|逐字相等|
+|旅程|`32999155-127f-418b-b073-600b6b159b6a.0.3`|user相等；system保留当前增强模板，与历史版本不同|
+|课程体验|`6c006207-ade9-4800-b40a-a0db181b4c9c.0.3`|逐字相等|
+|NPS|`b7f98851-b9b7-4395-89f9-39a63bbaeeef.0.3`|逐字相等|
+
+完整旧新请求、user/system、最终输出及差异直接更新于原飞书各场景表，新版列已替换，SOP及两历史知识库表保留；revision67回读11表151代码块逐字一致（还原展示换行）。
+
+证据：[统一结果](artifacts/comparison/format-runs/56b53f3c5/final-summary.json)、[业务响应回读](artifacts/comparison/format-runs/56b53f3c5/response-readback.json)、[覆盖配置未变](artifacts/comparison/format-overrides-preserved.json)、[部署UP](artifacts/comparison/format-deployment-ready.log)、[表格回读核验](artifacts/comparison/format-table-verification.json)。
 
 
 
-# 验证手册
+# 历史验证手册与阶段证据
+
+以下各阶段记录保留追溯；部署、格式结论及素养NPS覆盖以文首56b53f3c5当前实收表为准。历史“无双侧实收”“包装不同”“语义近似可接受”不再作为当前验收结论。
 
 ## 环境
 
@@ -319,6 +340,8 @@ SOP普通compare及V2旧路均为Seed-1.6且有推理，本次未改SOP配置；
 
 最终7个网关覆盖条目覆盖8类场景，配置发布及trace见 [TEST交付](artifacts/expanded-scope/test-replacement-delivery.md)。这代表测试环境生效，不代表生产13个应用全部通过。
 
-## 最新收窄范围与prompt裁决
+## 当前格式裁决与回读证据
 
-所有者已决定知识库4个生产应用保留Dify，TEST恢复旧路且复验完成。当前逐项结果和证据见 [当前prompt交接](artifacts/expanded-scope/current-prompt-handoff.md)；飞书第9节已全文回读。SOP完整一致，其他正文保留但messages不完全一致；素养NPS无双侧实收，不冒称通过。
+56b53f3c5已部署UP，八TEST场景实收完成：画像、摘要、分层、根因、课程体验、精品NPS、素养NPS完整messages逐字相等；旅程user逐字相等，system保留当前增强模板，具体差异完整列在原表。SOP V2复用既有输入相等证据。素养NPS已有本轮双侧基准/新侧实收，早期“无双侧实收”判断已被后续证据覆盖。
+
+[统一实收结果](artifacts/comparison/format-runs/56b53f3c5/final-summary.json)、[业务输出回读](artifacts/comparison/format-runs/56b53f3c5/response-readback.json)、[飞书revision67逐字核验](artifacts/comparison/format-table-verification.json)。11表151代码块完整回读一致；八业务answer与下游最终content逐字相等且stop，原model/platform/params覆盖未变。当前验收按对应旧Dify消息格式，不再用语义近似替代；不要求随机输出相同。13正式应用与八TEST样本边界保留，四知识库继续Dify，无生产修改。

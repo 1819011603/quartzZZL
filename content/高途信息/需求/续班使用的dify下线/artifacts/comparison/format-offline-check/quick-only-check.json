@@ -1,0 +1,9 @@
+{
+  "business_calls": 0,
+  "mode": "quick_reconstructed",
+  "historical_business_text_contained_verbatim": true,
+  "old_messages_sha256": "339f40916c4237f435cba9f8117b0127107ff55bccc3fb92e9a7ef97d7f5f45c",
+  "compare_execution_removed": true,
+  "historical_parser_recheck_passed": true,
+  "current_messages_equality_verified": false
+}

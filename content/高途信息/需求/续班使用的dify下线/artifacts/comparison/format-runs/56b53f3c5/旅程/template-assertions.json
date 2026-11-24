@@ -1,0 +1,8 @@
+{
+  "roles_equal": true,
+  "user_exact_equal": true,
+  "system_equals_current_template_plus_newline": true,
+  "old_system_chars": 2151,
+  "new_system_chars": 2483,
+  "resolved_preserved": true
+}
