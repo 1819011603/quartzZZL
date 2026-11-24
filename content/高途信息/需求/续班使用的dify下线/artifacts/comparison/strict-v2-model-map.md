@@ -50,9 +50,9 @@ TEST gps-ai只有deepseek-v4-flash-0731具明确旧名route；三种其他旧名
 |deepseek/DeepSeek-R1-250528|deepseek-flash|litellm_proxy/deepseek-v4.1-flash、deepseek/deepseek-flash、ep_wuxzxwds4_ds-v4-1-flash|多部署按网关选择；TEST素养NPS实跑返回deepseek-v4.1-flash（trace 24d4ad82）与ep_wuxzxwds4（trace 76d487c5）||
 |deepseek-v4-flash-0731|deepseek-flash|同上|素养NPS旧别名TEST已授权并实跑成功|
 
-来源：strict-v2-model-map.json（PROD/TEST控制面实时只读）+ 本轮真实调用；不需要保存或修改callerRoute。
+来源：LLM网关控制面，不是itemllm/litellm运行时或Dify：PROD为 `GET https://tech.baijia.com/llm-gateway/admin/config/all?env=prod`，TEST为 `GET https://tech.baijia.com/llm-gateway/admin/config/all?env=test`（控制台Cookie认证，凭据不落盘输出）。四条映射均来自响应 `models[].redirectToModelCode/deployments`；trace 24d4ad82、76d487c5仅作为素养NPS运行结果佐证，不是映射来源。不需要保存或修改callerRoute。
 
 ## AICR结果（2026-11-24）
 
 - f23459b3：task 2329已完成，FAIL，1 blocking/1 high/4 medium/9 low。blocking #59150指旧身份校验在createNotCalled后抛错会导致记录停留未调用；263ba48a已删除该抛错与兜底映射（缺失仅warn不阻断），按实现已消除，待新评审确认。
-- 263ba48a：推送后暂无AICR任务记录（查询时间15:5x），需后续复查。
+- 263ba48a：确认未生成AICR任务（2026-11-24复查）。此前失败原因是`aicr.py`默认请求未带历史成功调用必需的`ingress-traffic-env: grayTest`、`traffic-env: grayTest`与`X-Requested-With: XMLHttpRequest`。按task2329成功方式经127.0.0.1:8888代理只读查询task/list，HTTP/code均200，total=8；最新task 2329 headSha仍为f23459b399c2148e1ec84e888d9a2d0bc5d19869，无263ba48a任务。本地与远端分支HEAD均为263ba48ad2e476e7092093d36414280dddef2ed6d。复查结束，不再重复调用。
