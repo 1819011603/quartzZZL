@@ -1,0 +1,4 @@
+# student-data / TEST / default / application 待发布变更（dry_run，未发布）
+  + llm.gateway.application-prompt-formats = {"255107395528688640": "USER_FLAT", "255551371814636544": "USER_FLAT", "262173928596712448": "USER_FLAT", "2557335178922
+
+⚠️ 未发布。把上面 diff 给用户确认后，重新调用并传 dry_run=false 才会真发布。

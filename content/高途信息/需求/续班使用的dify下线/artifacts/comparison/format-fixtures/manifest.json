@@ -1,0 +1,137 @@
+[
+  {
+    "scene": "画像",
+    "old_trace": "2a9ff650-ba6f-4bf2-93f8-88034f864c93.0.3",
+    "roles": [
+      "user"
+    ],
+    "chars": [
+      3494
+    ],
+    "sha256": [
+      "7015cd89381788f6e8784642b98e8f463ce308992321428c5fedd3ce0f613afa"
+    ],
+    "expected_file": "artifacts/comparison/format-fixtures/画像-old-messages.json",
+    "scope": "历史TEST样本；旅程当前模板增强须另列差异，不能覆盖回旧模板"
+  },
+  {
+    "scene": "分层修正后",
+    "old_trace": "3c9e6b70-e6f3-4f95-883b-14408cdafc2b.0.3",
+    "roles": [
+      "user"
+    ],
+    "chars": [
+      8414
+    ],
+    "sha256": [
+      "3f248fde80e0003f1bc60e6331ca1252dd0eae49a606cf4442862ee301bddc2f"
+    ],
+    "expected_file": "artifacts/comparison/format-fixtures/分层修正后-old-messages.json",
+    "scope": "历史TEST样本；旅程当前模板增强须另列差异，不能覆盖回旧模板"
+  },
+  {
+    "scene": "素养NPS",
+    "old_trace": "8c802dc4-ed69-4533-b63a-3851e20bb83d.0.3",
+    "roles": [
+      "system",
+      "user"
+    ],
+    "chars": [
+      322,
+      412
+    ],
+    "sha256": [
+      "0ccaaa148b3c260e567e51e40811bb19f367a70a5739f236e8a74b355fd1a986",
+      "121ca024d1c7554fa117209ab08dfd4068ce2ef2bba895aa76951d19099d2827"
+    ],
+    "expected_file": "artifacts/comparison/format-fixtures/素养NPS-old-messages.json",
+    "scope": "历史TEST样本；旅程当前模板增强须另列差异，不能覆盖回旧模板"
+  },
+  {
+    "scene": "摘要",
+    "old_trace": "15760243-f225-4246-a103-c9565c2652ba.0.3",
+    "roles": [
+      "user"
+    ],
+    "chars": [
+      2057
+    ],
+    "sha256": [
+      "672cba5db7fd9c6c14871f47c1fb52f759dbadfe7b960ccebbce1d3997ae7cff"
+    ],
+    "expected_file": "artifacts/comparison/format-fixtures/摘要-old-messages.json",
+    "scope": "历史TEST样本；旅程当前模板增强须另列差异，不能覆盖回旧模板"
+  },
+  {
+    "scene": "退费根因",
+    "old_trace": "a32fe4b6-6269-4882-8d39-81c76f8ca23e.0.3",
+    "roles": [
+      "system",
+      "user"
+    ],
+    "chars": [
+      2255,
+      1158
+    ],
+    "sha256": [
+      "2f39b80919d7aaf75b1174dd81aebb1dc223a5fdfd124e6cd30d3207ea97f1f1",
+      "b65146b2fc63aa8aebcd5b6033d89492cfc25ec615771fb851f12f3e12cdfd97"
+    ],
+    "expected_file": "artifacts/comparison/format-fixtures/退费根因-old-messages.json",
+    "scope": "历史TEST样本；旅程当前模板增强须另列差异，不能覆盖回旧模板"
+  },
+  {
+    "scene": "旅程",
+    "old_trace": "bfd44413-31f5-493d-904b-e670783ff2c4.0.3",
+    "roles": [
+      "system",
+      "user"
+    ],
+    "chars": [
+      2151,
+      1214
+    ],
+    "sha256": [
+      "86040aa8dd743a9b33cf8415fd40c16d69c9fb7270b0ad0c1ccd39a7bb5228f3",
+      "7ba5836152f79eab2a048514bfdd79a8832326dba154a7d9120c8be87bac26cd"
+    ],
+    "expected_file": "artifacts/comparison/format-fixtures/旅程-old-messages.json",
+    "scope": "历史TEST样本；旅程当前模板增强须另列差异，不能覆盖回旧模板"
+  },
+  {
+    "scene": "课程体验",
+    "old_trace": "e02d7092-ee55-4e73-b731-b6f31ef2fb6e.0.3",
+    "roles": [
+      "system",
+      "user"
+    ],
+    "chars": [
+      2382,
+      650
+    ],
+    "sha256": [
+      "1fb0047e3b84abbe0571fa988dd0171e34706454d25b09057bf884eb720401a7",
+      "4e21ceda90f3289a58c6d1dcf0dc9be1f5fcffaaa94a76bb63669f34bedeecb7"
+    ],
+    "expected_file": "artifacts/comparison/format-fixtures/课程体验-old-messages.json",
+    "scope": "历史TEST样本；旅程当前模板增强须另列差异，不能覆盖回旧模板"
+  },
+  {
+    "scene": "NPS",
+    "old_trace": "d2003cc1-b573-4e1c-8918-d3a4d162fe62.0.3",
+    "roles": [
+      "system",
+      "user"
+    ],
+    "chars": [
+      474,
+      410
+    ],
+    "sha256": [
+      "3c5461ed8066a93cc13b186e9f641f067bcbdef6498b92f68133d07757d5c171",
+      "bafade6d7e0a9b5672c727bd45e22e8bbc89b4a06d6cc10e28e8d18951ebd920"
+    ],
+    "expected_file": "artifacts/comparison/format-fixtures/NPS-old-messages.json",
+    "scope": "历史TEST样本；旅程当前模板增强须另列差异，不能覆盖回旧模板"
+  }
+]

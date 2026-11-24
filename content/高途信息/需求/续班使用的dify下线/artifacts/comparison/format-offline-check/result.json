@@ -1,0 +1,9 @@
+{
+  "kind": "offline_historical_parser_check",
+  "source": "artifacts/expanded-refund/llm-full-c2512c21.log",
+  "source_sha256": "720574a7acef1ed048ec1fe9bbb7474f83398cc48c923733b28c23e8552b9c80",
+  "matches_historical_new_messages": true,
+  "matches_old_messages": false,
+  "new_business_calls": 0,
+  "current_deployment_verified": false
+}

@@ -1,0 +1,129 @@
+{
+  "execute_now": false,
+  "environment": "test-gtbg-dev-1",
+  "endpoint": "https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service",
+  "baseline": "pairs.json immutable historical actual messages",
+  "cases": [
+    {
+      "name": "画像",
+      "old_trace": "2a9ff650-ba6f-4bf2-93f8-88034f864c93.0.3",
+      "status": "ready",
+      "warnings": [
+        "动态数据可能已变化；先比较业务正文，变化不能归因为格式修复"
+      ],
+      "old_messages": "format-samples/画像-old-messages.json",
+      "old_messages_source": "pairs.json sides[0].request.messages (historical actual LiteLLM)",
+      "input_source": "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/续班使用的dify下线/artifacts/expanded-renewal/profile-request.json",
+      "request": "format-samples/画像-quick-request.json"
+    },
+    {
+      "name": "SOP V2",
+      "old_trace": "315c294d-dbc3-4d8f-adc6-e036ad96d1e1.0.3",
+      "status": "reuse_unchanged",
+      "warnings": [
+        "原入口syncRequestTaskV2，不用quickTest替代；共享路径未改时复用已相等证据"
+      ],
+      "old_messages": "format-samples/SOP V2-old-messages.json",
+      "old_messages_source": "pairs.json sides[0].request.messages (historical actual LiteLLM)"
+    },
+    {
+      "name": "分层修正后",
+      "old_trace": "3c9e6b70-e6f3-4f95-883b-14408cdafc2b.0.3",
+      "status": "ready",
+      "warnings": [
+        "动态数据可能已变化；先比较业务正文，变化不能归因为格式修复"
+      ],
+      "old_messages": "format-samples/分层修正后-old-messages.json",
+      "old_messages_source": "pairs.json sides[0].request.messages (historical actual LiteLLM)",
+      "input_source": "/Users/gaotu/githubDir/quartzZZL/content/高途信息/需求/续班使用的dify下线/artifacts/expanded-renewal/tier-valid-request.json",
+      "request": "format-samples/分层修正后-quick-request.json"
+    },
+    {
+      "name": "素养NPS",
+      "old_trace": "8c802dc4-ed69-4533-b63a-3851e20bb83d.0.3",
+      "status": "ready",
+      "warnings": [],
+      "old_messages": "format-samples/素养NPS-old-messages.json",
+      "old_messages_source": "pairs.json sides[0].request.messages (historical actual LiteLLM)",
+      "input_source": "/tmp/compare-suyang.json",
+      "request": "format-samples/素养NPS-quick-request.json"
+    },
+    {
+      "name": "摘要",
+      "old_trace": "15760243-f225-4246-a103-c9565c2652ba.0.3",
+      "status": "ready",
+      "warnings": [
+        "动态数据可能已变化；先比较业务正文，变化不能归因为格式修复"
+      ],
+      "old_messages": "format-samples/摘要-old-messages.json",
+      "old_messages_source": "pairs.json sides[0].request.messages (historical actual LiteLLM)",
+      "input_source": "verify.md documented successful context; requires dynamic data stability check",
+      "request": "format-samples/摘要-quick-request.json"
+    },
+    {
+      "name": "退费根因",
+      "old_trace": "a32fe4b6-6269-4882-8d39-81c76f8ca23e.0.3",
+      "status": "ready",
+      "warnings": [
+        "新受控样本；旧基准必须取本次TEST compare旧侧实收，禁止使用历史messages。运行前核实TEST应用Dify绑定，不能指向生产应用。"
+      ],
+      "old_messages": "format-samples/退费根因-old-messages.json",
+      "old_messages_source": "pairs.json sides[0].request.messages (historical actual LiteLLM)",
+      "input_source": "new controlled synthetic input; NOT historical replay",
+      "request": "format-samples/退费根因-new-compare-request.json",
+      "mode": "compare_new_sample"
+    },
+    {
+      "name": "旅程",
+      "old_trace": "bfd44413-31f5-493d-904b-e670783ff2c4.0.3",
+      "status": "ready",
+      "warnings": [
+        "旧TEST系统模板落后生产2482字模板；保留resolved字段/已解决退费原因，不为字面相等删除；格式与模板冲突分档报告"
+      ],
+      "old_messages": "format-samples/旅程-old-messages.json",
+      "old_messages_source": "pairs.json sides[0].request.messages (historical actual LiteLLM)",
+      "input_source": "/tmp/run_refund_compare.py literal q and context (copied, script not executed)",
+      "request": "format-samples/旅程-quick-request.json"
+    },
+    {
+      "name": "课程体验",
+      "old_trace": "e02d7092-ee55-4e73-b731-b6f31ef2fb6e.0.3",
+      "status": "ready",
+      "warnings": [],
+      "old_messages": "format-samples/课程体验-old-messages.json",
+      "old_messages_source": "pairs.json sides[0].request.messages (historical actual LiteLLM)",
+      "input_source": "/tmp/run_refund_compare.py literal q and context (copied, script not executed)",
+      "request": "format-samples/课程体验-quick-request.json"
+    },
+    {
+      "name": "NPS",
+      "old_trace": "d2003cc1-b573-4e1c-8918-d3a4d162fe62.0.3",
+      "status": "ready",
+      "warnings": [],
+      "old_messages": "format-samples/NPS-old-messages.json",
+      "old_messages_source": "pairs.json sides[0].request.messages (historical actual LiteLLM)",
+      "input_source": "/tmp/run_refund_compare.py literal q and context (copied, script not executed)",
+      "request": "format-samples/NPS-quick-request.json"
+    },
+    {
+      "name": "降退费",
+      "old_trace": "81e849b4-d461-4fd0-910a-154368d68bc0.0.3",
+      "status": "excluded_knowledge_base",
+      "warnings": [
+        "四个知识库正式路由保持Dify，不运行格式迁移验证"
+      ],
+      "old_messages": "format-samples/降退费-old-messages.json",
+      "old_messages_source": "pairs.json sides[0].request.messages (historical actual LiteLLM)"
+    },
+    {
+      "name": "素养建议",
+      "old_trace": "5e258635-6bba-4358-bb49-8c6017142140.0.3",
+      "status": "excluded_knowledge_base",
+      "warnings": [
+        "四个知识库正式路由保持Dify，不运行格式迁移验证"
+      ],
+      "old_messages": "format-samples/素养建议-old-messages.json",
+      "old_messages_source": "pairs.json sides[0].request.messages (historical actual LiteLLM)"
+    }
+  ]
+}

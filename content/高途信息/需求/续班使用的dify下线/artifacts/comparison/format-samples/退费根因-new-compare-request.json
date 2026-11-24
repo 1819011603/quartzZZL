@@ -1,0 +1,9 @@
+{
+  "serviceNameAndMethodName": "com.gaotu.student.data.domain.ai.manager.service.impl.AiApplicationTestServiceImpl#compareAiApplication",
+  "params": [
+    "退费根因分析",
+    "【新受控合成样本 FORMAT-ROOT-01】2026-11-24 10:00，测试老师与测试家长沟通：家长表示每周三直播与学校晚自习冲突，回放观看不及时；孩子对课程内容满意，但希望调整上课时间，无法调整则申请退费。",
+    "test",
+    {}
+  ]
+}
