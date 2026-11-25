@@ -41,3 +41,5 @@
 | 业务底表 | `gaotu.parents_meeting_student`（同库） | 小灶课学员维度表 |
 
 > 源头业务方是 teacher-tool（教务后台，`com.gaotu.teacher.tool.api.manage.subclazz.feign`），student-data 经 ACL 拉取并落 ES/本地镜像；两表在数仓侧（gaotu_etl_polar、gaotu-adb-data-prod 集群）有同名表登记。2026-11-23 验证：`parents_metting` 约 276 万行、`parents_meeting_student` 约 7910 万行，均持续写入。
+
+默认 Tab 发短信的场景、模板与发布范围根因见 [_page.md](_page.md)。
