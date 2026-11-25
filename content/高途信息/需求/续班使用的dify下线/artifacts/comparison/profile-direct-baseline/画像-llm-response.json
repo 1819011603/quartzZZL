@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-f6490af3b153440dbee1f9e46aa6c97a",
+  "created": 1795578764,
+  "model": "doubao-seed-2.0-lite",
+  "object": "chat.completion",
+  "system_fingerprint": null,
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "{\n    \"renewalInterest\": \"**来自对话**：无相关内容\\n**来自问卷**：1、认可二讲老师同步学习反馈、督学、家校沟通等服务表现；2、希望获得针对性查漏补缺小灶课、定期测评等服务；3、需要中考物理押题、专题复习、真题训练类备考内容\",\n    \"renewalResistance\": \"**来自对话**：无相关内容\\n**来自问卷**：1、学员物理学习存在课听懂课后做题不对、学习主动性差的问题，学习效果不理想；2、家长对寒春续班报名事项存在待咨询的疑虑\",\n    \"portraitSummary\": \"学员为即将进入中考总复习的准中考生，物理处于电学板块学习阶段，目前存在课上能听懂知识点但课后做题出错、学习习惯较差缺乏主动性的问题，学习效果未达预期。**家长作为问卷填写人，对二讲满意度7分、主讲满意度7分、课程满意度8分，有续班意向但仍有相关疑虑需要咨询老师**。家长认可二讲老师的日常服务表现，后续期望获得督学管理、针对性查漏补缺、定期测评、中考专项备考等相关服务，助力孩子冲刺重点高中。\"\n}",
+        "role": "assistant",
+        "tool_calls": null,
+        "function_call": null,
+        "reasoning_content": "\n用户现在需要我按照要求生成符合规范的JSON对吧？目前已梳理出两项核心字段的内容：续班兴趣点来自问卷的共3项，无对话相关内容；续班阻力来自问卷的共1项，仍有续班相关疑虑。\n\n我已核实确认续班阻力的全部两项具体内容，同时梳理出目标画像核心信息：学员为准中考生，物理学习效果未达预期，家长有续班意向需先咨询相关问题。\n\n家长认可二讲老师的相关服务，有获取督学反馈、针对性辅导等中考冲刺类服务的需求，我已按要求完成各核心字段的格式调整与内容核对。我已确认所有字段内容准确合规，接下来将整理为合法JSON输出，注意转义引号，仅输出规范内容。\n"
+      }
+    }
+  ],
+  "usage": {
+    "completion_tokens": 1022,
+    "prompt_tokens": 2333,
+    "total_tokens": 3355,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 753,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cached_tokens": null
+    },
+    "cost": 0.00477498
+  }
+}

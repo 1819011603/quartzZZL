@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-139f5fa8aed743699fb40fca2678c798",
+  "created": 1795578783,
+  "model": "doubao-seed-2.0-lite",
+  "object": "chat.completion",
+  "system_fingerprint": null,
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "{\"commSummary\":\"沟通围绕秋季课程相关事宜展开，告知不同班型的上课时间、内容差异，提醒相关课程存在**课程时间冲突**，核对**讲义发货**相关安排为23号开始发货，家长及学员认可高途老师授课**幽默风趣**、教学质量出色，部分学员认可现有课程学习节奏，明确续班意向甚至愿意帮忙推荐有补课需求的同学，同时也梳理出相关续班顾虑：部分家长担心教材**版本不一致**不匹配本地考情，担心多科同时学习孩子时间安排不过来，部分学员因课外安排与上课时间冲突、学习后成绩未提升效果不达预期、不适应老师讲课节奏风格、报名时承诺的单独答疑和学习报告等服务未落实，暂不考虑续报，同时同步物理**课程内容设置**与**班型安排**规则，约定秋季开课前提醒确认最终的**课程选择**\"}",
+        "role": "assistant",
+        "tool_calls": null,
+        "function_call": null,
+        "reasoning_content": "\n我现在需要生成符合要求的commSummary，\n\n目前已梳理完本次秋季课程沟通的核心信息，涵盖班型差异、冲突提醒、讲义发货安排，学员家长的认可度与续班顾虑，相关规则及课前注意事项，接下来会同步提醒家长确认最终课程选择。内容整理完成后会输出合规JSON。\n\n沟通内容的整理工作已完成，符合格式与内容要求，已明确最终输出仅需合规JSON对象，我将输出对应内容。\n\n符合要求的合规JSON内容已生成完毕，已核验内容无违规表述，核心信息完整，可直接输出。\n"
+      }
+    }
+  ],
+  "usage": {
+    "completion_tokens": 946,
+    "prompt_tokens": 1424,
+    "total_tokens": 2370,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 751,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cached_tokens": null
+    },
+    "cost": 0.00435288
+  }
+}

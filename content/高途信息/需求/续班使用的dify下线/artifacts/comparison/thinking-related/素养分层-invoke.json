@@ -1,0 +1,47 @@
+{
+  "url": "https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service",
+  "trafficEnv": "test-gtbg-dev-1",
+  "httpStatus": 200,
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask",
+    "params": [
+      "tier-thinking-5562c731-057b-4b3b-9c53-344e930232d2",
+      {
+        "aiApplicationName": "素养分层TEST独立验证20261124",
+        "userQuery": "",
+        "userTag": "test",
+        "platformType": 2,
+        "runUser": {
+          "email": "gongxuemeng@gaotu.cn"
+        }
+      },
+      {
+        "clazzNumber": "500775385189890048",
+        "userId": "6761113627",
+        "commTag": 0,
+        "subClazzNumber": "31298462823089024"
+      },
+      ""
+    ]
+  },
+  "curl": "curl -sk \\\n  -x \"${AGENT_PROXY_URL:-http://127.0.0.1:8888}\" \\\n  'https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-1' \\\n  -H 'identification: microLessonStudent' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask\", \"params\": [\"tier-thinking-5562c731-057b-4b3b-9c53-344e930232d2\", {\"aiApplicationName\": \"素养分层TEST独立验证20261124\", \"userQuery\": \"\", \"userTag\": \"test\", \"platformType\": 2, \"runUser\": {\"email\": \"gongxuemeng@gaotu.cn\"}}, {\"clazzNumber\": \"500775385189890048\", \"userId\": \"6761113627\", \"commTag\": 0, \"subClazzNumber\": \"31298462823089024\"}, \"\"]}'",
+  "traceId": "95d2fb8f-d462-4449-839e-b6123dca4b16.0.3",
+  "gapmApp": "student-data",
+  "identification": "microLessonStudent",
+  "rvoCode": 0,
+  "result": {
+    "usage": {
+      "completion_tokens": 73,
+      "prompt_tokens": 4285,
+      "cost": 0.00198366,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens_details": {},
+      "total_tokens": 4358
+    },
+    "event": "litellm_proxy/doubao-seed-2.0-lite",
+    "messageId": "chatcmpl-0942cc39acfe41afb1354d0eb1a8a0bb",
+    "answer": "学员进班已108天，是同科目新学员，走读就读。非续班期正式课节完成度仅0.3182，低于平均水平，近7天和您的微信互动频率很低，未预报名，也没有续班相关的正向反馈，目前无退费、课程相关异议情况。"
+  }
+}

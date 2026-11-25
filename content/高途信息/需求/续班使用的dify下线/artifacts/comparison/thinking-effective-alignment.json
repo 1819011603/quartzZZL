@@ -1,39 +1,31 @@
 {
-  "complete": false,
-  "completed_scope": "TEST旧别名有效行为画像/摘要对齐",
-  "releaseKey": "20261125114552-188aa6ecfba6978c",
-  "changed_agent": "255107338300556288",
-  "change": {
-    "params.thinking": {
-      "type": "disabled"
-    }
-  },
+  "complete": true,
+  "baseline": "当前生产画像v7直呼目标model的TEST副本",
+  "old_trace": "cff96ffc-9522-4b87-ba4b-3ccf50b0dc84.0.3",
+  "old_reasoning_tokens": 1593,
   "verification": [
     {
       "scene": "画像",
-      "trace": "a5d885f0-835c-4466-b91d-8be3f65a3961.0.3",
+      "trace": "3fce4abd-3895-4b68-bb90-54777ac6d680.0.3",
       "messages_equal": true,
-      "thinking": {
-        "type": "disabled"
-      },
-      "reasoning_tokens": 0,
-      "reasoning_content": null
+      "thinking": null,
+      "reasoning_tokens": 753,
+      "reasoning_content_present": true
     },
     {
       "scene": "摘要",
-      "trace": "8ef8ed4f-165e-4e0d-8b8f-0124cbff4de4.0.3",
+      "trace": "66c8b9fa-a1d0-4fa2-a305-6e24548ef9ce.0.3",
       "messages_equal": true,
-      "thinking": {
-        "type": "disabled"
-      },
-      "reasoning_tokens": 0,
-      "reasoning_content": null
+      "thinking": null,
+      "reasoning_tokens": 751,
+      "reasoning_content_present": true
     }
   ],
-  "production_scope_limitation": "当前生产画像model直接目标，TEST旧副本替换为旧别名引入force disabled；本修正不可外推当前生产画像thinking基准",
-  "remaining": [
-    "真正直呼目标模型TEST基准的可用模型注册/配置验证；保持生产只读",
-    "分层依据当前实际基准确认后再决定是否修改"
+  "final_config": "共享TEST agent255107338300556288省略thinking；旧别名实验disabled已撤回并发布回读",
+  "allowed_differences": [
+    "新json_object",
+    "旧Dify user"
   ],
+  "remaining_scope_note": "分层为旧别名实际生产配置，未在本画像基准修正中修改；需由主Worker按其独立验收范围处理",
   "active_operations": []
 }

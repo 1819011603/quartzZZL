@@ -1,0 +1,18 @@
+[
+  {
+    "scene": "画像",
+    "trace": "3fce4abd-3895-4b68-bb90-54777ac6d680.0.3",
+    "messages_equal": true,
+    "thinking": null,
+    "reasoning_tokens": 753,
+    "reasoning_content_present": true
+  },
+  {
+    "scene": "摘要",
+    "trace": "66c8b9fa-a1d0-4fa2-a305-6e24548ef9ce.0.3",
+    "messages_equal": true,
+    "thinking": null,
+    "reasoning_tokens": 751,
+    "reasoning_content_present": true
+  }
+]

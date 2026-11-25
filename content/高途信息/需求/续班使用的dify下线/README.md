@@ -13,30 +13,31 @@ tags: [需求]
 
 # Dify迁移当前结论
 
-## 当前未完成：实际thinking对齐
+## 当前结论：15场景有限TEST验收完成
 
-用户提供响应确证画像旧0、新1202 reasoning tokens，先前仅凭入口省略thinking的对齐判断不充分，现撤回有效thinking已对齐结论。本轮按上下文交接要求停止，尚未修改TEST配置或复验；无在途操作。续接见[安全交接](artifacts/comparison/thinking-effective-handoff.md)及[同因影响范围](artifacts/comparison/thinking-impact-review.md)。飞书仍revision186，待实际修正后统一更新。
+当前生产生成配置的TEST对照已闭合：画像旧/新推理token1593/753，摘要806/751，均开启thinking；高中分层、素养分层均0/0，关闭thinking。四组完整messages逐字相等，推理token数量不要求相同。画像/摘要保持原目标模型默认行为；两分层新侧显式disabled保留生产旧别名force注入行为，不再混用模型基准。
 
-
-已完成15个有限TEST场景对照，非生产全量上线验收。当前代码47b3dcb7；普通链路复用263ba48a有效证据，未全量重跑。允许确认的替代模型；随机输出不要求逐字一致。
+完整输入、HTTP、响应和trace见[15场景对照](artifacts/comparison/final-15-comparisons.json)、[画像有效基准](artifacts/comparison/thinking-effective-alignment.md)、[关联三场景实收](artifacts/comparison/thinking-related-verification.md)。当前TEST47b3dcb7，普通链路未受影响证据复用263ba48a，未全量重跑。仅有限TEST验收完成，不代表生产全量等价、生产上线或普遍输出语义等价。
 
 |场景|当前结果|证据版本|
 |---|---|---|
-|用户画像|真实生产配置TEST副本已核验；messages一致，允许参数差异保留，单次输出不证明普遍语义等价|263ba48a|
-|沟通摘要|完整对照齐全，messages相等|263ba48a|
+|用户画像|生产原目标模型TEST旧新messages相等、thinking均开启；1593/753|47b3dcb7|
+|沟通摘要|当前生产模型TEST旧新messages及有效thinking相等；806/751开启|47b3dcb7|
 |服务SOP|完整对照齐全，messages相等|263ba48a|
-|高中分层|完整对照齐全，messages相等|263ba48a|
+|高中分层|当前生产旧别名TEST对照，messages相等、有效thinking均关闭0/0|47b3dcb7（旧证据按项复用）|
 |精品根因|完整对照齐全，messages相等|263ba48a|
 |精品旅程|完整对照齐全，messages相等|47b3dcb7|
 |精品课程体验|完整对照齐全，messages相等|263ba48a|
 |精品NPS|完整对照齐全，messages相等|263ba48a|
-|素养分层|完整对照齐全，messages相等|263ba48a|
+|素养分层|当前生产旧别名TEST对照，messages相等、有效thinking均关闭0/0|47b3dcb7（旧证据按项复用）|
 |素养根因|完整对照齐全，messages相等|263ba48a|
 |素养旅程|完整对照齐全，messages相等|263ba48a|
 |素养课程体验|完整对照齐全，messages相等|263ba48a|
 |素养NPS|完整对照齐全，messages相等|47b3dcb7|
 |高中降退费|完整对照齐全，messages相等|47b3dcb7|
 |素养降退费|完整对照齐全，messages相等|47b3dcb7|
+
+画像/摘要基准证据分层及结论变化见[基准说明](artifacts/comparison/baseline-thinking-clarification.md)：按生产配置的TEST复现，不是生产运行直接观测。
 
 ## 差异与边界
 
@@ -52,6 +53,7 @@ tags: [需求]
 
 代码47b3dcb7已提交推送及TEST部署（流水线1362995），4项JUnit及编译通过；普通链路原有效证据复用。AICR2403取消，不称评审通过。本轮补齐未新增代码部署。
 
+- [迁移注意事项与适用实践](artifacts/comparison/migration-practices-current.md)
 - [15场景最终验证](artifacts/comparison/final-15-verification.md)
 - [完整输入输出及请求对照](artifacts/comparison/final-15-comparisons.json)
 - [机器验收结果](artifacts/comparison/final-15-verification.json)
@@ -60,7 +62,7 @@ tags: [需求]
 
 ## 现在什么情况
 
-T-验收：已完成15/15（两个403场景本轮排除）；TEST当前47b3dcb7，生产未切换。
+T-验收：15/15有限TEST场景完成，两个403场景排除；生产未切换，随机输出与生产全量等价未作保证。
 
 ## 当前资源
 

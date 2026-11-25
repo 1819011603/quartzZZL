@@ -1,0 +1,47 @@
+{
+  "url": "https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service",
+  "trafficEnv": "test-gtbg-dev-1",
+  "httpStatus": 200,
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask",
+    "params": [
+      "tier-thinking-776b65ca-0746-4055-b7bb-7b8b47fa40b2",
+      {
+        "aiApplicationName": "预测分层原因",
+        "userQuery": "",
+        "userTag": "test",
+        "platformType": 2,
+        "runUser": {
+          "email": "gongxuemeng@gaotu.cn"
+        }
+      },
+      {
+        "clazzNumber": "500775385189890048",
+        "userId": "6761113627",
+        "commTag": 0,
+        "subClazzNumber": "31298462823089024"
+      },
+      ""
+    ]
+  },
+  "curl": "curl -sk \\\n  -x \"${AGENT_PROXY_URL:-http://127.0.0.1:8888}\" \\\n  'https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-1' \\\n  -H 'identification: microLessonStudent' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask\", \"params\": [\"tier-thinking-776b65ca-0746-4055-b7bb-7b8b47fa40b2\", {\"aiApplicationName\": \"预测分层原因\", \"userQuery\": \"\", \"userTag\": \"test\", \"platformType\": 2, \"runUser\": {\"email\": \"gongxuemeng@gaotu.cn\"}}, {\"clazzNumber\": \"500775385189890048\", \"userId\": \"6761113627\", \"commTag\": 0, \"subClazzNumber\": \"31298462823089024\"}, \"\"]}'",
+  "traceId": "c08756d7-169f-4a84-89c3-1b825f63ac04.0.3",
+  "gapmApp": "student-data",
+  "identification": "microLessonStudent",
+  "rvoCode": 0,
+  "result": {
+    "usage": {
+      "completion_tokens": 69,
+      "prompt_tokens": 4285,
+      "cost": 0.00197358,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens_details": {},
+      "total_tokens": 4354
+    },
+    "event": "litellm_proxy/doubao-seed-2.0-lite",
+    "messageId": "chatcmpl-ac6b24fa949741b3b3382bc044a70a5e",
+    "answer": "入班服务已达108天，为同科目新学员，走读。非续班期正式课节完成度仅0.3182，远低于平均水平。近7日微信互动频率处于较低水平，无预报名记录，无续班相关正向反馈，也无相关退费异议。"
+  }
+}

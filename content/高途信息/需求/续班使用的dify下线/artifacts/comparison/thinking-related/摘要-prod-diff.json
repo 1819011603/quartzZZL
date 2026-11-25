@@ -1,0 +1,201 @@
+{
+  "created_by": {
+    "prod": "52761",
+    "test": "177071"
+  },
+  "updated_by": {
+    "prod": "52761",
+    "test": "177071"
+  },
+  "model": {
+    "prod": {
+      "provider": "langgenius/openai_api_compatible/openai_api_compatible",
+      "name": "doubao-seed-2-0-lite-260428",
+      "mode": "chat",
+      "completion_params": {
+        "stop": []
+      }
+    },
+    "test": {
+      "provider": "langgenius/openai_api_compatible/openai_api_compatible",
+      "name": "doubao/Doubao-1-5-pro-32k",
+      "mode": "chat",
+      "completion_params": {
+        "stop": []
+      }
+    }
+  },
+  "file_upload": {
+    "prod": {
+      "image": {
+        "detail": "high",
+        "enabled": true,
+        "number_limits": 3,
+        "transfer_methods": [
+          "remote_url",
+          "local_file"
+        ]
+      },
+      "enabled": true,
+      "allowed_file_types": [
+        "image",
+        "document"
+      ],
+      "allowed_file_extensions": [
+        ".GIF",
+        ".GIF",
+        ".PNG",
+        ".PNG",
+        ".SVG",
+        ".JPG",
+        ".JPEG",
+        ".JPG",
+        ".JPEG",
+        ".WEBP",
+        ".WEBP",
+        ".SVG",
+        ".md",
+        ".MD",
+        ".pdf",
+        ".xlsx",
+        ".markdown",
+        ".HTML",
+        ".DOCX",
+        ".xls",
+        ".vtt",
+        ".txt",
+        ".MDX",
+        ".XLS",
+        ".PDF",
+        ".doc",
+        ".docx",
+        ".PROPERTIES",
+        ".html",
+        ".HTM",
+        ".mdx",
+        ".XLSX",
+        ".csv",
+        ".properties",
+        ".CSV",
+        ".DOC",
+        ".VTT",
+        ".TXT",
+        ".MARKDOWN",
+        ".htm"
+      ],
+      "allowed_file_upload_methods": [
+        "remote_url",
+        "local_file"
+      ],
+      "number_limits": 3,
+      "need_parse_file_types": [
+        "document"
+      ],
+      "file_size_limits": {
+        "image": 10,
+        "document": 5
+      }
+    },
+    "test": {
+      "image": {
+        "detail": "high",
+        "enabled": true,
+        "number_limits": 3,
+        "transfer_methods": [
+          "remote_url",
+          "local_file"
+        ]
+      },
+      "enabled": true,
+      "allowed_file_types": [
+        "image",
+        "document"
+      ],
+      "allowed_file_extensions": [
+        ".JPEG",
+        ".GIF",
+        ".JPG",
+        ".PNG",
+        ".GIF",
+        ".WEBP",
+        ".JPG",
+        ".PNG",
+        ".SVG",
+        ".SVG",
+        ".WEBP",
+        ".JPEG",
+        ".PDF",
+        ".MARKDOWN",
+        ".mdx",
+        ".HTML",
+        ".MD",
+        ".doc",
+        ".CSV",
+        ".docx",
+        ".DOCX",
+        ".htm",
+        ".html",
+        ".HTM",
+        ".csv",
+        ".vtt",
+        ".md",
+        ".TXT",
+        ".MDX",
+        ".xlsx",
+        ".properties",
+        ".pdf",
+        ".XLSX",
+        ".xls",
+        ".XLS",
+        ".DOC",
+        ".markdown",
+        ".PROPERTIES",
+        ".txt",
+        ".VTT"
+      ],
+      "allowed_file_upload_methods": [
+        "remote_url",
+        "local_file"
+      ],
+      "number_limits": 3,
+      "need_parse_file_types": [
+        "document"
+      ],
+      "file_size_limits": {
+        "image": 10,
+        "document": 5
+      }
+    }
+  },
+  "created_at": {
+    "prod": 1788945572,
+    "test": 1795519946
+  },
+  "chat_prompt_config": {
+    "prod": {
+      "prompt": [
+        {
+          "role": "system",
+          "text": ""
+        }
+      ]
+    },
+    "test": {}
+  },
+  "completion_prompt_config": {
+    "prod": {
+      "prompt": {
+        "text": ""
+      },
+      "conversation_histories_role": {
+        "user_prefix": "",
+        "assistant_prefix": ""
+      }
+    },
+    "test": {}
+  },
+  "updated_at": {
+    "prod": 1788945572,
+    "test": 1795519946
+  }
+}

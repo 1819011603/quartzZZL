@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"keyword\" keyword=\"以下表格保留画像thinking反例\"><p id=\"doxcnNjkn5cvLzgVpOE88lv7Vkc\">以下表格保留画像thinking反例的完整输入输出：旧2a220458-cfd5-4547-82a0-295b5f386335.0.3推理token为0，新f2e3ea9d-eb41-41a8-b041-63d20fba2554.0.3为1202。旧TEST副本替换模型别名时额外触发disabled，故撤回“真实生产配置基准已闭合”的判断；表中模型别名不能视为无影响差异。TEST关闭thinking实验已验证消息不变、推理token为0，完整证据见thinking-effective-alignment；生产原模型的TEST复验仍在进行。</p></fragment>",
+      "document_id": "EWI6dsdvPokck0xy89ccJDuEnhg",
+      "revision_id": 190
+    }
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.70",
+      "latest": "1.0.100",
+      "message": "lark-cli 1.0.100 available, current 1.0.70, run: lark-cli update"
+    }
+  }
+}

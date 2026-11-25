@@ -1,0 +1,46 @@
+{
+  "url": "https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service",
+  "trafficEnv": "test-gtbg-dev-1",
+  "httpStatus": 200,
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask",
+    "params": [
+      "thinking-aligned-9619996d-2045-4daa-991e-d1f7d3e27c7a",
+      {
+        "aiApplicationName": "沟通摘要-test",
+        "userQuery": "",
+        "userTag": "test",
+        "platformType": 2,
+        "runUser": {
+          "email": "gongxuemeng@gaotu.cn"
+        }
+      },
+      {
+        "clazzNumber": "500775385189890048",
+        "userId": "7404351741",
+        "commTag": 0
+      },
+      ""
+    ]
+  },
+  "curl": "curl -sk \\\n  -x \"${AGENT_PROXY_URL:-http://127.0.0.1:8888}\" \\\n  'https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-1' \\\n  -H 'identification: microLessonStudent' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask\", \"params\": [\"thinking-aligned-9619996d-2045-4daa-991e-d1f7d3e27c7a\", {\"aiApplicationName\": \"沟通摘要-test\", \"userQuery\": \"\", \"userTag\": \"test\", \"platformType\": 2, \"runUser\": {\"email\": \"gongxuemeng@gaotu.cn\"}}, {\"clazzNumber\": \"500775385189890048\", \"userId\": \"7404351741\", \"commTag\": 0}, \"\"]}'",
+  "traceId": "66c8b9fa-a1d0-4fa2-a305-6e24548ef9ce.0.3",
+  "gapmApp": "student-data",
+  "identification": "microLessonStudent",
+  "rvoCode": 0,
+  "result": {
+    "usage": {
+      "completion_tokens": 946,
+      "prompt_tokens": 1424,
+      "cost": 0.00435288,
+      "completion_tokens_details": {
+        "reasoning_tokens": 751
+      },
+      "prompt_tokens_details": {},
+      "total_tokens": 2370
+    },
+    "event": "litellm_proxy/doubao-seed-2.0-lite",
+    "messageId": "chatcmpl-139f5fa8aed743699fb40fca2678c798",
+    "answer": "{\"commSummary\":\"沟通围绕秋季课程相关事宜展开，告知不同班型的上课时间、内容差异，提醒相关课程存在**课程时间冲突**，核对**讲义发货**相关安排为23号开始发货，家长及学员认可高途老师授课**幽默风趣**、教学质量出色，部分学员认可现有课程学习节奏，明确续班意向甚至愿意帮忙推荐有补课需求的同学，同时也梳理出相关续班顾虑：部分家长担心教材**版本不一致**不匹配本地考情，担心多科同时学习孩子时间安排不过来，部分学员因课外安排与上课时间冲突、学习后成绩未提升效果不达预期、不适应老师讲课节奏风格、报名时承诺的单独答疑和学习报告等服务未落实，暂不考虑续报，同时同步物理**课程内容设置**与**班型安排**规则，约定秋季开课前提醒确认最终的**课程选择**\"}"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-8ea4348d145f4ec0ad1517c634b189e7",
+  "created": 1795578957,
+  "model": "doubao-seed-2.0-lite",
+  "object": "chat.completion",
+  "system_fingerprint": null,
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "```json\n{\n  \"commSummary\": \"同步秋季多科课程相关安排，讲解**秋季班班型选择**规则，说明两类班课程内容基本一致，仅双一流班讲义额外增加拔高题，协调解决**课程时间冲突**问题，告知**讲义发货**的具体时间，确认暑假课程的完成情况，同步秋季课程上课时间、作业提交要求、**课程内容设置**等相关规则。相关人员认可课程授课**幽默风趣**、教学质量好，部分明确有续报意向，也存在部分顾虑，包括担心教材版本与课程版本不一致不匹配本地考情、多科同时学习时间安排不开易产生厌学情绪、对提前学物理存疑、学习后成绩未提升效果不达预期、不适应现有老师的授课风格、报名时承诺的答疑等服务未落实等，部分人员明确暂不续报，有人员同意帮忙留意身边有补课需求的同学存在转介绍意向，部分用户提出希望老师在秋季开课前提醒确认最终选定的学习科目。\"\n}\n```",
+        "role": "assistant",
+        "tool_calls": null,
+        "function_call": null,
+        "reasoning_content": "\n用户现在需要生成符合要求的commSummary，我已梳理完相关核心信息，本次生成需加粗突出关键点，当前整理出的内容涵盖用户续报相关的各类诉求，包括部分用户认可课程、部分用户有续报顾虑、部分用户有转介绍意向、部分用户对秋季课程有相关疑问等。\n\n我已梳理出秋季多科课程相关的核心沟通内容，将同步班型规则、协调时间冲突、告知发货安排，确认暑假课程完成情况，同步秋季上课及作业要求。\n\n目前已梳理出用户反馈的课程相关评价与诉求：部分用户认可授课意向续报，部分用户有续报顾虑，部分用户有转介绍意向，还有部分用户提出秋季开课前需确认学习科目。我已按要求调整表述、核对格式，整理出规范的沟通核心内容。我已核对所有表述合规无误，目前整理的用户诉求内容完整准确，接下来将其转换为符合规范的JSON格式输出。\n"
+      }
+    }
+  ],
+  "usage": {
+    "completion_tokens": 1029,
+    "prompt_tokens": 1293,
+    "total_tokens": 2322,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 806,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cached_tokens": null
+    },
+    "cost": 0.00427518
+  }
+}

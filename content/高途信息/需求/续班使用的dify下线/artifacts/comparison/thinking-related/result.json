@@ -1,0 +1,34 @@
+{
+  "complete": true,
+  "rows": [
+    {
+      "scene": "摘要",
+      "old_trace": "ffe40068-955e-4044-9eeb-ac8641740dfd.0.3",
+      "new_trace": "66c8b9fa-a1d0-4fa2-a305-6e24548ef9ce.0.3",
+      "old_reasoning_tokens": 806,
+      "new_reasoning_tokens": 751,
+      "messages_equal": true,
+      "effective_thinking_equal": true
+    },
+    {
+      "scene": "高中分层",
+      "old_trace": "90111bbb-6122-4a4e-84a0-1af98e31eda1.0.3",
+      "new_trace": "c08756d7-169f-4a84-89c3-1b825f63ac04.0.3",
+      "old_reasoning_tokens": 0,
+      "new_reasoning_tokens": 0,
+      "messages_equal": true,
+      "effective_thinking_equal": true
+    },
+    {
+      "scene": "素养分层",
+      "old_trace": "71b44f24-f24a-45f5-8200-d63615400d9b.0.3",
+      "new_trace": "95d2fb8f-d462-4449-839e-b6123dca4b16.0.3",
+      "old_reasoning_tokens": 0,
+      "new_reasoning_tokens": 0,
+      "messages_equal": true,
+      "effective_thinking_equal": true
+    }
+  ],
+  "configuration": "仅TEST agent262172718139452416增加thinking.disabled；画像摘要共享agent仍省略thinking",
+  "active_operations": []
+}

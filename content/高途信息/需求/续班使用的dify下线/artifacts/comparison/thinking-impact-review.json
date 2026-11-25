@@ -1,5 +1,5 @@
 {
-  "status": "画像/摘要新invoke成功且推理token0已读；完整有效参数对齐及生产基准适用性仍待实现者结论",
+  "status": "四组当前生产配置TEST有效thinking及messages验收完成",
   "snapshot_sha256": "7fbed69d3d1463151111ef82b62c2c0da005898d4753a650797725a50089ce43",
   "control_evidence": "strict-v2-model-map.json read_at 2026-11-24T14:18:15.598466; PROD35941/TEST35943",
   "finding": "历史控制面已证明旧豆包1.5别名force disabled；当前生产画像配置直接用目标模型，因此画像TEST副本改旧别名引入额外有效参数差异。不能由该TEST反例推出生产画像必须disabled。",
@@ -21,14 +21,15 @@
         1202
       ],
       "old_reasoning_tokens_in_comparison": [],
-      "status": "TEST旧别名副本对照差异已证；生产当前基准不支持直接判disabled",
-      "next_action": "优先保留生产画像目标模型复制基准核对有效参数；若另做历史别名兼容实验须单列，不能宣称生产迁移修复",
+      "status": "当前生产配置TEST有效thinking及messages已闭合",
+      "next_action": "无需重复本样本验证；不外推生产全量",
       "old_trace": "2a220458-cfd5-4547-82a0-295b5f386335.0.3",
       "new_trace": "f2e3ea9d-eb41-41a8-b041-63d20fba2554.0.3",
       "evidence": {
         "current": "profile-real-baseline/result.json",
         "config": "profile-real-baseline/copied-config-diff.json"
-      }
+      },
+      "current_evidence": "thinking-effective-alignment.json"
     },
     {
       "scene": "沟通摘要",
@@ -40,15 +41,16 @@
         736
       ],
       "old_reasoning_tokens_in_comparison": [],
-      "status": "历史旧别名样本受影响候选；需确认各自当前生产配置仍为该别名及有效参数",
-      "next_action": "确认当前真实基准身份；仅已确认保留旧别名语义的TEST对照有disabled依据，不能按共享agent一并关闭",
+      "status": "当前生产配置TEST有效thinking及messages已闭合",
+      "next_action": "无需重复本样本验证；不外推生产全量",
       "old_trace": "15760243-f225-4246-a103-c9565c2652ba.0.3",
       "new_trace": "9d831ba2-fc93-46d7-82ee-f1797aea5696.0.3",
       "evidence": {
         "old": "pairs.json:name=摘要,sides[0]",
         "input_new_response": "remaining-current-runs/after/摘要/invoke.json",
         "new_request": "remaining-current-runs/after/摘要/received.json"
-      }
+      },
+      "current_evidence": "thinking-related/result.json"
     },
     {
       "scene": "服务SOP",
@@ -83,15 +85,16 @@
         338
       ],
       "old_reasoning_tokens_in_comparison": [],
-      "status": "历史旧别名样本受影响候选；需确认各自当前生产配置仍为该别名及有效参数",
-      "next_action": "确认当前真实基准身份；仅已确认保留旧别名语义的TEST对照有disabled依据，不能按共享agent一并关闭",
+      "status": "当前生产配置TEST有效thinking及messages已闭合",
+      "next_action": "无需重复本样本验证；不外推生产全量",
       "old_trace": "3c9e6b70-e6f3-4f95-883b-14408cdafc2b.0.3",
       "new_trace": "63916e95-985f-4407-9f8e-00ae2ae61438.0.3",
       "evidence": {
         "old": "pairs.json:name=分层修正后,sides[0]",
         "input_new_response": "remaining-current-runs/after/分层修正后/invoke.json",
         "new_request": "remaining-current-runs/after/分层修正后/received.json"
-      }
+      },
+      "current_evidence": "thinking-related/result.json"
     },
     {
       "scene": "精品根因",
@@ -186,8 +189,8 @@
         410
       ],
       "old_reasoning_tokens_in_comparison": [],
-      "status": "历史旧别名样本受影响候选；需确认各自当前生产配置仍为该别名及有效参数",
-      "next_action": "确认当前真实基准身份；仅已确认保留旧别名语义的TEST对照有disabled依据，不能按共享agent一并关闭",
+      "status": "当前生产配置TEST有效thinking及messages已闭合",
+      "next_action": "无需重复本样本验证；不外推生产全量",
       "old_trace": "71b44f24-f24a-45f5-8200-d63615400d9b.0.3",
       "new_trace": "9a5b2c21-e465-45fb-b0c4-e24f46a18140.0.3",
       "evidence": {
@@ -197,7 +200,8 @@
         "input_new_response": "remaining-current-runs/suyang/素养分层/invoke.json",
         "old_http": "final-15-evidence/suyang-tier-old-http.json",
         "http_comparison": "final-15-evidence/suyang-tier-http-comparison.json"
-      }
+      },
+      "current_evidence": "thinking-related/result.json"
     },
     {
       "scene": "素养根因",
@@ -364,26 +368,92 @@
       "profile-real-baseline/test-detail.json:model_config.model",
       "profile-real-baseline/copied-config-diff.json:model"
     ],
-    "conclusion": "0 vs 1202只证明该TEST旧别名副本与新目标直呼不同；不是生产旧侧0的证据。消息模板复用有效，模型有效参数基准不可直接外推。"
+    "conclusion": "TEST副本现已恢复生产原目标模型，旧1593新753均推理开启；此前0 vs1202是旧别名实验偏差"
   },
   "new_observations": [
     {
       "scene": "画像",
-      "trace": "a5d885f0-835c-4466-b91d-8be3f65a3961.0.3",
-      "httpStatus": 200,
-      "rvoCode": 0,
-      "reasoning_tokens": 0,
-      "evidence": "thinking-effective-alignment/画像-invoke.json",
-      "limit": "仅新调用响应；不替代同次完整请求/基准适用性断言"
+      "trace": "3fce4abd-3895-4b68-bb90-54777ac6d680.0.3",
+      "messages_equal": true,
+      "thinking": null,
+      "reasoning_tokens": 753,
+      "reasoning_content_present": true
     },
     {
       "scene": "摘要",
-      "trace": "8ef8ed4f-165e-4e0d-8b8f-0124cbff4de4.0.3",
-      "httpStatus": 200,
-      "rvoCode": 0,
-      "reasoning_tokens": 0,
-      "evidence": "thinking-effective-alignment/摘要-invoke.json",
-      "limit": "仅新调用响应；不替代同次完整请求/基准适用性断言"
+      "trace": "66c8b9fa-a1d0-4fa2-a305-6e24548ef9ce.0.3",
+      "messages_equal": true,
+      "thinking": null,
+      "reasoning_tokens": 751,
+      "reasoning_content_present": true
     }
-  ]
+  ],
+  "current_profile_baseline": {
+    "complete": true,
+    "baseline": "当前生产画像v7直呼目标model的TEST副本",
+    "old_trace": "cff96ffc-9522-4b87-ba4b-3ccf50b0dc84.0.3",
+    "old_reasoning_tokens": 1593,
+    "verification": [
+      {
+        "scene": "画像",
+        "trace": "3fce4abd-3895-4b68-bb90-54777ac6d680.0.3",
+        "messages_equal": true,
+        "thinking": null,
+        "reasoning_tokens": 753,
+        "reasoning_content_present": true
+      },
+      {
+        "scene": "摘要",
+        "trace": "66c8b9fa-a1d0-4fa2-a305-6e24548ef9ce.0.3",
+        "messages_equal": true,
+        "thinking": null,
+        "reasoning_tokens": 751,
+        "reasoning_content_present": true
+      }
+    ],
+    "final_config": "共享TEST agent255107338300556288省略thinking；旧别名实验disabled已撤回并发布回读",
+    "allowed_differences": [
+      "新json_object",
+      "旧Dify user"
+    ],
+    "remaining_scope_note": "分层为旧别名实际生产配置，未在本画像基准修正中修改；需由主Worker按其独立验收范围处理",
+    "active_operations": []
+  },
+  "complete": true,
+  "related_verification": {
+    "complete": true,
+    "rows": [
+      {
+        "scene": "摘要",
+        "old_trace": "ffe40068-955e-4044-9eeb-ac8641740dfd.0.3",
+        "new_trace": "66c8b9fa-a1d0-4fa2-a305-6e24548ef9ce.0.3",
+        "old_reasoning_tokens": 806,
+        "new_reasoning_tokens": 751,
+        "messages_equal": true,
+        "effective_thinking_equal": true
+      },
+      {
+        "scene": "高中分层",
+        "old_trace": "90111bbb-6122-4a4e-84a0-1af98e31eda1.0.3",
+        "new_trace": "c08756d7-169f-4a84-89c3-1b825f63ac04.0.3",
+        "old_reasoning_tokens": 0,
+        "new_reasoning_tokens": 0,
+        "messages_equal": true,
+        "effective_thinking_equal": true
+      },
+      {
+        "scene": "素养分层",
+        "old_trace": "71b44f24-f24a-45f5-8200-d63615400d9b.0.3",
+        "new_trace": "95d2fb8f-d462-4449-839e-b6123dca4b16.0.3",
+        "old_reasoning_tokens": 0,
+        "new_reasoning_tokens": 0,
+        "messages_equal": true,
+        "effective_thinking_equal": true
+      }
+    ],
+    "configuration": "仅TEST agent262172718139452416增加thinking.disabled；画像摘要共享agent仍省略thinking",
+    "active_operations": []
+  },
+  "remaining": [],
+  "active_operations": []
 }

@@ -1,0 +1,46 @@
+{
+  "url": "https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service",
+  "trafficEnv": "test-gtbg-dev-1",
+  "httpStatus": 200,
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask",
+    "params": [
+      "thinking-aligned-b6f3c9d0-e6dd-4bdd-97d5-5e10167384b5",
+      {
+        "aiApplicationName": "用户画像-test",
+        "userQuery": "",
+        "userTag": "test",
+        "platformType": 2,
+        "runUser": {
+          "email": "gongxuemeng@gaotu.cn"
+        }
+      },
+      {
+        "clazzNumber": "500775385189890048",
+        "userId": "7404351741",
+        "commTag": 0
+      },
+      ""
+    ]
+  },
+  "curl": "curl -sk \\\n  -x \"${AGENT_PROXY_URL:-http://127.0.0.1:8888}\" \\\n  'https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-1' \\\n  -H 'identification: microLessonStudent' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask\", \"params\": [\"thinking-aligned-b6f3c9d0-e6dd-4bdd-97d5-5e10167384b5\", {\"aiApplicationName\": \"用户画像-test\", \"userQuery\": \"\", \"userTag\": \"test\", \"platformType\": 2, \"runUser\": {\"email\": \"gongxuemeng@gaotu.cn\"}}, {\"clazzNumber\": \"500775385189890048\", \"userId\": \"7404351741\", \"commTag\": 0}, \"\"]}'",
+  "traceId": "3fce4abd-3895-4b68-bb90-54777ac6d680.0.3",
+  "gapmApp": "student-data",
+  "identification": "microLessonStudent",
+  "rvoCode": 0,
+  "result": {
+    "usage": {
+      "completion_tokens": 1022,
+      "prompt_tokens": 2333,
+      "cost": 0.00477498,
+      "completion_tokens_details": {
+        "reasoning_tokens": 753
+      },
+      "prompt_tokens_details": {},
+      "total_tokens": 3355
+    },
+    "event": "litellm_proxy/doubao-seed-2.0-lite",
+    "messageId": "chatcmpl-f6490af3b153440dbee1f9e46aa6c97a",
+    "answer": "{\n    \"renewalInterest\": \"**来自对话**：无相关内容\\n**来自问卷**：1、认可二讲老师同步学习反馈、督学、家校沟通等服务表现；2、希望获得针对性查漏补缺小灶课、定期测评等服务；3、需要中考物理押题、专题复习、真题训练类备考内容\",\n    \"renewalResistance\": \"**来自对话**：无相关内容\\n**来自问卷**：1、学员物理学习存在课听懂课后做题不对、学习主动性差的问题，学习效果不理想；2、家长对寒春续班报名事项存在待咨询的疑虑\",\n    \"portraitSummary\": \"学员为即将进入中考总复习的准中考生，物理处于电学板块学习阶段，目前存在课上能听懂知识点但课后做题出错、学习习惯较差缺乏主动性的问题，学习效果未达预期。**家长作为问卷填写人，对二讲满意度7分、主讲满意度7分、课程满意度8分，有续班意向但仍有相关疑虑需要咨询老师**。家长认可二讲老师的日常服务表现，后续期望获得督学管理、针对性查漏补缺、定期测评、中考专项备考等相关服务，助力孩子冲刺重点高中。\"\n}"
+  }
+}

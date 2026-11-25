@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-db1401945c634a41b2bfcf9f7599b25e",
+  "created": 1795579181,
+  "model": "doubao-seed-2.0-lite",
+  "object": "chat.completion",
+  "system_fingerprint": null,
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "学员是同科目新学员，入班接受服务已108天。非续班期正式课节完成度仅0.3182，远低于平均水平，近7天和二讲的微信互动频率很低，也没有预报名，各项续班相关正向表现均不足，也无相关异议记录。",
+        "role": "assistant",
+        "tool_calls": null,
+        "function_call": null,
+        "reasoning_content": null
+      }
+    }
+  ],
+  "usage": {
+    "completion_tokens": 71,
+    "prompt_tokens": 4285,
+    "total_tokens": 4356,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cached_tokens": null
+    },
+    "cost": 0.00197862
+  }
+}

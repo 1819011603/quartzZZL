@@ -14,5 +14,75 @@
     "scope": "高中workflow代表性；请求显式runUser，非自动老师入口"
   },
   "remaining": [],
-  "active_operations": []
+  "active_operations": [],
+  "thinking_alias_experiment": {
+    "scope": "历史底层实验，disabled已撤回",
+    "current_configuration": false
+  },
+  "profile_production_model_baseline": {
+    "complete": true,
+    "baseline": "当前生产画像v7直呼目标model的TEST副本",
+    "old_trace": "cff96ffc-9522-4b87-ba4b-3ccf50b0dc84.0.3",
+    "old_reasoning_tokens": 1593,
+    "verification": [
+      {
+        "scene": "画像",
+        "trace": "3fce4abd-3895-4b68-bb90-54777ac6d680.0.3",
+        "messages_equal": true,
+        "thinking": null,
+        "reasoning_tokens": 753,
+        "reasoning_content_present": true
+      },
+      {
+        "scene": "摘要",
+        "trace": "66c8b9fa-a1d0-4fa2-a305-6e24548ef9ce.0.3",
+        "messages_equal": true,
+        "thinking": null,
+        "reasoning_tokens": 751,
+        "reasoning_content_present": true
+      }
+    ],
+    "final_config": "共享TEST agent255107338300556288省略thinking；旧别名实验disabled已撤回并发布回读",
+    "allowed_differences": [
+      "新json_object",
+      "旧Dify user"
+    ],
+    "remaining_scope_note": "分层为旧别名实际生产配置，未在本画像基准修正中修改；需由主Worker按其独立验收范围处理",
+    "active_operations": []
+  },
+  "thinking_related": {
+    "complete": true,
+    "rows": [
+      {
+        "scene": "摘要",
+        "old_trace": "ffe40068-955e-4044-9eeb-ac8641740dfd.0.3",
+        "new_trace": "66c8b9fa-a1d0-4fa2-a305-6e24548ef9ce.0.3",
+        "old_reasoning_tokens": 806,
+        "new_reasoning_tokens": 751,
+        "messages_equal": true,
+        "effective_thinking_equal": true
+      },
+      {
+        "scene": "高中分层",
+        "old_trace": "90111bbb-6122-4a4e-84a0-1af98e31eda1.0.3",
+        "new_trace": "c08756d7-169f-4a84-89c3-1b825f63ac04.0.3",
+        "old_reasoning_tokens": 0,
+        "new_reasoning_tokens": 0,
+        "messages_equal": true,
+        "effective_thinking_equal": true
+      },
+      {
+        "scene": "素养分层",
+        "old_trace": "71b44f24-f24a-45f5-8200-d63615400d9b.0.3",
+        "new_trace": "95d2fb8f-d462-4449-839e-b6123dca4b16.0.3",
+        "old_reasoning_tokens": 0,
+        "new_reasoning_tokens": 0,
+        "messages_equal": true,
+        "effective_thinking_equal": true
+      }
+    ],
+    "configuration": "仅TEST agent262172718139452416增加thinking.disabled；画像摘要共享agent仍省略thinking",
+    "active_operations": []
+  },
+  "acceptance_scope": "15个有限TEST场景；不代表生产全量等价或普遍输出语义相同；两403排除；两workflow隔离库且未注入片段"
 }

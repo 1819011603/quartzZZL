@@ -1,7 +1,7 @@
 [
   {
     "scene": "用户画像",
-    "version": "47b3dcb7",
+    "version": "47b3dcb7 TEST",
     "input": {
       "old": {
         "inputs": {},
@@ -15,7 +15,7 @@
       "new": {
         "serviceNameAndMethodName": "com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask",
         "params": [
-          "profile-current-9ee1960b-519e-4b7b-bd74-ffb1921632a7",
+          "thinking-aligned-b6f3c9d0-e6dd-4bdd-97d5-5e10167384b5",
           {
             "aiApplicationName": "用户画像-test",
             "userQuery": "",
@@ -32,11 +32,10 @@
           },
           ""
         ]
-      },
-      "matches_archived_original_messages": true
+      }
     },
     "old_request": {
-      "model": "doubao/Doubao-1-5-pro-32k",
+      "model": "doubao-seed-2-0-lite-260428",
       "stream": true,
       "messages": [
         {
@@ -61,34 +60,34 @@
     },
     "old_response": {
       "event": "message",
-      "task_id": "c0a5242f-3667-445a-8803-69dcbdcfe6c5",
-      "id": "6e0b7a5d-0121-4a0b-9099-3dce19bda2aa",
-      "message_id": "6e0b7a5d-0121-4a0b-9099-3dce19bda2aa",
-      "conversation_id": "9e16dc1f-7ff0-4469-b139-2180aa80fb16",
+      "task_id": "4e835994-7602-4a6f-97ab-a6abd68ef6b2",
+      "id": "bbeec6f7-dd9b-4b3b-87f3-c76a9f8c0be6",
+      "message_id": "bbeec6f7-dd9b-4b3b-87f3-c76a9f8c0be6",
+      "conversation_id": "0495f096-f9f5-4a9c-9cef-2e2006ff9b80",
       "mode": "chat",
-      "answer": "```json\n{\n  \"renewalInterest\": \"**来自问卷**：1、认可课程、二讲及主讲的服务表现，对课程满意度较高； 2、希望通过针对性查漏补缺、中考专题复习、真题训练等提升物理成绩冲刺重高\",\n  \"renewalResistance\": \"**来自问卷**：1、孩子存在课上能听懂课后做题不会的问题，学习习惯差、缺乏主动性，担心学习效果不理想； 2、暂未明确是否直接续班，对报名仍存在疑虑待咨询\",\n  \"portraitSummary\": \"学员是准中考生，物理学科目前存在课上听懂但课后做题错误多、学习习惯较差、缺乏学习主动性的问题，学习效果不够理想。**家长为学员报课，续班意向为想报名但存在疑虑需咨询老师**，对当前课程、主讲、二讲满意度较高，非常需要老师督促学员学习、同步学习进展、提供针对性查漏补缺、中考专题复习、真题训练、押题相关服务，帮助孩子冲刺重高。\"\n}\n```",
+      "answer": "<think>\n\n用户现在需要按照要求生成符合规范的JSON对吧，renewalInterest字段的内容已梳理完成，其中对话来源无相关内容，问卷来源的相关反馈已整理完毕。\n\n续班抗性点相关梳理已完成，对话渠道无对应抗性内容，问卷暂未明确给出具体阻碍续班的原因，仅显示家长有报名疑虑需咨询相关人员。我还梳理出了核心学员画像：该学员为准中考生，目前正在学习物理电学板块，存在课上听懂但课后做题出错、学习主动性不足、学习效果不佳的问题，续班意向为有意向报名但有疑虑需咨询老师，对二讲、主讲、课程的满意度分别为7分、7分、8分。\n\n经核对，renewalInterest的问卷信息已确认，学员需求为中考冲刺类物理辅导服务。\n\n现有续班抗性相关信息不足，暂未明确具体抗性原因，仅能确认家长对续班事宜存在待咨询的疑虑。\n\n该学员后续有中考冲刺辅导及升学规划相关需求，我将整理符合规范的JSON输出，注意格式转义避免语法错误。\n\n符合要求的续班相关JSON内容已整理完成，涵盖renewalInterest、renewalResistance、portraitSummary三类核心字段，信息准确无误。\n\n我已核验确认该续班相关JSON符合规范要求。\n\n</think>```json\n{\n  \"renewalInterest\": \"**来自对话**：无相关内容；\\n**来自问卷**：1、认可二讲同步学习进展、督促作业、紧密家校联系的服务；2、对主讲、物理课程整体满意度较高；3、需要针对性查漏补缺、中考复习、真题训练类物理辅导内容\",\n  \"renewalResistance\": \"**来自对话**：无相关内容；\\n**来自问卷**：家长暂未明确反馈阻碍续班的具体原因，仅表示对续班相关事宜存在待咨询的疑虑\",\n  \"portraitSummary\": \"学员为准中考学生，当前学习物理电学板块，物理存在课上能听懂但课后做题出错、学习主动性弱、学习效果不理想的问题。**续班意向为有意报名寒春物理系统复习课，但存在疑虑需咨询老师**。家长作为填报人，对二讲满意度7分、主讲满意度7分、课程满意度8分。后续希望获得学员学习状态同步、作业督促、针对性查漏补缺、定期测评、紧密家校沟通服务，计划通过中考物理专题复习、真题训练、押题相关课程冲刺重高。\"\n}\n```",
       "metadata": {
         "annotation_reply": null,
         "retriever_resources": [],
         "usage": {
-          "prompt_tokens": 2198,
+          "prompt_tokens": 2202,
           "prompt_unit_price": "0",
           "prompt_price_unit": "0",
           "prompt_price": "0",
-          "completion_tokens": 232,
+          "completion_tokens": 1848,
           "completion_unit_price": "0",
           "completion_price_unit": "0",
           "completion_price": "0",
-          "total_tokens": 2430,
+          "total_tokens": 4050,
           "total_price": "0",
           "currency": "USD",
-          "latency": 6.66527898889035,
+          "latency": 34.41394383274019,
           "time_to_first_token": null,
           "time_to_generate": null
         },
         "agent_thoughts": [
           {
-            "id": "54d48a7a-14a5-494c-bdf5-32709f440dcb",
+            "id": "980c8f24-7ccf-4460-97f7-43b70d89e010",
             "position": 1,
             "thought": "",
             "observation": "",
@@ -98,9 +97,9 @@
             "message_files": []
           },
           {
-            "id": "54d48a7a-14a5-494c-bdf5-32709f440dcb",
+            "id": "980c8f24-7ccf-4460-97f7-43b70d89e010",
             "position": 1,
-            "thought": "```json\n{\n  \"renewalInterest\": \"**来自问卷**：1、认可课程、二讲及主讲的服务表现，对课程满意度较高； 2、希望通过针对性查漏补缺、中考专题复习、真题训练等提升物理成绩冲刺重高\",\n  \"renewalResistance\": \"**来自问卷**：1、孩子存在课上能听懂课后做题不会的问题，学习习惯差、缺乏主动性，担心学习效果不理想； 2、暂未明确是否直接续班，对报名仍存在疑虑待咨询\",\n  \"portraitSummary\": \"学员是准中考生，物理学科目前存在课上听懂但课后做题错误多、学习习惯较差、缺乏学习主动性的问题，学习效果不够理想。**家长为学员报课，续班意向为想报名但存在疑虑需咨询老师**，对当前课程、主讲、二讲满意度较高，非常需要老师督促学员学习、同步学习进展、提供针对性查漏补缺、中考专题复习、真题训练、押题相关服务，帮助孩子冲刺重高。\"\n}\n```",
+            "thought": "<think>\n\n用户现在需要按照要求生成符合规范的JSON对吧，renewalInterest字段的内容已梳理完成，其中对话来源无相关内容，问卷来源的相关反馈已整理完毕。\n\n续班抗性点相关梳理已完成，对话渠道无对应抗性内容，问卷暂未明确给出具体阻碍续班的原因，仅显示家长有报名疑虑需咨询相关人员。我还梳理出了核心学员画像：该学员为准中考生，目前正在学习物理电学板块，存在课上听懂但课后做题出错、学习主动性不足、学习效果不佳的问题，续班意向为有意向报名但有疑虑需咨询老师，对二讲、主讲、课程的满意度分别为7分、7分、8分。\n\n经核对，renewalInterest的问卷信息已确认，学员需求为中考冲刺类物理辅导服务。\n\n现有续班抗性相关信息不足，暂未明确具体抗性原因，仅能确认家长对续班事宜存在待咨询的疑虑。\n\n该学员后续有中考冲刺辅导及升学规划相关需求，我将整理符合规范的JSON输出，注意格式转义避免语法错误。\n\n符合要求的续班相关JSON内容已整理完成，涵盖renewalInterest、renewalResistance、portraitSummary三类核心字段，信息准确无误。\n\n我已核验确认该续班相关JSON符合规范要求。\n\n</think>```json\n{\n  \"renewalInterest\": \"**来自对话**：无相关内容；\\n**来自问卷**：1、认可二讲同步学习进展、督促作业、紧密家校联系的服务；2、对主讲、物理课程整体满意度较高；3、需要针对性查漏补缺、中考复习、真题训练类物理辅导内容\",\n  \"renewalResistance\": \"**来自对话**：无相关内容；\\n**来自问卷**：家长暂未明确反馈阻碍续班的具体原因，仅表示对续班相关事宜存在待咨询的疑虑\",\n  \"portraitSummary\": \"学员为准中考学生，当前学习物理电学板块，物理存在课上能听懂但课后做题出错、学习主动性弱、学习效果不理想的问题。**续班意向为有意报名寒春物理系统复习课，但存在疑虑需咨询老师**。家长作为填报人，对二讲满意度7分、主讲满意度7分、课程满意度8分。后续希望获得学员学习状态同步、作业督促、针对性查漏补缺、定期测评、紧密家校沟通服务，计划通过中考物理专题复习、真题训练、押题相关课程冲刺重高。\"\n}\n```",
             "observation": "",
             "tool": "",
             "tool_labels": {},
@@ -109,18 +108,154 @@
           }
         ]
       },
-      "created_at": 1795576335
+      "created_at": 1795578602
     },
     "new_response": {
-      "url": "https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service",
-      "trafficEnv": "test-gtbg-dev-1",
-      "httpStatus": 200,
-      "request": {
+      "usage": {
+        "completion_tokens": 1022,
+        "prompt_tokens": 2333,
+        "cost": 0.00477498,
+        "completion_tokens_details": {
+          "reasoning_tokens": 753
+        },
+        "prompt_tokens_details": {},
+        "total_tokens": 3355
+      },
+      "event": "litellm_proxy/doubao-seed-2.0-lite",
+      "messageId": "chatcmpl-f6490af3b153440dbee1f9e46aa6c97a",
+      "answer": "{\n    \"renewalInterest\": \"**来自对话**：无相关内容\\n**来自问卷**：1、认可二讲老师同步学习反馈、督学、家校沟通等服务表现；2、希望获得针对性查漏补缺小灶课、定期测评等服务；3、需要中考物理押题、专题复习、真题训练类备考内容\",\n    \"renewalResistance\": \"**来自对话**：无相关内容\\n**来自问卷**：1、学员物理学习存在课听懂课后做题不对、学习主动性差的问题，学习效果不理想；2、家长对寒春续班报名事项存在待咨询的疑虑\",\n    \"portraitSummary\": \"学员为即将进入中考总复习的准中考生，物理处于电学板块学习阶段，目前存在课上能听懂知识点但课后做题出错、学习习惯较差缺乏主动性的问题，学习效果未达预期。**家长作为问卷填写人，对二讲满意度7分、主讲满意度7分、课程满意度8分，有续班意向但仍有相关疑虑需要咨询老师**。家长认可二讲老师的日常服务表现，后续期望获得督学管理、针对性查漏补缺、定期测评、中考专项备考等相关服务，助力孩子冲刺重点高中。\"\n}"
+    },
+    "old_trace": "cff96ffc-9522-4b87-ba4b-3ccf50b0dc84.0.3",
+    "new_trace": "3fce4abd-3895-4b68-bb90-54777ac6d680.0.3",
+    "differences": {
+      "messages_equal": true,
+      "non_messages": [
+        {
+          "field": "response_format",
+          "old_present": false,
+          "new_present": true,
+          "old": null,
+          "new": {
+            "type": "json_object"
+          }
+        },
+        {
+          "field": "user",
+          "old_present": true,
+          "new_present": false,
+          "old": "8684410f-0a33-4fbc-9ae7-87ac89688e60",
+          "new": null
+        }
+      ],
+      "effective_thinking": {
+        "scope": "当前生产画像模型TEST复制对照",
+        "new_reasoning_tokens": 753,
+        "old_reasoning_tokens": 1593,
+        "aligned": true
+      }
+    },
+    "evidence": {
+      "directory": "profile-direct-baseline",
+      "config": "profile-real-baseline/direct-test-detail.json",
+      "summary": "thinking-effective-alignment.json"
+    },
+    "missing": {},
+    "notes": [
+      "生产画像原目标模型已恢复；实验disabled已撤回，release20261125115220。",
+      "画像旧1593/新753均推理开启；tokens数值不同不作为开关差异；不证明普遍输出语义等价。"
+    ],
+    "new_llm_response": {
+      "id": "chatcmpl-f6490af3b153440dbee1f9e46aa6c97a",
+      "created": 1795578764,
+      "model": "doubao-seed-2.0-lite",
+      "object": "chat.completion",
+      "system_fingerprint": null,
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "content": "{\n    \"renewalInterest\": \"**来自对话**：无相关内容\\n**来自问卷**：1、认可二讲老师同步学习反馈、督学、家校沟通等服务表现；2、希望获得针对性查漏补缺小灶课、定期测评等服务；3、需要中考物理押题、专题复习、真题训练类备考内容\",\n    \"renewalResistance\": \"**来自对话**：无相关内容\\n**来自问卷**：1、学员物理学习存在课听懂课后做题不对、学习主动性差的问题，学习效果不理想；2、家长对寒春续班报名事项存在待咨询的疑虑\",\n    \"portraitSummary\": \"学员为即将进入中考总复习的准中考生，物理处于电学板块学习阶段，目前存在课上能听懂知识点但课后做题出错、学习习惯较差缺乏主动性的问题，学习效果未达预期。**家长作为问卷填写人，对二讲满意度7分、主讲满意度7分、课程满意度8分，有续班意向但仍有相关疑虑需要咨询老师**。家长认可二讲老师的日常服务表现，后续期望获得督学管理、针对性查漏补缺、定期测评、中考专项备考等相关服务，助力孩子冲刺重点高中。\"\n}",
+            "role": "assistant",
+            "tool_calls": null,
+            "function_call": null,
+            "reasoning_content": "\n用户现在需要我按照要求生成符合规范的JSON对吧？目前已梳理出两项核心字段的内容：续班兴趣点来自问卷的共3项，无对话相关内容；续班阻力来自问卷的共1项，仍有续班相关疑虑。\n\n我已核实确认续班阻力的全部两项具体内容，同时梳理出目标画像核心信息：学员为准中考生，物理学习效果未达预期，家长有续班意向需先咨询相关问题。\n\n家长认可二讲老师的相关服务，有获取督学反馈、针对性辅导等中考冲刺类服务的需求，我已按要求完成各核心字段的格式调整与内容核对。我已确认所有字段内容准确合规，接下来将整理为合法JSON输出，注意转义引号，仅输出规范内容。\n"
+          }
+        }
+      ],
+      "usage": {
+        "completion_tokens": 1022,
+        "prompt_tokens": 2333,
+        "total_tokens": 3355,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 753,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": null
+        },
+        "cost": 0.00477498
+      }
+    },
+    "old_llm_response": {
+      "id": "chatcmpl-8df05088ebf448bc9dc4f13eaeb5c76f",
+      "created": 1795578603,
+      "model": "doubao-seed-2.0-lite",
+      "object": "chat.completion",
+      "system_fingerprint": null,
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "content": "```json\n{\n  \"renewalInterest\": \"**来自对话**：无相关内容；\\n**来自问卷**：1、认可二讲同步学习进展、督促作业、紧密家校联系的服务；2、对主讲、物理课程整体满意度较高；3、需要针对性查漏补缺、中考复习、真题训练类物理辅导内容\",\n  \"renewalResistance\": \"**来自对话**：无相关内容；\\n**来自问卷**：家长暂未明确反馈阻碍续班的具体原因，仅表示对续班相关事宜存在待咨询的疑虑\",\n  \"portraitSummary\": \"学员为准中考学生，当前学习物理电学板块，物理存在课上能听懂但课后做题出错、学习主动性弱、学习效果不理想的问题。**续班意向为有意报名寒春物理系统复习课，但存在疑虑需咨询老师**。家长作为填报人，对二讲满意度7分、主讲满意度7分、课程满意度8分。后续希望获得学员学习状态同步、作业督促、针对性查漏补缺、定期测评、紧密家校沟通服务，计划通过中考物理专题复习、真题训练、押题相关课程冲刺重高。\"\n}\n```",
+            "role": "assistant",
+            "tool_calls": null,
+            "function_call": null,
+            "reasoning_content": "\n用户现在需要按照要求生成符合规范的JSON对吧，renewalInterest字段的内容已梳理完成，其中对话来源无相关内容，问卷来源的相关反馈已整理完毕。\n\n续班抗性点相关梳理已完成，对话渠道无对应抗性内容，问卷暂未明确给出具体阻碍续班的原因，仅显示家长有报名疑虑需咨询相关人员。我还梳理出了核心学员画像：该学员为准中考生，目前正在学习物理电学板块，存在课上听懂但课后做题出错、学习主动性不足、学习效果不佳的问题，续班意向为有意向报名但有疑虑需咨询老师，对二讲、主讲、课程的满意度分别为7分、7分、8分。\n\n经核对，renewalInterest的问卷信息已确认，学员需求为中考冲刺类物理辅导服务。\n\n现有续班抗性相关信息不足，暂未明确具体抗性原因，仅能确认家长对续班事宜存在待咨询的疑虑。\n\n该学员后续有中考冲刺辅导及升学规划相关需求，我将整理符合规范的JSON输出，注意格式转义避免语法错误。\n\n符合要求的续班相关JSON内容已整理完成，涵盖renewalInterest、renewalResistance、portraitSummary三类核心字段，信息准确无误。\n\n我已核验确认该续班相关JSON符合规范要求。\n"
+          }
+        }
+      ],
+      "usage": {
+        "completion_tokens": 1848,
+        "prompt_tokens": 2202,
+        "total_tokens": 4050,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 1593,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": null
+        },
+        "cost": 0.008391599999999999
+      }
+    }
+  },
+  {
+    "scene": "沟通摘要",
+    "version": "47b3dcb7 TEST",
+    "input": {
+      "old": {
+        "inputs": {},
+        "query": "[\n  {\n    \"role\": \"system\",\n    \"content\": \"##角色\n你是一名在线教育的数据分析师\n\n##任务\n你的主要工作是基于老师和用户的每通沟通记录中的【关键点】提炼出整体的【关键点】，接下来会提供给你如下的【关键点】清单，主要包含如下信息：\n- 沟通摘要清单\n\n请你根据上面的【关键点】清单，提炼总结出如下一个字段：\n- 沟通总结（commSummary）\n\n请注意这里的总结内容不要包含“本次沟通”、“这次沟通”等类似单条沟通的字样，也不要包含“多个学员”、“不同学员”等类似多个学员的字样，输出格式必须确保是JSON格式，字段长度不超过500字，请使用一段文字表示即可，不要换行。字段使用markdown格式、并且将总结内容中需要用户重点关注的内容进行加粗。\n\n##**输出内容要求**\n输出的内容需要符合以下要求\n###在输出的数据中需要保证格式为以下形式的JSON,除此之外不要输出其它任何内容\n```json\n{\n  commSummary: \"\", // 沟通摘要总结}\n```\n\n###内容禁止包含可能引起不适的敏感表述\n###内容禁止包含违法违规、暴力、色情、歧视性语\"\n  },\n  {\n    \"role\": \"user\",\n    \"content\": \"\n\n##**上下文数据**\n接下来是提供的一部分相关数据\n###沟通记录的摘要信息\n####数据内容及注释\n以下数据采用 Toon 格式编码，字段名已替换为中文描述以便理解：\n用户ID: 7404351741\n班级编号: 500775385189890048\n沟通摘要清单: [8]: 本次沟通是老师和家长沟通孩子秋季语文课程的相关事宜，老师告知家长语文秋季需要进行【秋季班班型选择】，分为双一流班（周日早八点上课）和一本班（周六下午四点上课），两个班型课程内容基本一致，仅双一流班的讲义会额外增加拔高题。家长表示暂时无法确定选择哪个班型，需要回家询问孩子的意见后再告知老师。老师提醒家长，孩子已选的化学课程在周日早上上课，和语文双一流班的上课时间存在【课程时间冲突】，因此语文需要选择周六下午的一本班，家长对此安排表示认可。家长提出诉求，希望老师将两个班型的相关信息发送给自己，之后和老师核对确认了【讲义发货】相关安排：老师告知讲义23号开始发货，家长确认该时间没问题。本次沟通中，家长续班意向明确，已确定续报秋季语文课程，未提及扩课意向与转介绍意向，不存在续班抗性。,续班兴趣点方面，家长和孩子都十分认可高途课程，认为高途老师授课【幽默风趣】，课堂氛围轻松，孩子能在愉快的互动中掌握知识，教学方法获得家长的高度肯定，孩子也很喜欢高途的各位老师，家长明确表示英语会坚持留在高途学习，语文也打算继续在高途报名学习。续班抗性点方面，家长的核心顾虑是【版本不一致】，孩子所在地区使用的教材版本和高途的全国版课程不一致，家长担心全国版课程不匹配本地考情。扩课意向方面，家长明确语文有意向在高途扩课学习，英语确定续报高途。转介绍意向方面，本次沟通未提及转介绍相关内容，无转介绍意向。,本次沟通是家长主动联系老师沟通秋季课程续报相关问题。家长明确表示，孩子英语和数学比较薄弱，确定续报这两科，语文暂时不续报，物理打算先跟着现阶段复习课走。家长的续班抗性点：一是担心孩子同时学习四科，周末时间安排不过来，孩子连续上课没有休息，容易产生厌学不耐烦的情绪；二是对提前学习物理存在顾虑。家长的诉求：一是确认物理【课程内容设置】与【班型安排】规则；二是希望老师在秋季开课前提醒自己确认最终要学习的科目。老师回应会在月底开课前主动联系确认，家长表示核心需求是确定好最终的【课程选择】。,本次是老师和完成暑假课程的学员的沟通，老师询问学员课程学习感受，确认学员已完成全部课程与作业，同步了暑假结课册小灶课的时间安排，告知学员【秋季课程】的讲义发货时间、上课时间、作业提交要求等相关事项。本次沟通中，学员的续班兴趣点为认可现有课程的学习节奏，愿意配合课程各项安排；无续班抗性点；续班意向为明确续班，已经确认秋季课程的相关安排，可以正常参与秋季课程学习；转介绍意向为学员同意帮忙留意身边有补课需求的同学，有转介绍意向。,老师电话跟进秋季续报，家长明确表示：每周六要去打篮球，上不了课，本班周六的上课时间和篮球训练固定冲突，暂时不考虑续报。【时间冲突】【与学校/课外安排冲突】,老师电话跟进秋季续报，家长反馈：学了一学期成绩没提升，校内月考名次和报课前基本一样，对继续报班的效果存疑。【效果不达预期】【成绩未提升】,微信通话跟进秋季续报，学员本人表示：不喜欢这个老师讲课方式，节奏太快、互动少，听着容易走神，所以不想继续跟这个班。【师资问题】【不喜欢老师风格】,微信聊天跟进秋季续报，家长投诉：报名时说好的服务没做到，当初承诺的每周一次单独答疑和学习报告都没落实，对服务不满意，不打算续报。【服务问题】【过度承诺】\n\"\n  }\n]",
+        "response_mode": "blocking",
+        "user": "summary-production-baseline-20261125",
+        "run_user": {
+          "email": "gongxuemeng@gaotu.cn"
+        }
+      },
+      "new": {
         "serviceNameAndMethodName": "com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask",
         "params": [
-          "profile-current-9ee1960b-519e-4b7b-bd74-ffb1921632a7",
+          "thinking-aligned-9619996d-2045-4daa-991e-d1f7d3e27c7a",
           {
-            "aiApplicationName": "用户画像-test",
+            "aiApplicationName": "沟通摘要-test",
             "userQuery": "",
             "userTag": "test",
             "platformType": 2,
@@ -135,89 +270,10 @@
           },
           ""
         ]
-      },
-      "curl": "curl -sk \\\n  -x \"${AGENT_PROXY_URL:-http://127.0.0.1:8888}\" \\\n  'https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-1' \\\n  -H 'identification: microLessonStudent' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask\", \"params\": [\"profile-current-9ee1960b-519e-4b7b-bd74-ffb1921632a7\", {\"aiApplicationName\": \"用户画像-test\", \"userQuery\": \"\", \"userTag\": \"test\", \"platformType\": 2, \"runUser\": {\"email\": \"gongxuemeng@gaotu.cn\"}}, {\"clazzNumber\": \"500775385189890048\", \"userId\": \"7404351741\", \"commTag\": 0}, \"\"]}'",
-      "traceId": "f2e3ea9d-eb41-41a8-b041-63d20fba2554.0.3",
-      "gapmApp": "student-data",
-      "identification": "microLessonStudent",
-      "rvoCode": 0,
-      "result": {
-        "usage": {
-          "completion_tokens": 1447,
-          "prompt_tokens": 2333,
-          "cost": 0.00691194,
-          "completion_tokens_details": {
-            "reasoning_tokens": 1202
-          },
-          "prompt_tokens_details": {},
-          "total_tokens": 3780
-        },
-        "event": "litellm_proxy/doubao-seed-2.0-lite",
-        "messageId": "chatcmpl-9039b1cefc2a49f0928ef47d9b0a3c3f",
-        "answer": "{\n    \"renewalInterest\": \"**来自对话**：无相关内容\\n**来自问卷**：1、认可二讲老师同步学习进展、督促作业、家校紧密沟通的优质服务；2、对当前物理课程满意度打8分，认可课程质量；3、希望获得针对性查漏补缺、中考复习、真题训练、押题等备考服务\",\n    \"renewalResistance\": \"**来自对话**：无相关内容\\n**来自问卷**：1、孩子物理存在课上听懂课后做题不对、学习主动性差的问题；2、当前学习效果不理想，家长报名寒春班仍有疑虑\",\n    \"portraitSummary\": \"学员为准中考生，物理学科当前存在课上听懂课后做题不对、学习习惯差缺乏主动性、学习效果不理想的问题。**家长为问卷填报人，对主讲、二讲满意度均为7分，课程满意度8分**，**有续班意向，但对寒春班报名存在疑虑需咨询老师**。学员后续诉求为获得定期学情同步、学习督促、针对性查漏补缺、中考专题复习、真题训练等相关备考服务。\"\n}"
       }
-    },
-    "old_trace": "2a220458-cfd5-4547-82a0-295b5f386335.0.3",
-    "new_trace": "f2e3ea9d-eb41-41a8-b041-63d20fba2554.0.3",
-    "differences": {
-      "messages_equal": true,
-      "parameters": {
-        "model": {
-          "old": "doubao/Doubao-1-5-pro-32k",
-          "new": "doubao-seed-2-0-lite-260428"
-        },
-        "user": {
-          "old": "8684410f-0a33-4fbc-9ae7-87ac89688e60",
-          "new": null
-        },
-        "response_format": {
-          "old": null,
-          "new": {
-            "type": "json_object"
-          }
-        }
-      },
-      "business_fields_equal": {
-        "renewalInterest": false,
-        "renewalResistance": false,
-        "portraitSummary": false
-      }
-    },
-    "evidence": {
-      "current": "profile-real-baseline/result.json",
-      "config": "profile-real-baseline/copied-config-diff.json"
-    },
-    "missing": {},
-    "notes": [
-      "真实生产画像配置TEST副本与新普通入口同原数据运行成功，messages逐字相等；模型映射及新json_object为允许差异，输出语义不宣称逐字等价。"
-    ]
-  },
-  {
-    "scene": "沟通摘要",
-    "version": "263ba48a",
-    "input": {
-      "serviceNameAndMethodName": "com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask",
-      "params": [
-        "remaining-6ca3d458-44e5-4c8d-b00e-f207b6927cde",
-        {
-          "aiApplicationName": "沟通摘要-test",
-          "userQuery": "",
-          "userTag": "test",
-          "platformType": 2,
-          "runUser": {
-            "email": "gongxuemeng@gaotu.cn"
-          }
-        },
-        {
-          "clazzNumber": "500775385189890048",
-          "userId": "7404351741",
-          "commTag": 0
-        },
-        ""
-      ]
     },
     "old_request": {
-      "model": "doubao/Doubao-1-5-pro-32k",
+      "model": "doubao-seed-2-0-lite-260428",
       "stream": true,
       "messages": [
         {
@@ -225,7 +281,7 @@
           "content": "[\n  {\n    \"role\": \"system\",\n    \"content\": \"##角色\n你是一名在线教育的数据分析师\n\n##任务\n你的主要工作是基于老师和用户的每通沟通记录中的【关键点】提炼出整体的【关键点】，接下来会提供给你如下的【关键点】清单，主要包含如下信息：\n- 沟通摘要清单\n\n请你根据上面的【关键点】清单，提炼总结出如下一个字段：\n- 沟通总结（commSummary）\n\n请注意这里的总结内容不要包含“本次沟通”、“这次沟通”等类似单条沟通的字样，也不要包含“多个学员”、“不同学员”等类似多个学员的字样，输出格式必须确保是JSON格式，字段长度不超过500字，请使用一段文字表示即可，不要换行。字段使用markdown格式、并且将总结内容中需要用户重点关注的内容进行加粗。\n\n##**输出内容要求**\n输出的内容需要符合以下要求\n###在输出的数据中需要保证格式为以下形式的JSON,除此之外不要输出其它任何内容\n```json\n{\n  commSummary: \"\", // 沟通摘要总结}\n```\n\n###内容禁止包含可能引起不适的敏感表述\n###内容禁止包含违法违规、暴力、色情、歧视性语\"\n  },\n  {\n    \"role\": \"user\",\n    \"content\": \"\n\n##**上下文数据**\n接下来是提供的一部分相关数据\n###沟通记录的摘要信息\n####数据内容及注释\n以下数据采用 Toon 格式编码，字段名已替换为中文描述以便理解：\n用户ID: 7404351741\n班级编号: 500775385189890048\n沟通摘要清单: [8]: 本次沟通是老师和家长沟通孩子秋季语文课程的相关事宜，老师告知家长语文秋季需要进行【秋季班班型选择】，分为双一流班（周日早八点上课）和一本班（周六下午四点上课），两个班型课程内容基本一致，仅双一流班的讲义会额外增加拔高题。家长表示暂时无法确定选择哪个班型，需要回家询问孩子的意见后再告知老师。老师提醒家长，孩子已选的化学课程在周日早上上课，和语文双一流班的上课时间存在【课程时间冲突】，因此语文需要选择周六下午的一本班，家长对此安排表示认可。家长提出诉求，希望老师将两个班型的相关信息发送给自己，之后和老师核对确认了【讲义发货】相关安排：老师告知讲义23号开始发货，家长确认该时间没问题。本次沟通中，家长续班意向明确，已确定续报秋季语文课程，未提及扩课意向与转介绍意向，不存在续班抗性。,续班兴趣点方面，家长和孩子都十分认可高途课程，认为高途老师授课【幽默风趣】，课堂氛围轻松，孩子能在愉快的互动中掌握知识，教学方法获得家长的高度肯定，孩子也很喜欢高途的各位老师，家长明确表示英语会坚持留在高途学习，语文也打算继续在高途报名学习。续班抗性点方面，家长的核心顾虑是【版本不一致】，孩子所在地区使用的教材版本和高途的全国版课程不一致，家长担心全国版课程不匹配本地考情。扩课意向方面，家长明确语文有意向在高途扩课学习，英语确定续报高途。转介绍意向方面，本次沟通未提及转介绍相关内容，无转介绍意向。,本次沟通是家长主动联系老师沟通秋季课程续报相关问题。家长明确表示，孩子英语和数学比较薄弱，确定续报这两科，语文暂时不续报，物理打算先跟着现阶段复习课走。家长的续班抗性点：一是担心孩子同时学习四科，周末时间安排不过来，孩子连续上课没有休息，容易产生厌学不耐烦的情绪；二是对提前学习物理存在顾虑。家长的诉求：一是确认物理【课程内容设置】与【班型安排】规则；二是希望老师在秋季开课前提醒自己确认最终要学习的科目。老师回应会在月底开课前主动联系确认，家长表示核心需求是确定好最终的【课程选择】。,本次是老师和完成暑假课程的学员的沟通，老师询问学员课程学习感受，确认学员已完成全部课程与作业，同步了暑假结课册小灶课的时间安排，告知学员【秋季课程】的讲义发货时间、上课时间、作业提交要求等相关事项。本次沟通中，学员的续班兴趣点为认可现有课程的学习节奏，愿意配合课程各项安排；无续班抗性点；续班意向为明确续班，已经确认秋季课程的相关安排，可以正常参与秋季课程学习；转介绍意向为学员同意帮忙留意身边有补课需求的同学，有转介绍意向。,老师电话跟进秋季续报，家长明确表示：每周六要去打篮球，上不了课，本班周六的上课时间和篮球训练固定冲突，暂时不考虑续报。【时间冲突】【与学校/课外安排冲突】,老师电话跟进秋季续报，家长反馈：学了一学期成绩没提升，校内月考名次和报课前基本一样，对继续报班的效果存疑。【效果不达预期】【成绩未提升】,微信通话跟进秋季续报，学员本人表示：不喜欢这个老师讲课方式，节奏太快、互动少，听着容易走神，所以不想继续跟这个班。【师资问题】【不喜欢老师风格】,微信聊天跟进秋季续报，家长投诉：报名时说好的服务没做到，当初承诺的每周一次单独答疑和学习报告都没落实，对服务不满意，不打算续报。【服务问题】【过度承诺】\n\"\n  }\n]"
         }
       ],
-      "user": "e4763467-0f1a-4a09-92f1-e4471db27940"
+      "user": "ada8d18d-336a-4d96-ae26-a82437774873"
     },
     "new_request": {
       "response_format": {
@@ -240,50 +296,187 @@
       ],
       "model": "doubao-seed-2-0-lite-260428"
     },
-    "old_response": "```json\n{\n  \"commSummary\": \"沟通围绕秋季课程相关事宜展开，介绍了语文两类班型的差异、上课时间，提醒家长注意**语文双一流班与已选化学课程时间冲突**，同步了**讲义23号开始发货**的安排，收集到不同用户的相关反馈：部分用户认可高途老师**幽默风趣**的授课风格，存在部分用户有明确续班意向，也有用户因**教材版本不一致**、课程时间和课外/学校安排冲突、成绩未提升效果不达预期、不喜欢现有老师讲课风格、承诺的答疑等服务未落实等问题不愿续报，部分用户咨询课程内容设置、班型安排相关规则，还有用户同意帮忙留意有补课需求的同学，存在转介绍意向。\"\n}\n```",
+    "old_response": {
+      "event": "message",
+      "task_id": "4c615557-7061-4a6a-b6da-0d47b8eb8995",
+      "id": "e5adeb02-7f1f-4b88-8fe6-bee31c5b2e06",
+      "message_id": "e5adeb02-7f1f-4b88-8fe6-bee31c5b2e06",
+      "conversation_id": "bf1431c5-7aa3-448d-8ba4-fbc0eeb946d9",
+      "mode": "chat",
+      "answer": "<think>\n\n用户现在需要生成符合要求的commSummary，我已梳理完相关核心信息，本次生成需加粗突出关键点，当前整理出的内容涵盖用户续报相关的各类诉求，包括部分用户认可课程、部分用户有续报顾虑、部分用户有转介绍意向、部分用户对秋季课程有相关疑问等。\n\n我已梳理出秋季多科课程相关的核心沟通内容，将同步班型规则、协调时间冲突、告知发货安排，确认暑假课程完成情况，同步秋季上课及作业要求。\n\n目前已梳理出用户反馈的课程相关评价与诉求：部分用户认可授课意向续报，部分用户有续报顾虑，部分用户有转介绍意向，还有部分用户提出秋季开课前需确认学习科目。我已按要求调整表述、核对格式，整理出规范的沟通核心内容。我已核对所有表述合规无误，目前整理的用户诉求内容完整准确，接下来将其转换为符合规范的JSON格式输出。\n\n</think>```json\n{\n  \"commSummary\": \"同步秋季多科课程相关安排，讲解**秋季班班型选择**规则，说明两类班课程内容基本一致，仅双一流班讲义额外增加拔高题，协调解决**课程时间冲突**问题，告知**讲义发货**的具体时间，确认暑假课程的完成情况，同步秋季课程上课时间、作业提交要求、**课程内容设置**等相关规则。相关人员认可课程授课**幽默风趣**、教学质量好，部分明确有续报意向，也存在部分顾虑，包括担心教材版本与课程版本不一致不匹配本地考情、多科同时学习时间安排不开易产生厌学情绪、对提前学物理存疑、学习后成绩未提升效果不达预期、不适应现有老师的授课风格、报名时承诺的答疑等服务未落实等，部分人员明确暂不续报，有人员同意帮忙留意身边有补课需求的同学存在转介绍意向，部分用户提出希望老师在秋季开课前提醒确认最终选定的学习科目。\"\n}\n```",
+      "metadata": {
+        "annotation_reply": null,
+        "retriever_resources": [],
+        "usage": {
+          "prompt_tokens": 1293,
+          "prompt_unit_price": "0",
+          "prompt_price_unit": "0",
+          "prompt_price": "0",
+          "completion_tokens": 1029,
+          "completion_unit_price": "0",
+          "completion_price_unit": "0",
+          "completion_price": "0",
+          "total_tokens": 2322,
+          "total_price": "0",
+          "currency": "USD",
+          "latency": 23.059030305594206,
+          "time_to_first_token": null,
+          "time_to_generate": null
+        },
+        "agent_thoughts": [
+          {
+            "id": "0a74c04c-5ce0-4316-9d08-aa6670fadbfb",
+            "position": 1,
+            "thought": "",
+            "observation": "",
+            "tool": "",
+            "tool_labels": {},
+            "tool_input": "",
+            "message_files": []
+          },
+          {
+            "id": "0a74c04c-5ce0-4316-9d08-aa6670fadbfb",
+            "position": 1,
+            "thought": "<think>\n\n用户现在需要生成符合要求的commSummary，我已梳理完相关核心信息，本次生成需加粗突出关键点，当前整理出的内容涵盖用户续报相关的各类诉求，包括部分用户认可课程、部分用户有续报顾虑、部分用户有转介绍意向、部分用户对秋季课程有相关疑问等。\n\n我已梳理出秋季多科课程相关的核心沟通内容，将同步班型规则、协调时间冲突、告知发货安排，确认暑假课程完成情况，同步秋季上课及作业要求。\n\n目前已梳理出用户反馈的课程相关评价与诉求：部分用户认可授课意向续报，部分用户有续报顾虑，部分用户有转介绍意向，还有部分用户提出秋季开课前需确认学习科目。我已按要求调整表述、核对格式，整理出规范的沟通核心内容。我已核对所有表述合规无误，目前整理的用户诉求内容完整准确，接下来将其转换为符合规范的JSON格式输出。\n\n</think>```json\n{\n  \"commSummary\": \"同步秋季多科课程相关安排，讲解**秋季班班型选择**规则，说明两类班课程内容基本一致，仅双一流班讲义额外增加拔高题，协调解决**课程时间冲突**问题，告知**讲义发货**的具体时间，确认暑假课程的完成情况，同步秋季课程上课时间、作业提交要求、**课程内容设置**等相关规则。相关人员认可课程授课**幽默风趣**、教学质量好，部分明确有续报意向，也存在部分顾虑，包括担心教材版本与课程版本不一致不匹配本地考情、多科同时学习时间安排不开易产生厌学情绪、对提前学物理存疑、学习后成绩未提升效果不达预期、不适应现有老师的授课风格、报名时承诺的答疑等服务未落实等，部分人员明确暂不续报，有人员同意帮忙留意身边有补课需求的同学存在转介绍意向，部分用户提出希望老师在秋季开课前提醒确认最终选定的学习科目。\"\n}\n```",
+            "observation": "",
+            "tool": "",
+            "tool_labels": {},
+            "tool_input": "",
+            "message_files": []
+          }
+        ]
+      },
+      "created_at": 1795578956
+    },
     "new_response": {
       "usage": {
-        "completion_tokens": 931,
+        "completion_tokens": 946,
         "prompt_tokens": 1424,
-        "cost": 0.00432264,
+        "cost": 0.00435288,
         "completion_tokens_details": {
-          "reasoning_tokens": 736
+          "reasoning_tokens": 751
         },
         "prompt_tokens_details": {},
-        "total_tokens": 2355
+        "total_tokens": 2370
       },
       "event": "litellm_proxy/doubao-seed-2.0-lite",
-      "messageId": "chatcmpl-41c8df28c0c448abbf3bbcd184f4e732",
-      "answer": "{\n  \"commSummary\": \"围绕秋季课程相关事宜沟通，介绍语文设有双一流班、一本班两类班型，两类课程内容基本一致仅双一流班讲义额外增加拔高题，**需留意部分班型存在和已选课程、课外安排的时间冲突问题**，讲义将于23号开始发货。部分用户认可高途老师幽默风趣的授课风格、轻松的课堂氛围，明确确定续报秋季相关课程，部分用户同意帮忙留意有补课需求的同学有转介绍意向；部分用户存在教材版本和本地使用版本不一致、担心多科同时报读挤占休息时间易引发厌学情绪、对提前学习物理存疑的顾虑，还有用户因学习后成绩未提升、不认可当前老师授课节奏风格、报名时承诺的每周单独答疑和学习报告未落实等问题明确表示不续报，老师会在秋季开课前提醒确认最终选科。\"\n}"
+      "messageId": "chatcmpl-139f5fa8aed743699fb40fca2678c798",
+      "answer": "{\"commSummary\":\"沟通围绕秋季课程相关事宜展开，告知不同班型的上课时间、内容差异，提醒相关课程存在**课程时间冲突**，核对**讲义发货**相关安排为23号开始发货，家长及学员认可高途老师授课**幽默风趣**、教学质量出色，部分学员认可现有课程学习节奏，明确续班意向甚至愿意帮忙推荐有补课需求的同学，同时也梳理出相关续班顾虑：部分家长担心教材**版本不一致**不匹配本地考情，担心多科同时学习孩子时间安排不过来，部分学员因课外安排与上课时间冲突、学习后成绩未提升效果不达预期、不适应老师讲课节奏风格、报名时承诺的单独答疑和学习报告等服务未落实，暂不考虑续报，同时同步物理**课程内容设置**与**班型安排**规则，约定秋季开课前提醒确认最终的**课程选择**\"}"
     },
-    "old_trace": "15760243-f225-4246-a103-c9565c2652ba.0.3",
-    "new_trace": "9d831ba2-fc93-46d7-82ee-f1797aea5696.0.3",
+    "old_trace": "ffe40068-955e-4044-9eeb-ac8641740dfd.0.3",
+    "new_trace": "66c8b9fa-a1d0-4fa2-a305-6e24548ef9ce.0.3",
     "differences": {
-      "model": {
-        "old": "doubao/Doubao-1-5-pro-32k",
-        "new": "doubao-seed-2-0-lite-260428"
-      },
-      "response_format": {
-        "old": null,
-        "new": {
-          "type": "json_object"
+      "messages_equal": true,
+      "non_messages": [
+        {
+          "field": "response_format",
+          "old_present": false,
+          "new_present": true,
+          "old": null,
+          "new": {
+            "type": "json_object"
+          }
+        },
+        {
+          "field": "user",
+          "old_present": true,
+          "new_present": false,
+          "old": "ada8d18d-336a-4d96-ae26-a82437774873",
+          "new": null
         }
-      },
-      "user": {
-        "old": "e4763467-0f1a-4a09-92f1-e4471db27940",
-        "new": null
+      ],
+      "effective_thinking": {
+        "aligned": true,
+        "old_reasoning_tokens": 806,
+        "new_reasoning_tokens": 751,
+        "scope": "当前生产配置TEST有限输入对照"
       }
     },
     "evidence": {
-      "old": "pairs.json:name=摘要,sides[0]",
-      "input_new_response": "remaining-current-runs/after/摘要/invoke.json",
-      "new_request": "remaining-current-runs/after/摘要/received.json"
+      "directory": "thinking-related",
+      "old_http": "thinking-related/摘要-llm-http.json",
+      "old_response": "thinking-related/摘要-old-response.json",
+      "old_llm_response": "thinking-related/摘要-llm-response.json",
+      "new_http": "profile-direct-baseline/摘要-http.json",
+      "result": "thinking-related/result.json",
+      "verification": "thinking-related-verification.md"
     },
     "missing": {},
     "notes": [
-      "旧response为pairs下游响应，新response为执行器返回，层级不同，均原样保留",
-      "身份自动来源/发送头同次关联由主worker补证"
-    ]
+      "当前生产生成配置的TEST对照，messages和有效thinking已闭合；仅有限输入，不证明生产全量或输出语义普遍等价。"
+    ],
+    "new_llm_response": {
+      "id": "chatcmpl-139f5fa8aed743699fb40fca2678c798",
+      "created": 1795578783,
+      "model": "doubao-seed-2.0-lite",
+      "object": "chat.completion",
+      "system_fingerprint": null,
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "content": "{\"commSummary\":\"沟通围绕秋季课程相关事宜展开，告知不同班型的上课时间、内容差异，提醒相关课程存在**课程时间冲突**，核对**讲义发货**相关安排为23号开始发货，家长及学员认可高途老师授课**幽默风趣**、教学质量出色，部分学员认可现有课程学习节奏，明确续班意向甚至愿意帮忙推荐有补课需求的同学，同时也梳理出相关续班顾虑：部分家长担心教材**版本不一致**不匹配本地考情，担心多科同时学习孩子时间安排不过来，部分学员因课外安排与上课时间冲突、学习后成绩未提升效果不达预期、不适应老师讲课节奏风格、报名时承诺的单独答疑和学习报告等服务未落实，暂不考虑续报，同时同步物理**课程内容设置**与**班型安排**规则，约定秋季开课前提醒确认最终的**课程选择**\"}",
+            "role": "assistant",
+            "tool_calls": null,
+            "function_call": null,
+            "reasoning_content": "\n我现在需要生成符合要求的commSummary，\n\n目前已梳理完本次秋季课程沟通的核心信息，涵盖班型差异、冲突提醒、讲义发货安排，学员家长的认可度与续班顾虑，相关规则及课前注意事项，接下来会同步提醒家长确认最终课程选择。内容整理完成后会输出合规JSON。\n\n沟通内容的整理工作已完成，符合格式与内容要求，已明确最终输出仅需合规JSON对象，我将输出对应内容。\n\n符合要求的合规JSON内容已生成完毕，已核验内容无违规表述，核心信息完整，可直接输出。\n"
+          }
+        }
+      ],
+      "usage": {
+        "completion_tokens": 946,
+        "prompt_tokens": 1424,
+        "total_tokens": 2370,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 751,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": null
+        },
+        "cost": 0.00435288
+      }
+    },
+    "old_llm_response": {
+      "id": "chatcmpl-8ea4348d145f4ec0ad1517c634b189e7",
+      "created": 1795578957,
+      "model": "doubao-seed-2.0-lite",
+      "object": "chat.completion",
+      "system_fingerprint": null,
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "content": "```json\n{\n  \"commSummary\": \"同步秋季多科课程相关安排，讲解**秋季班班型选择**规则，说明两类班课程内容基本一致，仅双一流班讲义额外增加拔高题，协调解决**课程时间冲突**问题，告知**讲义发货**的具体时间，确认暑假课程的完成情况，同步秋季课程上课时间、作业提交要求、**课程内容设置**等相关规则。相关人员认可课程授课**幽默风趣**、教学质量好，部分明确有续报意向，也存在部分顾虑，包括担心教材版本与课程版本不一致不匹配本地考情、多科同时学习时间安排不开易产生厌学情绪、对提前学物理存疑、学习后成绩未提升效果不达预期、不适应现有老师的授课风格、报名时承诺的答疑等服务未落实等，部分人员明确暂不续报，有人员同意帮忙留意身边有补课需求的同学存在转介绍意向，部分用户提出希望老师在秋季开课前提醒确认最终选定的学习科目。\"\n}\n```",
+            "role": "assistant",
+            "tool_calls": null,
+            "function_call": null,
+            "reasoning_content": "\n用户现在需要生成符合要求的commSummary，我已梳理完相关核心信息，本次生成需加粗突出关键点，当前整理出的内容涵盖用户续报相关的各类诉求，包括部分用户认可课程、部分用户有续报顾虑、部分用户有转介绍意向、部分用户对秋季课程有相关疑问等。\n\n我已梳理出秋季多科课程相关的核心沟通内容，将同步班型规则、协调时间冲突、告知发货安排，确认暑假课程完成情况，同步秋季上课及作业要求。\n\n目前已梳理出用户反馈的课程相关评价与诉求：部分用户认可授课意向续报，部分用户有续报顾虑，部分用户有转介绍意向，还有部分用户提出秋季开课前需确认学习科目。我已按要求调整表述、核对格式，整理出规范的沟通核心内容。我已核对所有表述合规无误，目前整理的用户诉求内容完整准确，接下来将其转换为符合规范的JSON格式输出。\n"
+          }
+        }
+      ],
+      "usage": {
+        "completion_tokens": 1029,
+        "prompt_tokens": 1293,
+        "total_tokens": 2322,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 806,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": null
+        },
+        "cost": 0.00427518
+      }
+    }
   },
   {
     "scene": "服务SOP",
@@ -383,28 +576,39 @@
   },
   {
     "scene": "高中分层",
-    "version": "263ba48a",
+    "version": "47b3dcb7 TEST",
     "input": {
-      "serviceNameAndMethodName": "com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask",
-      "params": [
-        "remaining-2c217026-3553-4355-bb2a-9dec5bf7923b",
-        {
-          "aiApplicationName": "预测分层原因",
-          "userQuery": "",
-          "userTag": "test",
-          "platformType": 2,
-          "runUser": {
-            "email": "gongxuemeng@gaotu.cn"
-          }
-        },
-        {
-          "clazzNumber": "500775385189890048",
-          "userId": "6761113627",
-          "commTag": 0,
-          "subClazzNumber": "31298462823089024"
-        },
-        ""
-      ]
+      "old": {
+        "inputs": {},
+        "query": "[\n  {\n    \"role\": \"system\",\n    \"content\": \"## 角色\n- 你是一位经验丰富且专业的数据分析师，擅长以通俗易懂且灵活多变的语言分析用户数据，并给出合理原因解释，以此让在线教育行业的辅导老师（二讲）相信AI续班预测意向度结果（即AI分层），促使其重点跟进。\n\n## 技能\n- 分析续班预测原因\n- 读取用户特征值、每个特征的重要性、以及此用户的AI分层（从高到低为ABCD，A续班概率最高、D续班概率最低）。\n- A续班概率为高、B续班概率为较高、C续班概率为偏低、D续班概率为低，分析结论时，需对应ABCD分层，给出预测原因。例如当续班意向分层\n- 结合特征值与重要性，优先挑选重要性高的多个特征值，以及你认为能够表示学员意向度高，续班概率高的特征值，将特征值转化为业务易懂的语言，用通俗易懂、简短精炼且自然流畅的语言，分析每个用户被预测为对应【AI分层】的原因，内容控制在200字以内。\n\n## 特征解释（将特征转化为业务易懂表述示例）\n服务天数：学员进辅导班后二讲服务天数，数字越高，进辅导班时间越长，二讲服务时间越长。\n同科目新老学员：相同科目，学员是否有历史订单。\n高危退费：学员是否想退费，不再学习。\n咨询/提出退费：学员咨询退费相关事项或明确提出退费。\n是否有补习：学员是否有补习经历。\n线上补习经验：学员过往的线上补习学习经历和体验。\n补习形式偏好：提取学员明确提及的补习教学形式偏好，包括教学方式和班级规模。\n对比其他补课方式：学员是否提到和其他补课方式的对比，或者想去其他补课机构。\n购买意愿：学员续班（购买课程/报名/下单）的意愿，可分为明确购买、犹豫考虑、明确拒绝3类。\n扩课意向：户是否有报名其他学科的想法，或者咨询其他学科报名流程。\n转介绍意向：用户是否有向其他人推荐课程，或者向老师推荐学员的想法。\n走读/住校：学员就读方式，包括走读、住校等基本分类，对于住校情况进一步细分回家频率。\n整体成绩分数：学员的整体学习成绩水平，排名信息或成绩水平描述。\n单学科成绩：学员某个学科成绩。\n薄弱科目（新）：提取学员明确提及的个人相对较弱的学习科目。\n优势学科：提取学员明确提及的个人相对较强的学习科目。\n高中选科：学员在高中的选科。\n学习进步：学员补习后，学习成绩是否有提升。\n升学规划：学员升学计划或学习目标。\n学习主动性：学员在学习过程中的主动性和自主程度。\n家庭教育态度：家庭在教育投入上的态度和参与程度。\n学科重视程度：学员对补习学科的重视程度。\n心理健康问题：学员表达学习焦虑相关问题的次数，例如【学习压力大焦虑/抵触补课/畏难情绪/考试信心不足】。\n家长和学员想法一致性：在购买课程上，家长和学员想法是否一致，如果老师表达完其中一方想法，另一方表示同意，则不算想法不一致。\n课程产品满意度：学员对课程产品的态度或评价，提取学员的课程产品满意度信息，用负值表示对课程产品不满意（满意度低），用正值表示对课程产品满意（满意度高）。\n课程质量：学员或家长对课程质量的评价。\n课程匹配度：学员学校课程和补习课程的匹配度，包括内容匹配度和进度匹配度。\n对辅导老师（二讲老师）的评价：学员对辅导老师的评价。\n对主讲老师（上课老师）的评价：学员对主讲老师的评价。\n效果异议：用户对课程效果的异议。\n价格异议：用户对课程价格的异议。\n关注优惠：用户主动询问是否有优惠、或者对优惠表达出感兴趣。\n时间冲突：课程与用户其他安排有时间冲突，或者与学校时间冲突，例如【“时间紧张/报太多课没时间学/学校作业多/学校事情多/放假时间少”】。\n服务异议：学员对课程服务方面的异议。\n近7日累计微信亲密度：近7天微信沟通频率高低，数字越高，互动频率越高，可理解为和二讲联系频繁程度，数值不代表沟通次数、天数。\n近7日累计通话亲密度：近7天通话沟通频率高低，数字越高，互动频率越高，可理解为和二讲联系频繁程度，数值不代表沟通次数、天数。\n平均已开课正式课节完成度_非续班期：平均已开课正式课节完成度\n平均已开课正式课节完成度_续班期：平均已开课正式课节完成度\n单位课节的小灶课听课时长_非续班期：小灶课听课时长\n单位课节的小灶课听课时长_续班期：小灶课听课时长\n累计参与考试频次_服务期：累计参与考试次数\n意向反馈是考虑续班的问卷数：意向反馈是考虑续班的问卷数\n意向反馈是拒绝续班的问卷数：意向反馈是拒绝续班的问卷数\n意向反馈是同意续班的问卷数：意向反馈是同意续班的问卷数\n是否预报名：学员是否预报名本学科。\n\n\n## 注意\n- 语言要通俗易懂，难理解的特征不要直接引用，而是变成通俗易懂、干练的语言去说。\n- 解释不要复杂，要简短干练，无用信息不用输出\n- 不需要说此学员被预测为ABCD，辅导老师已知道此信息\n- 特征相关性方向：正向代表特征重要性跟续班率正相关，重要性越大，续班率越高；负向代表特征重要性跟续班率负相关，重要性越大，续班率越低。此类判断仅对特征值为数值型有效，其他类型无效。\n- 对比用户特征值和特征分位数：正向相关的特征，特征值处于较高分位数，续班率增加；负向相关的特征，特征值处于较高分位数，续班率下降。\n- 多个类似或同类特征，结合你的理解，总结一个最终结果输出，不要重复输出，例如【补习形式偏好、是否对比其他补习方式、线上补习经验】属于同类特征。\n- 一定要注意：特征重要性仅代表这个特征能有帮助有效分层，不代表此特征值续班率高，比如省份重要性高，但省份【贵州省】，反而代表这个学员续班率低，分层减分，所以你要按照你的经验认知，判断每个特征值是加分还是减分。\n- A续班概率为高、B续班概率为较高、C续班概率为偏低、D续班概率为低，分析结论时，需对应ABCD分层，给出预测原因。例如当续班意向分层\n\n## 限制:\n- 回答必须围绕用户数据的分析，不要回复无关话题。\n- 严格依据提供的信息进行分析，不引入无根据信息。\n- 可以输出学员各项特征的数值，但是不需要输出分位数，涉及分位数的描述，转化成处于较高水平等描述，例如“该学员非续班期课节完成度为90%，处于高水平”。\n- 直接输出原因，不需要写明“该学员被分层的原因主要是”等字样，页面已有提示文案。\n- 输出的原因解释需通俗易懂、简短精炼、自然流畅，控制在200字以内，最后不需要展示原因多少个字。\n- 如果用户特征值为空，直接结束分析\n\n## 输出\n```\n总结的原因\n```\n- 如果提取不到原因，则输出：\n```\n暂无分析原因\n```\n\n##**输出内容要求**\n输出的内容需要符合以下要求\n###内容禁止包含可能引起不适的敏感表述\n###内容禁止包含违法违规、暴力、色情、歧视性语\"\n  },\n  {\n    \"role\": \"user\",\n    \"content\": \"\n\n##**上下文数据**\n接下来是提供的一部分相关数据\n###特征值信息\n####数据内容及注释\n以下数据采用 Toon 格式编码，字段名已替换为中文描述以便理解：\n用户特征值:   learningprogress: 0\n  mentalhealthissue: 0.0\n  tutoringteacherevaluation: 0\n  courseexpansionintention: 0\n  focusondiscount: 0\n  effectobjection: 0\n  courseproductsatisfaction: 0\n  is_pre_registration: 0\n  exam_frequency_sum_service_period: 0\n  coursequality: 0\n  referralintention: 0\n  resident: 走读\n  priceobjection: 0\n  reject_form_count: 0\n  timeconflict: 0\n  avg_lesson_completion_progress_renewal_period: 0.0\n  avg_lesson_completion_progress_non_renewal_period: 0.3182\n  days_since_in_subclazz: 108\n  serviceobjection: 0\n  avg_small_lesson_learn_duration_renewal_period: 0.0\n  refundwarn: 未知\n  leadteacherevaluation: 0\n  avg_small_lesson_learn_duration_non_renewal_period: 0.0\n  user_subject_old_type: 新学员\n  consider_form_count: 0\n  consultrefund: 0\n  wechat_engagement_7d: 0.1204\n  ideaconsistency: 0\n  accept_form_count: 0\n  call_engagement_7d: 0.0\n\n特征值分位数:   reject_form_count: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  learningprogress: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  timeconflict: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  avg_lesson_completion_progress_renewal_period: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  avg_lesson_completion_progress_non_renewal_period: \"{\\\"q25\\\":0.49950000643730164,\\\"q50\\\":0.7996000051498413,\\\"q75\\\":0.9528999924659729}\"\n  tutoringteacherevaluation: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  serviceobjection: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  avg_small_lesson_learn_duration_renewal_period: \"{\\\"q25\\\":0.0,\\\"q50\\\":4.0,\\\"q75\\\":3803.0}\"\n  leadteacherevaluation: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  avg_small_lesson_learn_duration_non_renewal_period: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  courseexpansionintention: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  consider_form_count: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  focusondiscount: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  effectobjection: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  consultrefund: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  courseproductsatisfaction: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  is_pre_registration: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":1.0}\"\n  exam_frequency_sum_service_period: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  wechat_engagement_7d: \"{\\\"q25\\\":0.47040000557899475,\\\"q50\\\":0.7804999947547913,\\\"q75\\\":1.457200050354004}\"\n  coursequality: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  referralintention: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  ideaconsistency: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  accept_form_count: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  call_engagement_7d: \"{\\\"q25\\\":-0.13330000638961792,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  priceobjection: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n\n特征重要性:   learningprogress: 0\n  overallscore: 0\n  mentalhealthissue: 0\n  tutoringteacherevaluation: 0\n  advantageoussubject: 0\n  onlinetutoringexperience: 0\n  courseexpansionintention: 0\n  comparewithothertutoringmethods: 0\n  focusondiscount: 0\n  effectobjection: 0\n  courseproductsatisfaction: 0\n  is_pre_registration: 11\n  exam_frequency_sum_service_period: 0\n  coursequality: 0\n  referralintention: 0\n  highschoolsubjectselection: 0\n  priceobjection: 0\n  resident: 3\n  weaksubject_new: 0\n  reject_form_count: 0\n  timeconflict: 0\n  avg_lesson_completion_progress_renewal_period: 0\n  schoolattendancetype: 1\n  avg_lesson_completion_progress_non_renewal_period: 214\n  singlesubjectscore: 11\n  days_since_in_subclazz: 200\n  other_tutoring_situation: 0\n  serviceobjection: 0\n  avg_small_lesson_learn_duration_renewal_period: 39\n  refundwarn: 3\n  leadteacherevaluation: 0\n  avg_small_lesson_learn_duration_non_renewal_period: 0\n  user_subject_old_type: 12\n  consider_form_count: 0\n  consultrefund: 0\n  subjectattentionlevel: 0\n  purchaseintention: 52\n  wechat_engagement_7d: 236\n  coursematchingdegree: 0\n  furtherstudyplanning: 0\n  learninginitiative: 0\n  familyeducationattitude: 0\n  ideaconsistency: 0\n  accept_form_count: 0\n  tutoringformatpreference: 0\n  call_engagement_7d: 0\n\n特征中文名称:   days_since_in_subclazz: 服务天数\n  user_subject_old_type: 同科目新老学员\n  refundwarn: 高危退费\n  consultrefund: 咨询/提出退费\n  other_tutoring_situation: 是否有补习\n  onlinetutoringexperience: 线上补习经验\n  tutoringformatpreference: 补习形式偏好\n  comparewithothertutoringmethods: 对比其他补课方式\n  purchaseintention: 购买意愿\n  courseexpansionintention: 扩课意向\n  referralintention: 转介绍意向\n  resident: 走读/住校\n  schoolattendancetype: 走读/住校\n  overallscore: 整体成绩分数\n  singlesubjectscore: 单学科成绩\n  weaksubject_new: 薄弱科目（新）\n  advantageoussubject: 优势学科\n  highschoolsubjectselection: 高中选科\n  learningprogress: 学习进步\n  furtherstudyplanning: 升学规划\n  learninginitiative: 学习主动性\n  familyeducationattitude: 家庭教育态度\n  subjectattentionlevel: 学科重视程度\n  mentalhealthissue: 心理健康问题\n  ideaconsistency: 家长和学员想法一致性\n  courseproductsatisfaction: 课程产品满意度\n  coursequality: 课程质量\n  coursematchingdegree: 课程匹配度\n  tutoringteacherevaluation: 对辅导老师（二讲老师）的评价\n  leadteacherevaluation: 对主讲老师（上课老师）的评价\n  effectobjection: 效果异议\n  priceobjection: 价格异议\n  focusondiscount: 关注优惠\n  timeconflict: 时间冲突\n  serviceobjection: 服务异议\n  wechat_engagement_7d: 近7日累计微信亲密度\n  call_engagement_7d: 近7日累计通话亲密度\n  avg_lesson_completion_progress_non_renewal_period: 平均已开课正式课节完成度_非续班期\n  avg_lesson_completion_progress_renewal_period: 平均已开课正式课节完成度_续班期\n  avg_small_lesson_learn_duration_non_renewal_period: 单位课节的小灶课听课时长_非续班期\n  avg_small_lesson_learn_duration_renewal_period: 单位课节的小灶课听课时长_续班期\n  exam_frequency_sum_service_period: 累计参与考试频次_服务期\n  consider_form_count: 意向反馈是考虑续班的问卷数\n  reject_form_count: 意向反馈是拒绝续班的问卷数\n  accept_form_count: 意向反馈是同意续班的问卷数\n  is_pre_registration: 是否预报名\n\n续班意向预测结果: D\n\"\n  }\n]",
+        "response_mode": "blocking",
+        "user": "summary-production-baseline-20261125",
+        "run_user": {
+          "email": "gongxuemeng@gaotu.cn"
+        }
+      },
+      "new": {
+        "serviceNameAndMethodName": "com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask",
+        "params": [
+          "tier-thinking-776b65ca-0746-4055-b7bb-7b8b47fa40b2",
+          {
+            "aiApplicationName": "预测分层原因",
+            "userQuery": "",
+            "userTag": "test",
+            "platformType": 2,
+            "runUser": {
+              "email": "gongxuemeng@gaotu.cn"
+            }
+          },
+          {
+            "clazzNumber": "500775385189890048",
+            "userId": "6761113627",
+            "commTag": 0,
+            "subClazzNumber": "31298462823089024"
+          },
+          ""
+        ]
+      }
     },
     "old_request": {
       "model": "doubao/Doubao-1-5-pro-32k",
@@ -415,7 +619,7 @@
           "content": "[\n  {\n    \"role\": \"system\",\n    \"content\": \"## 角色\n- 你是一位经验丰富且专业的数据分析师，擅长以通俗易懂且灵活多变的语言分析用户数据，并给出合理原因解释，以此让在线教育行业的辅导老师（二讲）相信AI续班预测意向度结果（即AI分层），促使其重点跟进。\n\n## 技能\n- 分析续班预测原因\n- 读取用户特征值、每个特征的重要性、以及此用户的AI分层（从高到低为ABCD，A续班概率最高、D续班概率最低）。\n- A续班概率为高、B续班概率为较高、C续班概率为偏低、D续班概率为低，分析结论时，需对应ABCD分层，给出预测原因。例如当续班意向分层\n- 结合特征值与重要性，优先挑选重要性高的多个特征值，以及你认为能够表示学员意向度高，续班概率高的特征值，将特征值转化为业务易懂的语言，用通俗易懂、简短精炼且自然流畅的语言，分析每个用户被预测为对应【AI分层】的原因，内容控制在200字以内。\n\n## 特征解释（将特征转化为业务易懂表述示例）\n服务天数：学员进辅导班后二讲服务天数，数字越高，进辅导班时间越长，二讲服务时间越长。\n同科目新老学员：相同科目，学员是否有历史订单。\n高危退费：学员是否想退费，不再学习。\n咨询/提出退费：学员咨询退费相关事项或明确提出退费。\n是否有补习：学员是否有补习经历。\n线上补习经验：学员过往的线上补习学习经历和体验。\n补习形式偏好：提取学员明确提及的补习教学形式偏好，包括教学方式和班级规模。\n对比其他补课方式：学员是否提到和其他补课方式的对比，或者想去其他补课机构。\n购买意愿：学员续班（购买课程/报名/下单）的意愿，可分为明确购买、犹豫考虑、明确拒绝3类。\n扩课意向：户是否有报名其他学科的想法，或者咨询其他学科报名流程。\n转介绍意向：用户是否有向其他人推荐课程，或者向老师推荐学员的想法。\n走读/住校：学员就读方式，包括走读、住校等基本分类，对于住校情况进一步细分回家频率。\n整体成绩分数：学员的整体学习成绩水平，排名信息或成绩水平描述。\n单学科成绩：学员某个学科成绩。\n薄弱科目（新）：提取学员明确提及的个人相对较弱的学习科目。\n优势学科：提取学员明确提及的个人相对较强的学习科目。\n高中选科：学员在高中的选科。\n学习进步：学员补习后，学习成绩是否有提升。\n升学规划：学员升学计划或学习目标。\n学习主动性：学员在学习过程中的主动性和自主程度。\n家庭教育态度：家庭在教育投入上的态度和参与程度。\n学科重视程度：学员对补习学科的重视程度。\n心理健康问题：学员表达学习焦虑相关问题的次数，例如【学习压力大焦虑/抵触补课/畏难情绪/考试信心不足】。\n家长和学员想法一致性：在购买课程上，家长和学员想法是否一致，如果老师表达完其中一方想法，另一方表示同意，则不算想法不一致。\n课程产品满意度：学员对课程产品的态度或评价，提取学员的课程产品满意度信息，用负值表示对课程产品不满意（满意度低），用正值表示对课程产品满意（满意度高）。\n课程质量：学员或家长对课程质量的评价。\n课程匹配度：学员学校课程和补习课程的匹配度，包括内容匹配度和进度匹配度。\n对辅导老师（二讲老师）的评价：学员对辅导老师的评价。\n对主讲老师（上课老师）的评价：学员对主讲老师的评价。\n效果异议：用户对课程效果的异议。\n价格异议：用户对课程价格的异议。\n关注优惠：用户主动询问是否有优惠、或者对优惠表达出感兴趣。\n时间冲突：课程与用户其他安排有时间冲突，或者与学校时间冲突，例如【“时间紧张/报太多课没时间学/学校作业多/学校事情多/放假时间少”】。\n服务异议：学员对课程服务方面的异议。\n近7日累计微信亲密度：近7天微信沟通频率高低，数字越高，互动频率越高，可理解为和二讲联系频繁程度，数值不代表沟通次数、天数。\n近7日累计通话亲密度：近7天通话沟通频率高低，数字越高，互动频率越高，可理解为和二讲联系频繁程度，数值不代表沟通次数、天数。\n平均已开课正式课节完成度_非续班期：平均已开课正式课节完成度\n平均已开课正式课节完成度_续班期：平均已开课正式课节完成度\n单位课节的小灶课听课时长_非续班期：小灶课听课时长\n单位课节的小灶课听课时长_续班期：小灶课听课时长\n累计参与考试频次_服务期：累计参与考试次数\n意向反馈是考虑续班的问卷数：意向反馈是考虑续班的问卷数\n意向反馈是拒绝续班的问卷数：意向反馈是拒绝续班的问卷数\n意向反馈是同意续班的问卷数：意向反馈是同意续班的问卷数\n是否预报名：学员是否预报名本学科。\n\n\n## 注意\n- 语言要通俗易懂，难理解的特征不要直接引用，而是变成通俗易懂、干练的语言去说。\n- 解释不要复杂，要简短干练，无用信息不用输出\n- 不需要说此学员被预测为ABCD，辅导老师已知道此信息\n- 特征相关性方向：正向代表特征重要性跟续班率正相关，重要性越大，续班率越高；负向代表特征重要性跟续班率负相关，重要性越大，续班率越低。此类判断仅对特征值为数值型有效，其他类型无效。\n- 对比用户特征值和特征分位数：正向相关的特征，特征值处于较高分位数，续班率增加；负向相关的特征，特征值处于较高分位数，续班率下降。\n- 多个类似或同类特征，结合你的理解，总结一个最终结果输出，不要重复输出，例如【补习形式偏好、是否对比其他补习方式、线上补习经验】属于同类特征。\n- 一定要注意：特征重要性仅代表这个特征能有帮助有效分层，不代表此特征值续班率高，比如省份重要性高，但省份【贵州省】，反而代表这个学员续班率低，分层减分，所以你要按照你的经验认知，判断每个特征值是加分还是减分。\n- A续班概率为高、B续班概率为较高、C续班概率为偏低、D续班概率为低，分析结论时，需对应ABCD分层，给出预测原因。例如当续班意向分层\n\n## 限制:\n- 回答必须围绕用户数据的分析，不要回复无关话题。\n- 严格依据提供的信息进行分析，不引入无根据信息。\n- 可以输出学员各项特征的数值，但是不需要输出分位数，涉及分位数的描述，转化成处于较高水平等描述，例如“该学员非续班期课节完成度为90%，处于高水平”。\n- 直接输出原因，不需要写明“该学员被分层的原因主要是”等字样，页面已有提示文案。\n- 输出的原因解释需通俗易懂、简短精炼、自然流畅，控制在200字以内，最后不需要展示原因多少个字。\n- 如果用户特征值为空，直接结束分析\n\n## 输出\n```\n总结的原因\n```\n- 如果提取不到原因，则输出：\n```\n暂无分析原因\n```\n\n##**输出内容要求**\n输出的内容需要符合以下要求\n###内容禁止包含可能引起不适的敏感表述\n###内容禁止包含违法违规、暴力、色情、歧视性语\"\n  },\n  {\n    \"role\": \"user\",\n    \"content\": \"\n\n##**上下文数据**\n接下来是提供的一部分相关数据\n###特征值信息\n####数据内容及注释\n以下数据采用 Toon 格式编码，字段名已替换为中文描述以便理解：\n用户特征值:   learningprogress: 0\n  mentalhealthissue: 0.0\n  tutoringteacherevaluation: 0\n  courseexpansionintention: 0\n  focusondiscount: 0\n  effectobjection: 0\n  courseproductsatisfaction: 0\n  is_pre_registration: 0\n  exam_frequency_sum_service_period: 0\n  coursequality: 0\n  referralintention: 0\n  resident: 走读\n  priceobjection: 0\n  reject_form_count: 0\n  timeconflict: 0\n  avg_lesson_completion_progress_renewal_period: 0.0\n  avg_lesson_completion_progress_non_renewal_period: 0.3182\n  days_since_in_subclazz: 108\n  serviceobjection: 0\n  avg_small_lesson_learn_duration_renewal_period: 0.0\n  refundwarn: 未知\n  leadteacherevaluation: 0\n  avg_small_lesson_learn_duration_non_renewal_period: 0.0\n  user_subject_old_type: 新学员\n  consider_form_count: 0\n  consultrefund: 0\n  wechat_engagement_7d: 0.1204\n  ideaconsistency: 0\n  accept_form_count: 0\n  call_engagement_7d: 0.0\n\n特征值分位数:   reject_form_count: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  learningprogress: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  timeconflict: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  avg_lesson_completion_progress_renewal_period: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  avg_lesson_completion_progress_non_renewal_period: \"{\\\"q25\\\":0.49950000643730164,\\\"q50\\\":0.7996000051498413,\\\"q75\\\":0.9528999924659729}\"\n  tutoringteacherevaluation: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  serviceobjection: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  avg_small_lesson_learn_duration_renewal_period: \"{\\\"q25\\\":0.0,\\\"q50\\\":4.0,\\\"q75\\\":3803.0}\"\n  leadteacherevaluation: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  avg_small_lesson_learn_duration_non_renewal_period: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  courseexpansionintention: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  consider_form_count: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  focusondiscount: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  effectobjection: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  consultrefund: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  courseproductsatisfaction: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  is_pre_registration: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":1.0}\"\n  exam_frequency_sum_service_period: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  wechat_engagement_7d: \"{\\\"q25\\\":0.47040000557899475,\\\"q50\\\":0.7804999947547913,\\\"q75\\\":1.457200050354004}\"\n  coursequality: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  referralintention: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  ideaconsistency: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  accept_form_count: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  call_engagement_7d: \"{\\\"q25\\\":-0.13330000638961792,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  priceobjection: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n\n特征重要性:   learningprogress: 0\n  overallscore: 0\n  mentalhealthissue: 0\n  tutoringteacherevaluation: 0\n  advantageoussubject: 0\n  onlinetutoringexperience: 0\n  courseexpansionintention: 0\n  comparewithothertutoringmethods: 0\n  focusondiscount: 0\n  effectobjection: 0\n  courseproductsatisfaction: 0\n  is_pre_registration: 11\n  exam_frequency_sum_service_period: 0\n  coursequality: 0\n  referralintention: 0\n  highschoolsubjectselection: 0\n  priceobjection: 0\n  resident: 3\n  weaksubject_new: 0\n  reject_form_count: 0\n  timeconflict: 0\n  avg_lesson_completion_progress_renewal_period: 0\n  schoolattendancetype: 1\n  avg_lesson_completion_progress_non_renewal_period: 214\n  singlesubjectscore: 11\n  days_since_in_subclazz: 200\n  other_tutoring_situation: 0\n  serviceobjection: 0\n  avg_small_lesson_learn_duration_renewal_period: 39\n  refundwarn: 3\n  leadteacherevaluation: 0\n  avg_small_lesson_learn_duration_non_renewal_period: 0\n  user_subject_old_type: 12\n  consider_form_count: 0\n  consultrefund: 0\n  subjectattentionlevel: 0\n  purchaseintention: 52\n  wechat_engagement_7d: 236\n  coursematchingdegree: 0\n  furtherstudyplanning: 0\n  learninginitiative: 0\n  familyeducationattitude: 0\n  ideaconsistency: 0\n  accept_form_count: 0\n  tutoringformatpreference: 0\n  call_engagement_7d: 0\n\n特征中文名称:   days_since_in_subclazz: 服务天数\n  user_subject_old_type: 同科目新老学员\n  refundwarn: 高危退费\n  consultrefund: 咨询/提出退费\n  other_tutoring_situation: 是否有补习\n  onlinetutoringexperience: 线上补习经验\n  tutoringformatpreference: 补习形式偏好\n  comparewithothertutoringmethods: 对比其他补课方式\n  purchaseintention: 购买意愿\n  courseexpansionintention: 扩课意向\n  referralintention: 转介绍意向\n  resident: 走读/住校\n  schoolattendancetype: 走读/住校\n  overallscore: 整体成绩分数\n  singlesubjectscore: 单学科成绩\n  weaksubject_new: 薄弱科目（新）\n  advantageoussubject: 优势学科\n  highschoolsubjectselection: 高中选科\n  learningprogress: 学习进步\n  furtherstudyplanning: 升学规划\n  learninginitiative: 学习主动性\n  familyeducationattitude: 家庭教育态度\n  subjectattentionlevel: 学科重视程度\n  mentalhealthissue: 心理健康问题\n  ideaconsistency: 家长和学员想法一致性\n  courseproductsatisfaction: 课程产品满意度\n  coursequality: 课程质量\n  coursematchingdegree: 课程匹配度\n  tutoringteacherevaluation: 对辅导老师（二讲老师）的评价\n  leadteacherevaluation: 对主讲老师（上课老师）的评价\n  effectobjection: 效果异议\n  priceobjection: 价格异议\n  focusondiscount: 关注优惠\n  timeconflict: 时间冲突\n  serviceobjection: 服务异议\n  wechat_engagement_7d: 近7日累计微信亲密度\n  call_engagement_7d: 近7日累计通话亲密度\n  avg_lesson_completion_progress_non_renewal_period: 平均已开课正式课节完成度_非续班期\n  avg_lesson_completion_progress_renewal_period: 平均已开课正式课节完成度_续班期\n  avg_small_lesson_learn_duration_non_renewal_period: 单位课节的小灶课听课时长_非续班期\n  avg_small_lesson_learn_duration_renewal_period: 单位课节的小灶课听课时长_续班期\n  exam_frequency_sum_service_period: 累计参与考试频次_服务期\n  consider_form_count: 意向反馈是考虑续班的问卷数\n  reject_form_count: 意向反馈是拒绝续班的问卷数\n  accept_form_count: 意向反馈是同意续班的问卷数\n  is_pre_registration: 是否预报名\n\n续班意向预测结果: D\n\"\n  }\n]"
         }
       ],
-      "user": "b1d3615e-1921-4281-88f0-b3ec598bb0d5"
+      "user": "b546bce0-0525-4194-b5e4-abc305c61271"
     },
     "new_request": {
       "response_format": {
@@ -428,52 +632,208 @@
           "content": "[\n  {\n    \"role\": \"system\",\n    \"content\": \"## 角色\n- 你是一位经验丰富且专业的数据分析师，擅长以通俗易懂且灵活多变的语言分析用户数据，并给出合理原因解释，以此让在线教育行业的辅导老师（二讲）相信AI续班预测意向度结果（即AI分层），促使其重点跟进。\n\n## 技能\n- 分析续班预测原因\n- 读取用户特征值、每个特征的重要性、以及此用户的AI分层（从高到低为ABCD，A续班概率最高、D续班概率最低）。\n- A续班概率为高、B续班概率为较高、C续班概率为偏低、D续班概率为低，分析结论时，需对应ABCD分层，给出预测原因。例如当续班意向分层\n- 结合特征值与重要性，优先挑选重要性高的多个特征值，以及你认为能够表示学员意向度高，续班概率高的特征值，将特征值转化为业务易懂的语言，用通俗易懂、简短精炼且自然流畅的语言，分析每个用户被预测为对应【AI分层】的原因，内容控制在200字以内。\n\n## 特征解释（将特征转化为业务易懂表述示例）\n服务天数：学员进辅导班后二讲服务天数，数字越高，进辅导班时间越长，二讲服务时间越长。\n同科目新老学员：相同科目，学员是否有历史订单。\n高危退费：学员是否想退费，不再学习。\n咨询/提出退费：学员咨询退费相关事项或明确提出退费。\n是否有补习：学员是否有补习经历。\n线上补习经验：学员过往的线上补习学习经历和体验。\n补习形式偏好：提取学员明确提及的补习教学形式偏好，包括教学方式和班级规模。\n对比其他补课方式：学员是否提到和其他补课方式的对比，或者想去其他补课机构。\n购买意愿：学员续班（购买课程/报名/下单）的意愿，可分为明确购买、犹豫考虑、明确拒绝3类。\n扩课意向：户是否有报名其他学科的想法，或者咨询其他学科报名流程。\n转介绍意向：用户是否有向其他人推荐课程，或者向老师推荐学员的想法。\n走读/住校：学员就读方式，包括走读、住校等基本分类，对于住校情况进一步细分回家频率。\n整体成绩分数：学员的整体学习成绩水平，排名信息或成绩水平描述。\n单学科成绩：学员某个学科成绩。\n薄弱科目（新）：提取学员明确提及的个人相对较弱的学习科目。\n优势学科：提取学员明确提及的个人相对较强的学习科目。\n高中选科：学员在高中的选科。\n学习进步：学员补习后，学习成绩是否有提升。\n升学规划：学员升学计划或学习目标。\n学习主动性：学员在学习过程中的主动性和自主程度。\n家庭教育态度：家庭在教育投入上的态度和参与程度。\n学科重视程度：学员对补习学科的重视程度。\n心理健康问题：学员表达学习焦虑相关问题的次数，例如【学习压力大焦虑/抵触补课/畏难情绪/考试信心不足】。\n家长和学员想法一致性：在购买课程上，家长和学员想法是否一致，如果老师表达完其中一方想法，另一方表示同意，则不算想法不一致。\n课程产品满意度：学员对课程产品的态度或评价，提取学员的课程产品满意度信息，用负值表示对课程产品不满意（满意度低），用正值表示对课程产品满意（满意度高）。\n课程质量：学员或家长对课程质量的评价。\n课程匹配度：学员学校课程和补习课程的匹配度，包括内容匹配度和进度匹配度。\n对辅导老师（二讲老师）的评价：学员对辅导老师的评价。\n对主讲老师（上课老师）的评价：学员对主讲老师的评价。\n效果异议：用户对课程效果的异议。\n价格异议：用户对课程价格的异议。\n关注优惠：用户主动询问是否有优惠、或者对优惠表达出感兴趣。\n时间冲突：课程与用户其他安排有时间冲突，或者与学校时间冲突，例如【“时间紧张/报太多课没时间学/学校作业多/学校事情多/放假时间少”】。\n服务异议：学员对课程服务方面的异议。\n近7日累计微信亲密度：近7天微信沟通频率高低，数字越高，互动频率越高，可理解为和二讲联系频繁程度，数值不代表沟通次数、天数。\n近7日累计通话亲密度：近7天通话沟通频率高低，数字越高，互动频率越高，可理解为和二讲联系频繁程度，数值不代表沟通次数、天数。\n平均已开课正式课节完成度_非续班期：平均已开课正式课节完成度\n平均已开课正式课节完成度_续班期：平均已开课正式课节完成度\n单位课节的小灶课听课时长_非续班期：小灶课听课时长\n单位课节的小灶课听课时长_续班期：小灶课听课时长\n累计参与考试频次_服务期：累计参与考试次数\n意向反馈是考虑续班的问卷数：意向反馈是考虑续班的问卷数\n意向反馈是拒绝续班的问卷数：意向反馈是拒绝续班的问卷数\n意向反馈是同意续班的问卷数：意向反馈是同意续班的问卷数\n是否预报名：学员是否预报名本学科。\n\n\n## 注意\n- 语言要通俗易懂，难理解的特征不要直接引用，而是变成通俗易懂、干练的语言去说。\n- 解释不要复杂，要简短干练，无用信息不用输出\n- 不需要说此学员被预测为ABCD，辅导老师已知道此信息\n- 特征相关性方向：正向代表特征重要性跟续班率正相关，重要性越大，续班率越高；负向代表特征重要性跟续班率负相关，重要性越大，续班率越低。此类判断仅对特征值为数值型有效，其他类型无效。\n- 对比用户特征值和特征分位数：正向相关的特征，特征值处于较高分位数，续班率增加；负向相关的特征，特征值处于较高分位数，续班率下降。\n- 多个类似或同类特征，结合你的理解，总结一个最终结果输出，不要重复输出，例如【补习形式偏好、是否对比其他补习方式、线上补习经验】属于同类特征。\n- 一定要注意：特征重要性仅代表这个特征能有帮助有效分层，不代表此特征值续班率高，比如省份重要性高，但省份【贵州省】，反而代表这个学员续班率低，分层减分，所以你要按照你的经验认知，判断每个特征值是加分还是减分。\n- A续班概率为高、B续班概率为较高、C续班概率为偏低、D续班概率为低，分析结论时，需对应ABCD分层，给出预测原因。例如当续班意向分层\n\n## 限制:\n- 回答必须围绕用户数据的分析，不要回复无关话题。\n- 严格依据提供的信息进行分析，不引入无根据信息。\n- 可以输出学员各项特征的数值，但是不需要输出分位数，涉及分位数的描述，转化成处于较高水平等描述，例如“该学员非续班期课节完成度为90%，处于高水平”。\n- 直接输出原因，不需要写明“该学员被分层的原因主要是”等字样，页面已有提示文案。\n- 输出的原因解释需通俗易懂、简短精炼、自然流畅，控制在200字以内，最后不需要展示原因多少个字。\n- 如果用户特征值为空，直接结束分析\n\n## 输出\n```\n总结的原因\n```\n- 如果提取不到原因，则输出：\n```\n暂无分析原因\n```\n\n##**输出内容要求**\n输出的内容需要符合以下要求\n###内容禁止包含可能引起不适的敏感表述\n###内容禁止包含违法违规、暴力、色情、歧视性语\"\n  },\n  {\n    \"role\": \"user\",\n    \"content\": \"\n\n##**上下文数据**\n接下来是提供的一部分相关数据\n###特征值信息\n####数据内容及注释\n以下数据采用 Toon 格式编码，字段名已替换为中文描述以便理解：\n用户特征值:   learningprogress: 0\n  mentalhealthissue: 0.0\n  tutoringteacherevaluation: 0\n  courseexpansionintention: 0\n  focusondiscount: 0\n  effectobjection: 0\n  courseproductsatisfaction: 0\n  is_pre_registration: 0\n  exam_frequency_sum_service_period: 0\n  coursequality: 0\n  referralintention: 0\n  resident: 走读\n  priceobjection: 0\n  reject_form_count: 0\n  timeconflict: 0\n  avg_lesson_completion_progress_renewal_period: 0.0\n  avg_lesson_completion_progress_non_renewal_period: 0.3182\n  days_since_in_subclazz: 108\n  serviceobjection: 0\n  avg_small_lesson_learn_duration_renewal_period: 0.0\n  refundwarn: 未知\n  leadteacherevaluation: 0\n  avg_small_lesson_learn_duration_non_renewal_period: 0.0\n  user_subject_old_type: 新学员\n  consider_form_count: 0\n  consultrefund: 0\n  wechat_engagement_7d: 0.1204\n  ideaconsistency: 0\n  accept_form_count: 0\n  call_engagement_7d: 0.0\n\n特征值分位数:   reject_form_count: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  learningprogress: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  timeconflict: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  avg_lesson_completion_progress_renewal_period: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  avg_lesson_completion_progress_non_renewal_period: \"{\\\"q25\\\":0.49950000643730164,\\\"q50\\\":0.7996000051498413,\\\"q75\\\":0.9528999924659729}\"\n  tutoringteacherevaluation: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  serviceobjection: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  avg_small_lesson_learn_duration_renewal_period: \"{\\\"q25\\\":0.0,\\\"q50\\\":4.0,\\\"q75\\\":3803.0}\"\n  leadteacherevaluation: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  avg_small_lesson_learn_duration_non_renewal_period: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  courseexpansionintention: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  consider_form_count: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  focusondiscount: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  effectobjection: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  consultrefund: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  courseproductsatisfaction: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  is_pre_registration: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":1.0}\"\n  exam_frequency_sum_service_period: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  wechat_engagement_7d: \"{\\\"q25\\\":0.47040000557899475,\\\"q50\\\":0.7804999947547913,\\\"q75\\\":1.457200050354004}\"\n  coursequality: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  referralintention: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  ideaconsistency: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  accept_form_count: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  call_engagement_7d: \"{\\\"q25\\\":-0.13330000638961792,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  priceobjection: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n\n特征重要性:   learningprogress: 0\n  overallscore: 0\n  mentalhealthissue: 0\n  tutoringteacherevaluation: 0\n  advantageoussubject: 0\n  onlinetutoringexperience: 0\n  courseexpansionintention: 0\n  comparewithothertutoringmethods: 0\n  focusondiscount: 0\n  effectobjection: 0\n  courseproductsatisfaction: 0\n  is_pre_registration: 11\n  exam_frequency_sum_service_period: 0\n  coursequality: 0\n  referralintention: 0\n  highschoolsubjectselection: 0\n  priceobjection: 0\n  resident: 3\n  weaksubject_new: 0\n  reject_form_count: 0\n  timeconflict: 0\n  avg_lesson_completion_progress_renewal_period: 0\n  schoolattendancetype: 1\n  avg_lesson_completion_progress_non_renewal_period: 214\n  singlesubjectscore: 11\n  days_since_in_subclazz: 200\n  other_tutoring_situation: 0\n  serviceobjection: 0\n  avg_small_lesson_learn_duration_renewal_period: 39\n  refundwarn: 3\n  leadteacherevaluation: 0\n  avg_small_lesson_learn_duration_non_renewal_period: 0\n  user_subject_old_type: 12\n  consider_form_count: 0\n  consultrefund: 0\n  subjectattentionlevel: 0\n  purchaseintention: 52\n  wechat_engagement_7d: 236\n  coursematchingdegree: 0\n  furtherstudyplanning: 0\n  learninginitiative: 0\n  familyeducationattitude: 0\n  ideaconsistency: 0\n  accept_form_count: 0\n  tutoringformatpreference: 0\n  call_engagement_7d: 0\n\n特征中文名称:   days_since_in_subclazz: 服务天数\n  user_subject_old_type: 同科目新老学员\n  refundwarn: 高危退费\n  consultrefund: 咨询/提出退费\n  other_tutoring_situation: 是否有补习\n  onlinetutoringexperience: 线上补习经验\n  tutoringformatpreference: 补习形式偏好\n  comparewithothertutoringmethods: 对比其他补课方式\n  purchaseintention: 购买意愿\n  courseexpansionintention: 扩课意向\n  referralintention: 转介绍意向\n  resident: 走读/住校\n  schoolattendancetype: 走读/住校\n  overallscore: 整体成绩分数\n  singlesubjectscore: 单学科成绩\n  weaksubject_new: 薄弱科目（新）\n  advantageoussubject: 优势学科\n  highschoolsubjectselection: 高中选科\n  learningprogress: 学习进步\n  furtherstudyplanning: 升学规划\n  learninginitiative: 学习主动性\n  familyeducationattitude: 家庭教育态度\n  subjectattentionlevel: 学科重视程度\n  mentalhealthissue: 心理健康问题\n  ideaconsistency: 家长和学员想法一致性\n  courseproductsatisfaction: 课程产品满意度\n  coursequality: 课程质量\n  coursematchingdegree: 课程匹配度\n  tutoringteacherevaluation: 对辅导老师（二讲老师）的评价\n  leadteacherevaluation: 对主讲老师（上课老师）的评价\n  effectobjection: 效果异议\n  priceobjection: 价格异议\n  focusondiscount: 关注优惠\n  timeconflict: 时间冲突\n  serviceobjection: 服务异议\n  wechat_engagement_7d: 近7日累计微信亲密度\n  call_engagement_7d: 近7日累计通话亲密度\n  avg_lesson_completion_progress_non_renewal_period: 平均已开课正式课节完成度_非续班期\n  avg_lesson_completion_progress_renewal_period: 平均已开课正式课节完成度_续班期\n  avg_small_lesson_learn_duration_non_renewal_period: 单位课节的小灶课听课时长_非续班期\n  avg_small_lesson_learn_duration_renewal_period: 单位课节的小灶课听课时长_续班期\n  exam_frequency_sum_service_period: 累计参与考试频次_服务期\n  consider_form_count: 意向反馈是考虑续班的问卷数\n  reject_form_count: 意向反馈是拒绝续班的问卷数\n  accept_form_count: 意向反馈是同意续班的问卷数\n  is_pre_registration: 是否预报名\n\n续班意向预测结果: D\n\"\n  }\n]"
         }
       ],
-      "model": "doubao-seed-2-0-lite-260428"
+      "model": "doubao-seed-2-0-lite-260428",
+      "thinking": {
+        "type": "disabled"
+      }
     },
-    "old_response": "该学员为同科目新学员，进班服务天数达108天，非续班期正式课节完成度仅31.82%，远低于平均水平。近7天和二讲的微信互动亲密度处于较低水平，无预报名记录，各类正向续班相关反馈均为0，没有明确续班相关意向。\n```",
+    "old_response": {
+      "event": "message",
+      "task_id": "12156c56-bce5-4095-bca9-1eadf63fc07a",
+      "id": "ef7eb1f1-9f66-49c2-890b-05a75fde124f",
+      "message_id": "ef7eb1f1-9f66-49c2-890b-05a75fde124f",
+      "conversation_id": "b6a6dd83-ac75-46aa-bd67-85b24664f219",
+      "mode": "chat",
+      "answer": "学员是同科目新学员，入班接受服务已108天。非续班期正式课节完成度仅0.3182，远低于平均水平，近7天和二讲的微信互动频率很低，也没有预报名，各项续班相关正向表现均不足，也无相关异议记录。",
+      "metadata": {
+        "annotation_reply": null,
+        "retriever_resources": [],
+        "usage": {
+          "prompt_tokens": 4285,
+          "prompt_unit_price": "0",
+          "prompt_price_unit": "0",
+          "prompt_price": "0",
+          "completion_tokens": 71,
+          "completion_unit_price": "0",
+          "completion_price_unit": "0",
+          "completion_price": "0",
+          "total_tokens": 4356,
+          "total_price": "0",
+          "currency": "USD",
+          "latency": 3.4823972396552563,
+          "time_to_first_token": null,
+          "time_to_generate": null
+        },
+        "agent_thoughts": [
+          {
+            "id": "f4f7afcc-a851-44ec-9db3-e9b00f666881",
+            "position": 1,
+            "thought": "",
+            "observation": "",
+            "tool": "",
+            "tool_labels": {},
+            "tool_input": "",
+            "message_files": []
+          },
+          {
+            "id": "f4f7afcc-a851-44ec-9db3-e9b00f666881",
+            "position": 1,
+            "thought": "学员是同科目新学员，入班接受服务已108天。非续班期正式课节完成度仅0.3182，远低于平均水平，近7天和二讲的微信互动频率很低，也没有预报名，各项续班相关正向表现均不足，也无相关异议记录。",
+            "observation": "",
+            "tool": "",
+            "tool_labels": {},
+            "tool_input": "",
+            "message_files": []
+          }
+        ]
+      },
+      "created_at": 1795579180
+    },
     "new_response": {
       "usage": {
-        "completion_tokens": 417,
-        "prompt_tokens": 4289,
-        "cost": 0.00333102,
+        "completion_tokens": 69,
+        "prompt_tokens": 4285,
+        "cost": 0.00197358,
         "completion_tokens_details": {
-          "reasoning_tokens": 338
+          "reasoning_tokens": 0
         },
         "prompt_tokens_details": {},
-        "total_tokens": 4706
+        "total_tokens": 4354
       },
       "event": "litellm_proxy/doubao-seed-2.0-lite",
-      "messageId": "chatcmpl-e7443aeded124bdd92d0c0b7ae7c13c0",
-      "answer": "```\n学员是同科目新学员，入班服务已108天，非续班期正式课完成度仅31.8%，远低于平均水平，几乎没听小灶课。近7天和二讲的微信、通话互动频率极低，暂未预报名，无任何正向续班意向反馈，没有相关积极信号。\n```"
+      "messageId": "chatcmpl-ac6b24fa949741b3b3382bc044a70a5e",
+      "answer": "入班服务已达108天，为同科目新学员，走读。非续班期正式课节完成度仅0.3182，远低于平均水平。近7日微信互动频率处于较低水平，无预报名记录，无续班相关正向反馈，也无相关退费异议。"
     },
-    "old_trace": "3c9e6b70-e6f3-4f95-883b-14408cdafc2b.0.3",
-    "new_trace": "63916e95-985f-4407-9f8e-00ae2ae61438.0.3",
+    "old_trace": "90111bbb-6122-4a4e-84a0-1af98e31eda1.0.3",
+    "new_trace": "c08756d7-169f-4a84-89c3-1b825f63ac04.0.3",
     "differences": {
-      "model": {
-        "old": "doubao/Doubao-1-5-pro-32k",
-        "new": "doubao-seed-2-0-lite-260428"
-      },
-      "response_format": {
-        "old": null,
-        "new": {
-          "type": "text"
+      "messages_equal": true,
+      "non_messages": [
+        {
+          "field": "model",
+          "old_present": true,
+          "new_present": true,
+          "old": "doubao/Doubao-1-5-pro-32k",
+          "new": "doubao-seed-2-0-lite-260428"
+        },
+        {
+          "field": "response_format",
+          "old_present": false,
+          "new_present": true,
+          "old": null,
+          "new": {
+            "type": "text"
+          }
+        },
+        {
+          "field": "thinking",
+          "old_present": false,
+          "new_present": true,
+          "old": null,
+          "new": {
+            "type": "disabled"
+          }
+        },
+        {
+          "field": "user",
+          "old_present": true,
+          "new_present": false,
+          "old": "b546bce0-0525-4194-b5e4-abc305c61271",
+          "new": null
         }
-      },
-      "user": {
-        "old": "b1d3615e-1921-4281-88f0-b3ec598bb0d5",
-        "new": null
+      ],
+      "effective_thinking": {
+        "aligned": true,
+        "old_reasoning_tokens": 0,
+        "new_reasoning_tokens": 0,
+        "scope": "当前生产配置TEST有限输入对照"
       }
     },
     "evidence": {
-      "old": "pairs.json:name=分层修正后,sides[0]",
-      "input_new_response": "remaining-current-runs/after/分层修正后/invoke.json",
-      "new_request": "remaining-current-runs/after/分层修正后/received.json"
+      "directory": "thinking-related",
+      "old_http": "thinking-related/高中-new-old-llm-http.json",
+      "old_response": "thinking-related/高中-old-response.json",
+      "old_llm_response": "thinking-related/高中-new-old-llm-response.json",
+      "new_http": "thinking-related/高中分层-http.json",
+      "result": "thinking-related/result.json",
+      "verification": "thinking-related-verification.md"
     },
     "missing": {},
     "notes": [
-      "旧response为pairs下游响应，新response为执行器返回，层级不同，均原样保留",
-      "身份自动来源/发送头同次关联由主worker补证"
-    ]
+      "当前生产生成配置的TEST对照，messages和有效thinking已闭合；仅有限输入，不证明生产全量或输出语义普遍等价。"
+    ],
+    "old_llm_response": {
+      "id": "chatcmpl-db1401945c634a41b2bfcf9f7599b25e",
+      "created": 1795579181,
+      "model": "doubao-seed-2.0-lite",
+      "object": "chat.completion",
+      "system_fingerprint": null,
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "content": "学员是同科目新学员，入班接受服务已108天。非续班期正式课节完成度仅0.3182，远低于平均水平，近7天和二讲的微信互动频率很低，也没有预报名，各项续班相关正向表现均不足，也无相关异议记录。",
+            "role": "assistant",
+            "tool_calls": null,
+            "function_call": null,
+            "reasoning_content": null
+          }
+        }
+      ],
+      "usage": {
+        "completion_tokens": 71,
+        "prompt_tokens": 4285,
+        "total_tokens": 4356,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": null
+        },
+        "cost": 0.00197862
+      }
+    },
+    "new_llm_response": {
+      "id": "chatcmpl-ac6b24fa949741b3b3382bc044a70a5e",
+      "created": 1795579050,
+      "model": "doubao-seed-2.0-lite",
+      "object": "chat.completion",
+      "system_fingerprint": null,
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "content": "入班服务已达108天，为同科目新学员，走读。非续班期正式课节完成度仅0.3182，远低于平均水平。近7日微信互动频率处于较低水平，无预报名记录，无续班相关正向反馈，也无相关退费异议。",
+            "role": "assistant",
+            "tool_calls": null,
+            "function_call": null,
+            "reasoning_content": null
+          }
+        }
+      ],
+      "usage": {
+        "completion_tokens": 69,
+        "prompt_tokens": 4285,
+        "total_tokens": 4354,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": null
+        },
+        "cost": 0.00197358
+      }
+    }
   },
   {
     "scene": "精品根因",
@@ -917,28 +1277,39 @@
   },
   {
     "scene": "素养分层",
-    "version": "263ba48a",
+    "version": "47b3dcb7 TEST；素养分层旧基线历史实收复用",
     "input": {
-      "serviceNameAndMethodName": "com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask",
-      "params": [
-        "remaining-suyang-16d28885-c243-4689-8889-c8828c71c4cf",
-        {
-          "aiApplicationName": "素养分层TEST独立验证20261124",
-          "userQuery": "",
-          "userTag": "test",
-          "platformType": 2,
-          "runUser": {
-            "email": "gongxuemeng@gaotu.cn"
-          }
-        },
-        {
-          "clazzNumber": "500775385189890048",
-          "userId": "6761113627",
-          "commTag": 0,
-          "subClazzNumber": "31298462823089024"
-        },
-        ""
-      ]
+      "old": {
+        "inputs": {},
+        "query": "[\n  {\n    \"role\": \"system\",\n    \"content\": \"## 角色\n- 你是一位经验丰富且专业的数据分析师，擅长以通俗易懂且灵活多变的语言分析用户数据，并给出合理原因解释，以此让在线教育行业的辅导老师（二讲）相信AI续班预测意向度结果（即AI分层），促使其重点跟进。\n\n## 技能\n- 分析续班预测原因\n- 读取用户特征值、每个特征的重要性、以及此用户的AI分层（从高到低为ABCD，A续班概率最高、D续班概率最低）。\n- A续班概率为高、B续班概率为较高、C续班概率为偏低、D续班概率为低，分析结论时，需对应ABCD分层，给出预测原因。例如当续班意向分层\n- 结合特征值与重要性，优先挑选重要性高的多个特征值，以及你认为能够表示学员意向度高，续班概率高的特征值，将特征值转化为业务易懂的语言，用通俗易懂、简短精炼且自然流畅的语言，分析每个用户被预测为对应【AI分层】的原因，内容控制在200字以内。\n\n## 特征解释（将特征转化为业务易懂表述示例）\n服务天数：学员进辅导班后二讲服务天数，数字越高，进辅导班时间越长，二讲服务时间越长。\n同科目新老学员：相同科目，学员是否有历史订单。\n高危退费：学员是否想退费，不再学习。\n咨询/提出退费：学员咨询退费相关事项或明确提出退费。\n是否有补习：学员是否有补习经历。\n线上补习经验：学员过往的线上补习学习经历和体验。\n补习形式偏好：提取学员明确提及的补习教学形式偏好，包括教学方式和班级规模。\n对比其他补课方式：学员是否提到和其他补课方式的对比，或者想去其他补课机构。\n购买意愿：学员续班（购买课程/报名/下单）的意愿，可分为明确购买、犹豫考虑、明确拒绝3类。\n扩课意向：户是否有报名其他学科的想法，或者咨询其他学科报名流程。\n转介绍意向：用户是否有向其他人推荐课程，或者向老师推荐学员的想法。\n走读/住校：学员就读方式，包括走读、住校等基本分类，对于住校情况进一步细分回家频率。\n整体成绩分数：学员的整体学习成绩水平，排名信息或成绩水平描述。\n单学科成绩：学员某个学科成绩。\n薄弱科目（新）：提取学员明确提及的个人相对较弱的学习科目。\n优势学科：提取学员明确提及的个人相对较强的学习科目。\n高中选科：学员在高中的选科。\n学习进步：学员补习后，学习成绩是否有提升。\n升学规划：学员升学计划或学习目标。\n学习主动性：学员在学习过程中的主动性和自主程度。\n家庭教育态度：家庭在教育投入上的态度和参与程度。\n学科重视程度：学员对补习学科的重视程度。\n心理健康问题：学员表达学习焦虑相关问题的次数，例如【学习压力大焦虑/抵触补课/畏难情绪/考试信心不足】。\n家长和学员想法一致性：在购买课程上，家长和学员想法是否一致，如果老师表达完其中一方想法，另一方表示同意，则不算想法不一致。\n课程产品满意度：学员对课程产品的态度或评价，提取学员的课程产品满意度信息，用负值表示对课程产品不满意（满意度低），用正值表示对课程产品满意（满意度高）。\n课程质量：学员或家长对课程质量的评价。\n课程匹配度：学员学校课程和补习课程的匹配度，包括内容匹配度和进度匹配度。\n对辅导老师（二讲老师）的评价：学员对辅导老师的评价。\n对主讲老师（上课老师）的评价：学员对主讲老师的评价。\n效果异议：用户对课程效果的异议。\n价格异议：用户对课程价格的异议。\n关注优惠：用户主动询问是否有优惠、或者对优惠表达出感兴趣。\n时间冲突：课程与用户其他安排有时间冲突，或者与学校时间冲突，例如【“时间紧张/报太多课没时间学/学校作业多/学校事情多/放假时间少”】。\n服务异议：学员对课程服务方面的异议。\n近7日累计微信亲密度：近7天微信沟通频率高低，数字越高，互动频率越高，可理解为和二讲联系频繁程度，数值不代表沟通次数、天数。\n近7日累计通话亲密度：近7天通话沟通频率高低，数字越高，互动频率越高，可理解为和二讲联系频繁程度，数值不代表沟通次数、天数。\n平均已开课正式课节完成度_非续班期：平均已开课正式课节完成度\n平均已开课正式课节完成度_续班期：平均已开课正式课节完成度\n单位课节的小灶课听课时长_非续班期：小灶课听课时长\n单位课节的小灶课听课时长_续班期：小灶课听课时长\n累计参与考试频次_服务期：累计参与考试次数\n意向反馈是考虑续班的问卷数：意向反馈是考虑续班的问卷数\n意向反馈是拒绝续班的问卷数：意向反馈是拒绝续班的问卷数\n意向反馈是同意续班的问卷数：意向反馈是同意续班的问卷数\n是否预报名：学员是否预报名本学科。\n\n\n## 注意\n- 语言要通俗易懂，难理解的特征不要直接引用，而是变成通俗易懂、干练的语言去说。\n- 解释不要复杂，要简短干练，无用信息不用输出\n- 不需要说此学员被预测为ABCD，辅导老师已知道此信息\n- 特征相关性方向：正向代表特征重要性跟续班率正相关，重要性越大，续班率越高；负向代表特征重要性跟续班率负相关，重要性越大，续班率越低。此类判断仅对特征值为数值型有效，其他类型无效。\n- 对比用户特征值和特征分位数：正向相关的特征，特征值处于较高分位数，续班率增加；负向相关的特征，特征值处于较高分位数，续班率下降。\n- 多个类似或同类特征，结合你的理解，总结一个最终结果输出，不要重复输出，例如【补习形式偏好、是否对比其他补习方式、线上补习经验】属于同类特征。\n- 一定要注意：特征重要性仅代表这个特征能有帮助有效分层，不代表此特征值续班率高，比如省份重要性高，但省份【贵州省】，反而代表这个学员续班率低，分层减分，所以你要按照你的经验认知，判断每个特征值是加分还是减分。\n- A续班概率为高、B续班概率为较高、C续班概率为偏低、D续班概率为低，分析结论时，需对应ABCD分层，给出预测原因。例如当续班意向分层\n\n## 限制:\n- 回答必须围绕用户数据的分析，不要回复无关话题。\n- 严格依据提供的信息进行分析，不引入无根据信息。\n- 可以输出学员各项特征的数值，但是不需要输出分位数，涉及分位数的描述，转化成处于较高水平等描述，例如“该学员非续班期课节完成度为90%，处于高水平”。\n- 直接输出原因，不需要写明“该学员被分层的原因主要是”等字样，页面已有提示文案。\n- 输出的原因解释需通俗易懂、简短精炼、自然流畅，控制在200字以内，最后不需要展示原因多少个字。\n- 如果用户特征值为空，直接结束分析\n\n## 输出\n```\n总结的原因\n```\n- 如果提取不到原因，则输出：\n```\n暂无分析原因\n```\n\n##**输出内容要求**\n输出的内容需要符合以下要求\n###内容禁止包含可能引起不适的敏感表述\n###内容禁止包含违法违规、暴力、色情、歧视性语\"\n  },\n  {\n    \"role\": \"user\",\n    \"content\": \"\n\n##**上下文数据**\n接下来是提供的一部分相关数据\n###特征值信息\n####数据内容及注释\n以下数据采用 Toon 格式编码，字段名已替换为中文描述以便理解：\n用户特征值:   learningprogress: 0\n  mentalhealthissue: 0.0\n  tutoringteacherevaluation: 0\n  courseexpansionintention: 0\n  focusondiscount: 0\n  effectobjection: 0\n  courseproductsatisfaction: 0\n  is_pre_registration: 0\n  exam_frequency_sum_service_period: 0\n  coursequality: 0\n  referralintention: 0\n  resident: 走读\n  priceobjection: 0\n  reject_form_count: 0\n  timeconflict: 0\n  avg_lesson_completion_progress_renewal_period: 0.0\n  avg_lesson_completion_progress_non_renewal_period: 0.3182\n  days_since_in_subclazz: 108\n  serviceobjection: 0\n  avg_small_lesson_learn_duration_renewal_period: 0.0\n  refundwarn: 未知\n  leadteacherevaluation: 0\n  avg_small_lesson_learn_duration_non_renewal_period: 0.0\n  user_subject_old_type: 新学员\n  consider_form_count: 0\n  consultrefund: 0\n  wechat_engagement_7d: 0.1204\n  ideaconsistency: 0\n  accept_form_count: 0\n  call_engagement_7d: 0.0\n\n特征值分位数:   reject_form_count: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  learningprogress: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  timeconflict: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  avg_lesson_completion_progress_renewal_period: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  avg_lesson_completion_progress_non_renewal_period: \"{\\\"q25\\\":0.49950000643730164,\\\"q50\\\":0.7996000051498413,\\\"q75\\\":0.9528999924659729}\"\n  tutoringteacherevaluation: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  serviceobjection: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  avg_small_lesson_learn_duration_renewal_period: \"{\\\"q25\\\":0.0,\\\"q50\\\":4.0,\\\"q75\\\":3803.0}\"\n  leadteacherevaluation: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  avg_small_lesson_learn_duration_non_renewal_period: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  courseexpansionintention: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  consider_form_count: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  focusondiscount: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  effectobjection: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  consultrefund: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  courseproductsatisfaction: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  is_pre_registration: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":1.0}\"\n  exam_frequency_sum_service_period: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  wechat_engagement_7d: \"{\\\"q25\\\":0.47040000557899475,\\\"q50\\\":0.7804999947547913,\\\"q75\\\":1.457200050354004}\"\n  coursequality: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  referralintention: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  ideaconsistency: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  accept_form_count: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  call_engagement_7d: \"{\\\"q25\\\":-0.13330000638961792,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  priceobjection: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n\n特征重要性:   learningprogress: 0\n  overallscore: 0\n  mentalhealthissue: 0\n  tutoringteacherevaluation: 0\n  advantageoussubject: 0\n  onlinetutoringexperience: 0\n  courseexpansionintention: 0\n  comparewithothertutoringmethods: 0\n  focusondiscount: 0\n  effectobjection: 0\n  courseproductsatisfaction: 0\n  is_pre_registration: 11\n  exam_frequency_sum_service_period: 0\n  coursequality: 0\n  referralintention: 0\n  highschoolsubjectselection: 0\n  priceobjection: 0\n  resident: 3\n  weaksubject_new: 0\n  reject_form_count: 0\n  timeconflict: 0\n  avg_lesson_completion_progress_renewal_period: 0\n  schoolattendancetype: 1\n  avg_lesson_completion_progress_non_renewal_period: 214\n  singlesubjectscore: 11\n  days_since_in_subclazz: 200\n  other_tutoring_situation: 0\n  serviceobjection: 0\n  avg_small_lesson_learn_duration_renewal_period: 39\n  refundwarn: 3\n  leadteacherevaluation: 0\n  avg_small_lesson_learn_duration_non_renewal_period: 0\n  user_subject_old_type: 12\n  consider_form_count: 0\n  consultrefund: 0\n  subjectattentionlevel: 0\n  purchaseintention: 52\n  wechat_engagement_7d: 236\n  coursematchingdegree: 0\n  furtherstudyplanning: 0\n  learninginitiative: 0\n  familyeducationattitude: 0\n  ideaconsistency: 0\n  accept_form_count: 0\n  tutoringformatpreference: 0\n  call_engagement_7d: 0\n\n特征中文名称:   days_since_in_subclazz: 服务天数\n  user_subject_old_type: 同科目新老学员\n  refundwarn: 高危退费\n  consultrefund: 咨询/提出退费\n  other_tutoring_situation: 是否有补习\n  onlinetutoringexperience: 线上补习经验\n  tutoringformatpreference: 补习形式偏好\n  comparewithothertutoringmethods: 对比其他补课方式\n  purchaseintention: 购买意愿\n  courseexpansionintention: 扩课意向\n  referralintention: 转介绍意向\n  resident: 走读/住校\n  schoolattendancetype: 走读/住校\n  overallscore: 整体成绩分数\n  singlesubjectscore: 单学科成绩\n  weaksubject_new: 薄弱科目（新）\n  advantageoussubject: 优势学科\n  highschoolsubjectselection: 高中选科\n  learningprogress: 学习进步\n  furtherstudyplanning: 升学规划\n  learninginitiative: 学习主动性\n  familyeducationattitude: 家庭教育态度\n  subjectattentionlevel: 学科重视程度\n  mentalhealthissue: 心理健康问题\n  ideaconsistency: 家长和学员想法一致性\n  courseproductsatisfaction: 课程产品满意度\n  coursequality: 课程质量\n  coursematchingdegree: 课程匹配度\n  tutoringteacherevaluation: 对辅导老师（二讲老师）的评价\n  leadteacherevaluation: 对主讲老师（上课老师）的评价\n  effectobjection: 效果异议\n  priceobjection: 价格异议\n  focusondiscount: 关注优惠\n  timeconflict: 时间冲突\n  serviceobjection: 服务异议\n  wechat_engagement_7d: 近7日累计微信亲密度\n  call_engagement_7d: 近7日累计通话亲密度\n  avg_lesson_completion_progress_non_renewal_period: 平均已开课正式课节完成度_非续班期\n  avg_lesson_completion_progress_renewal_period: 平均已开课正式课节完成度_续班期\n  avg_small_lesson_learn_duration_non_renewal_period: 单位课节的小灶课听课时长_非续班期\n  avg_small_lesson_learn_duration_renewal_period: 单位课节的小灶课听课时长_续班期\n  exam_frequency_sum_service_period: 累计参与考试频次_服务期\n  consider_form_count: 意向反馈是考虑续班的问卷数\n  reject_form_count: 意向反馈是拒绝续班的问卷数\n  accept_form_count: 意向反馈是同意续班的问卷数\n  is_pre_registration: 是否预报名\n\n续班意向预测结果: D\n\"\n  }\n]",
+        "response_mode": "blocking",
+        "user": "remaining-suyang-test-20261124",
+        "run_user": {
+          "email": "gongxuemeng@gaotu.cn"
+        }
+      },
+      "new": {
+        "serviceNameAndMethodName": "com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask",
+        "params": [
+          "tier-thinking-5562c731-057b-4b3b-9c53-344e930232d2",
+          {
+            "aiApplicationName": "素养分层TEST独立验证20261124",
+            "userQuery": "",
+            "userTag": "test",
+            "platformType": 2,
+            "runUser": {
+              "email": "gongxuemeng@gaotu.cn"
+            }
+          },
+          {
+            "clazzNumber": "500775385189890048",
+            "userId": "6761113627",
+            "commTag": 0,
+            "subClazzNumber": "31298462823089024"
+          },
+          ""
+        ]
+      }
     },
     "old_request": {
       "model": "doubao/Doubao-1-5-pro-32k",
@@ -962,103 +1333,192 @@
           "content": "[\n  {\n    \"role\": \"system\",\n    \"content\": \"## 角色\n- 你是一位经验丰富且专业的数据分析师，擅长以通俗易懂且灵活多变的语言分析用户数据，并给出合理原因解释，以此让在线教育行业的辅导老师（二讲）相信AI续班预测意向度结果（即AI分层），促使其重点跟进。\n\n## 技能\n- 分析续班预测原因\n- 读取用户特征值、每个特征的重要性、以及此用户的AI分层（从高到低为ABCD，A续班概率最高、D续班概率最低）。\n- A续班概率为高、B续班概率为较高、C续班概率为偏低、D续班概率为低，分析结论时，需对应ABCD分层，给出预测原因。例如当续班意向分层\n- 结合特征值与重要性，优先挑选重要性高的多个特征值，以及你认为能够表示学员意向度高，续班概率高的特征值，将特征值转化为业务易懂的语言，用通俗易懂、简短精炼且自然流畅的语言，分析每个用户被预测为对应【AI分层】的原因，内容控制在200字以内。\n\n## 特征解释（将特征转化为业务易懂表述示例）\n服务天数：学员进辅导班后二讲服务天数，数字越高，进辅导班时间越长，二讲服务时间越长。\n同科目新老学员：相同科目，学员是否有历史订单。\n高危退费：学员是否想退费，不再学习。\n咨询/提出退费：学员咨询退费相关事项或明确提出退费。\n是否有补习：学员是否有补习经历。\n线上补习经验：学员过往的线上补习学习经历和体验。\n补习形式偏好：提取学员明确提及的补习教学形式偏好，包括教学方式和班级规模。\n对比其他补课方式：学员是否提到和其他补课方式的对比，或者想去其他补课机构。\n购买意愿：学员续班（购买课程/报名/下单）的意愿，可分为明确购买、犹豫考虑、明确拒绝3类。\n扩课意向：户是否有报名其他学科的想法，或者咨询其他学科报名流程。\n转介绍意向：用户是否有向其他人推荐课程，或者向老师推荐学员的想法。\n走读/住校：学员就读方式，包括走读、住校等基本分类，对于住校情况进一步细分回家频率。\n整体成绩分数：学员的整体学习成绩水平，排名信息或成绩水平描述。\n单学科成绩：学员某个学科成绩。\n薄弱科目（新）：提取学员明确提及的个人相对较弱的学习科目。\n优势学科：提取学员明确提及的个人相对较强的学习科目。\n高中选科：学员在高中的选科。\n学习进步：学员补习后，学习成绩是否有提升。\n升学规划：学员升学计划或学习目标。\n学习主动性：学员在学习过程中的主动性和自主程度。\n家庭教育态度：家庭在教育投入上的态度和参与程度。\n学科重视程度：学员对补习学科的重视程度。\n心理健康问题：学员表达学习焦虑相关问题的次数，例如【学习压力大焦虑/抵触补课/畏难情绪/考试信心不足】。\n家长和学员想法一致性：在购买课程上，家长和学员想法是否一致，如果老师表达完其中一方想法，另一方表示同意，则不算想法不一致。\n课程产品满意度：学员对课程产品的态度或评价，提取学员的课程产品满意度信息，用负值表示对课程产品不满意（满意度低），用正值表示对课程产品满意（满意度高）。\n课程质量：学员或家长对课程质量的评价。\n课程匹配度：学员学校课程和补习课程的匹配度，包括内容匹配度和进度匹配度。\n对辅导老师（二讲老师）的评价：学员对辅导老师的评价。\n对主讲老师（上课老师）的评价：学员对主讲老师的评价。\n效果异议：用户对课程效果的异议。\n价格异议：用户对课程价格的异议。\n关注优惠：用户主动询问是否有优惠、或者对优惠表达出感兴趣。\n时间冲突：课程与用户其他安排有时间冲突，或者与学校时间冲突，例如【“时间紧张/报太多课没时间学/学校作业多/学校事情多/放假时间少”】。\n服务异议：学员对课程服务方面的异议。\n近7日累计微信亲密度：近7天微信沟通频率高低，数字越高，互动频率越高，可理解为和二讲联系频繁程度，数值不代表沟通次数、天数。\n近7日累计通话亲密度：近7天通话沟通频率高低，数字越高，互动频率越高，可理解为和二讲联系频繁程度，数值不代表沟通次数、天数。\n平均已开课正式课节完成度_非续班期：平均已开课正式课节完成度\n平均已开课正式课节完成度_续班期：平均已开课正式课节完成度\n单位课节的小灶课听课时长_非续班期：小灶课听课时长\n单位课节的小灶课听课时长_续班期：小灶课听课时长\n累计参与考试频次_服务期：累计参与考试次数\n意向反馈是考虑续班的问卷数：意向反馈是考虑续班的问卷数\n意向反馈是拒绝续班的问卷数：意向反馈是拒绝续班的问卷数\n意向反馈是同意续班的问卷数：意向反馈是同意续班的问卷数\n是否预报名：学员是否预报名本学科。\n\n\n## 注意\n- 语言要通俗易懂，难理解的特征不要直接引用，而是变成通俗易懂、干练的语言去说。\n- 解释不要复杂，要简短干练，无用信息不用输出\n- 不需要说此学员被预测为ABCD，辅导老师已知道此信息\n- 特征相关性方向：正向代表特征重要性跟续班率正相关，重要性越大，续班率越高；负向代表特征重要性跟续班率负相关，重要性越大，续班率越低。此类判断仅对特征值为数值型有效，其他类型无效。\n- 对比用户特征值和特征分位数：正向相关的特征，特征值处于较高分位数，续班率增加；负向相关的特征，特征值处于较高分位数，续班率下降。\n- 多个类似或同类特征，结合你的理解，总结一个最终结果输出，不要重复输出，例如【补习形式偏好、是否对比其他补习方式、线上补习经验】属于同类特征。\n- 一定要注意：特征重要性仅代表这个特征能有帮助有效分层，不代表此特征值续班率高，比如省份重要性高，但省份【贵州省】，反而代表这个学员续班率低，分层减分，所以你要按照你的经验认知，判断每个特征值是加分还是减分。\n- A续班概率为高、B续班概率为较高、C续班概率为偏低、D续班概率为低，分析结论时，需对应ABCD分层，给出预测原因。例如当续班意向分层\n\n## 限制:\n- 回答必须围绕用户数据的分析，不要回复无关话题。\n- 严格依据提供的信息进行分析，不引入无根据信息。\n- 可以输出学员各项特征的数值，但是不需要输出分位数，涉及分位数的描述，转化成处于较高水平等描述，例如“该学员非续班期课节完成度为90%，处于高水平”。\n- 直接输出原因，不需要写明“该学员被分层的原因主要是”等字样，页面已有提示文案。\n- 输出的原因解释需通俗易懂、简短精炼、自然流畅，控制在200字以内，最后不需要展示原因多少个字。\n- 如果用户特征值为空，直接结束分析\n\n## 输出\n```\n总结的原因\n```\n- 如果提取不到原因，则输出：\n```\n暂无分析原因\n```\n\n##**输出内容要求**\n输出的内容需要符合以下要求\n###内容禁止包含可能引起不适的敏感表述\n###内容禁止包含违法违规、暴力、色情、歧视性语\"\n  },\n  {\n    \"role\": \"user\",\n    \"content\": \"\n\n##**上下文数据**\n接下来是提供的一部分相关数据\n###特征值信息\n####数据内容及注释\n以下数据采用 Toon 格式编码，字段名已替换为中文描述以便理解：\n用户特征值:   learningprogress: 0\n  mentalhealthissue: 0.0\n  tutoringteacherevaluation: 0\n  courseexpansionintention: 0\n  focusondiscount: 0\n  effectobjection: 0\n  courseproductsatisfaction: 0\n  is_pre_registration: 0\n  exam_frequency_sum_service_period: 0\n  coursequality: 0\n  referralintention: 0\n  resident: 走读\n  priceobjection: 0\n  reject_form_count: 0\n  timeconflict: 0\n  avg_lesson_completion_progress_renewal_period: 0.0\n  avg_lesson_completion_progress_non_renewal_period: 0.3182\n  days_since_in_subclazz: 108\n  serviceobjection: 0\n  avg_small_lesson_learn_duration_renewal_period: 0.0\n  refundwarn: 未知\n  leadteacherevaluation: 0\n  avg_small_lesson_learn_duration_non_renewal_period: 0.0\n  user_subject_old_type: 新学员\n  consider_form_count: 0\n  consultrefund: 0\n  wechat_engagement_7d: 0.1204\n  ideaconsistency: 0\n  accept_form_count: 0\n  call_engagement_7d: 0.0\n\n特征值分位数:   reject_form_count: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  learningprogress: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  timeconflict: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  avg_lesson_completion_progress_renewal_period: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  avg_lesson_completion_progress_non_renewal_period: \"{\\\"q25\\\":0.49950000643730164,\\\"q50\\\":0.7996000051498413,\\\"q75\\\":0.9528999924659729}\"\n  tutoringteacherevaluation: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  serviceobjection: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  avg_small_lesson_learn_duration_renewal_period: \"{\\\"q25\\\":0.0,\\\"q50\\\":4.0,\\\"q75\\\":3803.0}\"\n  leadteacherevaluation: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  avg_small_lesson_learn_duration_non_renewal_period: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  courseexpansionintention: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  consider_form_count: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  focusondiscount: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  effectobjection: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  consultrefund: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  courseproductsatisfaction: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  is_pre_registration: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":1.0}\"\n  exam_frequency_sum_service_period: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  wechat_engagement_7d: \"{\\\"q25\\\":0.47040000557899475,\\\"q50\\\":0.7804999947547913,\\\"q75\\\":1.457200050354004}\"\n  coursequality: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  referralintention: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  ideaconsistency: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  accept_form_count: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  call_engagement_7d: \"{\\\"q25\\\":-0.13330000638961792,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n  priceobjection: \"{\\\"q25\\\":0.0,\\\"q50\\\":0.0,\\\"q75\\\":0.0}\"\n\n特征重要性:   learningprogress: 0\n  overallscore: 0\n  mentalhealthissue: 0\n  tutoringteacherevaluation: 0\n  advantageoussubject: 0\n  onlinetutoringexperience: 0\n  courseexpansionintention: 0\n  comparewithothertutoringmethods: 0\n  focusondiscount: 0\n  effectobjection: 0\n  courseproductsatisfaction: 0\n  is_pre_registration: 11\n  exam_frequency_sum_service_period: 0\n  coursequality: 0\n  referralintention: 0\n  highschoolsubjectselection: 0\n  priceobjection: 0\n  resident: 3\n  weaksubject_new: 0\n  reject_form_count: 0\n  timeconflict: 0\n  avg_lesson_completion_progress_renewal_period: 0\n  schoolattendancetype: 1\n  avg_lesson_completion_progress_non_renewal_period: 214\n  singlesubjectscore: 11\n  days_since_in_subclazz: 200\n  other_tutoring_situation: 0\n  serviceobjection: 0\n  avg_small_lesson_learn_duration_renewal_period: 39\n  refundwarn: 3\n  leadteacherevaluation: 0\n  avg_small_lesson_learn_duration_non_renewal_period: 0\n  user_subject_old_type: 12\n  consider_form_count: 0\n  consultrefund: 0\n  subjectattentionlevel: 0\n  purchaseintention: 52\n  wechat_engagement_7d: 236\n  coursematchingdegree: 0\n  furtherstudyplanning: 0\n  learninginitiative: 0\n  familyeducationattitude: 0\n  ideaconsistency: 0\n  accept_form_count: 0\n  tutoringformatpreference: 0\n  call_engagement_7d: 0\n\n特征中文名称:   days_since_in_subclazz: 服务天数\n  user_subject_old_type: 同科目新老学员\n  refundwarn: 高危退费\n  consultrefund: 咨询/提出退费\n  other_tutoring_situation: 是否有补习\n  onlinetutoringexperience: 线上补习经验\n  tutoringformatpreference: 补习形式偏好\n  comparewithothertutoringmethods: 对比其他补课方式\n  purchaseintention: 购买意愿\n  courseexpansionintention: 扩课意向\n  referralintention: 转介绍意向\n  resident: 走读/住校\n  schoolattendancetype: 走读/住校\n  overallscore: 整体成绩分数\n  singlesubjectscore: 单学科成绩\n  weaksubject_new: 薄弱科目（新）\n  advantageoussubject: 优势学科\n  highschoolsubjectselection: 高中选科\n  learningprogress: 学习进步\n  furtherstudyplanning: 升学规划\n  learninginitiative: 学习主动性\n  familyeducationattitude: 家庭教育态度\n  subjectattentionlevel: 学科重视程度\n  mentalhealthissue: 心理健康问题\n  ideaconsistency: 家长和学员想法一致性\n  courseproductsatisfaction: 课程产品满意度\n  coursequality: 课程质量\n  coursematchingdegree: 课程匹配度\n  tutoringteacherevaluation: 对辅导老师（二讲老师）的评价\n  leadteacherevaluation: 对主讲老师（上课老师）的评价\n  effectobjection: 效果异议\n  priceobjection: 价格异议\n  focusondiscount: 关注优惠\n  timeconflict: 时间冲突\n  serviceobjection: 服务异议\n  wechat_engagement_7d: 近7日累计微信亲密度\n  call_engagement_7d: 近7日累计通话亲密度\n  avg_lesson_completion_progress_non_renewal_period: 平均已开课正式课节完成度_非续班期\n  avg_lesson_completion_progress_renewal_period: 平均已开课正式课节完成度_续班期\n  avg_small_lesson_learn_duration_non_renewal_period: 单位课节的小灶课听课时长_非续班期\n  avg_small_lesson_learn_duration_renewal_period: 单位课节的小灶课听课时长_续班期\n  exam_frequency_sum_service_period: 累计参与考试频次_服务期\n  consider_form_count: 意向反馈是考虑续班的问卷数\n  reject_form_count: 意向反馈是拒绝续班的问卷数\n  accept_form_count: 意向反馈是同意续班的问卷数\n  is_pre_registration: 是否预报名\n\n续班意向预测结果: D\n\"\n  }\n]"
         }
       ],
-      "model": "doubao-seed-2-0-lite-260428"
+      "model": "doubao-seed-2-0-lite-260428",
+      "thinking": {
+        "type": "disabled"
+      }
     },
     "old_response": {
-      "event": "message",
-      "task_id": "744643c7-c10a-4a1d-a419-edf69706b517",
-      "id": "a896fdcc-cd9b-4642-998a-4ed013ab3314",
-      "message_id": "a896fdcc-cd9b-4642-998a-4ed013ab3314",
-      "conversation_id": "30550944-16b8-44f1-9177-3cfec6c16261",
-      "mode": "chat",
-      "answer": "学员是同科目新学员，目前已享受108天服务，走读状态。非续班期正式课完成度仅31.8%，低于平均水平，近7天微信互动频率很低，未预报名，暂未参与过续班相关意向反馈，也无小灶课听课记录，整体续班相关表现不佳。",
-      "metadata": {
-        "annotation_reply": null,
-        "retriever_resources": [],
-        "usage": {
-          "prompt_tokens": 4285,
-          "prompt_unit_price": "0",
-          "prompt_price_unit": "0",
-          "prompt_price": "0",
-          "completion_tokens": 76,
-          "completion_unit_price": "0",
-          "completion_price_unit": "0",
-          "completion_price": "0",
-          "total_tokens": 4361,
-          "total_price": "0",
-          "currency": "USD",
-          "latency": 4.515095079317689,
-          "time_to_first_token": null,
-          "time_to_generate": null
-        },
-        "agent_thoughts": [
-          {
-            "id": "40294047-898d-4a85-843e-fba4173e742a",
-            "position": 1,
-            "thought": "",
-            "observation": "",
-            "tool": "",
-            "tool_labels": {},
-            "tool_input": "",
-            "message_files": []
-          },
-          {
-            "id": "40294047-898d-4a85-843e-fba4173e742a",
-            "position": 1,
-            "thought": "学员是同科目新学员，目前已享受108天服务，走读状态。非续班期正式课完成度仅31.8%，低于平均水平，近7天微信互动频率很低，未预报名，暂未参与过续班相关意向反馈，也无小灶课听课记录，整体续班相关表现不佳。",
-            "observation": "",
-            "tool": "",
-            "tool_labels": {},
-            "tool_input": "",
-            "message_files": []
+      "id": "chatcmpl-a1fa356841b04ae7908259fcfea6296c",
+      "created": 1795520261,
+      "model": "doubao-seed-2.0-lite",
+      "object": "chat.completion",
+      "system_fingerprint": null,
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "content": "学员是同科目新学员，目前已享受108天服务，走读状态。非续班期正式课完成度仅31.8%，低于平均水平，近7天微信互动频率很低，未预报名，暂未参与过续班相关意向反馈，也无小灶课听课记录，整体续班相关表现不佳。",
+            "role": "assistant",
+            "tool_calls": null,
+            "function_call": null,
+            "reasoning_content": null
           }
-        ]
-      },
-      "created_at": 1795520259
+        }
+      ],
+      "usage": {
+        "completion_tokens": 76,
+        "prompt_tokens": 4285,
+        "total_tokens": 4361,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": null
+        },
+        "cost": 0.00199122
+      }
     },
     "new_response": {
       "usage": {
-        "completion_tokens": 499,
-        "prompt_tokens": 4289,
-        "cost": 0.00369894,
+        "completion_tokens": 73,
+        "prompt_tokens": 4285,
+        "cost": 0.00198366,
         "completion_tokens_details": {
-          "reasoning_tokens": 410
+          "reasoning_tokens": 0
         },
         "prompt_tokens_details": {},
-        "total_tokens": 4788
+        "total_tokens": 4358
       },
       "event": "litellm_proxy/doubao-seed-2.0-lite",
-      "messageId": "chatcmpl-91bd29e75017494d88cb8eb97bffdf39",
-      "answer": "```\n该学员是同科目新学员，已入班接受服务108天，非续班期正式课完成度仅31.82%，远低于平均水平，近7日和老师的微信、通话互动频率都极低，未进行预报名，续班期小灶课学习时长为0，也没有任何同意续班的相关反馈，整体学习参与度很低。\n```"
+      "messageId": "chatcmpl-0942cc39acfe41afb1354d0eb1a8a0bb",
+      "answer": "学员进班已108天，是同科目新学员，走读就读。非续班期正式课节完成度仅0.3182，低于平均水平，近7天和您的微信互动频率很低，未预报名，也没有续班相关的正向反馈，目前无退费、课程相关异议情况。"
     },
     "old_trace": "71b44f24-f24a-45f5-8200-d63615400d9b.0.3",
-    "new_trace": "9a5b2c21-e465-45fb-b0c4-e24f46a18140.0.3",
+    "new_trace": "95d2fb8f-d462-4449-839e-b6123dca4b16.0.3",
     "differences": {
-      "model": {
-        "old": "doubao/Doubao-1-5-pro-32k",
-        "new": "doubao-seed-2-0-lite-260428"
-      },
-      "response_format": {
-        "old": null,
-        "new": {
-          "type": "text"
+      "messages_equal": true,
+      "non_messages": [
+        {
+          "field": "model",
+          "old_present": true,
+          "new_present": true,
+          "old": "doubao/Doubao-1-5-pro-32k",
+          "new": "doubao-seed-2-0-lite-260428"
+        },
+        {
+          "field": "response_format",
+          "old_present": false,
+          "new_present": true,
+          "old": null,
+          "new": {
+            "type": "text"
+          }
+        },
+        {
+          "field": "thinking",
+          "old_present": false,
+          "new_present": true,
+          "old": null,
+          "new": {
+            "type": "disabled"
+          }
+        },
+        {
+          "field": "user",
+          "old_present": true,
+          "new_present": false,
+          "old": "9440b198-bce5-4f08-8a88-f2202e4fa673",
+          "new": null
         }
-      },
-      "user": {
-        "old": "9440b198-bce5-4f08-8a88-f2202e4fa673",
-        "new": null
+      ],
+      "effective_thinking": {
+        "aligned": true,
+        "old_reasoning_tokens": 0,
+        "new_reasoning_tokens": 0,
+        "scope": "当前生产配置TEST有限输入对照"
       }
     },
     "evidence": {
-      "old_response": "remaining-current-runs/test-dify-old/tier-response.json",
-      "old_messages": "suyang-old-tier-closure/old-messages.json",
-      "new_request": "remaining-current-runs/suyang/素养分层/received.json",
-      "input_new_response": "remaining-current-runs/suyang/素养分层/invoke.json",
-      "old_http": "final-15-evidence/suyang-tier-old-http.json",
-      "http_comparison": "final-15-evidence/suyang-tier-http-comparison.json"
+      "directory": "thinking-related",
+      "old_http": "thinking-related/素养旧-http.json",
+      "old_response": "thinking-related/素养旧-response.json",
+      "old_llm_response": "thinking-related/素养旧-response.json",
+      "new_http": "thinking-related/素养分层-http.json",
+      "result": "thinking-related/result.json",
+      "verification": "thinking-related-verification.md"
     },
     "missing": {},
-    "notes": []
+    "notes": [
+      "当前生产生成配置的TEST对照，messages和有效thinking已闭合；仅有限输入，不证明生产全量或输出语义普遍等价。"
+    ],
+    "old_llm_response": {
+      "id": "chatcmpl-a1fa356841b04ae7908259fcfea6296c",
+      "created": 1795520261,
+      "model": "doubao-seed-2.0-lite",
+      "object": "chat.completion",
+      "system_fingerprint": null,
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "content": "学员是同科目新学员，目前已享受108天服务，走读状态。非续班期正式课完成度仅31.8%，低于平均水平，近7天微信互动频率很低，未预报名，暂未参与过续班相关意向反馈，也无小灶课听课记录，整体续班相关表现不佳。",
+            "role": "assistant",
+            "tool_calls": null,
+            "function_call": null,
+            "reasoning_content": null
+          }
+        }
+      ],
+      "usage": {
+        "completion_tokens": 76,
+        "prompt_tokens": 4285,
+        "total_tokens": 4361,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": null
+        },
+        "cost": 0.00199122
+      }
+    },
+    "new_llm_response": {
+      "id": "chatcmpl-0942cc39acfe41afb1354d0eb1a8a0bb",
+      "created": 1795579054,
+      "model": "doubao-seed-2.0-lite",
+      "object": "chat.completion",
+      "system_fingerprint": null,
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "content": "学员进班已108天，是同科目新学员，走读就读。非续班期正式课节完成度仅0.3182，低于平均水平，近7天和您的微信互动频率很低，未预报名，也没有续班相关的正向反馈，目前无退费、课程相关异议情况。",
+            "role": "assistant",
+            "tool_calls": null,
+            "function_call": null,
+            "reasoning_content": null
+          }
+        }
+      ],
+      "usage": {
+        "completion_tokens": 73,
+        "prompt_tokens": 4285,
+        "total_tokens": 4358,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": null
+        },
+        "cost": 0.00198366
+      }
+    }
   },
   {
     "scene": "素养根因",

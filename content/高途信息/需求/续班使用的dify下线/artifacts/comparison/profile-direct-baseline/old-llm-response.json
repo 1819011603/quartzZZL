@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-8df05088ebf448bc9dc4f13eaeb5c76f",
+  "created": 1795578603,
+  "model": "doubao-seed-2.0-lite",
+  "object": "chat.completion",
+  "system_fingerprint": null,
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "```json\n{\n  \"renewalInterest\": \"**来自对话**：无相关内容；\\n**来自问卷**：1、认可二讲同步学习进展、督促作业、紧密家校联系的服务；2、对主讲、物理课程整体满意度较高；3、需要针对性查漏补缺、中考复习、真题训练类物理辅导内容\",\n  \"renewalResistance\": \"**来自对话**：无相关内容；\\n**来自问卷**：家长暂未明确反馈阻碍续班的具体原因，仅表示对续班相关事宜存在待咨询的疑虑\",\n  \"portraitSummary\": \"学员为准中考学生，当前学习物理电学板块，物理存在课上能听懂但课后做题出错、学习主动性弱、学习效果不理想的问题。**续班意向为有意报名寒春物理系统复习课，但存在疑虑需咨询老师**。家长作为填报人，对二讲满意度7分、主讲满意度7分、课程满意度8分。后续希望获得学员学习状态同步、作业督促、针对性查漏补缺、定期测评、紧密家校沟通服务，计划通过中考物理专题复习、真题训练、押题相关课程冲刺重高。\"\n}\n```",
+        "role": "assistant",
+        "tool_calls": null,
+        "function_call": null,
+        "reasoning_content": "\n用户现在需要按照要求生成符合规范的JSON对吧，renewalInterest字段的内容已梳理完成，其中对话来源无相关内容，问卷来源的相关反馈已整理完毕。\n\n续班抗性点相关梳理已完成，对话渠道无对应抗性内容，问卷暂未明确给出具体阻碍续班的原因，仅显示家长有报名疑虑需咨询相关人员。我还梳理出了核心学员画像：该学员为准中考生，目前正在学习物理电学板块，存在课上听懂但课后做题出错、学习主动性不足、学习效果不佳的问题，续班意向为有意向报名但有疑虑需咨询老师，对二讲、主讲、课程的满意度分别为7分、7分、8分。\n\n经核对，renewalInterest的问卷信息已确认，学员需求为中考冲刺类物理辅导服务。\n\n现有续班抗性相关信息不足，暂未明确具体抗性原因，仅能确认家长对续班事宜存在待咨询的疑虑。\n\n该学员后续有中考冲刺辅导及升学规划相关需求，我将整理符合规范的JSON输出，注意格式转义避免语法错误。\n\n符合要求的续班相关JSON内容已整理完成，涵盖renewalInterest、renewalResistance、portraitSummary三类核心字段，信息准确无误。\n\n我已核验确认该续班相关JSON符合规范要求。\n"
+      }
+    }
+  ],
+  "usage": {
+    "completion_tokens": 1848,
+    "prompt_tokens": 2202,
+    "total_tokens": 4050,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 1593,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cached_tokens": null
+    },
+    "cost": 0.008391599999999999
+  }
+}
