@@ -13,6 +13,11 @@ tags: [需求]
 
 # Dify迁移当前结论
 
+## 当前未完成：实际thinking对齐
+
+用户提供响应确证画像旧0、新1202 reasoning tokens，先前仅凭入口省略thinking的对齐判断不充分，现撤回有效thinking已对齐结论。本轮按上下文交接要求停止，尚未修改TEST配置或复验；无在途操作。续接见[安全交接](artifacts/comparison/thinking-effective-handoff.md)及[同因影响范围](artifacts/comparison/thinking-impact-review.md)。飞书仍revision186，待实际修正后统一更新。
+
+
 已完成15个有限TEST场景对照，非生产全量上线验收。当前代码47b3dcb7；普通链路复用263ba48a有效证据，未全量重跑。允许确认的替代模型；随机输出不要求逐字一致。
 
 |场景|当前结果|证据版本|

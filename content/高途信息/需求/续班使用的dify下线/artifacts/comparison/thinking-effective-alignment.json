@@ -1,0 +1,39 @@
+{
+  "complete": false,
+  "completed_scope": "TEST旧别名有效行为画像/摘要对齐",
+  "releaseKey": "20261125114552-188aa6ecfba6978c",
+  "changed_agent": "255107338300556288",
+  "change": {
+    "params.thinking": {
+      "type": "disabled"
+    }
+  },
+  "verification": [
+    {
+      "scene": "画像",
+      "trace": "a5d885f0-835c-4466-b91d-8be3f65a3961.0.3",
+      "messages_equal": true,
+      "thinking": {
+        "type": "disabled"
+      },
+      "reasoning_tokens": 0,
+      "reasoning_content": null
+    },
+    {
+      "scene": "摘要",
+      "trace": "8ef8ed4f-165e-4e0d-8b8f-0124cbff4de4.0.3",
+      "messages_equal": true,
+      "thinking": {
+        "type": "disabled"
+      },
+      "reasoning_tokens": 0,
+      "reasoning_content": null
+    }
+  ],
+  "production_scope_limitation": "当前生产画像model直接目标，TEST旧副本替换为旧别名引入force disabled；本修正不可外推当前生产画像thinking基准",
+  "remaining": [
+    "真正直呼目标模型TEST基准的可用模型注册/配置验证；保持生产只读",
+    "分层依据当前实际基准确认后再决定是否修改"
+  ],
+  "active_operations": []
+}

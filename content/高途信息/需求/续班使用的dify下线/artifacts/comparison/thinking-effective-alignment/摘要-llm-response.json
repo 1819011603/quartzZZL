@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-460d590272d248d9b04027672e8c8d97",
+  "created": 1795578392,
+  "model": "doubao-seed-2.0-lite",
+  "object": "chat.completion",
+  "system_fingerprint": null,
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "{\"commSummary\":\"围绕秋季课程相关事宜开展沟通，介绍语文秋季班可选择双一流班（周日早八点，讲义额外增加拔高题）和一本班（周六下午四点），提醒**已选的周日早化学课与语文双一流班时间冲突**，家长认可选择语文一本班，双方确认**讲义23号开始发货**。家长认可高途老师授课**幽默风趣**，但核心顾虑是**所用教材版本和高途全国版课程不一致，担心不匹配本地考情**，部分家长明确续报英语、数学，暂不续报语文，还存在担心多科同时学习孩子时间紧张易厌学、对提前学物理有顾虑的情况，诉求为确认物理**课程内容设置**与**班型安排**，希望开课前收到课程选择确认提醒。另有部分用户因课程时间与篮球训练冲突、学习一学期成绩未提升、不喜欢当前老师讲课节奏快互动少、报名时承诺的每周单独答疑和学习报告服务未落实等原因不考虑续报，部分学员认可现有课程节奏，同意帮忙留意身边有补课需求的同学，存在转介绍意向。\"}",
+        "role": "assistant",
+        "tool_calls": null,
+        "function_call": null,
+        "reasoning_content": null
+      }
+    }
+  ],
+  "usage": {
+    "completion_tokens": 243,
+    "prompt_tokens": 1420,
+    "total_tokens": 1663,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cached_tokens": null
+    },
+    "cost": 0.0012087600000000001
+  }
+}

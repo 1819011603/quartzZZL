@@ -1,0 +1,28 @@
+[
+  {
+    "class": "",
+    "container_ip": "10.255.181.226",
+    "image_name": "acr.baijia.com/uqun/litellm:release-537b62fc-20261124182947",
+    "level": "INFO",
+    "message": "2026-11-25 11:12:15,640 INFO  [litellm_pre_call_utils.py:1136] [TID:2a220458-cfd5-4547-82a0-295b5f386335.0.3] 30 Model redirect applied: caller=caller_0167, from_model=doubao/Doubao-1-5-pro-32k, to_model=doubao-seed-2-0-lite-260428",
+    "node_ip": "10.255.38.236",
+    "pod": "litellm-77895f7fb-zcr82",
+    "service": "litellm",
+    "thread": "",
+    "timestamp": "2026-11-25 11:12:15,640",
+    "trace_id": "2a220458-cfd5-4547-82a0-295b5f386335.0.3"
+  },
+  {
+    "class": "",
+    "container_ip": "10.255.181.226",
+    "image_name": "acr.baijia.com/uqun/litellm:release-537b62fc-20261124182947",
+    "level": "INFO",
+    "message": "2026-11-25 11:12:15,659 INFO  [router.py:1398] [TID:2a220458-cfd5-4547-82a0-295b5f386335.0.3] 30 Model redirect default params injected: doubao/Doubao-1-5-pro-32k -> doubao-seed-2-0-lite-260428, keys=['thinking']",
+    "node_ip": "10.255.38.236",
+    "pod": "litellm-77895f7fb-zcr82",
+    "service": "litellm",
+    "thread": "",
+    "timestamp": "2026-11-25 11:12:15,659",
+    "trace_id": "2a220458-cfd5-4547-82a0-295b5f386335.0.3"
+  }
+]

@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-e76da536cec14290b8d08698209eb958",
+  "created": 1795578386,
+  "model": "doubao-seed-2.0-lite",
+  "object": "chat.completion",
+  "system_fingerprint": null,
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "{\n    \"renewalInterest\": \"来自问卷：1、认可二讲老师同步学习进展、督促听课作业、家校紧密沟通的服务； 2、期待开设小灶课程查漏补缺、定期组织测评定位问题； 3、认为中考押题班、模考专题课、真题训练等内容对复习有帮助\",\n    \"renewalResistance\": \"来自问卷：1、孩子物理存在课上听懂但课后做题不对、学习习惯差缺乏主动性的问题； 2、孩子想学习但学习效果不理想\",\n    \"portraitSummary\": \"学员为准中考生，当前物理学习存在课上听懂课后做题不对、学习主动性差的问题，想学习但效果不理想。**家长续班意向为需要进一步咨询确认**，对二讲、主讲满意度为7分，对课程满意度为8分。核心诉求是获得针对性查漏补缺、学习监督、中考专题复习类服务，冲刺重高。\"\n}",
+        "role": "assistant",
+        "tool_calls": null,
+        "function_call": null,
+        "reasoning_content": null
+      }
+    }
+  ],
+  "usage": {
+    "completion_tokens": 208,
+    "prompt_tokens": 2329,
+    "total_tokens": 2537,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cached_tokens": null
+    },
+    "cost": 0.00150234
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"keyword\" keyword=\"当前结论：|TEST已发布20261125114552\"><p id=\"doxcnHO7B59X8PiFJsNKZwVZPyb\">当前结论：15场景的有限TEST输入输出证据已保留，但有效thinking对齐尚未全部完成，不能宣称整体等价替换。画像旧TEST副本因改用豆包1.5别名被路由强制关闭thinking；生产画像配置直接使用目标模型，因此该副本不是完整有效参数的生产基准。两个403问题建议场景仍排除。</p><p id=\"doxcnm05OlITmKeJxkVOpaqCp8e\">TEST已发布20261125114552-188aa6ecfba6978c，仅为画像/摘要共享agent补thinking.disabled。同原数据画像a5d885f0-835c-4466-b91d-8be3f65a3961.0.3、摘要8ef8ed4f-165e-4e0d-8b8f-0124cbff4de4.0.3实收messages不变、reasoning_content=null、reasoning_tokens=0；这只证明与旧别名实验对齐。当前生产配置直呼目标的TEST基准及最终策略仍待完成。代码47b3dcb7，普通链路既有263ba48a证据复用；未全量重跑、未生产切换。输出不要求逐字一致，有效参数差异必须单独核实。</p></fragment>",
+      "document_id": "EWI6dsdvPokck0xy89ccJDuEnhg",
+      "revision_id": 189
+    }
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.70",
+      "latest": "1.0.100",
+      "message": "lark-cli 1.0.100 available, current 1.0.70, run: lark-cli update"
+    }
+  }
+}

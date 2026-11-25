@@ -1,0 +1,389 @@
+{
+  "status": "画像/摘要新invoke成功且推理token0已读；完整有效参数对齐及生产基准适用性仍待实现者结论",
+  "snapshot_sha256": "7fbed69d3d1463151111ef82b62c2c0da005898d4753a650797725a50089ce43",
+  "control_evidence": "strict-v2-model-map.json read_at 2026-11-24T14:18:15.598466; PROD35941/TEST35943",
+  "finding": "历史控制面已证明旧豆包1.5别名force disabled；当前生产画像配置直接用目标模型，因此画像TEST副本改旧别名引入额外有效参数差异。不能由该TEST反例推出生产画像必须disabled。",
+  "owner_response_evidence": {
+    "old_trace": "2a220458-cfd5-4547-82a0-295b5f386335.0.3",
+    "old_reasoning_tokens": 0,
+    "new_trace": "f2e3ea9d-eb41-41a8-b041-63d20fba2554.0.3",
+    "new_reasoning_tokens": 1202,
+    "source": "owner提供的完整响应；本轮未重新调日志"
+  },
+  "rows": [
+    {
+      "scene": "用户画像",
+      "old_model": "doubao/Doubao-1-5-pro-32k",
+      "new_model": "doubao-seed-2-0-lite-260428",
+      "old_thinking": null,
+      "new_thinking": null,
+      "new_reasoning_tokens": [
+        1202
+      ],
+      "old_reasoning_tokens_in_comparison": [],
+      "status": "TEST旧别名副本对照差异已证；生产当前基准不支持直接判disabled",
+      "next_action": "优先保留生产画像目标模型复制基准核对有效参数；若另做历史别名兼容实验须单列，不能宣称生产迁移修复",
+      "old_trace": "2a220458-cfd5-4547-82a0-295b5f386335.0.3",
+      "new_trace": "f2e3ea9d-eb41-41a8-b041-63d20fba2554.0.3",
+      "evidence": {
+        "current": "profile-real-baseline/result.json",
+        "config": "profile-real-baseline/copied-config-diff.json"
+      }
+    },
+    {
+      "scene": "沟通摘要",
+      "old_model": "doubao/Doubao-1-5-pro-32k",
+      "new_model": "doubao-seed-2-0-lite-260428",
+      "old_thinking": null,
+      "new_thinking": null,
+      "new_reasoning_tokens": [
+        736
+      ],
+      "old_reasoning_tokens_in_comparison": [],
+      "status": "历史旧别名样本受影响候选；需确认各自当前生产配置仍为该别名及有效参数",
+      "next_action": "确认当前真实基准身份；仅已确认保留旧别名语义的TEST对照有disabled依据，不能按共享agent一并关闭",
+      "old_trace": "15760243-f225-4246-a103-c9565c2652ba.0.3",
+      "new_trace": "9d831ba2-fc93-46d7-82ee-f1797aea5696.0.3",
+      "evidence": {
+        "old": "pairs.json:name=摘要,sides[0]",
+        "input_new_response": "remaining-current-runs/after/摘要/invoke.json",
+        "new_request": "remaining-current-runs/after/摘要/received.json"
+      }
+    },
+    {
+      "scene": "服务SOP",
+      "old_model": "doubao/Doubao-Seed-1-6",
+      "new_model": "doubao-seed-2-0-lite-260428",
+      "old_thinking": null,
+      "new_thinking": null,
+      "new_reasoning_tokens": [
+        1302
+      ],
+      "old_reasoning_tokens_in_comparison": [],
+      "status": "未见相同强制disabled注入；实际默认有效行为未完全确认",
+      "next_action": "不套用画像disabled修正；优先复用完整旧响应，缺usage不当0",
+      "old_trace": "315c294d-dbc3-4d8f-adc6-e036ad96d1e1.0.3",
+      "new_trace": "c2b1755e-1ceb-4859-8488-423c73f52b03.0.3",
+      "evidence": {
+        "old": "pairs.json:name=SOP V2,sides[0]",
+        "input_new_response": "remaining-current-runs/after/SOP V2/invoke.json",
+        "new_request": "remaining-current-runs/after/SOP V2/received.json",
+        "automatic_identity": "final-15-evidence/sop-auto-header-watch.txt",
+        "automatic_helper": "final-15-evidence/sop-auto-helper-watch.txt",
+        "automatic_http": "final-15-evidence/sop-auto-http.json"
+      }
+    },
+    {
+      "scene": "高中分层",
+      "old_model": "doubao/Doubao-1-5-pro-32k",
+      "new_model": "doubao-seed-2-0-lite-260428",
+      "old_thinking": null,
+      "new_thinking": null,
+      "new_reasoning_tokens": [
+        338
+      ],
+      "old_reasoning_tokens_in_comparison": [],
+      "status": "历史旧别名样本受影响候选；需确认各自当前生产配置仍为该别名及有效参数",
+      "next_action": "确认当前真实基准身份；仅已确认保留旧别名语义的TEST对照有disabled依据，不能按共享agent一并关闭",
+      "old_trace": "3c9e6b70-e6f3-4f95-883b-14408cdafc2b.0.3",
+      "new_trace": "63916e95-985f-4407-9f8e-00ae2ae61438.0.3",
+      "evidence": {
+        "old": "pairs.json:name=分层修正后,sides[0]",
+        "input_new_response": "remaining-current-runs/after/分层修正后/invoke.json",
+        "new_request": "remaining-current-runs/after/分层修正后/received.json"
+      }
+    },
+    {
+      "scene": "精品根因",
+      "old_model": "deepseek/DeepSeek-R1-250528",
+      "new_model": "deepseek-flash",
+      "old_thinking": null,
+      "new_thinking": null,
+      "new_reasoning_tokens": [
+        1764
+      ],
+      "old_reasoning_tokens_in_comparison": [],
+      "status": "未见相同强制disabled注入；实际默认有效行为未完全确认",
+      "next_action": "不套用画像disabled修正；优先复用完整旧响应，缺usage不当0",
+      "old_trace": "a32fe4b6-6269-4882-8d39-81c76f8ca23e.0.3",
+      "new_trace": "aa02540f-30a8-40cd-816d-138168507e69.0.3",
+      "evidence": {
+        "old": "pairs.json:name=退费根因,sides[0]",
+        "input_new_response": "remaining-current-runs/after/退费根因/invoke.json",
+        "new_request": "remaining-current-runs/after/退费根因/received.json"
+      }
+    },
+    {
+      "scene": "精品旅程",
+      "old_model": "deepseek-flash",
+      "new_model": "deepseek-flash",
+      "old_thinking": {
+        "type": "enabled"
+      },
+      "new_thinking": {
+        "type": "enabled"
+      },
+      "new_reasoning_tokens": [
+        3368
+      ],
+      "old_reasoning_tokens_in_comparison": [],
+      "status": "可排除此特定别名跳过强制disabled路径；不等于全部行为已证相等",
+      "next_action": "本轮不因画像反例重跑",
+      "old_trace": "ff9508f8-2b0b-45b1-84c9-cd730c8dd437.0.3",
+      "new_trace": "1ae3e73d-c337-4b7e-9f88-4be4f6d580c2.0.3",
+      "evidence": {
+        "directory": "final-15-evidence/精品旅程",
+        "comparison": "final-15-evidence/精品旅程/comparison.json"
+      }
+    },
+    {
+      "scene": "精品课程体验",
+      "old_model": "deepseek/DeepSeek-R1-250528",
+      "new_model": "deepseek-flash",
+      "old_thinking": null,
+      "new_thinking": null,
+      "new_reasoning_tokens": [
+        1395
+      ],
+      "old_reasoning_tokens_in_comparison": [],
+      "status": "未见相同强制disabled注入；实际默认有效行为未完全确认",
+      "next_action": "不套用画像disabled修正；优先复用完整旧响应，缺usage不当0",
+      "old_trace": "e02d7092-ee55-4e73-b731-b6f31ef2fb6e.0.3",
+      "new_trace": "3a622047-d7a6-469d-89f5-778770a36f1f.0.3",
+      "evidence": {
+        "old": "pairs.json:name=课程体验,sides[0]",
+        "input_new_response": "remaining-current-runs/after/课程体验/invoke.json",
+        "new_request": "remaining-current-runs/after/课程体验/received.json"
+      }
+    },
+    {
+      "scene": "精品NPS",
+      "old_model": "deepseek/DeepSeek-R1-250528",
+      "new_model": "deepseek-flash",
+      "old_thinking": null,
+      "new_thinking": null,
+      "new_reasoning_tokens": [
+        1289
+      ],
+      "old_reasoning_tokens_in_comparison": [],
+      "status": "未见相同强制disabled注入；实际默认有效行为未完全确认",
+      "next_action": "不套用画像disabled修正；优先复用完整旧响应，缺usage不当0",
+      "old_trace": "d2003cc1-b573-4e1c-8918-d3a4d162fe62.0.3",
+      "new_trace": "db72f1f1-90c6-458a-a8f0-047bfdf501c1.0.3",
+      "evidence": {
+        "old": "pairs.json:name=NPS,sides[0]",
+        "input_new_response": "remaining-current-runs/after/NPS/invoke.json",
+        "new_request": "remaining-current-runs/after/NPS/received.json"
+      }
+    },
+    {
+      "scene": "素养分层",
+      "old_model": "doubao/Doubao-1-5-pro-32k",
+      "new_model": "doubao-seed-2-0-lite-260428",
+      "old_thinking": null,
+      "new_thinking": null,
+      "new_reasoning_tokens": [
+        410
+      ],
+      "old_reasoning_tokens_in_comparison": [],
+      "status": "历史旧别名样本受影响候选；需确认各自当前生产配置仍为该别名及有效参数",
+      "next_action": "确认当前真实基准身份；仅已确认保留旧别名语义的TEST对照有disabled依据，不能按共享agent一并关闭",
+      "old_trace": "71b44f24-f24a-45f5-8200-d63615400d9b.0.3",
+      "new_trace": "9a5b2c21-e465-45fb-b0c4-e24f46a18140.0.3",
+      "evidence": {
+        "old_response": "remaining-current-runs/test-dify-old/tier-response.json",
+        "old_messages": "suyang-old-tier-closure/old-messages.json",
+        "new_request": "remaining-current-runs/suyang/素养分层/received.json",
+        "input_new_response": "remaining-current-runs/suyang/素养分层/invoke.json",
+        "old_http": "final-15-evidence/suyang-tier-old-http.json",
+        "http_comparison": "final-15-evidence/suyang-tier-http-comparison.json"
+      }
+    },
+    {
+      "scene": "素养根因",
+      "old_model": "deepseek-flash",
+      "new_model": "deepseek-flash",
+      "old_thinking": {
+        "type": "enabled"
+      },
+      "new_thinking": {
+        "type": "enabled"
+      },
+      "new_reasoning_tokens": [
+        1347
+      ],
+      "old_reasoning_tokens_in_comparison": [],
+      "status": "可排除此特定别名跳过强制disabled路径；不等于全部行为已证相等",
+      "next_action": "本轮不因画像反例重跑",
+      "old_trace": "c9a92c1d-d766-4982-a6d9-700ba4c45e48.0.3",
+      "new_trace": "1b812e6a-3ef7-4399-b2e4-47b2d5f88b15.0.3",
+      "evidence": {
+        "old_request": "remaining-current-runs/test-dify-old/素养根因/replacement-llm-received.json",
+        "old_response": "remaining-current-runs/test-dify-old/素养根因/replacement-response.json",
+        "new_request": "remaining-current-runs/suyang-thinking-final/素养根因/received.json",
+        "input_new_response": "remaining-current-runs/suyang-thinking-final/素养根因/invoke.json",
+        "old_trace": "suyang-copy-current/final-summary.json"
+      }
+    },
+    {
+      "scene": "素养旅程",
+      "old_model": "deepseek-flash",
+      "new_model": "deepseek-flash",
+      "old_thinking": {
+        "type": "enabled"
+      },
+      "new_thinking": {
+        "type": "enabled"
+      },
+      "new_reasoning_tokens": [
+        2015
+      ],
+      "old_reasoning_tokens_in_comparison": [],
+      "status": "可排除此特定别名跳过强制disabled路径；不等于全部行为已证相等",
+      "next_action": "本轮不因画像反例重跑",
+      "old_trace": "130df5c1-0813-4fd0-9a86-325e5e2077ee.0.3",
+      "new_trace": "7c633ac1-66ed-4e74-9634-ab8ce0bcf9cb.0.3",
+      "evidence": {
+        "old_request": "remaining-current-runs/test-dify-old/素养旅程/replacement-llm-received.json",
+        "old_response": "remaining-current-runs/test-dify-old/素养旅程/replacement-response.json",
+        "new_request": "remaining-current-runs/suyang-thinking-final/素养旅程/received.json",
+        "input_new_response": "remaining-current-runs/suyang-thinking-final/素养旅程/invoke.json",
+        "old_trace": "suyang-copy-current/final-summary.json"
+      }
+    },
+    {
+      "scene": "素养课程体验",
+      "old_model": "deepseek-flash",
+      "new_model": "deepseek-flash",
+      "old_thinking": {
+        "type": "enabled"
+      },
+      "new_thinking": {
+        "type": "enabled"
+      },
+      "new_reasoning_tokens": [
+        3027
+      ],
+      "old_reasoning_tokens_in_comparison": [],
+      "status": "可排除此特定别名跳过强制disabled路径；不等于全部行为已证相等",
+      "next_action": "本轮不因画像反例重跑",
+      "old_trace": "61d3107e-f6b6-4fbe-ac11-5e83de9a6a9d.0.3",
+      "new_trace": "f018e314-4756-49c3-9660-7c2b6d216317.0.3",
+      "evidence": {
+        "old_request": "remaining-current-runs/test-dify-old/素养体验/replacement-llm-received.json",
+        "old_response": "remaining-current-runs/test-dify-old/素养体验/replacement-response.json",
+        "new_request": "remaining-current-runs/suyang-thinking-final/素养体验/received.json",
+        "input_new_response": "remaining-current-runs/suyang-thinking-final/素养体验/invoke.json",
+        "old_trace": "suyang-copy-current/final-summary.json"
+      }
+    },
+    {
+      "scene": "素养NPS",
+      "old_model": "deepseek-v4-flash-0731",
+      "new_model": "deepseek-v4-flash-0731",
+      "old_thinking": {
+        "type": "enabled"
+      },
+      "new_thinking": {
+        "type": "enabled"
+      },
+      "new_reasoning_tokens": [
+        3631
+      ],
+      "old_reasoning_tokens_in_comparison": [],
+      "status": "可排除此特定别名跳过强制disabled路径；不等于全部行为已证相等",
+      "next_action": "本轮不因画像反例重跑",
+      "old_trace": "8c802dc4-ed69-4533-b63a-3851e20bb83d.0.3",
+      "new_trace": "1eea85d3-3535-460e-995d-1b66df8f8956.0.3",
+      "evidence": {
+        "old": "pairs.json:name=素养NPS,sides[0]",
+        "input_new_response": "final-15-evidence/nps-normal-aligned-response.json",
+        "new_request": "final-15-evidence/nps-normal-aligned-http.json"
+      }
+    },
+    {
+      "scene": "高中降退费",
+      "old_model": "deepseek-flash",
+      "new_model": "deepseek-flash",
+      "old_thinking": null,
+      "new_thinking": null,
+      "new_reasoning_tokens": [
+        1509
+      ],
+      "old_reasoning_tokens_in_comparison": [],
+      "status": "可排除此特定别名跳过强制disabled路径；不等于全部行为已证相等",
+      "next_action": "本轮不因画像反例重跑",
+      "old_trace": "83af554c-558e-4491-9baf-c2add01b2e27.0.3",
+      "new_trace": "dcec0f6e-0074-4169-b3b1-323e98187ba8.0.3",
+      "evidence": {
+        "old_request": "kb-test-replacement/高中降退费/old-llm-received.json",
+        "new_request": "kb-test-replacement/高中降退费/new-llm-received.json",
+        "old_response": "kb-test-replacement/高中降退费/old-response.json",
+        "new_response": "kb-test-replacement/高中降退费/new-response.json",
+        "input": [
+          "kb-test-replacement/高中降退费/old-request.json",
+          "kb-test-replacement/高中降退费/new-request.json"
+        ]
+      }
+    },
+    {
+      "scene": "素养降退费",
+      "old_model": "deepseek-flash",
+      "new_model": "deepseek-flash",
+      "old_thinking": {
+        "type": "enabled"
+      },
+      "new_thinking": {
+        "type": "enabled"
+      },
+      "new_reasoning_tokens": [
+        2953
+      ],
+      "old_reasoning_tokens_in_comparison": [],
+      "status": "可排除此特定别名跳过强制disabled路径；不等于全部行为已证相等",
+      "next_action": "本轮不因画像反例重跑",
+      "old_trace": "38f00685-52f1-4c61-9637-0ea17be772da.0.3",
+      "new_trace": "e04638d2-48f8-4937-a9e2-8102755c45ce.0.3",
+      "evidence": {
+        "old_request": "kb-test-replacement/素养降退费/old-llm-received.json",
+        "new_request": "kb-test-replacement/素养降退费/new-llm-received.json",
+        "old_response": "kb-test-replacement/素养降退费/old-response.json",
+        "new_response": "kb-test-replacement/素养降退费/new-response.json",
+        "input": [
+          "kb-test-replacement/素养降退费/old-request.json",
+          "kb-test-replacement/素养降退费/new-request.json"
+        ]
+      }
+    }
+  ],
+  "baseline_validity": {
+    "production_profile_model": "doubao-seed-2-0-lite-260428",
+    "test_copy_profile_model": "doubao/Doubao-1-5-pro-32k",
+    "evidence": [
+      "profile-real-baseline/prod-detail.json:model_config.model",
+      "profile-real-baseline/test-detail.json:model_config.model",
+      "profile-real-baseline/copied-config-diff.json:model"
+    ],
+    "conclusion": "0 vs 1202只证明该TEST旧别名副本与新目标直呼不同；不是生产旧侧0的证据。消息模板复用有效，模型有效参数基准不可直接外推。"
+  },
+  "new_observations": [
+    {
+      "scene": "画像",
+      "trace": "a5d885f0-835c-4466-b91d-8be3f65a3961.0.3",
+      "httpStatus": 200,
+      "rvoCode": 0,
+      "reasoning_tokens": 0,
+      "evidence": "thinking-effective-alignment/画像-invoke.json",
+      "limit": "仅新调用响应；不替代同次完整请求/基准适用性断言"
+    },
+    {
+      "scene": "摘要",
+      "trace": "8ef8ed4f-165e-4e0d-8b8f-0124cbff4de4.0.3",
+      "httpStatus": 200,
+      "rvoCode": 0,
+      "reasoning_tokens": 0,
+      "evidence": "thinking-effective-alignment/摘要-invoke.json",
+      "limit": "仅新调用响应；不替代同次完整请求/基准适用性断言"
+    }
+  ]
+}

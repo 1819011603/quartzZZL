@@ -1,0 +1,22 @@
+[
+  {
+    "scene": "画像",
+    "trace": "a5d885f0-835c-4466-b91d-8be3f65a3961.0.3",
+    "messages_equal": true,
+    "thinking": {
+      "type": "disabled"
+    },
+    "reasoning_tokens": 0,
+    "reasoning_content": null
+  },
+  {
+    "scene": "摘要",
+    "trace": "8ef8ed4f-165e-4e0d-8b8f-0124cbff4de4.0.3",
+    "messages_equal": true,
+    "thinking": {
+      "type": "disabled"
+    },
+    "reasoning_tokens": 0,
+    "reasoning_content": null
+  }
+]
