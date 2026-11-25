@@ -4,7 +4,7 @@
 
 |项目|当前结论|证据|
 |---|---|---|
-|用户画像|messages相等；字段格式兼容；抗性归类存在实际输出差异，语义等价/该次业务落库未证明；非消息差异model,response_format,user|final-15-comparisons.json；新trace 708865b6-5d42-41bf-b5c1-54635a17c682.0.3|
+|用户画像|真实生产配置TEST副本已回读发布，同原数据messages相等，允许model/user/response_format差异保留；未泛化输出语义等价|profile-real-baseline/result.json；新trace f2e3ea9d-eb41-41a8-b041-63d20fba2554.0.3|
 |沟通摘要|messages逐字相等；非消息差异：model,response_format,user|final-15-comparisons.json；新trace 9d831ba2-fc93-46d7-82ee-f1797aea5696.0.3|
 |服务SOP|messages逐字相等；非消息差异：model,response_format,user|final-15-comparisons.json；新trace c2b1755e-1ceb-4859-8488-423c73f52b03.0.3|
 |高中分层|messages逐字相等；非消息差异：model,response_format,user|final-15-comparisons.json；新trace 63916e95-985f-4407-9f8e-00ae2ae61438.0.3|

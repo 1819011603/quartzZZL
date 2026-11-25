@@ -1,5 +1,11 @@
 {
-    "code": "unauthorized",
-    "message": "Access token is invalid",
-    "status": 401
+    "name": "TEST\u7d20\u517b\u5206\u5c42\u65e7\u94fe\u8def\u72ec\u7acb\u9a8c\u8bc120261124",
+    "description": "",
+    "tags": [],
+    "icon_type": "emoji",
+    "icon": "\ud83e\udd16",
+    "icon_background": "#FFEAD5",
+    "icon_url": null,
+    "mode": "agent-chat",
+    "author_name": "gongxuemeng"
 }

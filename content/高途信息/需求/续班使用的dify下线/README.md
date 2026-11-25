@@ -17,7 +17,7 @@ tags: [需求]
 
 |场景|当前结果|证据版本|
 |---|---|---|
-|用户画像|请求对齐、字段格式兼容；输出抗性归类有差异，语义等价未证明|263ba48a|
+|用户画像|真实生产配置TEST副本已核验；messages一致，允许参数差异保留，单次输出不证明普遍语义等价|263ba48a|
 |沟通摘要|完整对照齐全，messages相等|263ba48a|
 |服务SOP|完整对照齐全，messages相等|263ba48a|
 |高中分层|完整对照齐全，messages相等|263ba48a|
@@ -61,4 +61,6 @@ T-验收：已完成15/15（两个403场景本轮排除）；TEST当前47b3dcb7�
 
 TEST NPS fixture30339441、独立旅程与SOP样本保留供复验；密钥仅私有存储。Arthas已reset/stop，无在途操作。底层历史证据保留作溯源，不作为当前状态。
 
-画像输出具体边界见[同层输出比较](artifacts/comparison/profile-output-comparison.md)，不以messages相等推导输出语义等价或业务落库已验。
+
+
+画像当前基准及完整对照见[真实生产配置验证](artifacts/comparison/profile-real-baseline.md)。旧通用agent证据不再作为当前基准；历史原始文件保留。

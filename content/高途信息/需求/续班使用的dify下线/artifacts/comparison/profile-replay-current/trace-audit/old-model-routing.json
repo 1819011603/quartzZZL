@@ -1,0 +1,28 @@
+[
+  {
+    "class": "",
+    "container_ip": "10.255.179.126",
+    "image_name": "acr.baijia.com/uqun/litellm:release-537b62fc-20261124182947",
+    "level": "INFO",
+    "message": "2026-11-25 10:49:52,085 INFO  [utils.py:2948] [TID:344ab83c-f52e-4b04-8335-4d55520da499.0.3] 28 \nLiteLLM completion() model= doubao-seed-2.0-lite; provider = litellm_proxy",
+    "node_ip": "10.255.38.227",
+    "pod": "litellm-77895f7fb-snr7d",
+    "service": "litellm",
+    "thread": "",
+    "timestamp": "2026-11-25 10:49:52,085",
+    "trace_id": "344ab83c-f52e-4b04-8335-4d55520da499.0.3"
+  },
+  {
+    "class": "",
+    "container_ip": "10.255.179.126",
+    "image_name": "acr.baijia.com/uqun/litellm:release-537b62fc-20261124182947",
+    "level": "INFO",
+    "message": "2026-11-25 10:49:52,065 INFO  [litellm_pre_call_utils.py:1136] [TID:344ab83c-f52e-4b04-8335-4d55520da499.0.3] 28 Model redirect applied: caller=caller_0167, from_model=doubao/Doubao-1-5-pro-32k, to_model=doubao-seed-2-0-lite-260428",
+    "node_ip": "10.255.38.227",
+    "pod": "litellm-77895f7fb-snr7d",
+    "service": "litellm",
+    "thread": "",
+    "timestamp": "2026-11-25 10:49:52,065",
+    "trace_id": "344ab83c-f52e-4b04-8335-4d55520da499.0.3"
+  }
+]

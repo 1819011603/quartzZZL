@@ -1,0 +1,88 @@
+{
+  "old": {
+    "source": {
+      "class": "",
+      "container_ip": "10.255.179.126",
+      "image_name": "acr.baijia.com/uqun/litellm:release-537b62fc-20261124182947",
+      "level": "INFO",
+      "node_ip": "10.255.38.227",
+      "pod": "litellm-77895f7fb-snr7d",
+      "service": "litellm",
+      "thread": "",
+      "timestamp": "2026-11-25 10:49:52,064",
+      "trace_id": "344ab83c-f52e-4b04-8335-4d55520da499.0.3"
+    },
+    "raw_body_utf8_bytes": 9001,
+    "raw_body_sha256": "2c9ec41127cbf717840dbde2e0435f0c16b9ae036ce24b332f0901a5da330e51",
+    "content_chars": 3494,
+    "content_utf8_bytes": 8712,
+    "content_sha256": "7015cd89381788f6e8784642b98e8f463ce308992321428c5fedd3ce0f613afa",
+    "outer_roles": [
+      "user"
+    ],
+    "inner_text_roles": [
+      "system",
+      "user"
+    ],
+    "inner_is_valid_json": false,
+    "inner_content_lengths": [],
+    "archive_body_equal": true,
+    "complete_json_parse": true
+  },
+  "new": {
+    "source": {
+      "class": "",
+      "container_ip": "10.255.164.109",
+      "image_name": "acr.baijia.com/uqun/litellm:release-537b62fc-20261124182947",
+      "level": "INFO",
+      "node_ip": "10.255.34.114",
+      "pod": "litellm-77895f7fb-kxrpt",
+      "service": "litellm",
+      "thread": "",
+      "timestamp": "2026-11-25 10:49:58,933",
+      "trace_id": "bc6a6825-6c8d-49c2-8702-0474aa854412.0.3"
+    },
+    "raw_body_utf8_bytes": 8998,
+    "raw_body_sha256": "fc182687e62d4ca0a48af8318da8ea19be055b8a7e665a58c375a1a27ccc9ca3",
+    "content_chars": 3494,
+    "content_utf8_bytes": 8712,
+    "content_sha256": "7015cd89381788f6e8784642b98e8f463ce308992321428c5fedd3ce0f613afa",
+    "outer_roles": [
+      "user"
+    ],
+    "inner_text_roles": [
+      "system",
+      "user"
+    ],
+    "inner_is_valid_json": false,
+    "inner_content_lengths": [],
+    "archive_body_equal": true,
+    "complete_json_parse": true
+  },
+  "association": {
+    "console_message_id": "d9bc6161-e05d-4b70-88cc-d2ebc92dcaf1",
+    "console_end_user": "11ef22be-8a22-46bd-9567-820f390799fe",
+    "received_user": "11ef22be-8a22-46bd-9567-820f390799fe",
+    "end_user_equal": true,
+    "entry_trace": "91eeae60-0bc0-445a-89eb-d865bead0ef7.0.3"
+  },
+  "messages_equal": true,
+  "differences": {
+    "model": {
+      "old": "doubao/Doubao-1-5-pro-32k",
+      "new": "doubao-seed-2-0-lite-260428"
+    },
+    "response_format": {
+      "old": null,
+      "new": {
+        "type": "json_object"
+      }
+    },
+    "user": {
+      "old": "11ef22be-8a22-46bd-9567-820f390799fe",
+      "new": null
+    }
+  },
+  "normalization": "仅json.loads解析传输JSON转义；未strip/排序messages/重排角色/改content；raw-body原文另存。字典字段顺序不作为语义差异。",
+  "limits": "旧侧是已发布TEST通用agent重放，不是生产原app本次运行。已证明实际messages相同但HTTP参数不同，未证明生产原app全部配置逐字段相同。"
+}
