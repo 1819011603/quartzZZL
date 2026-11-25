@@ -1,0 +1,8 @@
+grep 941652f6-deff-4c63-b21c-55a2497fef1d app/log/app.log | tail -5
+[root@student-data-5ffb5bdc94-fn6f6 instance]# grep 941652f6-deff-4c63-b21c-55a2497fef1d app/log/app.log | tail -5
+2026-11-25 10:19:50.692 INFO  [CourseSyncAclService:112][http-nio-28688-exec-8]  - [TID: 941652f6-deff-4c63-b21c-55a2497fef1d.0.3] listByNumbers | request: {"cache":true,"cacheAble":true,"numbers":[500775364606343168]}
+2026-11-25 10:19:50.756 INFO  [OrderInfoQuerySyncAclService:141][http-nio-28688-exec-8]  - [TID: 941652f6-deff-4c63-b21c-55a2497fef1d.0.3] listByClazzNumbersAndUserIds | request is ClazzNumbersAndUserIdsBasedRequest(userIds=[7404351741], clazzNumbers=[500775385189890048])
+2026-11-25 10:19:50.902 INFO  [ClazzLessonSyncAclService:137][http-nio-28688-exec-8]  - [TID: 941652f6-deff-4c63-b21c-55a2497fef1d.0.3] getClazzLessonPropertyInfoByClazzes | request: ListByClazzNumbersRequest().
+2026-11-25 10:19:51.016 INFO  [RefundReasoningService:162][http-nio-28688-exec-8]  - [TID: 941652f6-deff-4c63-b21c-55a2497fef1d.0.3] 退费分析上下文为空忽略 event:{"stage":"previous","userId":7404351741,"clazzNumber":500775385189890048,"subclazzNumber":31298462823089024,"reasoningEnum":"SATISFACTION","paidTimeSeconds":1785144323,"refundTimeSeconds":0,"clazzStartTimeSeconds":1840418466,"clazzEndTimeSeconds":1840418466,"triggerSource":"final-migration-verification","triggerId":"final-refund-20261125","loopCount":0}
+2026-11-25 10:19:51.021 INFO  [RequestLogAspect:185][http-nio-28688-exec-8]  - [TID: 941652f6-deff-4c63-b21c-55a2497fef1d.0.3] 
+[root@student-data-5ffb5bdc94-fn6f6 instance]# 

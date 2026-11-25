@@ -1,0 +1,37 @@
+{
+  "ok": true,
+  "url": "https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service",
+  "trafficEnv": "test-gtbg-dev-1",
+  "httpStatus": 200,
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.student.data.domain.refundless.reasoning.RefundReasoningService#refundReasoningEvent",
+    "params": [
+      {
+        "userId": "7404351741",
+        "clazzNumber": "500775385189890048",
+        "subclazzNumber": "31298462823089024",
+        "reasoningEnum": "SATISFACTION",
+        "stage": "previous",
+        "triggerSource": "final-migration-verification",
+        "triggerId": "final-refund-20261125"
+      }
+    ]
+  },
+  "traceId": "941652f6-deff-4c63-b21c-55a2497fef1d.0.3",
+  "gapmApp": "student-data",
+  "identification": "microLessonStudent",
+  "rvoCode": 0,
+  "result": {
+    "handleCode": 1
+  }
+}
+
+---- 复现本次调用(可直接粘终端) ----
+curl -sk \
+  -x "${AGENT_PROXY_URL:-http://127.0.0.1:8888}" \
+  'https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service' \
+  -H 'content-type: application/json' \
+  -H 'traffic-env: test-gtbg-dev-1' \
+  -H 'identification: microLessonStudent' \
+  --data-raw '{"serviceNameAndMethodName": "com.gaotu.student.data.domain.refundless.reasoning.RefundReasoningService#refundReasoningEvent", "params": [{"userId": "7404351741", "clazzNumber": "500775385189890048", "subclazzNumber": "31298462823089024", "reasoningEnum": "SATISFACTION", "stage": "previous", "triggerSource": "final-migration-verification", "triggerId": "final-refund-20261125"}]}'
+

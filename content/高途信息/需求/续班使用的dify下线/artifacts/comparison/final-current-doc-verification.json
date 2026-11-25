@@ -1,0 +1,67 @@
+{
+  "revision": 172,
+  "scenes": [
+    {
+      "scene": "用户画像",
+      "complete_fields_equal": true
+    },
+    {
+      "scene": "沟通摘要",
+      "complete_fields_equal": true
+    },
+    {
+      "scene": "服务SOP",
+      "complete_fields_equal": true
+    },
+    {
+      "scene": "高中分层",
+      "complete_fields_equal": true
+    },
+    {
+      "scene": "精品根因",
+      "complete_fields_equal": true
+    },
+    {
+      "scene": "精品旅程",
+      "complete_fields_equal": true
+    },
+    {
+      "scene": "精品课程体验",
+      "complete_fields_equal": true
+    },
+    {
+      "scene": "精品NPS",
+      "complete_fields_equal": true
+    },
+    {
+      "scene": "素养分层",
+      "complete_fields_equal": true
+    },
+    {
+      "scene": "素养根因",
+      "complete_fields_equal": true
+    },
+    {
+      "scene": "素养旅程",
+      "complete_fields_equal": true
+    },
+    {
+      "scene": "素养课程体验",
+      "complete_fields_equal": true
+    },
+    {
+      "scene": "素养NPS",
+      "complete_fields_equal": true
+    },
+    {
+      "scene": "高中降退费",
+      "complete_fields_equal": true
+    },
+    {
+      "scene": "素养降退费",
+      "complete_fields_equal": true
+    }
+  ],
+  "full_fields_readback": true,
+  "h1_count": 15
+}

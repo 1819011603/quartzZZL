@@ -1,0 +1,39 @@
+{
+  "scene": "用户画像",
+  "old_level": "LLM content",
+  "new_level": "executor response; answer is business text",
+  "old_business": {
+    "renewalInterest": "**来自问卷**：1、认可二讲老师同步学习进展、督促听课作业、家校紧密沟通的服务；2、希望通过针对性查漏补缺、测评定位问题提升物理学习成效；3、认可中考物理押题、专题复习、真题训练类内容的价值",
+    "renewalResistance": "**来自问卷**：1、孩子物理存在课上听得懂课后不会做题的问题，学习主动性差习惯不好；2、当前学习效果未达预期，家长报名仍有疑虑待咨询",
+    "portraitSummary": "学员姓名为一伊，是准中考生，正在学习物理电学板块，物理学习存在课上听懂课后做题正确率低、学习习惯差、缺乏主动性的问题，学习效果不理想。**家长对主讲、二讲、课程满意度分别打7分、7分、8分**，续班意向为想报名但仍有疑虑需要咨询老师。诉求是希望后续得到针对性查漏补缺、定期学习反馈、学习督促、紧密家校沟通、测评定位学习问题的服务，也希望通过中考物理押题、专题复习、真题训练类内容助力冲刺重高。"
+  },
+  "new_business": {
+    "renewalInterest": "**来自对话**：无相关内容；\n**来自问卷**：1、认可二讲老师同步学习反馈、督促作业完成、紧密家校沟通的服务； 2、希望获得查漏补缺小灶课、中考物理专题复习、真题训练、押题类课程助力冲刺重高",
+    "renewalResistance": "**来自对话**：无相关内容；\n**来自问卷**：未明确表述阻碍续班的具体原因，仅表示有意向报名但存在待咨询的相关疑虑",
+    "portraitSummary": "学员为准中考生，物理学科当前存在课上听懂课后做题不准、学习主动性不足、学习效果不理想的问题。家长为报课人，对课程满意度打8分，二讲、主讲满意度均打7分。**家长续班意向为有意报名但需先咨询相关疑虑**，核心诉求是获得学习状态同步、学习习惯督促、针对性查漏补缺、中考物理专项复习等相关服务，助力孩子提升物理成绩冲刺重高。"
+  },
+  "same_keys_and_string_types": true,
+  "semantic_equal_proven": false,
+  "business_persistence_proven_for_trace": false,
+  "trace": "708865b6-5d42-41bf-b5c1-54635a17c682.0.3",
+  "document_update": {
+    "ok": true,
+    "identity": "user",
+    "data": {
+      "document": {
+        "revision_id": 173,
+        "url": "https://gaotuedu.feishu.cn/docx/EWI6dsdvPokck0xy89ccJDuEnhg"
+      },
+      "result": "success",
+      "warnings": []
+    },
+    "_notice": {
+      "update": {
+        "command": "lark-cli update",
+        "current": "1.0.70",
+        "latest": "1.0.100",
+        "message": "lark-cli 1.0.100 available, current 1.0.70, run: lark-cli update"
+      }
+    }
+  }
+}

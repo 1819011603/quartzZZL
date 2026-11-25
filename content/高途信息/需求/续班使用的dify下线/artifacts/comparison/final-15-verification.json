@@ -1,37 +1,18 @@
 {
-  "scope": "13 non-KB + 2 refund workflows; exclude two 403 problem suggestion agents",
-  "version": "47b3dcb7e5c6bdb4c908821cfe6ddf20d01e476e",
-  "complete": false,
-  "closed_this_turn": [
-    {
-      "scene": "素养分层",
-      "old_http": "final-15-evidence/suyang-tier-old-http.json",
-      "comparison": "final-15-evidence/suyang-tier-http-comparison.json"
-    },
-    {
-      "scene": "精品旅程",
-      "comparison": "final-15-evidence/精品旅程/comparison.json",
-      "old_http": "final-15-evidence/精品旅程/old-http.json",
-      "new_http": "final-15-evidence/精品旅程/new-http.json"
-    },
-    {
-      "scene": "素养NPS",
-      "new_http": "final-15-evidence/suyang-nps-new-http.json",
-      "trace": "acc2dcbd-8623-4081-9d9b-248fb93df2ef.0.3"
-    },
-    {
-      "scene": "SOP自动老师身份",
-      "trace": "d7043e0b-db14-4cca-bb6a-8cf3e91e8e03.0.3",
-      "helper": "final-15-evidence/sop-auto-helper-watch.txt",
-      "header": "final-15-evidence/sop-auto-header-watch.txt",
-      "result": "final-15-evidence/sop-result-readback.json"
-    }
-  ],
-  "remaining": [
-    "退款真实业务自动queryRunUser→发送费用头同次关联",
-    "两workflow同次费用头证据索引（优先既有日志，必要仅代表性补）",
-    "合并审查矩阵15条完整old/new body/input/output/trace路径并逐条验证存在及语义断言",
-    "形成final-15-verification.md/json最终当前结论，不复制阶段流水"
-  ],
+  "complete": true,
+  "scope": "13非KB+2降退费TEST；排除两个403",
+  "current_code": "47b3dcb7",
+  "historical_evidence_version": "263ba48a普通链路有效证据复用，未声称当前版本全量重跑",
+  "messages_equal_count": 15,
+  "full_input_output_http_trace_count": 15,
+  "matrix": "final-15-comparisons.json",
+  "refund_identity": "final-15-evidence/refund-identity-association.json",
+  "workflow_identity": {
+    "trace": "ec09563e-1c8b-4964-9259-8f492ee87835.0.3",
+    "header": "gongxuemeng",
+    "body_equal": true,
+    "scope": "高中workflow代表性；请求显式runUser，非自动老师入口"
+  },
+  "remaining": [],
   "active_operations": []
 }

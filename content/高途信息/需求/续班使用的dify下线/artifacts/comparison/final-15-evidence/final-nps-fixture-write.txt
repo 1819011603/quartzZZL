@@ -1,0 +1,9 @@
+{
+  "ok": true,
+  "executed": true,
+  "affected": 1,
+  "db": "ees_data",
+  "host": "gaotu-polar-test02.rwlb.rds.aliyuncs.com",
+  "stmt": "INSERT",
+  "hint": "已提交。回读校验请用 mysql_query。"
+}

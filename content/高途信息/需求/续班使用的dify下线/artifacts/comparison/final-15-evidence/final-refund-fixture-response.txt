@@ -1,0 +1,57 @@
+{
+  "ok": true,
+  "url": "https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service",
+  "trafficEnv": "test-gtbg-dev-1",
+  "httpStatus": 200,
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.student.data.domain.refundless.reasoning.RefundReasoningService#refundReasoningEvent",
+    "params": [
+      {
+        "userId": "7404351741",
+        "clazzNumber": "500775385189890048",
+        "subclazzNumber": "31298462823089024",
+        "reasoningEnum": "SATISFACTION",
+        "stage": "previous",
+        "triggerSource": "final-migration-verification",
+        "triggerId": "final-refund-fixture-20261125"
+      }
+    ]
+  },
+  "traceId": "611aeb2f-1d08-4d28-adcf-a56c86801bb7.0.3",
+  "gapmApp": "student-data",
+  "identification": "microLessonStudent",
+  "rvoCode": 0,
+  "result": {
+    "handleCode": 2,
+    "difyResponse": {
+      "usage": {
+        "completion_tokens": 432,
+        "prompt_tokens": 474,
+        "cost": 0.00123624,
+        "completion_tokens_details": {
+          "reasoning_tokens": 336
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "total_tokens": 906
+      },
+      "event": "litellm_proxy/deepseek-v4.1-flash",
+      "messageId": "198ced12-b261-4f70-aa3a-1292c0dbc336",
+      "answer": "总结本班级和其他班级nps评价情况：\n本班级分析：1条，课程满意度3分，反馈“课程节奏较快，希望增加答疑”（二讲弓雪萌、主讲刘永肖）。\n其他班级分析：暂无nps数据。\n\n本班级退费潜在诱因推测：\n课程节奏较快、答疑需求未满足，可能降低满意度。原文：“课程节奏较快，希望增加答疑”。存在因节奏与答疑不足产生退费风险。"
+    },
+    "answer": "总结本班级和其他班级nps评价情况：\n本班级分析：1条，课程满意度3分，反馈“课程节奏较快，希望增加答疑”（二讲弓雪萌、主讲刘永肖）。\n其他班级分析：暂无nps数据。\n\n本班级退费潜在诱因推测：\n课程节奏较快、答疑需求未满足，可能降低满意度。原文：“课程节奏较快，希望增加答疑”。存在因节奏与答疑不足产生退费风险。",
+    "probablyTryToGetJsonAnswer": "总结本班级和其他班级nps评价情况：\n本班级其他班级\n本班级退费潜在诱因推测：\n课程节奏较快、答疑需求未满足，可能降低满意度。原文：“课程节奏较快，希望增加答疑”。存在因节奏与答疑不足产生退费风险。",
+    "entryKey": "cbaafd743203877f8203f90222fe5ce3-7404351741-500775385189890048-31298462823089024-10bfd911-6572-4134-bcc7-515389f428dd-v4"
+  }
+}
+
+---- 复现本次调用(可直接粘终端) ----
+curl -sk \
+  -x "${AGENT_PROXY_URL:-http://127.0.0.1:8888}" \
+  'https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service' \
+  -H 'content-type: application/json' \
+  -H 'traffic-env: test-gtbg-dev-1' \
+  -H 'identification: microLessonStudent' \
+  --data-raw '{"serviceNameAndMethodName": "com.gaotu.student.data.domain.refundless.reasoning.RefundReasoningService#refundReasoningEvent", "params": [{"userId": "7404351741", "clazzNumber": "500775385189890048", "subclazzNumber": "31298462823089024", "reasoningEnum": "SATISFACTION", "stage": "previous", "triggerSource": "final-migration-verification", "triggerId": "final-refund-fixture-20261125"}]}'
+

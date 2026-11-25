@@ -1,0 +1,191 @@
+{
+    "id": "spcynF7tYh4ROXnG8Xg_b3577d0a-7120-4ea6-8f9a-f8d440e299fa",
+    "name": "TEST\u7d20\u517b\u5206\u5c42\u65e7\u94fe\u8def\u72ec\u7acb\u9a8c\u8bc120261124",
+    "description": "",
+    "mode": "agent-chat",
+    "icon_type": "emoji",
+    "icon": "\ud83e\udd16",
+    "icon_background": "#FFEAD5",
+    "icon_url": null,
+    "enable_site": true,
+    "enable_api": true,
+    "model_config": {
+        "opening_statement": "",
+        "suggested_questions": [],
+        "suggested_questions_after_answer": {
+            "enabled": true
+        },
+        "speech_to_text": {
+            "enabled": true
+        },
+        "text_to_speech": {
+            "enabled": false,
+            "language": "",
+            "voice": ""
+        },
+        "retriever_resource": {
+            "enabled": true
+        },
+        "annotation_reply": {
+            "enabled": false
+        },
+        "more_like_this": {
+            "enabled": false
+        },
+        "sensitive_word_avoidance": {
+            "configs": [],
+            "enabled": false,
+            "type": ""
+        },
+        "external_data_tools": [],
+        "model": {
+            "provider": "langgenius\/openai_api_compatible\/openai_api_compatible",
+            "name": "doubao\/Doubao-1-5-pro-32k",
+            "mode": "chat",
+            "completion_params": {
+                "stop": []
+            }
+        },
+        "user_input_form": [],
+        "dataset_query_variable": "",
+        "pre_prompt": "",
+        "gt_configs": {},
+        "agent_mode": {
+            "max_iteration": 5,
+            "enabled": true,
+            "prompt": null,
+            "strategy": "function_call",
+            "tools": []
+        },
+        "prompt_type": "simple",
+        "chat_prompt_config": {},
+        "completion_prompt_config": {},
+        "dataset_configs": {
+            "retrieval_model": "multiple",
+            "datasets": {
+                "datasets": []
+            },
+            "reranking_enable": false,
+            "top_k": 4
+        },
+        "file_upload": {
+            "image": {
+                "detail": "high",
+                "enabled": true,
+                "number_limits": 3,
+                "transfer_methods": [
+                    "remote_url",
+                    "local_file"
+                ]
+            },
+            "enabled": true,
+            "allowed_file_types": [
+                "image",
+                "document"
+            ],
+            "allowed_file_extensions": [
+                ".JPEG",
+                ".GIF",
+                ".JPG",
+                ".PNG",
+                ".GIF",
+                ".WEBP",
+                ".JPG",
+                ".PNG",
+                ".SVG",
+                ".SVG",
+                ".WEBP",
+                ".JPEG",
+                ".PDF",
+                ".MARKDOWN",
+                ".mdx",
+                ".HTML",
+                ".MD",
+                ".doc",
+                ".CSV",
+                ".docx",
+                ".DOCX",
+                ".htm",
+                ".html",
+                ".HTM",
+                ".csv",
+                ".vtt",
+                ".md",
+                ".TXT",
+                ".MDX",
+                ".xlsx",
+                ".properties",
+                ".pdf",
+                ".XLSX",
+                ".xls",
+                ".XLS",
+                ".DOC",
+                ".markdown",
+                ".PROPERTIES",
+                ".txt",
+                ".VTT"
+            ],
+            "allowed_file_upload_methods": [
+                "remote_url",
+                "local_file"
+            ],
+            "number_limits": 3,
+            "need_parse_file_types": [
+                "document"
+            ],
+            "file_size_limits": {
+                "image": 10,
+                "document": 5
+            }
+        },
+        "created_by": "177071",
+        "created_at": 1795519946,
+        "updated_by": "177071",
+        "updated_at": 1795519946
+    },
+    "workflow": null,
+    "api_base_url": "https:\/\/test-dify-open.baijia.com\/dify\/api\/v1",
+    "use_icon_as_answer_icon": false,
+    "api_max_active_requests": 50,
+    "created_by": "177071",
+    "created_at": 1795519900,
+    "updated_by": "177071",
+    "updated_at": 1795519947,
+    "deleted_tools": [],
+    "access_mode": null,
+    "tags": [],
+    "site": {
+        "access_token": "dA05czSG9WJt75aF",
+        "code": "dA05czSG9WJt75aF",
+        "title": "TEST\u7d20\u517b\u5206\u5c42\u65e7\u94fe\u8def\u72ec\u7acb\u9a8c\u8bc120261124",
+        "icon_type": "emoji",
+        "icon": "\ud83e\udd16",
+        "icon_background": "#FFEAD5",
+        "icon_url": null,
+        "description": null,
+        "default_language": "zh-Hans",
+        "chat_color_theme": null,
+        "chat_color_theme_inverted": false,
+        "customize_domain": null,
+        "copyright": null,
+        "privacy_policy": null,
+        "custom_disclaimer": "",
+        "customize_token_strategy": "not_allow",
+        "prompt_public": false,
+        "app_base_url": "https:\/\/test-os.baijia.com",
+        "show_workflow_steps": true,
+        "use_icon_as_answer_icon": false,
+        "created_by": "177071",
+        "created_at": 1795519901,
+        "updated_by": "177071",
+        "updated_at": 1795519901
+    },
+    "space_id": "spcynF7tYh4ROXnG8Xg",
+    "edit_permission": 1,
+    "admin_permission": 1,
+    "version": 1,
+    "space_type": "PERSONAL",
+    "publish_permission": 1,
+    "scene_template_permission": 1,
+    "publish_tool_permission": 1
+}
