@@ -1,0 +1,62 @@
+[
+  {
+    "id": "37138490",
+    "entry_key": "268213842803178496",
+    "application_number": "256919351674848256",
+    "call_status": "1",
+    "result_type": "1",
+    "create_time": "2026-01-20 08:30:08",
+    "result_excerpt_nonempty": true,
+    "contains_recommendWords": true
+  },
+  {
+    "id": "37137636",
+    "entry_key": "268213120506288128",
+    "application_number": "256919351674848256",
+    "call_status": "1",
+    "result_type": "1",
+    "create_time": "2026-01-20 08:18:38",
+    "result_excerpt_nonempty": true,
+    "contains_recommendWords": true
+  },
+  {
+    "id": "37137538",
+    "entry_key": "268213077340637184",
+    "application_number": "256919351674848256",
+    "call_status": "1",
+    "result_type": "1",
+    "create_time": "2026-01-20 08:17:57",
+    "result_excerpt_nonempty": true,
+    "contains_recommendWords": true
+  },
+  {
+    "id": "82145142",
+    "entry_key": "295936434268815360",
+    "application_number": "256919247659254784",
+    "call_status": "0",
+    "result_type": "0",
+    "create_time": "2026-11-22 08:28:50",
+    "result_excerpt_nonempty": false,
+    "contains_recommendWords": false
+  },
+  {
+    "id": "82145141",
+    "entry_key": "295936431145107456",
+    "application_number": "256919247659254784",
+    "call_status": "0",
+    "result_type": "0",
+    "create_time": "2026-11-22 08:28:47",
+    "result_excerpt_nonempty": false,
+    "contains_recommendWords": false
+  },
+  {
+    "id": "82145138",
+    "entry_key": "295936427929124864",
+    "application_number": "256919247659254784",
+    "call_status": "0",
+    "result_type": "0",
+    "create_time": "2026-11-22 08:28:44",
+    "result_excerpt_nonempty": false,
+    "contains_recommendWords": false
+  }
+]

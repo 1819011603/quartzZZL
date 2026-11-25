@@ -1,0 +1,9 @@
+[pod-term] baijia.gaotu.Business.operation-workbench.student-data [dev] -> 8 pod(s); using student-data-5ffb5bdc94-fn6f6 (status=Running, eureka=UP, ip=10.218.236.246)
+{"effect": {"classCount": 1, "cost": 824, "listenerId": 1, "methodCount": 1}, "jobId": 1, "success": true, "type": "enhancer"}
+@ArrayList[
+    @String[d7043e0b-db14-4cca-bb6a-8cf3e91e8e03.0.3],
+    @SingletonList[
+        @String[gongxuemeng],
+    ],
+    @String[8d8c9a9e763c54b43b2134d74aa5538e34635f242f9b88c18d8b700eaaeb395b],
+]

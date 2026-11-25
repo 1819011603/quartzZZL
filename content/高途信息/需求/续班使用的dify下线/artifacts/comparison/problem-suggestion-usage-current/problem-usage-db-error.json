@@ -1,0 +1,22 @@
+[
+  {
+    "id": "82460816",
+    "entry_key": "296209761862419456",
+    "application_number": "256919247659254784",
+    "call_status": "1",
+    "result_type": "1",
+    "create_time": "2026-11-25 08:53:15",
+    "result_excerpt_nonempty": true,
+    "contains_recommendWords": true
+  },
+  {
+    "id": "82460817",
+    "entry_key": "296209761863489536",
+    "application_number": "256919247659254784",
+    "call_status": "1",
+    "result_type": "1",
+    "create_time": "2026-11-25 08:53:16",
+    "result_excerpt_nonempty": true,
+    "contains_recommendWords": true
+  }
+]

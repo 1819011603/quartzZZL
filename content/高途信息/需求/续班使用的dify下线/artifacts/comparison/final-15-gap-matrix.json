@@ -1,0 +1,209 @@
+{
+  "at": "2026-11-25T09:56:58.154977+08:00",
+  "scope": "13非KB+2固定workflow；排除两403问题建议",
+  "acceptance": "同一有限输入、线上配置来源、旧新完整下游HTTP语义参数/消息、正常响应；允许替代模型；不比较随机输出、不要求生产全量",
+  "rows": [
+    {
+      "scene": "用户画像",
+      "version": "263ba48a，可复用至47b3dcb7，非重跑",
+      "input": "remaining-current-runs/after/画像/invoke.json:request",
+      "old_http": "pairs.json:画像:sides[0].request",
+      "new_http": "remaining-current-runs/after/画像/received.json",
+      "response": "remaining-current-runs/after/画像/invoke.json:result",
+      "entry": "ACL syncRequestTask",
+      "fee": "remaining-current-runs/watch-trace-association.json；人工RunUser，见公共身份补证",
+      "must_do": [],
+      "reuse": "完整body/响应复用；模型映射按已确认替代关系比对"
+    },
+    {
+      "scene": "沟通摘要",
+      "version": "263ba48a，可复用至47b3dcb7，非重跑",
+      "input": "remaining-current-runs/after/摘要/invoke.json:request",
+      "old_http": "pairs.json:摘要:sides[0].request",
+      "new_http": "remaining-current-runs/after/摘要/received.json",
+      "response": "remaining-current-runs/after/摘要/invoke.json:result",
+      "entry": "ACL syncRequestTask",
+      "fee": "remaining-current-runs/watch-trace-association.json；人工RunUser，见公共身份补证",
+      "must_do": [],
+      "reuse": "完整body/响应复用；模型映射按已确认替代关系比对"
+    },
+    {
+      "scene": "服务SOP",
+      "version": "263ba48a，可复用至47b3dcb7，非重跑",
+      "input": "remaining-current-runs/after/SOP V2/invoke.json:request",
+      "old_http": "pairs.json:SOP V2:sides[0].request",
+      "new_http": "remaining-current-runs/after/SOP V2/received.json",
+      "response": "remaining-current-runs/after/SOP V2/invoke.json:result",
+      "entry": "ACL syncRequestTaskV2",
+      "fee": "remaining-current-runs/watch-trace-association.json；人工RunUser，见公共身份补证",
+      "must_do": [],
+      "reuse": "完整body/响应复用；模型映射按已确认替代关系比对"
+    },
+    {
+      "scene": "高中分层",
+      "version": "263ba48a，可复用至47b3dcb7，非重跑",
+      "input": "remaining-current-runs/after/分层修正后/invoke.json:request",
+      "old_http": "pairs.json:分层修正后:sides[0].request",
+      "new_http": "remaining-current-runs/after/分层修正后/received.json",
+      "response": "remaining-current-runs/after/分层修正后/invoke.json:result",
+      "entry": "ACL syncRequestTask",
+      "fee": "remaining-current-runs/watch-trace-association.json；人工RunUser，见公共身份补证",
+      "must_do": [],
+      "reuse": "完整body/响应复用；模型映射按已确认替代关系比对"
+    },
+    {
+      "scene": "精品根因",
+      "version": "263ba48a，可复用至47b3dcb7，非重跑",
+      "input": "remaining-current-runs/after/退费根因/invoke.json:request",
+      "old_http": "pairs.json:退费根因:sides[0].request",
+      "new_http": "remaining-current-runs/after/退费根因/received.json",
+      "response": "remaining-current-runs/after/退费根因/invoke.json:result",
+      "entry": "ACL syncRequestTask",
+      "fee": "remaining-current-runs/watch-trace-association.json；人工RunUser，见公共身份补证",
+      "must_do": [],
+      "reuse": "完整body/响应复用；模型映射按已确认替代关系比对"
+    },
+    {
+      "scene": "精品旅程",
+      "version": "263ba48a，可复用至47b3dcb7，非重跑",
+      "input": "remaining-current-runs/after/旅程/invoke.json:request",
+      "old_http": "pairs.json:旅程:sides[0].request",
+      "new_http": "remaining-current-runs/after/旅程/received.json",
+      "response": "remaining-current-runs/after/旅程/invoke.json:result",
+      "entry": "ACL syncRequestTask",
+      "fee": "remaining-current-runs/watch-trace-association.json；人工RunUser，见公共身份补证",
+      "must_do": [
+        "复制正式当前精品旅程model_config/core/后处理到TEST，以该invoke同query对照；不可复用历史2151字system替代正式2482字模板"
+      ],
+      "reuse": "完整body/响应复用；模型映射按已确认替代关系比对"
+    },
+    {
+      "scene": "精品课程体验",
+      "version": "263ba48a，可复用至47b3dcb7，非重跑",
+      "input": "remaining-current-runs/after/课程体验/invoke.json:request",
+      "old_http": "pairs.json:课程体验:sides[0].request",
+      "new_http": "remaining-current-runs/after/课程体验/received.json",
+      "response": "remaining-current-runs/after/课程体验/invoke.json:result",
+      "entry": "ACL syncRequestTask",
+      "fee": "remaining-current-runs/watch-trace-association.json；人工RunUser，见公共身份补证",
+      "must_do": [],
+      "reuse": "完整body/响应复用；模型映射按已确认替代关系比对"
+    },
+    {
+      "scene": "精品NPS",
+      "version": "263ba48a，可复用至47b3dcb7，非重跑",
+      "input": "remaining-current-runs/after/NPS/invoke.json:request",
+      "old_http": "pairs.json:NPS:sides[0].request",
+      "new_http": "remaining-current-runs/after/NPS/received.json",
+      "response": "remaining-current-runs/after/NPS/invoke.json:result",
+      "entry": "ACL syncRequestTask",
+      "fee": "remaining-current-runs/watch-trace-association.json；人工RunUser，见公共身份补证",
+      "must_do": [],
+      "reuse": "完整body/响应复用；模型映射按已确认替代关系比对"
+    },
+    {
+      "scene": "素养分层",
+      "version": "263ba48a",
+      "input": "remaining-current-runs/suyang/素养分层/invoke.json:request",
+      "old_http": "suyang-old-tier-closure/old-messages.json：仅messages，非完整HTTP",
+      "new_http": "remaining-current-runs/suyang/素养分层/received.json",
+      "response": "remaining-current-runs/suyang/素养分层/invoke.json:result；test-dify-old/tier证据见闭环报告",
+      "entry": "ACL syncRequestTask；旧TEST Dify复制应用",
+      "fee": "suyang-watch-trace-association.json，分段",
+      "must_do": [
+        "使用原同query，取得旧调用同次完整下游HTTP JSON（model/stream/thinking/max_tokens/stop及其余非秘密字段）；优先关联原message，取不到才定向旧TEST重跑；替代模型允许，禁止拼模板冒充实收"
+      ],
+      "reuse": "8414字messages相等及新响应复用，不重做模板分析"
+    },
+    {
+      "scene": "素养根因",
+      "version": "263ba48a",
+      "input": "remaining-current-runs/suyang-thinking-final/素养根因/invoke.json:request",
+      "old_http": "remaining-current-runs/test-dify-old/素养根因/replacement-*（对应suyang-copy-current/final-summary.json）",
+      "new_http": "remaining-current-runs/suyang-thinking-final/素养根因/received.json",
+      "response": "remaining-current-runs/suyang-thinking-final/素养根因/invoke.json:result",
+      "entry": "旧复制线上配置TEST Dify；新ACL普通执行器；合成同输入",
+      "fee": "真实老师人工RunUser，沿用分段链",
+      "must_do": [],
+      "reuse": "完整messages及指定参数独立相等；deepseek-flash替代模型，thinking.enabled修正后证据优先"
+    },
+    {
+      "scene": "素养旅程",
+      "version": "263ba48a",
+      "input": "remaining-current-runs/suyang-thinking-final/素养旅程/invoke.json:request",
+      "old_http": "remaining-current-runs/test-dify-old/素养旅程/replacement-*（对应suyang-copy-current/final-summary.json）",
+      "new_http": "remaining-current-runs/suyang-thinking-final/素养旅程/received.json",
+      "response": "remaining-current-runs/suyang-thinking-final/素养旅程/invoke.json:result",
+      "entry": "旧复制线上配置TEST Dify；新ACL普通执行器；合成同输入",
+      "fee": "真实老师人工RunUser，沿用分段链",
+      "must_do": [],
+      "reuse": "完整messages及指定参数独立相等；deepseek-flash替代模型，thinking.enabled修正后证据优先"
+    },
+    {
+      "scene": "素养课程体验",
+      "version": "263ba48a",
+      "input": "remaining-current-runs/suyang-thinking-final/素养体验/invoke.json:request",
+      "old_http": "remaining-current-runs/test-dify-old/素养体验/replacement-*（对应suyang-copy-current/final-summary.json）",
+      "new_http": "remaining-current-runs/suyang-thinking-final/素养体验/received.json",
+      "response": "remaining-current-runs/suyang-thinking-final/素养体验/invoke.json:result",
+      "entry": "旧复制线上配置TEST Dify；新ACL普通执行器；合成同输入",
+      "fee": "真实老师人工RunUser，沿用分段链",
+      "must_do": [],
+      "reuse": "完整messages及指定参数独立相等；deepseek-flash替代模型，thinking.enabled修正后证据优先"
+    },
+    {
+      "scene": "素养NPS",
+      "version": "263ba48a（旧基线历史）",
+      "input": "strict-v2-nps/invoke-response.json:request",
+      "old_http": "pairs.json:素养NPS:sides[0].request；format-samples/素养NPS-old-messages.json",
+      "new_http": "strict-v2-nps/invoke-response.json及strict-v2-model-map.md关联实收",
+      "response": "strict-v2-nps/invoke-response.json:result",
+      "entry": "TEST副本/新V2检查，不能称普通原业务端到端",
+      "fee": "strict-v2-cost-identity.md及既有实收",
+      "must_do": [
+        "整理严格参数检查所用原始完整新HTTP文件与trace到同一索引；缺文件时先查已有归档，不能仅用invoke响应证明HTTP完整"
+      ],
+      "reuse": "旧独立messages、thinking.enabled、身份/缺身份响应复用"
+    },
+    {
+      "scene": "高中降退费",
+      "version": "47b3dcb7",
+      "input": "kb-test-replacement/高中降退费/old-request.json；kb-test-replacement/高中降退费/new-request.json；kb-test-replacement/shared-business-input.txt",
+      "old_http": "kb-test-replacement/高中降退费/old-llm-received.json",
+      "new_http": "kb-test-replacement/高中降退费/new-llm-received.json",
+      "response": "kb-test-replacement/高中降退费/old-response.json；kb-test-replacement/高中降退费/new-response.json",
+      "entry": "旧TEST advanced-chat；新retrieveWorkflowAndComplete自动Helper身份",
+      "fee": "源码自动取身份已证；本目录未见同次下游费用头专用证据，补读日志优先",
+      "must_do": [
+        "核对同次费用头证据（优先既有日志）；引用自动Helper→发送头的同次记录"
+      ],
+      "reuse": "完整messages/参数和返回usage已相等；old-node-executions检索成功，隔离库4片段；无需重做生成"
+    },
+    {
+      "scene": "素养降退费",
+      "version": "47b3dcb7",
+      "input": "kb-test-replacement/素养降退费/old-request.json；kb-test-replacement/素养降退费/new-request.json；kb-test-replacement/shared-business-input.txt",
+      "old_http": "kb-test-replacement/素养降退费/old-llm-received.json",
+      "new_http": "kb-test-replacement/素养降退费/new-llm-received.json",
+      "response": "kb-test-replacement/素养降退费/old-response.json；kb-test-replacement/素养降退费/new-response.json",
+      "entry": "旧TEST advanced-chat；新retrieveWorkflowAndComplete自动Helper身份",
+      "fee": "源码自动取身份已证；本目录未见同次下游费用头专用证据，补读日志优先",
+      "must_do": [
+        "核对同次费用头证据（优先既有日志）；引用自动Helper→发送头的同次记录"
+      ],
+      "reuse": "完整messages/参数和返回usage已相等；old-node-executions检索成功，隔离库4片段；无需重做生成"
+    }
+  ],
+  "shared_actions": [
+    "至少为SOP自动老师路径和退款调用路径分别保留一个真正自动获取RunUser→发送x-tech-ai-user-id同次关联；先复用已存在证据，不要求13项全部从前台触发。纯ACL人工RunUser不能冒称自动取身份。",
+    "47b3dcb7仅新增KB TEST入口与测试，普通适配链未改；复用263ba48a证据并保留版本标识，不宣称最新全量重跑。",
+    "费用watch乱码关联仅为分段证据；用同次ASCII trace/header/body摘要补清关联即可，不追计费。"
+  ],
+  "not_required": [
+    "无限异常组合或生产全量数据覆盖",
+    "对全部13项重新运行",
+    "生产生成/上线",
+    "把旧未引用context的模板改成知识增强",
+    "为证明同隔离库workflow对等而要求生产索引重建或生产生成"
+  ]
+}

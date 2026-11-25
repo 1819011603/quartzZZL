@@ -1,0 +1,48 @@
+{
+  "url": "https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service",
+  "trafficEnv": "test-gtbg-dev-1",
+  "httpStatus": 200,
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask",
+    "params": [
+      "final-journey-f78f45dd-6db3-4030-946b-b50c2c3f9e39",
+      {
+        "aiApplicationName": "精品旅程正式当前TEST独立验证",
+        "userQuery": "班级号：500775385189890048；学员：李明（userId=7404351741），高中学部，春季数学班。主讲老师王老师，辅导老师陈老师。2026-11-18 19:20 家长与陈老师沟通：“孩子最近三次数学作业正确率从85%降到62%，直播课听懂但课后不会做；王老师回复说会在下节课加强例题，陈老师建议每天完成错题整理。”2026-11-20 20:10 家长再次说：“孩子觉得课程节奏快，互动少，最近考虑退费，给课程体验评分5/10；如果增加答疑和针对性练习可能继续。”家长NPS评分：3/10，原因是作业反馈慢、个性化不足。请结合班级、学员、时间、老师和原话分析，并给出结构化结果。",
+        "userTag": "test",
+        "platformType": 2,
+        "runUser": {
+          "email": "gongxuemeng@gaotu.cn"
+        }
+      },
+      {
+        "clazzNumber": "500775385189890048",
+        "userId": "7404351741",
+        "commTag": 0
+      },
+      ""
+    ]
+  },
+  "curl": "curl -sk \\\n  -x \"${AGENT_PROXY_URL:-http://127.0.0.1:8888}\" \\\n  'https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-1' \\\n  -H 'identification: microLessonStudent' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.student.data.domain.ai.core.AiApplicationExecutor#syncRequestTask\", \"params\": [\"final-journey-f78f45dd-6db3-4030-946b-b50c2c3f9e39\", {\"aiApplicationName\": \"精品旅程正式当前TEST独立验证\", \"userQuery\": \"班级号：500775385189890048；学员：李明（userId=7404351741），高中学部，春季数学班。主讲老师王老师，辅导老师陈老师。2026-11-18 19:20 家长与陈老师沟通：“孩子最近三次数学作业正确率从85%降到62%，直播课听懂但课后不会做；王老师回复说会在下节课加强例题，陈老师建议每天完成错题整理。”2026-11-20 20:10 家长再次说：“孩子觉得课程节奏快，互动少，最近考虑退费，给课程体验评分5/10；如果增加答疑和针对性练习可能继续。”家长NPS评分：3/10，原因是作业反馈慢、个性化不足。请结合班级、学员、时间、老师和原话分析，并给出结构化结果。\", \"userTag\": \"test\", \"platformType\": 2, \"runUser\": {\"email\": \"gongxuemeng@gaotu.cn\"}}, {\"clazzNumber\": \"500775385189890048\", \"userId\": \"7404351741\", \"commTag\": 0}, \"\"]}'",
+  "traceId": "1ae3e73d-c337-4b7e-9f88-4be4f6d580c2.0.3",
+  "gapmApp": "student-data",
+  "identification": "microLessonStudent",
+  "rvoCode": 0,
+  "result": {
+    "usage": {
+      "completion_tokens": 3865,
+      "prompt_tokens": 1588,
+      "cost": 0.0092172096,
+      "completion_tokens_details": {
+        "reasoning_tokens": 3368
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 1536
+      },
+      "total_tokens": 5453
+    },
+    "event": "litellm_proxy/deepseek-v4.1-flash",
+    "messageId": "9f96d412-0c56-426e-8e18-c07ddb01aa65",
+    "answer": "{\n  \"tutoringSummary\": \"该学员为高中学部春季数学班，家长于2026-11-18反馈作业正确率下降、直播听懂但课后不会做，已出现潜在抱怨；2026-11-20进一步表示课程节奏快、互动少、已考虑退费，课程体验5/10，NPS3/10，主因作业反馈慢、个性化不足。当前退费意向为犹豫权衡（3分），核心风险学科/学期为数学/春。家长提出若增加答疑和针对性练习可能继续，说明仍有挽留空间。现有沟通中老师仅提出加强例题和错题整理，尚未形成已解决退费原因。\",\n  \"tutoringItems\": [\n    {\n      \"communicateId\": 1,\n      \"refundScore\": 2,\n      \"chatTopic\": \"潜在抱怨\",\n      \"chatSummary\": \"家长反馈春季数学作业正确率从85%降至62%，直播听懂但课后不会做，对课程效果产生担忧；尚未主动退费，但属于潜在退费风险。涉及学科/学期：数学/春。\",\n      \"chatTime\": \"2026-11-18 19:20:00\",\n      \"customerWords\": \"孩子最近三次数学作业正确率从85%降到62%，直播课听懂但课后不会做。\",\n      \"teacherWords\": \"王老师回复说会在下节课加强例题，陈老师建议每天完成错题整理。\"\n    },\n    {\n      \"communicateId\": 2,\n      \"refundScore\": 3,\n      \"chatTopic\": \"犹豫权衡\",\n      \"chatSummary\": \"家长明确表示最近考虑退费，指出课程节奏快、互动少，体验评分5/10，NPS3/10，作业反馈慢、个性化不足；若增加答疑和针对性练习可能继续。涉及学科/学期：数学/春。\",\n      \"chatTime\": \"2026-11-20 20:10:00\",\n      \"customerWords\": \"孩子觉得课程节奏快，互动少，最近考虑退费，给课程体验评分5/10；如果增加答疑和针对性练习可能继续。家长NPS评分：3/10，原因是作业反馈慢、个性化不足。\",\n      \"teacherWords\": \"\"\n    }\n  ],\n  \"resolvedRefundReasonList\": []\n}"
+  }
+}

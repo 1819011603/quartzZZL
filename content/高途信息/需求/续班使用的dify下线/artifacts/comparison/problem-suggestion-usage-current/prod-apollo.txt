@@ -1,0 +1,14 @@
+# student-data / PROD / application / 7 个 key
+已查 namespace: application
+
+命中:
+- `AiRecommendWordsGenerator.departmentAiApplicationConfig` = `{
+    "default": "生成沟通建议-高中",
+"10013518":"生成沟通建议-高中",
+"10012667":"生成沟通建议-素养"
+}`
+- `renewal.ai.fast.retrospect.topic` = `renewalAiFastRetrospectTopic_prod`
+- `ai.agent.accessor.override.map` = `{}`
+
+未命中(4): `AiRecommendWordsGenerator.knowledgeBase`, `AiRecommendWordsGenerator.skipEmptyAccountSwitch`, `FulfillProblemService.realTimeAnalysis`, `FulfillProblemService.asyncRealTimeAnalysis`
+用 fallback_namespaces 补其它 namespace，或 apollo_list_namespaces 核对 namespace 名

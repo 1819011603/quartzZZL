@@ -1,0 +1,27 @@
+{
+  "url": "https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service",
+  "trafficEnv": "test-gtbg-dev-1",
+  "httpStatus": 200,
+  "request": {
+    "serviceNameAndMethodName": "com.gaotu.student.data.domain.ai.business.fulfillSop.core.AiSopAnalysisGenerator#generate",
+    "params": [
+      {
+        "number": 7530633600362874200,
+        "userId": 7404351741,
+        "clazzNumber": 500775385189890048,
+        "fulfillStartTime": "2026-11-01T00:00:00",
+        "fulfillEndTime": "2026-12-31T23:59:59"
+      }
+    ]
+  },
+  "curl": "curl -sk \\\n  -x \"${AGENT_PROXY_URL:-http://127.0.0.1:8888}\" \\\n  'https://test-fuwu.baijia.com/bgwApi/student-data/test/acl/compare/service' \\\n  -H 'content-type: application/json' \\\n  -H 'traffic-env: test-gtbg-dev-1' \\\n  -H 'identification: microLessonStudent' \\\n  --data-raw '{\"serviceNameAndMethodName\": \"com.gaotu.student.data.domain.ai.business.fulfillSop.core.AiSopAnalysisGenerator#generate\", \"params\": [{\"number\": 7530633600362874200, \"userId\": 7404351741, \"clazzNumber\": 500775385189890048, \"fulfillStartTime\": \"2026-11-01T00:00:00\", \"fulfillEndTime\": \"2026-12-31T23:59:59\"}]}'",
+  "traceId": "d7043e0b-db14-4cca-bb6a-8cf3e91e8e03.0.3",
+  "gapmApp": "student-data",
+  "identification": "microLessonStudent",
+  "rvoCode": 0,
+  "raw": {
+    "code": 0,
+    "data": {},
+    "msg": ""
+  }
+}

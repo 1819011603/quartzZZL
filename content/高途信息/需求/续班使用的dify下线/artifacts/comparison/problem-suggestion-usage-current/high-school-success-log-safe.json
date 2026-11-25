@@ -1,0 +1,37 @@
+[
+  {
+    "timestamp": "2026-11-25 08:53:14.687",
+    "trace_id": "student-data-dws.4201.17955679943226466",
+    "service": "student-data",
+    "image_name": "acr.baijia.com/uqun/student-data:release-75f97270-20261123093540",
+    "message": "2026-11-25 08:53:14.687 INFO  [AiApplicationExecutor:245][ConsumeMessageThread_3]  - [TID: student-data-dws.4201.17955679943226466] AI应用调用任务记录创建成功，调用句柄: 296209761863489536, 类型: 同步"
+  },
+  {
+    "timestamp": "2026-11-25 08:53:16.004",
+    "trace_id": "student-data-dws.4201.17955679943226466",
+    "service": "student-data",
+    "image_name": "acr.baijia.com/uqun/student-data:release-75f97270-20261123093540",
+    "message": "2026-11-25 08:53:16.004 INFO  [AiApplicationExecutor:250][ConsumeMessageThread_3]  - [TID: student-data-dws.4201.17955679943226466] 提示词拼装完成，调用句柄: 296209761863489536, 应用编号: 256919247659254784, 提示词长度: 7047"
+  },
+  {
+    "timestamp": "2026-11-25 08:53:16.015",
+    "trace_id": "student-data-dws.4201.17955679943226466",
+    "service": "student-data",
+    "image_name": "acr.baijia.com/uqun/student-data:release-75f97270-20261123093540",
+    "message": "2026-11-25 08:53:16.015 INFO  [AiApplicationExecutor:260][ConsumeMessageThread_3]  - [TID: student-data-dws.4201.17955679943226466] AI应用调用任务结果记录创建成功，调用句柄: 296209761863489536"
+  },
+  {
+    "timestamp": "2026-11-25 08:53:29.833",
+    "trace_id": "student-data-dws.4201.17955679943226466",
+    "service": "student-data",
+    "image_name": "acr.baijia.com/uqun/student-data:release-75f97270-20261123093540",
+    "message": "2026-11-25 08:53:29.833 INFO  [AiApplicationExecutor:293][ConsumeMessageThread_3]  - [TID: student-data-dws.4201.17955679943226466] 插件处理完成，调用句柄: 296209761863489536, 应用编号: 256919247659254784, 原始结果长度: 451, 处理后结果长度: 264"
+  },
+  {
+    "timestamp": "2026-11-25 08:53:29.845",
+    "trace_id": "student-data-dws.4201.17955679943226466",
+    "service": "student-data",
+    "image_name": "acr.baijia.com/uqun/student-data:release-75f97270-20261123093540",
+    "message": "2026-11-25 08:53:29.845 INFO  [AiApplicationExecutor:322][ConsumeMessageThread_3]  - [TID: student-data-dws.4201.17955679943226466] AI应用任务执行成功，调用句柄: 296209761863489536, 应用编号: 256919247659254784, 响应状态: message, 插件处理状态: 成功"
+  }
+]

@@ -1,0 +1,108 @@
+{
+    "id": "spcynF7tYh4ROXnG8Xg_09fa590a-c1cb-40df-bc06-a826632b17b1",
+    "name": "TEST\u7cbe\u54c1\u65c5\u7a0b\u5f53\u524d\u6b63\u5f0f\u6a21\u677f20261125",
+    "description": "",
+    "mode": "agent-chat",
+    "icon": "\ud83e\udd16",
+    "icon_url": null,
+    "icon_background": "#FFEAD5",
+    "enable_site": true,
+    "enable_api": true,
+    "model_config": {
+        "opening_statement": null,
+        "suggested_questions": [],
+        "suggested_questions_after_answer": {
+            "enabled": false
+        },
+        "speech_to_text": {
+            "enabled": false
+        },
+        "text_to_speech": {
+            "enabled": false
+        },
+        "retriever_resource": {
+            "enabled": true
+        },
+        "annotation_reply": {
+            "enabled": false
+        },
+        "more_like_this": {
+            "enabled": false
+        },
+        "sensitive_word_avoidance": {
+            "enabled": false,
+            "type": "",
+            "configs": []
+        },
+        "external_data_tools": [],
+        "model": {
+            "provider": "langgenius\/openai_api_compatible\/openai_api_compatible",
+            "name": "doubao\/doubao-seed-2-0-mini-260215",
+            "mode": "chat",
+            "completion_params": {}
+        },
+        "user_input_form": [],
+        "dataset_query_variable": null,
+        "pre_prompt": null,
+        "gt_configs": null,
+        "agent_mode": {
+            "enabled": false,
+            "strategy": null,
+            "tools": [],
+            "prompt": null
+        },
+        "prompt_type": "simple",
+        "chat_prompt_config": {},
+        "completion_prompt_config": {},
+        "dataset_configs": {
+            "retrieval_model": "multiple"
+        },
+        "file_upload": {
+            "image": {
+                "enabled": true,
+                "number_limits": 20,
+                "detail": "high",
+                "transfer_methods": [
+                    "remote_url",
+                    "local_file"
+                ]
+            },
+            "allowed_file_types": [
+                "image",
+                "video"
+            ],
+            "allowed_file_extensions": [
+                ".JPG",
+                ".JPEG",
+                ".PNG",
+                ".GIF",
+                ".WEBP",
+                ".SVG",
+                ".MP4",
+                ".MOV",
+                ".MPEG",
+                ".WEBM"
+            ],
+            "allowed_file_upload_methods": [
+                "remote_url",
+                "local_file"
+            ],
+            "enabled": true,
+            "number_limits": 20
+        },
+        "created_by": "177071",
+        "created_at": 1795571925,
+        "updated_by": "177071",
+        "updated_at": 1795571925
+    },
+    "workflow": null,
+    "tracing": null,
+    "use_icon_as_answer_icon": false,
+    "created_by": "177071",
+    "created_at": 1795571925,
+    "updated_by": "177071",
+    "updated_at": 1795571924,
+    "access_mode": null,
+    "tags": [],
+    "space_id": "spcynF7tYh4ROXnG8Xg"
+}

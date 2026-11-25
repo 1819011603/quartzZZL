@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"keyword\" keyword=\"不含知识库：可替换的13个场景|高中问题建议在哪里/是否调用|素养问题建议在哪里/是否调用|“完整替换”的边界|版本与知识库剩余项|PROD只读核查时间\"><table id=\"doxcnkYnGwZP9Ugywm4VME9tNAd\"><colgroup><col/><col/></colgroup><thead><tr><th vertical-align=\"top\"><p id=\"doxcnFhFMVSEeojvtNtWJ18QQBg\">问题</p></th><th vertical-align=\"top\"><p id=\"doxcniP7Lh2ue5xIFyAdRTZrnod\">明确结论</p></th></tr></thead><tbody><tr><td vertical-align=\"top\"><p id=\"doxcn6fCUh7eGaCqX4eLktzi6he\">高中问题建议在哪里/是否调用</p></td><td vertical-align=\"top\"><p id=\"doxcnxQDTqf0TUcxp5wxTGWYi9G\">履约沟通问题→推荐沟通话术；/feign/fulfillProblem/overview读取结果。PROD 2026-11-25 08:53成功调用，明确在用。</p></td></tr><tr><td vertical-align=\"top\"><p id=\"doxcnyxIOYFnlGm35lWykZJlpvf\">素养问题建议在哪里/是否调用</p></td><td vertical-align=\"top\"><p id=\"doxcnEKWm6gauSDJmCL93sHGsxf\">同一功能按部门选择素养应用；配置仍保留。按id倒序最近3条为2026-01-20成功，近期调用未证实，不能判定已下线。</p></td></tr><tr><td vertical-align=\"top\"><p id=\"doxcn49uLzSOFnaqjBcW3IcicTb\">不含知识库：可替换的13个场景</p></td><td vertical-align=\"top\"><p id=\"doxcnfQoTP8qZRniHblI8CUKINh\">用户画像、沟通摘要、服务SOP分析、高中/素养分层原因、精品/素养退费根因、精品/素养退费旅程、精品/素养课程体验、精品/素养NPS。均支持已验证TEST输入/配置范围替换。</p></td></tr><tr><td vertical-align=\"top\"><p id=\"doxcnXFkseJEdqhNjbv8QJKKnug\">“完整替换”的边界</p></td><td vertical-align=\"top\"><p id=\"doxcnA0Pz4LEqBxlJ25UC5bBeUh\">已有生成及请求对齐证据，无已发现必须保留Dify的非知识库能力缺口；不等于所有生产业务入口/输入/异常分支已全量验收。素养分层缺旧提供商全部HTTP参数；精品旅程正式模板不同须保持各自配置；三素养使用替代模型，费用来源为分段验证。</p></td></tr><tr><td vertical-align=\"top\"><p id=\"doxcnMT7IbUeVXAjGrRaN9ubTYd\">版本与知识库剩余项</p></td><td vertical-align=\"top\"><p id=\"doxcn0TcDDMpn5IOGYvb3N9d73d\">非知识库证据绑定263ba48a及各次配置；47b3dcb7只新增知识库TEST入口/测试，普通生成适配链未改，可复用证据但未全量重跑。高中问题建议403仍是有效迁移缺口；素养使用状态待确认，403不证明闲置。</p></td></tr></tbody></table><p id=\"doxcnvcHkzD3uaIBrnLFjesNbAd\">PROD只读核查时间09:43–09:47；高中成功trace student-data-dws.4201.17955679943226466。素养按id倒序limit3不是全时段统计；近7天聚合超时不等于0调用。前端菜单URL未核实。无新增业务生成、配置修改或部署。</p></fragment>",
+      "document_id": "EWI6dsdvPokck0xy89ccJDuEnhg",
+      "revision_id": 155
+    }
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.70",
+      "latest": "1.0.100",
+      "message": "lark-cli 1.0.100 available, current 1.0.70, run: lark-cli update"
+    }
+  }
+}

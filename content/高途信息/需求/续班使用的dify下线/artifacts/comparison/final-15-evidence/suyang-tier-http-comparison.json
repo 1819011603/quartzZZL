@@ -1,0 +1,16 @@
+{
+  "env": "test",
+  "trace": "71b44f24-f24a-45f5-8200-d63615400d9b.0.3",
+  "messages_equal": true,
+  "old_parameters": {
+    "model": "doubao/Doubao-1-5-pro-32k",
+    "stream": true
+  },
+  "new_parameters": {
+    "response_format": {
+      "type": "text"
+    },
+    "stream": true,
+    "model": "doubao-seed-2-0-lite-260428"
+  }
+}

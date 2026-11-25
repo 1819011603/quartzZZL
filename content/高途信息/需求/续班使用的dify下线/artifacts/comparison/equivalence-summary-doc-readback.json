@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "document": {
+      "content": "<fragment mode=\"range\" requested-end=\"doxcnT0B7FXuHX0hrfw72RZkNhi\" requested-start=\"doxcnEI6ywSeZeY3DnL7taUIVob\"><table id=\"doxcnEI6ywSeZeY3DnL7taUIVob\"><colgroup><col/><col/><col/></colgroup><thead><tr><th vertical-align=\"top\"><p id=\"doxcn5QGRzMMYD4Wc8ScunzDwJf\">分组</p></th><th vertical-align=\"top\"><p id=\"doxcnFdY8icQX4a1LGkCXNuR4Lf\">场景</p></th><th vertical-align=\"top\"><p id=\"doxcn8KCF8CjQOIykDnS8u91x9f\">结论依据 / 缺项</p></th></tr></thead><tbody><tr><td vertical-align=\"top\"><p id=\"doxcnNBFNrjd5v1dQZjAq4wtqwi\">知识库：TEST范围内可等价替换</p></td><td vertical-align=\"top\"><p id=\"doxcnRPnOGIvWe78yFK5kLJfSfj\">高中精品降退费、素养降退费</p></td><td vertical-align=\"top\"><p id=\"doxcn8t03WRRJWNu8QwS3sf47mg\">47b3dcb7同输入、同隔离TEST库、替代模型；新Java检索→渲染→生成成功，完整messages及所比参数一致。</p></td></tr><tr><td vertical-align=\"top\"><p id=\"doxcn3f0TesQP3zAw9Kyr2senhc\">知识库：当前不能判定等价</p></td><td vertical-align=\"top\"><p id=\"doxcntTmontnUqXKdkOJhfzIZRg\">高中问题建议、素养问题建议</p></td><td vertical-align=\"top\"><p id=\"doxcnuwOXsDdJWeoaIdh8zGhDdg\">各自指定库HTTP403；缺正常查询权限或获授权原库内容，真实语料工具循环未完成。</p></td></tr><tr><td vertical-align=\"top\"><p id=\"doxcnKb2DLTeUaBJhQYZ0py1Ild\">非知识库：替代模型对照已验证</p></td><td vertical-align=\"top\"><p id=\"doxcn3yMdF5D1KvZ3Q7O7jfNOfg\">素养根因、素养旅程、素养课程体验</p></td><td vertical-align=\"top\"><p id=\"doxcnlqW1uSFfE2T9ejCllJ68sg\">独立TEST旧新messages及指定参数一致；不是仅模板推断，但不等于旧模型原样回放或生产全量完整等价。</p></td></tr><tr><td vertical-align=\"top\"><p id=\"doxcnvuE7dWPE5JMT3R83suPtPp\">非知识库：已有请求级证据</p></td><td vertical-align=\"top\"><p id=\"doxcnpaiqgDnlkdFBbXZg4gQ0Gf\">画像、摘要、SOP V2、高中分层、精品根因/旅程/体验/NPS，素养NPS、素养分层</p></td><td vertical-align=\"top\"><p id=\"doxcn8FTX1oNb7DZawDQlckCEzk\">既有12例及补证继续有效；素养分层为完整旧prompt与新messages相等，未扩大成旧供应商全部HTTP参数证明。费用身份为分段验证。</p></td></tr></tbody></table><p id=\"doxcnT0B7FXuHX0hrfw72RZkNhi\">“可等价”仅限已验证TEST输入、链路和请求参数。两项降退费旧模板未把检索片段放入LLM消息，新侧保留该行为；不是知识增强效果等价，不证明生产索引召回、随机输出或全量场景等价。没有任何场景据此被标为生产全量可直接切换；四生产知识库应用继续Dify。</p></fragment>",
+      "document_id": "EWI6dsdvPokck0xy89ccJDuEnhg",
+      "revision_id": 154
+    }
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.70",
+      "latest": "1.0.100",
+      "message": "lark-cli 1.0.100 available, current 1.0.70, run: lark-cli update"
+    }
+  }
+}

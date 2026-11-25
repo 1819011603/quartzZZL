@@ -1,0 +1,8 @@
+# student-data / PROD / application / 5 个 key
+已查 namespace: application
+
+命中:
+- `FulfillmentProblemRecommendRetrospectConsumer.onlyTransfer` = `true`
+
+未命中(4): `CommunicationFulfillmentProblemConsumer.effect`, `FulfillmentProblemRecommendFastRetrospectConsumer.effect`, `FulfillmentProblemRecommendRetrospectConsumer.effect`, `FulfillmentProblemRecommendRefreshConsumer.effect`
+用 fallback_namespaces 补其它 namespace，或 apollo_list_namespaces 核对 namespace 名

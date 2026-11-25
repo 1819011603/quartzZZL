@@ -1,0 +1,22 @@
+[
+  {
+    "number": "256919247659254784",
+    "name": "生成沟通建议-高中",
+    "isdel": "0",
+    "ai_agent_number": "256918735665808384",
+    "agent_name": "问题建议-高中",
+    "platform_type": "1",
+    "agent_isdel": "0"
+  },
+  {
+    "number": "256919351674848256",
+    "name": "生成沟通建议-素养",
+    "isdel": "0",
+    "ai_agent_number": "256918818763359232",
+    "agent_name": "问题建议-素养",
+    "platform_type": "1",
+    "agent_isdel": "0"
+  }
+]
+
+-- total_count: 2
