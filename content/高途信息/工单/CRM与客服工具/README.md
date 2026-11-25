@@ -7,4 +7,4 @@
 - [学员动态](学员动态/README.md) - 1 条，已解决：物流服务自动短信携带老师账号，动态显示老师姓名，不能据此认定人工发送。
 - [企微侧边栏](企微侧边栏/README.md) - 2 条：非缺陷（亲密称呼姓名兜底）；待验证（机器人转号后写跟进仍显示原归属人：webview 会话残留 + 登录识别 cookie 优先，含排查方法）。
 - [个人中心企微](个人中心企微/README.md) - 1 条，已解决：个人中心-绑定企微主体需先过 teacher-basic `waliyun.corp.idName.map` 白名单、且主体已在企微完成第三方应用授权（否则瓦力云 `getUserInfo` 报 48002），否则不显示/无弹码。
-- [触达通知](触达通知/README.md) - 1 条，已解决：顾问收不到企微进班提醒=线索分配没发生（上限满/顾问禁用/未配进规则），发送侧 ss-official-wk-agent 无故障；含 reach-service acl 桥域名、`reach_service` 库表入口。
+- [触达通知](触达通知/README.md) - 2 条；待处理：课节短信模板发布范围移除EM业务线；已解决：顾问收不到企微进班提醒=线索分配没发生（上限满/顾问禁用/未配进规则），发送侧 ss-official-wk-agent 无故障；含 reach-service acl 桥域名、`reach_service` 库表入口。

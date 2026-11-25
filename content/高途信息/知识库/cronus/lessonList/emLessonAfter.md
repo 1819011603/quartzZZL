@@ -25,4 +25,4 @@
 - [POST /lesson/after/page](https://qingzhou.baijia.com/#/cloud/apiDoc/search/detail?interfaceId=1159242&appId=student-center&branchName=release)
 - [POST /lesson/after/count](https://qingzhou.baijia.com/#/cloud/apiDoc/search/detail?interfaceId=1159241&appId=student-center&branchName=release)
 
-短信模板查询与场景参数见 [页面级短信入口核对](_page.md#短信入口核对2026-11-25)。
+短信模板查询与场景参数见 [页面级短信入口核对](_page.md#短信入口定位)。
