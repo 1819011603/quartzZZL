@@ -1,0 +1,9 @@
+{
+  "revision": 212,
+  "readback_verified": true,
+  "reused_production_trace": "cbc61996-27a1-4263-b504-dea8a8ef1e14.0.1",
+  "new_business_calls": 0,
+  "new_credentials": 0,
+  "local_task_processes_observed": 0,
+  "worktree_missing": true
+}

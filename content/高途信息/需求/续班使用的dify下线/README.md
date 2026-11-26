@@ -71,3 +71,11 @@ TEST NPS fixture30339441、独立旅程与SOP样本保留供复验；密钥仅�
 
 
 画像当前基准及完整对照见[真实生产配置验证](artifacts/comparison/profile-real-baseline.md)。旧通用agent证据不再作为当前基准；历史原始文件保留。
+
+
+生产凭据调查恢复核对（2026-11-26）：已有后续证据证明本人生产dataset凭据曾通过原库86233d1a-bddf-4a15-a229-c90b6a061c57鉴权。full_text_search、查询“答疑反馈慢”、top_k=4、不rerank返回HTTP200及4条非空片段，trace cbc61996-27a1-4263-b504-dea8a8ef1e14.0.1；另一业务query的keyword_search返回0条，trace b2bc1689-d81f-4e5b-98ce-4940144f068a.0.1。两次query和检索方式均不同，不能作单变量优劣比较。来源是本机验证驱动，不是student-data Pod；不代表生产四应用等价。凭据创建及回读属于已有历史成果，本轮未创建、读取明文或重放检索。四正式应用继续Dify。
+
+证据：artifacts/comparison/kb-credential-current/authorized-production-retrieve-fulltext.json、authorized-production-retrieve.json、key-postcreate-readback.json。
+
+
+凭据来源及历史操作授权证据边界见[验收补充](artifacts/comparison/kb-credential-current/credential-provenance-acceptance.md)：历史创建已记录，但对应所有者原始授权消息及驱动加载实现未找到，不沿用“已获授权”作为确定事实。
