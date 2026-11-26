@@ -79,3 +79,6 @@ TEST NPS fixture30339441、独立旅程与SOP样本保留供复验；密钥仅�
 
 
 凭据来源及历史操作授权证据边界见[验收补充](artifacts/comparison/kb-credential-current/credential-provenance-acceptance.md)：历史创建已记录，但对应所有者原始授权消息及驱动加载实现未找到，不沿用“已获授权”作为确定事实。
+
+
+配置格式与ID位置见[只读核验说明](artifacts/comparison/dify-config-id-locations.md)：区分业务表number、Dify UUID、dataset UUID及两类凭据；具体生产值为历史快照。
