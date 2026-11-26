@@ -5,7 +5,7 @@
 
 ## 本地验证
 - student-data b53b2e273：mvn8 reactor编译成功；OdsSmallRenewalSubjectSyncServiceQuitTest 3项通过（首次退课、重复退课、剩余在读重算）。复用既有Mockito测试结构，尚非数据库集成验证。
-- product-server 1c4813239：mvn8 reactor编译成功；RenewalServiceImplCheckPreCourseMultiPlanTest 5项通过（正常、部分冲突、全部冲突、同计划、删除入口）。尚非真实Excel上传端到端验证。
+- product-server 1c4813239：mvn8 reactor编译成功；RenewalServiceImplCheckPreCourseMultiPlanTest 5项通过（正常、部分冲突、全部冲突、同计划、删除入口）。真实Excel端到端验收见“49最终验收”。
 
 ## 测试部署
 - student-data：pipeline1366234，目标b53b2e273，镜像feature-renewal-autumn-optimization-b53b2e27-20261126114033，Pod student-data-5b8b79886b-v5jnc（10.218.239.205）Running/Eureka UP。
@@ -18,7 +18,7 @@ AICR任务2573/2574均显示取消、无findings，不能视为通过。已自�
 ## 当前真实联调结论
 - 65已验证：test-eco-2/b53b2e27，同Pod运行时needHandleLarge/recalcForceSwitch/effect均true。2025/C、年级21匹配大小班，真实源库、分班关系、消费者及异步ES回读。最后退出trace d2464630-97e3-491b-9015-7cafed89c48f.0.3：[]/0；重复退出trace 0006a7ad-e3ad-4954-b8f2-c1701a2c9524.0.3：仍[]/0；同维度剩余在读trace 0b1312f2-e740-4d94-852c-a718484afb51.0.3：数学/1。独占源库和大小班ES均清理回读为零。证据 /tmp/renewal65-w1-result.md 与其中原始回读文件。
 - 65边界：通过ACL桥注入真实消费者，未覆盖上游真实退课发MQ、事件乱序及快照竞态；无DAO mock，不代表生产存量修复。
-- 49未验收：当前镜像feature-renewal-autumn-optimization-1c481323-20261126114133，Running/Eureka UP。真实Excel已生成，但同线程身份隔离包装被Arthas strict invocation mode拒绝加载；未关闭保护，未执行五场景导入、未发送邮件。需受支持的同线程执行入口或可登录且无收件人的测试身份。
+- 49已验证：当前镜像feature-renewal-autumn-optimization-1c481323-20261126114133，Running/Eureka UP；tangwen01/accountId=90247。合法导入、删除、混合冲突、全部冲突、同计划重导五场景真实Excel验收完成，计划DB与课程关系无重复写入；完整证据见“49最终验收”。
 - 49清理：临时计划/属性/绑定已独立回读为零，Pod临时java/class/xlsx已删除回读不存在。保留独占课程592627513442762752、592627540829470720、592627558411993088，业务detail已回读canFollowCourse=1，计划绑定查询[]，供续验使用。证据 /tmp/renewal49-w1-result.md、/tmp/renewal49-final-pod-metadata.json、/tmp/renewal49-final-bindings.json。
 - 本轮未新增业务代码提交或部署，无生产写、无在途子任务。既有风险与回滚限制仍见coverage.md。
 
@@ -44,3 +44,10 @@ AICR任务2573/2574均显示取消、无findings，不能视为通过。已自�
 
 ## 最新授权
 所有者明确允许TEST测试通知并指定tangwen01，原通知授权阻塞解除。使用正常HTTP入口补验剩余三场景，不再尝试临时身份包装或绕过严格保护。既有65及49合法导入、删除证据继续有效。
+## 49最终验收：五场景通过（仅TEST）
+- 版本与身份：tangwen01/accountId=90247，test-eco-2/product-b-6f96b6945d-v492j；镜像feature-renewal-autumn-optimization-1c481323-20261126114133，本地HEAD=1c48132392ddec41a01a231e8e86b778aa7781b2，工作树干净。证据 /tmp/renewal49-final-identity.json、/tmp/renewal49-final-version.json。
+- 五场景结果：合法导入trace b47456e4-62b7-46f6-a970-736adafb99f9.0.3；删除trace 6896c142-83bf-47b1-88b2-10081122bcc7.0.3；混合冲突trace 4e372096-195b-4040-8334-a9685290d833.0.3，合法行成功、冲突行明确跨计划失败；全部冲突trace a5185af5-08c1-431b-b149-00ec05b7a81f.0.3，0行成功；同计划重导trace ff9fda6a-e38c-4d49-be8f-879d605881ac.0.3，仅报已存在相同续报关系。响应证据 /tmp/renewal49-final-mixed-1.json、/tmp/renewal49-final-conflict-1.json、/tmp/renewal49-final-legal-1.json。
+- 数据回读：混合后DB仅owner→A、target→B各1条；全部冲突与重导后无新增重复；课程关系重导前后均仅B→P。证据 /tmp/renewal49-final-mixed-db.json、/tmp/renewal49-final-conflict-db.json、/tmp/renewal49-final-repeat-db.json、/tmp/renewal49-final-relations-before-repeat.json、/tmp/renewal49-final-relations-after-repeat.json。
+- 通知：三个新增场景日志均出现sendMsgFileDs发送分支调用，证明业务通知路径执行；未查收件箱，不证明邮箱最终送达。证据 /tmp/renewal49-final-notification-evidence.txt。
+- 清理：正常删除B→P后课程关系回读{}；两个独占计划、属性、绑定三表count=0，三门课程有效计划绑定count=0；临时HTTP进程停止，Pod xlsx/b64/pid/log文件回读不存在。证据 /tmp/renewal49-final-legal-2.json、/tmp/renewal49-final-relations-cleanup.json、/tmp/renewal49-final-verification.txt、/tmp/renewal49-final-artifact-readback.txt。
+- 边界：本轮仅TEST，未生产访问、未改代码、未绕过严格保护；并发窗口、历史脏数据、数据库唯一性与ES链路未覆盖。课程关系为权威服务回读，未直查coursecenter底库。
